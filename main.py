@@ -439,6 +439,7 @@ with SB(uc=True, headed= True, undetectable=True, undetected=True,  user_data_di
                                 if str_value.isdigit():
                                     sb.click("input.btn.btn-info")
                                 else:
+                                    sb.type("input.captcha[type='text']", '1000')
                                     print(f'answer contain string{answer} {str(str_value.isdigit())}')
 
                             print(f"Captcha filled and form submitted. {answer}")

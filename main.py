@@ -402,7 +402,7 @@ brave_binary_path = '/usr/bin/brave-browser'
 #chrome_binary_path = '/opt/google/chrome/google-chrome'
 #chrome_user_data_dir = '/home/user/.config/google-chrome/'
 chrome_binary_path = '/opt/google/chrome/google-chrome'
-chrome_user_data_dir = '/home/coder/.config/google-chrome'
+chrome_user_data_dir = '/root/.config/google-chrome/'
 
 with SB(uc=True, headed= True, undetectable=True, undetected=True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path) as sb1:
 

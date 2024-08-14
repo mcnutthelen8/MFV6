@@ -18,19 +18,19 @@ from requests.exceptions import RequestException
 from seleniumbase import SB
 from seleniumbase import Driver
 import subprocess
-
+import pyautogui
 
 debug_mode = False
 
 def get_ip(driver):
-    original_window = driver.driver.current_window_handle
+    original_window = driver.current_window_handle
     driver.open_new_window()
-    driver.switch_to_newest_window()
+    driver.switch_to.newest_window()
     driver.open('https://api.ipify.org/')
     ip_address = driver.get_text('body')
     print('IP =', ip_address)
-    driver.driver.close()
-    driver.switch_to_window(original_window)
+    driver.close()
+    driver.switch_to.window(original_window)
     return ip_address
 
 def get_current_window_id():
@@ -78,25 +78,25 @@ def play_button(sb):
         play_button_selector = '.ytp-large-play-button'
         try:
             if sb.is_element_visible('iframe'):
-                sb.switch_to_frame(sb.find_element(By.TAG_NAME, "iframe"))
+                sb.switch_to.frame(sb.find_element(By.TAG_NAME, "iframe"))
                 if sb.is_element_visible(play_button_selector):
                     play_button_elements = sb.find_elements(By.CSS_SELECTOR, play_button_selector)
                     print("Play button found")
                     play_button = play_button_elements[0]
                     play_button.click()
                     print("Play button Clicked")
-                    sb.switch_to_default_content()
+                    sb.switch_to.default_content()
                     time.sleep(1)
                 else:
                     print("Play button not found")
-                    sb.switch_to_default_content()
+                    sb.switch_to.default_content()
             else:
                 print("iframe not found")
-                sb.switch_to_default_content()
+                sb.switch_to.default_content()
         except Exception as e:
             if debug_mode:
                 print(f"An error occurred: {e}")
-            sb.switch_to_default_content()
+            sb.switch_to.default_content()
 def playback_check(sb):
     try: 
         # Locate the <a> element by its id and click it
@@ -129,24 +129,24 @@ def reclick_button(sb):
     if current_duration == 0:
         play_button_selector = '.ytp-large-play-button'
         try:
-            sb.switch_to_frame(sb.find_element(By.TAG_NAME, "iframe"))
+            sb.switch_to.frame(sb.find_element(By.TAG_NAME, "iframe"))
             play_button_elements = sb.find_elements(By.CSS_SELECTOR, play_button_selector)
             print("reclick_button found")
             play_button = play_button_elements[0]
             play_button.click()
             print("reclick_button Clicked")
-            sb.switch_to_default_content()
+            sb.switch_to.default_content()
             time.sleep(2)
             play_button.click()
             #time.sleep(2)
             print("reclick_button Clicked Again")
 
             print("Play button not found")
-            sb.switch_to_default_content()
+            sb.switch_to.default_content()
         except Exception as e:
             if debug_mode:
                 print(f"An error occurred: {e}")
-            sb.switch_to_default_content()
+            sb.switch_to.default_content()
 
 def remove_pink(sb):
     try:
@@ -404,9 +404,10 @@ brave_binary_path = '/usr/bin/brave-browser'
 chrome_binary_path = '/opt/google/chrome/google-chrome'
 chrome_user_data_dir = '/root/.config/google-chrome/'
 
-with SB(uc=True, headed= True, undetectable=True, undetected=True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path) as sb1:
+sb1 = Driver(uc=True, headed= True, undetectable=True, undetected=True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
 
-    sb1.driver.maximize_window()
+if run_sb1:
+    sb1.maximize_window()
     id1 = get_current_window_id()
     ip_address =get_ip(sb1)
     while ip_address != ip_required:
@@ -418,17 +419,21 @@ with SB(uc=True, headed= True, undetectable=True, undetected=True,  user_data_di
         time.sleep(1)
         sb1.uc_open_with_tab(url)
         print(sb1.get_title())
+
         import img_captcha
         #import ocr_captcha
+
         def check_number_captcha_exists(sb, id):
+
             try:
                 # Attempt to find the number captcha image
                 try:
                     if sb.is_element_visible("#numberCaptcha"):
                         print("Number captcha exists.")
-                        sb.driver.maximize_window()
+                        sb.maximize_window()
                         activate_window_by_id(id)
                         #sb1.scroll_to_top()
+                        sb1.execute_script("window.scrollTo(0, 0);")
                         #answer = ocr_captcha.solve_ocr()
                         try:
                             #sb.type("input.captcha[type='text']", str(answer))
@@ -466,9 +471,10 @@ with SB(uc=True, headed= True, undetectable=True, undetected=True,  user_data_di
             try:
                 if sb.is_element_visible(".captcha-modal__icons .captcha-image"):
                     print("Icon captcha exists.")
-                    sb.driver.maximize_window()
+                    sb.maximize_window()
                     activate_window_by_id(id)
-                    sb1.scroll_to_top()
+                    #sb1.scroll_to_top()
+                    sb1.execute_script("window.scrollTo(0, 0);")
                     # Assuming img_captcha.solve_icon_captcha() is defined elsewhere
                     img_captcha.solve_image_skylom()
                     return True
@@ -481,6 +487,7 @@ with SB(uc=True, headed= True, undetectable=True, undetected=True,  user_data_di
                 # Handle the case where the container or images are not found
                     print("Exception: Icon captcha container not found.")
                 return False
+        
         current_duration = 1
         reclick_waits = 1
         category = 0
@@ -489,8 +496,8 @@ with SB(uc=True, headed= True, undetectable=True, undetected=True,  user_data_di
         while True:
             #activate_window_by_id(id1)
             cloudflare(id1,sb1)
-            sb1.switch_to_default_content()
-            sb1.scroll_to_top()
+            sb1.switch_to.default_content()
+            sb1.execute_script("window.scrollTo(0, 0);")
             play_button(sb1)
             playback_check(sb1)
             remove_pink(sb1)
@@ -500,9 +507,16 @@ with SB(uc=True, headed= True, undetectable=True, undetected=True,  user_data_di
                 print(f'reclick_waits:{reclick_waits}')
                 reclick_waits +=1
                 if reclick_waits > 25:
-                    print(f'start reclick {reclick_waits}')
-                    reclick_button(sb1)
+                    print(f'reopenning reclick {reclick_waits}')
+                    sb1.quit()
+                    sb1 = Driver(uc=True, headed= True, undetectable=True, undetected=True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
+                    
                     reclick_waits = 0
+                if reclick_waits > 20:
+                    reclick_button(sb1)
+                    pyautogui.click(990, 430)
+                    time.sleep(3)
+                    pyautogui.click(990, 430)
             else:
                 reclick_waits = 1
 

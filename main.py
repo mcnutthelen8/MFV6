@@ -22,7 +22,7 @@ import pyautogui
 import mysql.connector
 from mysql.connector import Error
 import datetime
-
+import pytz
 # Connect to the MySQL database
 debug_mode = False
 
@@ -45,7 +45,11 @@ def create_connection():
 
 
 def insert_data(amount, id):
-    now = datetime.datetime.now()
+    sri_lanka_tz = pytz.timezone('Asia/Colombo')
+    utc_now = datetime.utcnow().replace(tzinfo=pytz.utc)
+    sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
+
+    now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
     connection = create_connection()
     if connection:
         try:
@@ -360,8 +364,9 @@ def click_false_button(sb):
         else:
             if debug_mode:
                 print("'a.try_again' button is not visible.")
-        if sb.is_element_visible(".//a[text()=' False ']"):
-            sb.click(".//a[text()=' False ']")
+                
+        if sb.is_element_visible("a.themeBtn.brdr-btn"):
+            sb.click("a.themeBtn.brdr-btn")
             print("Clicked the 'False' button.")
             return True
         else:
@@ -372,8 +377,8 @@ def click_false_button(sb):
         if debug_mode:
             print(f"False' button is not visible.NoSuchElementException")
     try:
-        if sb.is_element_visible(".//a[contains(text(),'False')]"):
-            sb.click(".//a[contains(text(),'False')]")
+        if sb.is_element_visible("a.themeBtn.brdr-btn"):
+            sb.click("a.themeBtn.brdr-btn")
             print("Clicked the 'False' button.")
             return True
         else:

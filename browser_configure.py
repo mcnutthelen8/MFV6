@@ -1,6 +1,7 @@
 import pyautogui
 import time
 import requests
+from seleniumbase import Driver
 
 
 
@@ -190,6 +191,7 @@ def nopecha_elements():
                 try:
                     x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/auto_solve_off.png", region=(1412, 152, 800, 800), confidence=0.9)
                     pyautogui.click(1693, 193)
+                    pyautogui.click(1735, 193)
                     print("auto_solve_off Button Found")
                     time.sleep(2)
                 except pyautogui.ImageNotFoundException:
@@ -260,19 +262,7 @@ def pin_extensions():
 
 def install_extensions(extension_name):
     #on chrome://extensions/
-    pyautogui.click(1613, 137)
-    time.sleep(2)
-    pyautogui.keyDown('ctrl')
-    pyautogui.press('t')
-    pyautogui.keyUp('ctrl')
-    time.sleep(2)
-    pyautogui.keyDown('ctrl')
-    pyautogui.press('l')
-    pyautogui.keyUp('ctrl')
-    time.sleep(2)
-    pyautogui.typewrite('chrome://extensions/')
-    pyautogui.press('enter')
-    time.sleep(5)
+
     for i in range(1,4):
         try:
             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/dev_off.png", region=(1700, 95, 300, 300), confidence=0.9)
@@ -320,6 +310,14 @@ def install_extensions(extension_name):
             print("No load_unpack Button.")
     return None
 
+
+chrome_binary_path = '/opt/google/chrome/google-chrome'
+chrome_user_data_dir = '/root/.config/google-chrome/'
+dc = Driver(uc=True, headed= True, undetectable=True, undetected=True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
+dc.maximize_window()
+url = "chrome://extensions/"
+dc.uc_open_with_tab(url)
+print(dc.get_title())
 
 mysterium = install_extensions('mysterium')
 nopecha = install_extensions('nopecha')

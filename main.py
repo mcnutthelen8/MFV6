@@ -19,13 +19,57 @@ from seleniumbase import SB
 from seleniumbase import Driver
 import subprocess
 import pyautogui
+import mysql.connector
+from mysql.connector import Error
+import datetime
 
+# Connect to the MySQL database
 debug_mode = False
+
+def create_connection():
+    """Create a database connection."""
+    try:
+        connection = mysql.connector.connect(
+            host='sql12.freesqldatabase.com',
+            user='sql12724708',
+            password='MCTBzv65jd',
+            database='sql12724708',
+            port=3306
+        )
+        if connection.is_connected():
+            print('Connected to MySQL database')
+            return connection
+    except Error as e:
+        print(f"Error: {e}")
+        return None
+
+
+def insert_data(amount, id):
+    now = datetime.datetime.now()
+    connection = create_connection()
+    if connection:
+        try:
+            cursor = connection.cursor()
+            sql = """
+                UPDATE `status_table` SET `status` = %s, `amount` = %s  WHERE `status_table`.`id` = %s;
+            """
+            values = (str(now), amount, id)
+            cursor.execute(sql, values)  # Use execute instead of executemany
+            connection.commit()
+            print("Data inserted successfully.")
+
+            # Close the cursor and connection
+            cursor.close()
+
+            connection.close()
+        except Error as e:
+            print(f"Error: {e}")
+
 
 def get_ip(driver):
     original_window = driver.current_window_handle
     driver.open_new_window()
-    driver.switch_to.newest_window()
+    #driver.switch_to.newest_window()
     driver.open('https://api.ipify.org/')
     ip_address = driver.get_text('body')
     print('IP =', ip_address)
@@ -48,7 +92,7 @@ def activate_window_by_id(window_id):
 
 def element_exists(sb, selector):
     try:
-        return sb.is_element_visible(selector)
+        return sb.is_displayed(selector)
     except Exception:
         return False
 
@@ -58,7 +102,7 @@ def verify_success(sb):
 
 def get_current_duration(sb):
     try:
-        if sb.is_element_visible('.video-page-current-duration'):
+        if sb.is_displayed('.video-page-current-duration'):
             current_duration = sb.get_text('.video-page-current-duration')
             if debug_mode:
                 print(f"Current video duration: {current_duration}")
@@ -77,9 +121,9 @@ def play_button(sb):
     if current_duration == 0:
         play_button_selector = '.ytp-large-play-button'
         try:
-            if sb.is_element_visible('iframe'):
+            if sb.is_displayed('iframe'):
                 sb.switch_to.frame(sb.find_element(By.TAG_NAME, "iframe"))
-                if sb.is_element_visible(play_button_selector):
+                if sb.is_displayed(play_button_selector):
                     play_button_elements = sb.find_elements(By.CSS_SELECTOR, play_button_selector)
                     print("Play button found")
                     play_button = play_button_elements[0]
@@ -100,7 +144,7 @@ def play_button(sb):
 def playback_check(sb):
     try: 
         # Locate the <a> element by its id and click it
-        if sb.is_element_visible('#replay_video'):
+        if sb.is_displayed('#replay_video'):
             #sb.highlight('#replay_video')
             sb.click('#replay_video')
             print("Clicked the 'replay_video' button.")
@@ -150,7 +194,7 @@ def reclick_button(sb):
 
 def remove_pink(sb):
     try:
-        if sb.is_element_visible("div.pink_strip_homepage[style*='z-index: 20']"):
+        if sb.is_displayed("div.pink_strip_homepage[style*='z-index: 20']"):
             element = sb.find_element("div.pink_strip_homepage[style*='z-index: 20']")
             #sb.highlight(element)
             sb.execute_script("arguments[0].remove();", element)
@@ -258,7 +302,7 @@ def get_and_click_category(category,sb):
 def check_category_question(sb):
     category_question_selector = '.video-categ-question'
     try:
-        if sb.is_element_visible(category_question_selector):
+        if sb.is_displayed(category_question_selector):
             print("Category question exists")
             return True
         else:
@@ -296,7 +340,7 @@ def click_random_category(sb):
 def click_next_video(sb):
     next_video_selector = 'a.retention-click.themeBtn.bluebtn#nextvideo'
     try:
-        if sb.is_element_visible(next_video_selector):
+        if sb.is_displayed(next_video_selector):
             
             #sb.highlight(next_video_selector)
             sb.click(next_video_selector)
@@ -309,14 +353,14 @@ def click_next_video(sb):
     
 def click_false_button(sb):
     try:
-        if sb.is_element_visible("a.try_again"):
+        if sb.is_displayed("a.try_again"):
             sb.click("a.try_again")
             print("Clicked the 'a.try_again' button.")
             return True
         else:
             if debug_mode:
                 print("'a.try_again' button is not visible.")
-        if sb.is_element_visible(".//a[text()=' False ']"):
+        if sb.is_displayed(".//a[text()=' False ']"):
             sb.click(".//a[text()=' False ']")
             print("Clicked the 'False' button.")
             return True
@@ -328,7 +372,7 @@ def click_false_button(sb):
         if debug_mode:
             print(f"False' button is not visible.NoSuchElementException")
     try:
-        if sb.is_element_visible(".//a[text()=' False ']"):
+        if sb.is_displayed(".//a[text()=' False ']"):
             sb.click(".//a[text()=' False ']")
             print("Clicked the 'False' button.")
             return True
@@ -343,7 +387,7 @@ def click_false_button(sb):
 
 def handle_random_number_buttons(self):
     try:
-        if self.is_element_visible("ul.link-btn-list.vid-category-options"):
+        if self.is_displayed("ul.link-btn-list.vid-category-options"):
             print('Numeric verification found')
 
             ul_element = self.find_element("ul.link-btn-list.vid-category-options")
@@ -388,6 +432,24 @@ def handle_random_number_buttons(self):
                print(f"Exception: {e}")
         return False
 
+def get_coin_value(driver):
+    try:
+        # Locate the <a> element containing the coin value
+        element = driver.find_element("a.button.class-for-instant-baymack-videos.header-button")
+        
+        # Extract the text content
+        text = element.text.strip()
+        
+        # Extract the numeric part from the text
+        coin_value = text.split()[0]  # Assuming the first part is the numeric value
+        
+        print(f"Coin value: {coin_value}")
+        return coin_value
+    
+    except Exception as e:
+        print(f"Error: {e}")
+        return None
+    
 
 ip_required = '86.126.121.190' #'80.235.95.245' #'62.65.59.183'#Chrome /alisabro #'177.32.9.130' #'82.79.231.82'  #86.126.140.173'
 ip_required_2 = '177.32.9.130' #186.213.222.230'
@@ -428,7 +490,7 @@ if run_sb1:
             try:
                 # Attempt to find the number captcha image
                 try:
-                    if sb.is_element_visible("#numberCaptcha"):
+                    if sb.is_displayed("#numberCaptcha"):
                         print("Number captcha exists.")
                         sb.maximize_window()
                         activate_window_by_id(id)
@@ -469,7 +531,7 @@ if run_sb1:
             
         def check_icon_captcha_exists(sb, id):
             try:
-                if sb.is_element_visible(".captcha-modal__icons .captcha-image"):
+                if sb.is_displayed(".captcha-modal__icons .captcha-image"):
                     print("Icon captcha exists.")
                     sb.maximize_window()
                     activate_window_by_id(id)
@@ -614,7 +676,11 @@ if run_sb1:
                 print(f'Next Click {timer}')
                 print(f'Elapsed_time {seconds_only}')
                 start_time = time.time()
+                coins = get_coin_value(sb1)
+                if coins:
+                    insert_data(coins, 1)
                 ip_address = 0
+
             click_false_button(sb1)
             handle_random_number_buttons(sb1)
             check_number_captcha_exists(sb1, id1)

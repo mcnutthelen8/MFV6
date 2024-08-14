@@ -42,4 +42,3 @@ unzip fingerprint.crx -d /root/Desktop/MFV6/fingerprint
 unzip nopecha.crx -d /root/Desktop/MFV6/nopecha
 
 echo "Installation completed successfully!"
-python3 browser_configure.py

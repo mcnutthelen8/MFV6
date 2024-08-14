@@ -36,10 +36,10 @@ wget "https://clients2.googleusercontent.com/crx/blobs/AVsOOGj770VyacuboorG752M_
 wget "https://clients2.googleusercontent.com/crx/blobs/AVsOOGjQdui7oibybsnwnagZ_gz6_Zu_CSxKFbJpSbPGQSjDvf5FQBwps0BbXAAISoLmOfERqxVo_sGsBxUIAqX3N52hc5TZ4WXLPVNRnq6hp2Mjrb6FAMZSmuVHB-8YWXsgMMqOWnMm_jDpP5G-qw/MEOJNMFHJKAHLFCECPDCDGJCLCILMAIJ_1_0_5_0.crx" -O fingerprint.crx
 wget "https://clients2.googleusercontent.com/crx/blobs/AVsOOGhiVwWZyTfRn1a8tz5BGGIwjYMKxyrBvu_w00IgX7TjhJ-wiNAFbK_Use5iSp-upY6IKcIOi6jHcokx9kWzZmvxh4NmcKVVezMq81m9LqFP5NIuaTLugxHck9UHYvQAxlKa5V1Z0fOQGbAyy2lS51SFYNnB33uU/DKNLFMJAANFBLGFDFEBHIJALFMHMJJJO_0_4_12_0.crx" -O nopecha.crx
 
-unzip mysterium.zip -d /mysterium
-unzip cookie.zip -d /cookie
-unzip fingerprint.zip -d /fingerprint
-unzip nopecha.zip -d /nopecha
+unzip mysterium.crx -d /root/Desktop/MFV6/mysterium
+unzip cookie.crx -d /root/Desktop/MFV6/cookie
+unzip fingerprint.crx -d /root/Desktop/MFV6/fingerprint
+unzip nopecha.crx -d /root/Desktop/MFV6/nopecha
 
 echo "Installation completed successfully!"
 python3 browser_configure.py

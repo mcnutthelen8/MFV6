@@ -126,6 +126,7 @@ def mysterium_login():
                                                         try:
                                                             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/refresh_ip_off.png", region=(1325, 109, 800, 900), confidence=0.95)
                                                             pyautogui.click(1640, 300)
+                                                            pyautogui.click(1668, 300)
                                                             print("refresh_ip_off Found")
                                                             time.sleep(1)
                                                         except pyautogui.ImageNotFoundException:

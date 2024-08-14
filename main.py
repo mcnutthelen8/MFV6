@@ -27,6 +27,9 @@ import datetime
 # Connect to the MySQL database
 debug_mode = False
 
+ip_required = '86.126.121.190'
+farm_id = 1
+
 def create_connection():
     """Create a database connection."""
     try:
@@ -70,10 +73,21 @@ def insert_data(ip, amount, id):
             print("Status table updated successfully.")
 
             # Then, insert data into farm1_coins
-            sql_insert = """
-                INSERT INTO farm1_coins (time, amount) 
-                VALUES (%s, %s)
-            """
+            if farm_id == 1:
+                sql_insert = """
+                    INSERT INTO farm1_coins (time, amount) 
+                    VALUES (%s, %s)
+                """
+            if farm_id == 2:
+                sql_insert = """
+                    INSERT INTO farm2_coins (time, amount) 
+                    VALUES (%s, %s)
+                """
+            if farm_id == 3:
+                sql_insert = """
+                    INSERT INTO farm3_coins (time, amount) 
+                    VALUES (%s, %s)
+                """
             values_insert = (str(now), amount)
             cursor.execute(sql_insert, values_insert)  # Use execute instead of executemany
             connection.commit()
@@ -477,7 +491,7 @@ def get_coin_value(driver):
         return None
     
 
-ip_required = '86.126.121.190' #'80.235.95.245' #'62.65.59.183'#Chrome /alisabro #'177.32.9.130' #'82.79.231.82'  #86.126.140.173'
+#'80.235.95.245' #'62.65.59.183'#Chrome /alisabro #'177.32.9.130' #'82.79.231.82'  #86.126.140.173'
 ip_required_2 = '177.32.9.130' #186.213.222.230'
 ip_required_2 = '88.196.211.168'
 
@@ -617,7 +631,7 @@ if run_sb1:
                         ip_address =get_ip(sb1)
                         coins = get_coin_value(sb1)
                         if coins:
-                            insert_data(ip= ip_address,amount= coins, id= 1)
+                            insert_data(ip= ip_address,amount= coins, id= farm_id)
 
                     if category == 0:
                         video_link = get_youtube_link(sb1) 

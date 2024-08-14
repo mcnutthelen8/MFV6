@@ -332,6 +332,6 @@ if fingerprint and mysterium and nopecha and cookie:
             print('Nopecha Elements Added')
             if mysterium_login():
                 print('Mysterium Login Done...')
-                mysterium_vpn_connect('estonia')
+                #mysterium_vpn_connect('estonia')
                 time.sleep(100000)
 time.sleep(100000)

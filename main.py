@@ -21,8 +21,9 @@ import subprocess
 import pyautogui
 import mysql.connector
 from mysql.connector import Error
-import datetime
+from datetime import datetime
 import pytz
+import datetime
 # Connect to the MySQL database
 debug_mode = False
 
@@ -44,30 +45,50 @@ def create_connection():
         return None
 
 
+
 def insert_data(ip, amount, id):
     sri_lanka_tz = pytz.timezone('Asia/Colombo')
-    utc_now = datetime.utcnow().replace(tzinfo=pytz.utc)
+    utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
     sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
 
     now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
     connection = create_connection()
+
     if connection:
         try:
             cursor = connection.cursor()
-            sql = """
-                UPDATE `status_table` SET `status` = %s, `status` = %s, `amount` = %s  WHERE `status_table`.`id` = %s;
+
+            # First, update the status_table
+            sql_update = """
+                UPDATE `status_table` 
+                SET `ip_address` = %s, `status` = %s, `amount` = %s  
+                WHERE `id` = %s;
             """
-            values = (ip,str(now), amount, id)
-            cursor.execute(sql, values)  # Use execute instead of executemany
+            values_update = (ip, str(now), amount, id)
+            cursor.execute(sql_update, values_update)
             connection.commit()
-            print("Data inserted successfully.")
+            print("Status table updated successfully.")
 
-            # Close the cursor and connection
-            cursor.close()
+            # Then, insert data into farm1_coins
+            sql_insert = """
+                INSERT INTO farm1_coins (time, amount) 
+                VALUES (%s, %s)
+            """
+            values_insert = (str(now), amount)
+            cursor.execute(sql_insert, values_insert)  # Use execute instead of executemany
+            connection.commit()
+            print("Data inserted into farm1_coins successfully.")
 
-            connection.close()
         except Error as e:
             print(f"Error: {e}")
+        finally:
+            # Close the cursor and connection in the finally block to ensure they are closed even if an error occurs
+            if cursor:
+                cursor.close()
+            if connection:
+                connection.close()
+
+
 
 
 def get_ip(driver):
@@ -594,6 +615,9 @@ if run_sb1:
                     else:
                         print('Getting IP at 10 sec..')
                         ip_address =get_ip(sb1)
+                        coins = get_coin_value(sb1)
+                        if coins:
+                            insert_data(ip= ip_address,amount= coins, id= 1)
 
                     if category == 0:
                         video_link = get_youtube_link(sb1) 
@@ -681,9 +705,6 @@ if run_sb1:
                 print(f'Next Click {timer}')
                 print(f'Elapsed_time {seconds_only}')
                 start_time = time.time()
-                coins = get_coin_value(sb1)
-                if coins:
-                    insert_data(ip= ip_address,amount= coins, id= 1)
                 ip_address = 0
 
             click_false_button(sb1)

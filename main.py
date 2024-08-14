@@ -92,7 +92,7 @@ def activate_window_by_id(window_id):
 
 def element_exists(sb, selector):
     try:
-        return sb.is_displayed(selector)
+        return sb.is_element_visible(selector)
     except Exception:
         return False
 
@@ -102,7 +102,7 @@ def verify_success(sb):
 
 def get_current_duration(sb):
     try:
-        if sb.is_displayed('.video-page-current-duration'):
+        if sb.is_element_visible('.video-page-current-duration'):
             current_duration = sb.get_text('.video-page-current-duration')
             if debug_mode:
                 print(f"Current video duration: {current_duration}")
@@ -121,9 +121,9 @@ def play_button(sb):
     if current_duration == 0:
         play_button_selector = '.ytp-large-play-button'
         try:
-            if sb.is_displayed('iframe'):
+            if sb.is_element_visible('iframe'):
                 sb.switch_to.frame(sb.find_element(By.TAG_NAME, "iframe"))
-                if sb.is_displayed(play_button_selector):
+                if sb.is_element_visible(play_button_selector):
                     play_button_elements = sb.find_elements(By.CSS_SELECTOR, play_button_selector)
                     print("Play button found")
                     play_button = play_button_elements[0]
@@ -144,7 +144,7 @@ def play_button(sb):
 def playback_check(sb):
     try: 
         # Locate the <a> element by its id and click it
-        if sb.is_displayed('#replay_video'):
+        if sb.is_element_visible('#replay_video'):
             #sb.highlight('#replay_video')
             sb.click('#replay_video')
             print("Clicked the 'replay_video' button.")
@@ -194,7 +194,7 @@ def reclick_button(sb):
 
 def remove_pink(sb):
     try:
-        if sb.is_displayed("div.pink_strip_homepage[style*='z-index: 20']"):
+        if sb.is_element_visible("div.pink_strip_homepage[style*='z-index: 20']"):
             element = sb.find_element("div.pink_strip_homepage[style*='z-index: 20']")
             #sb.highlight(element)
             sb.execute_script("arguments[0].remove();", element)
@@ -302,7 +302,7 @@ def get_and_click_category(category,sb):
 def check_category_question(sb):
     category_question_selector = '.video-categ-question'
     try:
-        if sb.is_displayed(category_question_selector):
+        if sb.is_element_visible(category_question_selector):
             print("Category question exists")
             return True
         else:
@@ -340,7 +340,7 @@ def click_random_category(sb):
 def click_next_video(sb):
     next_video_selector = 'a.retention-click.themeBtn.bluebtn#nextvideo'
     try:
-        if sb.is_displayed(next_video_selector):
+        if sb.is_element_visible(next_video_selector):
             
             #sb.highlight(next_video_selector)
             sb.click(next_video_selector)
@@ -353,14 +353,14 @@ def click_next_video(sb):
     
 def click_false_button(sb):
     try:
-        if sb.is_displayed("a.try_again"):
+        if sb.is_element_visible("a.try_again"):
             sb.click("a.try_again")
             print("Clicked the 'a.try_again' button.")
             return True
         else:
             if debug_mode:
                 print("'a.try_again' button is not visible.")
-        if sb.is_displayed(".//a[text()=' False ']"):
+        if sb.is_element_visible(".//a[text()=' False ']"):
             sb.click(".//a[text()=' False ']")
             print("Clicked the 'False' button.")
             return True
@@ -372,8 +372,8 @@ def click_false_button(sb):
         if debug_mode:
             print(f"False' button is not visible.NoSuchElementException")
     try:
-        if sb.is_displayed(".//a[text()=' False ']"):
-            sb.click(".//a[text()=' False ']")
+        if sb.is_element_visible(".//a[contains(text(),'False')]"):
+            sb.click(".//a[contains(text(),'False')]")
             print("Clicked the 'False' button.")
             return True
         else:
@@ -387,7 +387,7 @@ def click_false_button(sb):
 
 def handle_random_number_buttons(self):
     try:
-        if self.is_displayed("ul.link-btn-list.vid-category-options"):
+        if self.is_element_visible("ul.link-btn-list.vid-category-options"):
             print('Numeric verification found')
 
             ul_element = self.find_element("ul.link-btn-list.vid-category-options")
@@ -490,7 +490,7 @@ if run_sb1:
             try:
                 # Attempt to find the number captcha image
                 try:
-                    if sb.is_displayed("#numberCaptcha"):
+                    if sb.is_element_visible("#numberCaptcha"):
                         print("Number captcha exists.")
                         sb.maximize_window()
                         activate_window_by_id(id)
@@ -531,7 +531,7 @@ if run_sb1:
             
         def check_icon_captcha_exists(sb, id):
             try:
-                if sb.is_displayed(".captcha-modal__icons .captcha-image"):
+                if sb.is_element_visible(".captcha-modal__icons .captcha-image"):
                     print("Icon captcha exists.")
                     sb.maximize_window()
                     activate_window_by_id(id)

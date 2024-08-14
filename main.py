@@ -44,7 +44,7 @@ def create_connection():
         return None
 
 
-def insert_data(amount, id):
+def insert_data(ip, amount, id):
     sri_lanka_tz = pytz.timezone('Asia/Colombo')
     utc_now = datetime.utcnow().replace(tzinfo=pytz.utc)
     sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
@@ -55,9 +55,9 @@ def insert_data(amount, id):
         try:
             cursor = connection.cursor()
             sql = """
-                UPDATE `status_table` SET `status` = %s, `amount` = %s  WHERE `status_table`.`id` = %s;
+                UPDATE `status_table` SET `status` = %s, `status` = %s, `amount` = %s  WHERE `status_table`.`id` = %s;
             """
-            values = (str(now), amount, id)
+            values = (ip,str(now), amount, id)
             cursor.execute(sql, values)  # Use execute instead of executemany
             connection.commit()
             print("Data inserted successfully.")
@@ -683,7 +683,7 @@ if run_sb1:
                 start_time = time.time()
                 coins = get_coin_value(sb1)
                 if coins:
-                    insert_data(coins, 1)
+                    insert_data(ip= ip_address,amount= coins, id= 1)
                 ip_address = 0
 
             click_false_button(sb1)

@@ -34,11 +34,11 @@ def create_connection():
     """Create a database connection."""
     try:
         connection = mysql.connector.connect(
-            host='sql12.freesqldatabase.com',
-            user='sql12724708',
-            password='MCTBzv65jd',
-            database='sql12724708',
-            port=3306
+            host='ooy.h.filess.io',
+            user='MFV6_herefooton',
+            password='ded12e502693e0b05146dd9d6cf1b6d43f0fa5db',
+            database='MFV6_herefooton',
+            port=3307
         )
         if connection.is_connected():
             print('Connected to MySQL database')

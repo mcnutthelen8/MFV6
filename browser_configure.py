@@ -314,7 +314,7 @@ def install_extensions(extension_name):
 
 chrome_binary_path = '/opt/google/chrome/google-chrome'
 chrome_user_data_dir = '/root/.config/google-chrome/'
-dc = Driver(uc=True, headed= True, undetectable=True, undetected=True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
+dc = Driver(uc=False, headed= True)
 dc.maximize_window()
 url = "chrome://extensions/"
 dc.uc_open_with_tab(url)

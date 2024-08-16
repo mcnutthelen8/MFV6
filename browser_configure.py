@@ -317,7 +317,7 @@ chrome_user_data_dir = '/root/.config/google-chrome/'
 dc = Driver(uc=False, headed= True)
 dc.maximize_window()
 url = "chrome://extensions/"
-dc.uc_open_with_tab(url)
+dc.open(url)
 print(dc.get_title())
 
 mysterium = install_extensions('mysterium')

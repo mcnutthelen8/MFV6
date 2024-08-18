@@ -28,8 +28,8 @@ import datetime
 debug_mode = False
 
 ip_required = '86.126.121.190'
-farm_id = 1
-server_name = 'estonia'
+farm_id = 3
+server_name = 'Poland'
 def create_connection():
     """Create a database connection."""
     try:

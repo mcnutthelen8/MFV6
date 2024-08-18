@@ -29,7 +29,7 @@ debug_mode = False
 
 ip_required = '86.126.121.190'
 farm_id = 1
-
+server_name = 'estonia'
 def create_connection():
     """Create a database connection."""
     try:
@@ -491,9 +491,105 @@ def get_coin_value(driver):
         return None
     
 
-#'80.235.95.245' #'62.65.59.183'#Chrome /alisabro #'177.32.9.130' #'82.79.231.82'  #86.126.140.173'
-ip_required_2 = '177.32.9.130' #186.213.222.230'
-ip_required_2 = '88.196.211.168'
+def get_ipaddress():
+    try:
+        response = requests.get('https://api.ipify.org?format=json')
+        response.raise_for_status()  # Raise an HTTPError for bad responses
+        ip_info = response.json()
+        ip_address = ip_info.get('ip', 'IP address not found')
+        print(f"Public IP Address: {ip_address}")
+        return ip_address
+    except requests.RequestException as e:
+        print(f"Error retrieving IP address: {e}")
+        return None
+
+def get_proxycheck(ip):
+
+    url = f'https://proxycheck.io/v2/{ip}'
+    
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an HTTPError for bad responses
+        result = response.json()
+        #print(result)
+        # Extract IP address and proxy status
+        status = result.get('status')
+        if status == 'ok':
+            ip_address = ip
+            ip_info = result.get(f'{ip_address}', {})
+            proxy_status = ip_info.get('proxy', 'Unknown')
+            print(f"IP Address: {ip_address} \nProxy Status: {proxy_status}")
+            if proxy_status =='no':
+                return True
+        else:
+            print("Error: Status not OK")
+            return None, None
+    except requests.RequestException as e:
+        print(f"Error retrieving IP address and proxy status: {e}")
+        return None, None
+
+
+def get_ipscore(ip):
+    url = f'https://ipqualityscore.com/api/json/ip/Bfg1dzryVqbpSwtbxgWb1uVkXLrr1Nzr/{ip}?strictness=3&allow_public_access_points=false'
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an HTTPError for bad responses
+        result = response.json()
+        #print(result)  # Print the raw response for debugging
+
+        # Assign specific data fields to variables
+        fraud_score = result.get('fraud_score', 'Unknown')
+        proxy = result.get('proxy', False)
+        vpn = result.get('vpn', False)
+        tor = result.get('tor', False)
+        active_vpn = result.get('active_vpn', False)
+        active_tor = result.get('active_tor', False)
+        recent_abuse = result.get('recent_abuse', False)
+        bot_status = result.get('bot_status', False)
+
+        # Print the assigned variables
+        print(f"Fraud Score: {fraud_score}")
+        print(f"Proxy: {proxy}")
+        print(f"VPN: {vpn}")
+        print(f"TOR: {tor}")
+        print(f"Active VPN: {active_vpn}")
+        print(f"Active TOR: {active_tor}")
+        print(f"Recent Abuse: {recent_abuse}")
+        print(f"Bot Status: {bot_status}")
+        if vpn == False and tor == False and active_vpn == False and active_tor == False and bot_status == False and recent_abuse == False:
+            return True
+        else:
+            return None
+    except requests.RequestException as e:
+        print(f"Error retrieving IP data: {e}")
+        return None, None, None, None, None, None, None, None
+
+
+def mysterium_vpn_connect(server_name):
+    try:
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
+        pyautogui.click(x, y)
+        print("mysterium_icon_empty Found")
+        time.sleep(5)
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/search_mysterium.png", region=(1325, 494, 800, 400), confidence=0.95)
+            pyautogui.click(x, y)
+            print("search_mysterium Found")
+            time.sleep(2)
+            pyautogui.typewrite(server_name)
+            pyautogui.press('enter')
+            time.sleep(3)
+            pyautogui.scroll(-500)
+            time.sleep(2)
+            pyautogui.click(1627, 568)
+            return True
+        except pyautogui.ImageNotFoundException:
+            print("No search_mysterium .")
+
+    except pyautogui.ImageNotFoundException:
+        print("No mysterium_icon_empty .")
+    return None
+
 
 run_sb1 = True
 run_sb2 = True
@@ -506,16 +602,27 @@ brave_binary_path = '/usr/bin/brave-browser'
 chrome_binary_path = '/opt/google/chrome/google-chrome'
 chrome_user_data_dir = '/root/.config/google-chrome/'
 
-sb1 = Driver(uc=True, headed= True, undetectable=True, undetected=True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
+sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
 
 if run_sb1:
     sb1.maximize_window()
     id1 = get_current_window_id()
-    ip_address =get_ip(sb1)
-    while ip_address != ip_required:
-        print(f'IP is not Matched {ip_address}, Required: {ip_required}')
 
-    print(f'IP Matched {ip_address}')
+    ipscore = None
+    proxycheck = None
+    ip_required = 0
+    while ipscore and proxycheck:
+        ip_address =get_ip(sb1)
+        ipscore = get_ipscore(ip_address)
+        proxycheck = get_proxycheck(ip_address)
+        if ipscore and proxycheck:
+            ip_required = ip_address
+            print(f'good {ip_address}')
+        else:
+            print(f'change ip {ip_address}')
+            mysterium_vpn_connect(server_name)
+
+    #print(f'IP Matched {ip_address}')
     if ip_address == ip_required:
         url = "https://www.skylom.com/videos"
         time.sleep(1)

@@ -314,6 +314,9 @@ def install_extensions(extension_name):
 
 chrome_binary_path = '/opt/google/chrome/google-chrome'
 chrome_user_data_dir = '/root/.config/google-chrome/'
+
+chrome_user_data_dir2 = '/root/.config/google-chrome/second'
+
 dc = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
 dc.maximize_window()
 url = "chrome://extensions/"
@@ -332,6 +335,26 @@ if fingerprint and mysterium and nopecha and cookie:
             print('Nopecha Elements Added')
             if mysterium_login():
                 print('Mysterium Login Done...')
-                #mysterium_vpn_connect('estonia')
-                time.sleep(100000)
+
+
+dc2 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir2, binary_location=chrome_binary_path)
+dc2.maximize_window()
+url = "chrome://extensions/"
+dc2.open(url)
+print(dc2.get_title())
+
+mysterium = install_extensions('mysterium')
+nopecha = install_extensions('nopecha')
+cookie = install_extensions('cookie')
+fingerprint = install_extensions('fingerprint')
+if fingerprint and mysterium and nopecha and cookie:
+    print('All Extensions are installed..')
+    if pin_extensions():
+        print('All Extensions are pinned')
+        if nopecha_elements():
+            print('Nopecha Elements Added')
+            if mysterium_login():
+                print('Mysterium Login Done...')
+
+
 time.sleep(100000)

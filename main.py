@@ -30,8 +30,12 @@ debug_mode = False
 ip_required = 0
 farm_id = 3
 farm_id2 = 1
+farm_id3 = 2
+farm_id4 = 4
 server_name1 = 'poland'
 server_name2 = 'estonia'
+server_name3 = 'romania'
+server_name4 = 'hungary'
 
 
 def create_connection():
@@ -90,6 +94,12 @@ def insert_data(ip, amount, id):
                     VALUES (%s, %s)
                 """
             if id == 3:
+
+                sql_insert = """
+                    INSERT INTO farm3_coins (time, amount) 
+                    VALUES (%s, %s)
+                """
+            if id == 4:
 
                 sql_insert = """
                     INSERT INTO farm3_coins (time, amount) 
@@ -512,7 +522,7 @@ def get_ipaddress():
 
 def get_proxycheck(ip):
 
-    url = f'https://proxycheck.io/v2/{ip}'
+    url = f'https://proxycheck.io/v2/{ip}?vpn=1&asn=1'
     
     try:
         response = requests.get(url)
@@ -617,6 +627,8 @@ def fix_ip(drive, name):
 
 run_sb1 = True
 run_sb2 = True
+run_sb3 = True
+run_sb4 = True
 
 brave_user_data_dir = '/home/coder/.config/BraveSoftware/Brave-Browser/'
 brave_binary_path = '/usr/bin/brave-browser'
@@ -627,6 +639,8 @@ chrome_binary_path = '/opt/google/chrome/google-chrome'
 chrome_user_data_dir = '/root/.config/google-chrome/'
 
 chrome_user_data_dir2 = '/root/.config/google-chrome/second'
+chrome_user_data_dir3 = '/root/.config/google-chrome/third'
+chrome_user_data_dir4 = '/root/.config/google-chrome/four'
 
 if run_sb1:
     sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
@@ -642,6 +656,20 @@ if run_sb2:
     ip_required2 = fix_ip(sb2, server_name2)
     ip_address2 = get_ip(sb2)
 
+if run_sb3:
+    sb3 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir3, binary_location=chrome_binary_path)
+    id3 = get_current_window_id()
+    sb3.maximize_window()
+    ip_required3 = fix_ip(sb3, server_name3)
+    ip_address3 = get_ip(sb3)
+
+if run_sb4:
+    sb4 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir4, binary_location=chrome_binary_path)
+    id4 = get_current_window_id()
+    sb4.maximize_window()
+    ip_required4 = fix_ip(sb4, server_name4)
+    ip_address4 = get_ip(sb4)
+
 
 
     #print(f'IP Matched {ip_address}')
@@ -652,9 +680,18 @@ if ip_address2 == ip_required2:
         sb1.open(url)
         print(sb1.get_title())
 
-        sb2.open(url)
-        print(sb2.get_title())
 
+        if run_sb2:
+            sb2.open(url)
+            print(sb2.get_title())
+
+        if run_sb3:
+            sb3.open(url)
+            print(sb3.get_title())
+
+        if run_sb4:
+            sb4.open(url)
+            print(sb4.get_title())
         import img_captcha
         #import ocr_captcha
 
@@ -735,28 +772,73 @@ if ip_address2 == ip_required2:
         basic_info2 = True
         start_time2 = time.time()
 
+        current_duration3 = 1
+        reclick_waits3 = 1
+        category3 = 0
+        basic_info3 = True
+        start_time3 = time.time()
+
+        current_duration4 = 1
+        reclick_waits4 = 1
+        category4 = 0
+        basic_info4 = True
+        start_time4 = time.time()
+
         while True:
             #activate_window_by_id(id1)
             cloudflare(id1,sb1)
-            cloudflare(id2,sb2)
-
             sb1.switch_to.default_content()
             sb1.execute_script("window.scrollTo(0, 0);")
             play_button(sb1)
             playback_check(sb1)
             remove_pink(sb1)
 
-            sb2.switch_to.default_content()
-            sb2.execute_script("window.scrollTo(0, 0);")
-            play_button(sb2)
-            playback_check(sb2)
-            remove_pink(sb2)
+            #SB2 
+            if run_sb2:
+                cloudflare(id2,sb2)
+                sb2.switch_to.default_content()
+                sb2.execute_script("window.scrollTo(0, 0);")
+                play_button(sb2)
+                playback_check(sb2)
+                remove_pink(sb2)
             
+            if run_sb3:
+                cloudflare(id3,sb3)
+                sb3.switch_to.default_content()
+                sb3.execute_script("window.scrollTo(0, 0);")
+                play_button(sb3)
+                playback_check(sb3)
+                remove_pink(sb3)
+            
+            if run_sb4:
+                cloudflare(id4,sb4)
+                sb4.switch_to.default_content()
+                sb4.execute_script("window.scrollTo(0, 0);")
+                play_button(sb4)
+                playback_check(sb4)
+                remove_pink(sb4)
+
+
             previous_duration = current_duration
             current_duration = get_current_duration(sb=sb1)
+            
+            if run_sb2:
+                previous_duration2 = current_duration2
+                current_duration2 = get_current_duration(sb=sb2)
 
-            previous_duration2 = current_duration2
-            current_duration2 = get_current_duration(sb=sb2)
+
+            if run_sb3:
+                previous_duration3 = current_duration3
+                current_duration3 = get_current_duration(sb=sb3)
+
+
+            if run_sb4:
+                previous_duration4 = current_duration4
+                current_duration4 = get_current_duration(sb=sb4)
+
+##################################################################
+##########################SB-1####################################
+##################################################################
 
             if current_duration == previous_duration and current_duration == 0 :
                 print(f'reclick_waits:{reclick_waits}')
@@ -767,7 +849,7 @@ if ip_address2 == ip_required2:
                     sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
                     id1 = get_current_window_id()
                     sb1.maximize_window()
-                    ip_required = fix_ip(sb1, 'poland')
+                    ip_required = fix_ip(sb1, server_name1)
                     ip_address = get_ip(sb1)
                     sb1.open("https://www.skylom.com/videos")
                     print(sb1.get_title())
@@ -780,33 +862,6 @@ if ip_address2 == ip_required2:
                     pyautogui.click(990, 430)
             else:
                 reclick_waits = 1
-            #sb2
-            if current_duration2 == previous_duration2 and current_duration2 == 0 :
-                print(f'reclick_waits:{reclick_waits2}')
-                reclick_waits2 +=1
-                if reclick_waits2 > 25:
-                    print(f'reopenning reclick {reclick_waits2}')
-                    sb2.quit()
-                    sb2 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir2, binary_location=chrome_binary_path)
-                    id2 = get_current_window_id()
-                    sb2.maximize_window()
-                    ip_required2 = fix_ip(sb2, 'estonia')
-                    ip_address2 = get_ip(sb2)
-                    sb2.open("https://www.skylom.com/videos")
-                    print(sb2.get_title())
-
-                    
-                    reclick_waits2 = 0
-                if reclick_waits2 > 20:
-                    reclick_button(sb2)
-                    activate_window_by_id(id2)
-                    pyautogui.click(990, 430)
-                    time.sleep(3)
-                    pyautogui.click(990, 430)
-            else:
-                reclick_waits2 = 1
-
-
 
             if current_duration:
                 if current_duration >= 10:
@@ -921,122 +976,438 @@ if ip_address2 == ip_required2:
             handle_random_number_buttons(sb1)
             check_number_captcha_exists(sb1, id1)
             check_icon_captcha_exists(sb1, id1)
+
 ##################################################################
+##########################SB-2####################################
+##################################################################
+            if run_sb2:
+                if current_duration2 == previous_duration2 and current_duration2 == 0 :
+                    print(f'reclick_waits:{reclick_waits2}')
+                    reclick_waits2 +=1
+                    if reclick_waits2 > 25:
+                        print(f'reopenning reclick {reclick_waits2}')
+                        sb2.quit()
+                        sb2 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir2, binary_location=chrome_binary_path)
+                        id2 = get_current_window_id()
+                        sb2.maximize_window()
+                        ip_required2 = fix_ip(sb2, server_name2)
+                        ip_address2 = get_ip(sb2)
+                        sb2.open("https://www.skylom.com/videos")
+                        print(sb2.get_title())
 
-            if current_duration2:
-                if current_duration2 >= 10:
-                    if ip_address2 == ip_required2:
-                        pass
-                    else:
-                        print('Getting2 IP at 10 sec..')
-                        ip_address2 =get_ip(sb2)
-                        coins2 = get_coin_value(sb2)
-                        if coins2:
-                            insert_data(ip= ip_address2,amount= coins2, id= farm_id2)
-
-                    if category2 == 0:
-                        video_link2 = get_youtube_link(sb2) 
-                        category2 = get_video_infog(video_link2)
-                        if debug_mode:
-                            print(f"Category2: {category2}")
-                        if "Howto" in category2:
-                            category2 = "How-To"
-                        elif "Science" in category2:
-                            category2 = "Sic-fi"
-                        elif "Beauty" in category2:
-                            category2 = "Beauty"
-                        elif "Nonprofit" in category2:
-                            category2 = "Nonprofit"    
-                        elif "Film" in category2:
-                            category2 = "Film"        
-                        elif "Auto" in category2:
-                            category2 = "Auto"    
-                        elif "Technology" in category2:
-                            category2 = "Technology"        
-                    
-                    else:
-                        if basic_info2:
-                            #print("Category is ",category)
-                            print(f"Video duration2: {current_duration2} and Category2 is {category2}", end="\r")
-                 
+                        
+                        reclick_waits2 = 0
+                    if reclick_waits2 > 20:
+                        reclick_button(sb2)
+                        activate_window_by_id(id2)
+                        pyautogui.click(990, 430)
+                        time.sleep(3)
+                        pyautogui.click(990, 430)
                 else:
-                    category2 = 0
-                    
-                    if basic_info:
-                        print(f"Video duration2: {current_duration2} and Category2 is {category2}", end="\r")
-                        #print('Video is Fresh')
+                    reclick_waits2 = 1
 
-            if check_category_question(sb2) == True:
-                if ip_address2 == ip_required2:
-                    ip_address2 = 0
-                    print('starting to answer category')
-                    if category2 != 0:
-                        print('starting to answer category confirm')
-                        if get_and_click_category(category2,sb2) == False:
+                if current_duration2:
+                    if current_duration2 >= 10:
+                        if ip_address2 == ip_required2:
+                            pass
+                        else:
+                            print('Getting2 IP at 10 sec..')
+                            ip_address2 =get_ip(sb2)
+                            coins2 = get_coin_value(sb2)
+                            if coins2:
+                                insert_data(ip= ip_address2,amount= coins2, id= farm_id2)
+
+                        if category2 == 0:
+                            video_link2 = get_youtube_link(sb2) 
+                            category2 = get_video_infog(video_link2)
                             if debug_mode:
-                                print("Issue Detect1")
-                            if get_and_click_category('None',sb2) == False:
+                                print(f"Category2: {category2}")
+                            if "Howto" in category2:
+                                category2 = "How-To"
+                            elif "Science" in category2:
+                                category2 = "Sic-fi"
+                            elif "Beauty" in category2:
+                                category2 = "Beauty"
+                            elif "Nonprofit" in category2:
+                                category2 = "Nonprofit"    
+                            elif "Film" in category2:
+                                category2 = "Film"        
+                            elif "Auto" in category2:
+                                category2 = "Auto"    
+                            elif "Technology" in category2:
+                                category2 = "Technology"        
+                        
+                        else:
+                            if basic_info2:
+                                #print("Category is ",category)
+                                print(f"Video duration2: {current_duration2} and Category2 is {category2}", end="\r")
+                    
+                    else:
+                        category2 = 0
+                        
+                        if basic_info:
+                            print(f"Video duration2: {current_duration2} and Category2 is {category2}", end="\r")
+                            #print('Video is Fresh')
+
+                if check_category_question(sb2) == True:
+                    if ip_address2 == ip_required2:
+                        ip_address2 = 0
+                        print('starting to answer category')
+                        if category2 != 0:
+                            print('starting to answer category confirm')
+                            if get_and_click_category(category2,sb2) == False:
                                 if debug_mode:
-                                    print("Issue Detect2")
-                                if get_and_click_category('Music',sb2) == False:
+                                    print("Issue Detect1")
+                                if get_and_click_category('None',sb2) == False:
                                     if debug_mode:
-                                        print("Issue Detect3")
-                                    if get_and_click_category('Entertainment',sb2) == False:
+                                        print("Issue Detect2")
+                                    if get_and_click_category('Music',sb2) == False:
                                         if debug_mode:
-                                            print("Issue Detect4")
-                                        if get_and_click_category('People & Blogs',sb2) == False:
+                                            print("Issue Detect3")
+                                        if get_and_click_category('Entertainment',sb2) == False:
                                             if debug_mode:
-                                                print("Issue Detect5")
-                                            if get_and_click_category('Science',sb2) == False:
+                                                print("Issue Detect4")
+                                            if get_and_click_category('People & Blogs',sb2) == False:
                                                 if debug_mode:
-                                                    print("Issue Detect7")
-                                                if get_and_click_category('Technology',sb2) == False:
+                                                    print("Issue Detect5")
+                                                if get_and_click_category('Science',sb2) == False:
                                                     if debug_mode:
-                                                        print("Issue Detect6")
-                                                    if get_and_click_category('News',sb2) == False:
+                                                        print("Issue Detect7")
+                                                    if get_and_click_category('Technology',sb2) == False:
                                                         if debug_mode:
-                                                            print("Issue Detect8")
-                                                        if click_random_category(sb2) == False:
-                                                            print('random2')
+                                                            print("Issue Detect6")
+                                                        if get_and_click_category('News',sb2) == False:
                                                             if debug_mode:
-                                                                print("Issue Detect9")
-                    elif category2 == 0:
-                        category2 = get_video_infog(video_link2)
-                        print(f"Category: {category2}")
-                        if "Howto" in category2:
-                            category2 = "How-To"
-                        elif "Science" in category2:
-                            category2 = "Sic-fi"
-                        elif "Nonprofit" in category2:
-                            category2 = "Nonprofit"    
-                        elif "Film" in category2:
-                            category2 = "Film"        
-                        elif "Auto" in category2:
-                            category2 = "Auto"    
-                        elif "Technology" in category2:
-                            category2 = "Technology"        
-                
+                                                                print("Issue Detect8")
+                                                            if click_random_category(sb2) == False:
+                                                                print('random2')
+                                                                if debug_mode:
+                                                                    print("Issue Detect9")
+                        elif category2 == 0:
+                            category2 = get_video_infog(video_link2)
+                            print(f"Category: {category2}")
+                            if "Howto" in category2:
+                                category2 = "How-To"
+                            elif "Science" in category2:
+                                category2 = "Sic-fi"
+                            elif "Nonprofit" in category2:
+                                category2 = "Nonprofit"    
+                            elif "Film" in category2:
+                                category2 = "Film"        
+                            elif "Auto" in category2:
+                                category2 = "Auto"    
+                            elif "Technology" in category2:
+                                category2 = "Technology"        
+                    
+                    else:
+                        #ip_address =get_ip(sb)
+                        print(f'IP2 is not Matched in IF category {ip_address2}, Required: {ip_required2}')
+                        print('Getting2 IP at after found category...')
+                        ip_address2 =get_ip(sb2)
+
+                if click_next_video(sb2):
+                    elapsed_time2 = time.time() - start_time2
+                    mins2, secs2 = divmod(int(elapsed_time2), 60)
+                    timer2 = f'{mins2:02d}:{secs2:02d}'
+                    seconds_only2 = int(elapsed_time2)
+                    print(f'Next Click {timer2}')
+                    print(f'Elapsed_time {seconds_only2}')
+                    start_time2 = time.time()
+                    ip_address2 = 0
+
+                click_false_button(sb2)
+                handle_random_number_buttons(sb2)
+                check_number_captcha_exists(sb2, id2)
+                check_icon_captcha_exists(sb2, id2)
+                time.sleep(1)
+
+##################################################################
+##########################SB-3####################################
+##################################################################
+            if run_sb3:
+                if current_duration3 == previous_duration3 and current_duration3 == 0 :
+                    print(f'reclick_waits:{reclick_waits3}')
+                    reclick_waits3 +=1
+                    if reclick_waits3 > 25:
+                        print(f'reopenning reclick {reclick_waits3}')
+                        sb3.quit()
+                        sb3 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir3, binary_location=chrome_binary_path)
+                        id3 = get_current_window_id()
+                        sb3.maximize_window()
+                        ip_required3 = fix_ip(sb3, server_name3)
+                        ip_address3 = get_ip(sb3)
+                        sb3.open("https://www.skylom.com/videos")
+                        print(sb3.get_title())
+
+                        
+                        reclick_waits3 = 0
+                    if reclick_waits3 > 20:
+                        reclick_button(sb3)
+                        activate_window_by_id(id3)
+                        pyautogui.click(990, 430)
+                        time.sleep(3)
+                        pyautogui.click(990, 430)
                 else:
-                    #ip_address =get_ip(sb)
-                    print(f'IP2 is not Matched in IF category {ip_address2}, Required: {ip_required2}')
-                    print('Getting2 IP at after found category...')
-                    ip_address2 =get_ip(sb2)
+                    reclick_waits3 = 1
 
-            if click_next_video(sb2):
-                elapsed_time2 = time.time() - start_time2
-                mins2, secs2 = divmod(int(elapsed_time2), 60)
-                timer2 = f'{mins2:02d}:{secs2:02d}'
-                seconds_only2 = int(elapsed_time2)
-                print(f'Next Click {timer2}')
-                print(f'Elapsed_time {seconds_only2}')
-                start_time2 = time.time()
-                ip_address2 = 0
+                if current_duration3:
+                    if current_duration3 >= 10:
+                        if ip_address3 == ip_required3:
+                            pass
+                        else:
+                            print('Getting3 IP at 10 sec..')
+                            ip_address3 =get_ip(sb3)
+                            coins3 = get_coin_value(sb3)
+                            if coins3:
+                                insert_data(ip= ip_address3,amount= coins3, id= farm_id3)
 
-            click_false_button(sb2)
-            handle_random_number_buttons(sb2)
-            check_number_captcha_exists(sb2, id2)
-            check_icon_captcha_exists(sb2, id2)
-            time.sleep(1)
+                        if category3 == 0:
+                            video_link3 = get_youtube_link(sb3) 
+                            category3 = get_video_infog(video_link3)
+                            if debug_mode:
+                                print(f"Category3: {category3}")
+                            if "Howto" in category3:
+                                category3 = "How-To"
+                            elif "Science" in category3:
+                                category3 = "Sic-fi"
+                            elif "Beauty" in category3:
+                                category3 = "Beauty"
+                            elif "Nonprofit" in category3:
+                                category3 = "Nonprofit"    
+                            elif "Film" in category3:
+                                category3 = "Film"        
+                            elif "Auto" in category3:
+                                category3 = "Auto"    
+                            elif "Technology" in category3:
+                                category3 = "Technology"        
+                        
+                        else:
+                            if basic_info3:
+                                #print("Category is ",category)
+                                print(f"Video duration3: {current_duration3} and Category3 is {category3}", end="\r")
+                    
+                    else:
+                        category3 = 0
+                        
+                        if basic_info:
+                            print(f"Video duration3: {current_duration2} and Category3 is {category3}", end="\r")
+                            #print('Video is Fresh')
+
+                if check_category_question(sb3) == True:
+                    if ip_address3 == ip_required3:
+                        ip_address3 = 0
+                        print('starting to answer category')
+                        if category3 != 0:
+                            print('starting to answer category confirm')
+                            if get_and_click_category(category3,sb3) == False:
+                                if debug_mode:
+                                    print("Issue Detect1")
+                                if get_and_click_category('None',sb3) == False:
+                                    if debug_mode:
+                                        print("Issue Detect2")
+                                    if get_and_click_category('Music',sb3) == False:
+                                        if debug_mode:
+                                            print("Issue Detect3")
+                                        if get_and_click_category('Entertainment',sb3) == False:
+                                            if debug_mode:
+                                                print("Issue Detect4")
+                                            if get_and_click_category('People & Blogs',sb3) == False:
+                                                if debug_mode:
+                                                    print("Issue Detect5")
+                                                if get_and_click_category('Science',sb3) == False:
+                                                    if debug_mode:
+                                                        print("Issue Detect7")
+                                                    if get_and_click_category('Technology',sb3) == False:
+                                                        if debug_mode:
+                                                            print("Issue Detect6")
+                                                        if get_and_click_category('News',sb3) == False:
+                                                            if debug_mode:
+                                                                print("Issue Detect8")
+                                                            if click_random_category(sb3) == False:
+                                                                print('random3')
+                                                                if debug_mode:
+                                                                    print("Issue Detect9")
+                        elif category3 == 0:
+                            category3 = get_video_infog(video_link3)
+                            print(f"Category: {category3}")
+                            if "Howto" in category3:
+                                category3 = "How-To"
+                            elif "Science" in category3:
+                                category3 = "Sic-fi"
+                            elif "Nonprofit" in category3:
+                                category3 = "Nonprofit"    
+                            elif "Film" in category3:
+                                category3 = "Film"        
+                            elif "Auto" in category3:
+                                category3 = "Auto"    
+                            elif "Technology" in category3:
+                                category3 = "Technology"        
+                    
+                    else:
+                        #ip_address =get_ip(sb)
+                        print(f'IP2 is not Matched in IF category {ip_address3}, Required: {ip_required3}')
+                        print('Getting2 IP at after found category...')
+                        ip_address3 =get_ip(sb3)
+
+                if click_next_video(sb3):
+                    elapsed_time3 = time.time() - start_time3
+                    mins3, secs3 = divmod(int(elapsed_time3), 60)
+                    timer3 = f'{mins3:02d}:{secs3:02d}'
+                    seconds_only3 = int(elapsed_time3)
+                    print(f'Next Click {timer3}')
+                    print(f'Elapsed_time {seconds_only3}')
+                    start_time3 = time.time()
+                    ip_address3 = 0
+
+                click_false_button(sb3)
+                handle_random_number_buttons(sb3)
+                check_number_captcha_exists(sb3, id3)
+                check_icon_captcha_exists(sb3, id3)
+                time.sleep(1)
+
+##################################################################
+##########################SB-4####################################
+##################################################################
+            if run_sb4:
+                if current_duration4 == previous_duration4 and current_duration4 == 0 :
+                    print(f'reclick_waits:{reclick_waits4}')
+                    reclick_waits4 +=1
+                    if reclick_waits4 > 25:
+                        print(f'reopenning reclick {reclick_waits4}')
+                        sb4.quit()
+                        sb4 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir4, binary_location=chrome_binary_path)
+                        id4 = get_current_window_id()
+                        sb4.maximize_window()
+                        ip_required4 = fix_ip(sb4, server_name4)
+                        ip_address4 = get_ip(sb4)
+                        sb4.open("https://www.skylom.com/videos")
+                        print(sb4.get_title())
+
+                        
+                        reclick_waits4 = 0
+                    if reclick_waits4 > 20:
+                        reclick_button(sb4)
+                        activate_window_by_id(id4)
+                        pyautogui.click(990, 430)
+                        time.sleep(3)
+                        pyautogui.click(990, 430)
+                else:
+                    reclick_waits4 = 1
+
+                if current_duration4:
+                    if current_duration4 >= 10:
+                        if ip_address4 == ip_required4:
+                            pass
+                        else:
+                            print('Getting4 IP at 10 sec..')
+                            ip_address4 =get_ip(sb4)
+                            coins4 = get_coin_value(sb4)
+                            if coins4:
+                                insert_data(ip= ip_address4,amount= coins4, id= farm_id4)
+
+                        if category4 == 0:
+                            video_link4 = get_youtube_link(sb4) 
+                            category4 = get_video_infog(video_link4)
+                            if debug_mode:
+                                print(f"Category4: {category4}")
+                            if "Howto" in category4:
+                                category4 = "How-To"
+                            elif "Science" in category4:
+                                category4 = "Sic-fi"
+                            elif "Beauty" in category4:
+                                category4 = "Beauty"
+                            elif "Nonprofit" in category4:
+                                category4 = "Nonprofit"    
+                            elif "Film" in category4:
+                                category4 = "Film"        
+                            elif "Auto" in category4:
+                                category4 = "Auto"    
+                            elif "Technology" in category4:
+                                category4 = "Technology"        
+                        
+                        else:
+                            if basic_info4:
+                                #print("Category is ",category)
+                                print(f"Video duration4: {current_duration4} and Category4 is {category4}", end="\r")
+                    
+                    else:
+                        category4 = 0
+                        
+                        if basic_info:
+                            print(f"Video duration4: {current_duration4} and Category4 is {category4}", end="\r")
+                            #print('Video is Fresh')
+
+                if check_category_question(sb4) == True:
+                    if ip_address4 == ip_required4:
+                        ip_address4 = 0
+                        print('starting to answer category')
+                        if category4 != 0:
+                            print('starting to answer category confirm')
+                            if get_and_click_category(category4,sb4) == False:
+                                if debug_mode:
+                                    print("Issue Detect1")
+                                if get_and_click_category('None',sb4) == False:
+                                    if debug_mode:
+                                        print("Issue Detect2")
+                                    if get_and_click_category('Music',sb4) == False:
+                                        if debug_mode:
+                                            print("Issue Detect3")
+                                        if get_and_click_category('Entertainment',sb4) == False:
+                                            if debug_mode:
+                                                print("Issue Detect4")
+                                            if get_and_click_category('People & Blogs',sb4) == False:
+                                                if debug_mode:
+                                                    print("Issue Detect5")
+                                                if get_and_click_category('Science',sb4) == False:
+                                                    if debug_mode:
+                                                        print("Issue Detect7")
+                                                    if get_and_click_category('Technology',sb4) == False:
+                                                        if debug_mode:
+                                                            print("Issue Detect6")
+                                                        if get_and_click_category('News',sb4) == False:
+                                                            if debug_mode:
+                                                                print("Issue Detect8")
+                                                            if click_random_category(sb4) == False:
+                                                                print('random4')
+                                                                if debug_mode:
+                                                                    print("Issue Detect9")
+                        elif category4 == 0:
+                            category4 = get_video_infog(video_link4)
+                            print(f"Category: {category4}")
+                            if "Howto" in category4:
+                                category4 = "How-To"
+                            elif "Science" in category4:
+                                category4 = "Sic-fi"
+                            elif "Nonprofit" in category4:
+                                category4 = "Nonprofit"    
+                            elif "Film" in category4:
+                                category4 = "Film"        
+                            elif "Auto" in category4:
+                                category4 = "Auto"    
+                            elif "Technology" in category4:
+                                category4 = "Technology"        
+                    
+                    else:
+                        #ip_address =get_ip(sb)
+                        print(f'IP2 is not Matched in IF category {ip_address4}, Required: {ip_required4}')
+                        print('Getting2 IP at after found category...')
+                        ip_address4 =get_ip(sb4)
+
+                if click_next_video(sb4):
+                    elapsed_time4 = time.time() - start_time4
+                    mins4, secs4 = divmod(int(elapsed_time4), 60)
+                    timer4 = f'{mins4:02d}:{secs4:02d}'
+                    seconds_only4 = int(elapsed_time4)
+                    print(f'Next Click {timer4}')
+                    print(f'Elapsed_time {seconds_only4}')
+                    start_time4 = time.time()
+                    ip_address4 = 0
+
+                click_false_button(sb3)
+                handle_random_number_buttons(sb4)
+                check_number_captcha_exists(sb4, id4)
+                check_icon_captcha_exists(sb4, id4)
+ 
 
     else:
         print(f'IP is not Matched in IF {ip_address}, Required: {ip_required}')

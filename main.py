@@ -102,7 +102,7 @@ def insert_data(ip, amount, id):
             if id == 4:
 
                 sql_insert = """
-                    INSERT INTO farm3_coins (time, amount) 
+                    INSERT INTO farm4_coins (time, amount) 
                     VALUES (%s, %s)
                 """
             values_insert = (str(now), amount)
@@ -110,14 +110,24 @@ def insert_data(ip, amount, id):
             connection.commit()
             print(f"Data inserted into {id}s successfully.")
 
-        except Error as e:
-            print(f"Error: {e}")
-        finally:
-            # Close the cursor and connection in the finally block to ensure they are closed even if an error occurs
+            sql_query = "SELECT ip_address FROM status_table;"
+            cursor.execute(sql_query)
+
+            # Fetch all IP addresses
+            rows = cursor.fetchall()
+            ip_list = [row[0] for row in rows]
             if cursor:
                 cursor.close()
             if connection:
                 connection.close()
+            return ip_list
+        except Error as e:
+            if cursor:
+                cursor.close()
+            if connection:
+                connection.close()
+            print(f"Error: {e}")
+            return None
 
 def get_ip(driver):
     original_window = driver.current_window_handle
@@ -783,7 +793,10 @@ if ip_address2 == ip_required2:
         category4 = 0
         basic_info4 = True
         start_time4 = time.time()
-
+        ip_address = 0
+        ip_address2 = 0
+        ip_address3 = 0
+        ip_address4 = 0
         while True:
             #activate_window_by_id(id1)
             cloudflare(id1,sb1)
@@ -872,7 +885,17 @@ if ip_address2 == ip_required2:
                         ip_address =get_ip(sb1)
                         coins = get_coin_value(sb1)
                         if coins:
-                            insert_data(ip= ip_address,amount= coins, id= farm_id)
+                            ip_list = insert_data(ip= ip_address,amount= coins, id= farm_id)
+                            if ip_list:
+                                duplicates_ip = set([ip for ip in ip_list if ip_list.count(ip) > 1])
+                                if ip_address in duplicates_ip:
+                                    print(f'{duplicates_ip} same ip detect {ip_address}')
+                                    ip_required = fix_ip(sb1, server_name1)
+                                    ip_address = get_ip(sb1)
+
+
+
+
 
                     if category == 0:
                         video_link = get_youtube_link(sb1) 
@@ -1015,7 +1038,13 @@ if ip_address2 == ip_required2:
                             ip_address2 =get_ip(sb2)
                             coins2 = get_coin_value(sb2)
                             if coins2:
-                                insert_data(ip= ip_address2,amount= coins2, id= farm_id2)
+                                ip_list2 =insert_data(ip= ip_address2,amount= coins2, id= farm_id2)
+                                if ip_list2:
+                                    duplicates_ip2 = set([ip for ip in ip_list2 if ip_list2.count(ip) > 1])
+                                    if ip_address2 in duplicates_ip2:
+                                        print(f'{duplicates_ip2} same 2 ip detect {ip_address2}')
+                                        ip_required2 = fix_ip(sb2, server_name2)
+                                        ip_address2 = get_ip(sb2)
 
                         if category2 == 0:
                             video_link2 = get_youtube_link(sb2) 
@@ -1159,7 +1188,13 @@ if ip_address2 == ip_required2:
                             ip_address3 =get_ip(sb3)
                             coins3 = get_coin_value(sb3)
                             if coins3:
-                                insert_data(ip= ip_address3,amount= coins3, id= farm_id3)
+                                ip_list3 = insert_data(ip= ip_address3,amount= coins3, id= farm_id3)
+                                if ip_list3:
+                                    duplicates_ip3 = set([ip for ip in ip_list3 if ip_list3.count(ip) > 1])
+                                    if ip_address3 in duplicates_ip3:
+                                        print(f'{duplicates_ip3} same 3 ip detect {ip_address3}')
+                                        ip_required3 = fix_ip(sb3, server_name3)
+                                        ip_address3 = get_ip(sb3)
 
                         if category3 == 0:
                             video_link3 = get_youtube_link(sb3) 
@@ -1303,7 +1338,14 @@ if ip_address2 == ip_required2:
                             ip_address4 =get_ip(sb4)
                             coins4 = get_coin_value(sb4)
                             if coins4:
-                                insert_data(ip= ip_address4,amount= coins4, id= farm_id4)
+                                ip_list4 = insert_data(ip= ip_address4,amount= coins4, id= farm_id4)
+                                if ip_list4:
+                                    duplicates_ip4 = set([ip for ip in ip_list4 if ip_list4.count(ip) > 1])
+                                    if ip_address4 in duplicates_ip4:
+                                        print(f'{duplicates_ip4} same 4 ip detect {ip_address4}')
+                                        ip_required4 = fix_ip(sb4, server_name4)
+                                        ip_address4 = get_ip(sb4)
+
 
                         if category4 == 0:
                             video_link4 = get_youtube_link(sb4) 

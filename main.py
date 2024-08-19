@@ -626,7 +626,7 @@ brave_binary_path = '/usr/bin/brave-browser'
 chrome_binary_path = '/opt/google/chrome/google-chrome'
 chrome_user_data_dir = '/root/.config/google-chrome/'
 
-chrome_user_data_dir2 = '/home/user/.config/google-chrome/second'
+chrome_user_data_dir2 = '/root/.config/google-chrome/second'
 
 if run_sb1:
     sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
@@ -1026,7 +1026,7 @@ if ip_address2 == ip_required2:
                 elapsed_time2 = time.time() - start_time2
                 mins2, secs2 = divmod(int(elapsed_time2), 60)
                 timer2 = f'{mins2:02d}:{secs2:02d}'
-                seconds_only2 = int(elapsed_time)
+                seconds_only2 = int(elapsed_time2)
                 print(f'Next Click {timer2}')
                 print(f'Elapsed_time {seconds_only2}')
                 start_time2 = time.time()

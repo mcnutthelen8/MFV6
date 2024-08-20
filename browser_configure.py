@@ -444,8 +444,10 @@ def fix_ip(drive, name):
 
 run_sb1 = True
 run_sb2 = True
-run_sb3 = True
-run_sb4 = True
+run_sb3 = False
+run_sb4 = False
+
+fresh = True
 
 brave_user_data_dir = '/home/coder/.config/BraveSoftware/Brave-Browser/'
 brave_binary_path = '/usr/bin/brave-browser'
@@ -460,100 +462,104 @@ chrome_user_data_dir3 = '/root/.config/google-chrome/third'
 chrome_user_data_dir4 = '/root/.config/google-chrome/four'
 
 
-server_name1 = 'poland'
-
-server_name2 = 'estonia'
+server_name1 = 'romania'
+server_name2 = 'hungary'
 server_name3 = 'romania'
 server_name4 = 'hungary'
 
-dc = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
-dc.maximize_window()
-url = "chrome://extensions/"
-dc.open(url)
-print(dc.get_title())
+if run_sb1:
+    dc = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
+    dc.maximize_window()
+    url = "chrome://extensions/"
+    dc.open(url)
+    print(dc.get_title())
 
-mysterium = install_extensions('mysterium')
-nopecha = install_extensions('nopecha')
-cookie = install_extensions('cookie')
-fingerprint = install_extensions('fingerprint')
-if fingerprint and mysterium and nopecha and cookie:
-    print('All Extensions are installed..')
-    if pin_extensions():
-        print('All Extensions are pinned')
-        if nopecha_elements():
-            print('Nopecha Elements Added')
-            if mysterium_login():
-                print('Mysterium Login Done...')
-                dc.maximize_window()
-                ip_required = fix_ip(dc, server_name1)
-                ip_address = get_ip(dc)
+    if fresh:
+        mysterium = install_extensions('mysterium')
+        nopecha = install_extensions('nopecha')
+        cookie = install_extensions('cookie')
+        fingerprint = install_extensions('fingerprint')
+        if fingerprint and mysterium and nopecha and cookie:
+            print('All Extensions are installed..')
+            if pin_extensions():
+                print('All Extensions are pinned')
+                if nopecha_elements():
+                    print('Nopecha Elements Added')
+                    if mysterium_login():
+                        print('Mysterium Login Done...')
+                        dc.maximize_window()
+                        ip_required = fix_ip(dc, server_name1)
+                        ip_address = get_ip(dc)
 ##############################################################################################################
-dc2 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir2, binary_location=chrome_binary_path)
-dc2.maximize_window()
-url = "chrome://extensions/"
-dc2.open(url)
-print(dc2.get_title())
-
-mysterium = install_extensions('mysterium')
-nopecha = install_extensions('nopecha')
-cookie = install_extensions('cookie')
-fingerprint = install_extensions('fingerprint')
-if fingerprint and mysterium and nopecha and cookie:
-    print('All Extensions are installed..')
-    if pin_extensions():
-        print('All Extensions are pinned')
-        if nopecha_elements():
-            print('Nopecha Elements Added')
-            if mysterium_login():
-                print('Mysterium Login Done...')
-                dc2.maximize_window()
-                ip_required = fix_ip(dc2, server_name2)
-                ip_address = get_ip(dc2)
-
-##############################################################################################################
-dc3 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir3, binary_location=chrome_binary_path)
-dc3.maximize_window()
-url = "chrome://extensions/"
-dc3.open(url)
-print(dc3.get_title())
-
-mysterium = install_extensions('mysterium')
-nopecha = install_extensions('nopecha')
-cookie = install_extensions('cookie')
-fingerprint = install_extensions('fingerprint')
-if fingerprint and mysterium and nopecha and cookie:
-    print('All Extensions are installed..')
-    if pin_extensions():
-        print('All Extensions are pinned')
-        if nopecha_elements():
-            print('Nopecha Elements Added')
-            if mysterium_login():
-                print('Mysterium Login Done...')
-                dc3.maximize_window()
-                ip_required = fix_ip(dc3, server_name3)
-                ip_address = get_ip(dc3)
+if run_sb2:
+    dc2 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir2, binary_location=chrome_binary_path)
+    dc2.maximize_window()
+    url = "chrome://extensions/"
+    dc2.open(url)
+    print(dc2.get_title())
+    if fresh:
+        mysterium = install_extensions('mysterium')
+        nopecha = install_extensions('nopecha')
+        cookie = install_extensions('cookie')
+        fingerprint = install_extensions('fingerprint')
+        if fingerprint and mysterium and nopecha and cookie:
+            print('All Extensions are installed..')
+            if pin_extensions():
+                print('All Extensions are pinned')
+                if nopecha_elements():
+                    print('Nopecha Elements Added')
+                    if mysterium_login():
+                        print('Mysterium Login Done...')
+                        dc2.maximize_window()
+                        ip_required = fix_ip(dc2, server_name2)
+                        ip_address = get_ip(dc2)
 
 ##############################################################################################################
-dc4 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir4, binary_location=chrome_binary_path)
-dc4.maximize_window()
-url = "chrome://extensions/"
-dc4.open(url)
-print(dc4.get_title())
+if run_sb3:
+    dc3 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir3, binary_location=chrome_binary_path)
+    dc3.maximize_window()
+    url = "chrome://extensions/"
+    dc3.open(url)
+    print(dc3.get_title())
+    if fresh:
+        mysterium = install_extensions('mysterium')
+        nopecha = install_extensions('nopecha')
+        cookie = install_extensions('cookie')
+        fingerprint = install_extensions('fingerprint')
+        if fingerprint and mysterium and nopecha and cookie:
+            print('All Extensions are installed..')
+            if pin_extensions():
+                print('All Extensions are pinned')
+                if nopecha_elements():
+                    print('Nopecha Elements Added')
+                    if mysterium_login():
+                        print('Mysterium Login Done...')
+                        dc3.maximize_window()
+                        ip_required = fix_ip(dc3, server_name3)
+                        ip_address = get_ip(dc3)
 
-mysterium = install_extensions('mysterium')
-nopecha = install_extensions('nopecha')
-cookie = install_extensions('cookie')
-fingerprint = install_extensions('fingerprint')
-if fingerprint and mysterium and nopecha and cookie:
-    print('All Extensions are installed..')
-    if pin_extensions():
-        print('All Extensions are pinned')
-        if nopecha_elements():
-            print('Nopecha Elements Added')
-            if mysterium_login():
-                print('Mysterium Login Done...')
-                dc4.maximize_window()
-                ip_required = fix_ip(dc4, server_name4)
-                ip_address = get_ip(dc4)
-                
+##############################################################################################################
+if run_sb4:
+    dc4 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir4, binary_location=chrome_binary_path)
+    dc4.maximize_window()
+    url = "chrome://extensions/"
+    dc4.open(url)
+    print(dc4.get_title())
+    if fresh:
+        mysterium = install_extensions('mysterium')
+        nopecha = install_extensions('nopecha')
+        cookie = install_extensions('cookie')
+        fingerprint = install_extensions('fingerprint')
+        if fingerprint and mysterium and nopecha and cookie:
+            print('All Extensions are installed..')
+            if pin_extensions():
+                print('All Extensions are pinned')
+                if nopecha_elements():
+                    print('Nopecha Elements Added')
+                    if mysterium_login():
+                        print('Mysterium Login Done...')
+                        dc4.maximize_window()
+                        ip_required = fix_ip(dc4, server_name4)
+                        ip_address = get_ip(dc4)
+
 time.sleep(100000)

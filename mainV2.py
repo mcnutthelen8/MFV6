@@ -918,15 +918,17 @@ if ip_address2 == ip_required2:
                 print('Getting IP at 10 sec..')
                 ip_address =get_ip(sb1)
                 coins = get_coin_value(sb1)
-                if coins:
-                    ip_list = insert_data(ip= ip_address,amount= coins, id= farm_id)
-                    if ip_list:
-                        duplicates_ip = set([ip for ip in ip_list if ip_list.count(ip) > 1])
-                        if ip_address in duplicates_ip:
-                            print(f'{duplicates_ip} same ip detect {ip_address}')
-                            ip_required = fix_ip(sb1, server_name1)
-                            ip_address = get_ip(sb1)
-
+                if ip_address == ip_required:
+                    if coins:
+                        ip_list = insert_data(ip= ip_address,amount= coins, id= farm_id)
+                        if ip_list:
+                            duplicates_ip = set([ip for ip in ip_list if ip_list.count(ip) > 1])
+                            if ip_address in duplicates_ip:
+                                print(f'{duplicates_ip} same ip detect {ip_address}')
+                                ip_required = fix_ip(sb1, server_name1)
+                                ip_address = get_ip(sb1)
+                            else:
+                                print('no duplicate on 1st')   
                             if ip_address == ip_required:
                                 ip_address = 0
                                 print('starting to answer category')
@@ -975,14 +977,14 @@ if ip_address2 == ip_required2:
                                         category = "Auto"    
                                     elif "Technology" in category:
                                         category = "Technology"        
-                            
-                            else:
-                                #ip_address =get_ip(sb)
-                                print(f'IP is not Matched in IF category {ip_address}, Required: {ip_required}')
-                                print('Getting IP at after found category...')
-                                #ip_address =get_ip(sb1)
-                                ip_required = fix_ip(sb1, server_name1)
-                                ip_address = get_ip(sb1)
+                
+                else:
+                    #ip_address =get_ip(sb)
+                    print(f'IP is not Matched in IF category {ip_address}, Required: {ip_required}')
+                    print('Getting IP at after found category...')
+                    ip_required = fix_ip(sb1, server_name1)
+                    ip_address = get_ip(sb1)
+
 
             if click_next_video(sb1):
                 elapsed_time = time.time() - start_time
@@ -1068,15 +1070,17 @@ if ip_address2 == ip_required2:
                     print('Getting2 IP at 10 sec..')
                     ip_address2 =get_ip(sb2)
                     coins2 = get_coin_value(sb2)
-                    if coins2:
-                        ip_list2 =insert_data(ip= ip_address2,amount= coins2, id= farm_id2)
-                        if ip_list2:
-                            duplicates_ip2 = set([ip for ip in ip_list2 if ip_list2.count(ip) > 1])
-                            if ip_address2 in duplicates_ip2:
-                                print(f'{duplicates_ip2} same 2 ip detect {ip_address2}')
-                                ip_required2 = fix_ip(sb2, server_name2)
-                                ip_address2 = get_ip(sb2)
-                                            
+                    if ip_address2 == ip_required2:
+                        if coins2:
+                            ip_list2 =insert_data(ip= ip_address2,amount= coins2, id= farm_id2)
+                            if ip_list2:
+                                duplicates_ip2 = set([ip for ip in ip_list2 if ip_list2.count(ip) > 1])
+                                if ip_address2 in duplicates_ip2:
+                                    print(f'{duplicates_ip2} same 2 ip detect {ip_address2}')
+                                    ip_required2 = fix_ip(sb2, server_name2)
+                                    ip_address2 = get_ip(sb2)
+                                else:
+                                    print('no duplicate on 2nd')            
                                 if ip_address2 == ip_required2:
                                     ip_address2 = 0
                                     print('starting to answer category')
@@ -1125,14 +1129,13 @@ if ip_address2 == ip_required2:
                                             category2 = "Auto"    
                                         elif "Technology" in category2:
                                             category2 = "Technology"        
-                                
-                                else:
-                                    #ip_address =get_ip(sb)
-                                    print(f'IP2 is not Matched in IF category {ip_address2}, Required: {ip_required2}')
-                                    print('Getting2 IP at after found category...')
-                                    #ip_address2 =get_ip(sb2)
-                                    ip_required2 = fix_ip(sb2, server_name2)
-                                    ip_address2 = get_ip(sb2)
+                    
+                    else:
+                        #ip_address =get_ip(sb)
+                        print(f'IP2 is not Matched in IF category {ip_address2}, Required: {ip_required2}')
+                        print('Getting2 IP at after found category...')
+                        ip_required2 = fix_ip(sb2, server_name2)
+                        ip_address2 = get_ip(sb2)
 
                 if click_next_video(sb2):
                     elapsed_time2 = time.time() - start_time2

@@ -637,7 +637,7 @@ def fix_ip(drive, name):
 
 run_sb1 = True
 run_sb2 = True
-run_sb3 = True
+run_sb3 = False
 run_sb4 = False
 
 brave_user_data_dir = '/home/coder/.config/BraveSoftware/Brave-Browser/'
@@ -673,6 +673,14 @@ if run_sb3:
     ip_required3 = fix_ip(sb3, server_name3)
     ip_address3 = get_ip(sb3)
 
+if run_sb4:
+    sb4 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir4, binary_location=chrome_binary_path)
+    id4 = get_current_window_id()
+    sb4.maximize_window()
+    ip_required4 = fix_ip(sb4, server_name4)
+    ip_address4 = get_ip(sb4)
+
+
 
     #print(f'IP Matched {ip_address}')
 if ip_address2 == ip_required2:
@@ -691,7 +699,9 @@ if ip_address2 == ip_required2:
             sb3.open(url)
             print(sb3.get_title())
 
-
+        if run_sb4:
+            sb4.open(url)
+            print(sb4.get_title())
         import img_captcha
         #import ocr_captcha
 
@@ -778,11 +788,15 @@ if ip_address2 == ip_required2:
         basic_info3 = True
         start_time3 = time.time()
 
-
+        current_duration4 = 1
+        reclick_waits4 = 1
+        category4 = 0
+        basic_info4 = True
+        start_time4 = time.time()
         ip_address = 0
         ip_address2 = 0
         ip_address3 = 0
-
+        ip_address4 = 0
         while True:
             #activate_window_by_id(id1)
             cloudflare(id1,sb1)
@@ -809,6 +823,13 @@ if ip_address2 == ip_required2:
                 playback_check(sb3)
                 remove_pink(sb3)
             
+            if run_sb4:
+                cloudflare(id4,sb4)
+                sb4.switch_to.default_content()
+                sb4.execute_script("window.scrollTo(0, 0);")
+                play_button(sb4)
+                playback_check(sb4)
+                remove_pink(sb4)
 
 
             previous_duration = current_duration
@@ -824,6 +845,9 @@ if ip_address2 == ip_required2:
                 current_duration3 = get_current_duration(sb=sb3)
 
 
+            if run_sb4:
+                previous_duration4 = current_duration4
+                current_duration4 = get_current_duration(sb=sb4)
 
 ##################################################################
 ##########################SB-1####################################
@@ -1276,6 +1300,156 @@ if ip_address2 == ip_required2:
                 check_icon_captcha_exists(sb3, id3)
                 time.sleep(1)
 
+##################################################################
+##########################SB-4####################################
+##################################################################
+            if run_sb4:
+                if current_duration4 == previous_duration4 and current_duration4 == 0 :
+                    print(f'reclick_waits:{reclick_waits4}')
+                    reclick_waits4 +=1
+                    if reclick_waits4 > 25:
+                        print(f'reopenning reclick {reclick_waits4}')
+                        sb4.quit()
+                        sb4 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir4, binary_location=chrome_binary_path)
+                        id4 = get_current_window_id()
+                        sb4.maximize_window()
+                        ip_required4 = fix_ip(sb4, server_name4)
+                        ip_address4 = get_ip(sb4)
+                        sb4.open("https://www.skylom.com/videos")
+                        print(sb4.get_title())
+
+                        
+                        reclick_waits4 = 0
+                    if reclick_waits4 > 20:
+                        reclick_button(sb4)
+                        activate_window_by_id(id4)
+                        pyautogui.click(990, 430)
+                        time.sleep(3)
+                        pyautogui.click(990, 430)
+                else:
+                    reclick_waits4 = 1
+
+                if current_duration4:
+                    if current_duration4 >= 10:
+                        if ip_address4 == ip_required4:
+                            pass
+                        else:
+                            print('Getting4 IP at 10 sec..')
+                            ip_address4 =get_ip(sb4)
+                            coins4 = get_coin_value(sb4)
+                            if coins4:
+                                ip_list4 = insert_data(ip= ip_address4,amount= coins4, id= farm_id4)
+                                if ip_list4:
+                                    duplicates_ip4 = set([ip for ip in ip_list4 if ip_list4.count(ip) > 1])
+                                    if ip_address4 in duplicates_ip4:
+                                        print(f'{duplicates_ip4} same 4 ip detect {ip_address4}')
+                                        ip_required4 = fix_ip(sb4, server_name4)
+                                        ip_address4 = get_ip(sb4)
+
+
+                        if category4 == 0:
+                            video_link4 = get_youtube_link(sb4) 
+                            category4 = get_video_infog(video_link4)
+                            if debug_mode:
+                                print(f"Category4: {category4}")
+                            if "Howto" in category4:
+                                category4 = "How-To"
+                            elif "Science" in category4:
+                                category4 = "Sic-fi"
+                            elif "Beauty" in category4:
+                                category4 = "Beauty"
+                            elif "Nonprofit" in category4:
+                                category4 = "Nonprofit"    
+                            elif "Film" in category4:
+                                category4 = "Film"        
+                            elif "Auto" in category4:
+                                category4 = "Auto"    
+                            elif "Technology" in category4:
+                                category4 = "Technology"        
+                        
+                        else:
+                            if basic_info4:
+                                #print("Category is ",category)
+                                print(f"Video duration4: {current_duration4} and Category4 is {category4}", end="\r")
+                    
+                    else:
+                        category4 = 0
+                        
+                        if basic_info:
+                            print(f"Video duration4: {current_duration4} and Category4 is {category4}", end="\r")
+                            #print('Video is Fresh')
+
+                if check_category_question(sb4) == True:
+                    if ip_address4 == ip_required4:
+                        ip_address4 = 0
+                        print('starting to answer category')
+                        if category4 != 0:
+                            print('starting to answer category confirm')
+                            if get_and_click_category(category4,sb4) == False:
+                                if debug_mode:
+                                    print("Issue Detect1")
+                                if get_and_click_category('None',sb4) == False:
+                                    if debug_mode:
+                                        print("Issue Detect2")
+                                    if get_and_click_category('Music',sb4) == False:
+                                        if debug_mode:
+                                            print("Issue Detect3")
+                                        if get_and_click_category('Entertainment',sb4) == False:
+                                            if debug_mode:
+                                                print("Issue Detect4")
+                                            if get_and_click_category('People & Blogs',sb4) == False:
+                                                if debug_mode:
+                                                    print("Issue Detect5")
+                                                if get_and_click_category('Science',sb4) == False:
+                                                    if debug_mode:
+                                                        print("Issue Detect7")
+                                                    if get_and_click_category('Technology',sb4) == False:
+                                                        if debug_mode:
+                                                            print("Issue Detect6")
+                                                        if get_and_click_category('News',sb4) == False:
+                                                            if debug_mode:
+                                                                print("Issue Detect8")
+                                                            if click_random_category(sb4) == False:
+                                                                print('random4')
+                                                                if debug_mode:
+                                                                    print("Issue Detect9")
+                        elif category4 == 0:
+                            category4 = get_video_infog(video_link4)
+                            print(f"Category: {category4}")
+                            if "Howto" in category4:
+                                category4 = "How-To"
+                            elif "Science" in category4:
+                                category4 = "Sic-fi"
+                            elif "Nonprofit" in category4:
+                                category4 = "Nonprofit"    
+                            elif "Film" in category4:
+                                category4 = "Film"        
+                            elif "Auto" in category4:
+                                category4 = "Auto"    
+                            elif "Technology" in category4:
+                                category4 = "Technology"        
+                    
+                    else:
+                        #ip_address =get_ip(sb)
+                        print(f'IP2 is not Matched in IF category {ip_address4}, Required: {ip_required4}')
+                        print('Getting2 IP at after found category...')
+                        ip_address4 =get_ip(sb4)
+
+                if click_next_video(sb4):
+                    elapsed_time4 = time.time() - start_time4
+                    mins4, secs4 = divmod(int(elapsed_time4), 60)
+                    timer4 = f'{mins4:02d}:{secs4:02d}'
+                    seconds_only4 = int(elapsed_time4)
+                    print(f'Next Click {timer4}')
+                    print(f'Elapsed_time {seconds_only4}')
+                    start_time4 = time.time()
+                    ip_address4 = 0
+
+                click_false_button(sb3)
+                handle_random_number_buttons(sb4)
+                check_number_captcha_exists(sb4, id4)
+                check_icon_captcha_exists(sb4, id4)
+ 
 
     else:
         print(f'IP is not Matched in IF {ip_address}, Required: {ip_required}')

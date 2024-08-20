@@ -657,9 +657,10 @@ def get_ocr_category(driver, links):
 
     # Check if we are on the correct page, if not, open a new window
     if title != 'NopeCHA CAPTCHA Solver':
-        original_window = driver.current_window_handle
         driver.open_new_window()
         driver.open('https://mfv6-ocr4.tiiny.site/')
+        title = driver.get_title()
+        print(title)
     time.sleep(1)
     # Re-check title after navigation
     if title == 'NopeCHA CAPTCHA Solver':
@@ -673,7 +674,6 @@ def get_ocr_category(driver, links):
         # Check if the OCR element is present
         if driver.is_element_present("#ocr1"):
             print('OCR Loaded')
-            driver.close()
             return True
             # Get the text from the OCR fields
             answer1 = driver.get_text("#ocr1")
@@ -814,6 +814,10 @@ def get_category_images():
 
 
 def check_words(category, fixed_words):
+
+    if isinstance(fixed_words, list) and isinstance(fixed_words[0], tuple):
+        fixed_words = [t[0] for t in fixed_words if isinstance(t, tuple) and len(t) > 0 and isinstance(t[0], str)]
+
     word_prefix = category[:4].lower() 
 
     for index, ref_word in enumerate(fixed_words):
@@ -894,10 +898,11 @@ def check_words(category, fixed_words):
             return index
     return 1
 
-def solve_image_category(drive, category):
+def solve_image_category(drive, category, window):
     title = drive.get_title()
     urls = "Fuckeup"
     if title == 'Skylom':
+
         print(title)
         urls = get_category_images()
     if get_ocr_category(drive, urls):
@@ -906,9 +911,15 @@ def solve_image_category(drive, category):
         answer3 = drive.get_text("#ocr3")
         answer4 = drive.get_text("#ocr4")
         answers = [answer1, answer2, answer3, answer4]
+        if debug_mode:
+            print(answers)
+        drive.close()
         fix_answers= fix_broken_words(answers)
+        if debug_mode:
+            print(fix_answers)
         position = check_words(category, fix_answers)
         print(f"The most similar word to '{category}' at index {position} : {fix_answers}")
+        title = drive.get_title()
         if title == 'Skylom':
             print(title,position)
             if position == 0:
@@ -919,6 +930,8 @@ def solve_image_category(drive, category):
                 pyautogui.click(777, 896)
             if position == 3:
                 pyautogui.click(1094, 903)
+
+            drive.switch_to.window(window)
 
 
 
@@ -1187,7 +1200,11 @@ if ip_address2 == ip_required2:
                         print(f"Video duration: {current_duration} and Category is {category}", end="\r")
                         #print('Video is Fresh')
 
-
+            title = sb1.get_title()
+            if title == 'Skylom':
+                if debug_mode:
+                    print(title)
+                original_window = sb1.current_window_handle
 
             if check_category_question(sb1) == True:
                 print('Getting IP at 10 sec..')
@@ -1210,7 +1227,11 @@ if ip_address2 == ip_required2:
                                 print('starting to answer category')
                                 if category != 0:
                                     print('starting to answer category confirm')
-                                    solve_image_category(sb1, category)
+                                    title = sb1.get_title()
+                                    if title == 'Skylom':
+                                        print(title)
+                                        original_window = sb1.current_window_handle
+                                        solve_image_category(sb1, category)
 
                                 elif category == 0:
                                     category = get_video_infog(video_link)
@@ -1235,6 +1256,10 @@ if ip_address2 == ip_required2:
                     ip_required = fix_ip(sb1, server_name1)
                     ip_address = get_ip(sb1)
 
+            title = sb1.get_title()
+            if title == 'NopeCHA CAPTCHA Solver':
+                solve_image_category(sb1, category, original_window)
+                
 
             if click_next_video(sb1):
                 elapsed_time = time.time() - start_time

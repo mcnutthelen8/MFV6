@@ -980,7 +980,9 @@ if ip_address2 == ip_required2:
                                 #ip_address =get_ip(sb)
                                 print(f'IP is not Matched in IF category {ip_address}, Required: {ip_required}')
                                 print('Getting IP at after found category...')
-                                ip_address =get_ip(sb1)
+                                #ip_address =get_ip(sb1)
+                                ip_required = fix_ip(sb1, server_name1)
+                                ip_address = get_ip(sb1)
 
             if click_next_video(sb1):
                 elapsed_time = time.time() - start_time
@@ -1128,7 +1130,9 @@ if ip_address2 == ip_required2:
                                     #ip_address =get_ip(sb)
                                     print(f'IP2 is not Matched in IF category {ip_address2}, Required: {ip_required2}')
                                     print('Getting2 IP at after found category...')
-                                    ip_address2 =get_ip(sb2)
+                                    #ip_address2 =get_ip(sb2)
+                                    ip_required2 = fix_ip(sb2, server_name2)
+                                    ip_address2 = get_ip(sb2)
 
                 if click_next_video(sb2):
                     elapsed_time2 = time.time() - start_time2

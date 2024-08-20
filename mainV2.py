@@ -24,6 +24,7 @@ from mysql.connector import Error
 from datetime import datetime
 import pytz
 import datetime
+import difflib
 # Connect to the MySQL database
 debug_mode = False
 
@@ -648,6 +649,282 @@ def fix_ip(drive, name):
             time.sleep(5)
 
 
+    
+
+
+def get_ocr_category(driver, links):
+    title = driver.get_title()
+
+    # Check if we are on the correct page, if not, open a new window
+    if title != 'NopeCHA CAPTCHA Solver':
+        original_window = driver.current_window_handle
+        driver.open_new_window()
+        driver.open('https://mfv6-ocr4.tiiny.site/')
+    time.sleep(1)
+    # Re-check title after navigation
+    if title == 'NopeCHA CAPTCHA Solver':
+        print(title)
+
+        # Check if CAPTCHA is still loading
+        if driver.is_text_visible('Submitting CAPTCHAs...'):
+            print('Captcha still loading')
+            return None
+        
+        # Check if the OCR element is present
+        if driver.is_element_present("#ocr1"):
+            print('OCR Loaded')
+            driver.close()
+            return True
+            # Get the text from the OCR fields
+            answer1 = driver.get_text("#ocr1")
+            answer2 = driver.get_text("#ocr2")
+            answer3 = driver.get_text("#ocr3")
+            answer4 = driver.get_text("#ocr4")
+            
+            # Store answers in a list
+            answers = [answer1, answer2, answer3, answer4]
+            
+            # Close the new window and switch back to the original window
+            driver.close()
+            print(answers)
+            return answers  # Return the list of answers
+        else:
+            # If the OCR elements aren't present, submit the links
+            driver.type("input#image_urls[type='text']", links)
+            driver.click("button")
+            return None
+    else:
+        return None
+
+
+
+def find_most_similar_word(word, word_list):
+    most_similar_word = None
+    highest_similarity = 0
+    most_similar_index = -1
+    
+    # Loop through each word in the list and calculate the similarity
+    for idx, candidate in enumerate(word_list):
+        similarity = difflib.SequenceMatcher(None, word, candidate).ratio()
+        
+        # If similarity is higher than the current highest, update the result
+        if similarity > highest_similarity:
+            highest_similarity = similarity
+            most_similar_word = candidate
+            most_similar_index = idx  # Store the index
+    
+    return most_similar_word, most_similar_index
+
+
+def fix_broken_words(word_list):
+    reference_list = [
+        "Comedy", "Education", "Gaming", "Music", "Science","Technology",
+        "Auto","Family" ,"Entertainment", "News","Politics", "People","Blogs",
+        "Travel", "Sports", "Beauty", "None","Nonprofit", "Howto", "Film",
+    ]
+    fixed_list = []
+    
+    for word in word_list:
+        fixed_word = find_most_similar_word(word, reference_list)
+        fixed_list.append(fixed_word)
+    
+    return fixed_list
+
+API_KEY = 'd5ace46d229a8844061fed0df01de9d1'
+IMG_PATHS = ['crop1.png', 'crop2.png', 'crop3.png', 'crop4.png']  # Output file paths
+
+def capture_and_crop_regions(regions, output_paths):
+    """
+    Takes a screenshot of the entire screen, crops specified regions, and saves them as separate files.
+
+    :param regions: List of tuples specifying the regions to crop. Each tuple should be in the format (x, y, width, height).
+    :param output_paths: List of file paths where the cropped images will be saved.
+    """
+    try:
+        # Capture the entire screen
+        screenshot = pyautogui.screenshot()
+        
+        if len(regions) != len(output_paths):
+            raise ValueError("The number of regions must match the number of output paths.")
+
+        # Process each region and save the cropped image
+        for (x, y, width, height), output_path in zip(regions, output_paths):
+            left = x
+            top = y
+            right = x + width
+            bottom = y + height
+            cropped_img = screenshot.crop((left, top, right, bottom))
+            cropped_img.save(output_path)
+            print(f"Saved cropped image to: {output_path}")
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+def upload_image(image_path):
+    url = 'https://api.imgbb.com/1/upload'
+    try:
+        with open(image_path, 'rb') as file:
+            response = requests.post(url, data={'key': API_KEY}, files={'image': file})
+            response.raise_for_status()  # Raise an error for HTTP error responses
+            return response.json()
+    except requests.exceptions.RequestException as e:
+        print(f"Error during upload: {e}")
+        return None
+
+def get_category_images():
+    # Define regions and paths
+    regions = [
+        (622, 766, 320, 85),  # Example region 1 (x, y, width, height)
+        (960, 766, 320, 85),  # Example region 2
+        (622, 862, 320, 85),  # Example region 3
+        (960, 862, 320, 85)   # Example region 4
+    ]
+    
+    output_paths = [
+        "crop1.png",  # Output file path for region 1
+        "crop2.png",  # Output file path for region 2
+        "crop3.png",  # Output file path for region 3
+        "crop4.png"   # Output file path for region 4
+    ]
+
+    # Capture and crop regions
+    capture_and_crop_regions(regions, output_paths)
+    
+    # Upload images and print URLs
+    image_urls = []
+    for image_path in output_paths:
+        result = upload_image(image_path)
+        if result and 'data' in result and 'url' in result['data']:
+            image_urls.append(result['data']['url'])
+        else:
+            image_urls.append(f"Failed to upload image: {image_path}")
+    
+    # Print image URLs
+    urls =[]
+    for url in image_urls:
+        print(url)
+        urls.append(url)
+
+    # Join the list into a single string, separating URLs with commas
+    url_string = ', '.join(urls) + ','  # Adding a trailing comma if you want it
+
+    # Output the result
+    print(url_string)
+    return url_string
+
+
+def check_words(category, fixed_words):
+    word_prefix = category[:4].lower() 
+
+    for index, ref_word in enumerate(fixed_words):
+        ref_word_prefix = ref_word[:4].lower() 
+        if word_prefix in ref_word_prefix:
+            print(f"Matching word for '{category}' at index {index}: {ref_word}")
+            return index
+    category = 'None'
+    word_prefix = category[:4].lower() 
+    for index, ref_word in enumerate(fixed_words):
+        ref_word_prefix = ref_word[:4].lower()  
+        if word_prefix in ref_word_prefix:
+            print(f"Matching word for '{category}' at index {index}: {ref_word}")
+            return index
+    category = 'Music'
+    word_prefix = category[:4].lower() 
+    for index, ref_word in enumerate(fixed_words):
+        ref_word_prefix = ref_word[:4].lower()  
+        if word_prefix in ref_word_prefix:
+            print(f"Matching word for '{category}' at index {index}: {ref_word}")
+            return index
+        
+    category = 'People'
+    word_prefix = category[:4].lower() 
+    for index, ref_word in enumerate(fixed_words):
+        ref_word_prefix = ref_word[:4].lower()  
+        if word_prefix in ref_word_prefix:
+            print(f"Matching word for '{category}' at index {index}: {ref_word}")
+            return index
+    category = 'Entertainment'
+    word_prefix = category[:4].lower() 
+    for index, ref_word in enumerate(fixed_words):
+        ref_word_prefix = ref_word[:4].lower()  
+        if word_prefix in ref_word_prefix:
+            print(f"Matching word for '{category}' at index {index}: {ref_word}")
+            return index
+    category = 'Science'
+    word_prefix = category[:4].lower() 
+    for index, ref_word in enumerate(fixed_words):
+        ref_word_prefix = ref_word[:4].lower()  
+        if word_prefix in ref_word_prefix:
+            print(f"Matching word for '{category}' at index {index}: {ref_word}")
+            return index
+        
+    category = 'Technology'
+    word_prefix = category[:4].lower() 
+    for index, ref_word in enumerate(fixed_words):
+        ref_word_prefix = ref_word[:4].lower()  
+        if word_prefix in ref_word_prefix:
+            print(f"Matching word for '{category}' at index {index}: {ref_word}")
+            return index
+        
+
+    category = 'News'
+    word_prefix = category[:4].lower() 
+    for index, ref_word in enumerate(fixed_words):
+        ref_word_prefix = ref_word[:4].lower()  
+        if word_prefix in ref_word_prefix:
+            print(f"Matching word for '{category}' at index {index}: {ref_word}")
+            return index
+        
+
+    category = 'Politics'
+    word_prefix = category[:4].lower() 
+    for index, ref_word in enumerate(fixed_words):
+        ref_word_prefix = ref_word[:4].lower()  
+        if word_prefix in ref_word_prefix:
+            print(f"Matching word for '{category}' at index {index}: {ref_word}")
+            return index
+        
+
+    category = 'Nonprofit'
+    word_prefix = category[:4].lower() 
+    for index, ref_word in enumerate(fixed_words):
+        ref_word_prefix = ref_word[:4].lower()  
+        if word_prefix in ref_word_prefix:
+            print(f"Matching word for '{category}' at index {index}: {ref_word}")
+            return index
+    return 1
+
+def solve_image_category(drive, category):
+    title = drive.get_title()
+    urls = "Fuckeup"
+    if title == 'Skylom':
+        print(title)
+        urls = get_category_images()
+    if get_ocr_category(drive, urls):
+        answer1 = drive.get_text("#ocr1")
+        answer2 = drive.get_text("#ocr2")
+        answer3 = drive.get_text("#ocr3")
+        answer4 = drive.get_text("#ocr4")
+        answers = [answer1, answer2, answer3, answer4]
+        fix_answers= fix_broken_words(answers)
+        position = check_words(category, fix_answers)
+        print(f"The most similar word to '{category}' at index {position} : {fix_answers}")
+        if title == 'Skylom':
+            print(title,position)
+            if position == 0:
+                pyautogui.click(749, 803)
+            if position == 1:
+                pyautogui.click(1100, 803)
+            if position == 2:
+                pyautogui.click(777, 896)
+            if position == 3:
+                pyautogui.click(1094, 903)
+
+
+
+
+
+
 run_sb1 = True
 run_sb2 = True
 run_sb3 = False
@@ -878,10 +1155,6 @@ if ip_address2 == ip_required2:
 
             if current_duration:
                 if current_duration >= 10:
-
-
-
-
                     if category == 0:
                         video_link = get_youtube_link(sb1) 
                         category = get_video_infog(video_link)
@@ -914,6 +1187,8 @@ if ip_address2 == ip_required2:
                         print(f"Video duration: {current_duration} and Category is {category}", end="\r")
                         #print('Video is Fresh')
 
+
+
             if check_category_question(sb1) == True:
                 print('Getting IP at 10 sec..')
                 ip_address =get_ip(sb1)
@@ -935,34 +1210,8 @@ if ip_address2 == ip_required2:
                                 print('starting to answer category')
                                 if category != 0:
                                     print('starting to answer category confirm')
-                                    if get_and_click_category(category,sb1) == False:
-                                        if debug_mode:
-                                            print("Issue Detect1")
-                                        if get_and_click_category('None',sb1) == False:
-                                            if debug_mode:
-                                                print("Issue Detect2")
-                                            if get_and_click_category('Music',sb1) == False:
-                                                if debug_mode:
-                                                    print("Issue Detect3")
-                                                if get_and_click_category('Entertainment',sb1) == False:
-                                                    if debug_mode:
-                                                        print("Issue Detect4")
-                                                    if get_and_click_category('People & Blogs',sb1) == False:
-                                                        if debug_mode:
-                                                            print("Issue Detect5")
-                                                        if get_and_click_category('Science',sb1) == False:
-                                                            if debug_mode:
-                                                                print("Issue Detect7")
-                                                            if get_and_click_category('Technology',sb1) == False:
-                                                                if debug_mode:
-                                                                    print("Issue Detect6")
-                                                                if get_and_click_category('News',sb1) == False:
-                                                                    if debug_mode:
-                                                                        print("Issue Detect8")
-                                                                    if click_random_category(sb1) == False:
-                                                                        print('random')
-                                                                        if debug_mode:
-                                                                            print("Issue Detect9")
+                                    solve_image_category(sb1, category)
+
                                 elif category == 0:
                                     category = get_video_infog(video_link)
                                     print(f"Category: {category}")

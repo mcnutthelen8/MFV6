@@ -591,7 +591,6 @@ def get_ipscore(ip):
         print(f"Error retrieving IP data: {e}")
         return None, None, None, None, None, None, None, None
 
-
 def mysterium_vpn_connect(server_name):
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
@@ -599,19 +598,33 @@ def mysterium_vpn_connect(server_name):
         print("mysterium_icon_empty Found")
         time.sleep(5)
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/search_mysterium.png", region=(1325, 494, 800, 400), confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/myserium_disconnect.png", region=(1325, 190, 800, 400), confidence=0.95)
             pyautogui.click(x, y)
-            print("search_mysterium Found")
-            time.sleep(2)
-            pyautogui.typewrite(server_name)
-            pyautogui.press('enter')
-            time.sleep(3)
-            pyautogui.scroll(-500)
-            time.sleep(2)
-            pyautogui.click(1627, 568)
-            return True
+            print("myserium_disconnect Found")
         except pyautogui.ImageNotFoundException:
-            print("No search_mysterium .")
+            print("No myserium_disconnect .")
+
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/quick_connect.png", region=(1325, 190, 800, 400), confidence=0.95)
+        
+            print("quick_connect Found")
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/search_mysterium.png", region=(1325, 494, 800, 400), confidence=0.95)
+                pyautogui.click(x, y)
+                print("search_mysterium Found")
+                time.sleep(2)
+                pyautogui.typewrite(server_name)
+                pyautogui.press('enter')
+                time.sleep(5)
+                pyautogui.scroll(-500)
+                time.sleep(2)
+                pyautogui.click(1627, 568)
+                return True
+            except pyautogui.ImageNotFoundException:
+                print("No search_mysterium .")
+        except pyautogui.ImageNotFoundException:
+            print("No quick_connect .")
+
 
     except pyautogui.ImageNotFoundException:
         print("No mysterium_icon_empty .")

@@ -530,10 +530,8 @@ def get_ipaddress():
         print(f"Error retrieving IP address: {e}")
         return None
 
-def get_proxycheck(ip):
-
+def get_proxycheck(ip, server_name):
     url = f'https://proxycheck.io/v2/{ip}?vpn=1&asn=1'
-    
     try:
         response = requests.get(url)
         response.raise_for_status()  # Raise an HTTPError for bad responses
@@ -545,9 +543,11 @@ def get_proxycheck(ip):
             ip_address = ip
             ip_info = result.get(f'{ip_address}', {})
             proxy_status = ip_info.get('proxy', 'Unknown')
-            print(f"IP Address: {ip_address} \nProxy Status: {proxy_status}")
+            country = ip_info.get('country', 'Unknown')
+            print(f"IP Address: {ip_address} \nProxy Status: {proxy_status} \country Status: {country}")
             if proxy_status =='no':
-                return True
+                if country.lower() in server_name.lower():
+                    return True
         else:
             print("Error: Status not OK")
             return None, None
@@ -624,7 +624,7 @@ def fix_ip(drive, name):
     while not (ipscore and proxycheck):
         ip_address = get_ip(drive)
         ipscore = get_ipscore(ip_address)
-        proxycheck = get_proxycheck(ip_address)
+        proxycheck = get_proxycheck(ip_address, server_name= name)
         if ipscore and proxycheck:
             print(f'Good IP found: {ip_address}')
             return ip_address
@@ -658,6 +658,8 @@ if run_sb1:
     sb1.maximize_window()
     ip_required = fix_ip(sb1, server_name1)
     ip_address = get_ip(sb1)
+    sb1.open("https://www.skylom.com/videos")
+    print(sb1.get_title())
 
 if run_sb2:
     sb2 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir2, binary_location=chrome_binary_path)
@@ -665,7 +667,8 @@ if run_sb2:
     sb2.maximize_window()
     ip_required2 = fix_ip(sb2, server_name2)
     ip_address2 = get_ip(sb2)
-
+    sb2.open("https://www.skylom.com/videos")
+    print(sb1.get_title())
 if run_sb3:
     sb3 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir3, binary_location=chrome_binary_path)
     id3 = get_current_window_id()
@@ -685,23 +688,7 @@ if run_sb4:
     #print(f'IP Matched {ip_address}')
 if ip_address2 == ip_required2:
     if ip_address == ip_required:
-        url = "https://www.skylom.com/videos"
-        time.sleep(1)
-        sb1.open(url)
-        print(sb1.get_title())
 
-
-        if run_sb2:
-            sb2.open(url)
-            print(sb2.get_title())
-
-        if run_sb3:
-            sb3.open(url)
-            print(sb3.get_title())
-
-        if run_sb4:
-            sb4.open(url)
-            print(sb4.get_title())
         import img_captcha
         #import ocr_captcha
 
@@ -917,8 +904,9 @@ if ip_address2 == ip_required2:
             if check_category_question(sb1) == True:
                 print('Getting IP at 10 sec..')
                 ip_address =get_ip(sb1)
+                proxycheck = get_proxycheck(ip_address, server_name= server_name1)
                 coins = get_coin_value(sb1)
-                if ip_address == ip_required:
+                if ip_address == ip_required and proxycheck:
                     if coins:
                         ip_list = insert_data(ip= ip_address,amount= coins, id= farm_id)
                         if ip_list:
@@ -1070,7 +1058,8 @@ if ip_address2 == ip_required2:
                     print('Getting2 IP at 10 sec..')
                     ip_address2 =get_ip(sb2)
                     coins2 = get_coin_value(sb2)
-                    if ip_address2 == ip_required2:
+                    proxycheck2 = get_proxycheck(ip_address2, server_name= server_name2)
+                    if ip_address2 == ip_required2 and proxycheck2:
                         if coins2:
                             ip_list2 =insert_data(ip= ip_address2,amount= coins2, id= farm_id2)
                             if ip_list2:

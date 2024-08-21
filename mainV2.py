@@ -38,6 +38,12 @@ server_name2 = 'estonia'
 server_name3 = 'romania'
 server_name4 = 'hungary'
 
+chrome_binary_path = '/opt/google/chrome/google-chrome'
+chrome_user_data_dir = '/root/.config/google-chrome/'
+
+chrome_user_data_dir2 = '/root/.config/google-chrome/second'
+chrome_user_data_dir3 = '/root/.config/google-chrome/third'
+chrome_user_data_dir4 = '/root/.config/google-chrome/four'
 
 def create_connection():
     """Create a database connection."""
@@ -191,6 +197,7 @@ def play_button(sb):
                     play_button_elements = sb.find_elements(By.CSS_SELECTOR, play_button_selector)
                     print("Play button found")
                     play_button = play_button_elements[0]
+                    time.sleep(2)
                     play_button.click()
                     print("Play button Clicked")
                     sb.switch_to.default_content()
@@ -919,6 +926,7 @@ def solve_image_category(drive, category, window):
             print(fix_answers)
         position = check_words(category, fix_answers)
         print(f"The most similar word to '{category}' at index {position} : {fix_answers}")
+        drive.switch_to.window(window)
         title = drive.get_title()
         if title == 'Skylom':
             print(title,position)
@@ -931,7 +939,7 @@ def solve_image_category(drive, category, window):
             if position == 3:
                 pyautogui.click(1094, 903)
 
-            drive.switch_to.window(window)
+            
 
 
 
@@ -948,12 +956,6 @@ brave_binary_path = '/usr/bin/brave-browser'
 
 #chrome_binary_path = '/opt/google/chrome/google-chrome'
 #chrome_user_data_dir = '/home/user/.config/google-chrome/'
-chrome_binary_path = '/opt/google/chrome/google-chrome'
-chrome_user_data_dir = '/root/.config/google-chrome/'
-
-chrome_user_data_dir2 = '/root/.config/google-chrome/second'
-chrome_user_data_dir3 = '/root/.config/google-chrome/third'
-chrome_user_data_dir4 = '/root/.config/google-chrome/four'
 
 if run_sb1:
     sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
@@ -1043,6 +1045,7 @@ if ip_address2 == ip_required2:
             try:
                 if sb.is_element_visible(".captcha-modal__icons .captcha-image"):
                     print("Icon captcha exists.")
+                    time.sleep(5)
                     sb.maximize_window()
                     activate_window_by_id(id)
                     #sb1.scroll_to_top()
@@ -1167,7 +1170,7 @@ if ip_address2 == ip_required2:
                 reclick_waits = 1
 
             if current_duration:
-                if current_duration >= 10:
+                if current_duration >= 50:
                     if category == 0:
                         video_link = get_youtube_link(sb1) 
                         category = get_video_infog(video_link)
@@ -1187,12 +1190,26 @@ if ip_address2 == ip_required2:
                             category = "Auto"    
                         elif "Technology" in category:
                             category = "Technology"        
-                    
+                        ip_address =get_ip(sb1)
+                        proxycheck = get_proxycheck(ip_address, server_name= server_name1)
+                        coins = get_coin_value(sb1)
+                        if ip_address == ip_required and proxycheck:
+                            if coins:
+                                ip_list = insert_data(ip= ip_address,amount= coins, id= farm_id)
+                                if ip_list:
+                                    duplicates_ip = set([ip for ip in ip_list if ip_list.count(ip) > 1])
+                                    if ip_address in duplicates_ip:
+                                        print(f'{duplicates_ip} same ip detect {ip_address}')
+                                        ip_required = fix_ip(sb1, server_name1)
+                                        ip_address = get_ip(sb1)
+                                    else:
+                                        print('no duplicate on 1st')  
                     else:
                         if basic_info:
                             #print("Category is ",category)
                             print(f"Video duration: {current_duration} and Category is {category}", end="\r")
-                
+
+ 
                 else:
                     category = 0
                     
@@ -1209,19 +1226,7 @@ if ip_address2 == ip_required2:
             if check_category_question(sb1) == True:
                 print('Getting IP at 10 sec..')
                 ip_address =get_ip(sb1)
-                proxycheck = get_proxycheck(ip_address, server_name= server_name1)
-                coins = get_coin_value(sb1)
-                if ip_address == ip_required and proxycheck:
-                    if coins:
-                        ip_list = insert_data(ip= ip_address,amount= coins, id= farm_id)
-                        if ip_list:
-                            duplicates_ip = set([ip for ip in ip_list if ip_list.count(ip) > 1])
-                            if ip_address in duplicates_ip:
-                                print(f'{duplicates_ip} same ip detect {ip_address}')
-                                ip_required = fix_ip(sb1, server_name1)
-                                ip_address = get_ip(sb1)
-                            else:
-                                print('no duplicate on 1st')   
+                if ip_address == ip_required:
                             if ip_address == ip_required:
                                 ip_address = 0
                                 print('starting to answer category')
@@ -1231,7 +1236,8 @@ if ip_address2 == ip_required2:
                                     if title == 'Skylom':
                                         print(title)
                                         original_window = sb1.current_window_handle
-                                        solve_image_category(sb1, category)
+                                        activate_window_by_id(id1)
+                                        solve_image_category(sb1, category, original_window)
 
                                 elif category == 0:
                                     category = get_video_infog(video_link)
@@ -1258,6 +1264,7 @@ if ip_address2 == ip_required2:
 
             title = sb1.get_title()
             if title == 'NopeCHA CAPTCHA Solver':
+                activate_window_by_id(id1)
                 solve_image_category(sb1, category, original_window)
                 
 
@@ -1294,11 +1301,9 @@ if ip_address2 == ip_required2:
                         sb2.open("https://www.skylom.com/videos")
                         print(sb2.get_title())
 
-                        
                         reclick_waits2 = 0
                     if reclick_waits2 > 20:
                         reclick_button(sb2)
-                        activate_window_by_id(id2)
                         pyautogui.click(990, 430)
                         time.sleep(3)
                         pyautogui.click(990, 430)
@@ -1306,14 +1311,12 @@ if ip_address2 == ip_required2:
                     reclick_waits2 = 1
 
                 if current_duration2:
-                    if current_duration2 >= 10:
-
-
+                    if current_duration2 >= 50:
                         if category2 == 0:
                             video_link2 = get_youtube_link(sb2) 
                             category2 = get_video_infog(video_link2)
                             if debug_mode:
-                                print(f"Category2: {category2}")
+                                print(f"Category: {category2}")
                             if "Howto" in category2:
                                 category2 = "How-To"
                             elif "Science" in category2:
@@ -1328,68 +1331,55 @@ if ip_address2 == ip_required2:
                                 category2 = "Auto"    
                             elif "Technology" in category2:
                                 category2 = "Technology"        
-                        
+                            ip_address2 =get_ip(sb2)
+                            proxycheck2 = get_proxycheck(ip_address2, server_name= server_name2)
+                            coins2 = get_coin_value(sb2)
+                            if ip_address2 == ip_required2 and proxycheck2:
+                                if coins2:
+                                    ip_list2 = insert_data(ip= ip_address2,amount= coins2, id= farm_id2)
+                                    if ip_list2:
+                                        duplicates_ip2 = set([ip2 for ip2 in ip_list2 if ip_list2.count(ip2) > 1])
+                                        if ip_address2 in duplicates_ip2:
+                                            print(f'{duplicates_ip2} same ip2 detect {ip_address2}')
+                                            ip_required2 = fix_ip(sb2, server_name1)
+                                            ip_address2 = get_ip(sb2)
+                                        else:
+                                            print('no 2 duplicate on 1st')  
                         else:
-                            if basic_info2:
+                            if basic_info:
                                 #print("Category is ",category)
                                 print(f"Video duration2: {current_duration2} and Category2 is {category2}", end="\r")
-                    
+
+    
                     else:
-                        category2 = 0
+                        category = 0
                         
                         if basic_info:
                             print(f"Video duration2: {current_duration2} and Category2 is {category2}", end="\r")
                             #print('Video is Fresh')
 
+                title2 = sb2.get_title()
+                if title2 == 'Skylom':
+                    if debug_mode:
+                        print(title2)
+                    original_window2 = sb2.current_window_handle
+
                 if check_category_question(sb2) == True:
-                    print('Getting2 IP at 10 sec..')
+                    print('Getting 2 IP at 10 sec..')
                     ip_address2 =get_ip(sb2)
-                    coins2 = get_coin_value(sb2)
-                    proxycheck2 = get_proxycheck(ip_address2, server_name= server_name2)
-                    if ip_address2 == ip_required2 and proxycheck2:
-                        if coins2:
-                            ip_list2 =insert_data(ip= ip_address2,amount= coins2, id= farm_id2)
-                            if ip_list2:
-                                duplicates_ip2 = set([ip for ip in ip_list2 if ip_list2.count(ip) > 1])
-                                if ip_address2 in duplicates_ip2:
-                                    print(f'{duplicates_ip2} same 2 ip detect {ip_address2}')
-                                    ip_required2 = fix_ip(sb2, server_name2)
-                                    ip_address2 = get_ip(sb2)
-                                else:
-                                    print('no duplicate on 2nd')            
+                    if ip_address2 == ip_required2:
                                 if ip_address2 == ip_required2:
                                     ip_address2 = 0
-                                    print('starting to answer category')
-                                    if category2 != 0:
-                                        print('starting to answer category confirm')
-                                        if get_and_click_category(category2,sb2) == False:
-                                            if debug_mode:
-                                                print("Issue Detect1")
-                                            if get_and_click_category('None',sb2) == False:
-                                                if debug_mode:
-                                                    print("Issue Detect2")
-                                                if get_and_click_category('Music',sb2) == False:
-                                                    if debug_mode:
-                                                        print("Issue Detect3")
-                                                    if get_and_click_category('Entertainment',sb2) == False:
-                                                        if debug_mode:
-                                                            print("Issue Detect4")
-                                                        if get_and_click_category('People & Blogs',sb2) == False:
-                                                            if debug_mode:
-                                                                print("Issue Detect5")
-                                                            if get_and_click_category('Science',sb2) == False:
-                                                                if debug_mode:
-                                                                    print("Issue Detect7")
-                                                                if get_and_click_category('Technology',sb2) == False:
-                                                                    if debug_mode:
-                                                                        print("Issue Detect6")
-                                                                    if get_and_click_category('News',sb2) == False:
-                                                                        if debug_mode:
-                                                                            print("Issue Detect8")
-                                                                        if click_random_category(sb2) == False:
-                                                                            print('random2')
-                                                                            if debug_mode:
-                                                                                print("Issue Detect9")
+                                    print('starting 2 to answer category')
+                                    if category != 0:
+                                        print('starting 2 to answer category confirm')
+                                        title2 = sb2.get_title()
+                                        if title2 == 'Skylom':
+                                            print(title2)
+                                            original_window2 = sb2.current_window_handle
+                                            activate_window_by_id(id2)
+                                            solve_image_category(sb2, category2, original_window2)
+
                                     elif category2 == 0:
                                         category2 = get_video_infog(video_link2)
                                         print(f"Category: {category2}")
@@ -1408,10 +1398,18 @@ if ip_address2 == ip_required2:
                     
                     else:
                         #ip_address =get_ip(sb)
-                        print(f'IP2 is not Matched in IF category {ip_address2}, Required: {ip_required2}')
-                        print('Getting2 IP at after found category...')
-                        ip_required2 = fix_ip(sb2, server_name2)
-                        ip_address2 = get_ip(sb2)
+                        print(f'IP 2 is not Matched in IF category {ip_address2}, Required: {ip_required2}')
+                        print('Getting 2 IP at after found category...')
+                        ip_required = fix_ip(sb2, server_name2)
+                        ip_address = get_ip(sb2)
+
+                title2 = sb2.get_title()
+                if title2 == 'NopeCHA CAPTCHA Solver':
+                    activate_window_by_id(id2)
+                    solve_image_category(sb2, category, original_window2)
+                  
+
+
 
                 if click_next_video(sb2):
                     elapsed_time2 = time.time() - start_time2

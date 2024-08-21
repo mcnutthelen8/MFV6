@@ -1174,36 +1174,37 @@ if ip_address2 == ip_required2:
                     if category == 0:
                         video_link = get_youtube_link(sb1) 
                         category = get_video_infog(video_link)
-                        if debug_mode:
-                            print(f"Category: {category}")
-                        if "Howto" in category:
-                            category = "How-To"
-                        elif "Science" in category:
-                            category = "Sic-fi"
-                        elif "Beauty" in category:
-                            category = "Beauty"
-                        elif "Nonprofit" in category:
-                            category = "Nonprofit"    
-                        elif "Film" in category:
-                            category = "Film"        
-                        elif "Auto" in category:
-                            category = "Auto"    
-                        elif "Technology" in category:
-                            category = "Technology"        
-                        ip_address =get_ip(sb1)
-                        proxycheck = get_proxycheck(ip_address, server_name= server_name1)
-                        coins = get_coin_value(sb1)
-                        if ip_address == ip_required and proxycheck:
-                            if coins:
-                                ip_list = insert_data(ip= ip_address,amount= coins, id= farm_id)
-                                if ip_list:
-                                    duplicates_ip = set([ip for ip in ip_list if ip_list.count(ip) > 1])
-                                    if ip_address in duplicates_ip:
-                                        print(f'{duplicates_ip} same ip detect {ip_address}')
-                                        ip_required = fix_ip(sb1, server_name1)
-                                        ip_address = get_ip(sb1)
-                                    else:
-                                        print('no duplicate on 1st')  
+                        if category:
+                            if debug_mode:
+                                print(f"Category: {category}")
+                            if "Howto" in category:
+                                category = "How-To"
+                            elif "Science" in category:
+                                category = "Sic-fi"
+                            elif "Beauty" in category:
+                                category = "Beauty"
+                            elif "Nonprofit" in category:
+                                category = "Nonprofit"    
+                            elif "Film" in category:
+                                category = "Film"        
+                            elif "Auto" in category:
+                                category = "Auto"    
+                            elif "Technology" in category:
+                                category = "Technology"        
+                            ip_address =get_ip(sb1)
+                            proxycheck = get_proxycheck(ip_address, server_name= server_name1)
+                            coins = get_coin_value(sb1)
+                            if ip_address == ip_required and proxycheck:
+                                if coins:
+                                    ip_list = insert_data(ip= ip_address,amount= coins, id= farm_id)
+                                    if ip_list:
+                                        duplicates_ip = set([ip for ip in ip_list if ip_list.count(ip) > 1])
+                                        if ip_address in duplicates_ip:
+                                            print(f'{duplicates_ip} same ip detect {ip_address}')
+                                            ip_required = fix_ip(sb1, server_name1)
+                                            ip_address = get_ip(sb1)
+                                        else:
+                                            print('no duplicate on 1st')  
                     else:
                         if basic_info:
                             #print("Category is ",category)
@@ -1241,19 +1242,21 @@ if ip_address2 == ip_required2:
 
                                 elif category == 0:
                                     category = get_video_infog(video_link)
+
                                     print(f"Category: {category}")
-                                    if "Howto" in category:
-                                        category = "How-To"
-                                    elif "Science" in category:
-                                        category = "Sic-fi"
-                                    elif "Nonprofit" in category:
-                                        category = "Nonprofit"    
-                                    elif "Film" in category:
-                                        category = "Film"        
-                                    elif "Auto" in category:
-                                        category = "Auto"    
-                                    elif "Technology" in category:
-                                        category = "Technology"        
+                                    if category:
+                                        if "Howto" in category:
+                                            category = "How-To"
+                                        elif "Science" in category:
+                                            category = "Sic-fi"
+                                        elif "Nonprofit" in category:
+                                            category = "Nonprofit"    
+                                        elif "Film" in category:
+                                            category = "Film"        
+                                        elif "Auto" in category:
+                                            category = "Auto"    
+                                        elif "Technology" in category:
+                                            category = "Technology"        
                 
                 else:
                     #ip_address =get_ip(sb)
@@ -1315,36 +1318,37 @@ if ip_address2 == ip_required2:
                         if category2 == 0:
                             video_link2 = get_youtube_link(sb2) 
                             category2 = get_video_infog(video_link2)
-                            if debug_mode:
-                                print(f"Category: {category2}")
-                            if "Howto" in category2:
-                                category2 = "How-To"
-                            elif "Science" in category2:
-                                category2 = "Sic-fi"
-                            elif "Beauty" in category2:
-                                category2 = "Beauty"
-                            elif "Nonprofit" in category2:
-                                category2 = "Nonprofit"    
-                            elif "Film" in category2:
-                                category2 = "Film"        
-                            elif "Auto" in category2:
-                                category2 = "Auto"    
-                            elif "Technology" in category2:
-                                category2 = "Technology"        
-                            ip_address2 =get_ip(sb2)
-                            proxycheck2 = get_proxycheck(ip_address2, server_name= server_name2)
-                            coins2 = get_coin_value(sb2)
-                            if ip_address2 == ip_required2 and proxycheck2:
-                                if coins2:
-                                    ip_list2 = insert_data(ip= ip_address2,amount= coins2, id= farm_id2)
-                                    if ip_list2:
-                                        duplicates_ip2 = set([ip2 for ip2 in ip_list2 if ip_list2.count(ip2) > 1])
-                                        if ip_address2 in duplicates_ip2:
-                                            print(f'{duplicates_ip2} same ip2 detect {ip_address2}')
-                                            ip_required2 = fix_ip(sb2, server_name1)
-                                            ip_address2 = get_ip(sb2)
-                                        else:
-                                            print('no 2 duplicate on 1st')  
+                            if category2:
+                                if debug_mode:
+                                    print(f"Category: {category2}")
+                                if "Howto" in category2:
+                                    category2 = "How-To"
+                                elif "Science" in category2:
+                                    category2 = "Sic-fi"
+                                elif "Beauty" in category2:
+                                    category2 = "Beauty"
+                                elif "Nonprofit" in category2:
+                                    category2 = "Nonprofit"    
+                                elif "Film" in category2:
+                                    category2 = "Film"        
+                                elif "Auto" in category2:
+                                    category2 = "Auto"    
+                                elif "Technology" in category2:
+                                    category2 = "Technology"        
+                                ip_address2 =get_ip(sb2)
+                                proxycheck2 = get_proxycheck(ip_address2, server_name= server_name2)
+                                coins2 = get_coin_value(sb2)
+                                if ip_address2 == ip_required2 and proxycheck2:
+                                    if coins2:
+                                        ip_list2 = insert_data(ip= ip_address2,amount= coins2, id= farm_id2)
+                                        if ip_list2:
+                                            duplicates_ip2 = set([ip2 for ip2 in ip_list2 if ip_list2.count(ip2) > 1])
+                                            if ip_address2 in duplicates_ip2:
+                                                print(f'{duplicates_ip2} same ip2 detect {ip_address2}')
+                                                ip_required2 = fix_ip(sb2, server_name1)
+                                                ip_address2 = get_ip(sb2)
+                                            else:
+                                                print('no 2 duplicate on 1st')  
                         else:
                             if basic_info:
                                 #print("Category is ",category)
@@ -1382,20 +1386,22 @@ if ip_address2 == ip_required2:
 
                                     elif category2 == 0:
                                         category2 = get_video_infog(video_link2)
+
                                         print(f"Category: {category2}")
-                                        if "Howto" in category2:
-                                            category2 = "How-To"
-                                        elif "Science" in category2:
-                                            category2 = "Sic-fi"
-                                        elif "Nonprofit" in category2:
-                                            category2 = "Nonprofit"    
-                                        elif "Film" in category2:
-                                            category2 = "Film"        
-                                        elif "Auto" in category2:
-                                            category2 = "Auto"    
-                                        elif "Technology" in category2:
-                                            category2 = "Technology"        
-                    
+                                        if category2:
+                                            if "Howto" in category2:
+                                                category2 = "How-To"
+                                            elif "Science" in category2:
+                                                category2 = "Sic-fi"
+                                            elif "Nonprofit" in category2:
+                                                category2 = "Nonprofit"    
+                                            elif "Film" in category2:
+                                                category2 = "Film"        
+                                            elif "Auto" in category2:
+                                                category2 = "Auto"    
+                                            elif "Technology" in category2:
+                                                category2 = "Technology"        
+                        
                     else:
                         #ip_address =get_ip(sb)
                         print(f'IP 2 is not Matched in IF category {ip_address2}, Required: {ip_required2}')

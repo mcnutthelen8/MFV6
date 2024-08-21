@@ -32,13 +32,17 @@ from PIL import Image
 debug_mode = False
 
 ip_required = 0
-farm_id = 3
-farm_id2 = 1
-farm_id3 = 2
+farm_id = 1
+farm_id2 = 2
+farm_id3 = 3
 farm_id4 = 4
-server_name1 = 'poland'
-server_name2 = 'estonia'
-server_name3 = 'romania'
+run_sb1 = True
+run_sb2 = False
+run_sb3 = False
+run_sb4 = False
+server_name1 = 'estonia'
+server_name2 = 'romania'
+server_name3 = 'poland'
 server_name4 = 'hungary'
 
 chrome_binary_path = '/opt/google/chrome/google-chrome'
@@ -286,24 +290,21 @@ headers = {
     'User-Agent': 'My User Agent 1.0',
 }
 
-def get_video_infog(video_url, timeout=8):
+def get_video_infog(video_url, driver, timeout=8 ):
+    original_window = driver.current_window_handle
+    driver.open_new_window()
+    #driver.switch_to.newest_window()
+    driver.open(f'view-source:{video_url}')
+    data = driver.get_text('body')
+    html_content = str(data)
+    soup = BeautifulSoup(html_content, 'html.parser')
+    category_tag = soup.find('meta', itemprop='genre')
+    category = category_tag['content'] if category_tag else None
+    print(f"Category For This Video is {category}")
+    driver.close()
+    driver.switch_to.window(original_window)
     print(video_url)
-    try:
-        response = requests.get(video_url, headers=headers, timeout=timeout)
-        print("Response received")
-        if response.status_code == 200:
-            html_content = response.text
-            soup = BeautifulSoup(html_content, 'html.parser')
-            category_tag = soup.find('meta', itemprop='genre')
-            category = category_tag['content'] if category_tag else None
-            print(f"Category For This Video is {category}")
-            return category
-    except requests.Timeout:
-        print(f"Request timed out after {timeout} seconds")
-        return '0'
-    except Exception as e:
-        print(f"Errorg: {e}")
-        return '0'
+    return category
 
 def get_youtube_link(sb):
     page_source = sb.get_page_source()
@@ -1148,10 +1149,7 @@ def solve_image_category(drive, category, window):
 
 
 
-run_sb1 = True
-run_sb2 = True
-run_sb3 = False
-run_sb4 = False
+
 
 brave_user_data_dir = '/home/coder/.config/BraveSoftware/Brave-Browser/'
 brave_binary_path = '/usr/bin/brave-browser'
@@ -1193,7 +1191,7 @@ if run_sb4:
 
 
     #print(f'IP Matched {ip_address}')
-if ip_address2 == ip_required2:
+if ip_address == ip_required:
     if ip_address == ip_required:
 
         import img_captcha
@@ -1407,6 +1405,8 @@ if ip_address2 == ip_required2:
                                             ip_address = get_ip(sb1)
                                         else:
                                             print('no duplicate on 1st')  
+                        else:
+                            print(f'category is not defined{category}')
                     else:
                         if basic_info:
                             #print("Category is ",category)

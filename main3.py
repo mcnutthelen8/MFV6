@@ -1126,23 +1126,25 @@ def solve_image_category(drive, category, window):
     word2= get_google_ocr(drive, str(linkg2))
     words = word1 + '@' + word2
     separated_words = split_at_symbols(words)
-    print(separated_words)
-    separated_words2 = fix_broken_words(separated_words)
-    print(separated_words2)
-    position = check_words(category, separated_words2)
-    print(f"The most similar word to '{category}' at index {position} : {separated_words2}")
-    title = drive.get_title()
-    if title == 'Skylom':
-        print(title,position)
-        if position == 0:
-            pyautogui.click(749, 803)
-        if position == 1:
-            pyautogui.click(1100, 803)
-        if position == 2:
-            pyautogui.click(777, 896)
-        if position == 3:
-            pyautogui.click(1094, 903)
-        
+    if separated_words:
+        print(separated_words)
+        separated_words2 = fix_broken_words(separated_words)
+        print(separated_words2)
+        if separated_words2:
+            position = check_words(category, separated_words2)
+            print(f"The most similar word to '{category}' at index {position} : {separated_words2}")
+            title = drive.get_title()
+            if title == 'Skylom':
+                print(title,position)
+                if position == 0:
+                    pyautogui.click(749, 803)
+                if position == 1:
+                    pyautogui.click(1100, 803)
+                if position == 2:
+                    pyautogui.click(777, 896)
+                if position == 3:
+                    pyautogui.click(1094, 903)
+                
 
 
 
@@ -1252,6 +1254,7 @@ if ip_address == ip_required:
                     sb1.execute_script("window.scrollTo(0, 0);")
                     # Assuming img_captcha.solve_icon_captcha() is defined elsewhere
                     img_captcha.solve_image_skylom()
+                    time.sleep(1)
                     return True
                 else:
                     if debug_mode:
@@ -1291,6 +1294,8 @@ if ip_address == ip_required:
         ip_address3 = 0
         ip_address4 = 0
         while True:
+            #if 
+            time.sleep(1)
             #activate_window_by_id(id1)
             cloudflare(id1,sb1)
             sb1.switch_to.default_content()
@@ -1370,7 +1375,7 @@ if ip_address == ip_required:
                 reclick_waits = 1
 
             if current_duration:
-                if current_duration >= 50:
+                if current_duration >= 20:
                     if category == 0:
                         video_link = get_youtube_link(sb1) 
                         category = get_video_infog(video_link, sb1)
@@ -1511,7 +1516,7 @@ if ip_address == ip_required:
                     reclick_waits2 = 1
 
                 if current_duration2:
-                    if current_duration2 >= 50:
+                    if current_duration2 >= 20:
                         if category2 == 0:
                             video_link2 = get_youtube_link(sb2) 
                             category2 = get_video_infog(video_link2, sb2)

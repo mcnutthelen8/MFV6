@@ -675,7 +675,7 @@ def upload_image(image_path):
         print(f"Error during upload: {e}")
         return None
 
-def get_category_images(image_path):
+def get_category_images2(image_path):
     result = upload_image(image_path)
     if result and 'data' in result and 'url' in result['data']:
         gg = result['data']['url']
@@ -1118,8 +1118,8 @@ def solve_image_category(drive, category, window):
     get_category_images()
     merge_images(image_paths, output_path, orientation, spacing)
     merge_images(image_paths2, output_path2, orientation, spacing)
-    linkg1 = get_category_images('merged_image.png')
-    linkg2 = get_category_images('merged_image2.png')
+    linkg1 = get_category_images2('merged_image.png')
+    linkg2 = get_category_images2('merged_image2.png')
     print(str(linkg1))
     print(str(linkg2))
     word1= get_google_ocr(drive, str(linkg1))
@@ -1441,6 +1441,7 @@ if ip_address == ip_required:
                                         solve_image_category(sb1, category, id1)
 
                                 elif category == 0:
+                                    video_link = get_youtube_link(sb1) 
                                     category = get_video_infog(video_link, sb1)
 
                                     print(f"Category: {category}")
@@ -1579,6 +1580,7 @@ if ip_address == ip_required:
                                             solve_image_category(sb2, category2, id2)
 
                                     elif category2 == 0:
+                                        video_link2 = get_youtube_link(sb2) 
                                         category2 = get_video_infog(video_link2, sb2)
 
                                         print(f"Category: {category2}")

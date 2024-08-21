@@ -1356,7 +1356,7 @@ if ip_address2 == ip_required2:
 
     
                     else:
-                        category = 0
+                        category2 = 0
                         
                         if basic_info:
                             print(f"Video duration2: {current_duration2} and Category2 is {category2}", end="\r")

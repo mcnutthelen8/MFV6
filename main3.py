@@ -44,8 +44,6 @@ server_name1 = 'estonia'
 server_name2 = 'romania'
 server_name3 = 'poland'
 server_name4 = 'hungary'
-ocr_url = 'https://622b-103-247-48-91.ngrok-free.app/'
-API_KEY = '6d207e02198a847aa98d0a2a901485a5'  # Replace with your actual API key
 
 chrome_binary_path = '/opt/google/chrome/google-chrome'
 chrome_user_data_dir = '/root/.config/google-chrome/'
@@ -664,115 +662,67 @@ def fix_ip(drive, name):
 
 
     
-
-
-IMG_PATHS = ['crop1.png', 'crop2.png', 'crop3.png', 'crop4.png']  # Output file paths
-
-def capture_and_crop_regions(regions, output_paths):
-    try:
-        # Capture the entire screen
-        screenshot = pyautogui.screenshot()
-        
-        if len(regions) != len(output_paths):
-            raise ValueError("The number of regions must match the number of output paths.")
-
-        # Process each region and save the cropped image
-        for (x, y, width, height), output_path in zip(regions, output_paths):
-            left = x
-            top = y
-            right = x + width
-            bottom = y + height
-            cropped_img = screenshot.crop((left, top, right, bottom))
-            cropped_img.save(output_path)
-            print(f"Saved cropped image to: {output_path}")
-
-    except Exception as e:
-        print(f"An error occurred: {e}")
-
-
-    
-
-def get_category_images():
-    # Define regions and paths
-    regions = [
-        (622, 766, 320, 85),  # Example region 1 (x, y, width, height)
-        (960, 766, 320, 85),  # Example region 2
-        (622, 862, 320, 85),  # Example region 3
-        (960, 862, 320, 85)   # Example region 4
-    ]
-    
-    output_paths = [
-        "crop1.png",  # Output file path for region 1
-        "crop2.png",  # Output file path for region 2
-        "crop3.png",  # Output file path for region 3
-        "crop4.png"   # Output file path for region 4
-    ]
-
-    # Capture and crop regions
-    capture_and_crop_regions(regions, output_paths)
-    
-
-
-def get_text_ocr(driver, links):
-    original_window = driver.current_window_handle
-    driver.open_new_window()
-    #driver.switch_to.newest_window()
-    driver.open(ocr_url)
-    print('Waiting for Results')
-    start_time = time.time()
-    while True:
-        if driver.is_text_visible('Solving CAPTCHA, please wait...'):
-            print('Solving CAPTCHA, please wait...')
-
-        elif driver.is_element_visible("#ocr1"):
-            print('OCR Loaded')
-            answer1 = driver.get_text("#ocr1")
-            answer2 = driver.get_text("#ocr2")
-            answer3 = driver.get_text("#ocr3")
-            answer4 = driver.get_text("#ocr4")
-            answers = [answer1, answer2, answer3, answer4]
-        
-            driver.close()
-            driver.switch_to.window(original_window)
-            end_time = time.time()
-            elapsed_time = end_time - start_time
-            minutes, seconds = divmod(elapsed_time, 60)
-            seconds, milliseconds = divmod(seconds * 1000, 1000)
-            
-            print(f"Solving time: {int(minutes)}:{int(seconds):02}:{int(milliseconds):03}")
-
-            return answers
-
-        else:
-            try:
-                if driver.is_element_present("#root > div > main > div > div > section.mb-4.border.border-gray-300.bg-white.shadow-md > div > footer > button"):
-                    driver.click("#root > div > main > div > div > section.mb-4.border.border-gray-300.bg-white.shadow-md > div > footer > button")
-            except Exception as e:
-                print(e)
-            try:
-                driver.type("input[type='text']", links)
-                driver.click("button")
-            except Exception as e:
-                print(e)
-
-
+API_KEY = 'd5ace46d229a8844061fed0df01de9d1'
 def upload_image(image_path):
-    url = 'https://freeimage.host/api/1/upload'
+    url = 'https://api.imgbb.com/1/upload'
     try:
         with open(image_path, 'rb') as file:
-            response = requests.post(url, data={'key': API_KEY, 'action': 'upload', 'format': 'json'}, files={'source': file})
+            response = requests.post(url, data={'key': API_KEY}, files={'image': file})
             response.raise_for_status()  # Raise an error for HTTP error responses
-            response_json = response.json()
-            
-            # Extract the image URL from the response
-            if response_json.get('status_code') == 200 and 'image' in response_json:
-                return response_json['image']['url']
-            else:
-                print("Upload failed:", response_json.get('status_txt', 'Unknown error'))
-                return None
+            return response.json()
+        
     except requests.exceptions.RequestException as e:
         print(f"Error during upload: {e}")
         return None
+
+def get_category_images2(image_path):
+    result = upload_image(image_path)
+    if result and 'data' in result and 'url' in result['data']:
+        gg = result['data']['url']
+        print(gg)
+        return gg
+    else:
+        print('Fuck U')
+
+def get_google_ocr(driver, url):
+    image_url = url
+    formatted_link = image_url.replace("https://", "").replace("/", "%2F")
+    print(f"Formatted link: {formatted_link}")
+    lens_url = f"https://lens.google.com/uploadbyurl?url=https%3A%2F%2F{formatted_link}"
+    print(f"Formatted link: {lens_url}")
+    original_window = driver.current_window_handle
+    driver.open_new_window()
+    #driver.switch_to.newest_window()
+    driver.open(lens_url)
+    while True:
+        try:
+            if driver.is_element_visible("button#ucj-2"):
+                driver.click("button#ucj-2")
+                print("Clicked the 'False' button.")
+            else:
+                print("'False' button is not visible.")
+        except Exception as e:
+            print(f"False' button is not visible.NoSuchElementException")
+        try:
+            if driver.is_element_visible("button.VfPpkd-LgbsSe.VfPpkd-LgbsSe-OWXEXe-k8QpJ.VfPpkd-LgbsSe-OWXEXe-dgl2Hf.nCP5yc.AjY5Oe.DuMIQc.LQeN7.kCfKMb"):
+                driver.click("button.VfPpkd-LgbsSe.VfPpkd-LgbsSe-OWXEXe-k8QpJ.VfPpkd-LgbsSe-OWXEXe-dgl2Hf.nCP5yc.AjY5Oe.DuMIQc.LQeN7.kCfKMb")
+                print("Clicked the button.VfPpkd-vQzf8d button.")
+            else:
+                print("button.VfPpkd-vQzf8d button is not visible.")
+        except Exception as e:
+            print(f"button.VfPpkd-vQzf8d' button is not visible.NoSuchElementException")
+        try:
+            if driver.is_element_visible("h1.wCgoWb"):
+                answer = driver.get_text("h1.wCgoWb")
+                
+                print(f"{answer}")
+                driver.close()
+                driver.switch_to.window(original_window)
+                return answer
+            else:
+                print(f"not found")
+        except Exception:
+            print(f"Error finding input box or submit button: {e}")
 
 def find_most_similar_word(word, word_list):
     most_similar_word = None
@@ -791,11 +741,20 @@ def find_most_similar_word(word, word_list):
     
     return most_similar_word, most_similar_index
 
+def split_at_symbols(input_string):
+    # Split the string by '@' and process parts
+    parts = input_string.split('@')
+
+    # Strip leading/trailing spaces and ensure commas separate words properly
+    result = [part.strip() for part in parts if part.strip()]
+
+    return result
+
 def fix_broken_words(word_list):
     reference_list = [
         "Comedy", "Education", "Gaming", "Music", "Science","Technology",
         "Auto","Family" ,"Entertainment", "News","Politics", "People","Blogs",
-        "Travel", "Sports", "Beauty", "None","Nonprofit", "Howto", "Film","pets",
+        "Travel", "Sports", "Beauty", "None","Nonprofit", "Howto", "Film",
     ]
     fixed_list = []
     
@@ -891,34 +850,293 @@ def check_words(category, fixed_words):
     return 1
 
 
+def get_ocr_category(driver, links):
+    title = driver.get_title()
 
+    # Check if we are on the correct page, if not, open a new window
+    if title != 'NopeCHA CAPTCHA Solver':
+        driver.open_new_window()
+        driver.open('https://mfv6-ocr4.tiiny.site/')
+        title = driver.get_title()
+        print(title)
+    time.sleep(1)
+    # Re-check title after navigation
+    if title == 'NopeCHA CAPTCHA Solver':
+        print(title)
+
+        # Check if CAPTCHA is still loading
+        if driver.is_text_visible('Submitting CAPTCHAs...'):
+            print('Captcha still loading')
+            return None
+        
+        # Check if the OCR element is present
+        if driver.is_element_present("#ocr1"):
+            print('OCR Loaded')
+            return True
+            # Get the text from the OCR fields
+            answer1 = driver.get_text("#ocr1")
+            answer2 = driver.get_text("#ocr2")
+            answer3 = driver.get_text("#ocr3")
+            answer4 = driver.get_text("#ocr4")
+            
+            # Store answers in a list
+            answers = [answer1, answer2, answer3, answer4]
+            
+            # Close the new window and switch back to the original window
+            driver.close()
+            print(answers)
+            return answers  # Return the list of answers
+        else:
+            # If the OCR elements aren't present, submit the links
+            driver.type("input#image_urls[type='text']", links)
+            driver.click("button")
+            return None
+    else:
+        return None
+
+
+
+def find_most_similar_word(word, word_list):
+    most_similar_word = None
+    highest_similarity = 0
+    most_similar_index = -1
+    
+    # Loop through each word in the list and calculate the similarity
+    for idx, candidate in enumerate(word_list):
+        similarity = difflib.SequenceMatcher(None, word, candidate).ratio()
+        
+        # If similarity is higher than the current highest, update the result
+        if similarity > highest_similarity:
+            highest_similarity = similarity
+            most_similar_word = candidate
+            most_similar_index = idx  # Store the index
+    
+    return most_similar_word, most_similar_index
+
+
+def fix_broken_words(word_list):
+    reference_list = [
+        "Comedy", "Education", "Gaming", "Music", "Science","Technology",
+        "Auto","Family" ,"Entertainment", "News","Politics", "People","Blogs",
+        "Travel", "Sports", "Beauty", "None","Nonprofit", "Howto", "Film",
+    ]
+    fixed_list = []
+    
+    for word in word_list:
+        fixed_word = find_most_similar_word(word, reference_list)
+        fixed_list.append(fixed_word)
+    
+    return fixed_list
+
+IMG_PATHS = ['crop1.png', 'crop2.png', 'crop3.png', 'crop4.png']  # Output file paths
+
+def capture_and_crop_regions(regions, output_paths):
+    try:
+        # Capture the entire screen
+        screenshot = pyautogui.screenshot()
+        
+        if len(regions) != len(output_paths):
+            raise ValueError("The number of regions must match the number of output paths.")
+
+        # Process each region and save the cropped image
+        for (x, y, width, height), output_path in zip(regions, output_paths):
+            left = x
+            top = y
+            right = x + width
+            bottom = y + height
+            cropped_img = screenshot.crop((left, top, right, bottom))
+            cropped_img.save(output_path)
+            print(f"Saved cropped image to: {output_path}")
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+API_KEY = '6d207e02198a847aa98d0a2a901485a5'  # Replace with your actual API key
+
+def upload_image(image_path):
+    url = 'https://freeimage.host/api/1/upload'
+    try:
+        with open(image_path, 'rb') as file:
+            response = requests.post(url, data={'key': API_KEY, 'action': 'upload', 'format': 'json'}, files={'source': file})
+            response.raise_for_status()  # Raise an error for HTTP error responses
+            response_json = response.json()
+            
+            # Extract the image URL from the response
+            if response_json.get('status_code') == 200 and 'image' in response_json:
+                return response_json['image']['url']
+            else:
+                print("Upload failed:", response_json.get('status_txt', 'Unknown error'))
+                return None
+    except requests.exceptions.RequestException as e:
+        print(f"Error during upload: {e}")
+        return None
+    
+
+def get_category_images():
+    # Define regions and paths
+    regions = [
+        (622, 766, 320, 85),  # Example region 1 (x, y, width, height)
+        (960, 766, 320, 85),  # Example region 2
+        (622, 862, 320, 85),  # Example region 3
+        (960, 862, 320, 85)   # Example region 4
+    ]
+    
+    output_paths = [
+        "crop1.png",  # Output file path for region 1
+        "crop2.png",  # Output file path for region 2
+        "crop3.png",  # Output file path for region 3
+        "crop4.png"   # Output file path for region 4
+    ]
+
+    # Capture and crop regions
+    capture_and_crop_regions(regions, output_paths)
+    
+
+def check_words(category, fixed_words):
+    category = category.replace('-', '')
+    print(f'Trying {category}')
+
+    fixed_words_lower = [word.lower() for word in fixed_words]
+
+    for word in fixed_words:
+        word_lower = word.lower()
+        category_lower = category.lower()
+        if word_lower in category_lower:
+            position = fixed_words_lower.index(word_lower)
+            print(f'{word} is a match in {category}. Position: {position}')
+            return position
+        
+    category = 'Music'
+    for word in fixed_words:
+        word_lower = word.lower()
+        category_lower = category.lower()
+        if word_lower in category_lower:
+            position = fixed_words_lower.index(word_lower)
+            print(f'{word} is a match in {category}. Position: {position}')
+            return position
+        
+    category = 'People'
+    for word in fixed_words:
+        word_lower = word.lower()
+        category_lower = category.lower()
+        if word_lower in category_lower:
+            position = fixed_words_lower.index(word_lower)
+            print(f'{word} is a match in {category}. Position: {position}')
+            return position
+        
+    category = 'Entertainment'
+    for word in fixed_words:
+        word_lower = word.lower()
+        category_lower = category.lower()
+        if word_lower in category_lower:
+            position = fixed_words_lower.index(word_lower)
+            print(f'{word} is a match in {category}. Position: {position}')
+            return position
+        
+    category = 'Science'
+    for word in fixed_words:
+        word_lower = word.lower()
+        category_lower = category.lower()
+        if word_lower in category_lower:
+            position = fixed_words_lower.index(word_lower)
+            print(f'{word} is a match in {category}. Position: {position}')
+            return position
+        
+    category = 'Technology'
+    for word in fixed_words:
+        word_lower = word.lower()
+        category_lower = category.lower()
+        if word_lower in category_lower:
+            position = fixed_words_lower.index(word_lower)
+            print(f'{word} is a match in {category}. Position: {position}')
+            return position
+        
+    category = 'News'
+    for word in fixed_words:
+        word_lower = word.lower()
+        category_lower = category.lower()
+        if word_lower in category_lower:
+            position = fixed_words_lower.index(word_lower)
+            print(f'{word} is a match in {category}. Position: {position}')
+            return position
+    return 1
+
+
+def merge_images(image_paths, output_path, orientation="horizontal", spacing=0):
+    # Load images
+    images = [cv2.imread(path) for path in image_paths]
+
+    # Check if all images were loaded successfully
+    if any(image is None for image in images):
+        raise ValueError("Failed to load one or more images.")
+
+    # Determine the output image size based on orientation
+    if orientation == "horizontal":
+        height = max(image.shape[0] for image in images)
+        width = sum(image.shape[1] for image in images) + spacing * (len(images) - 1)
+    elif orientation == "vertical":
+        height = sum(image.shape[0] for image in images) + spacing * (len(images) - 1)
+        width = max(image.shape[1] for image in images)
+    else:
+        raise ValueError("Invalid orientation. Must be 'horizontal' or 'vertical'.")
+
+    # Create an empty output image (using NumPy arrays)
+    output_image = np.zeros((height, width, 3), dtype=np.uint8)
+
+    # Merge images
+    x_offset = 0
+    y_offset = 0
+    for image in images:
+        if orientation == "horizontal":
+            output_image[y_offset:y_offset + image.shape[0], x_offset:x_offset + image.shape[1]] = image
+            x_offset += image.shape[1] + spacing
+        elif orientation == "vertical":
+            output_image[y_offset:y_offset + image.shape[0], x_offset:x_offset + image.shape[1]] = image
+            y_offset += image.shape[0] + spacing
+
+    # Save the output image
+    cv2.imwrite(output_path, output_image)
+# Example usage
+#image_paths = ["crop1.png", "at.png" , "crop2.png" , "at.png", "crop3.png", "at.png", "crop4.png"]
+#image_paths = ["crop1.png", "crop2.png" , "crop3.png", "crop4.png"]
+image_paths = ["crop1.png", "at.png" , "crop2.png" ]
+image_paths2 = ["crop3.png", "at.png" , "crop4.png" ]
+#image_paths3 = ["crop1.png", "at.png" , "crop2.png" , "at.png", "crop3.png", "at.png", "crop4.png"]
+output_path = "merged_image.png"
+output_path2 = "merged_image2.png"
+orientation = "horizontal"  # or "vertical"
+spacing = 10
 def solve_image_category(drive, category, window):
     activate_window_by_id(window)
     get_category_images()
-    link1 = upload_image('crop1.png')
-    link2 = upload_image('crop2.png')
-    link3 = upload_image('crop3.png')
-    link4 = upload_image('crop4.png')
-    category ='Music'
-    links = link1 +','+link2+','+link3+','+link4
-    print(links)
-    gg = get_text_ocr(drive, links)
-    print(gg)
-    fix_words = fix_broken_words(gg)
-    print(fix_words)
-    position = check_words(category, fix_words)
-    print(f"The most similar word to '{category}' at index {position} : {fix_words}")
-    title = drive.get_title()
-    if title == 'Skylom':
-        print(title,position)
-        if position == 0:
-                pyautogui.click(749, 803)
-        if position == 1:
-                pyautogui.click(1100, 803)
-        if position == 2:
-                pyautogui.click(777, 896)
-        if position == 3:
-                pyautogui.click(1094, 903)
+    merge_images(image_paths, output_path, orientation, spacing)
+    merge_images(image_paths2, output_path2, orientation, spacing)
+    linkg1 = get_category_images2('merged_image.png')
+    linkg2 = get_category_images2('merged_image2.png')
+    print(str(linkg1))
+    print(str(linkg2))
+    word1= get_google_ocr(drive, str(linkg1))
+    word2= get_google_ocr(drive, str(linkg2))
+    words = word1 + '@' + word2
+    separated_words = split_at_symbols(words)
+    if separated_words:
+        print(separated_words)
+        separated_words2 = fix_broken_words(separated_words)
+        print(separated_words2)
+        if separated_words2:
+            position = check_words(category, separated_words2)
+            print(f"The most similar word to '{category}' at index {position} : {separated_words2}")
+            title = drive.get_title()
+            if title == 'Skylom':
+                print(title,position)
+                if position == 0:
+                    pyautogui.click(749, 803)
+                if position == 1:
+                    pyautogui.click(1100, 803)
+                if position == 2:
+                    pyautogui.click(777, 896)
+                if position == 3:
+                    pyautogui.click(1094, 903)
                 
 
 

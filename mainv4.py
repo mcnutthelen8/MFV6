@@ -37,7 +37,7 @@ farm_id2 = 2
 farm_id3 = 3
 farm_id4 = 4
 run_sb1 = True
-run_sb2 = True
+run_sb2 = False
 run_sb3 = False
 run_sb4 = False
 server_name1 = 'estonia'
@@ -888,6 +888,8 @@ def get_category_images():
 
 def check_words(category, fixed_words):
     category = category.replace('-', '')
+    category = category.replace('blog', 'people')
+    category = category.replace('politics', 'news')
     print(f'Trying {category}')
 
     fixed_words_lower = [word.lower() for word in fixed_words]
@@ -1005,46 +1007,54 @@ spacing = 10
 def solve_image_category(drive, category, window):
     activate_window_by_id(window)
     get_category_images()
-    time.sleep(2)
-    merge_images(image_paths, output_path, orientation, spacing)
-    merge_images(image_paths2, output_path2, orientation, spacing)
-    linkg1 = upload_image('merged_image.png')
-    linkg2 = upload_image('merged_image2.png')
-    print(str(linkg1))
-    print(str(linkg2))
-    word1= get_google_ocr(drive, str(linkg1))
-    word2= get_google_ocr(drive, str(linkg2))
-    words = word1 + '@' + word2
-    separated_words = split_at_symbols(words)
-    try:
-        if separated_words:
-            print(separated_words)
-            separated_words2 = fix_broken_words(separated_words)
-            print(separated_words2)
-            if separated_words2:
-                position = check_words(category, separated_words2)
-                print(f"The most similar word to '{category}' at index {position} : {separated_words2}")
-                title = drive.get_title()
-                if title == 'Skylom':
-                    print(title,position)
-                    if position == 0:
-                        pyautogui.click(749, 803)
-                    if position == 1:
-                        pyautogui.click(1100, 803)
-                    if position == 2:
-                        pyautogui.click(777, 896)
-                    if position == 3:
-                        pyautogui.click(1094, 903)
-                    
-    except Exception as e:
-        print(e)
-        pyautogui.click(1100, 803)
-        
-
-
-
-
-
+    titile =drive.get_title()
+    print(titile)
+    if titile == 'Skylom':
+        get_category_images()
+        try:
+            img = Image.open('crop1.png')
+            img = img.convert("RGB") 
+            img_data = np.array(img)
+            is_white = np.all(img_data == [255, 255, 255])
+            if is_white:
+                print("The image is blank (all white).")
+            else:
+                print("The image is not blank.")
+                merge_images(image_paths, output_path, orientation, spacing)
+                merge_images(image_paths2, output_path2, orientation, spacing)
+                linkg1 = upload_image('merged_image.png')
+                linkg2 = upload_image('merged_image2.png')
+                print(str(linkg1))
+                print(str(linkg2))
+                word1= get_google_ocr(drive, str(linkg1))
+                word2= get_google_ocr(drive, str(linkg2))
+                words = word1 + '@' + word2
+                separated_words = split_at_symbols(words)
+                try:
+                    if separated_words:
+                        print(separated_words)
+                        separated_words2 = fix_broken_words(separated_words)
+                        print(separated_words2)
+                        if separated_words2:
+                            position = check_words(category, separated_words2)
+                            print(f"The most similar word to '{category}' at index {position} : {separated_words2}")
+                            title = drive.get_title()
+                            if title == 'Skylom':
+                                print(title,position)
+                                if position == 0:
+                                    pyautogui.click(749, 803)
+                                if position == 1:
+                                    pyautogui.click(1100, 803)
+                                if position == 2:
+                                    pyautogui.click(777, 896)
+                                if position == 3:
+                                    pyautogui.click(1094, 903)
+                                
+                except Exception as e:
+                    print(e)
+                    pyautogui.click(1100, 803)
+        except Exception as e:
+            print(f"Error: {e}")
 
 
 brave_user_data_dir = '/home/coder/.config/BraveSoftware/Brave-Browser/'
@@ -1126,7 +1136,7 @@ if ip_address == ip_required:
             try:
                 if sb.is_element_visible(".captcha-modal__icons .captcha-image"):
                     print("Icon captcha exists.")
-                    time.sleep(5)
+                    time.sleep(2)
                     sb.maximize_window()
                     activate_window_by_id(id)
                     #sb1.scroll_to_top()
@@ -1163,6 +1173,7 @@ if ip_address == ip_required:
         ip_address3 = 0
         ip_address4 = 0
         while True:
+            time.sleep(1)
             cloudflare(id1,sb1)
             sb1.switch_to.default_content()
             sb1.execute_script("window.scrollTo(0, 0);")

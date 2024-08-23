@@ -812,7 +812,7 @@ def fix_broken_words(word_list):
     reference_list = [
         "Comedy", "Education", "Gaming", "Music", "Science","Technology",
         "Auto","Family" ,"Entertainment", "News","Politics", "People","Blogs",
-        "Travel", "Sports", "Beauty", "None","Nonprofit", "Howto", "Film","pets", "Food",
+        "Travel", "Sports", "Beauty", "None","Nonprofit", "Howto", "Film","pets", "Food", "Sic-fi",
     ]
     fixed_list = []
     

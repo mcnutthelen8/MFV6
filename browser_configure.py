@@ -485,11 +485,11 @@ if run_sb1:
                 print('All Extensions are pinned')
                 if nopecha_elements():
                     print('Nopecha Elements Added')
-                    if mysterium_login():
-                        print('Mysterium Login Done...')
-                        dc.maximize_window()
-                        ip_required = fix_ip(dc, server_name1)
-                        ip_address = get_ip(dc)
+                    #if mysterium_login():
+                        #print('Mysterium Login Done...')
+                        #dc.maximize_window()
+                        #ip_required = fix_ip(dc, server_name1)
+                        #ip_address = get_ip(dc)
 ##############################################################################################################
 if run_sb2:
     dc2 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir2, binary_location=chrome_binary_path)
@@ -508,11 +508,11 @@ if run_sb2:
                 print('All Extensions are pinned')
                 if nopecha_elements():
                     print('Nopecha Elements Added')
-                    if mysterium_login():
-                        print('Mysterium Login Done...')
-                        dc2.maximize_window()
-                        ip_required = fix_ip(dc2, server_name2)
-                        ip_address = get_ip(dc2)
+                    #if mysterium_login():
+                        #print('Mysterium Login Done...')
+                        #dc2.maximize_window()
+                        #ip_required = fix_ip(dc2, server_name2)
+                        #ip_address = get_ip(dc2)
 
 ##############################################################################################################
 if run_sb3:

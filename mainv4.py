@@ -1003,6 +1003,73 @@ output_path2 = "merged_image2.png"
 orientation = "horizontal"  # or "vertical"
 spacing = 10
 
+def replace_white_with_limegreen(image_path, output_path, tolerance=50):
+    try:
+        # Open the image
+        img = Image.open(image_path)
+        img = img.convert("RGBA")  # Convert to RGBA to handle transparency if needed
+
+        # Get the data of the image
+        data = img.getdata()
+
+        # Create a new list to store modified pixels
+        new_data = []
+        for item in data:
+            # Calculate the difference between the pixel and white (255, 255, 255)
+            r, g, b = item[:3]
+            if abs(r - 255) <= tolerance and abs(g - 255) <= tolerance and abs(b - 255) <= tolerance:
+                # Replace white (within the tolerance range) with limegreen
+                new_data.append((0, 0, 0, item[3]))  # Keep original alpha value
+            else:
+                # Append other pixels unchanged
+                new_data.append(item)
+
+        # Update the image with the new pixel data
+        img.putdata(new_data)
+
+        # Save the image
+        img.save(output_path, "PNG")
+        print(f"Processed image saved as {output_path}")
+
+    except Exception as e:
+        print(f"Error: {e}")
+
+
+def remove_noise(image_path, output_path):
+    try:
+        # Load the image
+        img = cv2.imread(image_path)
+
+        # Convert to grayscale
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+        # Apply binary thresholding
+        _, thresh = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+
+        # Find contours
+        contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+        # Filter out small contours (noise or lines)
+        filtered_contours = [cnt for cnt in contours if cv2.contourArea(cnt) > 100]
+
+        # Create a mask for the filtered contours
+        mask = np.zeros_like(thresh)
+        cv2.drawContours(mask, filtered_contours, -1, 255, thickness=cv2.FILLED)
+
+        # Perform bitwise AND to keep only the large contours
+        cleaned_img = cv2.bitwise_and(thresh, mask)
+
+        # Invert the image to original binary style
+        cleaned_img = cv2.bitwise_not(cleaned_img)
+
+        # Save the cleaned image
+        cv2.imwrite(output_path, cleaned_img)
+        print(f"Cleaned image saved at {output_path}")
+
+
+    except Exception as e:
+        print(f"Error: {e}")
+
 
 def solve_image_category(drive, category, window):
     activate_window_by_id(window)
@@ -1020,6 +1087,25 @@ def solve_image_category(drive, category, window):
                 print("The image is blank (all white).")
             else:
                 print("The image is not blank.")
+                
+                image_path = "crop1.png"
+                output_path = image_path
+                replace_white_with_limegreen(image_path, output_path, tolerance=50)
+                remove_noise(image_path, output_path)
+                image_path = "crop2.png"
+                output_path = image_path
+                replace_white_with_limegreen(image_path, output_path, tolerance=50)
+                remove_noise(image_path, output_path)
+                image_path = "crop3.png"
+                output_path = image_path
+                replace_white_with_limegreen(image_path, output_path, tolerance=50)
+                remove_noise(image_path, output_path)
+                image_path = "crop4.png"
+                output_path = image_path
+                replace_white_with_limegreen(image_path, output_path, tolerance=50)
+                remove_noise(image_path, output_path)
+
+
                 merge_images(image_paths, output_path, orientation, spacing)
                 merge_images(image_paths2, output_path2, orientation, spacing)
                 linkg1 = upload_image('merged_image.png')

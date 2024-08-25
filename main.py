@@ -323,14 +323,15 @@ def get_youtube_link(sb):
                 #print(youtube_url_match.group(0))
                 return youtube_url_match.group(0)
             else:
-                return "YouTube link not found."
+                return 0
         else:
-            return "Anchor tag not found."
+            return 0
+
  
     except Exception as e:
         if debug_mode:
             print(f"An error occurred: {e}")
-        return None
+        return 0
 
 def cloudflare(id,sb):
     page_title = sb.get_title().strip()
@@ -874,19 +875,29 @@ def find_most_similar_word(word, word_list):
 
 def fix_broken_words(word_list):
     reference_list = [
-        "Comedy", "Education", "Gaming", "Music", "Science","Technology",
-        "Auto","Family" ,"Entertainment", "News","Politics", "People","Blogs",
-        "Travel", "Sports", "Beauty", "Nonprofit", "Howto", "Film","pets", "None", "Food", "Sic-fi",
+        "comedy", "education", "gaming", "music", "science","technology",
+        "auto","family" ,"entertainment","family entertainment", 'none', "news","politics", "news & politics", "people","blogs", "people & blogs",
+        "travel", "sports", "beauty", "nonprofit", "howto", "film","pets", "food", "sic-fi",
     ]
     fixed_list = []
     
     for word in word_list:
         word = word.replace('0', 'o')
+        word = word.replace('5', 's')
+        word = word.replace('$', 's')
+        word = word.replace('8', '&')
+        word = word.replace('1', 'i')
         fixed_word = find_most_similar_word(word, reference_list)
-        if fixed_word == "Politics":
-            fixed_word ="News"
-        if fixed_word == "Blogs":
-            fixed_word ="People"
+        if fixed_word == "politics":
+            fixed_word ="news"
+        if fixed_word == "blogs":
+            fixed_word ="people"
+        if fixed_word == "people & blogs":
+            fixed_word ="people"
+        if fixed_word == "news & politics":
+            fixed_word ="news"
+        if fixed_word == "family entertainment":
+            fixed_word ="family"
         fixed_list.append(fixed_word)
 
     return fixed_list
@@ -898,21 +909,30 @@ def ez_ocr(path):
     results = reader.readtext(path, detail = 0)
     cleaned_text = ''
     for text in results:
+        text = text.lower()
         cleaned_text += text
 
     cleaned_text = cleaned_text.replace('0', 'o')
+    cleaned_text = cleaned_text.replace('5', 's')
+    cleaned_text = cleaned_text.replace('$', 's')
+    cleaned_text = cleaned_text.replace('8', '&')
+    cleaned_text = cleaned_text.replace('1', 'i')
     if cleaned_text == '':
         cleaned_text = 'food'
     return cleaned_text
 
 
 def check_words(category, fixed_words):
+
+    if category is None:
+        print("Category is None aiyo.")
+        return
     category = category.replace('-', '')
     category = category.replace('blog', 'people')
     category = category.replace('politics', 'news')
     print(f'Trying {category}')
+    fixed_words_lower = [word.lower() for word in fixed_words if word is not None]
 
-    fixed_words_lower = [word.lower() for word in fixed_words]
 
     for word in fixed_words:
         word_lower = word.lower()
@@ -922,14 +942,7 @@ def check_words(category, fixed_words):
             print(f'{word} is a match in {category}. Position: {position}')
             return position
     print(f'Failed {category} Tring Music')
-    category = 'Music'
-    for word in fixed_words:
-        word_lower = word.lower()
-        category_lower = category.lower()
-        if word_lower in category_lower:
-            position = fixed_words_lower.index(word_lower)
-            print(f'{word} is a match in {category}. Position: {position}')
-            return position
+
     print(f'Failed {category} Tring People')        
     category = 'People'
     for word in fixed_words:
@@ -940,7 +953,17 @@ def check_words(category, fixed_words):
             print(f'{word} is a match in {category}. Position: {position}')
             return position
     print(f'Failed {category} Tring Entertainment')          
+        
     category = 'Entertainment'
+    for word in fixed_words:
+        word_lower = word.lower()
+        category_lower = category.lower()
+        if word_lower in category_lower:
+            position = fixed_words_lower.index(word_lower)
+            print(f'{word} is a match in {category}. Position: {position}')
+            return position
+    print(f'Failed {category} Tring Music')
+    category = 'Music'
     for word in fixed_words:
         word_lower = word.lower()
         category_lower = category.lower()
@@ -1009,7 +1032,7 @@ def solve_image_category(drive, category, window):
                 print('Images Filtered...')
                 image_paths = ['crop1.png', 'crop2.png', 'crop3.png', 'crop4.png']
                 words = []
-                for image in image_path:
+                for image in image_paths:
                     word = ez_ocr(image)
                     print("Ezocr Text:", word)
                     words.append(word)
@@ -1357,7 +1380,6 @@ if ip_address == ip_required:
                 else:
                     reclick_waits2 = 1
 
-                     
                 if current_duration2:
                     if current_duration2 >= 20:
                         if category2 == 0:
@@ -1365,7 +1387,7 @@ if ip_address == ip_required:
                             category2 = get_video_infog(video_link2, sb2)
                             if category2:
                                 if debug_mode:
-                                    print(f"Category2: {category2}")
+                                    print(f"Category: {category2}")
                                 if "Howto" in category2:
                                     category2 = "How-To"
                                 elif "Science" in category2:
@@ -1387,36 +1409,36 @@ if ip_address == ip_required:
                                     if coins2:
                                         ip_list2 = insert_data(ip= ip_address2,amount= coins2, id= farm_id2)
                                         if ip_list2:
-                                            duplicates_ip2 = set([ip for ip in ip_list2 if ip_list2.count(ip) > 1])
+                                            duplicates_ip2 = set([ip2 for ip2 in ip_list2 if ip_list2.count(ip2) > 1])
                                             if ip_address2 in duplicates_ip2:
                                                 print(f'{duplicates_ip2} same ip 2 detect {ip_address2}')
                                                 ip_required2 = fix_ip(sb2, server_name2)
                                                 ip_address2 = get_ip(sb2)
                                             else:
-                                                print('no duplicate on 2nd')  
+                                                print('no duplicate on 2st')  
                             else:
-                                print(f'category2 is not defined{category2}')
+                                print(f'category 2 is not defined{category2}')
                         else:
                             if basic_info:
                                 #print("Category is ",category)
-                                print(f"Video duration2: {current_duration2} and Category is {category2}", end="\r")
+                                print(f"Video duration 2 : {current_duration2} and Category is {category2}", end="\r")
 
     
                     else:
                         category2 = 0
                         
                         if basic_info:
-                            print(f"Video duration2 : {current_duration2} and Category is {category2}", end="\r")
+                            print(f"Video duration2: {current_duration2} and Category is {category2}", end="\r")
                             #print('Video is Fresh')
 
-                title = sb2.get_title()
-                if title == 'Skylom':
+                title2 = sb2.get_title()
+                if title2 == 'Skylom':
                     if debug_mode:
-                        print(title)
+                        print(title2)
                     original_window2 = sb2.current_window_handle
 
                 if check_category_question(sb2) == True:
-                    print('Getting2  IP at 10 sec..')
+                    print('Getting IP at 10 sec..')
                     ip_address2 =get_ip(sb2)
                     if ip_address2 == ip_required2:
                                 if ip_address2 == ip_required2:
@@ -1433,12 +1455,12 @@ if ip_address == ip_required:
                                         video_link2 = get_youtube_link(sb2) 
                                         category2 = get_video_infog(video_link2, sb2)
 
-                                        print(f"Category2: {category2}")
+                                        print(f"Category: {category2}")
                                         if category2:
                                             if "Howto" in category2:
                                                 category2 = "How-To"
                                             elif "Science" in category2:
-                                                category2 = "Sic-fi"
+                                                category2 = "Science"
                                             elif "Nonprofit" in category2:
                                                 category2 = "Nonprofit"    
                                             elif "Film" in category2:
@@ -1450,8 +1472,8 @@ if ip_address == ip_required:
                     
                     else:
                         #ip_address =get_ip(sb)
-                        print(f'IP is not Matched in IF category {ip_address2}, Required: {ip_required2}')
-                        print('Getting IP at after found category...')
+                        print(f'IP 2 is not Matched in IF category {ip_address2}, Required: {ip_required2}')
+                        print('Getting 2 IP at after found category...')
                         ip_required2 = fix_ip(sb2, server_name2)
                         ip_address2 = get_ip(sb2)
 
@@ -1462,8 +1484,8 @@ if ip_address == ip_required:
                     mins2, secs2 = divmod(int(elapsed_time2), 60)
                     timer2 = f'{mins2:02d}:{secs2:02d}'
                     seconds_only2 = int(elapsed_time2)
-                    print(f'Next Click2 {timer2}')
-                    print(f'Elapsed_time2 {seconds_only2}')
+                    print(f'Next Click {timer2}')
+                    print(f'Elapsed_time {seconds_only2}')
                     start_time2 = time.time()
                     ip_address2 = 0
 

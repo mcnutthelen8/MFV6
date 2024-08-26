@@ -890,7 +890,7 @@ def fix_broken_words(word_list):
     reference_list = [
         "comedy", "education", "gaming", "music", "Music", "science","technology",
         "family" ,"entertainment","family entertainment", 'none', "news","politics", "people","blogs",
-        "Travel", "sports", "beauty", "Nonprofit", "howto", "film","pets", "food", "sic-fi","people & blogs","news & politics","auto",
+        "travel", "sports", "beauty", "Nonprofit", "howto", "film","pets", "food", "sic-fi","people & blogs","news & politics","auto",
     
     ]
     fixed_list = []
@@ -981,7 +981,7 @@ def check_words(category, fixed_words):
                 return position
         
 
-    if category =='Sic-fi' or category =='Science' or category =='Technology':
+    if category =='Sic-fi' or category =='Sicfi' or category =='Science' or category =='Technology':
             category = 'Science'
             for word in fixed_words:
                 if word:
@@ -1012,7 +1012,16 @@ def check_words(category, fixed_words):
                         position = fixed_words_lower.index(word_lower)
                         print(f'{word} is a match in {category}. Position: {position}')
                         return position
-
+    print(f'Failed {category} Tring none')        
+    category = 'none'
+    for word in fixed_words:
+        if word:
+            word_lower = word.lower()
+            category_lower = category.lower()
+            if word_lower in category_lower:
+                position = fixed_words_lower.index(word_lower)
+                print(f'{word} is a match in {category}. Position: {position}')
+                return position
     print(f'Failed {category} Tring People')        
     category = 'People'
     for word in fixed_words:

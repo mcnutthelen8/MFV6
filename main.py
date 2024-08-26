@@ -284,6 +284,19 @@ def remove_pink(sb):
     except Exception as e:
         if debug_mode:
             print(f"An error occurred: {e}")
+    try:
+        # Check if the subscribe block container is visible based on its unique id
+        if sb.is_element_visible("div#subscribe_block_container"):
+            element = sb.find_element("div#subscribe_block_container")
+            # Remove the subscribe block element
+            sb.execute_script("arguments[0].remove();", element)
+            print("Subscribe block removed successfully.")
+        else:
+            if debug_mode:
+                print("Subscribe block not found.")
+    except Exception as e:
+        if debug_mode:
+            print(f"An error occurred: {e}")
         return
 
 headers = {
@@ -835,7 +848,7 @@ def sharp_image(image_path, output_path):
 
             # Define a stronger sharpening kernel
             kernel = np.array([[0, -1, 0],
-                            [-1, 7,-1],
+                            [-1, 171,-1],
                             [0, -1, 0]])
 
             # Apply the kernel to the image
@@ -875,18 +888,29 @@ def find_most_similar_word(word, word_list):
 
 def fix_broken_words(word_list):
     reference_list = [
-        "comedy", "education", "gaming", "music", "science","technology",
-        "auto","family" ,"entertainment","family entertainment", 'none', "news","politics", "news & politics", "people","blogs", "people & blogs",
-        "travel", "sports", "beauty", "nonprofit", "howto", "film","pets", "food", "sic-fi",
+        "Comedy", "Education", "Gaming", "Music", "Science","Technology",
+        "Auto","Family" ,"Entertainment","Family Entertainment", 'None', "News","Politics", "People","Blogs",
+        "Travel", "Sports", "Beauty", "Nonprofit", "HoWto", "Film","Pets", "Food", "Sic-fi","People & Blogs","News & Politics",
     ]
     fixed_list = []
     
     for word in word_list:
         word = word.replace('0', 'o')
         word = word.replace('5', 's')
+        word = word.replace('6', 's')
         word = word.replace('$', 's')
         word = word.replace('8', '&')
         word = word.replace('1', 'i')
+        word = word.replace('[', 'c')
+        word = word.replace('(', 'c')
+        word = word.replace('4', 'a')
+        word = word.replace('7', 'e')
+        word = word.replace('<', 'c')
+        word = word.replace('*', 'e')
+        letter_count = sum(1 for char in word if char.isalpha())
+        if letter_count < 10:
+            word = word.replace(' ', '')
+            print(letter_count, word)
         fixed_word = find_most_similar_word(word, reference_list)
         if fixed_word == "politics":
             fixed_word ="news"
@@ -898,6 +922,8 @@ def fix_broken_words(word_list):
             fixed_word ="news"
         if fixed_word == "family entertainment":
             fixed_word ="family"
+        if fixed_word is None:
+            fixed_word ="none"
         fixed_list.append(fixed_word)
 
     return fixed_list
@@ -914,95 +940,133 @@ def ez_ocr(path):
 
     cleaned_text = cleaned_text.replace('0', 'o')
     cleaned_text = cleaned_text.replace('5', 's')
+    cleaned_text = cleaned_text.replace('6', 's')
     cleaned_text = cleaned_text.replace('$', 's')
     cleaned_text = cleaned_text.replace('8', '&')
     cleaned_text = cleaned_text.replace('1', 'i')
+    cleaned_text = cleaned_text.replace('[', 'c')
+    cleaned_text = cleaned_text.replace('(', 'c')
+    cleaned_text = cleaned_text.replace('4', 'a')
+    cleaned_text = cleaned_text.replace('7', 'e')
+    cleaned_text = cleaned_text.replace('<', 'c')
+    cleaned_text = cleaned_text.replace('*', 'e')
+    letter_count = sum(1 for char in cleaned_text if char.isalpha())
+    if letter_count < 10:
+        cleaned_text = cleaned_text.replace(' ', '')
+        print(letter_count, cleaned_text)
     if cleaned_text == '':
         cleaned_text = 'food'
     return cleaned_text
 
 
 def check_words(category, fixed_words):
-
     if category is None:
         print("Category is None aiyo.")
         return
     category = category.replace('-', '')
     category = category.replace('blog', 'people')
     category = category.replace('politics', 'news')
+    #similar_word = find_most_similar_word(category, unfixed_words)
     print(f'Trying {category}')
     fixed_words_lower = [word.lower() for word in fixed_words if word is not None]
-
-
     for word in fixed_words:
-        word_lower = word.lower()
-        category_lower = category.lower()
-        if word_lower in category_lower:
-            position = fixed_words_lower.index(word_lower)
-            print(f'{word} is a match in {category}. Position: {position}')
-            return position
-    print(f'Failed {category} Tring Music')
+        if word:
+            word_lower = word.lower()
+            category_lower = category.lower()
+            if word_lower in category_lower:
+                position = fixed_words_lower.index(word_lower)
+                print(f'{word} is a match in {category}. Position: {position}')
+                return position
+        
+
+    if category =='Sic-fi' or category =='Science' or category =='Technology':
+            category = 'Science'
+            for word in fixed_words:
+                if word:
+                    word_lower = word.lower()
+                    category_lower = category.lower()
+                    if word_lower in category_lower:
+                        position = fixed_words_lower.index(word_lower)
+                        print(f'{word} is a match in {category}. Position: {position}')
+                        return position
+            print(f'Failed {category} Tring Technology')            
+            category = 'Technology'
+            for word in fixed_words:
+                if word:
+                    word_lower = word.lower()
+                    category_lower = category.lower()
+                    if word_lower in category_lower:
+                        position = fixed_words_lower.index(word_lower)
+                        print(f'{word} is a match in {category}. Position: {position}')
+                        return position
+        
+    if category =='Music':
+            category = 'auto'
+            for word in fixed_words:
+                if word:
+                    word_lower = word.lower()
+                    category_lower = category.lower()
+                    if word_lower in category_lower:
+                        position = fixed_words_lower.index(word_lower)
+                        print(f'{word} is a match in {category}. Position: {position}')
+                        return position
 
     print(f'Failed {category} Tring People')        
     category = 'People'
     for word in fixed_words:
-        word_lower = word.lower()
-        category_lower = category.lower()
-        if word_lower in category_lower:
-            position = fixed_words_lower.index(word_lower)
-            print(f'{word} is a match in {category}. Position: {position}')
-            return position
+        if word:
+            word_lower = word.lower()
+            category_lower = category.lower()
+            if word_lower in category_lower:
+                position = fixed_words_lower.index(word_lower)
+                print(f'{word} is a match in {category}. Position: {position}')
+                return position
     print(f'Failed {category} Tring Entertainment')          
         
     category = 'Entertainment'
     for word in fixed_words:
-        word_lower = word.lower()
-        category_lower = category.lower()
-        if word_lower in category_lower:
-            position = fixed_words_lower.index(word_lower)
-            print(f'{word} is a match in {category}. Position: {position}')
-            return position
+        if word:
+            word_lower = word.lower()
+            category_lower = category.lower()
+            if word_lower in category_lower:
+                position = fixed_words_lower.index(word_lower)
+                print(f'{word} is a match in {category}. Position: {position}')
+                return position
     print(f'Failed {category} Tring Music')
     category = 'Music'
     for word in fixed_words:
-        word_lower = word.lower()
-        category_lower = category.lower()
-        if word_lower in category_lower:
-            position = fixed_words_lower.index(word_lower)
-            print(f'{word} is a match in {category}. Position: {position}')
-            return position
-    print(f'Failed {category} Tring Science')    
-    category = 'Science'
-    for word in fixed_words:
-        word_lower = word.lower()
-        category_lower = category.lower()
-        if word_lower in category_lower:
-            position = fixed_words_lower.index(word_lower)
-            print(f'{word} is a match in {category}. Position: {position}')
-            return position
-    print(f'Failed {category} Tring Technology')            
-    category = 'Technology'
-    for word in fixed_words:
-        word_lower = word.lower()
-        category_lower = category.lower()
-        if word_lower in category_lower:
-            position = fixed_words_lower.index(word_lower)
-            print(f'{word} is a match in {category}. Position: {position}')
-            return position
-         
-    print(f'Failed {category} Tring News')           
-        
-    category = 'News'
-    for word in fixed_words:
-        word_lower = word.lower()
-        category_lower = category.lower()
-        if word_lower in category_lower:
-            position = fixed_words_lower.index(word_lower)
-            print(f'{word} is a match in {category}. Position: {position}')
-            return position
-    print('no word found clicking 1')
-    return 1
+        if word:
+            word_lower = word.lower()
+            category_lower = category.lower()
+            if word_lower in category_lower:
+                position = fixed_words_lower.index(word_lower)
+                print(f'{word} is a match in {category}. Position: {position}')
+                return position
+            
+    return 4
 
+
+
+import os
+import shutil
+
+def copy_images_to_folder(images_list, destination_folder):
+    # Check if the destination folder exists, if not, create it
+    if not os.path.exists(destination_folder):
+        os.makedirs(destination_folder)
+
+    # Loop through each image path in the list and copy it to the destination folder
+    for image_path in images_list:
+        # Check if the image exists
+        if os.path.exists(image_path):
+            try:
+                # Copy the image to the destination folder
+                shutil.copy(image_path, destination_folder)
+                print(f'Copied: {image_path} to {destination_folder}')
+            except Exception as e:
+                print(f'Error copying {image_path}: {e}')
+        else:
+            print(f'Image not found: {image_path}')
 
 def solve_image_category(drive, category, window):
     activate_window_by_id(window)
@@ -1020,7 +1084,8 @@ def solve_image_category(drive, category, window):
                 print("The image is blank (all white).")
             else:
                 print("The image is not blank.")
-                
+                image_paths_back = ['crop1.png', 'crop2.png', 'crop3.png', 'crop4.png']
+                copy_images_to_folder(image_paths_back, 'Backup')
                 image_path = "crop1.png"
                 Filter_images(image_path)
                 image_path = "crop2.png"
@@ -1038,11 +1103,17 @@ def solve_image_category(drive, category, window):
                     words.append(word)
 
                 print('Ez list :', words)
+                similar_word = find_most_similar_word(category, words)
+                
                 fixword_list = fix_broken_words(words)
                 print('Fix list :', fixword_list)
                 try:
                     if fixword_list:
                         position = check_words(category, fixword_list)
+                        if position == 4:
+                            print('position is None')
+                            print(f'{similar_word} is similar with {category}')
+                            position = words.index(similar_word)
                         print(f"The most similar word to '{category}' at index {position} : {fixword_list}")
                         title = drive.get_title()
                         if title == 'Skylom':
@@ -1185,7 +1256,7 @@ if ip_address == ip_required:
         ip_address3 = 0
         ip_address4 = 0
         while True:
-            time.sleep(1)
+            #time.sleep(1)
             cloudflare(id1,sb1)
             sb1.switch_to.default_content()
             sb1.execute_script("window.scrollTo(0, 0);")
@@ -1298,7 +1369,7 @@ if ip_address == ip_required:
 
             if check_category_question(sb1) == True:
                 print('Getting IP at 10 sec..')
-                ip_address =get_ip(sb1)
+                #ip_address =get_ip(sb1)
                 if ip_address == ip_required:
                             if ip_address == ip_required:
                                 ip_address = 0
@@ -1439,7 +1510,7 @@ if ip_address == ip_required:
 
                 if check_category_question(sb2) == True:
                     print('Getting IP at 10 sec..')
-                    ip_address2 =get_ip(sb2)
+                    #ip_address2 =get_ip(sb2)
                     if ip_address2 == ip_required2:
                                 if ip_address2 == ip_required2:
                                     ip_address2 = 0

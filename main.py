@@ -888,9 +888,10 @@ def find_most_similar_word(word, word_list):
 
 def fix_broken_words(word_list):
     reference_list = [
-        "Comedy", "Education", "Gaming", "Music", "Science","Technology",
-        "Auto","Family" ,"Entertainment","Family Entertainment", 'None', "News","Politics", "People","Blogs",
-        "Travel", "Sports", "Beauty", "Nonprofit", "HoWto", "Film","Pets", "Food", "Sic-fi","People & Blogs","News & Politics",
+        "comedy", "education", "gaming", "music", "Music", "science","technology",
+        "family" ,"entertainment","family entertainment", 'none', "news","politics", "people","blogs",
+        "Travel", "sports", "beauty", "Nonprofit", "howto", "film","pets", "food", "sic-fi","people & blogs","news & politics","auto",
+    
     ]
     fixed_list = []
     
@@ -902,6 +903,7 @@ def fix_broken_words(word_list):
         word = word.replace('8', '&')
         word = word.replace('1', 'i')
         word = word.replace('[', 'c')
+        word = word.replace('{', 'c')
         word = word.replace('(', 'c')
         word = word.replace('4', 'a')
         word = word.replace('7', 'e')
@@ -1070,7 +1072,6 @@ def copy_images_to_folder(images_list, destination_folder):
 
 def solve_image_category(drive, category, window):
     activate_window_by_id(window)
-    get_category_images()
     titile =drive.get_title()
     print(titile)
     if titile == 'Skylom':

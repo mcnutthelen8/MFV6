@@ -8,12 +8,12 @@ from seleniumbase import Driver
 
 def mysterium_vpn_connect(server_name):
     try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
         pyautogui.click(x, y)
         print("mysterium_icon_empty Found")
         time.sleep(5)
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/search_mysterium.png", region=(1325, 494, 800, 400), confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/search_mysterium.png", region=(1325, 494, 800, 400), confidence=0.99)
             pyautogui.click(x, y)
             print("search_mysterium Found")
             time.sleep(2)
@@ -48,18 +48,18 @@ def mysterium_login():
     for i in range(1,100):
         time.sleep(1)
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cookie_icon.png", region=(1625, 43, 400, 300), confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cookie_icon.png", region=(1625, 43, 400, 300), confidence=0.99)
             pyautogui.click(x, y)
             print("cookie_icon Found")
             time.sleep(3)
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/all_site.png", region=(1300, 212, 600, 300), confidence=0.95)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/all_site.png", region=(1300, 212, 600, 300), confidence=0.99)
                 pyautogui.click(x, y)
                 print("all_site Found")
             except pyautogui.ImageNotFoundException:
                 print("No all_site .")
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.95)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
                 pyautogui.click(x, y)
                 print("import_icon Found")
                 time.sleep(3)
@@ -77,7 +77,7 @@ def mysterium_login():
                         pyautogui.typewrite(text_content)
                         time.sleep(1)
                         try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.95)
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
                             pyautogui.click(x, y)
                             print("import_icon Found")
                             pyautogui.click(313, 147)
@@ -85,30 +85,30 @@ def mysterium_login():
                             pyautogui.press('f5')
                             time.sleep(3)
                             try:
-                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
+                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
                                 pyautogui.click(x, y)
                                 print("mysterium_icon_empty Found")
                                 i = 1
                                 for i in range(1, 100):
                                     try:
-                                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.95)
+                                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.99)
                                         pyautogui.click(x, y)
                                         print("mysterium_login Found")
                                         for i in range(1, 100):
                                             try:
-                                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_allow.png", region=(842, 750, 400, 300), confidence=0.95)
+                                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_allow.png", region=(842, 750, 400, 300), confidence=0.99)
                                                 pyautogui.click(x, y)
                                                 print("mysterium_allow Found")
                                                 time.sleep(3)
                                                 try:
-                                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
+                                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
                                                     pyautogui.click(x, y)
                                                     print("mysterium_icon_empty 2 Found")
                                                     time.sleep(3)
                                                     for i in range(1,100):
                                                         time.sleep(1)
                                                         try:
-                                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/settings_mysterium.png", region=(1445, 630, 400, 300), confidence=0.95)
+                                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/settings_mysterium.png", region=(1445, 630, 400, 300), confidence=0.99)
                                                             pyautogui.click(x, y)
                                                             print("settings_mysterium 2 Found")
                                                             time.sleep(1)
@@ -116,7 +116,7 @@ def mysterium_login():
                                                             print("No settings_mysterium 2.")
 
                                                         try:
-                                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/connection_mysterium_option.png", region=(1325, 109, 800, 900), confidence=0.95)
+                                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/connection_mysterium_option.png", region=(1325, 109, 800, 900), confidence=0.99)
                                                             pyautogui.click(x, y)
                                                             print("connection_mysterium_option Found")
                                                             time.sleep(1)
@@ -124,7 +124,7 @@ def mysterium_login():
                                                             print("No connection_mysterium_option.")
 
                                                         try:
-                                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/refresh_ip_off.png", region=(1325, 109, 800, 900), confidence=0.95)
+                                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/refresh_ip_off.png", region=(1325, 109, 800, 900), confidence=0.99)
                                                             pyautogui.click(1640, 300)
                                                             pyautogui.click(1668, 300)
                                                             print("refresh_ip_off Found")
@@ -133,7 +133,7 @@ def mysterium_login():
                                                             print("No refresh_ip_off.")
 
                                                         try:
-                                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/refresh_ip_on.png", region=(1325, 109, 800, 900), confidence=0.95)
+                                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/refresh_ip_on.png", region=(1325, 109, 800, 900), confidence=0.99)
                                                             pyautogui.click(300, 300)
                                                             print("refresh_ip_on Found")
                                                             return True
@@ -167,7 +167,7 @@ def mysterium_login():
             print("No cookie_icon .")
 
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/allow_button.png", region=(1080, 247, 400, 300), confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/allow_button.png", region=(1080, 247, 400, 300), confidence=0.99)
             pyautogui.click(x, y)
             print("allow_button Found")
                     
@@ -176,7 +176,7 @@ def mysterium_login():
 
 def nopecha_elements():
     try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/nopecha_error.png", region=(1625, 43, 400, 300), confidence=0.95)
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/nopecha_error.png", region=(1625, 43, 400, 300), confidence=0.99)
         pyautogui.click(x, y)
         print("nopecha_error Button Found")
         for i in range(1,1000):
@@ -201,7 +201,7 @@ def nopecha_elements():
                     x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/auto_solve_on.png", region=(1412, 152, 800, 800), confidence=0.9)
                     print("auto_solve_on Button Found")
                     try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/elements_filled.png", region=(1412, 152, 800, 800), confidence=0.95)
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/elements_filled.png", region=(1412, 152, 800, 800), confidence=0.99)
                         print("elements_filled Button Found")
                         return True
                     except pyautogui.ImageNotFoundException:
@@ -400,12 +400,12 @@ def get_ipscore(ip):
 
 def mysterium_vpn_connect(server_name):
     try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
         pyautogui.click(x, y)
         print("mysterium_icon_empty Found")
         time.sleep(5)
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/search_mysterium.png", region=(1325, 494, 800, 400), confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/search_mysterium.png", region=(1325, 494, 800, 400), confidence=0.99)
             pyautogui.click(x, y)
             print("search_mysterium Found")
             time.sleep(2)
@@ -485,11 +485,11 @@ if run_sb1:
                 print('All Extensions are pinned')
                 if nopecha_elements():
                     print('Nopecha Elements Added')
-                    #if mysterium_login():
-                        #print('Mysterium Login Done...')
-                        #dc.maximize_window()
-                        #ip_required = fix_ip(dc, server_name1)
-                        #ip_address = get_ip(dc)
+                    if mysterium_login():
+                        print('Mysterium Login Done...')
+                        dc.maximize_window()
+                        ip_required = fix_ip(dc, server_name1)
+                        ip_address = get_ip(dc)
 ##############################################################################################################
 if run_sb2:
     dc2 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir2, binary_location=chrome_binary_path)
@@ -508,58 +508,11 @@ if run_sb2:
                 print('All Extensions are pinned')
                 if nopecha_elements():
                     print('Nopecha Elements Added')
-                    #if mysterium_login():
-                        #print('Mysterium Login Done...')
-                        #dc2.maximize_window()
-                        #ip_required = fix_ip(dc2, server_name2)
-                        #ip_address = get_ip(dc2)
-
-##############################################################################################################
-if run_sb3:
-    dc3 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir3, binary_location=chrome_binary_path)
-    dc3.maximize_window()
-    url = "chrome://extensions/"
-    dc3.open(url)
-    print(dc3.get_title())
-    if fresh:
-        mysterium = install_extensions('mysterium')
-        nopecha = install_extensions('nopecha')
-        cookie = install_extensions('cookie')
-        fingerprint = install_extensions('fingerprint')
-        if fingerprint and mysterium and nopecha and cookie:
-            print('All Extensions are installed..')
-            if pin_extensions():
-                print('All Extensions are pinned')
-                if nopecha_elements():
-                    print('Nopecha Elements Added')
                     if mysterium_login():
                         print('Mysterium Login Done...')
-                        dc3.maximize_window()
-                        ip_required = fix_ip(dc3, server_name3)
-                        ip_address = get_ip(dc3)
+                        dc2.maximize_window()
+                        ip_required = fix_ip(dc2, server_name2)
+                        ip_address = get_ip(dc2)
 
-##############################################################################################################
-if run_sb4:
-    dc4 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir4, binary_location=chrome_binary_path)
-    dc4.maximize_window()
-    url = "chrome://extensions/"
-    dc4.open(url)
-    print(dc4.get_title())
-    if fresh:
-        mysterium = install_extensions('mysterium')
-        nopecha = install_extensions('nopecha')
-        cookie = install_extensions('cookie')
-        fingerprint = install_extensions('fingerprint')
-        if fingerprint and mysterium and nopecha and cookie:
-            print('All Extensions are installed..')
-            if pin_extensions():
-                print('All Extensions are pinned')
-                if nopecha_elements():
-                    print('Nopecha Elements Added')
-                    if mysterium_login():
-                        print('Mysterium Login Done...')
-                        dc4.maximize_window()
-                        ip_required = fix_ip(dc4, server_name4)
-                        ip_address = get_ip(dc4)
 
 time.sleep(100000)

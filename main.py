@@ -868,19 +868,40 @@ def Filter_images(output_path):
     decaptcha(output_path, output_path)
     sharp_image(output_path, output_path)
 
+import Levenshtein
+
+def simple_similarity(word1, word2):
+    
+    # Calculate character matches
+    matches = sum(1 for a, b in zip(word1, word2) if a == b)
+    return matches / max(len(word1), len(word2))
+
+# Function to find the most similar word from the reference list
+def find_most_similar_word2(word, word_list):
+    normalized_word = word
+    highest_similarity = 0
+    most_similar_word = None
+    
+    for candidate in word_list:
+        similarity = simple_similarity(normalized_word, candidate)
+        if similarity > highest_similarity:
+            highest_similarity = similarity
+            most_similar_word = candidate
+    
+    return most_similar_word
 
 def find_most_similar_word(word, word_list):
     most_similar_word = None
-    highest_similarity = 0
+    lowest_distance = float('inf')  # Start with an infinitely large distance
     most_similar_index = -1
-    
-    # Loop through each word in the list and calculate the similarity
+
+    # Loop through each word in the list and calculate the Levenshtein distance
     for idx, candidate in enumerate(word_list):
-        similarity = difflib.SequenceMatcher(None, word, candidate).ratio()
+        distance = Levenshtein.distance(word, candidate)
         
-        # If similarity is higher than the current highest, update the result
-        if similarity > highest_similarity:
-            highest_similarity = similarity
+        # If distance is lower than the current lowest, update the result
+        if distance < lowest_distance:
+            lowest_distance = distance
             most_similar_word = candidate
             most_similar_index = idx  # Store the index
     
@@ -910,10 +931,14 @@ def fix_broken_words(word_list):
         word = word.replace('<', 'c')
         word = word.replace('*', 'e')
         letter_count = sum(1 for char in word if char.isalpha())
+        fixed_word = find_most_similar_word(word.lower(), reference_list)
         if letter_count < 10:
             word = word.replace(' ', '')
             print(letter_count, word)
-        fixed_word = find_most_similar_word(word, reference_list)
+            if letter_count < 4:
+                fixed_word = find_most_similar_word2(word.lower(), reference_list)
+        else:
+            fixed_word = find_most_similar_word(word.lower(), reference_list)
         if fixed_word == "politics":
             fixed_word ="news"
         if fixed_word == "blogs":
@@ -958,6 +983,8 @@ def ez_ocr(path):
         print(letter_count, cleaned_text)
     if cleaned_text == '':
         cleaned_text = 'food'
+    if cleaned_text[0] == 'm' or cleaned_text[0] == 'M':
+        cleaned_text = 'music'
     return cleaned_text
 
 
@@ -1079,69 +1106,139 @@ def copy_images_to_folder(images_list, destination_folder):
         else:
             print(f'Image not found: {image_path}')
 
+
+import base64
+from io import BytesIO
+
+
+def print_base64_images(drive):
+    strings = []
+    seen = set()  # To track seen base64 strings
+    
+    try:
+        page_source = drive.get_page_source()
+        base64_images = re.findall(r'data:image/[^;]+;base64,([^"]+)', page_source)
+
+        for idx, image_data in enumerate(base64_images):
+            if image_data not in seen:  # Check for duplicates
+                print(f"Base64 Image {idx+1}: {image_data[:10]}...")
+                strings.append(image_data)
+                seen.add(image_data)  # Mark as seen to avoid duplicates
+
+        print(f"\nTotal unique base64 strings: {len(strings)}")
+
+        # Save each unique image
+        for idx, image_data in enumerate(strings):
+            image_bytes = base64.b64decode(image_data)  # Decode base64
+            image = Image.open(BytesIO(image_bytes))  # Convert to PIL image
+            image.save(f"crop{idx+1}.png")  # Save image as PNG
+            print(f"crop{idx+1} saved as image_{idx+1}.png")
+
+        return True
+    except Exception as e:
+        print(e)
+    return False
+
+
+def list_fixer(list1, list2):
+    for i in range(len(list1)):
+        if list1[i] == 'food':
+            list1[i] = list2[i]
+        elif list2[i] == 'food':
+            list2[i] = list1[i]
+    for i in range(min(len(list1), len(list2))): 
+        count1 = len([char for char in list1[i] if char.isalpha()])
+        count2 = len([char for char in list2[i] if char.isalpha()])
+        if count1 < count2:
+            list1[i] = list2[i]
+        elif count1 > count2:
+            list2[i] = list1[i]
+    return list1
+
+
 def solve_image_category(drive, category, window):
+    start_time = time.time()
+
     activate_window_by_id(window)
     titile =drive.get_title()
     print(titile)
     if titile == 'Skylom':
-        get_category_images()
-        try:
-            img = Image.open('crop3.png')
-            img = img.convert("RGB") 
-            img_data = np.array(img)
-            is_white = np.all(img_data == [255, 255, 255])
-            if is_white:
-                print("The image is blank (all white).")
-            else:
-                print("The image is not blank.")
-                image_paths_back = ['crop1.png', 'crop2.png', 'crop3.png', 'crop4.png']
-                copy_images_to_folder(image_paths_back, 'Backup')
-                image_path = "crop1.png"
-                Filter_images(image_path)
-                image_path = "crop2.png"
-                Filter_images(image_path)
-                image_path = "crop3.png"
-                Filter_images(image_path)
-                image_path = "crop4.png"
-                Filter_images(image_path)
-                print('Images Filtered...')
-                image_paths = ['crop1.png', 'crop2.png', 'crop3.png', 'crop4.png']
-                words = []
-                for image in image_paths:
-                    word = ez_ocr(image)
-                    print("Ezocr Text:", word)
-                    words.append(word)
+        base = print_base64_images(drive)
+        if base == True:
+            try:
+                image = cv2.imread('crop3.png')
+                gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+                is_white = np.all(gray_image == gray_image[0, 0])
+                if is_white:
+                    print("The image is blank (all white).")
+                else:
+                    print("The image is not blank.")
+                    image_paths_back = ['crop1.png', 'crop2.png', 'crop3.png', 'crop4.png']
+                    copy_images_to_folder(image_paths_back, 'Backup')
+                    image_path = "crop1.png"
+                    Filter_images(image_path)
+                    image_path = "crop2.png"
+                    Filter_images(image_path)
+                    image_path = "crop3.png"
+                    Filter_images(image_path)
+                    image_path = "crop4.png"
+                    Filter_images(image_path)
+                    print('Images Filtered...')
+                    image_paths = ['crop1.png', 'crop2.png', 'crop3.png', 'crop4.png']
+                    Filtered_words = []
+                    for image in image_paths:
+                        word = ez_ocr(image)
+                        #print("Ezocr Text:", word)
+                        Filtered_words.append(word)
 
-                print('Ez list :', words)
-                similar_word = find_most_similar_word(category, words)
-                
-                fixword_list = fix_broken_words(words)
-                print('Fix list :', fixword_list)
-                try:
-                    if fixword_list:
-                        position = check_words(category, fixword_list)
-                        if position == 4:
-                            print('position is None')
-                            print(f'{similar_word} is similar with {category}')
-                            position = words.index(similar_word)
-                        print(f"The most similar word to '{category}' at index {position} : {fixword_list}")
-                        title = drive.get_title()
-                        if title == 'Skylom':
-                            print(title,position)
-                            if position == 0:
-                                pyautogui.click(749, 803)
-                            if position == 1:
-                                pyautogui.click(1100, 803)
-                            if position == 2:
-                                pyautogui.click(777, 896)
-                            if position == 3:
-                                pyautogui.click(1094, 903)
-                                
-                except Exception as e:
-                    print(e)
-                    pyautogui.click(1100, 803)
-        except Exception as e:
-            print(f"Error: {e}")
+                    print('Filtered Ez list :', Filtered_words)
+
+                    image_paths = ['Backup/crop1.png', 'Backup/crop2.png', 'Backup/crop3.png', 'Backup/crop4.png']
+                    NoFiltered_words = []
+                    for image in image_paths:
+                        word = ez_ocr(image)
+                        #print("Ezocr Text:", word)
+                        NoFiltered_words.append(word)
+                    print('None Filtered Ez list :', NoFiltered_words)
+
+
+                    fixed_list = list_fixer(Filtered_words, NoFiltered_words)
+                    print('fixedlist list :', fixed_list)
+                    similar_word = find_most_similar_word(category, fixed_list)
+    
+                    fixword_list = fix_broken_words(fixed_list)
+                    print('Fix Broken Word list :', fixword_list)
+                    try:
+                        if fixword_list:
+                            position = check_words(category, fixword_list)
+                            if position == 4:
+                                print('position is None')
+                                print(f'{similar_word} is similar with {category}')
+                                position = fixed_list.index(similar_word)
+                            print(f"The most similar word to '{category}' at index {position} : {fixword_list}")
+                            title = drive.get_title()
+                            if title == 'Skylom':
+                                print(title,position)
+                                if position == 0:
+                                    pyautogui.click(749, 803)
+                                if position == 1:
+                                    pyautogui.click(1100, 803)
+                                if position == 2:
+                                    pyautogui.click(777, 896)
+                                if position == 3:
+                                    pyautogui.click(1094, 903)
+
+                                end_time = time.time()
+                                print(f"Completed in {end_time - start_time} seconds")
+
+                    except Exception as e:
+                        print(e)
+                        pyautogui.click(1100, 803)
+            except Exception as e:
+                print(f"Error: {e}")
+        else:
+            print(base,'Base False')
+
 
 
 

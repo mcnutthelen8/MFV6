@@ -443,7 +443,7 @@ def fix_ip(drive, name):
 
 
 run_sb1 = True
-run_sb2 = True
+run_sb2 = False
 run_sb3 = False
 run_sb4 = False
 

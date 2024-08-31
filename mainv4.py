@@ -284,6 +284,19 @@ def remove_pink(sb):
     except Exception as e:
         if debug_mode:
             print(f"An error occurred: {e}")
+    try:
+        # Check if the subscribe block container is visible based on its unique id
+        if sb.is_element_visible("div#subscribe_block_container"):
+            element = sb.find_element("div#subscribe_block_container")
+            # Remove the subscribe block element
+            sb.execute_script("arguments[0].remove();", element)
+            print("Subscribe block removed successfully.")
+        else:
+            if debug_mode:
+                print("Subscribe block not found.")
+    except Exception as e:
+        if debug_mode:
+            print(f"An error occurred: {e}")
         return
 
 headers = {
@@ -323,14 +336,15 @@ def get_youtube_link(sb):
                 #print(youtube_url_match.group(0))
                 return youtube_url_match.group(0)
             else:
-                return "YouTube link not found."
+                return 0
         else:
-            return "Anchor tag not found."
+            return 0
+
  
     except Exception as e:
         if debug_mode:
             print(f"An error occurred: {e}")
-        return None
+        return 0
 
 def cloudflare(id,sb):
     page_title = sb.get_title().strip()
@@ -660,350 +674,10 @@ def fix_ip(drive, name):
             print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
             time.sleep(5)
 
-
-    
-API_KEY = 'd5ace46d229a8844061fed0df01de9d1'
-def upload_image(image_path):
-    url = 'https://api.imgbb.com/1/upload'
-    try:
-        with open(image_path, 'rb') as file:
-            response = requests.post(url, data={'key': API_KEY}, files={'image': file})
-            response.raise_for_status()  # Raise an error for HTTP error responses
-            return response.json()
-        
-    except requests.exceptions.RequestException as e:
-        print(f"Error during upload: {e}")
-        return None
+#######Solve###########
 
 
-def get_google_ocr(driver, url):
-    image_url = url
-    formatted_link = image_url.replace("https://", "").replace("/", "%2F")
-    print(f"Formatted link: {formatted_link}")
-    lens_url = f"https://lens.google.com/uploadbyurl?url=https%3A%2F%2F{formatted_link}"
-    print(f"Formatted link: {lens_url}")
-    original_window = driver.current_window_handle
-    driver.open_new_window()
-    #driver.switch_to.newest_window()
-    driver.open(lens_url)
-    while True:
-        try:
-            if driver.is_element_visible("button#ucj-2"):
-                driver.click("button#ucj-2")
-                print("Clicked the 'False' button.")
-            else:
-                print("'False' button is not visible.")
-        except Exception as e:
-            print(f"False' button is not visible.NoSuchElementException")
-        try:
-            if driver.is_element_visible("button.VfPpkd-LgbsSe.VfPpkd-LgbsSe-OWXEXe-k8QpJ.VfPpkd-LgbsSe-OWXEXe-dgl2Hf.nCP5yc.AjY5Oe.DuMIQc.LQeN7.kCfKMb"):
-                driver.click("button.VfPpkd-LgbsSe.VfPpkd-LgbsSe-OWXEXe-k8QpJ.VfPpkd-LgbsSe-OWXEXe-dgl2Hf.nCP5yc.AjY5Oe.DuMIQc.LQeN7.kCfKMb")
-                print("Clicked the button.VfPpkd-vQzf8d button.")
-            else:
-                print("button.VfPpkd-vQzf8d button is not visible.")
-        except Exception as e:
-            print(f"button.VfPpkd-vQzf8d' button is not visible.NoSuchElementException")
-        try:
-            if driver.is_element_visible("h1.wCgoWb"):
-                answer = driver.get_text("h1.wCgoWb")
-                
-                print(f"{answer}")
-                driver.close()
-                driver.switch_to.window(original_window)
-                return answer
-            else:
-                print(f"not found")
-        except Exception:
-            print(f"Error finding input box or submit button: {e}")
-
-def find_most_similar_word(word, word_list):
-    most_similar_word = None
-    highest_similarity = 0
-    most_similar_index = -1
-    
-    # Loop through each word in the list and calculate the similarity
-    for idx, candidate in enumerate(word_list):
-        similarity = difflib.SequenceMatcher(None, word, candidate).ratio()
-        
-        # If similarity is higher than the current highest, update the result
-        if similarity > highest_similarity:
-            highest_similarity = similarity
-            most_similar_word = candidate
-            most_similar_index = idx  # Store the index
-    
-    return most_similar_word
-
-def split_at_symbols(input_string):
-    # Split the string by '@' and process parts
-    parts = input_string.split('@')
-
-    # Strip leading/trailing spaces and ensure commas separate words properly
-    result = [part.strip() for part in parts if part.strip()]
-
-    return result
-
-
-
-def get_ocr_category(driver, links):
-    title = driver.get_title()
-
-    # Check if we are on the correct page, if not, open a new window
-    if title != 'NopeCHA CAPTCHA Solver':
-        driver.open_new_window()
-        driver.open('https://mfv6-ocr4.tiiny.site/')
-        title = driver.get_title()
-        print(title)
-    time.sleep(1)
-    # Re-check title after navigation
-    if title == 'NopeCHA CAPTCHA Solver':
-        print(title)
-
-        # Check if CAPTCHA is still loading
-        if driver.is_text_visible('Submitting CAPTCHAs...'):
-            print('Captcha still loading')
-            return None
-        
-        # Check if the OCR element is present
-        if driver.is_element_present("#ocr1"):
-            print('OCR Loaded')
-            return True
-            # Get the text from the OCR fields
-            answer1 = driver.get_text("#ocr1")
-            answer2 = driver.get_text("#ocr2")
-            answer3 = driver.get_text("#ocr3")
-            answer4 = driver.get_text("#ocr4")
-            
-            # Store answers in a list
-            answers = [answer1, answer2, answer3, answer4]
-            
-            # Close the new window and switch back to the original window
-            driver.close()
-            print(answers)
-            return answers  # Return the list of answers
-        else:
-            # If the OCR elements aren't present, submit the links
-            driver.type("input#image_urls[type='text']", links)
-            driver.click("button")
-            return None
-    else:
-        return None
-
-
-
-def find_most_similar_word(word, word_list):
-    most_similar_word = None
-    highest_similarity = 0
-    most_similar_index = -1
-    
-    # Loop through each word in the list and calculate the similarity
-    for idx, candidate in enumerate(word_list):
-        similarity = difflib.SequenceMatcher(None, word, candidate).ratio()
-        
-        # If similarity is higher than the current highest, update the result
-        if similarity > highest_similarity:
-            highest_similarity = similarity
-            most_similar_word = candidate
-            most_similar_index = idx  # Store the index
-    
-    return most_similar_word
-
-
-def fix_broken_words(word_list):
-    reference_list = [
-        "Comedy", "Education", "Gaming", "Music", "Science","Technology",
-        "Auto","Family" ,"Entertainment", "News","Politics", "People","Blogs",
-        "Travel", "Sports", "Beauty", "None","Nonprofit", "Howto", "Film","pets", "Food", "Sic-fi",
-    ]
-    fixed_list = []
-    
-    for word in word_list:
-        fixed_word = find_most_similar_word(word, reference_list)
-        fixed_list.append(fixed_word)
-    
-    return fixed_list
-
-IMG_PATHS = ['crop1.png', 'crop2.png', 'crop3.png', 'crop4.png']  # Output file paths
-
-def capture_and_crop_regions(regions, output_paths):
-    try:
-        # Capture the entire screen
-        screenshot = pyautogui.screenshot()
-        
-        if len(regions) != len(output_paths):
-            raise ValueError("The number of regions must match the number of output paths.")
-
-        # Process each region and save the cropped image
-        for (x, y, width, height), output_path in zip(regions, output_paths):
-            left = x
-            top = y
-            right = x + width
-            bottom = y + height
-            cropped_img = screenshot.crop((left, top, right, bottom))
-            cropped_img.save(output_path)
-            print(f"Saved cropped image to: {output_path}")
-
-    except Exception as e:
-        print(f"An error occurred: {e}")
-
-API_KEY = '6d207e02198a847aa98d0a2a901485a5'  # Replace with your actual API key
-
-def upload_image(image_path):
-    url = 'https://freeimage.host/api/1/upload'
-    try:
-        with open(image_path, 'rb') as file:
-            response = requests.post(url, data={'key': API_KEY, 'action': 'upload', 'format': 'json'}, files={'source': file})
-            response.raise_for_status()  # Raise an error for HTTP error responses
-            response_json = response.json()
-            
-            # Extract the image URL from the response
-            if response_json.get('status_code') == 200 and 'image' in response_json:
-                return response_json['image']['url']
-            else:
-                print("Upload failed:", response_json.get('status_txt', 'Unknown error'))
-                return None
-    except requests.exceptions.RequestException as e:
-        print(f"Error during upload: {e}")
-        return None
-    
-
-def get_category_images():
-    # Define regions and paths
-    regions = [
-        (622, 766, 320, 85),  # Example region 1 (x, y, width, height)
-        (960, 766, 320, 85),  # Example region 2
-        (622, 862, 320, 85),  # Example region 3
-        (960, 862, 320, 85)   # Example region 4
-    ]
-    
-    output_paths = [
-        "crop1.png",  # Output file path for region 1
-        "crop2.png",  # Output file path for region 2
-        "crop3.png",  # Output file path for region 3
-        "crop4.png"   # Output file path for region 4
-    ]
-
-    # Capture and crop regions
-    capture_and_crop_regions(regions, output_paths)
-    
-
-def check_words(category, fixed_words):
-    category = category.replace('-', '')
-    category = category.replace('blog', 'people')
-    category = category.replace('politics', 'news')
-    print(f'Trying {category}')
-
-    fixed_words_lower = [word.lower() for word in fixed_words]
-
-    for word in fixed_words:
-        word_lower = word.lower()
-        category_lower = category.lower()
-        if word_lower in category_lower:
-            position = fixed_words_lower.index(word_lower)
-            print(f'{word} is a match in {category}. Position: {position}')
-            return position
-        
-    category = 'Music'
-    for word in fixed_words:
-        word_lower = word.lower()
-        category_lower = category.lower()
-        if word_lower in category_lower:
-            position = fixed_words_lower.index(word_lower)
-            print(f'{word} is a match in {category}. Position: {position}')
-            return position
-        
-    category = 'People'
-    for word in fixed_words:
-        word_lower = word.lower()
-        category_lower = category.lower()
-        if word_lower in category_lower:
-            position = fixed_words_lower.index(word_lower)
-            print(f'{word} is a match in {category}. Position: {position}')
-            return position
-        
-    category = 'Entertainment'
-    for word in fixed_words:
-        word_lower = word.lower()
-        category_lower = category.lower()
-        if word_lower in category_lower:
-            position = fixed_words_lower.index(word_lower)
-            print(f'{word} is a match in {category}. Position: {position}')
-            return position
-        
-    category = 'Science'
-    for word in fixed_words:
-        word_lower = word.lower()
-        category_lower = category.lower()
-        if word_lower in category_lower:
-            position = fixed_words_lower.index(word_lower)
-            print(f'{word} is a match in {category}. Position: {position}')
-            return position
-        
-    category = 'Technology'
-    for word in fixed_words:
-        word_lower = word.lower()
-        category_lower = category.lower()
-        if word_lower in category_lower:
-            position = fixed_words_lower.index(word_lower)
-            print(f'{word} is a match in {category}. Position: {position}')
-            return position
-        
-    category = 'News'
-    for word in fixed_words:
-        word_lower = word.lower()
-        category_lower = category.lower()
-        if word_lower in category_lower:
-            position = fixed_words_lower.index(word_lower)
-            print(f'{word} is a match in {category}. Position: {position}')
-            return position
-    return 1
-
-
-def merge_images(image_paths, output_path, orientation="horizontal", spacing=0):
-    # Load images
-    images = [cv2.imread(path) for path in image_paths]
-
-    # Check if all images were loaded successfully
-    if any(image is None for image in images):
-        raise ValueError("Failed to load one or more images.")
-
-    # Determine the output image size based on orientation
-    if orientation == "horizontal":
-        height = max(image.shape[0] for image in images)
-        width = sum(image.shape[1] for image in images) + spacing * (len(images) - 1)
-    elif orientation == "vertical":
-        height = sum(image.shape[0] for image in images) + spacing * (len(images) - 1)
-        width = max(image.shape[1] for image in images)
-    else:
-        raise ValueError("Invalid orientation. Must be 'horizontal' or 'vertical'.")
-
-    # Create an empty output image (using NumPy arrays)
-    output_image = np.zeros((height, width, 3), dtype=np.uint8)
-
-    # Merge images
-    x_offset = 0
-    y_offset = 0
-    for image in images:
-        if orientation == "horizontal":
-            output_image[y_offset:y_offset + image.shape[0], x_offset:x_offset + image.shape[1]] = image
-            x_offset += image.shape[1] + spacing
-        elif orientation == "vertical":
-            output_image[y_offset:y_offset + image.shape[0], x_offset:x_offset + image.shape[1]] = image
-            y_offset += image.shape[0] + spacing
-
-    # Save the output image
-    cv2.imwrite(output_path, output_image)
-# Example usage
-#image_paths = ["crop1.png", "at.png" , "crop2.png" , "at.png", "crop3.png", "at.png", "crop4.png"]
-#image_paths = ["crop1.png", "crop2.png" , "crop3.png", "crop4.png"]
-image_paths = ["crop1.png", "at.png" , "crop2.png" ]
-image_paths2 = ["crop3.png", "at.png" , "crop4.png" ]
-#image_paths3 = ["crop1.png", "at.png" , "crop2.png" , "at.png", "crop3.png", "at.png", "crop4.png"]
-output_path = "merged_image.png"
-output_path2 = "merged_image2.png"
-orientation = "horizontal"  # or "vertical"
-spacing = 10
-
-def replace_white_with_limegreen(image_path, output_path, tolerance=50):
+def replace_white_with_limegreen(image_path, output_path, tolerance=30):
     try:
         # Open the image
         img = Image.open(image_path)
@@ -1030,10 +704,10 @@ def replace_white_with_limegreen(image_path, output_path, tolerance=50):
         # Save the image
         img.save(output_path, "PNG")
         print(f"Processed image saved as {output_path}")
+        return output_path
 
     except Exception as e:
         print(f"Error: {e}")
-
 
 def remove_noise(image_path, output_path):
     try:
@@ -1066,64 +740,531 @@ def remove_noise(image_path, output_path):
         cv2.imwrite(output_path, cleaned_img)
         print(f"Cleaned image saved at {output_path}")
 
-
     except Exception as e:
         print(f"Error: {e}")
 
+def remove_random_lines(image_path, output_path):
+
+
+    # Read the image
+    image = cv2.imread(image_path)
+    img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+    cv2.imshow("original", img)
+
+    img = cv2.bitwise_not(img)
+
+    kernel = np.ones((14, 14), np.uint8)
+    close = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
+    newkernel = np.ones((5, 5), np.uint8)
+    inv = cv2.erode(close, newkernel, iterations=1)
+
+    inv = cv2.bitwise_not(inv)
+
+    cv2.imshow("inverted", inv)
+    cv2.imwrite(output_path, inv)
+
+    # Save the cleaned image
+    #cv2.imwrite(output_path, cleaned_image)
+
+def decaptcha(image_path, output_path):
+    # Load the image
+    src = cv2.imread(image_path)
+
+    # Convert image to HSV (Hue, Saturation, Value)
+    hsv = cv2.cvtColor(src, cv2.COLOR_BGR2HSV)
+
+    # Define the line color range in HSV (fine-tune these values as needed)
+    lower_color = np.array([0, 0, 110], dtype="uint8")   # Slightly darker shade for gray
+    upper_color = np.array([180, 30, 135], dtype="uint8") # Capturing grey variations
+
+    # Create mask for grey lines
+    mask = cv2.inRange(hsv, lower_color, upper_color)
+
+    # Slightly increase dilation to remove remaining lines
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 2))
+    mask_dilated = cv2.dilate(mask, kernel, iterations=2)  # Increase iterations if necessary
+
+    # Apply inpainting to remove the lines
+    dst = cv2.inpaint(src, mask_dilated, 2 , cv2.INPAINT_TELEA)
+
+    # Convert the result to grayscale for further processing
+    gray_dst = cv2.cvtColor(dst, cv2.COLOR_BGR2GRAY)
+
+    # Apply Gaussian blur to smooth out noise
+    blurred_dst = cv2.GaussianBlur(gray_dst, (5,5), 0)
+
+    # Apply Otsu's threshold to binarize the image (make it black and white)
+    _, final_dst = cv2.threshold(blurred_dst, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+
+    cv2.imwrite(output_path, final_dst)
+
+def sharp_image(image_path, output_path):
+        # Load the image
+            image = cv2.imread(image_path)
+
+            # Convert to grayscale
+            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+            # Define a stronger sharpening kernel
+            kernel = np.array([[0, -1, 0],
+                            [-1, 171,-1],
+                            [0, -1, 0]])
+
+            # Apply the kernel to the image
+            sharpened = cv2.filter2D(gray, -1, kernel)
+
+
+            # Save the sharpened image
+            cv2.imwrite(output_path, sharpened)
+
+def Filter_images(output_path):
+    replace_white_with_limegreen(output_path, output_path, tolerance=50)
+    sharp_image(output_path, output_path)
+
+    remove_noise(output_path, output_path)
+    sharp_image(output_path, output_path)
+
+    decaptcha(output_path, output_path)
+    sharp_image(output_path, output_path)
+
+import Levenshtein
+
+def simple_similarity(word1, word2):
+    
+    # Calculate character matches
+    matches = sum(1 for a, b in zip(word1, word2) if a == b)
+    return matches / max(len(word1), len(word2))
+
+# Function to find the most similar word from the reference list
+def find_most_similar_word2(word, word_list):
+    normalized_word = word
+    highest_similarity = 0
+    most_similar_word = None
+    
+    for candidate in word_list:
+        similarity = simple_similarity(normalized_word, candidate)
+        if similarity > highest_similarity:
+            highest_similarity = similarity
+            most_similar_word = candidate
+    
+    return most_similar_word
+
+def find_most_similar_word(word, word_list):
+    most_similar_word = None
+    lowest_distance = float('inf')  # Start with an infinitely large distance
+    most_similar_index = -1
+
+    # Loop through each word in the list and calculate the Levenshtein distance
+    for idx, candidate in enumerate(word_list):
+        distance = Levenshtein.distance(word, candidate)
+        
+        # If distance is lower than the current lowest, update the result
+        if distance < lowest_distance:
+            lowest_distance = distance
+            most_similar_word = candidate
+            most_similar_index = idx  # Store the index
+    
+    return most_similar_word
+
+def fix_broken_words(word_list):
+    reference_list = [
+        "comedy", "education", "gaming", "music", "Music", "science","technology",
+        "family" ,"entertainment","family entertainment", 'none', "news","politics", "people","blogs",
+        "travel","travel & events", "sports", "beauty", "Nonprofit", "howto", "film","pets", "food", "sic-fi","people & blogs","news & politics","auto",
+    
+    ]
+    fixed_list = []
+    
+    for word in word_list:
+        word = word.replace('0', 'o')
+        word = word.replace('5', 's')
+        word = word.replace('6', 's')
+        word = word.replace('$', 's')
+        word = word.replace('8', '&')
+        word = word.replace('1', 'i')
+        word = word.replace('[', 'c')
+        word = word.replace('{', 'c')
+        word = word.replace('(', 'c')
+        word = word.replace('4', 'a')
+        word = word.replace('7', 'e')
+        word = word.replace('<', 'c')
+        word = word.replace('*', 'e')
+        letter_count = sum(1 for char in word if char.isalpha())
+        if letter_count < 4:
+            if word[0] == 'm' or word[0] == 'M':
+                word = 'music'
+        fixed_word = find_most_similar_word(word.lower(), reference_list)
+
+        if letter_count < 10:
+            word = word.replace(' ', '')
+            print(letter_count, word)
+            if letter_count < 4:
+                fixed_word = find_most_similar_word2(word.lower(), reference_list)
+        else:
+            fixed_word = find_most_similar_word(word.lower(), reference_list)
+        if fixed_word == "politics":
+            fixed_word ="news"
+        if fixed_word == "blogs":
+            fixed_word ="people"
+        if fixed_word == "people & blogs":
+            fixed_word ="people"
+        if fixed_word == "news & politics":
+            fixed_word ="news"
+        if fixed_word == "family entertainment":
+            fixed_word ="family"
+        if fixed_word is None:
+            fixed_word ="none"
+        if letter_count < 4:
+            if cleaned_text[0] == 'm' or cleaned_text[0] == 'M':
+                cleaned_text = 'music'
+        fixed_list.append(fixed_word)
+
+    return fixed_list
+
+
+import easyocr
+reader = easyocr.Reader(['en'], gpu= False)
+def ez_ocr(path):
+    results = reader.readtext(path, detail = 0)
+    cleaned_text = ''
+    for text in results:
+        text = text.lower()
+        cleaned_text += text
+
+    cleaned_text = cleaned_text.replace('0', 'o')
+    cleaned_text = cleaned_text.replace('5', 's')
+    cleaned_text = cleaned_text.replace('6', 's')
+    cleaned_text = cleaned_text.replace('$', 's')
+    cleaned_text = cleaned_text.replace('8', '&')
+    cleaned_text = cleaned_text.replace('1', 'i')
+    cleaned_text = cleaned_text.replace('[', 'c')
+    cleaned_text = cleaned_text.replace('(', 'c')
+    cleaned_text = cleaned_text.replace('4', 'a')
+    cleaned_text = cleaned_text.replace('7', 'e')
+    cleaned_text = cleaned_text.replace('<', 'c')
+    cleaned_text = cleaned_text.replace('*', 'e')
+    letter_count = sum(1 for char in cleaned_text if char.isalpha())
+    if letter_count < 10:
+        cleaned_text = cleaned_text.replace(' ', '')
+        print(letter_count, cleaned_text)
+    if cleaned_text == '':
+        cleaned_text = 'food'
+
+    return cleaned_text
+
+
+def check_words(category, fixed_words):
+    if category is None:
+        print("Category is None aiyo.")
+        return
+    category = category.replace('-', '')
+    category = category.replace('blog', 'people')
+    category = category.replace('politics', 'news')
+    #similar_word = find_most_similar_word(category, unfixed_words)
+    print(f'Trying {category}')
+    fixed_words_lower = [word.lower() for word in fixed_words if word is not None]
+    for word in fixed_words:
+        if word:
+            word_lower = word.lower()
+            category_lower = category.lower()
+            if word_lower in category_lower:
+                position = fixed_words_lower.index(word_lower)
+                print(f'{word} is a match in {category}. Position: {position}')
+                return position
+        
+
+    if category =='Sic-fi' or category =='Sicfi' or category =='Science' or category =='Technology':
+            category = 'Science'
+            for word in fixed_words:
+                if word:
+                    word_lower = word.lower()
+                    category_lower = category.lower()
+                    if word_lower in category_lower:
+                        position = fixed_words_lower.index(word_lower)
+                        print(f'{word} is a match in {category}. Position: {position}')
+                        return position
+            print(f'Failed {category} Tring Technology')            
+            category = 'Technology'
+            for word in fixed_words:
+                if word:
+                    word_lower = word.lower()
+                    category_lower = category.lower()
+                    if word_lower in category_lower:
+                        position = fixed_words_lower.index(word_lower)
+                        print(f'{word} is a match in {category}. Position: {position}')
+                        return position
+        
+    if category =='Music':
+            category = 'auto'
+            for word in fixed_words:
+                if word:
+                    word_lower = word.lower()
+                    category_lower = category.lower()
+                    if word_lower in category_lower:
+                        position = fixed_words_lower.index(word_lower)
+                        print(f'{word} is a match in {category}. Position: {position}')
+                        return position
+    print(f'Failed {category} Tring none')        
+    category = 'none'
+    for word in fixed_words:
+        if word:
+            word_lower = word.lower()
+            category_lower = category.lower()
+            if word_lower in category_lower:
+                position = fixed_words_lower.index(word_lower)
+                print(f'{word} is a match in {category}. Position: {position}')
+                return position
+    print(f'Failed {category} Tring People')        
+    category = 'People'
+    for word in fixed_words:
+        if word:
+            word_lower = word.lower()
+            category_lower = category.lower()
+            if word_lower in category_lower:
+                position = fixed_words_lower.index(word_lower)
+                print(f'{word} is a match in {category}. Position: {position}')
+                return position
+    print(f'Failed {category} Tring Entertainment')          
+        
+    category = 'Entertainment'
+    for word in fixed_words:
+        if word:
+            word_lower = word.lower()
+            category_lower = category.lower()
+            if word_lower in category_lower:
+                position = fixed_words_lower.index(word_lower)
+                print(f'{word} is a match in {category}. Position: {position}')
+                return position
+    print(f'Failed {category} Tring Music')
+    category = 'Music'
+    for word in fixed_words:
+        if word:
+            word_lower = word.lower()
+            category_lower = category.lower()
+            if word_lower in category_lower:
+                position = fixed_words_lower.index(word_lower)
+                print(f'{word} is a match in {category}. Position: {position}')
+                return position
+            
+    return 4
+
+
+
+import os
+import shutil
+
+def copy_images_to_folder(images_list, destination_folder):
+    # Check if the destination folder exists, if not, create it
+    if not os.path.exists(destination_folder):
+        os.makedirs(destination_folder)
+
+    # Loop through each image path in the list and copy it to the destination folder
+    for image_path in images_list:
+        # Check if the image exists
+        if os.path.exists(image_path):
+            try:
+                # Copy the image to the destination folder
+                shutil.copy(image_path, destination_folder)
+                print(f'Copied: {image_path} to {destination_folder}')
+            except Exception as e:
+                print(f'Error copying {image_path}: {e}')
+        else:
+            print(f'Image not found: {image_path}')
+
+
+import base64
+from io import BytesIO
+
+
+def print_base64_images(drive):
+    strings = []
+    seen = set()  # To track seen base64 strings
+    
+    try:
+        page_source = drive.get_page_source()
+        base64_images = re.findall(r'data:image/[^;]+;base64,([^"]+)', page_source)
+
+        for idx, image_data in enumerate(base64_images):
+            if image_data not in seen:  # Check for duplicates
+                print(f"Base64 Image {idx+1}: {image_data[:10]}...")
+                strings.append(image_data)
+                seen.add(image_data)  # Mark as seen to avoid duplicates
+
+        print(f"\nTotal unique base64 strings: {len(strings)}")
+
+        # Save each unique image
+        for idx, image_data in enumerate(strings):
+            image_bytes = base64.b64decode(image_data)  # Decode base64
+            image = Image.open(BytesIO(image_bytes))  # Convert to PIL image
+            image.save(f"crop{idx+1}.png")  # Save image as PNG
+            print(f"crop{idx+1} saved as image_{idx+1}.png")
+
+        return True
+    except Exception as e:
+        print(e)
+    return False
+
+
+def list_fixer(list1, list2):
+    for i in range(len(list1)):
+        if list1[i] == 'food':
+            list1[i] = list2[i]
+        elif list2[i] == 'food':
+            list2[i] = list1[i]
+    for i in range(min(len(list1), len(list2))): 
+        count1 = len([char for char in list1[i] if char.isalpha()])
+        count2 = len([char for char in list2[i] if char.isalpha()])
+        if count1 < count2:
+            list1[i] = list2[i]
+        elif count1 > count2:
+            list2[i] = list1[i]
+
+    return list1
+
+
+def capture_and_crop_regions(regions, output_paths):
+    try:
+        # Capture the entire screen
+        screenshot = pyautogui.screenshot()
+        
+        if len(regions) != len(output_paths):
+            raise ValueError("The number of regions must match the number of output paths.")
+
+        # Process each region and save the cropped image
+        for (x, y, width, height), output_path in zip(regions, output_paths):
+            left = x
+            top = y
+            right = x + width
+            bottom = y + height
+            cropped_img = screenshot.crop((left, top, right, bottom))
+            cropped_img.save(output_path)
+            print(f"Saved cropped image to: {output_path}")
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
+def are_images_loaded(sb):
+        # Find all image elements inside the ul
+        images = sb.find_elements('ul.link-btn-list.video-categ-options img')
+        # Iterate through the images and check if they are fully loaded
+        for img in images:
+            # Check if the image is loaded (complete) and has non-zero width and height
+            is_loaded = sb.execute_script(
+                "return arguments[0].complete && arguments[0].naturalWidth > 0 && arguments[0].naturalHeight > 0;", img
+            )
+            
+            # If any image is not fully loaded, return False
+            if not is_loaded:
+                print(f"Image not loaded: {img.get_attribute('src')}")
+                return False
+
+        # If all images are loaded, return True
+        return True
+
+
+def get_category_images():
+    # Define regions and paths
+    regions = [
+        (622, 766, 320, 85),  # Example region 1 (x, y, width, height)
+        (960, 766, 320, 85),  # Example region 2
+        (622, 862, 320, 85),  # Example region 3
+        (960, 862, 320, 85)   # Example region 4
+    ]
+    
+    output_paths = [
+        "crop1.png",  # Output file path for region 1
+        "crop2.png",  # Output file path for region 2
+        "crop3.png",  # Output file path for region 3
+        "crop4.png"   # Output file path for region 4
+    ]
+
+    # Capture and crop regions
+    capture_and_crop_regions(regions, output_paths)
+    return True
+
+def get_category_images_baymack():
+        # Define regions and paths
+    regions = [
+        (610,705, 300, 50),  # Example region 1 (x, y, width, height)
+        (1011,705, 300, 50),  # Example region 2
+        (610,767, 300, 50),  # Example region 3
+        (1011,767, 300, 50)   # Example region 4
+    ]
+    
+    output_paths = [
+        "crop1.png",  # Output file path for region 1
+        "crop2.png",  # Output file path for region 2
+        "crop3.png",  # Output file path for region 3
+        "crop4.png"   # Output file path for region 4
+    ]
+
+    # Capture and crop regions
+    capture_and_crop_regions(regions, output_paths)
+    return True
 
 def solve_image_category(drive, category, window):
+    start_time = time.time()
+
     activate_window_by_id(window)
-    get_category_images()
     titile =drive.get_title()
     print(titile)
+    time.sleep(3)
     if titile == 'Skylom':
-        get_category_images()
-        try:
-            img = Image.open('crop1.png')
-            img = img.convert("RGB") 
-            img_data = np.array(img)
-            is_white = np.all(img_data == [255, 255, 255])
-            if is_white:
-                print("The image is blank (all white).")
-            else:
-                print("The image is not blank.")
-                
-                image_path = "crop1.png"
-                output_path = image_path
-                replace_white_with_limegreen(image_path, output_path, tolerance=50)
-                remove_noise(image_path, output_path)
-                image_path = "crop2.png"
-                output_path = image_path
-                replace_white_with_limegreen(image_path, output_path, tolerance=50)
-                remove_noise(image_path, output_path)
-                image_path = "crop3.png"
-                output_path = image_path
-                replace_white_with_limegreen(image_path, output_path, tolerance=50)
-                remove_noise(image_path, output_path)
-                image_path = "crop4.png"
-                output_path = image_path
-                replace_white_with_limegreen(image_path, output_path, tolerance=50)
-                remove_noise(image_path, output_path)
+        #base = print_base64_images(drive)
+        base = are_images_loaded(drive)
+        if base == True:
+            get_category_images()
+            try:
+                image = cv2.imread('crop3.png')
+                gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+                is_white = np.all(gray_image == gray_image[0, 0])
+                if is_white:
+                    print("The image is blank (all white).")
+                else:
+                    print("The image is not blank.")
+                    image_paths_back = ['crop1.png', 'crop2.png', 'crop3.png', 'crop4.png']
+                    copy_images_to_folder(image_paths_back, 'Backup')
+                    image_path = "crop1.png"
+                    Filter_images(image_path)
+                    image_path = "crop2.png"
+                    Filter_images(image_path)
+                    image_path = "crop3.png"
+                    Filter_images(image_path)
+                    image_path = "crop4.png"
+                    Filter_images(image_path)
+                    print('Images Filtered...')
+                    image_paths = ['crop1.png', 'crop2.png', 'crop3.png', 'crop4.png']
+                    Filtered_words = []
+                    for image in image_paths:
+                        word = ez_ocr(image)
+                        #print("Ezocr Text:", word)
+                        Filtered_words.append(word)
+
+                    print('Filtered Ez list :', Filtered_words)
+
+                    image_paths = ['Backup/crop1.png', 'Backup/crop2.png', 'Backup/crop3.png', 'Backup/crop4.png']
+                    NoFiltered_words = []
+                    for image in image_paths:
+                        word = ez_ocr(image)
+                        #print("Ezocr Text:", word)
+                        NoFiltered_words.append(word)
+                    print('None Filtered Ez list :', NoFiltered_words)
 
 
-                merge_images(image_paths, output_path, orientation, spacing)
-                merge_images(image_paths2, output_path2, orientation, spacing)
-                linkg1 = upload_image('merged_image.png')
-                linkg2 = upload_image('merged_image2.png')
-                print(str(linkg1))
-                print(str(linkg2))
-                word1= get_google_ocr(drive, str(linkg1))
-                word2= get_google_ocr(drive, str(linkg2))
-                words = word1 + '@' + word2
-                separated_words = split_at_symbols(words)
-                try:
-                    if separated_words:
-                        print(separated_words)
-                        separated_words2 = fix_broken_words(separated_words)
-                        print(separated_words2)
-                        if separated_words2:
-                            position = check_words(category, separated_words2)
-                            print(f"The most similar word to '{category}' at index {position} : {separated_words2}")
+                    fixed_list = list_fixer(Filtered_words, NoFiltered_words)
+                    print('fixedlist list :', fixed_list)
+                    similar_word = find_most_similar_word(category, fixed_list)
+    
+                    fixword_list = fix_broken_words(fixed_list)
+                    print('Fix Broken Word list :', fixword_list)
+                    try:
+                        if fixword_list:
+                            position = check_words(category, fixword_list)
+                            if position == 4:
+                                print('position is None')
+                                print(f'{similar_word} is similar with {category}')
+                                position = fixed_list.index(similar_word)
+                            print(f"The most similar word to '{category}' at index {position} : {fixword_list}")
                             title = drive.get_title()
                             if title == 'Skylom':
                                 print(title,position)
@@ -1135,14 +1276,104 @@ def solve_image_category(drive, category, window):
                                     pyautogui.click(777, 896)
                                 if position == 3:
                                     pyautogui.click(1094, 903)
-                                
-                except Exception as e:
-                    print(e)
-                    pyautogui.click(1100, 803)
-        except Exception as e:
-            print(f"Error: {e}")
+
+                                end_time = time.time()
+                                print(f"Completed in {end_time - start_time} seconds")
+
+                    except Exception as e:
+                        print(e)
+                        pyautogui.click(1100, 803)
+            except Exception as e:
+                print(f"Error: {e}")
+        else:
+            print(base,'Base False')
 
 
+    if titile == 'Baymack':
+        #base = print_base64_images(drive)
+        base = are_images_loaded(drive)
+        if base == True:
+            get_category_images_baymack()
+            try:
+                image = cv2.imread('crop3.png')
+                gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+                is_white = np.all(gray_image == gray_image[0, 0])
+                if is_white:
+                    print("The image is blank (all white).")
+                else:
+                    print("The image is not blank.")
+                    image_paths_back = ['crop1.png', 'crop2.png', 'crop3.png', 'crop4.png']
+                    copy_images_to_folder(image_paths_back, 'Backup')
+                    image_path = "crop1.png"
+                    Filter_images(image_path)
+                    image_path = "crop2.png"
+                    Filter_images(image_path)
+                    image_path = "crop3.png"
+                    Filter_images(image_path)
+                    image_path = "crop4.png"
+                    Filter_images(image_path)
+                    print('Images Filtered...')
+                    image_paths = ['crop1.png', 'crop2.png', 'crop3.png', 'crop4.png']
+                    Filtered_words = []
+                    for image in image_paths:
+                        word = ez_ocr(image)
+                        #print("Ezocr Text:", word)
+                        Filtered_words.append(word)
+
+                    print('Filtered Ez list :', Filtered_words)
+
+                    image_paths = ['Backup/crop1.png', 'Backup/crop2.png', 'Backup/crop3.png', 'Backup/crop4.png']
+                    NoFiltered_words = []
+                    for image in image_paths:
+                        word = ez_ocr(image)
+                        #print("Ezocr Text:", word)
+                        NoFiltered_words.append(word)
+                    print('None Filtered Ez list :', NoFiltered_words)
+
+
+                    fixed_list = list_fixer(Filtered_words, NoFiltered_words)
+                    print('fixedlist list :', fixed_list)
+                    similar_word = find_most_similar_word(category, fixed_list)
+    
+                    fixword_list = fix_broken_words(fixed_list)
+                    print('Fix Broken Word list :', fixword_list)
+                    try:
+                        if fixword_list:
+                            position = check_words(category, fixword_list)
+                            if position == 4:
+                                print('position is None')
+                                print(f'{similar_word} is similar with {category}')
+                                position = fixed_list.index(similar_word)
+                            print(f"The most similar word to '{category}' at index {position} : {fixword_list}")
+                            title = drive.get_title()
+                            if title == 'Baymack':
+                                print(title,position)
+                                if position == 0:
+                                    pyautogui.click(749, 743)
+                                if position == 1:
+                                    pyautogui.click(1100, 743)
+                                if position == 2:
+                                    pyautogui.click(777, 788)
+                                if position == 3:
+                                    pyautogui.click(1094, 788)
+
+                                end_time = time.time()
+                                print(f"Completed in {end_time - start_time} seconds")
+
+                    except Exception as e:
+                        print(e)
+                        pyautogui.click(1100, 803)
+            except Exception as e:
+                print(f"Error: {e}")
+        else:
+            print(base,'Base False')
+
+
+
+
+
+
+################################################################################################################
 brave_user_data_dir = '/home/coder/.config/BraveSoftware/Brave-Browser/'
 brave_binary_path = '/usr/bin/brave-browser'
 
@@ -1172,6 +1403,7 @@ if ip_address == ip_required:
     if ip_address == ip_required:
 
         import img_captcha
+        import img_captcha_bay
         #import ocr_captcha
 
         def check_number_captcha_exists(sb, id):
@@ -1225,12 +1457,21 @@ if ip_address == ip_required:
                     time.sleep(2)
                     sb.maximize_window()
                     activate_window_by_id(id)
-                    #sb1.scroll_to_top()
-                    sb1.execute_script("window.scrollTo(0, 0);")
-                    # Assuming img_captcha.solve_icon_captcha() is defined elsewhere
-                    img_captcha.solve_image_skylom()
-                    time.sleep(1)
-                    return True
+                    title =  sb.get_title()
+                    if title == 'Skylom':
+                        #sb1.scroll_to_top()
+                        sb.execute_script("window.scrollTo(0, 0);")
+                        # Assuming img_captcha.solve_icon_captcha() is defined elsewhere
+                        img_captcha.solve_image_skylom()
+                        time.sleep(1)
+                        return True
+                    if title == 'Baymack':
+                        #sb1.scroll_to_top()
+                        sb.execute_script("window.scrollTo(0, 0);")
+                        # Assuming img_captcha.solve_icon_captcha() is defined elsewhere
+                        img_captcha_bay.solve_image_skylom()
+                        time.sleep(1)
+                        return True
                 else:
                     if debug_mode:
                         print("Icon captcha does not exist.")
@@ -1259,22 +1500,13 @@ if ip_address == ip_required:
         ip_address3 = 0
         ip_address4 = 0
         while True:
-            time.sleep(1)
+            #time.sleep(1)
             cloudflare(id1,sb1)
             sb1.switch_to.default_content()
             sb1.execute_script("window.scrollTo(0, 0);")
             play_button(sb1)
             playback_check(sb1)
             remove_pink(sb1)
-
-            #SB2 
-            if run_sb2:
-                cloudflare(id2,sb2)
-                sb2.switch_to.default_content()
-                sb2.execute_script("window.scrollTo(0, 0);")
-                play_button(sb2)
-                playback_check(sb2)
-                remove_pink(sb2)
 
 
             previous_duration = current_duration
@@ -1364,23 +1596,19 @@ if ip_address == ip_required:
                         print(f"Video duration: {current_duration} and Category is {category}", end="\r")
                         #print('Video is Fresh')
 
-            title = sb1.get_title()
-            if title == 'Skylom':
-                if debug_mode:
-                    print(title)
-                original_window = sb1.current_window_handle
+
 
             if check_category_question(sb1) == True:
                 print('Getting IP at 10 sec..')
-                ip_address =get_ip(sb1)
+                #ip_address =get_ip(sb1)
                 if ip_address == ip_required:
                             if ip_address == ip_required:
-                                ip_address = 0
+                                
                                 print('starting to answer category')
                                 if category != 0:
                                     print('starting to answer category confirm')
                                     title = sb1.get_title()
-                                    if title == 'Skylom':
+                                    if title:
                                         print(title)
                                         solve_image_category(sb1, category, id1)
 
@@ -1426,145 +1654,3 @@ if ip_address == ip_required:
             handle_random_number_buttons(sb1)
             check_number_captcha_exists(sb1, id1)
             check_icon_captcha_exists(sb1, id1)
-
-##################################################################
-##########################SB-2####################################
-##################################################################
-            if run_sb2:
-                if current_duration2 == previous_duration2 and current_duration2 == 0 :
-                    print(f'reclick_waits:{reclick_waits2}')
-                    reclick_waits2 +=1
-                    if reclick_waits2 > 25:
-                        print(f'reopenning reclick {reclick_waits2}')
-                        sb2.quit()
-                        sb2 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir2, binary_location=chrome_binary_path)
-                        id2 = get_current_window_id()
-                        sb2.maximize_window()
-                        ip_required2 = fix_ip(sb2, server_name2)
-                        ip_address2 = get_ip(sb2)
-                        sb2.open("https://www.skylom.com/videos")
-                        print(sb2.get_title())
-
-                        reclick_waits2 = 0
-                    if reclick_waits2 > 20:
-                        reclick_button(sb2)
-                        pyautogui.click(990, 430)
-                        time.sleep(3)
-                        pyautogui.click(990, 430)
-                else:
-                    reclick_waits2 = 1
-
-                     
-                if current_duration2:
-                    if current_duration2 >= 20:
-                        if category2 == 0:
-                            video_link2 = get_youtube_link(sb2) 
-                            category2 = get_video_infog(video_link2, sb2)
-                            if category2:
-                                if debug_mode:
-                                    print(f"Category2: {category2}")
-                                if "Howto" in category2:
-                                    category2 = "How-To"
-                                elif "Science" in category2:
-                                    category2 = "Sic-fi"
-                                elif "Beauty" in category2:
-                                    category2 = "Beauty"
-                                elif "Nonprofit" in category2:
-                                    category2 = "Nonprofit"    
-                                elif "Film" in category2:
-                                    category2 = "Film"        
-                                elif "Auto" in category2:
-                                    category2 = "Auto"    
-                                elif "Technology" in category2:
-                                    category2 = "Technology"        
-                                ip_address2 =get_ip(sb2)
-                                proxycheck2 = get_proxycheck(ip_address2, server_name= server_name2)
-                                coins2 = get_coin_value(sb2)
-                                if ip_address2 == ip_required2 and proxycheck2:
-                                    if coins2:
-                                        ip_list2 = insert_data(ip= ip_address2,amount= coins2, id= farm_id2)
-                                        if ip_list2:
-                                            duplicates_ip2 = set([ip for ip in ip_list2 if ip_list2.count(ip) > 1])
-                                            if ip_address2 in duplicates_ip2:
-                                                print(f'{duplicates_ip2} same ip 2 detect {ip_address2}')
-                                                ip_required2 = fix_ip(sb2, server_name2)
-                                                ip_address2 = get_ip(sb2)
-                                            else:
-                                                print('no duplicate on 2nd')  
-                            else:
-                                print(f'category2 is not defined{category2}')
-                        else:
-                            if basic_info:
-                                #print("Category is ",category)
-                                print(f"Video duration2: {current_duration2} and Category is {category2}", end="\r")
-
-    
-                    else:
-                        category2 = 0
-                        
-                        if basic_info:
-                            print(f"Video duration2 : {current_duration2} and Category is {category2}", end="\r")
-                            #print('Video is Fresh')
-
-                title = sb2.get_title()
-                if title == 'Skylom':
-                    if debug_mode:
-                        print(title)
-                    original_window2 = sb2.current_window_handle
-
-                if check_category_question(sb2) == True:
-                    print('Getting2  IP at 10 sec..')
-                    ip_address2 =get_ip(sb2)
-                    if ip_address2 == ip_required2:
-                                if ip_address2 == ip_required2:
-                                    ip_address2 = 0
-                                    print('starting to answer category')
-                                    if category2 != 0:
-                                        print('starting to answer category confirm')
-                                        title2 = sb2.get_title()
-                                        if title2 == 'Skylom':
-                                            print(title2)
-                                            solve_image_category(sb2, category2, id2)
-
-                                    elif category2 == 0:
-                                        video_link2 = get_youtube_link(sb2) 
-                                        category2 = get_video_infog(video_link2, sb2)
-
-                                        print(f"Category2: {category2}")
-                                        if category2:
-                                            if "Howto" in category2:
-                                                category2 = "How-To"
-                                            elif "Science" in category2:
-                                                category2 = "Sic-fi"
-                                            elif "Nonprofit" in category2:
-                                                category2 = "Nonprofit"    
-                                            elif "Film" in category2:
-                                                category2 = "Film"        
-                                            elif "Auto" in category2:
-                                                category2 = "Auto"    
-                                            elif "Technology" in category2:
-                                                category2 = "Technology"        
-                    
-                    else:
-                        #ip_address =get_ip(sb)
-                        print(f'IP is not Matched in IF category {ip_address2}, Required: {ip_required2}')
-                        print('Getting IP at after found category...')
-                        ip_required2 = fix_ip(sb2, server_name2)
-                        ip_address2 = get_ip(sb2)
-
-                    
-
-                if click_next_video(sb2):
-                    elapsed_time2 = time.time() - start_time2
-                    mins2, secs2 = divmod(int(elapsed_time2), 60)
-                    timer2 = f'{mins2:02d}:{secs2:02d}'
-                    seconds_only2 = int(elapsed_time2)
-                    print(f'Next Click2 {timer2}')
-                    print(f'Elapsed_time2 {seconds_only2}')
-                    start_time2 = time.time()
-                    ip_address2 = 0
-
-                click_false_button(sb2)
-                handle_random_number_buttons(sb2)
-                check_number_captcha_exists(sb2, id2)
-                check_icon_captcha_exists(sb2, id2)

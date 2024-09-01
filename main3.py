@@ -1678,7 +1678,19 @@ if ip_address == ip_required:
                     #ip_address =get_ip(sb1)
                     if ip_address == ip_required:
                                 if ip_address == ip_required:
-                                    
+                                    title = sb1.get_title()
+                                    if title == 'Skylom':
+                                        sb1.switch_to.window(baymack_window)
+                                        if click_next_video(sb1):
+                                            elapsed_time = time.time() - start_time
+                                            mins, secs = divmod(int(elapsed_time), 60)
+                                            timer = f'{mins:02d}:{secs:02d}'
+                                            seconds_only = int(elapsed_time)
+                                            print(f'Next Click {timer}')
+                                            print(f'Elapsed_time {seconds_only}')
+                                            start_time = time.time()
+                                            ip_address = 0
+                                        sb1.switch_to.window(skylom_window)
                                     print('starting to answer category')
                                     if category != 0:
                                         print('starting to answer category confirm')
@@ -1800,7 +1812,19 @@ if ip_address == ip_required:
                     #ip_address =get_ip(sb1)
                     if ip_address == ip_required:
                                 if ip_address == ip_required:
-                                    
+                                    title = sb1.get_title()
+                                    if title == 'Baymack':
+                                        sb1.switch_to.window(skylom_window)
+                                        if click_next_video(sb1):
+                                            elapsed_time = time.time() - start_time
+                                            mins, secs = divmod(int(elapsed_time), 60)
+                                            timer = f'{mins:02d}:{secs:02d}'
+                                            seconds_only = int(elapsed_time)
+                                            print(f'Next Click {timer}')
+                                            print(f'Elapsed_time {seconds_only}')
+                                            start_time = time.time()
+                                            ip_address = 0
+                                        sb1.switch_to.window(baymack_window)
                                     print('starting to answer category')
                                     if category_bay != 0:
                                         print('starting to answer category confirm')

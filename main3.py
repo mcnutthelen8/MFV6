@@ -196,7 +196,7 @@ def get_current_duration(sb):
     
 def play_button(sb):
     current_duration = get_current_duration(sb)
-    if current_duration < 2:
+    if current_duration == 0:
         play_button_selector = '.ytp-large-play-button'
         try:
             if sb.is_element_visible('iframe'):
@@ -1579,7 +1579,7 @@ if ip_address == ip_required:
         previous_duration_bay = 0
         previous_duration = 0
         while True:
-            #time.sleep(1)
+            time.sleep(1)
             cloudflare(id1,sb1)
             sb1.switch_to.default_content()
             sb1.execute_script("window.scrollTo(0, 0);")

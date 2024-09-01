@@ -1557,14 +1557,17 @@ if ip_address == ip_required:
                 return False
         
         current_duration = 1
+        current_duration_bay = 1
         reclick_waits = 1
         category = 0
+        category_bay = 0
         basic_info = True
         start_time = time.time()
 
         current_duration2 = 1
         reclick_waits2 = 1
         category2 = 0
+
         basic_info2 = True
         start_time2 = time.time()
 
@@ -1573,6 +1576,8 @@ if ip_address == ip_required:
         ip_address2 = 0
         ip_address3 = 0
         ip_address4 = 0
+        previous_duration_bay = 0
+        previous_duration = 0
         while True:
             #time.sleep(1)
             cloudflare(id1,sb1)
@@ -1581,140 +1586,255 @@ if ip_address == ip_required:
             play_button(sb1)
             playback_check(sb1)
             remove_pink(sb1)
-
-
-            previous_duration = current_duration
-            current_duration = get_current_duration(sb=sb1)
-            
-            if run_sb2:
-                previous_duration2 = current_duration2
-                current_duration2 = get_current_duration(sb=sb2)
-
+            title = sb1.get_title()
 
 
 ##################################################################
 ##########################SB-1####################################
 ##################################################################
+            if title == 'Skylom':
+                previous_duration = current_duration
+                current_duration = get_current_duration(sb=sb1)
+                if current_duration == previous_duration and current_duration == 0 :
+                    print(f'reclick_waits:{reclick_waits}')
+                    reclick_waits +=1
+                    if reclick_waits > 155:
+                        print(f'reopenning reclick {reclick_waits}')
+                        sb1.quit()
+                        sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
+                        id1 = get_current_window_id()
+                        sb1.maximize_window()
+                        ip_required = fix_ip(sb1, server_name1)
+                        ip_address = get_ip(sb1)
+                        sb1.open("https://www.skylom.com/videos")
+                        print(sb1.get_title())
 
-            if current_duration == previous_duration and current_duration == 0 :
-                print(f'reclick_waits:{reclick_waits}')
-                reclick_waits +=1
-                if reclick_waits > 55:
-                    print(f'reopenning reclick {reclick_waits}')
-                    sb1.quit()
-                    sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
-                    id1 = get_current_window_id()
-                    sb1.maximize_window()
-                    ip_required = fix_ip(sb1, server_name1)
-                    ip_address = get_ip(sb1)
-                    sb1.open("https://www.skylom.com/videos")
-                    print(sb1.get_title())
-
-                    reclick_waits = 0
-                if reclick_waits > 50:
-                    reclick_button(sb1)
-                    pyautogui.click(990, 430)
-                    time.sleep(3)
-                    pyautogui.click(990, 430)
-            else:
-                reclick_waits = 1
-
-            if current_duration:
-                if current_duration >= 20:
-                    if category == 0:
-                        video_link = get_youtube_link(sb1) 
-                        category = get_video_infog(video_link, sb1)
-                        if category:
-                            if debug_mode:
-                                print(f"Category: {category}")
-                            if "Howto" in category:
-                                category = "How-To"
-                            elif "Science" in category:
-                                category = "Sic-fi"
-                            elif "Beauty" in category:
-                                category = "Beauty"
-                            elif "Nonprofit" in category:
-                                category = "Nonprofit"    
-                            elif "Film" in category:
-                                category = "Film"        
-                            elif "Auto" in category:
-                                category = "Auto"    
-                            elif "Technology" in category:
-                                category = "Technology"
-                            title = sb1.get_title()
-                            if title == 'Skylom':        
-                                ip_address =get_ip(sb1)
-                                proxycheck = get_proxycheck(ip_address, server_name= server_name1)
-                                coins = get_coin_value(sb1)
-                                if ip_address == ip_required and proxycheck:
-                                    if coins:
-                                        ip_list = insert_data(ip= ip_address,amount= coins, id= farm_id)
-                                        if ip_list:
-                                            duplicates_ip = set([ip for ip in ip_list if ip_list.count(ip) > 1])
-                                            if ip_address in duplicates_ip:
-                                                print(f'{duplicates_ip} same ip detect {ip_address}')
-                                                ip_required = fix_ip(sb1, server_name1)
-                                                ip_address = get_ip(sb1)
-                                            else:
-                                                print('no duplicate on 1st')  
-                        else:
-                            print(f'category is not defined{category}')
-                    else:
-                        if basic_info:
-                            #print("Category is ",category)
-                            print(f"Video duration: {current_duration} and Category is {category}", end="\r")
-
- 
+                        reclick_waits = 0
+                    if reclick_waits > 50:
+                        reclick_button(sb1)
+                        pyautogui.click(990, 430)
+                        time.sleep(3)
+                        pyautogui.click(990, 430)
                 else:
-                    category = 0
-                    
-                    if basic_info:
-                        print(f"Video duration: {current_duration} and Category is {category}", end="\r")
-                        #print('Video is Fresh')
-
-
-
-            if check_category_question(sb1) == True:
-                print('Getting IP at 10 sec..')
-                #ip_address =get_ip(sb1)
-                if ip_address == ip_required:
-                            if ip_address == ip_required:
-                                
-                                print('starting to answer category')
-                                if category != 0:
-                                    print('starting to answer category confirm')
-                                    title = sb1.get_title()
-                                    if title:
-                                        print(title)
-                                        solve_image_category(sb1, category, id1)
-
-                                elif category == 0:
-                                    video_link = get_youtube_link(sb1) 
-                                    category = get_video_infog(video_link, sb1)
-
+                    reclick_waits = 1
+                
+                if current_duration:
+                    if current_duration >= 20:
+                        if category == 0:
+                            video_link = get_youtube_link(sb1) 
+                            category = get_video_infog(video_link, sb1)
+                            if category:
+                                if debug_mode:
                                     print(f"Category: {category}")
-                                    if category:
-                                        if "Howto" in category:
-                                            category = "How-To"
-                                        elif "Science" in category:
-                                            category = "Sic-fi"
-                                        elif "Nonprofit" in category:
-                                            category = "Nonprofit"    
-                                        elif "Film" in category:
-                                            category = "Film"        
-                                        elif "Auto" in category:
-                                            category = "Auto"    
-                                        elif "Technology" in category:
-                                            category = "Technology"        
-                
-                else:
-                    #ip_address =get_ip(sb)
-                    print(f'IP is not Matched in IF category {ip_address}, Required: {ip_required}')
-                    print('Getting IP at after found category...')
-                    ip_required = fix_ip(sb1, server_name1)
-                    ip_address = get_ip(sb1)
+                                if "Howto" in category:
+                                    category = "How-To"
+                                elif "Science" in category:
+                                    category = "Sic-fi"
+                                elif "Beauty" in category:
+                                    category = "Beauty"
+                                elif "Nonprofit" in category:
+                                    category = "Nonprofit"    
+                                elif "Film" in category:
+                                    category = "Film"        
+                                elif "Auto" in category:
+                                    category = "Auto"    
+                                elif "Technology" in category:
+                                    category = "Technology"
+                                title = sb1.get_title()
+                                if title == 'Skylom':        
+                                    ip_address =get_ip(sb1)
+                                    proxycheck = get_proxycheck(ip_address, server_name= server_name1)
+                                    coins = get_coin_value(sb1)
+                                    if ip_address == ip_required and proxycheck:
+                                        if coins:
+                                            ip_list = insert_data(ip= ip_address,amount= coins, id= farm_id)
+                                            if ip_list:
+                                                duplicates_ip = set([ip for ip in ip_list if ip_list.count(ip) > 1])
+                                                if ip_address in duplicates_ip:
+                                                    print(f'{duplicates_ip} same ip detect {ip_address}')
+                                                    ip_required = fix_ip(sb1, server_name1)
+                                                    ip_address = get_ip(sb1)
+                                                else:
+                                                    print('no duplicate on 1st')  
+                            else:
+                                print(f'category is not defined{category}')
+                        else:
+                            if basic_info:
+                                #print("Category is ",category)
+                                print(f"Video duration: {current_duration} and Category is {category}", end="\r")
 
+    
+                    else:
+                        category = 0
+                        
+                        if basic_info:
+                            print(f"Video duration: {current_duration} and Category is {category}", end="\r")
+                            #print('Video is Fresh')
+
+
+
+                if check_category_question(sb1) == True:
+                    print('Getting IP at 10 sec..')
+                    #ip_address =get_ip(sb1)
+                    if ip_address == ip_required:
+                                if ip_address == ip_required:
+                                    
+                                    print('starting to answer category')
+                                    if category != 0:
+                                        print('starting to answer category confirm')
+                                        title = sb1.get_title()
+                                        if title:
+                                            print(title)
+                                            solve_image_category(sb1, category, id1)
+
+                                    elif category == 0:
+                                        video_link = get_youtube_link(sb1) 
+                                        category = get_video_infog(video_link, sb1)
+
+                                        print(f"Category: {category}")
+                                        if category:
+                                            if "Howto" in category:
+                                                category = "How-To"
+                                            elif "Science" in category:
+                                                category = "Sic-fi"
+                                            elif "Nonprofit" in category:
+                                                category = "Nonprofit"    
+                                            elif "Film" in category:
+                                                category = "Film"        
+                                            elif "Auto" in category:
+                                                category = "Auto"    
+                                            elif "Technology" in category:
+                                                category = "Technology"        
+                    
+                    else:
+                        #ip_address =get_ip(sb)
+                        print(f'IP is not Matched in IF category {ip_address}, Required: {ip_required}')
+                        print('Getting IP at after found category...')
+                        ip_required = fix_ip(sb1, server_name1)
+                        ip_address = get_ip(sb1)
+
+                    
+            if title == 'Baymack':
+                previous_duration_bay = current_duration_bay
+                current_duration_bay = get_current_duration(sb=sb1)
+                if current_duration_bay == previous_duration_bay and current_duration_bay == 0 :
+                    print(f'reclick_waits:{reclick_waits}')
+                    reclick_waits +=1
+                    if reclick_waits > 155:
+                        print(f'reopenning reclick {reclick_waits}')
+                        sb1.quit()
+                        sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
+                        id1 = get_current_window_id()
+                        sb1.maximize_window()
+                        ip_required = fix_ip(sb1, server_name1)
+                        ip_address = get_ip(sb1)
+                        sb1.open("https://www.skylom.com/videos")
+                        print(sb1.get_title())
+
+                        reclick_waits = 0
+                    if reclick_waits > 50:
+                        reclick_button(sb1)
+                        pyautogui.click(990, 430)
+                        time.sleep(3)
+                        pyautogui.click(990, 430)
+                else:
+                    reclick_waits = 1
                 
+                if current_duration_bay:
+                    if current_duration_bay >= 20:
+                        if category_bay == 0:
+                            video_link = get_youtube_link(sb1) 
+                            category_bay = get_video_infog(video_link, sb1)
+                            if category_bay:
+                                if debug_mode:
+                                    print(f"Category: {category_bay}")
+                                if "Howto" in category_bay:
+                                    category_bay = "How-To"
+                                elif "Science" in category_bay:
+                                    category_bay = "Sic-fi"
+                                elif "Beauty" in category_bay:
+                                    category_bay = "Beauty"
+                                elif "Nonprofit" in category_bay:
+                                    category_bay = "Nonprofit"    
+                                elif "Film" in category_bay:
+                                    category_bay = "Film"        
+                                elif "Auto" in category_bay:
+                                    category_bay = "Auto"    
+                                elif "Technology" in category_bay:
+                                    category_bay = "Technology"
+                                title = sb1.get_title()
+                                if title == 'Skylom':        
+                                    ip_address =get_ip(sb1)
+                                    proxycheck = get_proxycheck(ip_address, server_name= server_name1)
+                                    coins = get_coin_value(sb1)
+                                    if ip_address == ip_required and proxycheck:
+                                        if coins:
+                                            ip_list = insert_data(ip= ip_address,amount= coins, id= farm_id)
+                                            if ip_list:
+                                                duplicates_ip = set([ip for ip in ip_list if ip_list.count(ip) > 1])
+                                                if ip_address in duplicates_ip:
+                                                    print(f'{duplicates_ip} same ip detect {ip_address}')
+                                                    ip_required = fix_ip(sb1, server_name1)
+                                                    ip_address = get_ip(sb1)
+                                                else:
+                                                    print('no duplicate on 1st')  
+                            else:
+                                print(f'category_bay is not defined{category_bay}')
+                        else:
+                            if basic_info:
+                                #print("Category is ",category)
+                                print(f"Video duration_bay: {current_duration_bay} and Category is {category_bay}", end="\r")
+
+    
+                    else:
+                        category_bay = 0
+                        
+                        if basic_info:
+                            print(f"Video duration_bay: {current_duration_bay} and Category is {category_bay}", end="\r")
+                            #print('Video is Fresh')
+
+
+
+                if check_category_question(sb1) == True:
+                    print('Getting IP at 10 sec..')
+                    #ip_address =get_ip(sb1)
+                    if ip_address == ip_required:
+                                if ip_address == ip_required:
+                                    
+                                    print('starting to answer category')
+                                    if category_bay != 0:
+                                        print('starting to answer category confirm')
+                                        title = sb1.get_title()
+                                        if title:
+                                            print(title)
+                                            solve_image_category(sb1, category_bay, id1)
+
+                                    elif category_bay == 0:
+                                        video_link = get_youtube_link(sb1) 
+                                        category_bay = get_video_infog(video_link, sb1)
+
+                                        print(f"Category: {category_bay}")
+                                        if category_bay:
+                                            if "Howto" in category_bay:
+                                                category_bay = "How-To"
+                                            elif "Science" in category_bay:
+                                                category_bay = "Sic-fi"
+                                            elif "Nonprofit" in category_bay:
+                                                category_bay = "Nonprofit"    
+                                            elif "Film" in category_bay:
+                                                category_bay = "Film"        
+                                            elif "Auto" in category_bay:
+                                                category_bay = "Auto"    
+                                            elif "Technology" in category_bay:
+                                                category_bay = "Technology"        
+                    
+                    else:
+                        #ip_address =get_ip(sb)
+                        print(f'IP _bays not Matched in IF category {ip_address}, Required: {ip_required}')
+                        print('Getting IP at after found category...')
+                        ip_required = fix_ip(sb1, server_name1)
+                        ip_address = get_ip(sb1)
+
 
             if click_next_video(sb1):
                 elapsed_time = time.time() - start_time
@@ -1730,6 +1850,7 @@ if ip_address == ip_required:
             handle_random_number_buttons(sb1)
             check_number_captcha_exists(sb1, id1)
             check_icon_captcha_exists(sb1, id1)
+
             title = sb1.get_title()
             if title == 'Skylom':
                 sb1.switch_to.window(baymack_window)

@@ -1823,7 +1823,7 @@ if ip_address == ip_required:
                                             print(f'Next Click {timer}')
                                             print(f'Elapsed_time {seconds_only}')
                                             start_time = time.time()
-                                            ip_address = 0
+                                            #ip_address = 0
                                         sb1.switch_to.window(baymack_window)
                                     print('starting to answer category')
                                     if category_bay != 0:
@@ -1861,6 +1861,7 @@ if ip_address == ip_required:
 
 
             if click_next_video(sb1):
+
                 elapsed_time = time.time() - start_time
                 mins, secs = divmod(int(elapsed_time), 60)
                 timer = f'{mins:02d}:{secs:02d}'
@@ -1868,7 +1869,9 @@ if ip_address == ip_required:
                 print(f'Next Click {timer}')
                 print(f'Elapsed_time {seconds_only}')
                 start_time = time.time()
-                ip_address = 0
+                title = sb1.get_title()
+                if title == 'Skylom':
+                    ip_address = 0
 
             click_false_button(sb1)
             handle_random_number_buttons(sb1)

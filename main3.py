@@ -196,7 +196,7 @@ def get_current_duration(sb):
     
 def play_button(sb):
     current_duration = get_current_duration(sb)
-    if current_duration == 0:
+    if current_duration < 2:
         play_button_selector = '.ytp-large-play-button'
         try:
             if sb.is_element_visible('iframe'):

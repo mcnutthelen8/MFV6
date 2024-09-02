@@ -1315,35 +1315,6 @@ def get_category_images_baymack():
 
 
 
-def similarity_onword(word, word_list):
-    most_similar_word = None
-    lowest_distance = float('inf')
-    most_similar_index = -1
-    best_similarity_score = 0
-    
-    # Iterate through the word list
-    for idx, candidate in enumerate(word_list):
-        distance = Levenshtein.distance(word, candidate)
-        max_len = max(len(word), len(candidate))
-        
-        # Calculate similarity score
-        similarity_score = 1 - (distance / max_len)
-        
-        # Print the score for each word
-        print(f"Word: {candidate}, Similarity Score: {similarity_score}")
-        
-        # Update the most similar word and score
-        if similarity_score > best_similarity_score:
-            best_similarity_score = similarity_score
-            most_similar_word = candidate
-            most_similar_index = idx
-    if best_similarity_score > 0.3:
-        for i in range(len(word_list)):
-            if most_similar_word == word_list[i]:
-                return i
-    else:
-        return None
-    return None
 def solve_image_category(drive, category, window):
     start_time = time.time()
 
@@ -1401,11 +1372,8 @@ def solve_image_category(drive, category, window):
                     print('Fix Broken Word list :', fixword_list)
                     try:
                         if fixword_list:
-                            position = similarity_onword(word, NoFiltered_words)
-                            if position is None:
-                                position = similarity_onword(word, Filtered_words)
-                            if position is None:
-                                position = check_words(category, fixword_list)
+
+                            position = check_words(category, fixword_list)
                             if position == 4:
                                 print('position is None')
                                 print(f'{similar_word} is similar with {category}')
@@ -1967,10 +1935,21 @@ if ip_address == ip_required:
                 if title == 'Skylom':
                     ip_address = 0
 
-            click_false_button(sb1)
-            handle_random_number_buttons(sb1)
+
+
             check_number_captcha_exists(sb1, id1)
             check_icon_captcha_exists(sb1, id1)
+
+
+            calc_captcha = click_false_button(sb1)
+            if calc_captcha == False:
+                calc_captcha = handle_random_number_buttons(sb1)
+
+            while calc_captcha == True:
+                calc_captcha = click_false_button(sb1)
+                if calc_captcha == False:
+                    calc_captcha = handle_random_number_buttons(sb1)
+                time.sleep(1)
 
             title = sb1.get_title()
             if title == 'Skylom':

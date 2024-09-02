@@ -781,6 +781,7 @@ def fix_ip(drive, name):
         elif proxycheck == 50:
             print(f'Country ok /Bad IP detected: {ip_address}. Changing IP...')
             mysterium_vpn_Recon_ip(name)
+            time.sleep(5)
         else:
             print(f'Bad IP detected: {ip_address}. Changing IP...')
             mysterium_vpn_connect(name)
@@ -1951,11 +1952,13 @@ if ip_address == ip_required:
                     calc_captcha = handle_random_number_buttons(sb1)
                 time.sleep(1)
 
-            title = sb1.get_title()
-            if title == 'Skylom':
-                sb1.switch_to.window(baymack_window)
-            elif title == 'Baymack':
-                sb1.switch_to.window(skylom_window)
-            else:
-                print(f'no title was sky or bay {title}')
-            
+
+            if with_baymack == True:
+                title = sb1.get_title()
+                if title == 'Skylom':
+                    sb1.switch_to.window(baymack_window)
+                elif title == 'Baymack':
+                    sb1.switch_to.window(skylom_window)
+                else:
+                    print(f'no title was sky or bay {title}')
+                

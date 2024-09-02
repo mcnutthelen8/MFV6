@@ -642,7 +642,10 @@ def get_proxycheck(ip, server_name):
             print(f"IP Address: {ip_address} \nProxy Status: {proxy_status} \country Status: {country}")
             if proxy_status =='no':
                 if country.lower() in server_name.lower():
-                    return True
+                    return 200
+                else:
+                    print(f'{country} is not {server_name}')
+                    return 50
         else:
             print("Error: Status not OK")
             return None, None
@@ -725,6 +728,45 @@ def mysterium_vpn_connect(server_name):
         print("No mysterium_icon_empty .")
     return None
 
+def mysterium_vpn_Recon_ip(server_name):
+    try:
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
+        pyautogui.click(x, y)
+        print("mysterium_icon_empty Found")
+        time.sleep(5)
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/myserium_disconnect.png", region=(1325, 190, 800, 400), confidence=0.95)
+            pyautogui.click(x, y)
+            print("myserium_disconnect Found")
+            unknown_con = True
+            while unknown_con == True:
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/Unknown.png", region=(1345, 90, 800, 400), confidence=0.95)
+                    #pyautogui.click(x, y)
+                    print("Unkown Found")
+                    unknown_con = True
+                except pyautogui.ImageNotFoundException:
+                    print("No Unkown .")
+                    unknown_con = False
+            
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/recon.png", region=(1345, 90, 800, 600), confidence=0.95)
+                pyautogui.click(x, y)
+                print("recon Found")
+                time.sleep(5)
+                return True
+            except pyautogui.ImageNotFoundException:
+                print("No recon .")
+
+        except pyautogui.ImageNotFoundException:
+            print("No myserium_disconnect .")
+
+
+
+    except pyautogui.ImageNotFoundException:
+        print("No mysterium_icon_empty .")
+    return None
+
 def fix_ip(drive, name):
     ipscore = None
     proxycheck = None
@@ -733,9 +775,12 @@ def fix_ip(drive, name):
         ip_address = get_ip(drive)
         ipscore = get_ipscore(ip_address)
         proxycheck = get_proxycheck(ip_address, server_name= name)
-        if ipscore and proxycheck:
+        if ipscore and proxycheck == 200:
             print(f'Good IP found: {ip_address}')
             return ip_address
+        elif proxycheck == 50:
+            print(f'Country ok /Bad IP detected: {ip_address}. Changing IP...')
+            mysterium_vpn_Recon_ip(name)
         else:
             print(f'Bad IP detected: {ip_address}. Changing IP...')
             mysterium_vpn_connect(name)
@@ -938,8 +983,8 @@ def find_most_similar_word(word, word_list):
 def fix_broken_words(word_list):
     reference_list = [
         "comedy", "education", "gaming", "music", "Music", "science","technology",
-        "family" ,"entertainment","family entertainment", 'none', "news","politics", "people","blogs",
-        "travel","travel & events", "sports", "beauty", "Nonprofit", "howto", "film","pets", "food", "sic-fi","people & blogs","news & politics","auto",
+        "family" ,"entertainment","family entertainment", 'none', "news","politics", "people",
+        "travel","travel & events", "sports", "beauty", "nonprofit", "howto", "film","pets", "food", "sic-fi","people & blogs","news & politics","auto",
     
     ]
     fixed_list = []
@@ -1268,13 +1313,44 @@ def get_category_images_baymack():
     capture_and_crop_regions(regions, output_paths)
     return True
 
+
+
+def similarity_onword(word, word_list):
+    most_similar_word = None
+    lowest_distance = float('inf')
+    most_similar_index = -1
+    best_similarity_score = 0
+    
+    # Iterate through the word list
+    for idx, candidate in enumerate(word_list):
+        distance = Levenshtein.distance(word, candidate)
+        max_len = max(len(word), len(candidate))
+        
+        # Calculate similarity score
+        similarity_score = 1 - (distance / max_len)
+        
+        # Print the score for each word
+        print(f"Word: {candidate}, Similarity Score: {similarity_score}")
+        
+        # Update the most similar word and score
+        if similarity_score > best_similarity_score:
+            best_similarity_score = similarity_score
+            most_similar_word = candidate
+            most_similar_index = idx
+    if best_similarity_score > 0.3:
+        for i in range(len(word_list)):
+            if most_similar_word == word_list[i]:
+                return i
+    else:
+        return None
+    return None
 def solve_image_category(drive, category, window):
     start_time = time.time()
 
     activate_window_by_id(window)
     titile =drive.get_title()
     print(titile)
-    time.sleep(3)
+    time.sleep(1)
     if titile == 'Skylom':
         #base = print_base64_images(drive)
         base = are_images_loaded(drive)
@@ -1325,7 +1401,11 @@ def solve_image_category(drive, category, window):
                     print('Fix Broken Word list :', fixword_list)
                     try:
                         if fixword_list:
-                            position = check_words(category, fixword_list)
+                            position = similarity_onword(word, NoFiltered_words)
+                            if position is None:
+                                position = similarity_onword(word, Filtered_words)
+                            if position is None:
+                                position = check_words(category, fixword_list)
                             if position == 4:
                                 print('position is None')
                                 print(f'{similar_word} is similar with {category}')
@@ -1607,6 +1687,13 @@ if ip_address == ip_required:
                         ip_required = fix_ip(sb1, server_name1)
                         ip_address = get_ip(sb1)
                         sb1.open("https://www.skylom.com/videos")
+                        skylom_window = sb1.current_window_handle
+                        
+                        if with_baymack == True:
+                            sb1.open_new_window()
+                            sb1.open("https://www.baymack.com/videos")
+                            baymack_window = sb1.current_window_handle
+
                         print(sb1.get_title())
 
                         reclick_waits = 0
@@ -1741,6 +1828,13 @@ if ip_address == ip_required:
                         ip_required = fix_ip(sb1, server_name1)
                         ip_address = get_ip(sb1)
                         sb1.open("https://www.skylom.com/videos")
+                        skylom_window = sb1.current_window_handle
+                        
+                        if with_baymack == True:
+                            sb1.open_new_window()
+                            sb1.open("https://www.baymack.com/videos")
+                            baymack_window = sb1.current_window_handle
+
                         print(sb1.get_title())
 
                         reclick_waits = 0
@@ -1810,8 +1904,8 @@ if ip_address == ip_required:
                 if check_category_question(sb1) == True:
                     print('Getting IP at 10 sec..')
                     #ip_address =get_ip(sb1)
-                    if ip_address == ip_required:
-                                if ip_address == ip_required:
+                    if ip_address == ip_address:
+                                if ip_address == ip_address:
                                     title = sb1.get_title()
                                     if title == 'Baymack':
                                         sb1.switch_to.window(skylom_window)

@@ -70,18 +70,19 @@ def mysterium_login():
                         text_content = response.text
                     else:
                         print(f"Failed to retrieve the content. Status code: {response.status_code}")
-                        text_content = ""
+                        text_content = None
                     if text_content:
                         pyautogui.click(1385, 310)
                         time.sleep(1)
                         pyautogui.typewrite(text_content)
-                        time.sleep(1)
+                        time.sleep(5)
                         try:
                             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
                             pyautogui.click(x, y)
                             print("import_icon Found")
-                            pyautogui.click(313, 147)
+                            
                             time.sleep(3)
+                            pyautogui.click(313, 147)
                             pyautogui.press('f5')
                             time.sleep(3)
                             try:
@@ -488,31 +489,10 @@ if run_sb1:
                     if mysterium_login():
                         print('Mysterium Login Done...')
                         dc.maximize_window()
-                        ip_required = fix_ip(dc, server_name1)
-                        ip_address = get_ip(dc)
+                        #ip_required = fix_ip(dc, server_name1)
+                        #ip_address = get_ip(dc)
 ##############################################################################################################
-if run_sb2:
-    dc2 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir2, binary_location=chrome_binary_path)
-    dc2.maximize_window()
-    url = "chrome://extensions/"
-    dc2.open(url)
-    print(dc2.get_title())
-    if fresh:
-        mysterium = install_extensions('mysterium')
-        nopecha = install_extensions('nopecha')
-        cookie = install_extensions('cookie')
-        fingerprint = install_extensions('fingerprint')
-        if fingerprint and mysterium and nopecha and cookie:
-            print('All Extensions are installed..')
-            if pin_extensions():
-                print('All Extensions are pinned')
-                if nopecha_elements():
-                    print('Nopecha Elements Added')
-                    if mysterium_login():
-                        print('Mysterium Login Done...')
-                        dc2.maximize_window()
-                        ip_required = fix_ip(dc2, server_name2)
-                        ip_address = get_ip(dc2)
+
 
 
 time.sleep(100000)

@@ -640,11 +640,11 @@ def get_proxycheck(ip, server_name):
             proxy_status = ip_info.get('proxy', 'Unknown')
             country = ip_info.get('country', 'Unknown')
             print(f"IP Address: {ip_address} \nProxy Status: {proxy_status} \country Status: {country}")
-            if proxy_status =='no':
-                if country.lower() in server_name.lower():
+            if country.lower() in server_name.lower():
+                if proxy_status =='no':
                     return 200
                 else:
-                    print(f'{country} is not {server_name}')
+                    print(f'{country} is not {200}')
                     return 50
         else:
             print("Error: Status not OK")
@@ -736,7 +736,7 @@ def mysterium_vpn_Recon_ip(server_name):
         time.sleep(5)
         try:
             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/myserium_disconnect.png", region=(1325, 190, 800, 400), confidence=0.95)
-            pyautogui.click(x, y)
+            #pyautogui.click(x, y)
             print("myserium_disconnect Found")
             unknown_con = True
             while unknown_con == True:
@@ -778,7 +778,7 @@ def fix_ip(drive, name):
         if ipscore and proxycheck == 200:
             print(f'Good IP found: {ip_address}')
             return ip_address
-        elif proxycheck == 50:
+        elif proxycheck == 50 or proxycheck == 200:
             print(f'Country ok /Bad IP detected: {ip_address}. Changing IP...')
             mysterium_vpn_Recon_ip(name)
             time.sleep(5)

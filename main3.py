@@ -1031,35 +1031,7 @@ def fix_broken_words(word_list):
     return fixed_list
 
 
-import easyocr
-reader = easyocr.Reader(['en'], gpu= False)
-def ez_ocr(path):
-    results = reader.readtext(path, detail = 0)
-    cleaned_text = ''
-    for text in results:
-        text = text.lower()
-        cleaned_text += text
 
-    cleaned_text = cleaned_text.replace('0', 'o')
-    cleaned_text = cleaned_text.replace('5', 's')
-    cleaned_text = cleaned_text.replace('6', 's')
-    cleaned_text = cleaned_text.replace('$', 's')
-    cleaned_text = cleaned_text.replace('8', '&')
-    cleaned_text = cleaned_text.replace('1', 'i')
-    cleaned_text = cleaned_text.replace('[', 'c')
-    cleaned_text = cleaned_text.replace('(', 'c')
-    cleaned_text = cleaned_text.replace('4', 'a')
-    cleaned_text = cleaned_text.replace('7', 'e')
-    cleaned_text = cleaned_text.replace('<', 'c')
-    cleaned_text = cleaned_text.replace('*', 'e')
-    letter_count = sum(1 for char in cleaned_text if char.isalpha())
-    if letter_count < 10:
-        cleaned_text = cleaned_text.replace(' ', '')
-        print(letter_count, cleaned_text)
-    if cleaned_text == '':
-        cleaned_text = 'food'
-
-    return cleaned_text
 
 
 def check_words(category, fixed_words):

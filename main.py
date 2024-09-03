@@ -6,7 +6,7 @@ import time
 chrome_binary_path = '/opt/google/chrome/google-chrome'
 chrome_user_data_dir = '/root/.config/google-chrome/'
 
-server_name1 = 'romania'
+server_name1 = 'estonia'
 
 
 def get_ip(driver):

@@ -1005,6 +1005,7 @@ def fix_broken_words(word_list):
         word = word.replace('<', 'c')
         word = word.replace('*', 'e')
         letter_count = sum(1 for char in word if char.isalpha())
+        fixed_word = find_most_similar_word(word.lower(), reference_list)
 
         if letter_count < 10:
             word = word.replace(' ', '')

@@ -326,7 +326,7 @@ headers = {
     'User-Agent': 'My User Agent 1.0',
 }
 
-def get_video_infog(video_url, driver, timeout=8 ):
+def get_video_infog2(video_url, driver, timeout=8 ):
     original_window = driver.current_window_handle
     driver.open_new_window()
     #driver.switch_to.newest_window()
@@ -341,6 +341,27 @@ def get_video_infog(video_url, driver, timeout=8 ):
     driver.switch_to.window(original_window)
     print(video_url)
     return category
+
+
+def get_video_infog(video_url, timeout=8):
+    print(video_url)
+    try:
+        response = requests.get(video_url, headers=headers, timeout=timeout)
+        print("Response received")
+        if response.status_code == 200:
+            html_content = response.text
+            soup = BeautifulSoup(html_content, 'html.parser')
+            category_tag = soup.find('meta', itemprop='genre')
+            category = category_tag['content'] if category_tag else None
+            print(f"Category For This Video is {category}")
+            return category
+    except requests.Timeout:
+        print(f"Request timed out after {timeout} seconds")
+        return '0'
+    except Exception as e:
+        print(f"Errorg: {e}")
+        return '0'
+    
 
 def get_youtube_link(sb):
     page_source = sb.get_page_source()
@@ -415,20 +436,30 @@ def get_and_click_category(category, sb):
 
 
     
-def check_category_question(sb):
-    category_question_selector = '.video-categ-question'
+def check_category_question(sb, debug_mode=False):
+    category_question_selector = '.video-categ-question.video-question-answer'
+    expected_text = "Guess what category the video is?"
+    
     try:
+        # Check if the element is visible and has the expected text
         if sb.is_element_visible(category_question_selector):
-            print("Category question exists")
-            return True
+            actual_text = sb.get_text(category_question_selector)
+            if actual_text.strip() == expected_text:
+                print("Category question exists and matches the expected text.")
+                return True
+            else:
+                if debug_mode:
+                    print(f"Category question found, but text does not match. Found: '{actual_text}'")
+                return False
         else:
             if debug_mode:
-                print("Category question does not exist")
+                print("Category question element does not exist or is not visible.")
             return False
     except Exception as e:
         if debug_mode:
             print(f"An error occurred: {e}")
         return False
+
 
 def click_random_category(sb):
     try:
@@ -780,168 +811,15 @@ def fix_ip(drive, name):
             return ip_address
         elif proxycheck == 50 or proxycheck == 200:
             print(f'Country ok /Bad IP detected: {ip_address}. Changing IP...')
-            mysterium_vpn_Recon_ip(name)
+            #mysterium_vpn_Recon_ip(name)
             time.sleep(5)
         else:
             print(f'Bad IP detected: {ip_address}. Changing IP...')
-            mysterium_vpn_connect(name)
+            #mysterium_vpn_connect(name)
             print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
             time.sleep(5)
 
 #######Solve###########
-
-
-def replace_white_with_limegreen(image_path, output_path, tolerance=30):
-    try:
-        # Open the image
-        img = Image.open(image_path)
-        img = img.convert("RGBA")  # Convert to RGBA to handle transparency if needed
-
-        # Get the data of the image
-        data = img.getdata()
-
-        # Create a new list to store modified pixels
-        new_data = []
-        for item in data:
-            # Calculate the difference between the pixel and white (255, 255, 255)
-            r, g, b = item[:3]
-            if abs(r - 255) <= tolerance and abs(g - 255) <= tolerance and abs(b - 255) <= tolerance:
-                # Replace white (within the tolerance range) with limegreen
-                new_data.append((0, 0, 0, item[3]))  # Keep original alpha value
-            else:
-                # Append other pixels unchanged
-                new_data.append(item)
-
-        # Update the image with the new pixel data
-        img.putdata(new_data)
-
-        # Save the image
-        img.save(output_path, "PNG")
-        print(f"Processed image saved as {output_path}")
-        return output_path
-
-    except Exception as e:
-        print(f"Error: {e}")
-
-def remove_noise(image_path, output_path):
-    try:
-        # Load the image
-        img = cv2.imread(image_path)
-
-        # Convert to grayscale
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-        # Apply binary thresholding
-        _, thresh = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
-
-        # Find contours
-        contours, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-        # Filter out small contours (noise or lines)
-        filtered_contours = [cnt for cnt in contours if cv2.contourArea(cnt) > 100]
-
-        # Create a mask for the filtered contours
-        mask = np.zeros_like(thresh)
-        cv2.drawContours(mask, filtered_contours, -1, 255, thickness=cv2.FILLED)
-
-        # Perform bitwise AND to keep only the large contours
-        cleaned_img = cv2.bitwise_and(thresh, mask)
-
-        # Invert the image to original binary style
-        cleaned_img = cv2.bitwise_not(cleaned_img)
-
-        # Save the cleaned image
-        cv2.imwrite(output_path, cleaned_img)
-        print(f"Cleaned image saved at {output_path}")
-
-    except Exception as e:
-        print(f"Error: {e}")
-
-def remove_random_lines(image_path, output_path):
-
-
-    # Read the image
-    image = cv2.imread(image_path)
-    img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-    cv2.imshow("original", img)
-
-    img = cv2.bitwise_not(img)
-
-    kernel = np.ones((14, 14), np.uint8)
-    close = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
-    newkernel = np.ones((5, 5), np.uint8)
-    inv = cv2.erode(close, newkernel, iterations=1)
-
-    inv = cv2.bitwise_not(inv)
-
-    cv2.imshow("inverted", inv)
-    cv2.imwrite(output_path, inv)
-
-    # Save the cleaned image
-    #cv2.imwrite(output_path, cleaned_image)
-
-def decaptcha(image_path, output_path):
-    # Load the image
-    src = cv2.imread(image_path)
-
-    # Convert image to HSV (Hue, Saturation, Value)
-    hsv = cv2.cvtColor(src, cv2.COLOR_BGR2HSV)
-
-    # Define the line color range in HSV (fine-tune these values as needed)
-    lower_color = np.array([0, 0, 110], dtype="uint8")   # Slightly darker shade for gray
-    upper_color = np.array([180, 30, 135], dtype="uint8") # Capturing grey variations
-
-    # Create mask for grey lines
-    mask = cv2.inRange(hsv, lower_color, upper_color)
-
-    # Slightly increase dilation to remove remaining lines
-    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2, 2))
-    mask_dilated = cv2.dilate(mask, kernel, iterations=2)  # Increase iterations if necessary
-
-    # Apply inpainting to remove the lines
-    dst = cv2.inpaint(src, mask_dilated, 2 , cv2.INPAINT_TELEA)
-
-    # Convert the result to grayscale for further processing
-    gray_dst = cv2.cvtColor(dst, cv2.COLOR_BGR2GRAY)
-
-    # Apply Gaussian blur to smooth out noise
-    blurred_dst = cv2.GaussianBlur(gray_dst, (5,5), 0)
-
-    # Apply Otsu's threshold to binarize the image (make it black and white)
-    _, final_dst = cv2.threshold(blurred_dst, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-
-
-    cv2.imwrite(output_path, final_dst)
-
-def sharp_image(image_path, output_path):
-        # Load the image
-            image = cv2.imread(image_path)
-
-            # Convert to grayscale
-            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-            # Define a stronger sharpening kernel
-            kernel = np.array([[0, -1, 0],
-                            [-1, 171,-1],
-                            [0, -1, 0]])
-
-            # Apply the kernel to the image
-            sharpened = cv2.filter2D(gray, -1, kernel)
-
-
-            # Save the sharpened image
-            cv2.imwrite(output_path, sharpened)
-
-def Filter_images(output_path):
-    replace_white_with_limegreen(output_path, output_path, tolerance=50)
-    sharp_image(output_path, output_path)
-
-    remove_noise(output_path, output_path)
-    sharp_image(output_path, output_path)
-
-    decaptcha(output_path, output_path)
-    sharp_image(output_path, output_path)
-
 import Levenshtein
 
 def simple_similarity(word1, word2):
@@ -950,7 +828,7 @@ def simple_similarity(word1, word2):
     matches = sum(1 for a, b in zip(word1, word2) if a == b)
     return matches / max(len(word1), len(word2))
 
-# Function to find the most similar word from the reference list
+
 def find_most_similar_word2(word, word_list):
     normalized_word = word
     highest_similarity = 0
@@ -1030,10 +908,6 @@ def fix_broken_words(word_list):
         fixed_list.append(fixed_word)
 
     return fixed_list
-
-
-
-
 
 def check_words(category, fixed_words):
     if category is None:
@@ -1127,48 +1001,6 @@ def check_words(category, fixed_words):
     return 4
 
 
-
-import os
-import shutil
-
-def copy_images_to_folder(images_list, destination_folder):
-    # Check if the destination folder exists, if not, create it
-    if not os.path.exists(destination_folder):
-        os.makedirs(destination_folder)
-
-    # Loop through each image path in the list and copy it to the destination folder
-    for image_path in images_list:
-        # Check if the image exists
-        if os.path.exists(image_path):
-            try:
-                # Copy the image to the destination folder
-                shutil.copy(image_path, destination_folder)
-                print(f'Copied: {image_path} to {destination_folder}')
-            except Exception as e:
-                print(f'Error copying {image_path}: {e}')
-        else:
-            print(f'Image not found: {image_path}')
-
-
-
-
-def list_fixer(list1, list2):
-    for i in range(len(list1)):
-        if list1[i] == 'food':
-            list1[i] = list2[i]
-        elif list2[i] == 'food':
-            list2[i] = list1[i]
-    for i in range(min(len(list1), len(list2))): 
-        count1 = len([char for char in list1[i] if char.isalpha()])
-        count2 = len([char for char in list2[i] if char.isalpha()])
-        if count1 < count2:
-            list1[i] = list2[i]
-        elif count1 > count2:
-            list2[i] = list1[i]
-
-    return list1
-
-
 def capture_and_crop_regions(regions, output_paths):
     try:
         # Capture the entire screen
@@ -1189,24 +1021,41 @@ def capture_and_crop_regions(regions, output_paths):
 
     except Exception as e:
         print(f"An error occurred: {e}")
+
 def are_images_loaded(sb):
         # Find all image elements inside the ul
-        images = sb.find_elements('ul.link-btn-list.video-categ-options img')
-        # Iterate through the images and check if they are fully loaded
+        images = sb.find_elements("ul.link-btn-list img")
+
+        all_loaded = True
         for img in images:
-            # Check if the image is loaded (complete) and has non-zero width and height
-            is_loaded = sb.execute_script(
-                "return arguments[0].complete && arguments[0].naturalWidth > 0 && arguments[0].naturalHeight > 0;", img
-            )
+            # Fetch image src and check if image is displayed and completely loaded
+            img_src = img.get_attribute("src")
             
-            # If any image is not fully loaded, return False
-            if not is_loaded:
-                print(f"Image not loaded: {img.get_attribute('src')}")
-                return False
+            # Use JavaScript to confirm image load status
+            is_image_loaded = sb.execute_script("""
+                let img = arguments[0];
+                return new Promise((resolve) => {
+                    if (img.complete && img.naturalWidth > 0 && img.naturalHeight > 0) {
+                        resolve(true);
+                    } else {
+                        img.onload = () => resolve(true);
+                        img.onerror = () => resolve(false);
+                    }
+                });
+            """, img)
+            
+            # If image failed to load, report and break the loop
+            if not is_image_loaded:
+                print(f"Image with src '{img_src}' failed to load.")
+                all_loaded = False
+                break
 
-        # If all images are loaded, return True
-        return True
+        if all_loaded:
+            print("All images loaded successfully.")
+        else:
+            print("Some images failed to load.")
 
+        return all_loaded
 
 def get_category_images():
     # Define regions and paths
@@ -1249,122 +1098,52 @@ def get_category_images_baymack():
     return True
 
 
-def split_at_symbols(input_string):
-    # Split the string by '@' and process parts
-    parts = input_string.split('@')
+from paddleocr import PaddleOCR
+ocr = PaddleOCR(use_angle_cls=True, lang='en',  drop_score=0)
 
-    # Strip leading/trailing spaces and ensure commas separate words properly
-    result = [part.strip() for part in parts if part.strip()]
+def remove_lines_from_image(input_image_path, output_image_path, np1 = 2 , np2 = 1):
+    image = cv2.imread(input_image_path, 0)
+    kernel_dilation = np.ones((2, 1), np.uint8)
+    kernel_erosion = np.ones((2, 2), np.uint8)
+    dilation = cv2.dilate(image, kernel_dilation, iterations=1)
+    erosion = cv2.erode(dilation, kernel_erosion, iterations=1)
+    kernel_closing = np.ones((np1, np2), np.uint8)
+    closing = cv2.morphologyEx(erosion, cv2.MORPH_CLOSE, kernel_closing)
+    cv2.imwrite(output_image_path, closing)
 
-    return result
-
-def merge_images(image_paths, output_path, orientation="horizontal", spacing=0):
-    # Load images
-    images = [cv2.imread(path) for path in image_paths]
-
-    # Check if all images were loaded successfully
-    if any(image is None for image in images):
-        raise ValueError("Failed to load one or more images.")
-
-    # Determine the output image size based on orientation
-    if orientation == "horizontal":
-        height = max(image.shape[0] for image in images)
-        width = sum(image.shape[1] for image in images) + spacing * (len(images) - 1)
-    elif orientation == "vertical":
-        height = sum(image.shape[0] for image in images) + spacing * (len(images) - 1)
-        width = max(image.shape[1] for image in images)
-    else:
-        raise ValueError("Invalid orientation. Must be 'horizontal' or 'vertical'.")
-
-    # Create an empty output image (using NumPy arrays)
-    output_image = np.zeros((height, width, 3), dtype=np.uint8)
-
-    # Merge images
-    x_offset = 0
-    y_offset = 0
-    for image in images:
-        if orientation == "horizontal":
-            output_image[y_offset:y_offset + image.shape[0], x_offset:x_offset + image.shape[1]] = image
-            x_offset += image.shape[1] + spacing
-        elif orientation == "vertical":
-            output_image[y_offset:y_offset + image.shape[0], x_offset:x_offset + image.shape[1]] = image
-            y_offset += image.shape[0] + spacing
-
-    # Save the output image
-    cv2.imwrite(output_path, output_image)
-
-
-def get_google_ocr(driver, url):
-    image_url = url
-    formatted_link = image_url.replace("https://", "").replace("/", "%2F")
-    print(f"Formatted link: {formatted_link}")
-    lens_url = f"https://lens.google.com/uploadbyurl?url=https%3A%2F%2F{formatted_link}"
-    print(f"Formatted link: {lens_url}")
-    original_window = driver.current_window_handle
-    driver.open_new_window()
-    #driver.switch_to.newest_window()
-    driver.open(lens_url)
-    while True:
-        try:
-            if driver.is_element_visible("button#ucj-2"):
-                driver.click("button#ucj-2")
-                #print("Clicked the 'False' button.")
-
-
-        except Exception as e:
-            pass
-            #print(f"False' button is not visible.NoSuchElementException")
-        try:
-            if driver.is_element_visible("button.VfPpkd-LgbsSe.VfPpkd-LgbsSe-OWXEXe-k8QpJ.VfPpkd-LgbsSe-OWXEXe-dgl2Hf.nCP5yc.AjY5Oe.DuMIQc.LQeN7.kCfKMb"):
-                driver.click("button.VfPpkd-LgbsSe.VfPpkd-LgbsSe-OWXEXe-k8QpJ.VfPpkd-LgbsSe-OWXEXe-dgl2Hf.nCP5yc.AjY5Oe.DuMIQc.LQeN7.kCfKMb")
-                #print("Clicked the button.VfPpkd-vQzf8d button.")
-        except Exception as e:
-            pass
-            #print(f"button.VfPpkd-vQzf8d' button is not visible.NoSuchElementException")
-        try:
-            if driver.is_element_visible("h1.wCgoWb"):
-                answer = driver.get_text("h1.wCgoWb")
-                
-                print(f"{answer}")
-                driver.close()
-                driver.switch_to.window(original_window)
-                return answer
+def captcha_to_text(image_paths):
+    temp_output = 'temp_output.png'
+    list_img = []
+    for image in image_paths:
+        remove_lines_from_image(image, temp_output, np1 = 2 , np2 = 1)
+        result = ocr.ocr(image)
+        if result == [None]:
+            print(f'try 3,3 for {image}')
+            remove_lines_from_image(image, temp_output, np1 = 3 , np2 = 3)
+            result = ocr.ocr(temp_output)
+            if result == [None]:
+                result = 'foo'
             else:
-                #print(f"not found")
-                pass
-        except Exception:
-            #print(f"Error finding input box or submit button: {e}")
-            pass
+                result = ''.join([item[1][0] for item in result[0]])
+        else:
+            result = ''.join([item[1][0] for item in result[0]])
+            result_back = result
+            letter_count = sum(1 for char in result if char.isalpha())
+            if letter_count <= 2:
+                print(f'2 letter  for {image} letters are {result}')
+                remove_lines_from_image(image, temp_output, np1 = 3 , np2 = 3)
+                result = ocr.ocr(temp_output)
+                if result == [None]:
+                    result = result_back
+                else:
+                    result = ''.join([item[1][0] for item in result[0]])
+        list_img.append(result)
 
-API_KEY = '6d207e02198a847aa98d0a2a901485a5'  # Replace with your actual API key
+    return list_img
 
-def upload_image(image_path):
-    url = 'https://freeimage.host/api/1/upload'
-    try:
-        with open(image_path, 'rb') as file:
-            response = requests.post(url, data={'key': API_KEY, 'action': 'upload', 'format': 'json'}, files={'source': file})
-            response.raise_for_status()  # Raise an error for HTTP error responses
-            response_json = response.json()
-            
-            # Extract the image URL from the response
-            if response_json.get('status_code') == 200 and 'image' in response_json:
-                return response_json['image']['url']
-            else:
-                print("Upload failed:", response_json.get('status_txt', 'Unknown error'))
-                return None
-    except requests.exceptions.RequestException as e:
-        print(f"Error during upload: {e}")
-        return None
-image_paths = ["crop1.png", "at.png" , "crop2.png" ]
-image_paths2 = ["crop3.png", "at.png" , "crop4.png" ]
-output_path = "merged_image.png"
-output_path2 = "merged_image2.png"
-orientation = "horizontal" 
-spacing = 10
 
 def solve_image_category(drive, category, window):
     start_time = time.time()
-
     activate_window_by_id(window)
     titile =drive.get_title()
     print(titile)
@@ -1382,24 +1161,13 @@ def solve_image_category(drive, category, window):
                     print("The image is blank (all white).")
                 else:
                     print("The image is not blank.")
-
-                    merge_images(image_paths, output_path, orientation, spacing)
-                    merge_images(image_paths2, output_path2, orientation, spacing)
-                    linkg1 = upload_image('merged_image.png')
-                    linkg2 = upload_image('merged_image2.png')
-                    print(str(linkg1))
-                    print(str(linkg2))
-                    start_time = time.time()
-                    word1= get_google_ocr(drive, str(linkg1))
-                    word2= get_google_ocr(drive, str(linkg2))
-                    words = word1 + '@' + word2
-                    separated_words = split_at_symbols(words)
-                    print(separated_words)
-                    fixword_list = fix_broken_words(separated_words)
+                    image_paths = ['crop1.png', 'crop2.png', 'crop3.png', 'crop4.png']
+                    captcha_ocr = captcha_to_text(image_paths)
+                    print('Peddle Word list :', captcha_ocr)
+                    fixword_list = fix_broken_words(captcha_ocr)
                     print('Fix Broken Word list :', fixword_list)
                     try:
                         if fixword_list:
-
                             position = check_words(category, fixword_list)
                             if position == 4:
                                 print('position is None')
@@ -1441,20 +1209,10 @@ def solve_image_category(drive, category, window):
                     print("The image is blank (all white).")
                 else:
                     print("The image is not blank.")
-
-                    merge_images(image_paths, output_path, orientation, spacing)
-                    merge_images(image_paths2, output_path2, orientation, spacing)
-                    linkg1 = upload_image('merged_image.png')
-                    linkg2 = upload_image('merged_image2.png')
-                    print(str(linkg1))
-                    print(str(linkg2))
-                    start_time = time.time()
-                    word1= get_google_ocr(drive, str(linkg1))
-                    word2= get_google_ocr(drive, str(linkg2))
-                    words = word1 + '@' + word2
-                    separated_words = split_at_symbols(words)
-                    print(separated_words)
-                    fixword_list = fix_broken_words(separated_words)
+                    image_paths = ['crop1.png', 'crop2.png', 'crop3.png', 'crop4.png']
+                    captcha_ocr = captcha_to_text(image_paths)
+                    print('Peddle Word list :', captcha_ocr)
+                    fixword_list = fix_broken_words(captcha_ocr)
                     print('Fix Broken Word list :', fixword_list)
 
                     try:
@@ -1944,8 +1702,6 @@ if ip_address == ip_required:
 
             check_number_captcha_exists(sb1, id1)
             check_icon_captcha_exists(sb1, id1)
-
-
             click_false_button(sb1)
             handle_random_number_buttons(sb1)
 

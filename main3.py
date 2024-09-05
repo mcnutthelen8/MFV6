@@ -326,7 +326,7 @@ headers = {
     'User-Agent': 'My User Agent 1.0',
 }
 
-def get_video_infog2(video_url, driver, timeout=8 ):
+def get_video_infog(video_url, driver, timeout=8 ):
     original_window = driver.current_window_handle
     driver.open_new_window()
     #driver.switch_to.newest_window()
@@ -343,25 +343,6 @@ def get_video_infog2(video_url, driver, timeout=8 ):
     return category
 
 
-def get_video_infog(video_url, timeout=8):
-    print(video_url)
-    try:
-        response = requests.get(video_url, headers=headers, timeout=timeout)
-        print("Response received")
-        if response.status_code == 200:
-            html_content = response.text
-            soup = BeautifulSoup(html_content, 'html.parser')
-            category_tag = soup.find('meta', itemprop='genre')
-            category = category_tag['content'] if category_tag else None
-            print(f"Category For This Video is {category}")
-            return category
-    except requests.Timeout:
-        print(f"Request timed out after {timeout} seconds")
-        return '0'
-    except Exception as e:
-        print(f"Errorg: {e}")
-        return '0'
-    
 
 def get_youtube_link(sb):
     page_source = sb.get_page_source()
@@ -436,18 +417,24 @@ def get_and_click_category(category, sb):
 
 
     
+    
 def check_category_question(sb, debug_mode=False):
     category_question_selector = '.video-categ-question.video-question-answer'
-    expected_text = "Guess what category the video is?"
+    category_question_selector2 = '.video-categ-question'
+    expected_text = "Guess What Category The Video Is?"
+    expected_text2 = "Guess what category the video is?"
     
     try:
         # Check if the element is visible and has the expected text
-        if sb.is_element_visible(category_question_selector):
-            actual_text = sb.get_text(category_question_selector)
-            if actual_text.strip() == expected_text:
+        if sb.is_element_visible(category_question_selector2):
+            actual_text = sb.get_text(category_question_selector2)
+            print(actual_text)
+            if actual_text.strip() == expected_text or actual_text.strip() == expected_text2:
                 print("Category question exists and matches the expected text.")
                 return True
+
             else:
+                print(f"Category question found, but text does not match. Found: '{actual_text}'")
                 if debug_mode:
                     print(f"Category question found, but text does not match. Found: '{actual_text}'")
                 return False
@@ -459,7 +446,6 @@ def check_category_question(sb, debug_mode=False):
         if debug_mode:
             print(f"An error occurred: {e}")
         return False
-
 
 def click_random_category(sb):
     try:
@@ -882,6 +868,11 @@ def fix_broken_words(word_list):
         word = word.replace('7', 'e')
         word = word.replace('<', 'c')
         word = word.replace('*', 'e')
+        if word == 'F-w':
+            word = 'film'
+        if word == '1F()Ve':
+            print('travel')
+            word = 'travel'
         letter_count = sum(1 for char in word if char.isalpha())
         fixed_word = find_most_similar_word(word.lower(), reference_list)
 
@@ -1024,38 +1015,22 @@ def capture_and_crop_regions(regions, output_paths):
 
 def are_images_loaded(sb):
         # Find all image elements inside the ul
-        images = sb.find_elements("ul.link-btn-list img")
-
-        all_loaded = True
+        images = sb.find_elements('ul.link-btn-list.video-categ-options img')
+        # Iterate through the images and check if they are fully loaded
         for img in images:
-            # Fetch image src and check if image is displayed and completely loaded
-            img_src = img.get_attribute("src")
+            # Check if the image is loaded (complete) and has non-zero width and height
+            is_loaded = sb.execute_script(
+                "return arguments[0].complete && arguments[0].naturalWidth > 0 && arguments[0].naturalHeight > 0;", img
+            )
             
-            # Use JavaScript to confirm image load status
-            is_image_loaded = sb.execute_script("""
-                let img = arguments[0];
-                return new Promise((resolve) => {
-                    if (img.complete && img.naturalWidth > 0 && img.naturalHeight > 0) {
-                        resolve(true);
-                    } else {
-                        img.onload = () => resolve(true);
-                        img.onerror = () => resolve(false);
-                    }
-                });
-            """, img)
-            
-            # If image failed to load, report and break the loop
-            if not is_image_loaded:
-                print(f"Image with src '{img_src}' failed to load.")
-                all_loaded = False
-                break
+            # If any image is not fully loaded, return False
+            if not is_loaded:
+                print(f"Image not loaded: {img.get_attribute('src')}")
+                return False
 
-        if all_loaded:
-            print("All images loaded successfully.")
-        else:
-            print("Some images failed to load.")
+        # If all images are loaded, return True
+        return True
 
-        return all_loaded
 
 def get_category_images():
     # Define regions and paths
@@ -1171,6 +1146,8 @@ def solve_image_category(drive, category, window):
                             position = check_words(category, fixword_list)
                             if position == 4:
                                 print('position is None')
+                                similar_word = find_most_similar_word(category, captcha_ocr)
+                                position = captcha_ocr.index(similar_word)
                             print(f"The most similar word to '{category}' at index {position} : {fixword_list}")
                             title = drive.get_title()
                             if title == 'Skylom':
@@ -1220,7 +1197,8 @@ def solve_image_category(drive, category, window):
                             position = check_words(category, fixword_list)
                             if position == 4:
                                 print('position is None')
-
+                                similar_word = find_most_similar_word(category, captcha_ocr)
+                                position = captcha_ocr.index(similar_word)
                             print(f"The most similar word to '{category}' at index {position} : {fixword_list}")
                             title = drive.get_title()
                             if title == 'Baymack':

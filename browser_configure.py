@@ -484,11 +484,11 @@ if run_sb1:
             print('All Extensions are installed..')
             if pin_extensions():
                 print('All Extensions are pinned')
-                if nopecha_elements():
-                    print('Nopecha Elements Added')
-                    if mysterium_login():
-                        print('Mysterium Login Done...')
-                        dc.maximize_window()
+                #if nopecha_elements():
+                 #   print('Nopecha Elements Added')
+                if mysterium_login():
+                    print('Mysterium Login Done...')
+                    dc.maximize_window()
                         #ip_required = fix_ip(dc, server_name1)
                         #ip_address = get_ip(dc)
 ##############################################################################################################

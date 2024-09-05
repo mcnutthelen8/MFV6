@@ -205,20 +205,20 @@ def play_button(sb):
                     play_button_elements = sb.find_elements(By.CSS_SELECTOR, play_button_selector)
                     print("Play button found")
                     play_button = play_button_elements[0]
-                    time.sleep(2)
+                    time.sleep(1)
                     play_button.click()
                     print("Play button Clicked")
                     sb.switch_to.default_content()
-                    time.sleep(1)
+                    #time.sleep(1)
                 if sb.is_element_visible('button.ytp-ad-skip-button-modern'):
                     play_button_elements = sb.find_elements(By.CSS_SELECTOR, 'button.ytp-ad-skip-button-modern')
                     print("Play button found")
                     play_button = play_button_elements[0]
-                    time.sleep(2)
+                    time.sleep(1)
                     play_button.click()
                     print("Play button Clicked")
                     sb.switch_to.default_content()
-                    time.sleep(1)
+                    #time.sleep(1)
                 else:
                     print("Play button not found")
                     sb.switch_to.default_content()
@@ -1368,7 +1368,7 @@ if ip_address == ip_required:
         previous_duration_bay = 0
         previous_duration = 0
         while True:
-            time.sleep(1)
+            #time.sleep(1)
             cloudflare(id1,sb1)
             sb1.switch_to.default_content()
             sb1.execute_script("window.scrollTo(0, 0);")
@@ -1475,25 +1475,10 @@ if ip_address == ip_required:
                     if ip_address == ip_required:
                                 if ip_address == ip_required:
                                     title = sb1.get_title()
-                                    if title == 'Skylom' and with_baymack == True:
-                                        sb1.switch_to.window(baymack_window)
-                                        if click_next_video(sb1):
-                                            elapsed_time = time.time() - start_time
-                                            mins, secs = divmod(int(elapsed_time), 60)
-                                            timer = f'{mins:02d}:{secs:02d}'
-                                            seconds_only = int(elapsed_time)
-                                            print(f'Next Click {timer}')
-                                            print(f'Elapsed_time {seconds_only}')
-                                            start_time = time.time()
-                                            ip_address = 0
-                                        sb1.switch_to.window(skylom_window)
                                     print('starting to answer category')
-                                    if category != 0:
-                                        print('starting to answer category confirm')
-                                        title = sb1.get_title()
-                                        if title:
-                                            print(title)
-                                            solve_image_category(sb1, category, id1)
+                                    if category != 0 and title == 'Skylom':
+                                        print(title)
+                                        solve_image_category(sb1, category, id1)
 
                                     elif category == 0:
                                         video_link = get_youtube_link(sb1) 
@@ -1616,20 +1601,7 @@ if ip_address == ip_required:
                     if ip_address == ip_address:
                                 if ip_address == ip_address:
                                     title = sb1.get_title()
-                                    if title == 'Baymack':
-                                        sb1.switch_to.window(skylom_window)
-                                        if click_next_video(sb1):
-                                            elapsed_time = time.time() - start_time
-                                            mins, secs = divmod(int(elapsed_time), 60)
-                                            timer = f'{mins:02d}:{secs:02d}'
-                                            seconds_only = int(elapsed_time)
-                                            print(f'Next Click {timer}')
-                                            print(f'Elapsed_time {seconds_only}')
-                                            start_time = time.time()
-                                            #ip_address = 0
-                                        sb1.switch_to.window(baymack_window)
-                                    print('starting to answer category')
-                                    if category_bay != 0:
+                                    if category_bay != 0 and title == 'Baymack':
                                         print('starting to answer category confirm')
                                         title = sb1.get_title()
                                         if title:
@@ -1663,25 +1635,24 @@ if ip_address == ip_required:
                         ip_address = get_ip(sb1)
 
 
-            if click_next_video(sb1):
-
-                elapsed_time = time.time() - start_time
-                mins, secs = divmod(int(elapsed_time), 60)
-                timer = f'{mins:02d}:{secs:02d}'
-                seconds_only = int(elapsed_time)
-                print(f'Next Click {timer}')
-                print(f'Elapsed_time {seconds_only}')
-                start_time = time.time()
-                title = sb1.get_title()
-                if title == 'Skylom':
-                    ip_address = 0
-
+            #if click_next_video(sb1):
+                #elapsed_time = time.time() - start_time
+                #mins, secs = divmod(int(elapsed_time), 60)
+                #timer = f'{mins:02d}:{secs:02d}'
+                #seconds_only = int(elapsed_time)
+                #print(f'Next Click {timer}')
+                #print(f'Elapsed_time {seconds_only}')
+                #start_time = time.time()
+                #title = sb1.get_title()
+                #if title == 'Skylom':
+                #    ip_address = 0
 
 
-            check_number_captcha_exists(sb1, id1)
+
+            #check_number_captcha_exists(sb1, id1)
             check_icon_captcha_exists(sb1, id1)
-            click_false_button(sb1)
-            handle_random_number_buttons(sb1)
+            #click_false_button(sb1)
+            #handle_random_number_buttons(sb1)
 
 
 

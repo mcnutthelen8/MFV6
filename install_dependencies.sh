@@ -19,7 +19,7 @@ sudo dpkg -i google-chrome-stable_current_amd64.deb
 # Install pip and Python packages
 echo "Installing pip and Python packages..."
 sudo apt install -y python3-pip
-pip install requests beautifulsoup4 selenium clipboard pyautogui opencv-python numpy seleniumbase pillow easyocr Levenshtein
+pip install requests beautifulsoup4 selenium clipboard pyautogui opencv-python numpy seleniumbase pillow Levenshtein paddlepaddle paddleocr
 pip install mysql-connector-python
 
 # Install additional tools

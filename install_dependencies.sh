@@ -19,7 +19,7 @@ sudo dpkg -i google-chrome-stable_current_amd64.deb
 # Install pip and Python packages
 echo "Installing pip and Python packages..."
 sudo apt install -y python3-pip
-pip install requests beautifulsoup4 selenium clipboard pyautogui opencv-python numpy seleniumbase pillow Levenshtein paddlepaddle paddleocr
+pip install requests beautifulsoup4 selenium clipboard pyautogui opencv-python numpy seleniumbase pillow Levenshtein paddlepaddle paddleocr pymongo
 pip install mysql-connector-python
 
 # Install additional tools
@@ -39,6 +39,6 @@ wget "https://clients2.googleusercontent.com/crx/blobs/AVsOOGhiVwWZyTfRn1a8tz5BG
 unzip mysterium.crx -d /root/Desktop/MFV6/mysterium
 unzip cookie.crx -d /root/Desktop/MFV6/cookie
 unzip fingerprint.crx -d /root/Desktop/MFV6/fingerprint
-unzip nopecha.crx -d /root/Desktop/MFV6/nopecha
+#unzip nopecha.crx -d /root/Desktop/MFV6/nopecha
 
 echo "Installation completed successfully!"

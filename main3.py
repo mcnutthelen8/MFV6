@@ -19,8 +19,6 @@ from seleniumbase import SB
 from seleniumbase import Driver
 import subprocess
 import pyautogui
-import mysql.connector
-from mysql.connector import Error
 from datetime import datetime
 import pytz
 import datetime
@@ -53,96 +51,58 @@ chrome_user_data_dir2 = '/root/.config/google-chrome/second'
 chrome_user_data_dir3 = '/root/.config/google-chrome/third'
 chrome_user_data_dir4 = '/root/.config/google-chrome/four'
 
-def create_connection():
-    """Create a database connection."""
+
+from pymongo import MongoClient
+
+
+mongo_uri = "mongodb+srv://redgta36:J6n7Hoz2ribHmMmx@moneyfarm.wwzcs.mongodb.net/?retryWrites=true&w=majority&appName=moneyfarm"
+client = MongoClient(mongo_uri)
+db = client['MoneyFarmV6'] 
+collection = db[f'Farm{farm_id}']
+
+def add_messages(type_value, new_messages):
     try:
-        connection = mysql.connector.connect(
-            host='ooy.h.filess.io',
-            user='MFV6_herefooton',
-            password='ded12e502693e0b05146dd9d6cf1b6d43f0fa5db',
-            database='MFV6_herefooton',
-            port=3307
-        )
-        if connection.is_connected():
-            print('Connected to MySQL database')
-            return connection
-    except Error as e:
-        print(f"Error: {e}")
-        return None
+        query = {"type": type_value}
+        existing_doc = collection.find_one(query)
+        print("Existing document before update")
+        new_message = new_messages # {'2024-09-06 03:47:14': 220}  # Use a new timestamp
+        messages = existing_doc['messages']
+        messages.update(new_message)
+        update = {"$set": {"messages": messages}}
+        result = collection.update_one(query, update)
+        print("Updated document")
+        if result.matched_count > 0:
+            print(f"Added new messages to existing document. Updated {result.modified_count} document(s).")
+        else:
+            print("No document found with the specified type.")
+    except Exception as e:
+        print(e)
 
-
-
-def insert_data(ip, amount, id):
+def insert_data(ip, amount1, amount2):
     sri_lanka_tz = pytz.timezone('Asia/Colombo')
     utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
     sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
-
     now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
-    connection = create_connection()
 
-    if connection:
-        try:
-            cursor = connection.cursor()
+    query = {"type": "main"}
+    sample_document = {
+        "Skylom": amount1,
+        "Baymack": amount2,
+        "Status": now,
+        "Ip": ip
+        
+    }
+    update = {"$set": sample_document}
+    result = collection.update_one(query, update)      
+    if result.modified_count > 0:
+        print(f"Updated {result.modified_count} document(s).")
+    else:
+        print("No document was updated.")
+    add_messages('skylom', {now: amount1})
+    add_messages('baymack', {now: amount2})
+    return
 
-            # First, update the status_table
-            sql_update = """
-                UPDATE `status_table` 
-                SET `ip_address` = %s, `status` = %s, `amount` = %s  
-                WHERE `id` = %s;
-            """
-            values_update = (ip, str(now), amount, id)
-            cursor.execute(sql_update, values_update)
-            connection.commit()
-            print("Status table updated successfully.")
 
-            # Then, insert data into farm1_coins
-            if id == 1:
-
-                sql_insert = """
-                    INSERT INTO farm1_coins (time, amount) 
-                    VALUES (%s, %s)
-                """
-            if id == 2:
-
-                sql_insert = """
-                    INSERT INTO farm2_coins (time, amount) 
-                    VALUES (%s, %s)
-                """
-            if id == 3:
-
-                sql_insert = """
-                    INSERT INTO farm3_coins (time, amount) 
-                    VALUES (%s, %s)
-                """
-            if id == 4:
-
-                sql_insert = """
-                    INSERT INTO farm4_coins (time, amount) 
-                    VALUES (%s, %s)
-                """
-            values_insert = (str(now), amount)
-            cursor.execute(sql_insert, values_insert)  # Use execute instead of executemany
-            connection.commit()
-            print(f"Data inserted into {id}s successfully.")
-
-            sql_query = "SELECT ip_address FROM status_table;"
-            cursor.execute(sql_query)
-
-            # Fetch all IP addresses
-            rows = cursor.fetchall()
-            ip_list = [row[0] for row in rows]
-            if cursor:
-                cursor.close()
-            if connection:
-                connection.close()
-            return ip_list
-        except Error as e:
-            if cursor:
-                cursor.close()
-            if connection:
-                connection.close()
-            print(f"Error: {e}")
-            return None
 
 def get_ip(driver):
     original_window = driver.current_window_handle
@@ -1366,6 +1326,7 @@ if ip_address == ip_required:
         ip_address3 = 0
         ip_address4 = 0
         previous_duration_bay = 0
+        baymack_coins = 0
         previous_duration = 0
         while True:
             #time.sleep(1)
@@ -1442,16 +1403,9 @@ if ip_address == ip_required:
                                     proxycheck = get_proxycheck(ip_address, server_name= server_name1)
                                     coins = get_coin_value(sb1)
                                     if ip_address == ip_required and proxycheck:
-                                        if coins:
-                                            ip_list = insert_data(ip= ip_address,amount= coins, id= farm_id)
-                                            if ip_list:
-                                                duplicates_ip = set([ip for ip in ip_list if ip_list.count(ip) > 1])
-                                                if ip_address in duplicates_ip:
-                                                    print(f'{duplicates_ip} same ip detect {ip_address}')
-                                                    ip_required = fix_ip(sb1, server_name1)
-                                                    ip_address = get_ip(sb1)
-                                                else:
-                                                    print('no duplicate on 1st')  
+                                        if coins and baymack_coins != 0:
+                                            insert_data(ip= ip_address,amount1=coins, amount2=baymack_coins)
+
                             else:
                                 print(f'category is not defined{category}')
                         else:
@@ -1503,6 +1457,7 @@ if ip_address == ip_required:
                         #ip_address =get_ip(sb)
                         print(f'IP is not Matched in IF category {ip_address}, Required: {ip_required}')
                         print('Getting IP at after found category...')
+                        break
                         ip_required = fix_ip(sb1, server_name1)
                         ip_address = get_ip(sb1)
 
@@ -1563,21 +1518,17 @@ if ip_address == ip_required:
                                 elif "Technology" in category_bay:
                                     category_bay = "Technology"
                                 title = sb1.get_title()
-                                if title == 'Skylom':        
-                                    ip_address =get_ip(sb1)
-                                    proxycheck = get_proxycheck(ip_address, server_name= server_name1)
+                                if title == 'Baymack':        
+                                    #ip_address =get_ip(sb1)
+                                    #proxycheck = get_proxycheck(ip_address, server_name= server_name1)
                                     coins = get_coin_value(sb1)
                                     if ip_address == ip_required and proxycheck:
                                         if coins:
-                                            ip_list = insert_data(ip= ip_address,amount= coins, id= farm_id)
-                                            if ip_list:
-                                                duplicates_ip = set([ip for ip in ip_list if ip_list.count(ip) > 1])
-                                                if ip_address in duplicates_ip:
-                                                    print(f'{duplicates_ip} same ip detect {ip_address}')
-                                                    ip_required = fix_ip(sb1, server_name1)
-                                                    ip_address = get_ip(sb1)
-                                                else:
-                                                    print('no duplicate on 1st')  
+                                            baymack_coins = coins
+                                        else:
+                                            print('Bymack Coins not availible')
+
+ 
                             else:
                                 print(f'category_bay is not defined{category_bay}')
                         else:
@@ -1631,21 +1582,11 @@ if ip_address == ip_required:
                         #ip_address =get_ip(sb)
                         print(f'IP _bays not Matched in IF category {ip_address}, Required: {ip_required}')
                         print('Getting IP at after found category...')
+                        break
                         ip_required = fix_ip(sb1, server_name1)
                         ip_address = get_ip(sb1)
 
 
-            #if click_next_video(sb1):
-                #elapsed_time = time.time() - start_time
-                #mins, secs = divmod(int(elapsed_time), 60)
-                #timer = f'{mins:02d}:{secs:02d}'
-                #seconds_only = int(elapsed_time)
-                #print(f'Next Click {timer}')
-                #print(f'Elapsed_time {seconds_only}')
-                #start_time = time.time()
-                #title = sb1.get_title()
-                #if title == 'Skylom':
-                #    ip_address = 0
 
 
 

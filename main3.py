@@ -1329,7 +1329,7 @@ if ip_address == ip_required:
         baymack_coins = 0
         previous_duration = 0
         while True:
-            #time.sleep(1)
+            time.sleep(1)
             cloudflare(id1,sb1)
             sb1.switch_to.default_content()
             sb1.execute_script("window.scrollTo(0, 0);")
@@ -1405,6 +1405,8 @@ if ip_address == ip_required:
                                     if ip_address == ip_required and proxycheck:
                                         if coins and baymack_coins != 0:
                                             insert_data(ip= ip_address,amount1=coins, amount2=baymack_coins)
+                                            print('insert Data')
+
 
                             else:
                                 print(f'category is not defined{category}')
@@ -1522,11 +1524,10 @@ if ip_address == ip_required:
                                     #ip_address =get_ip(sb1)
                                     #proxycheck = get_proxycheck(ip_address, server_name= server_name1)
                                     coins = get_coin_value(sb1)
-                                    if ip_address == ip_required and proxycheck:
-                                        if coins:
-                                            baymack_coins = coins
-                                        else:
-                                            print('Bymack Coins not availible')
+                                    if coins:
+                                        baymack_coins = coins
+                                    else:
+                                        print('Bymack Coins not availible')
 
  
                             else:

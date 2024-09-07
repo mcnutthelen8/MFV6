@@ -22,37 +22,26 @@ import pyautogui
 from datetime import datetime
 import pytz
 import datetime
-import difflib
 import cv2
 import numpy as np
 from PIL import Image
-# Connect to the MySQL database
+from pymongo import MongoClient
+from paddleocr import PaddleOCR
+import Levenshtein
+
+ocr = PaddleOCR(use_angle_cls=True, lang='en',  drop_score=0)
 debug_mode = False
 
 ip_required = 0
 farm_id = 1
-farm_id2 = 2
-farm_id3 = 3
-farm_id4 = 4
 run_sb1 = True
-run_sb2 = False
-run_sb3 = False
-run_sb4 = False
 with_baymack = True
+fresh = True
 server_name1 = 'estonia'
-server_name2 = 'romania'
-server_name3 = 'poland'
-server_name4 = 'hungary'
+
 
 chrome_binary_path = '/opt/google/chrome/google-chrome'
 chrome_user_data_dir = '/root/.config/google-chrome/'
-
-chrome_user_data_dir2 = '/root/.config/google-chrome/second'
-chrome_user_data_dir3 = '/root/.config/google-chrome/third'
-chrome_user_data_dir4 = '/root/.config/google-chrome/four'
-
-
-from pymongo import MongoClient
 
 
 mongo_uri = "mongodb+srv://redgta36:J6n7Hoz2ribHmMmx@moneyfarm.wwzcs.mongodb.net/?retryWrites=true&w=majority&appName=moneyfarm"
@@ -89,7 +78,8 @@ def insert_data(ip, amount1, amount2):
         "Skylom": amount1,
         "Baymack": amount2,
         "Status": now,
-        "Ip": ip
+        "Ip": ip,
+        "response": 'Running'
         
     }
     update = {"$set": sample_document}
@@ -127,16 +117,6 @@ def activate_window_by_id(window_id):
     print(f"Activate Window ID: {window_id}")
     subprocess.run(['xdotool', 'windowactivate', window_id])
 
-
-def element_exists(sb, selector):
-    try:
-        return sb.is_element_visible(selector)
-    except Exception:
-        return False
-
-def verify_success(sb):
-    sb.assert_element('img[alt="Logo Assembly"]', timeout=5)
-    sb.sleep(4)
 
 def get_current_duration(sb):
     try:
@@ -345,40 +325,9 @@ def cloudflare(id,sb):
         sb.refresh()
 
 
-def get_and_click_category(category, sb):
-    try:
-        # Wait for the category buttons to be present
-        category_buttons = WebDriverWait(sb, 1).until(
-            EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'ul.link-btn-list.video-categ-options li a div'))
-        )
-        
-        # Print the category buttons
-        for button in category_buttons:
-            print(button.text)
-        
-        # Find and click the assigned category
-        for button in category_buttons:
-            button_text = button.text.strip().lower()
-            category_lower = category.lower()
-            
-            # Check for partial match
-            if category_lower in button_text or button_text in category_lower:
-                print(f"Found and clicked category: {button.text}")
-                button.click()
-                return True
-        
-        if debug_mode:
-            print(f"Category '{category}' not found")
-        return False
-    except Exception as e:
-        if debug_mode:
-            print(f"An error occurred: {str(e)}")
-        return False
-
 
     
-    
-def check_category_question(sb, debug_mode=False):
+def check_category_question(sb):
     category_question_selector = '.video-categ-question.video-question-answer'
     category_question_selector2 = '.video-categ-question'
     expected_text = "Guess What Category The Video Is?"
@@ -407,170 +356,6 @@ def check_category_question(sb, debug_mode=False):
             print(f"An error occurred: {e}")
         return False
 
-def click_random_category(sb):
-    try:
-        # Wait for the category buttons to be present
-        category_buttons = WebDriverWait(sb, 1).until(
-            EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'ul.link-btn-list.video-categ-options li a div'))
-        )
-        
-        # Print the category buttons
-        for button in category_buttons:
-            print(button.text)
-        
-        # Select a random button and click it
-        random_button = random.choice(category_buttons)
-        #sb.highlight(random_button)
-        random_button.click()
-        print(f"Clicked random category: {random_button.text}")
-        return True
-    
-    except Exception as e:
-        if debug_mode:
-            print(f"An error occurred: {e}")
-        return False
-
-def click_next_video(sb):
-    next_video_selector = 'a.retention-click.themeBtn.bluebtn#nextvideo'
-    try:
-        if sb.is_element_visible(next_video_selector):
-            
-            #sb.highlight(next_video_selector)
-            sb.click(next_video_selector)
-            print("Next Video button clicked")
-            return True
-    except (NoSuchElementException, TimeoutException, Exception):
-        if debug_mode:
-            print("Next Video button not found")
-    next_video_selector = '#next-video'
-    try:
-        if sb.is_element_visible(next_video_selector):
-            
-            #sb.highlight(next_video_selector)
-            sb.click(next_video_selector)
-            print("Next Video button clicked")
-            return True
-    except (NoSuchElementException, TimeoutException, Exception):
-        if debug_mode:
-            print("Next Video button not found")
-    next_video_selector = '#nextvideo'
-    try:
-        if sb.is_element_visible(next_video_selector):
-            
-            #sb.highlight(next_video_selector)
-            sb.click(next_video_selector)
-            print("Next Video button clicked")
-            return True
-    except (NoSuchElementException, TimeoutException, Exception):
-        if debug_mode:
-            print("Next Video button not found")
-
-    next_video_selector = 'a.retention-click.themeBtn'
-    try:
-        if sb.is_element_visible(next_video_selector):
-            
-            #sb.highlight(next_video_selector)
-            sb.click(next_video_selector)
-            print("Next Video button clicked")
-            return True
-    except (NoSuchElementException, TimeoutException, Exception):
-        if debug_mode:
-            print("Next Video button not found")
-    next_video_selector = 'a.themeBtn'
-    try:
-        if sb.is_element_visible(next_video_selector):
-            
-            #sb.highlight(next_video_selector)
-            sb.click(next_video_selector)
-            print("Next Video button clicked")
-            return True
-    except (NoSuchElementException, TimeoutException, Exception):
-        if debug_mode:
-            print("Next Video button not found")
-        return False
-    
-def click_false_button(sb):
-    try:
-        if sb.is_element_visible("a.try_again"):
-            sb.click("a.try_again")
-            print("Clicked the 'a.try_again' button.")
-            return True
-        else:
-            if debug_mode:
-                print("'a.try_again' button is not visible.")
-                
-        if sb.is_element_visible("a.themeBtn.brdr-btn"):
-            sb.click("a.themeBtn.brdr-btn")
-            print("Clicked the 'False' button.")
-            return True
-        else:
-            if debug_mode:
-                print("'False' button is not visible.")
-            return False
-    except Exception as e:
-        if debug_mode:
-            print(f"False' button is not visible.NoSuchElementException")
-    try:
-        if sb.is_element_visible("a.themeBtn.brdr-btn"):
-            sb.click("a.themeBtn.brdr-btn")
-            print("Clicked the 'False' button.")
-            return True
-        else:
-            if debug_mode:
-                print("'False' button is not visible.")
-            return False
-    except Exception as e:
-        if debug_mode:
-            print(f"False' button is not visible.NoSuchElementException")
-        return False
-
-def handle_random_number_buttons(self):
-    try:
-        if self.is_element_visible("ul.link-btn-list.vid-category-options"):
-            print('Numeric verification found')
-
-            ul_element = self.find_element("ul.link-btn-list.vid-category-options")
-            buttons = ul_element.find_elements(By.TAG_NAME, "a")
-            
-            values = []
-            for button in buttons:
-                text = button.text.strip()
-                if text.isdigit():  # Check if the text is a digit
-                    values.append(int(text))
-                    print(f"Button value: {text}")
-            
-            if values:
-                # Find the smallest value
-                min_value = min(values)
-                print(f"Smallest value: {min_value}")
-                
-                # Find the button with the smallest value and click it
-                for button in buttons:
-                    if button.text.strip() == str(min_value):
-                        try:
-                            button.click()
-                            print("Clicked the button with the smallest value.")
-                            return True
-                        except Exception as click_exception:
-                            print(f"Error clicking the button: {click_exception}")
-                            return False
-            else:
-                if debug_mode:
-                    print("No numeric values found.")
-                return False
-        else:
-            if debug_mode:
-                 print("Numeric verification element is not visible.")
-            return False
-    except NoSuchElementException:
-        if debug_mode:
-            print("NoSuchElementException: Numeric verification element not found.")
-        return False
-    except Exception as e:
-        if debug_mode:
-               print(f"Exception: {e}")
-        return False
-
 def get_coin_value(driver):
     try:
         # Locate the <a> element containing the coin value
@@ -589,18 +374,6 @@ def get_coin_value(driver):
         print(f"Error: {e}")
         return None
     
-
-def get_ipaddress():
-    try:
-        response = requests.get('https://api.ipify.org?format=json')
-        response.raise_for_status()  # Raise an HTTPError for bad responses
-        ip_info = response.json()
-        ip_address = ip_info.get('ip', 'IP address not found')
-        print(f"Public IP Address: {ip_address}")
-        return ip_address
-    except requests.RequestException as e:
-        print(f"Error retrieving IP address: {e}")
-        return None
 
 def get_proxycheck(ip, server_name):
     url = f'https://proxycheck.io/v2/{ip}?vpn=1&asn=1'
@@ -629,7 +402,6 @@ def get_proxycheck(ip, server_name):
     except requests.RequestException as e:
         print(f"Error retrieving IP address and proxy status: {e}")
         return None, None
-
 
 def get_ipscore(ip):
     url = f'https://ipqualityscore.com/api/json/ip/Bfg1dzryVqbpSwtbxgWb1uVkXLrr1Nzr/{ip}?strictness=3&allow_public_access_points=false'
@@ -757,23 +529,20 @@ def fix_ip(drive, name):
             return ip_address
         elif proxycheck == 50 or proxycheck == 200:
             print(f'Country ok /Bad IP detected: {ip_address}. Changing IP...')
-            #mysterium_vpn_Recon_ip(name)
+            mysterium_vpn_Recon_ip(name)
             time.sleep(5)
         else:
             print(f'Bad IP detected: {ip_address}. Changing IP...')
-            #mysterium_vpn_connect(name)
+            mysterium_vpn_connect(name)
             print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
             time.sleep(5)
 
-#######Solve###########
-import Levenshtein
-
+#######Solve###############################################################
 def simple_similarity(word1, word2):
     
     # Calculate character matches
     matches = sum(1 for a, b in zip(word1, word2) if a == b)
     return matches / max(len(word1), len(word2))
-
 
 def find_most_similar_word2(word, word_list):
     normalized_word = word
@@ -951,7 +720,6 @@ def check_words(category, fixed_words):
             
     return 4
 
-
 def capture_and_crop_regions(regions, output_paths):
     try:
         # Capture the entire screen
@@ -990,7 +758,6 @@ def are_images_loaded(sb):
 
         # If all images are loaded, return True
         return True
-
 
 def get_category_images():
     # Define regions and paths
@@ -1032,10 +799,6 @@ def get_category_images_baymack():
     capture_and_crop_regions(regions, output_paths)
     return True
 
-
-from paddleocr import PaddleOCR
-ocr = PaddleOCR(use_angle_cls=True, lang='en',  drop_score=0)
-
 def remove_lines_from_image(input_image_path, output_image_path, np1 = 2 , np2 = 1):
     image = cv2.imread(input_image_path, 0)
     kernel_dilation = np.ones((2, 1), np.uint8)
@@ -1075,7 +838,6 @@ def captcha_to_text(image_paths):
         list_img.append(result)
 
     return list_img
-
 
 def solve_image_category(drive, category, window):
     start_time = time.time()
@@ -1186,42 +948,347 @@ def solve_image_category(drive, category, window):
 
 
 
-
-
 ################################################################################################################
-brave_user_data_dir = '/home/coder/.config/BraveSoftware/Brave-Browser/'
-brave_binary_path = '/usr/bin/brave-browser'
-
-#chrome_binary_path = '/opt/google/chrome/google-chrome'
-#chrome_user_data_dir = '/home/user/.config/google-chrome/'
 skylom_window = 0
 baymack_window = 0
+
+
+####################################Control Panel Shit##########################################################
+
+
+def mysterium_login():
+    pyautogui.click(1613, 137)
+    time.sleep(2)
+    pyautogui.keyDown('ctrl')
+    pyautogui.press('t')
+    pyautogui.keyUp('ctrl')
+    time.sleep(2)
+    pyautogui.keyDown('ctrl')
+    pyautogui.press('l')
+    pyautogui.keyUp('ctrl')
+    time.sleep(2)
+    pyautogui.typewrite('https://app.mysteriumvpn.com/')
+    pyautogui.press('enter')
+    time.sleep(5)
+    for i in range(1,100):
+        time.sleep(1)
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cookie_icon.png", region=(1625, 43, 400, 300), confidence=0.99)
+            pyautogui.click(x, y)
+            print("cookie_icon Found")
+            time.sleep(3)
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/all_site.png", region=(1300, 212, 600, 300), confidence=0.99)
+                pyautogui.click(x, y)
+                print("all_site Found")
+            except pyautogui.ImageNotFoundException:
+                print("No all_site .")
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
+                pyautogui.click(x, y)
+                print("import_icon Found")
+                time.sleep(3)
+                for i in range(1,50):
+                    url = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie.json"
+                    response = requests.get(url)
+                    if response.status_code == 200:
+                        text_content = response.text
+                    else:
+                        print(f"Failed to retrieve the content. Status code: {response.status_code}")
+                        text_content = None
+                    if text_content:
+                        pyautogui.click(1385, 310)
+                        time.sleep(1)
+                        pyautogui.typewrite(text_content)
+                        time.sleep(5)
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
+                            pyautogui.click(x, y)
+                            print("import_icon Found")
+                            
+                            time.sleep(3)
+                            pyautogui.click(313, 147)
+                            pyautogui.press('f5')
+                            time.sleep(3)
+                            try:
+                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
+                                pyautogui.click(x, y)
+                                print("mysterium_icon_empty Found")
+                                i = 1
+                                for i in range(1, 100):
+                                    try:
+                                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.99)
+                                        pyautogui.click(x, y)
+                                        print("mysterium_login Found")
+                                        for i in range(1, 100):
+                                            try:
+                                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_allow.png", region=(842, 750, 400, 300), confidence=0.99)
+                                                pyautogui.click(x, y)
+                                                print("mysterium_allow Found")
+                                                time.sleep(3)
+                                                try:
+                                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
+                                                    pyautogui.click(x, y)
+                                                    print("mysterium_icon_empty 2 Found")
+                                                    time.sleep(3)
+                                                    for i in range(1,100):
+                                                        time.sleep(1)
+                                                        try:
+                                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/settings_mysterium.png", region=(1445, 630, 400, 300), confidence=0.99)
+                                                            pyautogui.click(x, y)
+                                                            print("settings_mysterium 2 Found")
+                                                            time.sleep(1)
+                                                        except pyautogui.ImageNotFoundException:
+                                                            print("No settings_mysterium 2.")
+
+                                                        try:
+                                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/connection_mysterium_option.png", region=(1325, 109, 800, 900), confidence=0.99)
+                                                            pyautogui.click(x, y)
+                                                            print("connection_mysterium_option Found")
+                                                            time.sleep(1)
+                                                        except pyautogui.ImageNotFoundException:
+                                                            print("No connection_mysterium_option.")
+
+                                                        try:
+                                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/refresh_ip_off.png", region=(1325, 109, 800, 900), confidence=0.99)
+                                                            pyautogui.click(1640, 300)
+                                                            pyautogui.click(1668, 300)
+                                                            print("refresh_ip_off Found")
+                                                            time.sleep(1)
+                                                        except pyautogui.ImageNotFoundException:
+                                                            print("No refresh_ip_off.")
+
+                                                        try:
+                                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/refresh_ip_on.png", region=(1325, 109, 800, 900), confidence=0.99)
+                                                            pyautogui.click(300, 300)
+                                                            print("refresh_ip_on Found")
+                                                            return True
+                                                        except pyautogui.ImageNotFoundException:
+                                                            print("No refresh_ip_on.")
+
+                                                    #return True
+                                                except pyautogui.ImageNotFoundException:
+                                                    print("No mysterium_icon_empty 2.")
+
+                                            except pyautogui.ImageNotFoundException:
+                                                print("No mysterium_allow .")
+
+                                    except pyautogui.ImageNotFoundException:
+                                        print("No mysterium_login .")
+
+                                    
+                            except pyautogui.ImageNotFoundException:
+                                print("No mysterium_icon_empty .")
+                            #return True
+                        
+                        except pyautogui.ImageNotFoundException:
+                            print(f"No import_icon .{i}")
+                    time.sleep(1)
+
+
+            except pyautogui.ImageNotFoundException:
+                print("No import_icon .")
+
+        except pyautogui.ImageNotFoundException:
+            print("No cookie_icon .")
+
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/allow_button.png", region=(1080, 247, 400, 300), confidence=0.99)
+            pyautogui.click(x, y)
+            print("allow_button Found")
+                    
+        except pyautogui.ImageNotFoundException:
+            print("No allow_button .")
+
+def pin_extensions():
+    try:
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/extension_icon.png", region=(1700, 30, 300, 300), confidence=0.9)
+        pyautogui.click(x, y)
+        print("extension_icon Button Found")
+
+        for i in range(1,400):
+            time.sleep(1)
+            pyautogui.moveTo(1700, 30)
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/pin.png", region=(1588, 170, 400, 600), confidence=0.9)
+                pyautogui.click(x, y)
+                pyautogui.moveTo(1700, 30)
+                print("pin Button Found")
+                time.sleep(1)    
+            except pyautogui.ImageNotFoundException:
+                print("No pin Button.")
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/all_pinned.png", region=(1588, 170, 400, 600), confidence=0.99)
+                pyautogui.moveTo(1700, 40)
+                print("all_pinned Button Found")
+                return True   
+            except pyautogui.ImageNotFoundException:
+                print("No all_pinned Button.")
+    except pyautogui.ImageNotFoundException:
+        print("No extension_icon Button.")
+        return False
+
+def install_extensions(extension_name):
+    #on chrome://extensions/
+
+    for i in range(1,4):
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/dev_off.png", region=(1700, 95, 300, 300), confidence=0.9)
+            pyautogui.click(x, y)
+            print("Developer Button Found")
+        except pyautogui.ImageNotFoundException:
+            print("No Developer Button.")
+        time.sleep(2)
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/load_unpack.png", region=(2, 100, 400, 400), confidence=0.90)
+            pyautogui.click(x, y)
+            print("load_unpack Button Found")
+            time.sleep(2)
+            for i in range(1,100):
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mfv6_unselect.png", region=(388, 260, 300, 300), confidence=0.60)
+                    pyautogui.click(x, y)
+                    print("mfv6_unselect Button Found")
+                        
+                except pyautogui.ImageNotFoundException:
+                    print("No mfv6_unselect Button.")
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mfv6_select.png", region=(388, 260, 300, 300), confidence=0.90)
+                    pyautogui.click(x, y)
+                    print("mfv6_select Button Found")
+                    #####Select Your Extension
+                    extension_path = f"/root/Desktop/MFV6/images/{extension_name}.png" 
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen(extension_path, region=(545, 200, 500, 500), confidence=0.9)
+                        pyautogui.click(x, y)
+                        print(f"{extension_path} folder Found")
+                        time.sleep(2)
+                        pyautogui.click(1467, 123)
+                        print(f"{extension_path} folder Installed Complete")
+                        return True
+                    
+                    except pyautogui.ImageNotFoundException:
+                        print(f"No {extension_path} folder.")
+                except pyautogui.ImageNotFoundException:
+                    print("No mfv6_select Button.")
+                time.sleep(1)
+                print(f'Waiting Seconds:{i}')
+
+        except pyautogui.ImageNotFoundException:
+            print("No load_unpack Button.")
+    return None
+
+
+def ipfixer():
+    ip = 0
+    preip = 0
+    respo = 0
+    while True:
+        query = {"type": "main"}
+        doc = collection.find_one(query)
+        request = doc["request"]
+        if request == 'ipfixer':
+
+            update = {"$set": {"response": 'Fixing...🟠'}}
+            result = collection.update_one(query, update)
+            preip = get_ip(sb1)
+            if ip == preip:
+                print(f'Good IP found: {ip}')
+                if respo == 0:
+                    update = {"$set": {"response": f'Ready IP🟢: {ip}'}}
+                    result = collection.update_one(query, update)
+                    if result.matched_count > 0:
+                        print(f"Added new messages to existing document. Updated {result.modified_count} document(s).")
+                        respo = 1
+                    else:
+                        print("No document found with the specified type.")
+                
+            else:
+                respo = 0
+                update = {"$set": {"response": f'Changed IP🔴: {ip}'}}
+                result = collection.update_one(query, update)
+                ip = fix_ip(sb1, server_name1)
+        else:
+            return True
+
+def control_panel():
+    try:
+        query = {"type": "main"}
+        doc = collection.find_one(query)
+        request = doc["request"]
+        print(request)
+        if request == 'ipfixer':
+            ipfixer()
+            return 1
+        elif request == 'mainscript':
+            print(request)
+            return 2
+        elif request == 'reset':
+            print(request)
+        elif request == 'kill':
+            print(request)
+        elif request == 'signin':
+            print(request)
+        else:
+            print('No function Found to Run')
+    except Exception as e:
+        print(f"Control Panel Function Exception:{e}")
+    return None
+
+
+    #print(f'IP Matched {ip_address}')
+
 if run_sb1:
     sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
-    id1 = get_current_window_id()
     sb1.maximize_window()
+    url = "chrome://extensions/"
+    sb1.open(url)
+    print(sb1.get_title())
+    sb1.maximize_window()
+    query = {"type": "main"}
+    update = {"$set": {"response": 'Browser Configuring...'}}
+    result = collection.update_one(query, update)
+    update = {"$set": {"request": 'ipfixer'}}
+    result = collection.update_one(query, update)
+    if result.matched_count > 0:
+        print(f"Added new messages to existing document. Updated {result.modified_count} document(s).")
+    else:
+        print("No document found with the specified type.")
+
+    if fresh:
+        mysterium = install_extensions('mysterium')
+        nopecha = install_extensions('nopecha')
+        cookie = install_extensions('cookie')
+        fingerprint = install_extensions('fingerprint')
+        if fingerprint and mysterium and nopecha and cookie:
+            print('All Extensions are installed..')
+            if pin_extensions():
+                print('All Extensions are pinned')
+                if mysterium_login():
+                    print('Mysterium Login Done...')
+                    sb1.maximize_window()
+    
+    current_window = sb1.current_window_handle
+    all_windows = sb1.window_handles
+    for window in all_windows:
+        if window != current_window:
+            sb1.switch_to.window(window)
+            sb1.close()  # Close the tab
+    sb1.switch_to.window(current_window)
+    #time.sleep(1)
+    ipfixer()
     ip_required = fix_ip(sb1, server_name1)
     ip_address = get_ip(sb1)
     sb1.open("https://www.skylom.com/videos")
     skylom_window = sb1.current_window_handle
-    
     if with_baymack == True:
         sb1.open_new_window()
         sb1.open("https://www.baymack.com/videos")
         baymack_window = sb1.current_window_handle
-
     print(sb1.get_title())
 
-if run_sb2:
-    sb2 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir2, binary_location=chrome_binary_path)
-    id2 = get_current_window_id()
-    sb2.maximize_window()
-    ip_required2 = fix_ip(sb2, server_name2)
-    ip_address2 = get_ip(sb2)
-    sb2.open("https://www.skylom.com/videos")
-    print(sb1.get_title())
 
-    #print(f'IP Matched {ip_address}')
+
 if ip_address == ip_required:
     if ip_address == ip_required:
 
@@ -1319,291 +1386,286 @@ if ip_address == ip_required:
 
         basic_info2 = True
         start_time2 = time.time()
-
-
         ip_address = 0
-        ip_address2 = 0
-        ip_address3 = 0
-        ip_address4 = 0
+
         previous_duration_bay = 0
         baymack_coins = 0
         previous_duration = 0
         while True:
-            time.sleep(1)
-            cloudflare(id1,sb1)
-            sb1.switch_to.default_content()
-            sb1.execute_script("window.scrollTo(0, 0);")
-            play_button(sb1)
-            playback_check(sb1)
-            remove_pink(sb1)
-            title = sb1.get_title()
+            #time.sleep(1)
+            mainscript = control_panel()
 
 
-##################################################################
-##########################SB-1####################################
-##################################################################
-            if title == 'Skylom':
-                previous_duration = current_duration
-                current_duration = get_current_duration(sb=sb1)
-                if current_duration == previous_duration and current_duration == 0 :
-                    print(f'reclick_waits:{reclick_waits}')
-                    reclick_waits +=1
-                    if reclick_waits > 155:
-                        print(f'reopenning reclick {reclick_waits}')
-                        sb1.quit()
-                        sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
-                        id1 = get_current_window_id()
-                        sb1.maximize_window()
-                        ip_required = fix_ip(sb1, server_name1)
-                        ip_address = get_ip(sb1)
-                        sb1.open("https://www.skylom.com/videos")
-                        skylom_window = sb1.current_window_handle
-                        
-                        if with_baymack == True:
-                            sb1.open_new_window()
-                            sb1.open("https://www.baymack.com/videos")
-                            baymack_window = sb1.current_window_handle
-
-                        print(sb1.get_title())
-
-                        reclick_waits = 0
-                    if reclick_waits > 50:
-                        reclick_button(sb1)
-                        pyautogui.click(990, 430)
-                        time.sleep(3)
-                        pyautogui.click(990, 430)
-                else:
-                    reclick_waits = 1
-                
-                if current_duration:
-                    if current_duration >= 20:
-                        if category == 0:
-                            video_link = get_youtube_link(sb1) 
-                            category = get_video_infog(video_link, sb1)
-                            if category:
-                                if debug_mode:
-                                    print(f"Category: {category}")
-                                if "Howto" in category:
-                                    category = "How-To"
-                                elif "Science" in category:
-                                    category = "Sic-fi"
-                                elif "Beauty" in category:
-                                    category = "Beauty"
-                                elif "Nonprofit" in category:
-                                    category = "Nonprofit"    
-                                elif "Film" in category:
-                                    category = "Film"        
-                                elif "Auto" in category:
-                                    category = "Auto"    
-                                elif "Technology" in category:
-                                    category = "Technology"
-                                title = sb1.get_title()
-                                if title == 'Skylom':        
-                                    ip_address =get_ip(sb1)
-                                    proxycheck = get_proxycheck(ip_address, server_name= server_name1)
-                                    coins = get_coin_value(sb1)
-                                    if ip_address == ip_required and proxycheck:
-                                        if coins and baymack_coins != 0:
-                                            insert_data(ip= ip_address,amount1=coins, amount2=baymack_coins)
-                                            print('insert Data')
-
-
-                            else:
-                                print(f'category is not defined{category}')
-                        else:
-                            if basic_info:
-                                #print("Category is ",category)
-                                print(f"Video duration: {current_duration} and Category is {category}", end="\r")
-
-    
-                    else:
-                        category = 0
-                        
-                        if basic_info:
-                            print(f"Video duration: {current_duration} and Category is {category}", end="\r")
-                            #print('Video is Fresh')
-
-
-
-                if check_category_question(sb1) == True:
-                    print('Getting IP at 10 sec..')
-                    #ip_address =get_ip(sb1)
-                    if ip_address == ip_required:
-                                if ip_address == ip_required:
-                                    title = sb1.get_title()
-                                    print('starting to answer category')
-                                    if category != 0 and title == 'Skylom':
-                                        print(title)
-                                        solve_image_category(sb1, category, id1)
-
-                                    elif category == 0:
-                                        video_link = get_youtube_link(sb1) 
-                                        category = get_video_infog(video_link, sb1)
-
-                                        print(f"Category: {category}")
-                                        if category:
-                                            if "Howto" in category:
-                                                category = "How-To"
-                                            elif "Science" in category:
-                                                category = "Sic-fi"
-                                            elif "Nonprofit" in category:
-                                                category = "Nonprofit"    
-                                            elif "Film" in category:
-                                                category = "Film"        
-                                            elif "Auto" in category:
-                                                category = "Auto"    
-                                            elif "Technology" in category:
-                                                category = "Technology"        
-                    
-                    else:
-                        #ip_address =get_ip(sb)
-                        print(f'IP is not Matched in IF category {ip_address}, Required: {ip_required}')
-                        print('Getting IP at after found category...')
-                        break
-                        ip_required = fix_ip(sb1, server_name1)
-                        ip_address = get_ip(sb1)
-
-                    
-            if title == 'Baymack':
-                previous_duration_bay = current_duration_bay
-                current_duration_bay = get_current_duration(sb=sb1)
-                if current_duration_bay == previous_duration_bay and current_duration_bay == 0 :
-                    print(f'reclick_waits:{reclick_waits}')
-                    reclick_waits +=1
-                    if reclick_waits > 155:
-                        print(f'reopenning reclick {reclick_waits}')
-                        sb1.quit()
-                        sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
-                        id1 = get_current_window_id()
-                        sb1.maximize_window()
-                        ip_required = fix_ip(sb1, server_name1)
-                        ip_address = get_ip(sb1)
-                        sb1.open("https://www.skylom.com/videos")
-                        skylom_window = sb1.current_window_handle
-                        
-                        if with_baymack == True:
-                            sb1.open_new_window()
-                            sb1.open("https://www.baymack.com/videos")
-                            baymack_window = sb1.current_window_handle
-
-                        print(sb1.get_title())
-
-                        reclick_waits = 0
-                    if reclick_waits > 50:
-                        reclick_button(sb1)
-                        pyautogui.click(990, 430)
-                        time.sleep(3)
-                        pyautogui.click(990, 430)
-                else:
-                    reclick_waits = 1
-                
-                if current_duration_bay:
-                    if current_duration_bay >= 20:
-                        if category_bay == 0:
-                            video_link = get_youtube_link(sb1) 
-                            category_bay = get_video_infog(video_link, sb1)
-                            if category_bay:
-                                if debug_mode:
-                                    print(f"Category: {category_bay}")
-                                if "Howto" in category_bay:
-                                    category_bay = "How-To"
-                                elif "Science" in category_bay:
-                                    category_bay = "Sic-fi"
-                                elif "Beauty" in category_bay:
-                                    category_bay = "Beauty"
-                                elif "Nonprofit" in category_bay:
-                                    category_bay = "Nonprofit"    
-                                elif "Film" in category_bay:
-                                    category_bay = "Film"        
-                                elif "Auto" in category_bay:
-                                    category_bay = "Auto"    
-                                elif "Technology" in category_bay:
-                                    category_bay = "Technology"
-                                title = sb1.get_title()
-                                if title == 'Baymack':        
-                                    #ip_address =get_ip(sb1)
-                                    #proxycheck = get_proxycheck(ip_address, server_name= server_name1)
-                                    coins = get_coin_value(sb1)
-                                    if coins:
-                                        baymack_coins = coins
-                                    else:
-                                        print('Bymack Coins not availible')
-
- 
-                            else:
-                                print(f'category_bay is not defined{category_bay}')
-                        else:
-                            if basic_info:
-                                #print("Category is ",category)
-                                print(f"Video duration_bay: {current_duration_bay} and Category is {category_bay}", end="\r")
-
-    
-                    else:
-                        category_bay = 0
-                        
-                        if basic_info:
-                            print(f"Video duration_bay: {current_duration_bay} and Category is {category_bay}", end="\r")
-                            #print('Video is Fresh')
-
-
-
-                if check_category_question(sb1) == True:
-                    print('Getting IP at 10 sec..')
-                    #ip_address =get_ip(sb1)
-                    if ip_address == ip_address:
-                                if ip_address == ip_address:
-                                    title = sb1.get_title()
-                                    if category_bay != 0 and title == 'Baymack':
-                                        print('starting to answer category confirm')
-                                        title = sb1.get_title()
-                                        if title:
-                                            print(title)
-                                            solve_image_category(sb1, category_bay, id1)
-
-                                    elif category_bay == 0:
-                                        video_link = get_youtube_link(sb1) 
-                                        category_bay = get_video_infog(video_link, sb1)
-
-                                        print(f"Category: {category_bay}")
-                                        if category_bay:
-                                            if "Howto" in category_bay:
-                                                category_bay = "How-To"
-                                            elif "Science" in category_bay:
-                                                category_bay = "Sic-fi"
-                                            elif "Nonprofit" in category_bay:
-                                                category_bay = "Nonprofit"    
-                                            elif "Film" in category_bay:
-                                                category_bay = "Film"        
-                                            elif "Auto" in category_bay:
-                                                category_bay = "Auto"    
-                                            elif "Technology" in category_bay:
-                                                category_bay = "Technology"        
-                    
-                    else:
-                        #ip_address =get_ip(sb)
-                        print(f'IP _bays not Matched in IF category {ip_address}, Required: {ip_required}')
-                        print('Getting IP at after found category...')
-                        break
-                        ip_required = fix_ip(sb1, server_name1)
-                        ip_address = get_ip(sb1)
-
-
-
-
-
-            #check_number_captcha_exists(sb1, id1)
-            check_icon_captcha_exists(sb1, id1)
-            #click_false_button(sb1)
-            #handle_random_number_buttons(sb1)
-
-
-
-            if with_baymack == True:
+            if mainscript == 1:
+                cloudflare(id1,sb1)
+                sb1.switch_to.default_content()
+                sb1.execute_script("window.scrollTo(0, 0);")
+                play_button(sb1)
+                playback_check(sb1)
+                remove_pink(sb1)
                 title = sb1.get_title()
                 if title == 'Skylom':
-                    sb1.switch_to.window(baymack_window)
-                elif title == 'Baymack':
-                    sb1.switch_to.window(skylom_window)
-                else:
-                    print(f'no title was sky or bay {title}')
-                
+                    previous_duration = current_duration
+                    current_duration = get_current_duration(sb=sb1)
+                    if current_duration == previous_duration and current_duration == 0 :
+                        print(f'reclick_waits:{reclick_waits}')
+                        reclick_waits +=1
+                        if reclick_waits > 155:
+                            print(f'reopenning reclick {reclick_waits}')
+                            sb1.quit()
+                            sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
+                            id1 = get_current_window_id()
+                            sb1.maximize_window()
+                            ip_required = fix_ip(sb1, server_name1)
+                            ip_address = get_ip(sb1)
+                            sb1.open("https://www.skylom.com/videos")
+                            skylom_window = sb1.current_window_handle
+                            
+                            if with_baymack == True:
+                                sb1.open_new_window()
+                                sb1.open("https://www.baymack.com/videos")
+                                baymack_window = sb1.current_window_handle
+
+                            print(sb1.get_title())
+
+                            reclick_waits = 0
+                        if reclick_waits > 50:
+                            reclick_button(sb1)
+                            pyautogui.click(990, 430)
+                            time.sleep(3)
+                            pyautogui.click(990, 430)
+                    else:
+                        reclick_waits = 1
+                    
+                    if current_duration:
+                        if current_duration >= 20:
+                            if category == 0:
+                                video_link = get_youtube_link(sb1) 
+                                category = get_video_infog(video_link, sb1)
+                                if category:
+                                    if debug_mode:
+                                        print(f"Category: {category}")
+                                    if "Howto" in category:
+                                        category = "How-To"
+                                    elif "Science" in category:
+                                        category = "Sic-fi"
+                                    elif "Beauty" in category:
+                                        category = "Beauty"
+                                    elif "Nonprofit" in category:
+                                        category = "Nonprofit"    
+                                    elif "Film" in category:
+                                        category = "Film"        
+                                    elif "Auto" in category:
+                                        category = "Auto"    
+                                    elif "Technology" in category:
+                                        category = "Technology"
+                                    title = sb1.get_title()
+                                    if title == 'Skylom':        
+                                        ip_address =get_ip(sb1)
+                                        proxycheck = get_proxycheck(ip_address, server_name= server_name1)
+                                        coins = get_coin_value(sb1)
+                                        if ip_address == ip_required and proxycheck:
+                                            if coins and baymack_coins != 0:
+                                                insert_data(ip= ip_address,amount1=coins, amount2=baymack_coins)
+                                                print('insert Data')
+
+
+                                else:
+                                    print(f'category is not defined{category}')
+                            else:
+                                if basic_info:
+                                    #print("Category is ",category)
+                                    print(f"Video duration: {current_duration} and Category is {category}", end="\r")
+
+        
+                        else:
+                            category = 0
+                            
+                            if basic_info:
+                                print(f"Video duration: {current_duration} and Category is {category}", end="\r")
+                                #print('Video is Fresh')
+
+
+
+                    if check_category_question(sb1) == True:
+                        print('Getting IP at 10 sec..')
+                        #ip_address =get_ip(sb1)
+                        if ip_address == ip_required:
+                                    if ip_address == ip_required:
+                                        title = sb1.get_title()
+                                        print('starting to answer category')
+                                        if category != 0 and title == 'Skylom':
+                                            print(title)
+                                            solve_image_category(sb1, category, id1)
+
+                                        elif category == 0:
+                                            video_link = get_youtube_link(sb1) 
+                                            category = get_video_infog(video_link, sb1)
+
+                                            print(f"Category: {category}")
+                                            if category:
+                                                if "Howto" in category:
+                                                    category = "How-To"
+                                                elif "Science" in category:
+                                                    category = "Sic-fi"
+                                                elif "Nonprofit" in category:
+                                                    category = "Nonprofit"    
+                                                elif "Film" in category:
+                                                    category = "Film"        
+                                                elif "Auto" in category:
+                                                    category = "Auto"    
+                                                elif "Technology" in category:
+                                                    category = "Technology"        
+                        
+                        else:
+                            #ip_address =get_ip(sb)
+                            print(f'IP is not Matched in IF category {ip_address}, Required: {ip_required}')
+                            print('Getting IP at after found category...')
+                            query = {"type": "main"}
+                            update = {"$set": {"response": f'IP is not Matched{ip_address}'}}
+                            result = collection.update_one(query, update)
+                            break
+                            ip_required = fix_ip(sb1, server_name1)
+                            ip_address = get_ip(sb1)
+
+                        
+                if title == 'Baymack':
+                    previous_duration_bay = current_duration_bay
+                    current_duration_bay = get_current_duration(sb=sb1)
+                    if current_duration_bay == previous_duration_bay and current_duration_bay == 0 :
+                        print(f'reclick_waits:{reclick_waits}')
+                        reclick_waits +=1
+                        if reclick_waits > 155:
+                            print(f'reopenning reclick {reclick_waits}')
+                            sb1.quit()
+                            sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
+                            id1 = get_current_window_id()
+                            sb1.maximize_window()
+                            ip_required = fix_ip(sb1, server_name1)
+                            ip_address = get_ip(sb1)
+                            sb1.open("https://www.skylom.com/videos")
+                            skylom_window = sb1.current_window_handle
+                            
+                            if with_baymack == True:
+                                sb1.open_new_window()
+                                sb1.open("https://www.baymack.com/videos")
+                                baymack_window = sb1.current_window_handle
+
+                            print(sb1.get_title())
+
+                            reclick_waits = 0
+                        if reclick_waits > 50:
+                            reclick_button(sb1)
+                            pyautogui.click(990, 430)
+                            time.sleep(3)
+                            pyautogui.click(990, 430)
+                    else:
+                        reclick_waits = 1
+                    
+                    if current_duration_bay:
+                        if current_duration_bay >= 20:
+                            if category_bay == 0:
+                                video_link = get_youtube_link(sb1) 
+                                category_bay = get_video_infog(video_link, sb1)
+                                if category_bay:
+                                    if debug_mode:
+                                        print(f"Category: {category_bay}")
+                                    if "Howto" in category_bay:
+                                        category_bay = "How-To"
+                                    elif "Science" in category_bay:
+                                        category_bay = "Sic-fi"
+                                    elif "Beauty" in category_bay:
+                                        category_bay = "Beauty"
+                                    elif "Nonprofit" in category_bay:
+                                        category_bay = "Nonprofit"    
+                                    elif "Film" in category_bay:
+                                        category_bay = "Film"        
+                                    elif "Auto" in category_bay:
+                                        category_bay = "Auto"    
+                                    elif "Technology" in category_bay:
+                                        category_bay = "Technology"
+                                    title = sb1.get_title()
+                                    if title == 'Baymack':        
+                                        #ip_address =get_ip(sb1)
+                                        #proxycheck = get_proxycheck(ip_address, server_name= server_name1)
+                                        coins = get_coin_value(sb1)
+                                        if coins:
+                                            baymack_coins = coins
+                                        else:
+                                            print('Bymack Coins not availible')
+
+    
+                                else:
+                                    print(f'category_bay is not defined{category_bay}')
+                            else:
+                                if basic_info:
+                                    #print("Category is ",category)
+                                    print(f"Video duration_bay: {current_duration_bay} and Category is {category_bay}", end="\r")
+
+        
+                        else:
+                            category_bay = 0
+                            
+                            if basic_info:
+                                print(f"Video duration_bay: {current_duration_bay} and Category is {category_bay}", end="\r")
+                                #print('Video is Fresh')
+
+
+
+                    if check_category_question(sb1) == True:
+                        print('Getting IP at 10 sec..')
+                        #ip_address =get_ip(sb1)
+                        if ip_address == ip_address:
+                                    if ip_address == ip_address:
+                                        title = sb1.get_title()
+                                        if category_bay != 0 and title == 'Baymack':
+                                            print('starting to answer category confirm')
+                                            title = sb1.get_title()
+                                            if title:
+                                                print(title)
+                                                solve_image_category(sb1, category_bay, id1)
+
+                                        elif category_bay == 0:
+                                            video_link = get_youtube_link(sb1) 
+                                            category_bay = get_video_infog(video_link, sb1)
+
+                                            print(f"Category: {category_bay}")
+                                            if category_bay:
+                                                if "Howto" in category_bay:
+                                                    category_bay = "How-To"
+                                                elif "Science" in category_bay:
+                                                    category_bay = "Sic-fi"
+                                                elif "Nonprofit" in category_bay:
+                                                    category_bay = "Nonprofit"    
+                                                elif "Film" in category_bay:
+                                                    category_bay = "Film"        
+                                                elif "Auto" in category_bay:
+                                                    category_bay = "Auto"    
+                                                elif "Technology" in category_bay:
+                                                    category_bay = "Technology"        
+                        
+                        else:
+                            #ip_address =get_ip(sb)
+                            print(f'IP _bays not Matched in IF category {ip_address}, Required: {ip_required}')
+                            print('Getting IP at after found category...')
+                            query = {"type": "main"}
+                            update = {"$set": {"response": f'IP is not Matched{ip_address}'}}
+                            result = collection.update_one(query, update)
+                            break
+                            ip_required = fix_ip(sb1, server_name1)
+                            ip_address = get_ip(sb1)
+
+
+                check_icon_captcha_exists(sb1, id1)
+                if with_baymack == True:
+                    title = sb1.get_title()
+                    if title == 'Skylom':
+                        sb1.switch_to.window(baymack_window)
+                    elif title == 'Baymack':
+                        sb1.switch_to.window(skylom_window)
+                    else:
+                        print(f'no title was sky or bay {title}')
+            
+            elif mainscript == 2:
+                ip_required = fix_ip(sb1, server_name1)
+                ip_address = get_ip(sb1)

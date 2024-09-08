@@ -28,6 +28,7 @@ from PIL import Image
 from pymongo import MongoClient
 from paddleocr import PaddleOCR
 import Levenshtein
+import json
 
 ocr = PaddleOCR(use_angle_cls=True, lang='en',  drop_score=0)
 debug_mode = False
@@ -373,9 +374,38 @@ def get_coin_value(driver):
     except Exception as e:
         print(f"Error: {e}")
         return None
-    
 
-def get_proxycheck(ip, server_name):
+def get_proxycheck_inbrowser(sb1, ip, server_name):   
+    url = f'https://proxycheck.io/v2/{ip}?vpn=1&asn=1'
+    val = None
+    try:
+        original_window = sb1.current_window_handle
+        sb1.open_new_window()
+        sb1.open(url)
+        ip_address_raw = sb1.get_text('body')
+        #print("Raw Response:", ip_address_raw)
+        ip_address = json.loads(ip_address_raw)
+        proxy_status = ip_address[str(ip)]["proxy"]
+        country = ip_address[str(ip)]["country"]
+
+        print(f"IP Address: {ip} \nProxy Status: {proxy_status} \nCountry: {country}")
+        if country.lower() in server_name.lower():
+            if proxy_status == 'no':
+                val = 200
+            else:
+                print(f'{country} is valid with not proxy status.')
+                val = 50
+        sb1.close()
+        sb1.switch_to.window(original_window)
+        
+        return val
+    
+    except Exception as e:
+        print(f'ibbrowser ProxyCheck Error: {e}')
+        return val
+
+
+def get_proxycheck(driver, ip, server_name):
     url = f'https://proxycheck.io/v2/{ip}?vpn=1&asn=1'
     try:
         response = requests.get(url)
@@ -397,11 +427,12 @@ def get_proxycheck(ip, server_name):
                     print(f'{country} is not {200}')
                     return 50
         else:
-            print("Error: Status not OK")
-            return None, None
+            print("Error: Status not OK : Trying Inbrowser Way")
+            val = get_proxycheck_inbrowser(driver, ip, server_name)
+            return val
     except requests.RequestException as e:
         print(f"Error retrieving IP address and proxy status: {e}")
-        return None, None
+        return None
 
 def get_ipscore(ip):
     url = f'https://ipqualityscore.com/api/json/ip/Bfg1dzryVqbpSwtbxgWb1uVkXLrr1Nzr/{ip}?strictness=3&allow_public_access_points=false'
@@ -436,7 +467,7 @@ def get_ipscore(ip):
             return None
     except requests.RequestException as e:
         print(f"Error retrieving IP data: {e}")
-        return None, None, None, None, None, None, None, None
+        return None
 
 def mysterium_vpn_connect(server_name):
     try:
@@ -523,7 +554,7 @@ def fix_ip(drive, name):
     while not (ipscore and proxycheck):
         ip_address = get_ip(drive)
         ipscore = get_ipscore(ip_address)
-        proxycheck = get_proxycheck(ip_address, server_name= name)
+        proxycheck = get_proxycheck(drive, ip_address, server_name= name)
         if ipscore and proxycheck == 200:
             print(f'Good IP found: {ip_address}')
             return ip_address
@@ -1183,14 +1214,14 @@ def ipfixer():
     ip = 0
     preip = 0
     respo = 0
+    query = {"type": "main"}
+    update = {"$set": {"response": 'Fixing...🟠'}}
+    result = collection.update_one(query, update)
     while True:
         query = {"type": "main"}
         doc = collection.find_one(query)
         request = doc["request"]
         if request == 'ipfixer':
-
-            update = {"$set": {"response": 'Fixing...🟠'}}
-            result = collection.update_one(query, update)
             preip = get_ip(sb1)
             if ip == preip:
                 print(f'Good IP found: {ip}')
@@ -1202,6 +1233,8 @@ def ipfixer():
                         respo = 1
                     else:
                         print("No document found with the specified type.")
+                else:
+                    print(f"repo {respo}")
                 
             else:
                 respo = 0
@@ -1219,10 +1252,10 @@ def control_panel():
         print(request)
         if request == 'ipfixer':
             ipfixer()
-            return 1
+            return 2
         elif request == 'mainscript':
             print(request)
-            return 2
+            return 1
         elif request == 'reset':
             print(request)
         elif request == 'kill':
@@ -1241,6 +1274,7 @@ def control_panel():
 if run_sb1:
     sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
     sb1.maximize_window()
+    id1 = get_current_window_id()
     url = "chrome://extensions/"
     sb1.open(url)
     print(sb1.get_title())
@@ -1391,12 +1425,14 @@ if ip_address == ip_required:
         previous_duration_bay = 0
         baymack_coins = 0
         previous_duration = 0
+        print('Starting Loop')
         while True:
             #time.sleep(1)
             mainscript = control_panel()
 
 
             if mainscript == 1:
+                print('mainscript is 1 ')
                 cloudflare(id1,sb1)
                 sb1.switch_to.default_content()
                 sb1.execute_script("window.scrollTo(0, 0);")
@@ -1462,7 +1498,7 @@ if ip_address == ip_required:
                                     title = sb1.get_title()
                                     if title == 'Skylom':        
                                         ip_address =get_ip(sb1)
-                                        proxycheck = get_proxycheck(ip_address, server_name= server_name1)
+                                        proxycheck = get_proxycheck(sb1, ip_address, server_name= server_name1)
                                         coins = get_coin_value(sb1)
                                         if ip_address == ip_required and proxycheck:
                                             if coins and baymack_coins != 0:
@@ -1522,7 +1558,7 @@ if ip_address == ip_required:
                             print(f'IP is not Matched in IF category {ip_address}, Required: {ip_required}')
                             print('Getting IP at after found category...')
                             query = {"type": "main"}
-                            update = {"$set": {"response": f'IP is not Matched{ip_address}'}}
+                            update = {"$set": {"response": f'IP is not Matched{ip_address}, Required: {ip_required}'}}
                             result = collection.update_one(query, update)
                             break
                             ip_required = fix_ip(sb1, server_name1)
@@ -1587,7 +1623,7 @@ if ip_address == ip_required:
                                     title = sb1.get_title()
                                     if title == 'Baymack':        
                                         #ip_address =get_ip(sb1)
-                                        #proxycheck = get_proxycheck(ip_address, server_name= server_name1)
+                                        #proxycheck = get_proxycheck(sb1, ip_address, server_name= server_name1)
                                         coins = get_coin_value(sb1)
                                         if coins:
                                             baymack_coins = coins
@@ -1649,7 +1685,7 @@ if ip_address == ip_required:
                             print(f'IP _bays not Matched in IF category {ip_address}, Required: {ip_required}')
                             print('Getting IP at after found category...')
                             query = {"type": "main"}
-                            update = {"$set": {"response": f'IP is not Matched{ip_address}'}}
+                            update = {"$set": {"response": f'IP is not Matched{ip_address}, Required: {ip_required}'}}
                             result = collection.update_one(query, update)
                             break
                             ip_required = fix_ip(sb1, server_name1)
@@ -1667,5 +1703,6 @@ if ip_address == ip_required:
                         print(f'no title was sky or bay {title}')
             
             elif mainscript == 2:
+                print('mainscript is 2 ')
                 ip_required = fix_ip(sb1, server_name1)
                 ip_address = get_ip(sb1)

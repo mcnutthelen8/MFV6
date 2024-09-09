@@ -2,35 +2,35 @@
 
 # Update package list
 echo "Updating package list..."
-sudo apt-get update
+apt-get update
 
 # Install Python core dependencies
 echo "Installing Python core dependencies..."
-sudo apt-get -f install -y --force-yes
-sudo apt-get install -y fonts-liberation libgbm1 libnspr4 libnss3 libu2f-udev libvulkan1 xdg-utils
+apt-get -f install -y --force-yes
+apt-get install -y fonts-liberation libgbm1 libnspr4 libnss3 libu2f-udev libvulkan1 xdg-utils
 
 # Install Google Chrome
 echo "Installing Google Chrome..."
 cd /tmp
-sudo wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-sudo apt-get -f install -y --force-yes
-sudo dpkg -i google-chrome-stable_current_amd64.deb
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+apt-get -f install -y --force-yes
+dpkg -i google-chrome-stable_current_amd64.deb
 
 # Install pip and Python packages
 echo "Installing pip and Python packages..."
-sudo apt install -y python3-pip
+apt install -y python3-pip
 pip install requests beautifulsoup4 selenium clipboard pyautogui opencv-python numpy seleniumbase pillow Levenshtein paddlepaddle paddleocr pymongo
 #pip install mysql-connector-python
 
 # Install additional tools
 echo "Installing additional tools..."
-sudo apt install -y gnome-screenshot
-sudo apt-get install -y python3-tk python3-dev
-sudo apt install -y xdotool
-sudo apt install -y nano
-sudo apt-get update
+apt install -y gnome-screenshot
+apt-get install -y python3-tk python3-dev
+apt install -y xdotool
+apt install -y nano
+apt-get update
 xrandr --output VNC-0 --mode 1920x1080
-sudo apt install unzip
+apt install unzip
 wget "https://clients2.googleusercontent.com/crx/blobs/AVsOOGhXta8-UhRWEUcB2CckwYwwFI6WMiZ8b-CxyBlFaRSv-8wsJGQEG3lL_ILVoKOmDEowQmnAnB2cwNoa3h3lbPBUsTP376PSoi8nM_fjkQSkoiDkoTx0-5M5j9WIdrlaAMZSmuUvAQiNCBMqU-HcXaveN1nJlDMohw/DCLJFNHBJPILFPMIMIPCIJGAALCABFHD_0_0_1_0.crx" -O mysterium.crx
 wget "https://clients2.googleusercontent.com/crx/blobs/AVsOOGj770VyacuboorG752M_MoplMXpBqv27gaGClAoAPeW92og_XcYErayPTq6isteFYXVGH-1-3b2N0R1CqL_2W1il76ss8wS5mm3w7ZLiHXE93yBpXDSXVZoznOZBPEAxlKa5bvVqk7IzuoqSHwWklCswZPR2Hsg/HLKENNDEDNHFKEKHGCDICDFDDNKALMDM_1_13_0_0.crx" -O cookie.crx
 wget "https://clients2.googleusercontent.com/crx/blobs/AVsOOGjQdui7oibybsnwnagZ_gz6_Zu_CSxKFbJpSbPGQSjDvf5FQBwps0BbXAAISoLmOfERqxVo_sGsBxUIAqX3N52hc5TZ4WXLPVNRnq6hp2Mjrb6FAMZSmuVHB-8YWXsgMMqOWnMm_jDpP5G-qw/MEOJNMFHJKAHLFCECPDCDGJCLCILMAIJ_1_0_5_0.crx" -O fingerprint.crx

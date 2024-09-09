@@ -1468,7 +1468,8 @@ if run_sb1:
         nopecha = install_extensions('nopecha')
         cookie = install_extensions('cookie')
         fingerprint = install_extensions('fingerprint')
-        if fingerprint and mysterium and nopecha and cookie:
+        mfhelper = install_extensions('mfhelper')
+        if fingerprint and mysterium and nopecha and cookie and mfhelper:
             print('All Extensions are installed..')
             if pin_extensions():
                 print('All Extensions are pinned')

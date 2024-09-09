@@ -32,7 +32,7 @@ import json
 
 ocr = PaddleOCR(use_angle_cls=True, lang='en',  drop_score=0)
 debug_mode = False
-
+facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/alisabro.json'
 ip_required = 0
 farm_id = 1
 run_sb1 = True
@@ -137,6 +137,7 @@ def get_current_duration(sb):
     
 def play_button(sb):
     current_duration = get_current_duration(sb)
+    title1 = sb.get_title()
     if current_duration == 0:
         play_button_selector = '.ytp-large-play-button'
         try:
@@ -146,20 +147,20 @@ def play_button(sb):
                     play_button_elements = sb.find_elements(By.CSS_SELECTOR, play_button_selector)
                     print("Play button found")
                     play_button = play_button_elements[0]
-                    time.sleep(1)
+                    time.sleep(2)
                     play_button.click()
                     print("Play button Clicked")
                     sb.switch_to.default_content()
-                    #time.sleep(1)
+                    time.sleep(1)
                 if sb.is_element_visible('button.ytp-ad-skip-button-modern'):
                     play_button_elements = sb.find_elements(By.CSS_SELECTOR, 'button.ytp-ad-skip-button-modern')
                     print("Play button found")
                     play_button = play_button_elements[0]
-                    time.sleep(1)
+                    time.sleep(2)
                     play_button.click()
                     print("Play button Clicked")
                     sb.switch_to.default_content()
-                    #time.sleep(1)
+                    time.sleep(1)
                 else:
                     print("Play button not found")
                     sb.switch_to.default_content()
@@ -170,6 +171,22 @@ def play_button(sb):
             if debug_mode:
                 print(f"An error occurred: {e}")
             sb.switch_to.default_content()
+    elif current_duration == 1 and title1 == 'Skylom':
+        time.sleep(2)
+        current_duration = get_current_duration(sb)
+        if current_duration == 1:
+            play_button_selector = '.ytp-large-play-button'
+            try:
+                if sb.is_element_visible('iframe'):
+                    sb.switch_to.frame(sb.find_element(By.TAG_NAME, "iframe"))
+                    if sb.is_element_visible(play_button_selector):
+                        play_button_elements = sb.find_elements(By.CSS_SELECTOR, play_button_selector)
+                        print("Play button found")
+                        play_button = play_button_elements[0]
+                        time.sleep(2)
+                        play_button.click()
+            except Exception as e:
+                print(f'Issue{e}')
 
 def playback_check(sb):
     try: 
@@ -1209,6 +1226,148 @@ def install_extensions(extension_name):
             print("No load_unpack Button.")
     return None
 
+def facebook_login():
+    pyautogui.click(1613, 137)
+    time.sleep(2)
+    pyautogui.keyDown('ctrl')
+    pyautogui.press('t')
+    pyautogui.keyUp('ctrl')
+    time.sleep(2)
+    pyautogui.keyDown('ctrl')
+    pyautogui.press('l')
+    pyautogui.keyUp('ctrl')
+    time.sleep(2)
+    pyautogui.typewrite('https://web.facebook.com/')
+    pyautogui.press('enter')
+    time.sleep(5)
+    for i in range(1,100):
+        time.sleep(1)
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cookie_icon.png", region=(1625, 43, 400, 300), confidence=0.99)
+            pyautogui.click(x, y)
+            print("cookie_icon Found")
+            time.sleep(3)
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/all_site.png", region=(1300, 212, 600, 300), confidence=0.99)
+                pyautogui.click(x, y)
+                print("all_site Found")
+            except pyautogui.ImageNotFoundException:
+                print("No all_site .")
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
+                pyautogui.click(x, y)
+                print("import_icon Found")
+                time.sleep(3)
+                for i in range(1,50):
+                    url = facebook_cookies
+                    response = requests.get(url)
+                    if response.status_code == 200:
+                        text_content = response.text
+                    else:
+                        print(f"Failed to retrieve the content. Status code: {response.status_code}")
+                        text_content = None
+                    if text_content:
+                        pyautogui.click(1385, 310)
+                        time.sleep(1)
+                        pyautogui.typewrite(text_content)
+                        time.sleep(5)
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
+                            pyautogui.click(x, y)
+                            print("import_icon Found")
+                            
+                            time.sleep(3)
+                            pyautogui.click(313, 147)
+                            pyautogui.press('f5')
+                            time.sleep(3)
+                            #return True
+                        
+                        except pyautogui.ImageNotFoundException:
+                            print(f"No import_icon .{i}")
+                    time.sleep(1)
+
+
+            except pyautogui.ImageNotFoundException:
+                print("No import_icon .")
+
+        except pyautogui.ImageNotFoundException:
+            print("No cookie_icon .")
+
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/allow_button.png", region=(1080, 247, 400, 300), confidence=0.99)
+            pyautogui.click(x, y)
+            print("allow_button Found")
+                    
+        except pyautogui.ImageNotFoundException:
+            print("No allow_button .")
+
+
+def baymack_login(driver):
+    coin_val = None
+    while not coin_val:
+        coin_val = get_coin_value()  # Assuming get_coin_value() is defined elsewhere
+        if coin_val:
+            print(f'Baymack Coins: {coin_val}')
+            return coin_val
+        else:
+            try:
+                # Look for '.quiz-btn' and click if visible
+                if driver.is_element_visible('.quiz-btn'):
+                    buttons = driver.find_elements(By.CSS_SELECTOR, '.quiz-btn')
+                    if buttons:
+                        print(".quiz-btn button found, clicking...")
+                        buttons[0].click()
+                    else:
+                        print(".quiz-btn not found!")
+                else:
+                    print("Element .quiz-btn is not visible!")
+
+                # Check for a button with specific class name and "Continue as" text
+                continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'span.x1lliihq.x6ikm8r.x10wlt62.x1n2onr6.xlyipyv.xuxw1ft')
+                for button in continue_buttons:
+                    if 'Continue as' in button.text:
+                        print(f"Button found: {button.text}, clicking...")
+                        button.click()
+                        break
+
+                # Check if password input is found
+                if driver.is_element_visible('input[name="pass"][type="password"]'):
+                    password_field = driver.find_element(By.CSS_SELECTOR, 'input[name="pass"][type="password"]')
+                    print("Password field found, typing password...")
+                    password_field.send_keys('ashen1997')
+                    
+                    # Look for "Continue" button after entering the password
+                    continue_button = driver.find_element(By.CSS_SELECTOR, 'input[type="submit"][value="Continue"][data-testid="sec_ac_button"]')
+                    if continue_button:
+                        print("Continue button found, clicking...")
+                        continue_button.click()
+                    else:
+                        print("Continue button not found!")
+                
+                if driver.get_title() == 'Log in to Facebook':
+                    print(driver.get_title())
+                    query = {"type": "main"}
+                    update = {"$set": {"response": 'Facebook Need Logins'}}
+                    collection.update_one(query, update)
+                    facebook_login()
+                    
+
+                if driver.is_element_visible('a.btn.btn-fb-social[href="/auth/facebook/callback"]'):
+                    fb_login_button = driver.find_element(By.CSS_SELECTOR, 'a.btn.btn-fb-social[href="/auth/facebook/callback"]')
+                    print("Facebook login button found, clicking...")
+                    fb_login_button.click()
+                else:
+                    print("Facebook login button not found!")
+
+            except Exception as e:
+                print(f'Baymack Login Error: {e}')
+                query = {"type": "main"}
+                update = {"$set": {"response": ' Login Error:'}}
+                collection.update_one(query, update)
+
+        # Optionally, sleep to avoid excessive loop iteration speed
+        driver.sleep(2)
+
 
 def ipfixer():
     ip = 0
@@ -1258,10 +1417,13 @@ def control_panel():
             return 1
         elif request == 'reset':
             print(request)
+            return 3
         elif request == 'kill':
             print(request)
-        elif request == 'signin':
+            return 4
+        elif request == 'pause':
             print(request)
+            return 5
         else:
             print('No function Found to Run')
     except Exception as e:
@@ -1270,7 +1432,7 @@ def control_panel():
 
 
     #print(f'IP Matched {ip_address}')
-
+baymack_coins = 0
 if run_sb1:
     sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
     sb1.maximize_window()
@@ -1315,10 +1477,18 @@ if run_sb1:
     ip_address = get_ip(sb1)
     sb1.open("https://www.skylom.com/videos")
     skylom_window = sb1.current_window_handle
+    ggt = sb1.get_title()
+
+    if ggt == 'Skylom':
+        time.sleep(1)
+        baymack_login(sb1)
     if with_baymack == True:
         sb1.open_new_window()
         sb1.open("https://www.baymack.com/videos")
         baymack_window = sb1.current_window_handle
+        if ggt == 'Baymack':
+            time.sleep(1)
+            baymack_coins =baymack_login(sb1)
     print(sb1.get_title())
 
 
@@ -1423,13 +1593,12 @@ if ip_address == ip_required:
         ip_address = 0
 
         previous_duration_bay = 0
-        baymack_coins = 0
+        #baymack_coins = 0
         previous_duration = 0
         print('Starting Loop')
         while True:
             #time.sleep(1)
             mainscript = control_panel()
-
 
             if mainscript == 1:
                 print('mainscript is 1 ')
@@ -1706,3 +1875,52 @@ if ip_address == ip_required:
                 print('mainscript is 2 ')
                 ip_required = fix_ip(sb1, server_name1)
                 ip_address = get_ip(sb1)
+
+            elif mainscript == 3:
+                sb1.quit()
+                time.sleep(1)
+                sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
+                sb1.maximize_window()
+                id1 = get_current_window_id()
+                url = "chrome://extensions/"
+                sb1.open(url)
+                print(sb1.get_title())
+                sb1.maximize_window()
+                query = {"type": "main"}
+                update = {"$set": {"response": 'Browser Configuring...'}}
+                result = collection.update_one(query, update)
+                update = {"$set": {"request": 'ipfixer'}}
+                result = collection.update_one(query, update)
+                if result.matched_count > 0:
+                    print(f"Added new messages to existing document. Updated {result.modified_count} document(s).")
+                else:
+                    print("No document found with the specified type.")
+                
+                current_window = sb1.current_window_handle
+                all_windows = sb1.window_handles
+                for window in all_windows:
+                    if window != current_window:
+                        sb1.switch_to.window(window)
+                        sb1.close()  # Close the tab
+                sb1.switch_to.window(current_window)
+                #time.sleep(1)
+                ipfixer()
+                ip_required = fix_ip(sb1, server_name1)
+                ip_address = get_ip(sb1)
+                sb1.open("https://www.skylom.com/videos")
+                skylom_window = sb1.current_window_handle
+                if with_baymack == True:
+                    sb1.open_new_window()
+                    sb1.open("https://www.baymack.com/videos")
+                    baymack_window = sb1.current_window_handle
+                print(sb1.get_title())
+
+            elif mainscript == 4:
+                sb1.quit()
+                time.sleep(1)
+                print('Killing Everything....')
+                break
+
+            elif mainscript == 5:
+                print('Pausing....')
+                time.sleep(3)

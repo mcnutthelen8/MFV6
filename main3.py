@@ -30,14 +30,17 @@ from paddleocr import PaddleOCR
 import Levenshtein
 import json
 
-ocr = PaddleOCR(use_angle_cls=True, lang='en',  drop_score=0)
+
 debug_mode = False
 facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/alisabro.json'
 ip_required = 0
 farm_id = 1
 run_sb1 = True
 with_baymack = True
+
 fresh = True
+with_vnc = True
+
 server_name1 = 'estonia'
 
 
@@ -46,9 +49,13 @@ chrome_user_data_dir = '/root/.config/google-chrome/'
 
 
 mongo_uri = "mongodb+srv://redgta36:J6n7Hoz2ribHmMmx@moneyfarm.wwzcs.mongodb.net/?retryWrites=true&w=majority&appName=moneyfarm"
+
+
 client = MongoClient(mongo_uri)
 db = client['MoneyFarmV6'] 
 collection = db[f'Farm{farm_id}']
+ocr = PaddleOCR(use_angle_cls=True, lang='en',  drop_score=0)
+
 
 def add_messages(type_value, new_messages):
     try:
@@ -1277,10 +1284,10 @@ def facebook_login():
                             print("import_icon Found")
                             
                             time.sleep(3)
-                            pyautogui.click(313, 147)
+                            pyautogui.click(113, 100)
                             pyautogui.press('f5')
                             time.sleep(3)
-                            #return True
+                            return True
                         
                         except pyautogui.ImageNotFoundException:
                             print(f"No import_icon .{i}")
@@ -1305,12 +1312,13 @@ def facebook_login():
 def baymack_login(driver):
     coin_val = None
     while not coin_val:
-        coin_val = get_coin_value()  # Assuming get_coin_value() is defined elsewhere
+        coin_val = get_coin_value(driver)  # Assuming get_coin_value() is defined elsewhere
         if coin_val:
             print(f'Baymack Coins: {coin_val}')
             return coin_val
         else:
             try:
+                print(driver.get_title())
                 # Look for '.quiz-btn' and click if visible
                 if driver.is_element_visible('.quiz-btn'):
                     buttons = driver.find_elements(By.CSS_SELECTOR, '.quiz-btn')
@@ -1327,11 +1335,12 @@ def baymack_login(driver):
                 for button in continue_buttons:
                     if 'Continue as' in button.text:
                         print(f"Button found: {button.text}, clicking...")
-                        button.click()
+                        pyautogui.click(791, 737)
+                        #button.click()
                         break
 
                 # Check if password input is found
-                if driver.is_element_visible('input[name="pass"][type="password"]'):
+                if driver.is_element_visible('input[name="pass"][type="password"]') and driver.get_title() == 'Facebook':
                     password_field = driver.find_element(By.CSS_SELECTOR, 'input[name="pass"][type="password"]')
                     print("Password field found, typing password...")
                     password_field.send_keys('ashen1997')
@@ -1344,7 +1353,7 @@ def baymack_login(driver):
                     else:
                         print("Continue button not found!")
                 
-                if driver.get_title() == 'Log in to Facebook':
+                if driver.get_title() == 'Log in to Facebook' or driver.get_title() == 'Log into Facebook':
                     print(driver.get_title())
                     query = {"type": "main"}
                     update = {"$set": {"response": 'Facebook Need Logins'}}
@@ -1433,6 +1442,9 @@ def control_panel():
 
     #print(f'IP Matched {ip_address}')
 baymack_coins = 0
+vnc_url = 0
+vnc_window = 0
+start_vnc = 0
 if run_sb1:
     sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
     sb1.maximize_window()
@@ -1462,6 +1474,7 @@ if run_sb1:
                 print('All Extensions are pinned')
                 if mysterium_login():
                     print('Mysterium Login Done...')
+                    facebook_login()
                     sb1.maximize_window()
     
     current_window = sb1.current_window_handle
@@ -1486,6 +1499,7 @@ if run_sb1:
         sb1.open_new_window()
         sb1.open("https://www.baymack.com/videos")
         baymack_window = sb1.current_window_handle
+        ggt = sb1.get_title()
         if ggt == 'Baymack':
             time.sleep(1)
             baymack_coins =baymack_login(sb1)
@@ -1598,10 +1612,13 @@ if ip_address == ip_required:
         print('Starting Loop')
         while True:
             #time.sleep(1)
+            
             mainscript = control_panel()
 
             if mainscript == 1:
                 print('mainscript is 1 ')
+                
+
                 cloudflare(id1,sb1)
                 sb1.switch_to.default_content()
                 sb1.execute_script("window.scrollTo(0, 0);")
@@ -1870,7 +1887,10 @@ if ip_address == ip_required:
                         sb1.switch_to.window(skylom_window)
                     else:
                         print(f'no title was sky or bay {title}')
-            
+
+
+
+
             elif mainscript == 2:
                 print('mainscript is 2 ')
                 ip_required = fix_ip(sb1, server_name1)

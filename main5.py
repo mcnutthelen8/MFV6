@@ -41,7 +41,7 @@ with_baymack = True
 fresh = True
 with_vnc = True
 
-server_name1 = 'estonia'
+server_name1 = 'poland'
 
 
 chrome_binary_path = '/opt/google/chrome/google-chrome'

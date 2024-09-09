@@ -45,7 +45,7 @@ server_name1 = 'estonia'
 
 
 chrome_binary_path = '/opt/google/chrome/google-chrome'
-chrome_user_data_dir = '/home/user/.config/google-chrome/'
+chrome_user_data_dir = '/headless/.config/google-chrome/'
 
 
 mongo_uri = "mongodb+srv://redgta36:J6n7Hoz2ribHmMmx@moneyfarm.wwzcs.mongodb.net/?retryWrites=true&w=majority&appName=moneyfarm"
@@ -495,23 +495,23 @@ def get_ipscore(ip):
 
 def mysterium_vpn_connect(server_name):
     try:
-        x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
+        x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
         pyautogui.click(x, y)
         print("mysterium_icon_empty Found")
         time.sleep(5)
         try:
-            x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/myserium_disconnect.png", region=(1325, 190, 800, 400), confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/myserium_disconnect.png", region=(1325, 190, 800, 400), confidence=0.95)
             pyautogui.click(x, y)
             print("myserium_disconnect Found")
         except pyautogui.ImageNotFoundException:
             print("No myserium_disconnect .")
 
         try:
-            x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/quick_connect.png", region=(1325, 190, 800, 400), confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/quick_connect.png", region=(1325, 190, 800, 400), confidence=0.95)
         
             print("quick_connect Found")
             try:
-                x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/search_mysterium.png", region=(1325, 494, 800, 400), confidence=0.95)
+                x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/search_mysterium.png", region=(1325, 494, 800, 400), confidence=0.95)
                 pyautogui.click(x, y)
                 print("search_mysterium Found")
                 time.sleep(2)
@@ -534,18 +534,18 @@ def mysterium_vpn_connect(server_name):
 
 def mysterium_vpn_Recon_ip(server_name):
     try:
-        x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
+        x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
         pyautogui.click(x, y)
         print("mysterium_icon_empty Found")
         time.sleep(5)
         try:
-            x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/myserium_disconnect.png", region=(1325, 190, 800, 400), confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/myserium_disconnect.png", region=(1325, 190, 800, 400), confidence=0.95)
             #pyautogui.click(x, y)
             print("myserium_disconnect Found")
             unknown_con = True
             while unknown_con == True:
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/Unknown.png", region=(1345, 90, 800, 400), confidence=0.95)
+                    x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/Unknown.png", region=(1345, 90, 800, 400), confidence=0.95)
                     #pyautogui.click(x, y)
                     print("Unkown Found")
                     unknown_con = True
@@ -554,7 +554,7 @@ def mysterium_vpn_Recon_ip(server_name):
                     unknown_con = False
             
             try:
-                x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/recon.png", region=(1345, 90, 800, 600), confidence=0.95)
+                x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/recon.png", region=(1345, 90, 800, 600), confidence=0.95)
                 pyautogui.click(x, y)
                 print("recon Found")
                 time.sleep(5)
@@ -1028,18 +1028,18 @@ def mysterium_login():
     for i in range(1,100):
         time.sleep(1)
         try:
-            x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/cookie_icon.png", region=(1625, 43, 400, 300), confidence=0.99)
+            x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/cookie_icon.png", region=(1625, 43, 400, 300), confidence=0.99)
             pyautogui.click(x, y)
             print("cookie_icon Found")
             time.sleep(3)
             try:
-                x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/all_site.png", region=(1300, 212, 600, 300), confidence=0.99)
+                x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/all_site.png", region=(1300, 212, 600, 300), confidence=0.99)
                 pyautogui.click(x, y)
                 print("all_site Found")
             except pyautogui.ImageNotFoundException:
                 print("No all_site .")
             try:
-                x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
+                x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
                 pyautogui.click(x, y)
                 print("import_icon Found")
                 time.sleep(3)
@@ -1057,7 +1057,7 @@ def mysterium_login():
                         pyautogui.typewrite(text_content)
                         time.sleep(5)
                         try:
-                            x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
+                            x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
                             pyautogui.click(x, y)
                             print("import_icon Found")
                             
@@ -1066,30 +1066,30 @@ def mysterium_login():
                             pyautogui.press('f5')
                             time.sleep(3)
                             try:
-                                x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
+                                x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
                                 pyautogui.click(x, y)
                                 print("mysterium_icon_empty Found")
                                 i = 1
                                 for i in range(1, 100):
                                     try:
-                                        x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.99)
+                                        x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.99)
                                         pyautogui.click(x, y)
                                         print("mysterium_login Found")
                                         for i in range(1, 100):
                                             try:
-                                                x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/mysterium_allow.png", region=(842, 750, 400, 300), confidence=0.99)
+                                                x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/mysterium_allow.png", region=(842, 750, 400, 300), confidence=0.99)
                                                 pyautogui.click(x, y)
                                                 print("mysterium_allow Found")
                                                 time.sleep(3)
                                                 try:
-                                                    x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
+                                                    x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
                                                     pyautogui.click(x, y)
                                                     print("mysterium_icon_empty 2 Found")
                                                     time.sleep(3)
                                                     for i in range(1,100):
                                                         time.sleep(1)
                                                         try:
-                                                            x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/settings_mysterium.png", region=(1445, 630, 400, 300), confidence=0.99)
+                                                            x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/settings_mysterium.png", region=(1445, 630, 400, 300), confidence=0.99)
                                                             pyautogui.click(x, y)
                                                             print("settings_mysterium 2 Found")
                                                             time.sleep(1)
@@ -1097,7 +1097,7 @@ def mysterium_login():
                                                             print("No settings_mysterium 2.")
 
                                                         try:
-                                                            x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/connection_mysterium_option.png", region=(1325, 109, 800, 900), confidence=0.99)
+                                                            x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/connection_mysterium_option.png", region=(1325, 109, 800, 900), confidence=0.99)
                                                             pyautogui.click(x, y)
                                                             print("connection_mysterium_option Found")
                                                             time.sleep(1)
@@ -1105,7 +1105,7 @@ def mysterium_login():
                                                             print("No connection_mysterium_option.")
 
                                                         try:
-                                                            x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/refresh_ip_off.png", region=(1325, 109, 800, 900), confidence=0.99)
+                                                            x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/refresh_ip_off.png", region=(1325, 109, 800, 900), confidence=0.99)
                                                             pyautogui.click(1640, 300)
                                                             pyautogui.click(1668, 300)
                                                             print("refresh_ip_off Found")
@@ -1114,7 +1114,7 @@ def mysterium_login():
                                                             print("No refresh_ip_off.")
 
                                                         try:
-                                                            x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/refresh_ip_on.png", region=(1325, 109, 800, 900), confidence=0.99)
+                                                            x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/refresh_ip_on.png", region=(1325, 109, 800, 900), confidence=0.99)
                                                             pyautogui.click(300, 300)
                                                             print("refresh_ip_on Found")
                                                             return True
@@ -1148,7 +1148,7 @@ def mysterium_login():
             print("No cookie_icon .")
 
         try:
-            x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/allow_button.png", region=(1080, 247, 400, 300), confidence=0.99)
+            x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/allow_button.png", region=(1080, 247, 400, 300), confidence=0.99)
             pyautogui.click(x, y)
             print("allow_button Found")
                     
@@ -1157,7 +1157,7 @@ def mysterium_login():
 
 def pin_extensions():
     try:
-        x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/extension_icon.png", region=(1700, 30, 300, 300), confidence=0.9)
+        x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/extension_icon.png", region=(1700, 30, 300, 300), confidence=0.9)
         pyautogui.click(x, y)
         print("extension_icon Button Found")
 
@@ -1165,7 +1165,7 @@ def pin_extensions():
             time.sleep(1)
             pyautogui.moveTo(1700, 30)
             try:
-                x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/pin.png", region=(1588, 170, 400, 600), confidence=0.9)
+                x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/pin.png", region=(1588, 170, 400, 600), confidence=0.9)
                 pyautogui.click(x, y)
                 pyautogui.moveTo(1700, 30)
                 print("pin Button Found")
@@ -1173,7 +1173,7 @@ def pin_extensions():
             except pyautogui.ImageNotFoundException:
                 print("No pin Button.")
             try:
-                x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/all_pinned.png", region=(1588, 170, 400, 600), confidence=0.99)
+                x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/all_pinned.png", region=(1588, 170, 400, 600), confidence=0.99)
                 pyautogui.moveTo(1700, 40)
                 print("all_pinned Button Found")
                 return True   
@@ -1188,31 +1188,31 @@ def install_extensions(extension_name):
 
     for i in range(1,4):
         try:
-            x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/dev_off.png", region=(1700, 95, 300, 300), confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/dev_off.png", region=(1700, 95, 300, 300), confidence=0.9)
             pyautogui.click(x, y)
             print("Developer Button Found")
         except pyautogui.ImageNotFoundException:
             print("No Developer Button.")
         time.sleep(2)
         try:
-            x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/load_unpack.png", region=(2, 100, 400, 400), confidence=0.90)
+            x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/load_unpack.png", region=(2, 100, 400, 400), confidence=0.90)
             pyautogui.click(x, y)
             print("load_unpack Button Found")
             time.sleep(2)
             for i in range(1,100):
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/mfv6_unselect.png", region=(388, 260, 300, 300), confidence=0.60)
+                    x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/mfv6_unselect.png", region=(388, 260, 300, 300), confidence=0.60)
                     pyautogui.click(x, y)
                     print("mfv6_unselect Button Found")
                         
                 except pyautogui.ImageNotFoundException:
                     print("No mfv6_unselect Button.")
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/mfv6_select.png", region=(388, 260, 300, 300), confidence=0.90)
+                    x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/mfv6_select.png", region=(388, 260, 300, 300), confidence=0.90)
                     pyautogui.click(x, y)
                     print("mfv6_select Button Found")
                     #####Select Your Extension
-                    extension_path = f"/home/user/Desktop/MFV6/images/{extension_name}.png" 
+                    extension_path = f"/headless/Desktop/MFV6/images/{extension_name}.png" 
                     try:
                         x, y = pyautogui.locateCenterOnScreen(extension_path, region=(545, 200, 500, 500), confidence=0.9)
                         pyautogui.click(x, y)
@@ -1250,18 +1250,18 @@ def facebook_login():
     for i in range(1,100):
         time.sleep(1)
         try:
-            x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/cookie_icon.png", region=(1625, 43, 400, 300), confidence=0.99)
+            x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/cookie_icon.png", region=(1625, 43, 400, 300), confidence=0.99)
             pyautogui.click(x, y)
             print("cookie_icon Found")
             time.sleep(3)
             try:
-                x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/all_site.png", region=(1300, 212, 600, 300), confidence=0.99)
+                x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/all_site.png", region=(1300, 212, 600, 300), confidence=0.99)
                 pyautogui.click(x, y)
                 print("all_site Found")
             except pyautogui.ImageNotFoundException:
                 print("No all_site .")
             try:
-                x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
+                x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
                 pyautogui.click(x, y)
                 print("import_icon Found")
                 time.sleep(3)
@@ -1279,7 +1279,7 @@ def facebook_login():
                         pyautogui.typewrite(text_content)
                         time.sleep(5)
                         try:
-                            x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
+                            x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
                             pyautogui.click(x, y)
                             print("import_icon Found")
                             
@@ -1301,7 +1301,7 @@ def facebook_login():
             print("No cookie_icon .")
 
         try:
-            x, y = pyautogui.locateCenterOnScreen("/home/user/Desktop/MFV6/images/allow_button.png", region=(1080, 247, 400, 300), confidence=0.99)
+            x, y = pyautogui.locateCenterOnScreen("/headless/Desktop/MFV6/images/allow_button.png", region=(1080, 247, 400, 300), confidence=0.99)
             pyautogui.click(x, y)
             print("allow_button Found")
                     

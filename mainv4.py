@@ -1,91 +1,117 @@
 import os
 import subprocess
+import shutil
 
-# User inputs
-CRD_SSH_Code = input("Enter your Google CRD SSH Code: ")
-username = "hello"  # Replace with your desired username
-password = "world"  # Replace with your desired password
-Pin = 234567  # Replace with your desired PIN
-Autostart = True  # Set to True if you want autostart to be enabled
+CRD_SSH_Code = input("Google CRD SSH Code :")
+username = "user" #@param {type:"string"}
+password = "root" #@param {type:"string"}
+os.system(f"useradd -m {username}")
+os.system(f"adduser {username} sudo")
+os.system(f"echo '{username}:{password}' | sudo chpasswd")
+os.system("sed -i 's/\/bin\/sh/\/bin\/bash/g' /etc/passwd")
+
+Pin = 123456 #@param {type: "integer"}
+Autostart = True #@param {type: "boolean"}
 
 class CRDSetup:
     def __init__(self, user):
-        # Initial setup
-        self.update_system()
-        self.install_crd()
-        self.install_desktop_environment()
-        self.configure_user(user)
-        self.finish_setup(user)
+        os.system("apt update")
+        self.installCRD()
+        self.installDesktopEnvironment()
+        #self.changewall()
+        #self.installGoogleChrome()
+        #self.installTelegram()
+        #self.installQbit()
+        self.finish(user)
 
     @staticmethod
-    def update_system():
-        """Update package lists."""
-        subprocess.run(['apt', 'update'], check=True)
+    def installCRD():
+        subprocess.run(['wget', 'https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb'])
+        subprocess.run(['dpkg', '--install', 'chrome-remote-desktop_current_amd64.deb'])
+        subprocess.run(['apt', 'install', '--assume-yes', '--fix-broken'])
+        print("Chrome Remoted Desktop Installed !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
+    @staticmethod
+    def installDesktopEnvironment():
+        os.system("export DEBIAN_FRONTEND=noninteractive")
+        os.system("apt install --assume-yes xfce4 desktop-base xfce4-terminal")
+        os.system("bash -c 'echo \"exec /etc/X11/Xsession /usr/bin/xfce4-session\" > /etc/chrome-remote-desktop-session'")
+        os.system("apt remove --assume-yes gnome-terminal")
+        os.system("apt install --assume-yes xscreensaver")
+        os.system("sudo service lightdm stop")
+        os.system("sudo apt-get install dbus-x11 -y")
+        os.system("service dbus start")
+        print("Installed XFCE4 Desktop Environment !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
+    @staticmethod
+    def installGoogleChrome():
+        subprocess.run(["wget", "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"])
+        subprocess.run(["dpkg", "--install", "google-chrome-stable_current_amd64.deb"])
+        subprocess.run(['apt', 'install', '--assume-yes', '--fix-broken'])
+        print("Google Chrome Installed !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     
     @staticmethod
-    def install_crd():
-        """Install Chrome Remote Desktop."""
-        subprocess.run(['wget', 'https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb'], check=True)
-        subprocess.run(['dpkg', '--install', 'chrome-remote-desktop_current_amd64.deb'], check=True)
-        subprocess.run(['apt', 'install', '--assume-yes', '--fix-broken'], check=True)
-        print("Chrome Remote Desktop installed successfully!")
+    def installTelegram():
+        subprocess.run(["apt", "install", "--assume-yes", "telegram-desktop"])
+        print("Telegram Installed !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
     @staticmethod
-    def install_desktop_environment():
-        """Install XFCE4 desktop environment."""
-        subprocess.run(['apt', 'install', '--assume-yes', 'xfce4', 'desktop-base', 'xfce4-terminal'], check=True)
-        with open('/etc/chrome-remote-desktop-session', 'w') as f:
-            f.write("exec /etc/X11/Xsession /usr/bin/xfce4-session\n")
-        subprocess.run(['apt', 'remove', '--assume-yes', 'gnome-terminal'], check=True)
-        subprocess.run(['apt', 'install', '--assume-yes', 'xscreensaver'], check=True)
-        subprocess.run(['apt', 'purge', '--assume-yes', 'light-locker'], check=True)
-        subprocess.run(['apt', 'install', '--reinstall', 'xfce4-screensaver'], check=True)
-        subprocess.run(['systemctl', 'disable', 'lightdm.service'], check=True)
-        print("XFCE4 Desktop Environment installed successfully!")
+    def changewall():
+        os.system(f"sudo curl -s -L -o /etc/alternatives/desktop-theme/wallpaper/contents/images/1280x1024.svg https://gitlab.com/chamod12/gcrd_deb_codesandbox.io_rdp/-/raw/main/walls/1280x1024.svg")
+        os.system(f"sudo curl -s -L -o /etc/alternatives/desktop-theme/wallpaper/contents/images/1280x800.svg https://gitlab.com/chamod12/gcrd_deb_codesandbox.io_rdp/-/raw/main/walls/1280x800.svg")
+        os.system(f"sudo curl -s -L -o /etc/alternatives/desktop-theme/wallpaper/contents/images/1600x1200.svg https://gitlab.com/chamod12/gcrd_deb_codesandbox.io_rdp/-/raw/main/walls/1600x1200.svg")
+        os.system(f"sudo curl -s -L -o /etc/alternatives/desktop-theme/wallpaper/contents/images/1920x1080.svg https://gitlab.com/chamod12/gcrd_deb_codesandbox.io_rdp/-/raw/main/walls/1920x1080.svg")
+        os.system(f"sudo curl -s -L -o /etc/alternatives/desktop-theme/wallpaper/contents/images/1920x1200.svg https://gitlab.com/chamod12/gcrd_deb_codesandbox.io_rdp/-/raw/main/walls/1920x1200.svg")
+        os.system(f"sudo curl -s -L -o /etc/alternatives/desktop-theme/wallpaper/contents/images/2560x1440.svg https://gitlab.com/chamod12/gcrd_deb_codesandbox.io_rdp/-/raw/main/walls/2560x1440.svg")
+        os.system(f"sudo curl -s -L -o /etc/alternatives/desktop-theme/wallpaper/contents/images/2560x1600.svg https://gitlab.com/chamod12/gcrd_deb_codesandbox.io_rdp/-/raw/main/walls/2560x1600.svg")
+        os.system(f"sudo curl -s -L -o /etc/alternatives/desktop-theme/wallpaper/contents/images/3200x1800.svg https://gitlab.com/chamod12/gcrd_deb_codesandbox.io_rdp/-/raw/main/walls/3200x1800.svg")
+        os.system(f"sudo curl -s -L -o /etc/alternatives/desktop-theme/wallpaper/contents/images/3200x2000.svg https://gitlab.com/chamod12/gcrd_deb_codesandbox.io_rdp/-/raw/main/walls/3200x2000.svg")
+        os.system(f"sudo curl -s -L -o /etc/alternatives/desktop-theme/wallpaper/contents/images/3840x2160.svg https://gitlab.com/chamod12/gcrd_deb_codesandbox.io_rdp/-/raw/main/walls/3840x2160.svg")
+        os.system(f"sudo curl -s -L -o /etc/alternatives/desktop-theme/wallpaper/contents/images/5120x2880.svg https://gitlab.com/chamod12/gcrd_deb_codesandbox.io_rdp/-/raw/main/walls/5120x2880.svg")
+        print("Wallpaper Changed !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+   
+    @staticmethod
+    def installQbit():
+        subprocess.run(["sudo", "apt", "update"])
+        subprocess.run(["sudo", "apt", "install", "-y", "qbittorrent"])
+        print("Qbittorrent Installed !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
     @staticmethod
-    def configure_user(user):
-        """Create a user and set permissions."""
-        subprocess.run(['useradd', '-m', user], check=True)
-        subprocess.run(['adduser', user, 'sudo'], check=True)
-        subprocess.run(['sh', '-c', f"echo '{user}:{password}' | chpasswd"], check=True)
-        subprocess.run(['sed', '-i', 's/\/bin\/sh/\/bin\/bash/g', '/etc/passwd'], check=True)
-        print(f"User {user} created and configured successfully!")
-
-    @staticmethod
-    def finish_setup(user):
-        """Finish setting up Chrome Remote Desktop and autostart."""
+    def finish(user):
         if Autostart:
-            autostart_dir = f"/home/{user}/.config/autostart"
-            os.makedirs(autostart_dir, exist_ok=True)
-            link = "https://www.youtube.com/@The_Disala"
-            colab_autostart = f"""[Desktop Entry]
+            os.makedirs(f"/home/{user}/.config/autostart", exist_ok=True)
+            link = "www.youtube.com/@The_Disala"
+            colab_autostart = """[Desktop Entry]
+            print("Finalizing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
 Type=Application
 Name=Colab
-Exec=sh -c "sensible-browser {link}"
+Exec=sh -c "sensible-browser {}"
 Icon=
-Comment=Open a predefined notebook at session sign-in.
-X-GNOME-Autostart-enabled=true"""
-            autostart_file = f"{autostart_dir}/colab.desktop"
-            with open(autostart_file, "w") as f:
+Comment=Open a predefined notebook at session signin.
+X-GNOME-Autostart-enabled=true""".format(link)
+            with open(f"/home/{user}/.config/autostart/colab.desktop", "w") as f:
                 f.write(colab_autostart)
-            subprocess.run(['chmod', '+x', autostart_file], check=True)
-            subprocess.run(['chown', f"{user}:{user}", '/home/{user}/.config'], check=True)
-            print("Autostart configuration completed!")
-
-        subprocess.run(['adduser', user, 'chrome-remote-desktop'], check=True)
+            os.system(f"chmod +x /home/{user}/.config/autostart/colab.desktop")
+            os.system(f"chown {user}:{user} /home/{user}/.config")
+            
+        os.system(f"adduser {user} chrome-remote-desktop")
         command = f"{CRD_SSH_Code} --pin={Pin}"
-        subprocess.run(['su', '-', user, '-c', command], check=True)
-        subprocess.run(['service', 'chrome-remote-desktop', 'start'], check=True)
-
-        print(f"Setup completed!\nLog in PIN: {Pin}\nUsername: {username}\nPassword: {password}")
+        os.system(f"su - {user} -c '{command}'")
+        os.system("service chrome-remote-desktop start")
+        
+        print("Log in PIN : 123456") 
+        print("User Name : user") 
+        print("User Pass : root") 
+        while True:
+            pass
 
 try:
-    if not CRD_SSH_Code:
-        print("Please enter the auth code from the provided link.")
+    if CRD_SSH_Code == "":
+        print("Please enter authcode from the given link")
     elif len(str(Pin)) < 6:
-        print("PIN must be at least 6 digits long.")
+        print("Enter a pin more or equal to 6 digits")
     else:
         CRDSetup(username)
-except subprocess.CalledProcessError as e:
-    print(f"An error occurred: {e}")
+except NameError as e:
+    print("'username' variable not found, Create a user first")

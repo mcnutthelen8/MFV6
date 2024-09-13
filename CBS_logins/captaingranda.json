@@ -1,0 +1,39 @@
+[
+    {
+        "domain": ".codesandbox.io",
+        "expirationDate": 1739626536,
+        "hostOnly": false,
+        "httpOnly": false,
+        "name": "cc_cookie",
+        "path": "/",
+        "sameSite": "lax",
+        "secure": true,
+        "session": false,
+        "storeId": null,
+        "value": "%7B%22categories%22%3A%5B%22functional%22%2C%22analytical%22%2C%22marketing%22%5D%2C%22revision%22%3A0%2C%22data%22%3Anull%2C%22consentTimestamp%22%3A%222024-08-17T13%3A35%3A36.233Z%22%2C%22consentId%22%3A%224a736020-75ef-4144-ba07-482ba2dfdea8%22%2C%22services%22%3A%7B%22functional%22%3A%5B%5D%2C%22analytical%22%3A%5B%5D%2C%22marketing%22%3A%5B%5D%7D%2C%22lastConsentTimestamp%22%3A%222024-08-17T13%3A35%3A36.233Z%22%2C%22expirationTime%22%3A1739626536233%7D"
+    },
+    {
+        "domain": ".codesandbox.io",
+        "hostOnly": false,
+        "httpOnly": true,
+        "name": "_cfuvid",
+        "path": "/",
+        "sameSite": "no_restriction",
+        "secure": true,
+        "session": true,
+        "storeId": null,
+        "value": "t_fJgSGkpET2C1K4ac0K5GXsYlRi4EXCOibZqq6UdoQ-1726220738153-0.0.1.1-604800000"
+    },
+    {
+        "domain": "codesandbox.io",
+        "hostOnly": true,
+        "httpOnly": true,
+        "name": "_code_sandbox_key",
+        "path": "/",
+        "sameSite": "strict",
+        "secure": true,
+        "session": true,
+        "storeId": null,
+        "value": "XCP.dCwbfBB93MRqq4HZDm9VB9hSc-6ducsXDqJXUinc8Kzr_DrycHDqYQAWX1irs3ytbueTf4LiA17devX9MjWxE9OPI--nnvvD4oF3FjmME003H3VB3UK6gWxQSg8vp4iyri1KphVbrgIc5x4Z99JhE5JvAlzx4MXo9qor_yYdOYOL4NfrH0q3ZrnvqHA5TsfULv34x4u2xBBP5jVy4W5Es_9Btogp3TT1nnZWRbIlL8r06MIMfU9xmwtjYI9029rJvgyUrcixAKl-7rRuIuaTmVrAKw4OkN9lWTN2_tNAGytZuntJJ33hhE2vSnh1h7TVTTO4CKbkMRM_UfsXS16Qnnjrw7dd4ueZJKI2x48ygr-gUaqlV4kzLsHj8487JBJ_NqDTpojzF91CqIy4woY8P04vV7pee84ehvbtNSm3499bCf9-sxP66W9R0LWS92u-bsc-wTjLkWQS9I67iPcS-wjpE-cGIjZLVziTZfq5D3C19eDPpxbntjUy9MGqyon5A8WerzkD9xZM4fOYxZjShRMVq0osEWz1PuUlaXDqCvo4oKvolqfvpo3eNx3EUNOYDeT0NKGFVpfhuRRf1VvCJIpLI7FPSNARfA8i-wmoC2PbtBqZBWypZJMmLu6XUiS5EUGaJV2t_GlEueD9CDt0_J-fvu2SybImb39nayb4PT3IBaqeaA"
+    }
+]

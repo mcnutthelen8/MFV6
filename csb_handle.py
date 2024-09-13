@@ -34,7 +34,7 @@ chrome_binary_path = '/opt/google/chrome/google-chrome'
 chrome_user_data_dir = '/root/.config/google-chrome/'
 fresh = True
 
-CSB_id = 'captaingranda'
+CSB_id = 'yvonne'
 def pin_extensions():
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/extension_icon.png", region=(1700, 30, 300, 300), confidence=0.9)
@@ -119,25 +119,14 @@ def are_extensions_exist():
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/extension_icon.png", region=(1700, 30, 300, 300), confidence=0.9)
         #pyautogui.click(x, y)
         print("extension_icon Button Found")
-        return True
+        return False
 
     except pyautogui.ImageNotFoundException:
         print("No extension_icon Button.")
-        return False
+        return True
 
-def codesandbox_login(codesandbox_id):
-    pyautogui.click(1613, 137)
-    time.sleep(2)
-    pyautogui.keyDown('ctrl')
-    pyautogui.press('t')
-    pyautogui.keyUp('ctrl')
-    time.sleep(2)
-    pyautogui.keyDown('ctrl')
-    pyautogui.press('l')
-    pyautogui.keyUp('ctrl')
-    time.sleep(2)
-    pyautogui.typewrite('https://codesandbox.io/')
-    pyautogui.press('enter')
+def codesandbox_login(driver, codesandbox_id):
+    driver.open('https://codesandbox.io')
     time.sleep(5)
     for i in range(1,100):
         time.sleep(1)
@@ -179,6 +168,7 @@ def codesandbox_login(codesandbox_id):
                             pyautogui.click(113, 100)
                             pyautogui.press('f5')
                             time.sleep(3)
+                            #driver.close()
                             return True
                         
                         except pyautogui.ImageNotFoundException:
@@ -199,9 +189,11 @@ def codesandbox_login(codesandbox_id):
                     
         except pyautogui.ImageNotFoundException:
             print("No allow_button .")
+        #driver.close()
+
 
 def are_codesand_logged(driver):
-    sb1.open('https://codesandbox.io/dashboard/recent')
+    driver.open('https://codesandbox.io/dashboard/recent')
     time.sleep(2)
     for i in range(1,9999):
         try:
@@ -211,7 +203,8 @@ def are_codesand_logged(driver):
             for button in continue_buttons:
                 if 'Sign in to CodeSandbox' in button.text:
                     print(f"H1 found: {button.text}, clicking...")
-                    codesandbox_login(CSB_id)
+                    codesandbox_login(driver,CSB_id)
+                    sb1.open('https://codesandbox.io/dashboard/recent')
             
             if 'Recent - CodeSandbox' in titile:
                 return True

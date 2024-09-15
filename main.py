@@ -29,7 +29,7 @@ from paddleocr import PaddleOCR
 import Levenshtein
 import json
 import argparse
-
+import clipboard
 # Initialize the argument parser
 parser = argparse.ArgumentParser(description="Process some arguments.")
 parser.add_argument('--farm', type=int, help="Farm")
@@ -1256,11 +1256,17 @@ def install_extensions(extension_name):
 
 def facebook_login():
     pyautogui.click(1613, 137)
+    
     time.sleep(2)
     pyautogui.keyDown('ctrl')
-    pyautogui.press('t')
+    pyautogui.press('l')
     pyautogui.keyUp('ctrl')
     time.sleep(2)
+    pyautogui.keyDown('ctrl')
+    pyautogui.press('c')
+    pyautogui.keyUp('ctrl')
+    time.sleep(2)
+    urkg = clipboard.paste()
     pyautogui.keyDown('ctrl')
     pyautogui.press('l')
     pyautogui.keyUp('ctrl')
@@ -1309,8 +1315,12 @@ def facebook_login():
                             pyautogui.press('f5')
                             time.sleep(3)
                             pyautogui.keyDown('ctrl')
-                            pyautogui.press('w')
+                            pyautogui.press('l')
                             pyautogui.keyUp('ctrl')
+                            time.sleep(2)
+                            pyautogui.typewrite(urkg)
+                            pyautogui.press('enter')
+                            time.sleep(5)
                             return True
                         
                         except pyautogui.ImageNotFoundException:
@@ -1491,12 +1501,15 @@ def control_panel():
 
 
     #print(f'IP Matched {ip_address}')
+
+
+time.sleep(100)
 baymack_coins = 0
 vnc_url = 0
 vnc_window = 0
 start_vnc = 0
 if run_sb1:
-    sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
+    sb1 = Driver(uc=True, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
     sb1.maximize_window()
     id1 = get_current_window_id()
     url = "chrome://extensions/"
@@ -1539,22 +1552,59 @@ if run_sb1:
     ipfixer()
     ip_required = fix_ip(sb1, server_name1)
     ip_address = get_ip(sb1)
-    sb1.open("https://www.skylom.com/videos")
-    skylom_window = sb1.current_window_handle
+
+    # Open Skylom and get the title
+    sb1.uc_open_with_tab("https://www.skylom.com/videos")
     ggt = sb1.get_title()
 
+    # If Skylom loads, perform the login
     if ggt == 'Skylom':
         time.sleep(1)
         baymack_login(sb1)
-    if with_baymack == True:
-        sb1.open_new_window()
-        sb1.open("https://www.zaptaps.com/videos")
-        baymack_window = sb1.current_window_handle
+
+    # Save Skylom window handle
+    skylom_window = sb1.current_window_handle
+    print(f"Skylom window handle: {skylom_window}")
+
+    # If Baymack is involved, open Zaptaps in a new window
+    if with_baymack:
+        sb1.open_new_window()  # Opens a new window
+        sb1.switch_to_newest_window()  # Switch to the newly opened window
+        sb1.uc_open_with_tab("https://www.zaptaps.com/videos")  # Load Zaptaps in the new window
+
+        # Get the title after opening Zaptaps
         ggt = sb1.get_title()
+        print(f"Title after opening Zaptaps: {ggt}")
+        
+        # Retrieve all window handles and assign the non-matching one to Baymack
+        all_windows = sb1.window_handles
+        print(f"All windows: {all_windows}")
+
+        # Find and assign Baymack window (not matching Skylom window)
+        for window in all_windows:
+            if window != skylom_window:
+                baymack_window = window
+                break
+        
+        print(f"Baymack window handle: {baymack_window}")
+        
+        # Switch to Baymack window and perform login if Zaptaps page loaded
+        sb1.switch_to.window(baymack_window)
+        ggt = sb1.get_title()
+        print(f"Title of Baymack window: {ggt}")
+        
         if ggt == 'Zaptaps':
             time.sleep(1)
-            baymack_coins =baymack_login(sb1)
-    print(sb1.get_title())
+            baymack_coins = baymack_login(sb1)
+            print(f'Done: {baymack_coins}')
+        
+        # Save the new Baymack window handle after login
+        baymack_window = sb1.current_window_handle
+        print(f"New Baymack window handle after login: {baymack_window}")
+
+    # Ensure you're switching back to the Baymack window manually
+    sb1.switch_to.window(baymack_window)
+    print(f'Switched to Baymack window: {baymack_window}, Skylom window: {skylom_window}')
 
 
 
@@ -1980,16 +2030,62 @@ if ip_address == ip_required:
                 ipfixer()
                 ip_required = fix_ip(sb1, server_name1)
                 ip_address = get_ip(sb1)
-                sb1.open("https://www.skylom.com/videos")
+                # Open Skylom and get the title
+                sb1.uc_open_with_tab("https://www.skylom.com/videos")
+                ggt = sb1.get_title()
+
+                # If Skylom loads, perform the login
+                if ggt == 'Skylom':
+                    time.sleep(1)
+                    baymack_login(sb1)
+
+                # Save Skylom window handle
                 skylom_window = sb1.current_window_handle
-                if with_baymack == True:
-                    sb1.open_new_window()
-                    sb1.open("https://www.zaptaps.com/videos")
+                print(f"Skylom window handle: {skylom_window}")
+
+                # If Baymack is involved, open Zaptaps in a new window
+                if with_baymack:
+                    sb1.open_new_window()  # Opens a new window
+                    sb1.switch_to_newest_window()  # Switch to the newly opened window
+                    sb1.uc_open_with_tab("https://www.zaptaps.com/videos")  # Load Zaptaps in the new window
+
+                    # Get the title after opening Zaptaps
+                    ggt = sb1.get_title()
+                    print(f"Title after opening Zaptaps: {ggt}")
+                    
+                    # Retrieve all window handles and assign the non-matching one to Baymack
+                    all_windows = sb1.window_handles
+                    print(f"All windows: {all_windows}")
+
+                    # Find and assign Baymack window (not matching Skylom window)
+                    for window in all_windows:
+                        if window != skylom_window:
+                            baymack_window = window
+                            break
+                    
+                    print(f"Baymack window handle: {baymack_window}")
+                    
+                    # Switch to Baymack window and perform login if Zaptaps page loaded
+                    sb1.switch_to.window(baymack_window)
+                    ggt = sb1.get_title()
+                    print(f"Title of Baymack window: {ggt}")
+                    
+                    if ggt == 'Zaptaps':
+                        time.sleep(1)
+                        baymack_coins = baymack_login(sb1)
+                        print(f'Done: {baymack_coins}')
+                    
+                    # Save the new Baymack window handle after login
                     baymack_window = sb1.current_window_handle
-                print(sb1.get_title())
+                    print(f"New Baymack window handle after login: {baymack_window}")
+
+                # Ensure you're switching back to the Baymack window manually
+                sb1.switch_to.window(baymack_window)
+                print(f'Switched to Baymack window: {baymack_window}, Skylom window: {skylom_window}')
 
             elif mainscript == 4:
                 print('Withdraw Skylom..')
+                sb1.switch_to.window(skylom_window)
                 sb1.maximize_window()
                 sb1.open('skylom.com/prizes')
                 print(sb1.get_title())
@@ -2023,6 +2119,7 @@ if ip_address == ip_required:
                     
             elif mainscript == 6:
                 print('Withdraw Baymack..')
+                sb1.switch_to.window(baymack_window)
                 sb1.maximize_window()
                 sb1.open('zaptaps.com/prizes')
                 print(sb1.get_title())

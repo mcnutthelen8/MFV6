@@ -28,6 +28,7 @@ sudo apt install -y gnome-screenshot
 sudo apt-get install -y python3-tk python3-dev
 sudo apt install -y xdotool
 sudo apt install -y nano
+sudo apt-get install xclip
 sudo apt-get update
 xrandr --output VNC-0 --mode 1920x1080
 sudo apt install unzip

@@ -1,40 +1,23 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.common.exceptions import NoSuchElementException, TimeoutException, StaleElementReferenceException
-from urllib.parse import urlparse, parse_qs
 import time
-import re
 import requests
-from bs4 import BeautifulSoup
 import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import random
 import requests
-from requests.exceptions import RequestException
-from seleniumbase import SB
+
 from seleniumbase import Driver
-import subprocess
 import pyautogui
-from datetime import datetime
-import pytz
-import datetime
-import cv2
-import numpy as np
-from PIL import Image
-from pymongo import MongoClient
-from paddleocr import PaddleOCR
-import Levenshtein
 import json
 
+fresh = True
+CSB_id = 'yvonne'
+
+command_1 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 browser_configure.py'
 chrome_binary_path = '/opt/google/chrome/google-chrome'
 chrome_user_data_dir = '/root/.config/google-chrome/'
-fresh = True
 
-CSB_id = 'yvonne'
 def pin_extensions():
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/extension_icon.png", region=(1700, 30, 300, 300), confidence=0.9)
@@ -197,7 +180,7 @@ def are_codesand_logged(driver):
     time.sleep(2)
     for i in range(1,9999):
         try:
-            titile = sb1.get_title()
+            titile = driver.get_title()
             print(f'title is : {titile}')
             continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'h1.sc-bdnylx')
             for button in continue_buttons:
@@ -211,6 +194,182 @@ def are_codesand_logged(driver):
 
         except Exception as e:
             print(f' are_codesand_logged ERROR:{e}')
+
+
+def create_devbox(driver):
+    driver.open('https://codesandbox.io/dashboard')
+    time.sleep(2)
+    try:
+            continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'button.sc-bdnylx')
+            for button in continue_buttons:
+                if 'Create' in button.text:
+                    print(f"found: {button.text}, clicking...")
+                    button.click()
+                    time.sleep(3)
+                    python_buttons = driver.find_elements(By.CSS_SELECTOR, 'button[title="Python"]')
+                    for button in python_buttons:
+                        print(f"Found button with title: {button.get_attribute('title')}, clicking...")
+                        button.click()
+                        time.sleep(5)
+                        python_buttons = driver.find_elements(By.CSS_SELECTOR, 'button[type="submit"]')
+                        for button in python_buttons:
+                            print(f"Found button with title: {button.get_attribute('submit')}, clicking...")
+                            button.click() 
+                            for i in range(1,9999):
+                                time.sleep(2)
+            
+                                title = driver.get_title()
+                                print(f'Titile: {title}, Sec : {i}')
+                                if 'README.md - workspace - CodeSandbox' in title:
+                                    print(f'Vm Has Loaded:{title}')
+                                    return True               
+
+            return False
+    except Exception as e:
+        print(f'Create DevBox:{e}')
+        return False
+    
+def deploy_docker(farmurl):
+    for i in range(1, 999):
+            
+        try:
+            pyautogui.click(23, 303)
+            time.sleep(3)
+            pyautogui.click(320, 397)
+            time.sleep(3)
+            pyautogui.click(500, 840)
+            time.sleep(3)
+            pyautogui.press('enter')
+            time.sleep(3)
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/workspace_git.png", region=(350, 780, 800, 800), confidence=0.9)
+            if x and y:
+                pyautogui.click(x, y)
+                print("workspace git Found")
+                pyautogui.typewrite('docker run -i --platform=linux/amd64 -p 6080:6080 akarita/docker-ubuntu-desktop')
+                pyautogui.press('enter')
+                for i in range(1,999):
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/docker_deployed.png", region=(350, 780, 800, 800), confidence=0.9)
+                        if x and y:
+                            pyautogui.click(x, y)
+                            print("docker_deployed git Found")
+                            for i in range(1,990):
+                                pyautogui.click(23, 303)
+                                time.sleep(3)
+                                pyautogui.click(104, 329)
+                                time.sleep(5)
+                                try:
+                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/director_lister.png", region=(1120, 223, 1000, 1000), confidence=0.9)
+                                    if x and y:
+                                        pyautogui.click(x, y)
+                                        print("director_lister git Found")
+                                        pyautogui.click(1228,462)
+                                        time.sleep(3)
+                                        for i in range(1, 999):
+                                            pyautogui.rightClick(1467, 346)
+                                            time.sleep(5)
+                                            try:
+                                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/open_terminal.png", region=(1120, 223, 1000, 1000), confidence=0.9)
+                                                if x and y:
+                                                    pyautogui.click(x, y)
+                                                    print("open_terminal git Found")
+                                                    for i in range(1, 999):
+                                                        time.sleep(3)
+                                                        try:
+                                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/desktop_terminal.png", region=(1120, 223, 1000, 1000), confidence=0.9)
+                                                            if x and y:
+                                                                pyautogui.click(x, y)
+                                                                print("desktop_terminal git Found")
+                                                                pyautogui.typewrite(farmurl)
+                                                                pyautogui.press('enter')
+                                                                return True
+                                                        except Exception as e:
+                                                            print('desktop_terminal not found')
+
+
+                                            except Exception as e:
+                                                print('open_terminal not found')
+                                        
+                                except Exception as e:
+                                    print('director_lister not found')
+
+                    except Exception as e:
+                        print('docker_deployed not found')
+                
+            
+        except Exception as e:
+            print(f'Deploy:{e}')
+
+
+def CSB_Usages(driver):
+    original_window = driver.current_window_handle
+    driver.open_new_window()
+    driver.open('https://codesandbox.io/dashboard/')
+    time.sleep(3)
+    usage_list = []
+    
+    try:
+        continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'a.sc-bdnylx')
+        for button in continue_buttons:
+            if 'View usage' in button.text:
+                print(f"Found and clicking: {button.text}")
+                #button.click()
+                pyautogui.click(217, 1042)
+                
+                time.sleep(5)
+                
+                rows = driver.find_elements(By.CSS_SELECTOR, "tbody#vm_usage tr")
+                for row in rows:
+                    row_id = row.get_attribute("id")
+                    devbox_name = row.find_element(By.CSS_SELECTOR, "td:nth-of-type(1) a").text.strip()
+                    credit = row.find_element(By.CSS_SELECTOR, "td:nth-of-type(2)").text.strip()
+                    runtime = row.find_element(By.CSS_SELECTOR, "td:nth-of-type(3)").text.strip()
+                    vm_tier = row.find_element(By.CSS_SELECTOR, "td:nth-of-type(4)").text.strip()
+
+                    print(f"ID_name: {row_id}")
+                    print(f"Devbox: {devbox_name}")
+                    print(f"Credit: {credit}")
+                    print(f"Runtime: {runtime}")
+                    print(f"Vm Tier: {vm_tier}\n")
+                    
+                    # Store the data in a Python dictionary
+                    vm_usage_data = {
+                        "ID_name": row_id,
+                        "Devbox": devbox_name,
+                        "Credit": credit,
+                        "Runtime": runtime,
+                        "Vm_Tier": vm_tier
+                    }
+
+                    # Add the data to the usage_list
+                    usage_list.append(vm_usage_data)
+            else:
+                print(button.text)
+                print('View usage Not Found')     
+    except Exception as e:
+        print(f'Error during usage extraction: {e}')
+    
+    # Close the new window and return to the original one
+    driver.close()
+    driver.switch_to.window(original_window)
+
+    # Optionally convert usage_list to a JSON formatted string if needed
+    json_usage_list = json.dumps(usage_list, indent=4)
+    print(json_usage_list)
+    print(usage_list)
+    return json_usage_list
+
+
+def delete_csb(driver):
+    try:
+        continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'span.sc-bdnylx')
+        for button in continue_buttons:
+            if 'You have no recent work' in button.text:
+                print(f"found: {button.text},You have no recent work clicking...")
+                return True
+        
+    except Exception as e:
+        print(f'Delete:{e}')
 
 sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
 sb1.maximize_window()
@@ -230,4 +389,8 @@ if fresh:
                 print('All Extensions are pinned')
 
 codesandlogged = are_codesand_logged(sb1)
-print(codesandlogged)
+
+create_devbox(sb1)
+time.sleep(99999)
+deploy_docker(command_1)
+time.sleep(99999)

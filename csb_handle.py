@@ -6,17 +6,36 @@ import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import requests
-
 from seleniumbase import Driver
 import pyautogui
 import json
+from pymongo import MongoClient
+import time
+from datetime import datetime
+import pytz
+import datetime
+
 
 fresh = True
+fresh_vms =True 
+vm_count = 1 + 3 
 CSB_id = 'yvonne'
+CSB_Script = 'CSB1'
+waiting_sec = 200
 
-command_1 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 browser_configure.py'
+
+command_1 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main3.py'
+command_2 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main4.py'
+command_3 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main5.py'
+command_4 = 'gg'
+command_5 = 'gg'
+
 chrome_binary_path = '/opt/google/chrome/google-chrome'
 chrome_user_data_dir = '/root/.config/google-chrome/'
+
+mongo_uri = "mongodb+srv://redgta36:J6n7Hoz2ribHmMmx@moneyfarm.wwzcs.mongodb.net/?retryWrites=true&w=majority&appName=moneyfarm"
+client = MongoClient(mongo_uri)
+db = client['MoneyFarmV6'] 
 
 def pin_extensions():
     try:
@@ -96,7 +115,6 @@ def install_extensions(extension_name):
             print("No load_unpack Button.")
     return None
 
-
 def are_extensions_exist():
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/extension_icon.png", region=(1700, 30, 300, 300), confidence=0.9)
@@ -174,7 +192,6 @@ def codesandbox_login(driver, codesandbox_id):
             print("No allow_button .")
         #driver.close()
 
-
 def are_codesand_logged(driver):
     driver.open('https://codesandbox.io/dashboard/recent')
     time.sleep(2)
@@ -194,7 +211,6 @@ def are_codesand_logged(driver):
 
         except Exception as e:
             print(f' are_codesand_logged ERROR:{e}')
-
 
 def create_devbox(driver):
     driver.open('https://codesandbox.io/dashboard')
@@ -300,7 +316,6 @@ def deploy_docker(farmurl):
         except Exception as e:
             print(f'Deploy:{e}')
 
-
 def CSB_Usages(driver):
     original_window = driver.current_window_handle
     driver.open_new_window()
@@ -355,21 +370,33 @@ def CSB_Usages(driver):
 
     # Optionally convert usage_list to a JSON formatted string if needed
     json_usage_list = json.dumps(usage_list, indent=4)
-    print(json_usage_list)
-    print(usage_list)
-    return json_usage_list
-
+    #print(json_usage_list)
+    #print(usage_list)
+    return usage_list
 
 def delete_csb(driver):
-    try:
-        continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'span.sc-bdnylx')
-        for button in continue_buttons:
-            if 'You have no recent work' in button.text:
-                print(f"found: {button.text},You have no recent work clicking...")
-                return True
-        
-    except Exception as e:
-        print(f'Delete:{e}')
+    driver.open('https://codesandbox.io/dashboard')
+    time.sleep(2)
+    for i in range(1,999):
+        try:
+            continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'span.sc-bdnylx')
+            for button in continue_buttons:
+                if 'You have no recent work' in button.text:
+                    print(f"found: {button.text},You have no recent work clicking...")
+                    return True
+                
+            continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'h3.sc-bdnylx')
+            for button in continue_buttons:
+                if 'Pick up where you left off' in button.text:
+                    print(f"found: {button.text},Pick up where you left off clicking...")
+                    pyautogui.rightClick(459, 624)
+                    time.sleep(2)
+                    pyautogui.click(504, 1026)
+                    time.sleep(2)
+        except Exception as e:
+            print(f'Delete:{i}|{e}')
+
+
 
 sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
 sb1.maximize_window()
@@ -377,6 +404,7 @@ url = "chrome://extensions/"
 sb1.open(url)
 print(sb1.get_title())
 fresh = are_extensions_exist()
+
 if fresh:
         mysterium = install_extensions('mysterium')
         nopecha = install_extensions('nopecha')
@@ -389,8 +417,95 @@ if fresh:
                 print('All Extensions are pinned')
 
 codesandlogged = are_codesand_logged(sb1)
+urls_dev = []
+page_windows = []
 
-create_devbox(sb1)
-time.sleep(99999)
-deploy_docker(command_1)
-time.sleep(99999)
+if fresh_vms:
+    delete_csb(sb1)
+    for i in range(1, vm_count):
+        command = command_1
+        if   i == 1: command = command_1
+        elif i == 2: command = command_2
+        elif i == 3: command = command_3
+        elif i == 4: command = command_4
+        elif i == 5: command = command_5
+        sb1.open_new_window()
+        create_devbox(sb1)
+        deploy_docker(command)
+        page_url = sb1.get_current_url()
+        page_window = sb1.current_window_handle
+        urls_dev.append(page_url)
+        page_windows.append(page_window)
+else:
+    collection = db[CSB_Script]
+    data = collection.find_one({"csb_script_id": CSB_Script})
+    devboxes = data['devboxes']
+    devboxes_id = [item.strip() for item in devboxes.split('<br>') if item.strip()]
+    urls_dev = [f'https://codesandbox.io/p/{item}' for item in devboxes_id]
+    for url in urls_dev:
+        sb1.open_new_window()
+        sb1.open(url)
+        window = sb1.current_window_handle
+        page_windows.append(window)
+
+
+while True:
+    urls =[]
+    for page in page_windows:
+        sb1.switch_to.window(page)
+        sb1.refresh()
+        for i in range(1,999):
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/director_lister.png", region=(1120, 223, 1000, 1000), confidence=0.9)
+                if x and y:
+                    pyautogui.click(x, y)
+                    print("director_lister git Found")
+                    pyautogui.click(1228,462)
+                    time.sleep(3)
+                    page_url = sb1.get_current_url()
+                    urls.append(page_url)
+                    break
+
+            except Exception as e:
+                print(f'Waiting For Find Directior Listener{i}')
+
+    #after each Refresh
+    collection = db[CSB_Script]
+    result = collection.delete_many({})
+    print(f"Deleted {result.deleted_count} documents.")
+    devbox_string = "<br>\n".join([url.replace('https://codesandbox.io/p/', '') for url in urls])
+    sri_lanka_tz = pytz.timezone('Asia/Colombo')
+    utc_now = datetime.utcnow().replace(tzinfo=pytz.utc)  
+    sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
+    now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
+
+    csb_panel =     {"csb_script_id": CSB_Script,
+                    "csb_logins": CSB_id,
+                    "devboxes": devbox_string,
+                    "status": now}
+    
+    csb_panel_collection = db[CSB_Script]
+    csb_panel_result = csb_panel_collection.insert_one(csb_panel)
+    print(f"Inserted csb_panel with ID: {csb_panel_result.inserted_id}")
+
+    usage = CSB_Usages(sb1)
+    usage_collection = db[CSB_Script]
+    usage_result = usage_collection.insert_many(usage)
+    print(f"Inserted usage documents with IDs: {usage_result.inserted_ids}")
+
+    #Wating
+    gg = True
+    start_time = time.time()
+    while gg == True:
+        for page in page_windows:
+            sb1.switch_to.window(page)
+            time.sleep(5)
+
+        elapsed_time = time.time() - start_time
+        mins, secs = divmod(int(elapsed_time), 60)
+        timer = f'{mins:02d}:{secs:02d}'
+        seconds_only = int(elapsed_time)
+        print(f'Next Click {timer}')
+        print(f'Elapsed_time {seconds_only}')
+        if seconds_only > waiting_sec:
+            gg = False

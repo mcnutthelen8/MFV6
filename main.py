@@ -971,7 +971,7 @@ def solve_image_category(drive, category, window):
             print(base,'Base False')
 
 
-    if titile == 'Baymack':
+    if titile == 'Zaptaps':
         #base = print_base64_images(drive)
         base = are_images_loaded(drive)
         if base == True:
@@ -999,7 +999,7 @@ def solve_image_category(drive, category, window):
                                 position = captcha_ocr.index(similar_word)
                             print(f"The most similar word to '{category}' at index {position} : {fixword_list}")
                             title = drive.get_title()
-                            if title == 'Baymack':
+                            if title == 'Zaptaps':
                                 print(title,position)
                                 if position == 0:
                                     pyautogui.click(749, 743)
@@ -1308,6 +1308,9 @@ def facebook_login():
                             pyautogui.click(113, 100)
                             pyautogui.press('f5')
                             time.sleep(3)
+                            pyautogui.keyDown('ctrl')
+                            pyautogui.press('w')
+                            pyautogui.keyUp('ctrl')
                             return True
                         
                         except pyautogui.ImageNotFoundException:
@@ -1548,7 +1551,7 @@ if run_sb1:
         sb1.open("https://www.zaptaps.com/videos")
         baymack_window = sb1.current_window_handle
         ggt = sb1.get_title()
-        if ggt == 'Baymack':
+        if ggt == 'Zaptaps':
             time.sleep(1)
             baymack_coins =baymack_login(sb1)
     print(sb1.get_title())
@@ -1621,7 +1624,7 @@ if ip_address == ip_required:
                         img_captcha.solve_image_skylom()
                         time.sleep(1)
                         return True
-                    if title == 'Baymack':
+                    if title == 'Zaptaps':
                         #sb1.scroll_to_top()
                         sb.execute_script("window.scrollTo(0, 0);")
                         # Assuming img_captcha.solve_icon_captcha() is defined elsewhere
@@ -1800,7 +1803,7 @@ if ip_address == ip_required:
                             #ip_address = get_ip(sb1)
 
                         
-                if title == 'Baymack':
+                if title == 'Zaptaps':
                     previous_duration_bay = current_duration_bay
                     current_duration_bay = get_current_duration(sb=sb1)
                     if current_duration_bay == previous_duration_bay and current_duration_bay == 0 :
@@ -1856,7 +1859,7 @@ if ip_address == ip_required:
                                     elif "Technology" in category_bay:
                                         category_bay = "Technology"
                                     title = sb1.get_title()
-                                    if title == 'Baymack':        
+                                    if title == 'Zaptaps':        
                                         #ip_address =get_ip(sb1)
                                         #proxycheck = get_proxycheck(sb1, ip_address, server_name= server_name1)
                                         coins = get_coin_value(sb1)
@@ -1889,7 +1892,7 @@ if ip_address == ip_required:
                         if ip_address == ip_address:
                                     if ip_address == ip_address:
                                         title = sb1.get_title()
-                                        if category_bay != 0 and title == 'Baymack':
+                                        if category_bay != 0 and title == 'Zaptaps':
                                             print('starting to answer category confirm')
                                             title = sb1.get_title()
                                             if title:
@@ -1933,7 +1936,7 @@ if ip_address == ip_required:
                     title = sb1.get_title()
                     if title == 'Skylom':
                         sb1.switch_to.window(baymack_window)
-                    elif title == 'Baymack':
+                    elif title == 'Zaptaps':
                         sb1.switch_to.window(skylom_window)
                     else:
                         print(f'no title was sky or bay {title}')

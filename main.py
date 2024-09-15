@@ -1468,7 +1468,18 @@ def ipfixer():
                 ip = fix_ip(sb1, server_name1)
         else:
             return True
-
+def get_coin_value_redeem(driver):
+    try:
+        continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'h2.blnc')
+        for button in continue_buttons:
+            if 'You' in button.text:
+                print(f"Button found: {button.text}, clicking...")
+                gg = int(float(gg.split()[2]))
+                return gg
+    except Exception as e:
+        pass
+    return 0
+                            
 def control_panel():
     try:
         query = {"type": "main"}
@@ -2088,11 +2099,11 @@ if ip_address == ip_required:
                 sb1.open('skylom.com/prizes')
                 print(sb1.get_title())
                 cp = control_panel()
-                bcoins = get_coin_value(sb1)
+                bcoins = get_coin_value_redeem(sb1)
                 attemp = 1
                 while cp == 4:
                     ip_address = get_ip(sb1)
-                    coins = get_coin_value(sb1)
+                    coins = get_coin_value_redeem(sb1)
                     if coins > 20:
                         if ip_address == ip_required:
                             pyautogui.click(100,200)
@@ -2122,11 +2133,11 @@ if ip_address == ip_required:
                 sb1.open('zaptaps.com/prizes')
                 print(sb1.get_title())
                 cp = control_panel()
-                bcoins = get_coin_value(sb1)
+                bcoins = get_coin_value_redeem(sb1)
                 attemp = 1
                 while cp == 6:
                     ip_address = get_ip(sb1)
-                    coins = get_coin_value(sb1)
+                    coins = get_coin_value_redeem(sb1)
                     if coins > 200:
                         if ip_address == ip_required:
                             pyautogui.click(100,200)

@@ -1502,8 +1502,6 @@ def control_panel():
 
     #print(f'IP Matched {ip_address}')
 
-
-time.sleep(100)
 baymack_coins = 0
 vnc_url = 0
 vnc_window = 0

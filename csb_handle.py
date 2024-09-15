@@ -1,20 +1,35 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.action_chains import ActionChains
+from selenium.common.exceptions import NoSuchElementException, TimeoutException, StaleElementReferenceException
+from urllib.parse import urlparse, parse_qs
 import time
+import re
 import requests
+from bs4 import BeautifulSoup
 import time
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import random
 import requests
+from requests.exceptions import RequestException
+from seleniumbase import SB
 from seleniumbase import Driver
+import subprocess
 import pyautogui
-import json
-from pymongo import MongoClient
-import time
 from datetime import datetime
 import pytz
 import datetime
+import cv2
+import numpy as np
+from PIL import Image
+from pymongo import MongoClient
 
+import json
+
+import pyperclip as clipboard
 
 fresh = True
 fresh_vms =True 
@@ -244,7 +259,7 @@ def create_devbox(driver):
     except Exception as e:
         print(f'Create DevBox:{e}')
         return False
-    
+  
 def deploy_docker(farmurl):
     for i in range(1, 999):
             
@@ -263,7 +278,8 @@ def deploy_docker(farmurl):
                 print("workspace git Found")
                 pyautogui.typewrite('docker run -i --platform=linux/amd64 -p 6080:6080 akarita/docker-ubuntu-desktop')
                 pyautogui.press('enter')
-                for i in range(1,999):
+                for i in range(1,9999):
+                    time.sleep(1)  
                     try:
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/docker_deployed.png", region=(350, 780, 800, 800), confidence=0.9)
                         if x and y:
@@ -322,8 +338,17 @@ def CSB_Usages(driver):
     driver.open('https://codesandbox.io/dashboard/')
     time.sleep(3)
     usage_list = []
+    ucredit = 0
     
     try:
+        continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'p.text-csb-green-5')
+        for button in continue_buttons:
+            if 'free credits used' in button.text:
+                print(f"Found and clicking: {button.text}")
+                gg = button.text 
+                gg = gg.replace('free credits used', '').strip()
+                ucredit = gg
+
         continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'a.sc-bdnylx')
         for button in continue_buttons:
             if 'View usage' in button.text:
@@ -340,7 +365,7 @@ def CSB_Usages(driver):
                     credit = row.find_element(By.CSS_SELECTOR, "td:nth-of-type(2)").text.strip()
                     runtime = row.find_element(By.CSS_SELECTOR, "td:nth-of-type(3)").text.strip()
                     vm_tier = row.find_element(By.CSS_SELECTOR, "td:nth-of-type(4)").text.strip()
-
+                    
                     print(f"ID_name: {row_id}")
                     print(f"Devbox: {devbox_name}")
                     print(f"Credit: {credit}")
@@ -360,7 +385,8 @@ def CSB_Usages(driver):
                     usage_list.append(vm_usage_data)
             else:
                 print(button.text)
-                print('View usage Not Found')     
+                print('View usage Not Found')   
+
     except Exception as e:
         print(f'Error during usage extraction: {e}')
     
@@ -372,7 +398,7 @@ def CSB_Usages(driver):
     json_usage_list = json.dumps(usage_list, indent=4)
     #print(json_usage_list)
     #print(usage_list)
-    return usage_list
+    return ucredit, usage_list
 
 def delete_csb(driver):
     driver.open('https://codesandbox.io/dashboard')
@@ -423,6 +449,7 @@ page_windows = []
 if fresh_vms:
     delete_csb(sb1)
     for i in range(1, vm_count):
+        sb1.maximize_window()
         command = command_1
         if   i == 1: command = command_1
         elif i == 2: command = command_2
@@ -432,7 +459,14 @@ if fresh_vms:
         sb1.open_new_window()
         create_devbox(sb1)
         deploy_docker(command)
-        page_url = sb1.get_current_url()
+
+        pyautogui.click(942, 65)
+        time.sleep(1)
+        pyautogui.hotkey('ctrl', 'l')
+        pyautogui.keyUp('ctrl')
+        time.sleep(0.5)
+        pyautogui.hotkey('ctrl', 'c')
+        page_url = clipboard.paste()
         page_window = sb1.current_window_handle
         urls_dev.append(page_url)
         page_windows.append(page_window)
@@ -443,6 +477,7 @@ else:
     devboxes_id = [item.strip() for item in devboxes.split('<br>') if item.strip()]
     urls_dev = [f'https://codesandbox.io/p/{item}' for item in devboxes_id]
     for url in urls_dev:
+        sb1.maximize_window()
         sb1.open_new_window()
         sb1.open(url)
         window = sb1.current_window_handle
@@ -461,8 +496,15 @@ while True:
                     pyautogui.click(x, y)
                     print("director_lister git Found")
                     pyautogui.click(1228,462)
-                    time.sleep(3)
-                    page_url = sb1.get_current_url()
+                    time.sleep(2)
+                    pyautogui.click(942, 65)
+                    time.sleep(1)
+                    pyautogui.hotkey('ctrl', 'l')
+                    pyautogui.keyUp('ctrl')
+                    time.sleep(0.5)
+                    pyautogui.hotkey('ctrl', 'c')
+                    page_url = clipboard.paste()
+                    #page_url = sb1.get_current_url()
                     urls.append(page_url)
                     break
 
@@ -478,19 +520,21 @@ while True:
     utc_now = datetime.utcnow().replace(tzinfo=pytz.utc)  
     sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
     now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
-
+    ucredit, usage_list = CSB_Usages(sb1)
+    
     csb_panel =     {"csb_script_id": CSB_Script,
                     "csb_logins": CSB_id,
                     "devboxes": devbox_string,
+                    "ucredit" : ucredit,
                     "status": now}
     
     csb_panel_collection = db[CSB_Script]
     csb_panel_result = csb_panel_collection.insert_one(csb_panel)
     print(f"Inserted csb_panel with ID: {csb_panel_result.inserted_id}")
 
-    usage = CSB_Usages(sb1)
+
     usage_collection = db[CSB_Script]
-    usage_result = usage_collection.insert_many(usage)
+    usage_result = usage_collection.insert_many(usage_list)
     print(f"Inserted usage documents with IDs: {usage_result.inserted_ids}")
 
     #Wating

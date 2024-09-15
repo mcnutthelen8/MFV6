@@ -31,7 +31,7 @@ echo "Installing additional tools..."
 sudo apt-get install -y gnome-screenshot python3-tk python3-dev xdotool nano xclip unzip
 
 # Ensure the directory exists
-mkdir -p /root/Desktop/MFV6/mysterium
+#mkdir -p /root/Desktop/MFV6/mysterium
 
 # Set screen resolution (adjust VNC-0 if necessary)
 echo "Setting screen resolution..."

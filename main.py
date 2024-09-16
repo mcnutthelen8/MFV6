@@ -1512,13 +1512,31 @@ def control_panel():
         print(f"Control Panel Function Exception:{e}")
     return None
 
+
 def solve_ocr_number(driver):
     screenshot = pyautogui.screenshot()
-    region = (886, 666, 1035 - 886, 715 - 666)
-    cropped_image = screenshot.crop(region)
+    left = 886
+    top = 666
+    right = 1035
+    bottom = 715
+    
+    # Ensure coordinates are valid
+    if left < right and top < bottom:
+        # Crop the image
+        cropped_image = screenshot.crop((left, top, right, bottom))
+        cropped_image.save("captcha.png")
+        print('Captcha image saved as captcha.png')
+    else:
+        print(f"Invalid coordinates: left={left}, top={top}, right={right}, bottom={bottom}")
 
-    cropped_image.save("captcha.png")
-    captcha_ocr = captcha_to_text(["captcha.png"])
+    # Assuming you have a function `captcha_to_text` that processes the image
+    captcha_ocr_list = captcha_to_text(["captcha.png"])
+    # Convert list to string, remove spaces
+    if captcha_ocr_list:
+        captcha_ocr = captcha_ocr_list[0].strip().replace(" ", "")
+    else:
+        captcha_ocr = ''  # Default to empty string if no result
+
     return captcha_ocr
 
 
@@ -1638,52 +1656,41 @@ if ip_address == ip_required:
         #import ocr_captcha
 
         def check_number_captcha_exists(sb, id):
-
             try:
-                # Attempt to find the number captcha image
-                try:
-                    if sb.is_element_visible("textarea.captcha-textarea"):
-                        print("Number captcha exists.")
-                        sb.maximize_window()
-                        activate_window_by_id(id)
-                        #sb1.scroll_to_top()
-                        sb1.execute_script("window.scrollTo(0, 0);")
-                        answer = solve_ocr_number(sb)
-                        sb.type("textarea.captcha-textarea", str(answer))
+                # Check if the number captcha is present in the DOM
+                if sb.is_element_visible("textarea.captcha-textarea"):
+                    print("Number captcha exists.")
+                    
+                    # Maximize the window to ensure captcha is fully visible
+                    sb.maximize_window()
+                    
+                    # Activate the specific window by its ID (assumed function)
+                    activate_window_by_id(id)
+                    
+                    # Scroll to the captcha element to make sure it's in view
+                    captcha_element = sb.find_element("textarea.captcha-textarea")
+                    sb.execute_script("arguments[0].scrollIntoView(true);", captcha_element)
+                    
+                    # Solve the captcha using OCR (assumed solve_ocr_number is a function that returns the captcha solution)
+                    answer = solve_ocr_number(sb)
+                    
+                    # Type the solved captcha answer into the textarea
+                    sb.type("textarea.captcha-textarea", str(answer))
+                    
+                    # Click the submit button
+                    sb.click("a.themeBtn")
 
-                        sb.click("a.themeBtn")
-                        return True
-                        try:
-                            sb.type("textarea.captcha-textarea", str(answer))
-                            answer = sb.get_text("input.captcha[type='text']")
-                            str_value = str(answer)
-                            #str_value.isdigit()
-                            #if answer:
-                            #    if answer:
-                            #        sb.click("input.btn.btn-info")
-                            #    else:
-                            #        sb.type("input.captcha[type='text']", '1000')
-                            #        print(f'answer contain string{answer} {str(str_value.isdigit())}')
-
-                            print(f"Captcha filled and form submitted. {answer}")
-                            return True
-                        except Exception:
-                            if debug_mode:
-                                print(f"Error finding input box or submit button: {e}")
-                            return False
-                    else:
-                        if debug_mode:
-                            print("Number captcha exists but is not displayed.")
-                        return False
-                except Exception:
+                    return True
+                else:
                     if debug_mode:
-                        print("Number captcha does not exist.")
+                        print("Number captcha exists but is not displayed or visible.")
                     return False
 
             except Exception as e:
                 if debug_mode:
                     print(f"An unexpected error occurred: {e}")
                 return False
+
             
         def check_icon_captcha_exists(sb, id):
             try:
@@ -2009,6 +2016,7 @@ if ip_address == ip_required:
 
                 check_icon_captcha_exists(sb1, id1)
                 check_number_captcha_exists(sb1, id1)
+
                 if with_baymack == True:
                     title = sb1.get_title()
                     if title == 'Skylom':

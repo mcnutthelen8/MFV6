@@ -11,7 +11,7 @@ sudo apt-get --fix-broken install -y
 # Install Python core dependencies
 echo "Installing Python core dependencies..."
 sudo apt-get install -y fonts-liberation libgbm1 libnspr4 libnss3 libu2f-udev libvulkan1 xdg-utils
-
+sudo apt-get --fix-broken install -y
 # Install Google Chrome
 echo "Installing Google Chrome..."
 cd /tmp
@@ -25,11 +25,11 @@ sudo apt-get --fix-broken install -y
 echo "Installing pip and Python packages..."
 sudo apt-get install -y python3-pip
 pip3 install requests beautifulsoup4 selenium clipboard pyautogui opencv-python numpy seleniumbase pillow Levenshtein paddlepaddle paddleocr pymongo pyperclip
-
+sudo apt-get --fix-broken install -y
 # Install additional tools
 echo "Installing additional tools..."
 sudo apt-get install -y gnome-screenshot python3-tk python3-dev xdotool nano xclip unzip
-
+sudo apt-get --fix-broken install -y
 # Set screen resolution (adjust VNC-0 if necessary)
 echo "Setting screen resolution..."
 xrandr --output VNC-0 --mode 1920x1080

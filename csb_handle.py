@@ -30,13 +30,22 @@ from pymongo import MongoClient
 import json
 
 import pyperclip as clipboard
+import pytz
+import datetime
+from datetime import datetime
+
+sri_lanka_tz = pytz.timezone('Asia/Colombo')
+utc_now = datetime.utcnow().replace(tzinfo=pytz.utc)  
+sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
+now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
+
 
 fresh = True
 fresh_vms =True 
 vm_count = 1 + 3 
 CSB_id = 'yvonne'
 CSB_Script = 'CSB1'
-waiting_sec = 200
+waiting_sec = 300
 
 
 command_1 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 1'
@@ -543,7 +552,7 @@ while True:
     while gg == True:
         for page in page_windows:
             sb1.switch_to.window(page)
-            time.sleep(5)
+            time.sleep(15)
 
         elapsed_time = time.time() - start_time
         mins, secs = divmod(int(elapsed_time), 60)

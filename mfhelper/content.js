@@ -8,6 +8,12 @@ function clickNextVideo() {
         'a.themeBtn'
     ];
 
+    // Check if the captcha textarea exists
+    if (document.querySelector('textarea.captcha-textarea')) {
+        console.log("Captcha textarea found, skipping the 'Next Video' click.");
+        return false; // Skip clicking if captcha textarea is present
+    }
+
     // Loop through the selectors and try to find and click the button
     for (let selector of selectors) {
         const nextVideoButton = document.querySelector(selector);
@@ -21,9 +27,16 @@ function clickNextVideo() {
     console.log("Next Video button not found");
     return false;
 }
+
 // Function to click the "False" button or "Try Again" button
 function clickFalseButton() {
     try {
+        // Check if the captcha textarea exists
+        if (document.querySelector('textarea.captcha-textarea')) {
+            console.log("Captcha textarea found, skipping the 'False' button click.");
+            return false; // Skip clicking if captcha textarea is present
+        }
+
         let tryAgainButton = document.querySelector('a.try_again');
         if (tryAgainButton) {
             tryAgainButton.click();
@@ -94,26 +107,32 @@ function handleRandomNumberButtons() {
     }
 }
 
-// Function to periodically check for the "False" or "Try Again" button every 2 seconds
+// Function to periodically check for the "False" or "Try Again" button every 1 second
 function startCheckingForFalseButton() {
     setInterval(() => {
         clickFalseButton();
-    }, 1000); // Check every 2 seconds (2000 ms)
+    }, 1000); // Check every 1 second
 }
 
-// Function to periodically check for random number buttons and click the smallest value every 2 seconds
+// Function to periodically check for random number buttons and click the smallest value every 1 second
 function startCheckingForRandomNumberButtons() {
     setInterval(() => {
         handleRandomNumberButtons();
-    }, 1000); // Check every 2 seconds (2000 ms)
+    }, 1000); // Check every 1 second
 }
+
+// Function to periodically check for the "Next Video" button every 1 second
 function startCheckingForNextVideo() {
     setInterval(() => {
         clickNextVideo();
-    }, 1000); // Check every 2 seconds (2000 ms)
+    }, 1000); // Check every 1 second
 }
+
 // Start checking for "False" button or "Try Again" button
 startCheckingForFalseButton();
+
 // Start checking for random number buttons and click the smallest value
 startCheckingForRandomNumberButtons();
+
+// Start checking for "Next Video" button
 startCheckingForNextVideo();

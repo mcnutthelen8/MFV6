@@ -1052,7 +1052,7 @@ def mysterium_login():
             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cookie_icon.png", region=(1625, 43, 400, 300), confidence=0.99)
             pyautogui.click(x, y)
             print("cookie_icon Found")
-            time.sleep(3)
+            time.sleep(5)
             try:
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/all_site.png", region=(1300, 212, 600, 300), confidence=0.99)
                 pyautogui.click(x, y)
@@ -1064,7 +1064,7 @@ def mysterium_login():
                 pyautogui.click(x, y)
                 print("import_icon Found")
                 time.sleep(3)
-                for i in range(1,50):
+                for i in range(1,10):
                     url = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie.json"
                     response = requests.get(url)
                     if response.status_code == 200:
@@ -1091,12 +1091,14 @@ def mysterium_login():
                                 pyautogui.click(x, y)
                                 print("mysterium_icon_empty Found")
                                 i = 1
-                                for i in range(1, 100):
+                                for i in range(1, 10):
+                                    time.sleep(1)
                                     try:
                                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.99)
                                         pyautogui.click(x, y)
                                         print("mysterium_login Found")
-                                        for i in range(1, 100):
+                                        for i in range(1, 10):
+                                            time.sleep(1)
                                             try:
                                                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_allow.png", region=(842, 750, 400, 300), confidence=0.99)
                                                 pyautogui.click(x, y)

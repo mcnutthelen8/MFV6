@@ -78,9 +78,5 @@ sudo apt-get --fix-broken install -y
 echo "Setting screen resolution..."
 xrandr --output VNC-0 --mode 1920x1080
 
-# Download and unzip Mysterium extension
-echo "Downloading and unzipping Mysterium extension..."
-wget "https://clients2.googleusercontent.com/crx/blobs/AVsOOGhXta8-UhRWEUcB2CckwYwwFI6WMiZ8b-CxyBlFaRSv-8wsJGQEG3lL_ILVoKOmDEowQmnAnB2cwNoa3h3lbPBUsTP376PSoi8nM_fjkQSkoiDkoTx0-5M5j9WIdrlaAMZSmuUvAQiNCBMqU-HcXaveN1nJlDMohw/DCLJFNHBJPILFPMIMIPCIJGAALCABFHD_0_0_1_0.crx" -O mysterium.crx
-unzip mysterium.crx -d /root/Desktop/MFV6/mysterium
 
 echo "Installation completed successfully!"

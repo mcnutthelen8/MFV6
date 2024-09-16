@@ -1,0 +1,91 @@
+[
+    {
+        "domain": ".codesandbox.io",
+        "expirationDate": 1758047758,
+        "hostOnly": false,
+        "httpOnly": false,
+        "name": "AMP_a205ed9b06",
+        "path": "/",
+        "sameSite": "lax",
+        "secure": false,
+        "session": false,
+        "storeId": null,
+        "value": "JTdCJTIyZGV2aWNlSWQlMjIlM0ElMjI5NmE3ZjMwMC1mZjg0LTQ1NjQtOWNlZC01NjkwNjIzNzhlNWMlMjIlMkMlMjJ1c2VySWQlMjIlM0ElMjI3OTFhNjEyM2JjNTYwOTIzYWMxNTBjNzJhMWM0MzM1ODRiOWFjOGM4JTIyJTJDJTIyc2Vzc2lvbklkJTIyJTNBMTcyNjUxMTY2OTkxNCUyQyUyMm9wdE91dCUyMiUzQWZhbHNlJTJDJTIybGFzdEV2ZW50VGltZSUyMiUzQTE3MjY1MTE3NTgxMjclMkMlMjJsYXN0RXZlbnRJZCUyMiUzQTkxJTdE"
+    },
+    {
+        "domain": ".codesandbox.io",
+        "expirationDate": 1741969935,
+        "hostOnly": false,
+        "httpOnly": false,
+        "name": "cc_cookie",
+        "path": "/",
+        "sameSite": "lax",
+        "secure": true,
+        "session": false,
+        "storeId": null,
+        "value": "%7B%22categories%22%3A%5B%22functional%22%2C%22analytical%22%2C%22marketing%22%5D%2C%22revision%22%3A0%2C%22data%22%3Anull%2C%22consentTimestamp%22%3A%222024-09-13T16%3A32%3A15.523Z%22%2C%22consentId%22%3A%22060d08c7-3196-4be0-9311-f7b2f07752dc%22%2C%22services%22%3A%7B%22functional%22%3A%5B%5D%2C%22analytical%22%3A%5B%5D%2C%22marketing%22%3A%5B%5D%7D%2C%22lastConsentTimestamp%22%3A%222024-09-13T16%3A32%3A15.523Z%22%2C%22expirationTime%22%3A1741969935523%7D"
+    },
+    {
+        "domain": ".codesandbox.io",
+        "expirationDate": 1758047716,
+        "hostOnly": false,
+        "httpOnly": false,
+        "name": "AMP_MKTG_a205ed9b06",
+        "path": "/",
+        "sameSite": "lax",
+        "secure": false,
+        "session": false,
+        "storeId": null,
+        "value": "JTdCJTIycmVmZXJyZXIlMjIlM0ElMjJodHRwcyUzQSUyRiUyRnd3dy5nb29nbGUuY29tJTJGJTIyJTJDJTIycmVmZXJyaW5nX2RvbWFpbiUyMiUzQSUyMnd3dy5nb29nbGUuY29tJTIyJTdE"
+    },
+    {
+        "domain": ".codesandbox.io",
+        "hostOnly": false,
+        "httpOnly": true,
+        "name": "_cfuvid",
+        "path": "/",
+        "sameSite": "no_restriction",
+        "secure": true,
+        "session": true,
+        "storeId": null,
+        "value": "d5L0dpEpu4pKOjcY7O61uakeQIW141QabzfBOgbjJgw-1726511654438-0.0.1.1-604800000"
+    },
+    {
+        "domain": "codesandbox.io",
+        "hostOnly": true,
+        "httpOnly": true,
+        "name": "_code_sandbox_key",
+        "path": "/",
+        "sameSite": "strict",
+        "secure": true,
+        "session": true,
+        "storeId": null,
+        "value": "XCP.u0ueK-orp790b4WfrYJA1nL2nrQQ7UZShm1XsIDLnDlyP04Tv9oWEl5BK4VXtaTtLHpg4h0AQ8AN1k1meQLHeWrcuSPZCEi9UlT_eqQHzYajLqYTfusVu5VxaOTySt6zUBmvoDIE8ps4HPXpk7UF9VpDHo7XBfL0WRNB91sV_cWl0SSdbxXxfXRTxjEDUl7VLIDn1Q_ohYboZM_6syf1S8webufGpYxcMAQXahPvLoOBOmCbOWP8UA_yDyHFM_4WWg7I5hDClqsqedzHx96It_zG4dcPOvYVUqr6S9mkQZukMTCKSU6HKIKcDB36Ol-uN9ThWFdPXMixmYJdHrWfSZ6JXA6Ao6yD4LYh_3_GzOFYisj8q1tWqz9n4r542Mj3uOFcPlYTVGMCkAeg_F_XxVSHR8y-ZsCn82Tnp_sABOk59jh5YWDhQzgh79_KiZBEfjw3QMiFVzA4DkbJukZZuEydigw627gQ55eIhI1Tzp1-zPj7usTpRbXxsg4kC2gb4GpopGSyHiQn5G2bQAKs9hvxY6jN9z9CF0bZ1nKGsPlhuVrIhZcR6N5EURHxURW4ITDAo0OS2GOu-TqS64RFXyONWP1kcoKHVWKaRA1HT70OBjfMchPkPA"
+    },
+    {
+        "domain": "codesandbox.io",
+        "expirationDate": 1728930955.37896,
+        "hostOnly": true,
+        "httpOnly": true,
+        "name": "guardian_default_token",
+        "path": "/",
+        "sameSite": null,
+        "secure": false,
+        "session": false,
+        "storeId": null,
+        "value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJDb2RlU2FuZGJveCIsImV4cCI6MTcyODkzMDk1NSwiaWF0IjoxNzI2NTExNzU1LCJpc3MiOiJDb2RlU2FuZGJveCIsImp0aSI6IjQ1NzE1OGIxLTYwZjgtNDM1MC05NGEwLWE0NjZjNDExMzE3MCIsIm5iZiI6MTcyNjUxMTc1NCwic3ViIjoiVXNlcjpjMTFmMjJkZi02NmExLTQ2NDYtYTkzOC04ZjgxNTY2ODk3ZTgiLCJ0eXAiOiJyZWZyZXNoIn0.EulVwCIkh2ZefPJfq0CUQjAgefq-XfrsgUTiAIFnZmsjmrCHoGA_sWXnbpQEeqwYkPAK_MxfoAeOgfxpDvs9ig"
+    },
+    {
+        "domain": "codesandbox.io",
+        "expirationDate": 1728930955.512308,
+        "hostOnly": true,
+        "httpOnly": false,
+        "name": "signedIn",
+        "path": "/",
+        "sameSite": null,
+        "secure": false,
+        "session": false,
+        "storeId": null,
+        "value": "true"
+    }
+]

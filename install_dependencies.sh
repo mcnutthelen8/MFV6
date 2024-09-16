@@ -24,14 +24,11 @@ sudo apt-get --fix-broken install -y
 # Install pip and Python packages
 echo "Installing pip and Python packages..."
 sudo apt-get install -y python3-pip
-pip install requests beautifulsoup4 selenium clipboard pyautogui opencv-python numpy seleniumbase pillow Levenshtein paddlepaddle paddleocr pymongo pyperclip
+pip3 install requests beautifulsoup4 selenium clipboard pyautogui opencv-python numpy seleniumbase pillow Levenshtein paddlepaddle paddleocr pymongo pyperclip
 
 # Install additional tools
 echo "Installing additional tools..."
 sudo apt-get install -y gnome-screenshot python3-tk python3-dev xdotool nano xclip unzip
-
-# Ensure the directory exists
-#mkdir -p /root/Desktop/MFV6/mysterium
 
 # Set screen resolution (adjust VNC-0 if necessary)
 echo "Setting screen resolution..."

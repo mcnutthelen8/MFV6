@@ -1660,23 +1660,13 @@ if ip_address == ip_required:
                 # Check if the number captcha is present in the DOM
                 if sb.is_element_visible("textarea.captcha-textarea"):
                     print("Number captcha exists.")
-                    
-                    # Maximize the window to ensure captcha is fully visible
                     sb.maximize_window()
-                    
-                    # Activate the specific window by its ID (assumed function)
                     activate_window_by_id(id)
-                    
-                    # Scroll to the captcha element to make sure it's in view
                     captcha_element = sb.find_element("textarea.captcha-textarea")
                     sb.execute_script("arguments[0].scrollIntoView(true);", captcha_element)
-                    
-                    # Solve the captcha using OCR (assumed solve_ocr_number is a function that returns the captcha solution)
                     answer = solve_ocr_number(sb)
-                    
-                    # Type the solved captcha answer into the textarea
                     sb.type("textarea.captcha-textarea", str(answer))
-                    
+                    time.sleep(1)
                     # Click the submit button
                     sb.click("a.themeBtn")
 

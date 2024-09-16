@@ -1512,8 +1512,19 @@ def control_panel():
         print(f"Control Panel Function Exception:{e}")
     return None
 
+def solve_ocr_number(driver):
+    screenshot = pyautogui.screenshot()
+    region = (886, 666, 1035 - 886, 715 - 666)
+    cropped_image = screenshot.crop(region)
 
-    #print(f'IP Matched {ip_address}')
+    cropped_image.save("captcha.png")
+    captcha_ocr = captcha_to_text(["captcha.png"])
+    return captcha_ocr
+
+
+    
+
+
 
 baymack_coins = 0
 vnc_url = 0
@@ -1631,24 +1642,28 @@ if ip_address == ip_required:
             try:
                 # Attempt to find the number captcha image
                 try:
-                    if sb.is_element_visible("#numberCaptcha"):
+                    if sb.is_element_visible("textarea.captcha-textarea"):
                         print("Number captcha exists.")
                         sb.maximize_window()
                         activate_window_by_id(id)
                         #sb1.scroll_to_top()
                         sb1.execute_script("window.scrollTo(0, 0);")
-                        #answer = ocr_captcha.solve_ocr()
+                        answer = solve_ocr_number(sb)
+                        sb.type("textarea.captcha-textarea", str(answer))
+
+                        sb.click("a.themeBtn")
+                        return True
                         try:
-                            #sb.type("input.captcha[type='text']", str(answer))
+                            sb.type("textarea.captcha-textarea", str(answer))
                             answer = sb.get_text("input.captcha[type='text']")
                             str_value = str(answer)
-                            str_value.isdigit()
-                            if answer:
-                                if str_value.isdigit():
-                                    sb.click("input.btn.btn-info")
-                                else:
-                                    sb.type("input.captcha[type='text']", '1000')
-                                    print(f'answer contain string{answer} {str(str_value.isdigit())}')
+                            #str_value.isdigit()
+                            #if answer:
+                            #    if answer:
+                            #        sb.click("input.btn.btn-info")
+                            #    else:
+                            #        sb.type("input.captcha[type='text']", '1000')
+                            #        print(f'answer contain string{answer} {str(str_value.isdigit())}')
 
                             print(f"Captcha filled and form submitted. {answer}")
                             return True
@@ -1993,6 +2008,7 @@ if ip_address == ip_required:
 
 
                 check_icon_captcha_exists(sb1, id1)
+                check_number_captcha_exists(sb1, id1)
                 if with_baymack == True:
                     title = sb1.get_title()
                     if title == 'Skylom':

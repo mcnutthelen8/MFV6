@@ -1610,6 +1610,7 @@ baymack_coins = 0
 vnc_url = 0
 vnc_window = 0
 start_vnc = 0
+
 if run_sb1:
     sb1 = Driver(uc=True, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
     sb1.maximize_window()
@@ -1945,7 +1946,9 @@ if ip_address == ip_required:
                             query = {"type": "main"}
                             update = {"$set": {"response": f'IP is not Matched{ip_address}, Required: {ip_required}'}}
                             result = collection.update_one(query, update)
-                            time.sleep(5)
+                            update2 = {"$set": {"request": 'ipfixer'}}
+                            result = collection.update_one(query, update2)
+                            time.sleep(3)
                             #break
                             #ip_required = fix_ip(sb1, server_name1)
                             #ip_address = get_ip(sb1)
@@ -2073,7 +2076,10 @@ if ip_address == ip_required:
                             query = {"type": "main"}
                             update = {"$set": {"response": f'IP is not Matched{ip_address}, Required: {ip_required}'}}
                             result = collection.update_one(query, update)
-                            time.sleep(5)
+
+                            update2 = {"$set": {"request": 'ipfixer'}}
+                            result = collection.update_one(query, update2)
+                            time.sleep(3)
                             #break
                             #ip_required = fix_ip(sb1, server_name1)
                             #ip_address = get_ip(sb1)
@@ -2099,8 +2105,9 @@ if ip_address == ip_required:
 
             elif mainscript == 3:
                 sb1.quit()
-                time.sleep(1)
-                sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
+                time.sleep(2)
+
+                sb1 = Driver(uc=True, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
                 sb1.maximize_window()
                 id1 = get_current_window_id()
                 url = "chrome://extensions/"
@@ -2116,18 +2123,11 @@ if ip_address == ip_required:
                     print(f"Added new messages to existing document. Updated {result.modified_count} document(s).")
                 else:
                     print("No document found with the specified type.")
-                
-                current_window = sb1.current_window_handle
-                all_windows = sb1.window_handles
-                for window in all_windows:
-                    if window != current_window:
-                        sb1.switch_to.window(window)
-                        sb1.close()  # Close the tab
-                sb1.switch_to.window(current_window)
-                #time.sleep(1)
+                sb1.maximize_window()
                 ipfixer()
                 ip_required = fix_ip(sb1, server_name1)
                 ip_address = get_ip(sb1)
+
                 # Open Skylom and get the title
                 sb1.uc_open_with_tab("https://www.skylom.com/videos")
                 ggt = sb1.get_title()
@@ -2180,6 +2180,7 @@ if ip_address == ip_required:
                 # Ensure you're switching back to the Baymack window manually
                 sb1.switch_to.window(baymack_window)
                 print(f'Switched to Baymack window: {baymack_window}, Skylom window: {skylom_window}')
+
 
             elif mainscript == 4:
                 print('Withdraw Skylom..')

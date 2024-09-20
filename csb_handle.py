@@ -45,7 +45,7 @@ fresh_vms =True
 vm_count = 1 + 3 
 CSB_id = 'yvonne'
 CSB_Script = 'CSB1'
-waiting_sec = 300
+waiting_sec = 200
 
 
 command_1 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 1'
@@ -541,17 +541,30 @@ while True:
     csb_panel_result = csb_panel_collection.insert_one(csb_panel)
     print(f"Inserted csb_panel with ID: {csb_panel_result.inserted_id}")
 
-
-    usage_collection = db[CSB_Script]
-    usage_result = usage_collection.insert_many(usage_list)
-    print(f"Inserted usage documents with IDs: {usage_result.inserted_ids}")
+    if usage_list:
+        usage_collection = db[CSB_Script]
+        usage_result = usage_collection.insert_many(usage_list)
+        print(f"Inserted usage documents with IDs: {usage_result.inserted_ids}")
 
     #Wating
     gg = True
     start_time = time.time()
     while gg == True:
-        for page in page_windows:
+        for i, page in enumerate(page_windows):
+            i += 1
             sb1.switch_to.window(page)
+            time.sleep(5)
+            title =  sb1.get_title()
+            if 'Unable to start the microVM' in title:
+                command = command_1
+                if   i == 1: command = command_1
+                elif i == 2: command = command_2
+                elif i == 3: command = command_3
+                elif i == 4: command = command_4
+                elif i == 5: command = command_5
+                create_devbox(sb1)
+                deploy_docker(command)
+                pyautogui.click(942, 65)
             time.sleep(15)
 
         elapsed_time = time.time() - start_time

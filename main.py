@@ -1,3 +1,5 @@
+
+
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -10,7 +12,6 @@ import re
 import requests
 from bs4 import BeautifulSoup
 import time
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import random
 import requests
@@ -30,12 +31,36 @@ import Levenshtein
 import json
 import argparse
 import clipboard
+
+#Current version -- V6.9.1
+
+#Updates Log -- V6.9.1
+#""" Fixed get_ip() and youtube category function having issues with selenium being fucked by using try:except
+
+#    Added New Improvement to ipfixer Which is it will connect with other farms and changes ip of all of them 
+#    untill all are ready to go this will fix issues with Mysterium VPN changes server and getting ip banned 
+#    
+#    Added New Argument '--farm' with levels of 0/1/2/3
+#       3 == install extension /login mysteium and facebook/ pin extension
+#       2 == login mysteium and facebook/
+#       1 == facebook
+#       0 == Nothing
+# 
+# """
+#
+
+
 # Initialize the argument parser
 parser = argparse.ArgumentParser(description="Process some arguments.")
 parser.add_argument('--farm', type=int, help="Farm")
+parser.add_argument('--fresh', type=int, help="Fresh")
 args = parser.parse_args()
 farm_id = args.farm
+fresh = args.farm
 facebook_cookies = '0'
+CSB1_farms = [1, 2, 3]
+
+
 
 if farm_id == 1:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/alisabro.json'
@@ -64,9 +89,6 @@ ip_required = 0
 
 run_sb1 = True
 with_baymack = True
-
-fresh = True
-with_vnc = True
 
 
 chrome_binary_path = '/opt/google/chrome/google-chrome'
@@ -127,15 +149,23 @@ def insert_data(ip, amount1, amount2):
 
 
 def get_ip(driver):
-    original_window = driver.current_window_handle
-    driver.open_new_window()
-    #driver.switch_to.newest_window()
-    driver.open('https://api.ipify.org/')
-    ip_address = driver.get_text('body')
-    print('IP =', ip_address)
-    driver.close()
-    driver.switch_to.window(original_window)
-    return ip_address
+    while True:
+        original_window = driver.current_window_handle
+        driver.open_new_window()
+        try:
+            #driver.switch_to.newest_window()
+            driver.open('https://api.ipify.org/')
+            ip_address = driver.get_text('body')
+            print('IP =', ip_address)
+            driver.close()
+            driver.switch_to.window(original_window)
+            return ip_address
+        
+        except Exception as e:
+            print(e)
+        driver.close()
+        driver.switch_to.window(original_window)
+
 
 def get_current_window_id():
     # Run the command to get the current window ID
@@ -318,18 +348,25 @@ headers = {
 def get_video_infog(video_url, driver, timeout=8 ):
     original_window = driver.current_window_handle
     driver.open_new_window()
-    #driver.switch_to.newest_window()
-    driver.open(f'view-source:{video_url}')
-    data = driver.get_text('body')
-    html_content = str(data)
-    soup = BeautifulSoup(html_content, 'html.parser')
-    category_tag = soup.find('meta', itemprop='genre')
-    category = category_tag['content'] if category_tag else None
-    print(f"Category For This Video is {category}")
+    try:
+        #driver.switch_to.newest_window()
+        driver.open(f'view-source:{video_url}')
+        data = driver.get_text('body')
+        html_content = str(data)
+        soup = BeautifulSoup(html_content, 'html.parser')
+        category_tag = soup.find('meta', itemprop='genre')
+        category = category_tag['content'] if category_tag else None
+        print(f"Category For This Video is {category}")
+        driver.close()
+        driver.switch_to.window(original_window)
+        print(video_url)
+        return category
+    
+    except Exception as e:
+        print(e)
     driver.close()
     driver.switch_to.window(original_window)
-    print(video_url)
-    return category
+    return 0
 
 
 def get_youtube_link(sb):
@@ -1444,6 +1481,12 @@ def ipfixer():
     query = {"type": "main"}
     update = {"$set": {"response": 'Fixing...🟠'}}
     result = collection.update_one(query, update)
+    for i in CSB1_farms:
+        collection_csb = db[f'Farm{i}']
+        update = {"$set": {"request": 'ipfixer'}}
+        result = collection_csb.update_one(query, update)
+        print('Update Farm', i)
+
     while True:
         query = {"type": "main"}
         doc = collection.find_one(query)
@@ -1462,6 +1505,24 @@ def ipfixer():
                         print("No document found with the specified type.")
                 else:
                     print(f"repo {respo}")
+                    res_farms = []
+                    for frm in CSB1_farms:
+                        collection_csb = db[f'Farm{frm}']
+                        query = {"type": "main"}
+                        doc = collection_csb.find_one(query)
+                        res = doc["response"]
+                        req = doc["request"]
+                        if req == 'ipfixer' and 'Ready IP' in res:
+                            res_farms.append(res)
+                        elif req == 'mainscript' and 'Running' in res:
+                            res_farms.append(res)
+                        else:
+                            print('aiyo', i)
+                    if len(res_farms) == len(CSB1_farms):
+                        query = {"type": "main"}
+                        update = {"$set": {"request": 'mainscript'}}
+                        result = collection.update_one(query, update)
+
                 
             else:
                 respo = 0
@@ -1470,6 +1531,7 @@ def ipfixer():
                 ip = fix_ip(sb1, server_name1)
         else:
             return True
+
 def get_coin_value_redeem(driver):
     try:
         continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'h2.blnc')
@@ -1565,8 +1627,9 @@ if run_sb1:
         print(f"Added new messages to existing document. Updated {result.modified_count} document(s).")
     else:
         print("No document found with the specified type.")
+    sb1.maximize_window()
 
-    if fresh:
+    if fresh >= 3:
         mysterium = install_extensions('mysterium')
         nopecha = install_extensions('nopecha')
         cookie = install_extensions('cookie')
@@ -1574,12 +1637,16 @@ if run_sb1:
         mfhelper = install_extensions('mfhelper')
         if fingerprint and mysterium and nopecha and cookie and mfhelper:
             print('All Extensions are installed..')
-            if pin_extensions():
-                print('All Extensions are pinned')
-                if mysterium_login():
-                    print('Mysterium Login Done...')
-                    facebook_login()
-                    sb1.maximize_window()
+
+    if fresh >= 2:
+        if pin_extensions():
+            print('All Extensions are pinned')
+            if mysterium_login():
+                print('Mysterium Login Done...')
+
+    if fresh >= 1:            
+        facebook_login()
+        sb1.maximize_window()
     
     current_window = sb1.current_window_handle
     all_windows = sb1.window_handles
@@ -1665,6 +1732,14 @@ if ip_address == ip_required:
                     captcha_element = sb.find_element("textarea.captcha-textarea")
                     sb.execute_script("arguments[0].scrollIntoView(true);", captcha_element)
                     answer = solve_ocr_number(sb)
+                    if answer == 'foo':
+                        time.sleep(1)
+                        answer = solve_ocr_number(sb)
+                    if answer == 'foo':
+                        time.sleep(1)
+                        answer = solve_ocr_number(sb)
+                    if answer == None:
+                        answer = solve_ocr_number(sb)
                     sb.type("textarea.captcha-textarea", str(answer))
                     time.sleep(1)
                     # Click the submit button
@@ -2015,8 +2090,6 @@ if ip_address == ip_required:
                         sb1.switch_to.window(skylom_window)
                     else:
                         print(f'no title was sky or bay {title}')
-
-
 
 
             elif mainscript == 2:

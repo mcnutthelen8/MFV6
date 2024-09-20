@@ -56,7 +56,7 @@ parser.add_argument('--farm', type=int, help="Farm")
 parser.add_argument('--fresh', type=int, help="Fresh")
 args = parser.parse_args()
 farm_id = args.farm
-fresh = args.farm
+fresh = args.fresh
 facebook_cookies = '0'
 CSB1_farms = [1, 2, 3]
 

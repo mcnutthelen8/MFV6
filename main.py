@@ -1516,6 +1516,8 @@ def ipfixer():
                             res_farms.append(res)
                         elif req == 'mainscript' and 'Running' in res:
                             res_farms.append(res)
+                        elif req == 'mainscript' and 'Ready IP' in res:
+                            res_farms.append(res)
                         else:
                             print('aiyo', i)
                     if len(res_farms) == len(CSB1_farms):

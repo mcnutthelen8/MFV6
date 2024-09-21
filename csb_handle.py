@@ -45,7 +45,7 @@ fresh_vms =True
 vm_count = 1 + 3 
 CSB_id = 'yvonne'
 CSB_Script = 'CSB1'
-waiting_sec = 200
+waiting_sec = 1700
 
 
 command_1 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 1 --fresh 3'
@@ -565,7 +565,7 @@ while True:
                 create_devbox(sb1)
                 deploy_docker(command)
                 pyautogui.click(942, 65)
-            time.sleep(15)
+            time.sleep(25)
 
         elapsed_time = time.time() - start_time
         mins, secs = divmod(int(elapsed_time), 60)

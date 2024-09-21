@@ -358,6 +358,7 @@ def get_video_infog(video_url, driver, timeout=8 ):
         category = category_tag['content'] if category_tag else None
         print(f"Category For This Video is {category}")
         driver.close()
+
         driver.switch_to.window(original_window)
         print(video_url)
         return category
@@ -2186,9 +2187,10 @@ if ip_address == ip_required:
 
             elif mainscript == 4:
                 print('Withdraw Skylom..')
-                sb1.switch_to.window(skylom_window)
+                original_window = sb1.current_window_handle
+                sb1.open_new_window()
                 sb1.maximize_window()
-                sb1.open('skylom.com/prizes')
+                sb1.open('https://www.skylom.com/prizes')
                 print(sb1.get_title())
                 cp = control_panel()
                 bcoins = get_coin_value_redeem(sb1)
@@ -2216,8 +2218,10 @@ if ip_address == ip_required:
                     update = {"$set": {"response": f'Coins{coins}, Attempts: {attemp}, Before: {bcoins} Withdraw : {int(bcoins) - int(coins)}'}}
                     attemp += 1
                     cp = control_panel()
-                sb1.open('skylom.com/prizes')
-                    
+                sb1.close()
+                
+                sb1.switch_to.window(original_window)
+
             elif mainscript == 6:
                 print('Withdraw Baymack..')
                 sb1.switch_to.window(baymack_window)

@@ -1539,14 +1539,17 @@ def ipfixer():
         else:
             return True
 
-def get_coin_value_redeem(driver):
+def get_coin_value_redeem(driver ):
     try:
         continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'h2.blnc')
         for button in continue_buttons:
             if 'You' in button.text:
                 print(f"Button found: {button.text}, clicking...")
+                gg = button.text
                 gg = int(float(gg.split()[2]))
                 return gg
+            else:
+                print(button.text)
     except Exception as e:
         pass
     return 0
@@ -2191,16 +2194,25 @@ if ip_address == ip_required:
 
             elif mainscript == 4:
                 print('Withdraw Skylom..')
-                original_window = sb1.current_window_handle
-                sb1.open_new_window()
-                sb1.open('https://www.skylom.com/prizes')
+                current_window = sb1.current_window_handle
+                all_windows = sb1.window_handles
+                for window in all_windows:
+                    if window != current_window:
+                        sb1.switch_to.window(window)
+                        sb1.close()  # Close the tab
+                sb1.switch_to.window(current_window)
+                sb1.uc_open_with_tab('https://www.skylom.com/prizes')
+                time.sleep(1)
                 print(sb1.get_title())
                 cp = control_panel()
                 bcoins = get_coin_value_redeem(sb1)
+                print(sb1.get_title(), bcoins)
                 attemp = 1
                 while cp == 4:
                     ip_address = get_ip(sb1)
+                    time.sleep(1)
                     coins = get_coin_value_redeem(sb1)
+
                     if coins > 20:
                         if ip_address == ip_required:
                             pyautogui.click(100,200)
@@ -2219,47 +2231,17 @@ if ip_address == ip_required:
 
                     query = {"type": "main"}
                     update = {"$set": {"response": f'Coins{coins}, Attempts: {attemp}, Before: {bcoins} Withdraw : {int(bcoins) - int(coins)}'}}
+                    result = collection.update_one(query, update)
                     attemp += 1
                     cp = control_panel()
-                sb1.close()
+                query = {"type": "main"}
+                update = {"$set": {"request": 'reset'}}
+                result = collection.update_one(query, update)
                 
-                sb1.switch_to.window(original_window)
 
             elif mainscript == 6:
                 print('Withdraw Baymack..')
-                sb1.switch_to.window(baymack_window)
-                sb1.maximize_window()
-                sb1.open('zaptaps.com/prizes')
-                print(sb1.get_title())
-                cp = control_panel()
-                bcoins = get_coin_value_redeem(sb1)
-                attemp = 1
-                while cp == 6:
-                    ip_address = get_ip(sb1)
-                    coins = get_coin_value_redeem(sb1)
-                    if coins > 200:
-                        if ip_address == ip_required:
-                            pyautogui.click(100,200)
-                            time.sleep(3)
-                            redeem(sb1)
-                            time.sleep(3)
-                        else:
-                            print('Ip is not matching')
-                            query = {"type": "main"}
-                            update = {"$set": {"response": f'IP is not Matched{ip_address}, Required: {ip_required}'}}
-                            result = collection.update_one(query, update)
-                            time.sleep(5)
-                    else:
-                        print('Low Coins >',{coins})
-                        time.sleep(3)
 
-                    query = {"type": "main"}
-                    update = {"$set": {"response": f'Coins{coins}, Attempts: {attemp}, Before: {bcoins} Withdraw : {int(bcoins) - int(coins)}'}}
-                    attemp += 1
-                    cp = control_panel()
-
-                sb1.open('zaptaps.com')
-                    
 
 
             elif mainscript == 5:

@@ -263,7 +263,9 @@ def create_devbox(driver):
                                 if 'README.md - workspace - CodeSandbox' in title:
                                     print(f'Vm Has Loaded:{title}')
                                     return True               
-
+                                if 'New Devtool - workspace - CodeSandbox' in title:
+                                    print(f'Vm Has Loaded:{title}')
+                                    return True  
             return False
     except Exception as e:
         print(f'Create DevBox:{e}')

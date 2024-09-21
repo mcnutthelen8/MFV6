@@ -1,5 +1,25 @@
+// Function to get the current URL
+function getCurrentURL() {
+    return window.location.href;
+}
+
+// Function to check if we are on a restricted page
+function isOnRestrictedPage() {
+    const restrictedUrls = [
+        'https://www.skylom.com/prizes',
+        'https://www.zaptaps.com/prizes'
+    ];
+    const currentURL = getCurrentURL();
+    return restrictedUrls.includes(currentURL);
+}
+
 // Function to check and click the "Next Video" button
 function clickNextVideo() {
+    if (isOnRestrictedPage()) {
+        console.log("On a restricted page, skipping 'Next Video' click.");
+        return false; // Skip clicking if on a restricted page
+    }
+
     const selectors = [
         'a.retention-click.themeBtn.bluebtn#nextvideo',
         '#next-video',
@@ -30,6 +50,11 @@ function clickNextVideo() {
 
 // Function to click the "False" button or "Try Again" button
 function clickFalseButton() {
+    if (isOnRestrictedPage()) {
+        console.log("On a restricted page, skipping 'False' button click.");
+        return false; // Skip clicking if on a restricted page
+    }
+
     try {
         // Check if the captcha textarea exists
         if (document.querySelector('textarea.captcha-textarea')) {
@@ -63,6 +88,11 @@ function clickFalseButton() {
 
 // Function to handle and click the button with the smallest numeric value
 function handleRandomNumberButtons() {
+    if (isOnRestrictedPage()) {
+        console.log("On a restricted page, skipping 'Random Number' button click.");
+        return false; // Skip clicking if on a restricted page
+    }
+
     try {
         let ulElement = document.querySelector("ul.link-btn-list.vid-category-options");
         if (ulElement) {
@@ -107,7 +137,7 @@ function handleRandomNumberButtons() {
     }
 }
 
-// Function to periodically check for the "False" or "Try Again" button every 1 second
+// Function to periodically check for the "False" button or "Try Again" button every 1 second
 function startCheckingForFalseButton() {
     setInterval(() => {
         clickFalseButton();

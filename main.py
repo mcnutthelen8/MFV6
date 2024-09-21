@@ -32,8 +32,12 @@ import json
 import argparse
 import clipboard
 
-#Current version -- V6.9.1
+#Current version -- V6.9.2
 
+#Updates Log -- V6.9.2
+#""" Fixed withdrawsky()
+# 
+# """
 #Updates Log -- V6.9.1
 #""" Fixed get_ip() and youtube category function having issues with selenium being fucked by using try:except
 
@@ -2189,7 +2193,6 @@ if ip_address == ip_required:
                 print('Withdraw Skylom..')
                 original_window = sb1.current_window_handle
                 sb1.open_new_window()
-                sb1.maximize_window()
                 sb1.open('https://www.skylom.com/prizes')
                 print(sb1.get_title())
                 cp = control_panel()

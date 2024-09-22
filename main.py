@@ -1484,6 +1484,7 @@ def ipfixer():
     ip = 0
     preip = 0
     respo = 0
+    gg2344 = 0
     query = {"type": "main"}
     update = {"$set": {"response": 'Fixing...🟠'}}
     result = collection.update_one(query, update)

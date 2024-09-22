@@ -62,7 +62,7 @@ args = parser.parse_args()
 farm_id = args.farm
 fresh = args.fresh
 facebook_cookies = '0'
-CSB1_farms = [1, 2, 3]
+CSB1_farms = [1, 2, 3, 4, 5]
 
 
 
@@ -77,11 +77,12 @@ elif farm_id == 3:
     server_name1 = 'poland'
     
 elif farm_id == 4:
-    facebook_cookies = 'gg'
-    server_name1 = 'gg'
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
+    server_name1 = 'hungary'
 elif farm_id == 5:
-    facebook_cookies = 'gg'
-    server_name1 = 'gg'
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/andyrogers.json'
+    server_name1 = 'belgium'
+
 else:
     while True:
         print('SOmething Wrong Did u use --farm')

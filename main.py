@@ -62,7 +62,7 @@ args = parser.parse_args()
 farm_id = args.farm
 fresh = args.fresh
 facebook_cookies = '0'
-CSB1_farms = [1, 2, 3, 4, 5]
+CSB1_farms = [1, 2, 3, 4]
 
 
 
@@ -1527,9 +1527,16 @@ def ipfixer():
                         else:
                             print('aiyo', i)
                     if len(res_farms) == len(CSB1_farms):
-                        query = {"type": "main"}
-                        update = {"$set": {"request": 'mainscript'}}
-                        result = collection.update_one(query, update)
+                        if gg2344 == 1:
+
+                            query = {"type": "main"}
+                            update = {"$set": {"request": 'mainscript'}}
+                            result = collection.update_one(query, update)
+                        else:
+                            gg2344 = 1
+                    else:
+                        gg2344 = 0
+                        
 
                 
             else:
@@ -2242,6 +2249,7 @@ if ip_address == ip_required:
 
             elif mainscript == 6:
                 print('Withdraw Baymack..')
+                break
 
 
 

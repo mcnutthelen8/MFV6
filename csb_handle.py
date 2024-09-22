@@ -42,17 +42,18 @@ now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
 
 fresh = True
 fresh_vms =True 
-vm_count = 1 + 3 
+vm_count = 1 + 5 
 CSB_id = 'yvonne'
 CSB_Script = 'CSB1'
 waiting_sec = 1700
-
+#https://www.skylom.com/willem3
+#https://www.zaptaps.com/willem
 
 command_1 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 1 --fresh 3'
 command_2 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 2 --fresh 3'
 command_3 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 3 --fresh 3'
-command_4 = 'gg'
-command_5 = 'gg'
+command_4 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 4 --fresh 3'
+command_5 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 5 --fresh 3'
 
 chrome_binary_path = '/opt/google/chrome/google-chrome'
 chrome_user_data_dir = '/root/.config/google-chrome/'
@@ -501,6 +502,7 @@ while True:
         sb1.switch_to.window(page)
         sb1.refresh()
         for i in range(1,999):
+            
             try:
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/director_lister.png", region=(1120, 223, 1000, 1000), confidence=0.9)
                 if x and y:

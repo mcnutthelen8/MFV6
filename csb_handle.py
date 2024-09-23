@@ -39,21 +39,31 @@ utc_now = datetime.utcnow().replace(tzinfo=pytz.utc)
 sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
 now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
 
+Layout = 1
 
 fresh = True
 fresh_vms =True 
 vm_count = 1 + 4
 CSB_id = 'yvonne'
-CSB_Script = 'CSB1'
+CSB_Script = f'CSB{Layout}'
 waiting_sec = 1700
 #https://www.skylom.com/willem3
 #https://www.zaptaps.com/willem
+command_1 = '0'
+command_2 = '0'
+command_3 = '0'
+command_4 = '0'
 
-command_1 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 1 --fresh 3'
-command_2 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 2 --fresh 3'
-command_3 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 3 --fresh 3'
-command_4 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 4 --fresh 3'
-command_5 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 5 --fresh 3'
+if Layout == 1:
+    command_1 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 1 --fresh 3'
+    command_2 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 2 --fresh 3'
+    command_3 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 3 --fresh 3'
+    command_4 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 4 --fresh 3'
+elif Layout == 2:
+    command_1 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 5 --fresh 3'
+    command_2 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 6 --fresh 3'
+    command_3 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 7 --fresh 3'
+    command_4 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 8 --fresh 3'
 
 chrome_binary_path = '/opt/google/chrome/google-chrome'
 chrome_user_data_dir = '/root/.config/google-chrome/'
@@ -467,7 +477,7 @@ if fresh_vms:
         elif i == 2: command = command_2
         elif i == 3: command = command_3
         elif i == 4: command = command_4
-        elif i == 5: command = command_5
+
         sb1.open_new_window()
         create_devbox(sb1)
         deploy_docker(command)
@@ -565,7 +575,7 @@ while True:
                 elif i == 2: command = command_2
                 elif i == 3: command = command_3
                 elif i == 4: command = command_4
-                elif i == 5: command = command_5
+
                 create_devbox(sb1)
                 deploy_docker(command)
                 pyautogui.click(942, 65)

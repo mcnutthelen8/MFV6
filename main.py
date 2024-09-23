@@ -75,13 +75,23 @@ elif farm_id == 2:
 elif farm_id == 3:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/williesmith.json'
     server_name1 = 'poland'
-    
 elif farm_id == 4:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
     server_name1 = 'hungary'
+################2d######################
 elif farm_id == 5:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/andyrogers.json'
     server_name1 = 'belgium'
+elif farm_id == 6:
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/merlelnc.json'
+    server_name1 = 'latvia'
+elif farm_id == 7:
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/berendkalpana.json'
+    server_name1 = 'finland'
+elif farm_id == 8:
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/captaingranda.json'
+    server_name1 = 'croatia'
+
 
 else:
     while True:
@@ -253,6 +263,7 @@ def play_button(sb):
                         play_button.click()
             except Exception as e:
                 print(f'Issue{e}')
+    
 
 def playback_check(sb):
     try: 
@@ -549,7 +560,7 @@ def get_ipscore(ip):
         print(f"Active TOR: {active_tor}")
         print(f"Recent Abuse: {recent_abuse}")
         print(f"Bot Status: {bot_status}")
-        if vpn == False and tor == False and active_vpn == False and active_tor == False and bot_status == False and recent_abuse == False:
+        if vpn == False and tor == False and active_vpn == False and active_tor == False: #and bot_status == False and recent_abuse == False:
             return True
         else:
             return None
@@ -1528,6 +1539,7 @@ def ipfixer():
                         else:
                             print('aiyo', i)
                     if len(res_farms) == len(CSB1_farms):
+                        time.sleep(5)
                         if gg2344 == 1:
 
                             query = {"type": "main"}

@@ -729,8 +729,9 @@ while True:
             sb1.switch_to.window(page)
             time.sleep(5)
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/reload_window.png", region=(184, 148, 1700, 1000), confidence=0.99)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/reload_window.png", region=(184, 148, 1700, 1000), confidence=0.94)
                 pyautogui.press('f5')
+                pyautogui.click(242, 85)
             except Exception as e:
                 print(f'Waiting For Find Directior Listener{i}')
 

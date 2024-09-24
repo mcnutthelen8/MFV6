@@ -568,6 +568,12 @@ while True:
             i += 1
             sb1.switch_to.window(page)
             time.sleep(5)
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/reload_window.png", region=(184, 148, 1700, 1000), confidence=0.99)
+                pyautogui.press('f5')
+            except Exception as e:
+                print(f'Waiting For Find Directior Listener{i}')
+
             title =  sb1.get_title()
             if 'Unable to start the microVM' in title:
                 command = command_1
@@ -579,7 +585,7 @@ while True:
                 create_devbox(sb1)
                 deploy_docker(command)
                 pyautogui.click(942, 65)
-            time.sleep(25)
+            time.sleep(35)
 
         elapsed_time = time.time() - start_time
         mins, secs = divmod(int(elapsed_time), 60)

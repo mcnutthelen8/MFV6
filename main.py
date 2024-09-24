@@ -62,6 +62,9 @@ args = parser.parse_args()
 farm_id = args.farm
 fresh = args.fresh
 facebook_cookies = '0'
+
+
+
 CSB1_farms = [1, 2, 3, 4]
 
 
@@ -69,28 +72,36 @@ CSB1_farms = [1, 2, 3, 4]
 if farm_id == 1:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/alisabro.json'
     server_name1 = 'estonia'
+    CSB1_farms = [1, 2, 3, 4]
 elif farm_id == 2:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/diludilakshi.json'
     server_name1 = 'romania'
+    CSB1_farms = [1, 2, 3, 4]
 elif farm_id == 3:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/williesmith.json'
     server_name1 = 'poland'
+    CSB1_farms = [1, 2, 3, 4]
 elif farm_id == 4:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
     server_name1 = 'hungary'
+    CSB1_farms = [1, 2, 3, 4]
 ################2d######################
 elif farm_id == 5:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/andyrogers.json'
     server_name1 = 'belgium'
+    CSB1_farms = [5, 6, 7, 8]
 elif farm_id == 6:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/merlelnc.json'
     server_name1 = 'latvia'
+    CSB1_farms = [5, 6, 7, 8]
 elif farm_id == 7:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/berendkalpana.json'
     server_name1 = 'finland'
+    CSB1_farms = [5, 6, 7, 8]
 elif farm_id == 8:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/captaingranda.json'
     server_name1 = 'croatia'
+    CSB1_farms = [5, 6, 7, 8]
 
 
 else:

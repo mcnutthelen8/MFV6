@@ -1687,7 +1687,7 @@ if run_sb1:
     if fresh >= 2:
         if pin_extensions():
             print('All Extensions are pinned')
-            if mysterium_login():
+            if mysterium_login(sb1):
                 print('Mysterium Login Done...')
 
     if fresh >= 1:            

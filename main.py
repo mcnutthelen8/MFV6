@@ -1240,6 +1240,8 @@ def mysterium_login(driver):
                             #return True
         mysterium_web_login(driver)
 
+
+
 def pin_extensions():
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/extension_icon.png", region=(1700, 30, 300, 300), confidence=0.9)
@@ -1435,6 +1437,7 @@ def redeem(driver):
 
 def baymack_login(driver):
     coin_val = None
+    start_time = time.time()
     while not coin_val:
         coin_val = get_coin_value(driver)  # Assuming get_coin_value() is defined elsewhere
         if coin_val:
@@ -1442,6 +1445,29 @@ def baymack_login(driver):
             return coin_val
         else:
             time.sleep(1)
+            elapsed_time = time.time() - start_time
+            mins, secs = divmod(int(elapsed_time), 60)
+            timer = f'{mins:02d}:{secs:02d}'
+            seconds_only = int(elapsed_time)
+            print(f'Next Click {timer}')
+            print(f'Elapsed_time {seconds_only}')
+            if seconds_only > 90:
+                
+
+                pyautogui.keyDown('ctrl')
+                pyautogui.press('left')
+                pyautogui.keyUp('ctrl')
+                time.sleep(2)
+                if driver.get_title() == 'Facebook' or driver.get_title() == 'Skylom' or driver.get_title() == 'Zaptaps':
+                    print('found good page')
+                else:
+                    pyautogui.keyDown('ctrl')
+                    pyautogui.press('right')
+                    pyautogui.keyUp('ctrl')
+                    time.sleep(2)
+                start_time = time.time()
+
+
             try:
                 print(driver.get_title())
                 # Look for '.quiz-btn' and click if visible
@@ -1874,33 +1900,26 @@ if ip_address == ip_required:
                 if title == 'Skylom':
                     previous_duration = current_duration
                     current_duration = get_current_duration(sb=sb1)
-                    if current_duration == previous_duration and current_duration == 0 :
+                    if current_duration == previous_duration: #and current_duration == 0 :
+                        time.sleep(2)
                         print(f'reclick_waits:{reclick_waits}')
                         reclick_waits +=1
                         if reclick_waits > 155:
                             print(f'reopenning reclick {reclick_waits}')
-                            sb1.quit()
-                            sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
-                            id1 = get_current_window_id()
-                            sb1.maximize_window()
-                            ip_required = fix_ip(sb1, server_name1)
-                            ip_address = get_ip(sb1)
-                            sb1.open("https://www.skylom.com/videos")
-                            skylom_window = sb1.current_window_handle
-                            
-                            if with_baymack == True:
-                                sb1.open_new_window()
-                                sb1.open("https://www.zaptaps.com/videos")
-                                baymack_window = sb1.current_window_handle
+                            query = {"type": "main"}
+                            update = {"$set": {"request": 'reset'}}
+                            result = collection.update_one(query, update)
 
                             print(sb1.get_title())
-
                             reclick_waits = 0
-                        if reclick_waits > 50:
-                            reclick_button(sb1)
+
+
+                        if reclick_waits == 50 or reclick_waits == 55 or reclick_waits == 60 or reclick_waits == 70:
+                            #reclick_button(sb1)
                             pyautogui.click(990, 430)
+                            pyautogui.press('f5')
                             time.sleep(3)
-                            pyautogui.click(990, 430)
+
                     else:
                         reclick_waits = 1
                     
@@ -2002,33 +2021,25 @@ if ip_address == ip_required:
                 if title == 'Zaptaps':
                     previous_duration_bay = current_duration_bay
                     current_duration_bay = get_current_duration(sb=sb1)
-                    if current_duration_bay == previous_duration_bay and current_duration_bay == 0 :
+                    if current_duration_bay == previous_duration_bay:
+                        time.sleep(2) #and current_duration_bay == 0 :
                         print(f'reclick_waits:{reclick_waits}')
                         reclick_waits +=1
                         if reclick_waits > 155:
                             print(f'reopenning reclick {reclick_waits}')
-                            sb1.quit()
-                            sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
-                            id1 = get_current_window_id()
-                            sb1.maximize_window()
-                            ip_required = fix_ip(sb1, server_name1)
-                            ip_address = get_ip(sb1)
-                            sb1.open("https://www.skylom.com/videos")
-                            skylom_window = sb1.current_window_handle
-                            
-                            if with_baymack == True:
-                                sb1.open_new_window()
-                                sb1.open("https://www.zaptaps.com/videos")
-                                baymack_window = sb1.current_window_handle
+                            query = {"type": "main"}
+                            update = {"$set": {"request": 'reset'}}
+                            result = collection.update_one(query, update)
 
                             print(sb1.get_title())
-
                             reclick_waits = 0
-                        if reclick_waits > 50:
-                            reclick_button(sb1)
+
+                        if reclick_waits == 50 or reclick_waits == 55 or reclick_waits == 60 or reclick_waits == 70:
+                            #reclick_button(sb1)
                             pyautogui.click(990, 430)
+                            pyautogui.press('f5')
                             time.sleep(3)
-                            pyautogui.click(990, 430)
+
                     else:
                         reclick_waits = 1
                     
@@ -2276,6 +2287,9 @@ if ip_address == ip_required:
 
             elif mainscript == 6:
                 print('Withdraw Baymack..')
+                sb1.close()
+                sb1.close()
+                sb1.close()
                 break
 
 

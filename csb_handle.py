@@ -444,6 +444,151 @@ def delete_csb(driver):
         except Exception as e:
             print(f'Delete:{i}|{e}')
 
+def mysterium_web_login(driver):
+    driver.open('https://app.mysteriumvpn.com/')
+    time.sleep(5)
+    for i in range(1,100):
+        time.sleep(1)
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cookie_icon.png", region=(1625, 43, 400, 300), confidence=0.99)
+            pyautogui.click(x, y)
+            print("cookie_icon Found")
+            time.sleep(3)
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/all_site.png", region=(1300, 212, 600, 300), confidence=0.99)
+                pyautogui.click(x, y)
+                print("all_site Found")
+            except pyautogui.ImageNotFoundException:
+                print("No all_site .")
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
+                pyautogui.click(x, y)
+                print("import_icon Found")
+                time.sleep(3)
+                for i in range(1,50):
+                    url = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie.json"
+                    response = requests.get(url)
+                    if response.status_code == 200:
+                        text_content = response.text
+                    else:
+                        print(f"Failed to retrieve the content. Status code: {response.status_code}")
+                        text_content = None
+                    if text_content:
+                        pyautogui.click(1385, 310)
+                        time.sleep(1)
+                        pyautogui.typewrite(text_content)
+                        time.sleep(5)
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
+                            pyautogui.click(x, y)
+                            print("import_icon Found")
+                            
+                            time.sleep(3)
+                            pyautogui.click(113, 100)
+                            pyautogui.press('f5')
+                            time.sleep(3)
+                            #driver.close()
+                            return True
+                        
+                        except pyautogui.ImageNotFoundException:
+                            print(f"No import_icon .{i}")
+                    time.sleep(1)
+
+
+            except pyautogui.ImageNotFoundException:
+                print("No import_icon .")
+
+        except pyautogui.ImageNotFoundException:
+            print("No cookie_icon .")
+
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/allow_button.png", region=(1080, 247, 400, 300), confidence=0.99)
+            pyautogui.click(x, y)
+            print("allow_button Found")
+                    
+        except pyautogui.ImageNotFoundException:
+            print("No allow_button .")
+        #driver.close()
+
+def mysterium_login(driver):
+    for i in range(1,100):
+        titile = sb1.get_title()
+        if 'Home' in titile:
+
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
+                pyautogui.click(x, y)
+                print("mysterium_icon_empty Found")
+                i = 1
+                for i in range(1, 10):
+                    time.sleep(1)
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.99)
+                        pyautogui.click(x, y)
+                        print("mysterium_login Found")
+                        for i in range(1, 10):
+                            time.sleep(2)
+                            try:
+                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_allow.png", region=(842, 750, 400, 300), confidence=0.99)
+                                pyautogui.click(x, y)
+                                print("mysterium_allow Found")
+                                time.sleep(3)
+                                try:
+                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
+                                    pyautogui.click(x, y)
+                                    print("mysterium_icon_empty 2 Found")
+                                    time.sleep(3)
+                                    for i in range(1,100):
+                                        time.sleep(1)
+                                        try:
+                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/settings_mysterium.png", region=(1445, 630, 400, 300), confidence=0.99)
+                                            pyautogui.click(x, y)
+                                            print("settings_mysterium 2 Found")
+                                            time.sleep(1)
+                                        except pyautogui.ImageNotFoundException:
+                                            print("No settings_mysterium 2.")
+
+                                        try:
+                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/connection_mysterium_option.png", region=(1325, 109, 800, 900), confidence=0.99)
+                                            pyautogui.click(x, y)
+                                            print("connection_mysterium_option Found")
+                                            time.sleep(1)
+                                        except pyautogui.ImageNotFoundException:
+                                            print("No connection_mysterium_option.")
+
+                                        try:
+                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/refresh_ip_off.png", region=(1325, 109, 800, 900), confidence=0.99)
+                                            pyautogui.click(1640, 300)
+                                            pyautogui.click(1668, 300)
+                                            print("refresh_ip_off Found")
+                                            time.sleep(1)
+                                        except pyautogui.ImageNotFoundException:
+                                            print("No refresh_ip_off.")
+
+                                        try:
+                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/refresh_ip_on.png", region=(1325, 109, 800, 900), confidence=0.99)
+                                            pyautogui.click(300, 300)
+                                            print("refresh_ip_on Found")
+                                            return True
+                                        except pyautogui.ImageNotFoundException:
+                                            print("No refresh_ip_on.")
+
+                                                        #return True
+                                except pyautogui.ImageNotFoundException:
+                                    print("No mysterium_icon_empty 2.")
+
+                            except pyautogui.ImageNotFoundException:
+                                print("No mysterium_allow .")
+
+                    except pyautogui.ImageNotFoundException:
+                        print("No mysterium_login .")
+
+                                        
+            except pyautogui.ImageNotFoundException:
+                print("No mysterium_icon_empty .")
+                            #return True
+        mysterium_web_login(driver)
+
 
 
 sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
@@ -463,6 +608,7 @@ if fresh:
             print('All Extensions are installed..')
             if pin_extensions():
                 print('All Extensions are pinned')
+                mysterium_login(sb1)
 
 codesandlogged = are_codesand_logged(sb1)
 urls_dev = []
@@ -533,7 +679,21 @@ while True:
 
             except Exception as e:
                 print(f'Waiting For Find Directior Listener{i}')
-
+            title =  sb1.get_title()
+            if 'Unable to start the microVM' in title:
+                pyautogui.click(1228,462)
+                time.sleep(2)
+                pyautogui.click(942, 65)
+                time.sleep(1)
+                pyautogui.hotkey('ctrl', 'l')
+                pyautogui.keyUp('ctrl')
+                time.sleep(0.5)
+                pyautogui.hotkey('ctrl', 'c')
+                page_url = clipboard.paste()
+                #page_url = sb1.get_current_url()
+                urls.append(page_url)
+                break
+            
     #after each Refresh
     collection = db[CSB_Script]
     result = collection.delete_many({})

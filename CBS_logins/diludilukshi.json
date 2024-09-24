@@ -1,0 +1,91 @@
+[
+    {
+        "domain": ".codesandbox.io",
+        "expirationDate": 1758725489,
+        "hostOnly": false,
+        "httpOnly": false,
+        "name": "AMP_a205ed9b06",
+        "path": "/",
+        "sameSite": "lax",
+        "secure": false,
+        "session": false,
+        "storeId": null,
+        "value": "JTdCJTIyZGV2aWNlSWQlMjIlM0ElMjIwNjUwNmM1ZC0zNzc2LTRmNmMtOGQ3OC0wZTRiYTkwMWFlZmUlMjIlMkMlMjJ1c2VySWQlMjIlM0ElMjJhY2EwYTQwYjcxYzc4MGEyODNjMWZkMDQ2YmMzNzNlNWQ2ODVkNzFmJTIyJTJDJTIyc2Vzc2lvbklkJTIyJTNBMTcyNzE4OTQwNzU1MyUyQyUyMm9wdE91dCUyMiUzQWZhbHNlJTJDJTIybGFzdEV2ZW50VGltZSUyMiUzQTE3MjcxODk0ODk3NTIlMkMlMjJsYXN0RXZlbnRJZCUyMiUzQTI1OTMlN0Q="
+    },
+    {
+        "domain": ".codesandbox.io",
+        "expirationDate": 1739626536,
+        "hostOnly": false,
+        "httpOnly": false,
+        "name": "cc_cookie",
+        "path": "/",
+        "sameSite": "lax",
+        "secure": true,
+        "session": false,
+        "storeId": null,
+        "value": "%7B%22categories%22%3A%5B%22functional%22%2C%22analytical%22%2C%22marketing%22%5D%2C%22revision%22%3A0%2C%22data%22%3Anull%2C%22consentTimestamp%22%3A%222024-08-17T13%3A35%3A36.233Z%22%2C%22consentId%22%3A%224a736020-75ef-4144-ba07-482ba2dfdea8%22%2C%22services%22%3A%7B%22functional%22%3A%5B%5D%2C%22analytical%22%3A%5B%5D%2C%22marketing%22%3A%5B%5D%7D%2C%22lastConsentTimestamp%22%3A%222024-08-17T13%3A35%3A36.233Z%22%2C%22expirationTime%22%3A1739626536233%7D"
+    },
+    {
+        "domain": ".codesandbox.io",
+        "expirationDate": 1757581099,
+        "hostOnly": false,
+        "httpOnly": false,
+        "name": "AMP_MKTG_a205ed9b06",
+        "path": "/",
+        "sameSite": "lax",
+        "secure": false,
+        "session": false,
+        "storeId": null,
+        "value": "JTdCJTIycmVmZXJyZXIlMjIlM0ElMjJodHRwcyUzQSUyRiUyRmdpdGh1Yi5jb20lMkZjb2Rlc2FuZGJveCUyRmNvZGVzYW5kYm94LWNsaWVudCUyRmlzc3VlcyUyRjg0NDAlMjIlMkMlMjJyZWZlcnJpbmdfZG9tYWluJTIyJTNBJTIyZ2l0aHViLmNvbSUyMiU3RA=="
+    },
+    {
+        "domain": ".codesandbox.io",
+        "hostOnly": false,
+        "httpOnly": true,
+        "name": "_cfuvid",
+        "path": "/",
+        "sameSite": "no_restriction",
+        "secure": true,
+        "session": true,
+        "storeId": null,
+        "value": "jzLPQyeMt02h1gIritDMCIL1_So8Lm7dCXGS0WYlXmM-1727150422284-0.0.1.1-604800000"
+    },
+    {
+        "domain": "codesandbox.io",
+        "hostOnly": true,
+        "httpOnly": true,
+        "name": "_code_sandbox_key",
+        "path": "/",
+        "sameSite": "strict",
+        "secure": true,
+        "session": true,
+        "storeId": null,
+        "value": "XCP.lC_xagWiyTLyKYjYZdNoY0E2XMdoLkdgCFPQ3aEGTVcf3kL3hE4BOKyuTSZ0Rm91J0_zOiO7PDdiroY-P32ZAIWSvUEjJDUOj2Mn9mfUJ_zeRswvCTeMBsdtTdFsL90z6D6PJakaOCSgQoPGpEEkFSZCZ62fSZuBEAxBjvlv6_gSGCqLkX4H90sPAi7dKRXcdBaBvKxDYg6ScK82Diz-NZXaa8ss2halPFOd4d59Rj5D4sfcCl6Mv5-b9PIfrBfvz7yJj9KAC_CbiuV9ZlZ8ti5gyZFDO3b8ZW2lvEXik1ncJLRLv6q4bkiFl5eTG_EFYJAmT_UX7d36rUyEwKTAi2kpbWhVQPwt6ojBYn10AYIw7nrVpB8RgPW0AOSObIUPOKYXpbxHnirWUGincOcmkpED843VQacxbJdo2BK35Yk4yG5pK7zCGyGP6aF3T0Z-8LFqxD-xex3C9zxn-4HScqsjlU19CXg3XMSe_TMcPKMR6inbv_AsBcbbdLLjxJp7Dk9_Pjjaj9xaHKS3v-mhItJI_EW7diAU5yhE0Wk1p1NS9rKqvGcMxmMOFvZoU_UxREhT-6wUfqc38jjGtq6z2aN7Q1YGqX67xrwA_wQj-qAtHoYiPFLIuw"
+    },
+    {
+        "domain": "codesandbox.io",
+        "expirationDate": 1729608686.280635,
+        "hostOnly": true,
+        "httpOnly": true,
+        "name": "guardian_default_token",
+        "path": "/",
+        "sameSite": null,
+        "secure": false,
+        "session": false,
+        "storeId": null,
+        "value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJDb2RlU2FuZGJveCIsImV4cCI6MTcyOTYwODY4NSwiaWF0IjoxNzI3MTg5NDg1LCJpc3MiOiJDb2RlU2FuZGJveCIsImp0aSI6IjZlODY3ZjhhLTkxOTYtNDMzNy05YTJhLTk5MmQxYWFhMWIxNyIsIm5iZiI6MTcyNzE4OTQ4NCwic3ViIjoiVXNlcjo3MmQyMzY4Ni1iMTM0LTQ1NjYtYmQ2Zi1jMDk3NzA1NGViNmMiLCJ0eXAiOiJyZWZyZXNoIn0.KpPDKqgO2VMubV94qzf0NjQm-kyfeNM4lOnlzvINGMfCTq-VOoxsMAyXB2OM8sTj2BdfYHD0R7Fx-iLoedJdww"
+    },
+    {
+        "domain": "codesandbox.io",
+        "expirationDate": 1729608686.008954,
+        "hostOnly": true,
+        "httpOnly": false,
+        "name": "signedIn",
+        "path": "/",
+        "sameSite": null,
+        "secure": false,
+        "session": false,
+        "storeId": null,
+        "value": "true"
+    }
+]

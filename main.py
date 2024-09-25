@@ -588,10 +588,11 @@ def get_ipscore(ip):
         print(f"Active TOR: {active_tor}")
         print(f"Recent Abuse: {recent_abuse}")
         print(f"Bot Status: {bot_status}")
-        if vpn == False and tor == False and active_vpn == False and active_tor == False and fraud_score < 90: #and bot_status == False and recent_abuse == False:
-            return True
-        else:
-            return None
+        if fraud_score:
+            if vpn == False and tor == False and active_vpn == False and active_tor == False and fraud_score < 90: #and bot_status == False and recent_abuse == False:
+                return True
+            else:
+                return None
     except requests.RequestException as e:
         print(f"Error retrieving IP data: {e}")
         return None

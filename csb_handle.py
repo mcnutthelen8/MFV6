@@ -43,8 +43,8 @@ Layout = 1
 
 fresh = True
 fresh_vms =True 
-vm_count = 1 + 4
-CSB_id = 'yvonne'
+vm_count = 1 + 5
+CSB_id = 'andrewperera70'
 CSB_Script = f'CSB{Layout}'
 waiting_sec = 1700
 #https://www.skylom.com/willem3
@@ -729,9 +729,10 @@ while True:
             sb1.switch_to.window(page)
             time.sleep(5)
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/reload_window.png", region=(184, 148, 1700, 1000), confidence=0.94)
-                pyautogui.press('f5')
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/reload_window.png", region=(144, 118, 1700, 1000), confidence=0.9)
                 pyautogui.click(242, 85)
+                pyautogui.press('f5')
+
             except Exception as e:
                 print(f'Waiting For Find Directior Listener{i}')
 

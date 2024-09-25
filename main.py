@@ -65,44 +65,45 @@ facebook_cookies = '0'
 
 
 
-CSB1_farms = [1, 2, 3, 4, 5]
+CSB1_farms = [1, 2, 3, 4]
 
 
 
 if farm_id == 1:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/alisabro.json'
     server_name1 = 'estonia'
-    CSB1_farms = [1, 2, 3, 4, 5]
+    CSB1_farms = [1, 2, 3, 4]
 elif farm_id == 2:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/diludilakshi.json'
     server_name1 = 'romania'
-    CSB1_farms = [1, 2, 3, 4, 5]
+    CSB1_farms = [1, 2, 3, 4]
 elif farm_id == 3:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/williesmith.json'
     server_name1 = 'poland'
-    CSB1_farms = [1, 2, 3, 4, 5]
+    CSB1_farms = [1, 2, 3, 4]
 elif farm_id == 4:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
     server_name1 = 'hungary'
-    CSB1_farms = [1, 2, 3, 4, 5]
+    CSB1_farms = [1, 2, 3, 4]
+
+################2d######################
 elif farm_id == 5:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/andrewperera.json'
     server_name1 = 'belarus'
-    CSB1_farms = [1, 2, 3, 4, 5]
+    CSB1_farms = [5, 6, 7, 8]
 
-################2d######################
 elif farm_id == 6:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/andyrogers.json'
     server_name1 = 'belgium'
-    CSB1_farms = [6, 7, 8]
+    CSB1_farms = [5, 6, 7, 8]
 elif farm_id == 7:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/garthswiff22.json'
     server_name1 = 'chile'
-    CSB1_farms = [6, 7, 8]
+    CSB1_farms = [5, 6, 7, 8]
 elif farm_id == 8:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/captaingranda.json'
     server_name1 = 'croatia'
-    CSB1_farms = [6, 7, 8]
+    CSB1_farms = [5, 6, 7, 8]
 
 
 else:
@@ -442,6 +443,12 @@ def get_youtube_link(sb):
         return 0
 
 def cloudflare(id,sb):
+    try:
+        sb.uc_gui_click_captcha()
+        time.sleep(3)
+        sb.uc_gui_handle_captcha()
+    except Exception as e:
+        print(e)
     page_title = sb.get_title().strip()
     
     if page_title == 'Just a moment...':
@@ -1494,6 +1501,7 @@ def baymack_login(driver):
                         print(f"Button found: {button.text}, clicking...")
                         pyautogui.click(791, 737)
                         start_time += 1
+                        print(start_time)
                         if start_time > 5:
                             pyautogui.keyDown('ctrl')
                             pyautogui.press('left')

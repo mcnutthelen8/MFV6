@@ -65,43 +65,44 @@ facebook_cookies = '0'
 
 
 
-CSB1_farms = [1, 2, 3, 4]
+CSB1_farms = [1, 2, 3, 4, 5]
 
 
 
 if farm_id == 1:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/alisabro.json'
     server_name1 = 'estonia'
-    CSB1_farms = [1, 2, 3, 4]
+    CSB1_farms = [1, 2, 3, 4, 5]
 elif farm_id == 2:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/diludilakshi.json'
     server_name1 = 'romania'
-    CSB1_farms = [1, 2, 3, 4]
+    CSB1_farms = [1, 2, 3, 4, 5]
 elif farm_id == 3:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/williesmith.json'
     server_name1 = 'poland'
-    CSB1_farms = [1, 2, 3, 4]
+    CSB1_farms = [1, 2, 3, 4, 5]
 elif farm_id == 4:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
     server_name1 = 'hungary'
-    CSB1_farms = [1, 2, 3, 4]
-################2d######################
+    CSB1_farms = [1, 2, 3, 4, 5]
 elif farm_id == 5:
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/andrewperera.json'
+    server_name1 = 'belarus'
+    CSB1_farms = [1, 2, 3, 4, 5]
+
+################2d######################
+elif farm_id == 6:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/andyrogers.json'
     server_name1 = 'belgium'
-    CSB1_farms = [5, 6, 7, 8]
-elif farm_id == 6:
-    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/merlelnc.json'
-    server_name1 = 'latvia'
-    CSB1_farms = [5, 6, 7, 8]
+    CSB1_farms = [6, 7, 8]
 elif farm_id == 7:
-    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/berendkalpana.json'
-    server_name1 = 'finland'
-    CSB1_farms = [5, 6, 7, 8]
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/garthswiff22.json'
+    server_name1 = 'chile'
+    CSB1_farms = [6, 7, 8]
 elif farm_id == 8:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/captaingranda.json'
     server_name1 = 'croatia'
-    CSB1_farms = [5, 6, 7, 8]
+    CSB1_farms = [6, 7, 8]
 
 
 else:
@@ -220,6 +221,22 @@ def get_current_duration(sb):
     except Exception as e:
         if debug_mode:
             print(f"An error occurred: {e}")
+        try:
+            continue_buttons = sb.find_elements(By.CSS_SELECTOR, 'h2.blnc')
+            for button in continue_buttons:
+                if 'You' in button.text:
+                    print(f"Button found: {button.text}, clicking...")
+                    gg = button.text
+                    gg = int(float(gg.split()[2]))
+                    pyautogui.keyDown('ctrl')
+                    pyautogui.press('left')
+                    pyautogui.keyUp('ctrl')
+                    time.sleep(2)
+                    return None
+                else:
+                    print(button.text)
+        except Exception as e:
+            return None
         return None
     
 def play_button(sb):
@@ -571,7 +588,7 @@ def get_ipscore(ip):
         print(f"Active TOR: {active_tor}")
         print(f"Recent Abuse: {recent_abuse}")
         print(f"Bot Status: {bot_status}")
-        if vpn == False and tor == False and active_vpn == False and active_tor == False: #and bot_status == False and recent_abuse == False:
+        if vpn == False and tor == False and active_vpn == False and active_tor == False and fraud_score < 90: #and bot_status == False and recent_abuse == False:
             return True
         else:
             return None
@@ -1414,13 +1431,18 @@ def redeem(driver):
         doc = collection.find_one(query)
         mail = doc["withdraw_mail"]
 
-        redeem_buttons = driver.find_elements('a.themeBtn.small.redeemButton')
+        # Locate all gift card names and values
+        card_names = driver.find_elements('span.card-name a')
         gift_values = driver.find_elements('span.gift-value')
-        # Loop through gift values to find the correct Airtm $0.01 Gift Card
-        for i, gift_value in enumerate(gift_values):
-            if "$0.01 Gift Card For 15 Coins" in gift_value.text:
+        redeem_buttons = driver.find_elements('a.themeBtn.small.smallButton')
+
+        # Loop through gift values and card names to find the correct Airtm $0.01 Gift Card
+        for i, (card_name, gift_value) in enumerate(zip(card_names, gift_values)):
+            if "Airtm" in card_name.text and "$0.01 Gift Card For 15 Coins" in gift_value.text:
                 redeem_buttons[i].click()
                 print("Clicked the Airtm $0.01 Gift Card redeem button.")
+                
+                # Wait for the email input to appear
                 driver.wait_for_element('input#userEmail', timeout=10)
                 email_input = driver.find_element('input#userEmail')
                 email_input.send_keys(mail)
@@ -1431,13 +1453,14 @@ def redeem(driver):
                 submit_button.click()
                 print("Clicked the submit button.")
                 time.sleep(3)
+                break  # Stop after finding and clicking the right button
     except Exception as e:
         print(e)
 
 
 def baymack_login(driver):
     coin_val = None
-    start_time = time.time()
+    start_time = 1
     while not coin_val:
         coin_val = get_coin_value(driver)  # Assuming get_coin_value() is defined elsewhere
         if coin_val:
@@ -1445,27 +1468,6 @@ def baymack_login(driver):
             return coin_val
         else:
             time.sleep(1)
-            elapsed_time = time.time() - start_time
-            mins, secs = divmod(int(elapsed_time), 60)
-            timer = f'{mins:02d}:{secs:02d}'
-            seconds_only = int(elapsed_time)
-            print(f'Next Click {timer}')
-            print(f'Elapsed_time {seconds_only}')
-            if seconds_only > 90:
-                
-
-                pyautogui.keyDown('ctrl')
-                pyautogui.press('left')
-                pyautogui.keyUp('ctrl')
-                time.sleep(2)
-                if driver.get_title() == 'Facebook' or driver.get_title() == 'Skylom' or driver.get_title() == 'Zaptaps':
-                    print('found good page')
-                else:
-                    pyautogui.keyDown('ctrl')
-                    pyautogui.press('right')
-                    pyautogui.keyUp('ctrl')
-                    time.sleep(2)
-                start_time = time.time()
 
 
             try:
@@ -1487,9 +1489,16 @@ def baymack_login(driver):
                 continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'span.x1lliihq.x6ikm8r.x10wlt62.x1n2onr6.xlyipyv.xuxw1ft')
                 for button in continue_buttons:
                     if 'Continue as' in button.text:
+                        time.sleep(1)
                         print(f"Button found: {button.text}, clicking...")
                         pyautogui.click(791, 737)
-                        #button.click()
+                        start_time += 1
+                        if start_time > 5:
+                            pyautogui.keyDown('ctrl')
+                            pyautogui.press('left')
+                            pyautogui.keyUp('ctrl')
+                            time.sleep(2)
+                            start_time  = 1
                         break
 
                 # Check if password input is found
@@ -1904,7 +1913,7 @@ if ip_address == ip_required:
                         time.sleep(2)
                         print(f'reclick_waits:{reclick_waits}')
                         reclick_waits +=1
-                        if reclick_waits > 155:
+                        if reclick_waits > 70:
                             print(f'reopenning reclick {reclick_waits}')
                             query = {"type": "main"}
                             update = {"$set": {"request": 'reset'}}
@@ -1914,7 +1923,7 @@ if ip_address == ip_required:
                             reclick_waits = 0
 
 
-                        if reclick_waits == 50 or reclick_waits == 55 or reclick_waits == 60 or reclick_waits == 70:
+                        if reclick_waits == 20 or reclick_waits == 25 or reclick_waits == 30 or reclick_waits == 50:
                             #reclick_button(sb1)
                             pyautogui.click(990, 430)
                             pyautogui.press('f5')
@@ -2025,7 +2034,7 @@ if ip_address == ip_required:
                         time.sleep(2) #and current_duration_bay == 0 :
                         print(f'reclick_waits:{reclick_waits}')
                         reclick_waits +=1
-                        if reclick_waits > 155:
+                        if reclick_waits > 80:
                             print(f'reopenning reclick {reclick_waits}')
                             query = {"type": "main"}
                             update = {"$set": {"request": 'reset'}}
@@ -2034,7 +2043,7 @@ if ip_address == ip_required:
                             print(sb1.get_title())
                             reclick_waits = 0
 
-                        if reclick_waits == 50 or reclick_waits == 55 or reclick_waits == 60 or reclick_waits == 70:
+                        if reclick_waits == 20 or reclick_waits == 25 or reclick_waits == 30 or reclick_waits == 40:
                             #reclick_button(sb1)
                             pyautogui.click(990, 430)
                             pyautogui.press('f5')

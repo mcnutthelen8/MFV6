@@ -43,7 +43,7 @@ Layout = 1
 
 fresh = True
 fresh_vms =True 
-vm_count = 1 + 5
+vm_count = 1 + 4
 CSB_id = 'andrewperera70'
 CSB_Script = f'CSB{Layout}'
 waiting_sec = 1700
@@ -608,7 +608,7 @@ if fresh:
             print('All Extensions are installed..')
             if pin_extensions():
                 print('All Extensions are pinned')
-                mysterium_login(sb1)
+                #mysterium_login(sb1)
 
 codesandlogged = are_codesand_logged(sb1)
 urls_dev = []

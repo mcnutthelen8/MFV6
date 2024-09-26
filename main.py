@@ -444,6 +444,12 @@ def get_youtube_link(sb):
 
 def cloudflare(id,sb):
     try:
+        if sb.is_element_visible('span.cb-lb-t'):
+        #<span class="cb-lb-t">Verify you are human</span>
+            actual_text = sb.get_text('span.cb-lb-t')
+            print(actual_text)
+            if 'Verify you are human' in actual_text:
+                print('Done Boy')
         sb.uc_gui_click_captcha()
         time.sleep(3)
         sb.uc_gui_handle_captcha()
@@ -1502,7 +1508,7 @@ def baymack_login(driver):
                         pyautogui.click(791, 737)
                         start_time += 1
                         print(start_time)
-                        if start_time > 5:
+                        if start_time > 3:
                             pyautogui.keyDown('ctrl')
                             pyautogui.press('left')
                             pyautogui.keyUp('ctrl')
@@ -1701,7 +1707,7 @@ vnc_window = 0
 start_vnc = 0
 
 if run_sb1:
-    sb1 = Driver(uc=True, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
+    sb1 = Driver(uc=True, headed= True, undetectable= True, undetected=True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
     sb1.maximize_window()
     id1 = get_current_window_id()
     url = "chrome://extensions/"
@@ -1908,9 +1914,10 @@ if ip_address == ip_required:
                 print('mainscript is 1 ')
                 
 
-                cloudflare(id1,sb1)
+                
                 sb1.switch_to.default_content()
                 sb1.execute_script("window.scrollTo(0, 0);")
+                cloudflare(id1,sb1)
                 play_button(sb1)
                 playback_check(sb1)
                 remove_pink(sb1)
@@ -2313,5 +2320,9 @@ if ip_address == ip_required:
 
 
             elif mainscript == 5:
+
                 print('Pausing....')
                 time.sleep(3)
+
+
+                #<span class="cb-lb-t">Verify you are human</span>

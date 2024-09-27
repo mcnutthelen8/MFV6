@@ -1692,11 +1692,13 @@ def cloudflare(id,sb):
         try:
             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/logout_bay.png", region=(1270, 223, 500, 800), confidence=0.94)
             pyautogui.click(x, y)
-            time.sleep(3)
+            time.sleep(2)
 
         except Exception as e:
             print(e)
-        #pyautogui.click(1335, 364)
+            pyautogui.click(1335, 364)
+            time.sleep(2)
+
         baymack_login(sb)
     except Exception as e:
         print(e)

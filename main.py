@@ -1690,7 +1690,7 @@ def cloudflare(id,sb):
         pyautogui.click(1336, 164)
         time.sleep(4)
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/logout_bay.png", region=(1270, 223, 500, 800), confidence=0.94)
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/logout_bay.png", region=(1270, 223, 500, 800), confidence=0.9)
             pyautogui.click(x, y)
             time.sleep(2)
 

@@ -442,30 +442,6 @@ def get_youtube_link(sb):
             print(f"An error occurred: {e}")
         return 0
 
-def cloudflare(id,sb):
-    try:
-        if sb.is_element_visible('span.cb-lb-t'):
-        #<span class="cb-lb-t">Verify you are human</span>
-            actual_text = sb.get_text('span.cb-lb-t')
-            print(actual_text)
-            if 'Verify you are human' in actual_text:
-                print('Done Boy')
-        sb.uc_gui_click_captcha()
-        time.sleep(3)
-        sb.uc_gui_handle_captcha()
-    except Exception as e:
-        print(e)
-    page_title = sb.get_title().strip()
-    
-    if page_title == 'Just a moment...':
-        activate_window_by_id(id)
-        print('tru')
-        sb.uc_gui_handle_captcha()
-        sb.uc_gui_click_captcha()
-        sb.post_message("CouldFlare Found", duration=3)
-    elif page_title == 'www.skylom.com | 502: Bad gateway' or page_title == 'www.skylom.com | 503: Bad gateway':
-        print('www.skylom.com | 502: Bad gateway')
-        sb.refresh()
 
     
 def check_category_question(sb):
@@ -573,17 +549,19 @@ def get_proxycheck(driver, ip, server_name):
     except requests.RequestException as e:
         print(f"Error retrieving IP address and proxy status: {e}")
         return None
-
 def get_ipscore(ip):
     url = f'https://ipqualityscore.com/api/json/ip/Bfg1dzryVqbpSwtbxgWb1uVkXLrr1Nzr/{ip}?strictness=3&allow_public_access_points=false'
     try:
         response = requests.get(url)
         response.raise_for_status()  # Raise an HTTPError for bad responses
         result = response.json()
-        #print(result)  # Print the raw response for debugging
+        # print(result)  # Print the raw response for debugging
 
         # Assign specific data fields to variables
-        fraud_score = result.get('fraud_score', 'Unknown')
+        fraud_score = result.get('fraud_score', None)
+        if fraud_score is None or not isinstance(fraud_score, int):
+            fraud_score = 89  # Assign a default integer value if fraud_score is not valid
+
         proxy = result.get('proxy', False)
         vpn = result.get('vpn', False)
         tor = result.get('tor', False)
@@ -601,14 +579,16 @@ def get_ipscore(ip):
         print(f"Active TOR: {active_tor}")
         print(f"Recent Abuse: {recent_abuse}")
         print(f"Bot Status: {bot_status}")
-        if fraud_score:
-            if vpn == False and tor == False and active_vpn == False and active_tor == False and fraud_score < 90: #and bot_status == False and recent_abuse == False:
-                return True
-            else:
-                return None
+
+        # Ensure fraud_score is an integer for comparison
+        if vpn == False and tor == False and active_vpn == False and active_tor == False and fraud_score < 90:
+            return True
+        else:
+            return None
     except requests.RequestException as e:
         print(f"Error retrieving IP data: {e}")
         return None
+
 
 def mysterium_vpn_connect(server_name):
     try:
@@ -1483,7 +1463,12 @@ def baymack_login(driver):
         else:
             time.sleep(1)
 
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/fb_somewentwrong.png", region=(615, 434, 800, 500), confidence=0.90)
+                pyautogui.click(13, 81)
 
+            except Exception as e:
+                print(e)
             try:
                 print(driver.get_title())
                 # Look for '.quiz-btn' and click if visible
@@ -1697,7 +1682,30 @@ def solve_ocr_number(driver):
     return captcha_ocr
 
 
+def cloudflare(id,sb):
+    try:
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verify_cloudflare.png", region=(779, 651, 500, 500), confidence=0.95)
+        pyautogui.click(x, y)
+        print("verify_cloudflare git Found")
+        pyautogui.click(1336, 164)
+        time.sleep(3)
+        pyautogui.click(1335, 364)
+        time.sleep(3)
+        baymack_login(sb)
+    except Exception as e:
+        print(e)
+    page_title = sb.get_title().strip()
     
+    if page_title == 'Just a moment...':
+        activate_window_by_id(id)
+        print('tru')
+        sb.uc_gui_handle_captcha()
+        sb.uc_gui_click_captcha()
+        sb.post_message("CouldFlare Found", duration=3)
+    elif page_title == 'www.skylom.com | 502: Bad gateway' or page_title == 'www.skylom.com | 503: Bad gateway':
+        print('www.skylom.com | 502: Bad gateway')
+        sb.refresh()
+
 
 
 
@@ -1917,7 +1925,7 @@ if ip_address == ip_required:
                 
                 sb1.switch_to.default_content()
                 sb1.execute_script("window.scrollTo(0, 0);")
-                cloudflare(id1,sb1)
+                
                 play_button(sb1)
                 playback_check(sb1)
                 remove_pink(sb1)
@@ -2168,6 +2176,7 @@ if ip_address == ip_required:
 
                 check_icon_captcha_exists(sb1, id1)
                 check_number_captcha_exists(sb1, id1)
+                cloudflare(id1,sb1)
 
                 if with_baymack == True:
                     title = sb1.get_title()

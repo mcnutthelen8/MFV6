@@ -1685,12 +1685,18 @@ def solve_ocr_number(driver):
 def cloudflare(id,sb):
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verify_cloudflare.png", region=(779, 651, 500, 500), confidence=0.95)
-        pyautogui.click(x, y)
+        #pyautogui.click(x, y)
         print("verify_cloudflare git Found")
         pyautogui.click(1336, 164)
-        time.sleep(3)
-        pyautogui.click(1335, 364)
-        time.sleep(3)
+        time.sleep(4)
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/logout_bay.png", region=(1270, 223, 500, 800), confidence=0.94)
+            pyautogui.click(x, y)
+            time.sleep(3)
+
+        except Exception as e:
+            print(e)
+        #pyautogui.click(1335, 364)
         baymack_login(sb)
     except Exception as e:
         print(e)

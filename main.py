@@ -1687,7 +1687,7 @@ def cloudflare(id,sb):
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verify_cloudflare.png", region=(779, 651, 500, 500), confidence=0.95)
         #pyautogui.click(x, y)
         print("verify_cloudflare git Found")
-        pyautogui.click(1336, 164)
+        pyautogui.click(1326, 164)
         time.sleep(4)
         try:
             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/logout_bay.png", region=(1260, 223, 700, 800), confidence=0.9)

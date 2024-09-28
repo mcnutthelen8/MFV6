@@ -1,3 +1,5 @@
+
+
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
@@ -10,12 +12,10 @@ import re
 import requests
 from bs4 import BeautifulSoup
 import time
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import random
 import requests
 from requests.exceptions import RequestException
-from seleniumbase import SB
 from seleniumbase import Driver
 import subprocess
 import pyautogui
@@ -29,19 +29,94 @@ from pymongo import MongoClient
 from paddleocr import PaddleOCR
 import Levenshtein
 import json
+import argparse
+import clipboard
 
+#Current version -- V6.9.2
+
+#Updates Log -- V6.9.2
+#""" Fixed withdrawsky()
+# 
+# """
+#Updates Log -- V6.9.1
+#""" Fixed get_ip() and youtube category function having issues with selenium being fucked by using try:except
+
+#    Added New Improvement to ipfixer Which is it will connect with other farms and changes ip of all of them 
+#    untill all are ready to go this will fix issues with Mysterium VPN changes server and getting ip banned 
+#    
+#    Added New Argument '--farm' with levels of 0/1/2/3
+#       3 == install extension /login mysteium and facebook/ pin extension
+#       2 == login mysteium and facebook/
+#       1 == facebook
+#       0 == Nothing
+# 
+# """
+#
+
+
+# Initialize the argument parser
+parser = argparse.ArgumentParser(description="Process some arguments.")
+parser.add_argument('--farm', type=int, help="Farm")
+parser.add_argument('--fresh', type=int, help="Fresh")
+args = parser.parse_args()
+farm_id = args.farm
+fresh = args.fresh
+facebook_cookies = '0'
+
+
+
+CSB1_farms = [1, 2, 3, 4]
+
+
+
+if farm_id == 1:
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/alisabro.json'
+    server_name1 = 'estonia'
+    CSB1_farms = [1, 2, 3, 4]
+elif farm_id == 2:
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/diludilakshi.json'
+    server_name1 = 'romania'
+    CSB1_farms = [1, 2, 3, 4]
+elif farm_id == 3:
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/williesmith.json'
+    server_name1 = 'poland'
+    CSB1_farms = [1, 2, 3, 4]
+elif farm_id == 4:
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
+    server_name1 = 'hungary'
+    CSB1_farms = [1, 2, 3, 4]
+
+################2d######################
+elif farm_id == 5:
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/andrewperera.json'
+    server_name1 = 'belarus'
+    CSB1_farms = [5, 6, 7, 8]
+
+elif farm_id == 6:
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/andyrogers.json'
+    server_name1 = 'belgium'
+    CSB1_farms = [5, 6, 7, 8]
+elif farm_id == 7:
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/garthswiff22.json'
+    server_name1 = 'chile'
+    CSB1_farms = [5, 6, 7, 8]
+elif farm_id == 8:
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/captaingranda.json'
+    server_name1 = 'croatia'
+    CSB1_farms = [5, 6, 7, 8]
+
+
+else:
+    while True:
+        print('SOmething Wrong Did u use --farm')
 
 debug_mode = False
-facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/alisabro.json'
+
 ip_required = 0
-farm_id = 1
+#farm_id = 1
+
 run_sb1 = True
 with_baymack = True
-
-fresh = True
-with_vnc = True
-
-server_name1 = 'estonia'
 
 
 chrome_binary_path = '/opt/google/chrome/google-chrome'
@@ -49,7 +124,6 @@ chrome_user_data_dir = '/root/.config/google-chrome/'
 
 
 mongo_uri = "mongodb+srv://redgta36:J6n7Hoz2ribHmMmx@moneyfarm.wwzcs.mongodb.net/?retryWrites=true&w=majority&appName=moneyfarm"
-
 
 client = MongoClient(mongo_uri)
 db = client['MoneyFarmV6'] 
@@ -103,15 +177,23 @@ def insert_data(ip, amount1, amount2):
 
 
 def get_ip(driver):
-    original_window = driver.current_window_handle
-    driver.open_new_window()
-    #driver.switch_to.newest_window()
-    driver.open('https://api.ipify.org/')
-    ip_address = driver.get_text('body')
-    print('IP =', ip_address)
-    driver.close()
-    driver.switch_to.window(original_window)
-    return ip_address
+    while True:
+        original_window = driver.current_window_handle
+        driver.open_new_window()
+        try:
+            #driver.switch_to.newest_window()
+            driver.open('https://api.ipify.org/')
+            ip_address = driver.get_text('body')
+            print('IP =', ip_address)
+            driver.close()
+            driver.switch_to.window(original_window)
+            return ip_address
+        
+        except Exception as e:
+            print(e)
+        driver.close()
+        driver.switch_to.window(original_window)
+
 
 def get_current_window_id():
     # Run the command to get the current window ID
@@ -140,6 +222,22 @@ def get_current_duration(sb):
     except Exception as e:
         if debug_mode:
             print(f"An error occurred: {e}")
+        try:
+            continue_buttons = sb.find_elements(By.CSS_SELECTOR, 'h2.blnc')
+            for button in continue_buttons:
+                if 'You' in button.text:
+                    print(f"Button found: {button.text}, clicking...")
+                    gg = button.text
+                    gg = int(float(gg.split()[2]))
+                    pyautogui.keyDown('ctrl')
+                    pyautogui.press('left')
+                    pyautogui.keyUp('ctrl')
+                    time.sleep(2)
+                    return None
+                else:
+                    print(button.text)
+        except Exception as e:
+            return None
         return None
     
 def play_button(sb):
@@ -194,6 +292,7 @@ def play_button(sb):
                         play_button.click()
             except Exception as e:
                 print(f'Issue{e}')
+    
 
 def playback_check(sb):
     try: 
@@ -294,19 +393,26 @@ headers = {
 def get_video_infog(video_url, driver, timeout=8 ):
     original_window = driver.current_window_handle
     driver.open_new_window()
-    #driver.switch_to.newest_window()
-    driver.open(f'view-source:{video_url}')
-    data = driver.get_text('body')
-    html_content = str(data)
-    soup = BeautifulSoup(html_content, 'html.parser')
-    category_tag = soup.find('meta', itemprop='genre')
-    category = category_tag['content'] if category_tag else None
-    print(f"Category For This Video is {category}")
+    try:
+        #driver.switch_to.newest_window()
+        driver.open(f'view-source:{video_url}')
+        data = driver.get_text('body')
+        html_content = str(data)
+        soup = BeautifulSoup(html_content, 'html.parser')
+        category_tag = soup.find('meta', itemprop='genre')
+        category = category_tag['content'] if category_tag else None
+        print(f"Category For This Video is {category}")
+        driver.close()
+
+        driver.switch_to.window(original_window)
+        print(video_url)
+        return category
+    
+    except Exception as e:
+        print(e)
     driver.close()
     driver.switch_to.window(original_window)
-    print(video_url)
-    return category
-
+    return 0
 
 
 def get_youtube_link(sb):
@@ -335,20 +441,6 @@ def get_youtube_link(sb):
         if debug_mode:
             print(f"An error occurred: {e}")
         return 0
-
-def cloudflare(id,sb):
-    page_title = sb.get_title().strip()
-    
-    if page_title == 'Just a moment...':
-        activate_window_by_id(id)
-        print('tru')
-        sb.uc_gui_handle_captcha()
-        sb.uc_gui_click_captcha()
-        sb.post_message("CouldFlare Found", duration=3)
-    elif page_title == 'www.skylom.com | 502: Bad gateway' or page_title == 'www.skylom.com | 503: Bad gateway':
-        print('www.skylom.com | 502: Bad gateway')
-        sb.refresh()
-
 
 
     
@@ -457,17 +549,19 @@ def get_proxycheck(driver, ip, server_name):
     except requests.RequestException as e:
         print(f"Error retrieving IP address and proxy status: {e}")
         return None
-
 def get_ipscore(ip):
     url = f'https://ipqualityscore.com/api/json/ip/Bfg1dzryVqbpSwtbxgWb1uVkXLrr1Nzr/{ip}?strictness=3&allow_public_access_points=false'
     try:
         response = requests.get(url)
         response.raise_for_status()  # Raise an HTTPError for bad responses
         result = response.json()
-        #print(result)  # Print the raw response for debugging
+        # print(result)  # Print the raw response for debugging
 
         # Assign specific data fields to variables
-        fraud_score = result.get('fraud_score', 'Unknown')
+        fraud_score = result.get('fraud_score', None)
+        if fraud_score is None or not isinstance(fraud_score, int):
+            fraud_score = 89  # Assign a default integer value if fraud_score is not valid
+
         proxy = result.get('proxy', False)
         vpn = result.get('vpn', False)
         tor = result.get('tor', False)
@@ -485,13 +579,16 @@ def get_ipscore(ip):
         print(f"Active TOR: {active_tor}")
         print(f"Recent Abuse: {recent_abuse}")
         print(f"Bot Status: {bot_status}")
-        if vpn == False and tor == False and active_vpn == False and active_tor == False and bot_status == False and recent_abuse == False:
+
+        # Ensure fraud_score is an integer for comparison
+        if vpn == False and tor == False and active_vpn == False and active_tor == False and fraud_score < 90:
             return True
         else:
             return None
     except requests.RequestException as e:
         print(f"Error retrieving IP data: {e}")
         return None
+
 
 def mysterium_vpn_connect(server_name):
     try:
@@ -950,7 +1047,7 @@ def solve_image_category(drive, category, window):
             print(base,'Base False')
 
 
-    if titile == 'Baymack':
+    if titile == 'Zaptaps':
         #base = print_base64_images(drive)
         base = are_images_loaded(drive)
         if base == True:
@@ -978,7 +1075,7 @@ def solve_image_category(drive, category, window):
                                 position = captcha_ocr.index(similar_word)
                             print(f"The most similar word to '{category}' at index {position} : {fixword_list}")
                             title = drive.get_title()
-                            if title == 'Baymack':
+                            if title == 'Zaptaps':
                                 print(title,position)
                                 if position == 0:
                                     pyautogui.click(749, 743)
@@ -1009,21 +1106,8 @@ baymack_window = 0
 
 
 ####################################Control Panel Shit##########################################################
-
-
-def mysterium_login():
-    pyautogui.click(1613, 137)
-    time.sleep(2)
-    pyautogui.keyDown('ctrl')
-    pyautogui.press('t')
-    pyautogui.keyUp('ctrl')
-    time.sleep(2)
-    pyautogui.keyDown('ctrl')
-    pyautogui.press('l')
-    pyautogui.keyUp('ctrl')
-    time.sleep(2)
-    pyautogui.typewrite('https://app.mysteriumvpn.com/')
-    pyautogui.press('enter')
+def mysterium_web_login(driver):
+    driver.open('https://app.mysteriumvpn.com/')
     time.sleep(5)
     for i in range(1,100):
         time.sleep(1)
@@ -1062,79 +1146,11 @@ def mysterium_login():
                             print("import_icon Found")
                             
                             time.sleep(3)
-                            pyautogui.click(313, 147)
+                            pyautogui.click(113, 100)
                             pyautogui.press('f5')
                             time.sleep(3)
-                            try:
-                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
-                                pyautogui.click(x, y)
-                                print("mysterium_icon_empty Found")
-                                i = 1
-                                for i in range(1, 100):
-                                    try:
-                                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.99)
-                                        pyautogui.click(x, y)
-                                        print("mysterium_login Found")
-                                        for i in range(1, 100):
-                                            try:
-                                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_allow.png", region=(842, 750, 400, 300), confidence=0.99)
-                                                pyautogui.click(x, y)
-                                                print("mysterium_allow Found")
-                                                time.sleep(3)
-                                                try:
-                                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
-                                                    pyautogui.click(x, y)
-                                                    print("mysterium_icon_empty 2 Found")
-                                                    time.sleep(3)
-                                                    for i in range(1,100):
-                                                        time.sleep(1)
-                                                        try:
-                                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/settings_mysterium.png", region=(1445, 630, 400, 300), confidence=0.99)
-                                                            pyautogui.click(x, y)
-                                                            print("settings_mysterium 2 Found")
-                                                            time.sleep(1)
-                                                        except pyautogui.ImageNotFoundException:
-                                                            print("No settings_mysterium 2.")
-
-                                                        try:
-                                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/connection_mysterium_option.png", region=(1325, 109, 800, 900), confidence=0.99)
-                                                            pyautogui.click(x, y)
-                                                            print("connection_mysterium_option Found")
-                                                            time.sleep(1)
-                                                        except pyautogui.ImageNotFoundException:
-                                                            print("No connection_mysterium_option.")
-
-                                                        try:
-                                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/refresh_ip_off.png", region=(1325, 109, 800, 900), confidence=0.99)
-                                                            pyautogui.click(1640, 300)
-                                                            pyautogui.click(1668, 300)
-                                                            print("refresh_ip_off Found")
-                                                            time.sleep(1)
-                                                        except pyautogui.ImageNotFoundException:
-                                                            print("No refresh_ip_off.")
-
-                                                        try:
-                                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/refresh_ip_on.png", region=(1325, 109, 800, 900), confidence=0.99)
-                                                            pyautogui.click(300, 300)
-                                                            print("refresh_ip_on Found")
-                                                            return True
-                                                        except pyautogui.ImageNotFoundException:
-                                                            print("No refresh_ip_on.")
-
-                                                    #return True
-                                                except pyautogui.ImageNotFoundException:
-                                                    print("No mysterium_icon_empty 2.")
-
-                                            except pyautogui.ImageNotFoundException:
-                                                print("No mysterium_allow .")
-
-                                    except pyautogui.ImageNotFoundException:
-                                        print("No mysterium_login .")
-
-                                    
-                            except pyautogui.ImageNotFoundException:
-                                print("No mysterium_icon_empty .")
-                            #return True
+                            #driver.close()
+                            return True
                         
                         except pyautogui.ImageNotFoundException:
                             print(f"No import_icon .{i}")
@@ -1154,6 +1170,88 @@ def mysterium_login():
                     
         except pyautogui.ImageNotFoundException:
             print("No allow_button .")
+        #driver.close()
+
+def mysterium_login(driver):
+    for i in range(1,100):
+        titile = sb1.get_title()
+        if 'Home' in titile:
+
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
+                pyautogui.click(x, y)
+                print("mysterium_icon_empty Found")
+                i = 1
+                for i in range(1, 10):
+                    time.sleep(1)
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.99)
+                        pyautogui.click(x, y)
+                        print("mysterium_login Found")
+                        for i in range(1, 10):
+                            time.sleep(2)
+                            try:
+                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_allow.png", region=(842, 750, 400, 300), confidence=0.99)
+                                pyautogui.click(x, y)
+                                print("mysterium_allow Found")
+                                time.sleep(3)
+                                try:
+                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
+                                    pyautogui.click(x, y)
+                                    print("mysterium_icon_empty 2 Found")
+                                    time.sleep(3)
+                                    for i in range(1,100):
+                                        time.sleep(1)
+                                        try:
+                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/settings_mysterium.png", region=(1445, 630, 400, 300), confidence=0.99)
+                                            pyautogui.click(x, y)
+                                            print("settings_mysterium 2 Found")
+                                            time.sleep(1)
+                                        except pyautogui.ImageNotFoundException:
+                                            print("No settings_mysterium 2.")
+
+                                        try:
+                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/connection_mysterium_option.png", region=(1325, 109, 800, 900), confidence=0.99)
+                                            pyautogui.click(x, y)
+                                            print("connection_mysterium_option Found")
+                                            time.sleep(1)
+                                        except pyautogui.ImageNotFoundException:
+                                            print("No connection_mysterium_option.")
+
+                                        try:
+                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/refresh_ip_off.png", region=(1325, 109, 800, 900), confidence=0.99)
+                                            pyautogui.click(1640, 300)
+                                            pyautogui.click(1668, 300)
+                                            print("refresh_ip_off Found")
+                                            time.sleep(1)
+                                        except pyautogui.ImageNotFoundException:
+                                            print("No refresh_ip_off.")
+
+                                        try:
+                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/refresh_ip_on.png", region=(1325, 109, 800, 900), confidence=0.99)
+                                            pyautogui.click(300, 300)
+                                            print("refresh_ip_on Found")
+                                            return True
+                                        except pyautogui.ImageNotFoundException:
+                                            print("No refresh_ip_on.")
+
+                                                        #return True
+                                except pyautogui.ImageNotFoundException:
+                                    print("No mysterium_icon_empty 2.")
+
+                            except pyautogui.ImageNotFoundException:
+                                print("No mysterium_allow .")
+
+                    except pyautogui.ImageNotFoundException:
+                        print("No mysterium_login .")
+
+                                        
+            except pyautogui.ImageNotFoundException:
+                print("No mysterium_icon_empty .")
+                            #return True
+        mysterium_web_login(driver)
+
+
 
 def pin_extensions():
     try:
@@ -1237,9 +1335,14 @@ def facebook_login():
     pyautogui.click(1613, 137)
     time.sleep(2)
     pyautogui.keyDown('ctrl')
-    pyautogui.press('t')
+    pyautogui.press('l')
     pyautogui.keyUp('ctrl')
     time.sleep(2)
+    pyautogui.keyDown('ctrl')
+    pyautogui.press('c')
+    pyautogui.keyUp('ctrl')
+    time.sleep(2)
+    urkg = clipboard.paste()
     pyautogui.keyDown('ctrl')
     pyautogui.press('l')
     pyautogui.keyUp('ctrl')
@@ -1287,6 +1390,13 @@ def facebook_login():
                             pyautogui.click(113, 100)
                             pyautogui.press('f5')
                             time.sleep(3)
+                            pyautogui.keyDown('ctrl')
+                            pyautogui.press('l')
+                            pyautogui.keyUp('ctrl')
+                            time.sleep(2)
+                            pyautogui.typewrite(urkg)
+                            pyautogui.press('enter')
+                            time.sleep(5)
                             return True
                         
                         except pyautogui.ImageNotFoundException:
@@ -1309,14 +1419,56 @@ def facebook_login():
             print("No allow_button .")
 
 
+def redeem(driver):
+    try:    
+        query = {"type": "main"}
+        doc = collection.find_one(query)
+        mail = doc["withdraw_mail"]
+
+        # Locate all gift card names and values
+        card_names = driver.find_elements('span.card-name a')
+        gift_values = driver.find_elements('span.gift-value')
+        redeem_buttons = driver.find_elements('a.themeBtn.small.smallButton')
+
+        # Loop through gift values and card names to find the correct Airtm $0.01 Gift Card
+        for i, (card_name, gift_value) in enumerate(zip(card_names, gift_values)):
+            if "Airtm" in card_name.text and "$0.01 Gift Card For 15 Coins" in gift_value.text:
+                redeem_buttons[i].click()
+                print("Clicked the Airtm $0.01 Gift Card redeem button.")
+                
+                # Wait for the email input to appear
+                driver.wait_for_element('input#userEmail', timeout=10)
+                email_input = driver.find_element('input#userEmail')
+                email_input.send_keys(mail)
+                print(f"Filled the email input field with {mail}.")
+                time.sleep(1)
+
+                submit_button = driver.find_element('input#subGiftCard')
+                submit_button.click()
+                print("Clicked the submit button.")
+                time.sleep(3)
+                break  # Stop after finding and clicking the right button
+    except Exception as e:
+        print(e)
+
+
 def baymack_login(driver):
     coin_val = None
+    start_time = 1
     while not coin_val:
         coin_val = get_coin_value(driver)  # Assuming get_coin_value() is defined elsewhere
         if coin_val:
             print(f'Baymack Coins: {coin_val}')
             return coin_val
         else:
+            time.sleep(1)
+
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/fb_somewentwrong.png", region=(615, 434, 800, 500), confidence=0.90)
+                pyautogui.click(13, 81)
+
+            except Exception as e:
+                print(e)
             try:
                 print(driver.get_title())
                 # Look for '.quiz-btn' and click if visible
@@ -1329,14 +1481,24 @@ def baymack_login(driver):
                         print(".quiz-btn not found!")
                 else:
                     print("Element .quiz-btn is not visible!")
+                
+                time.sleep(1)
 
                 # Check for a button with specific class name and "Continue as" text
                 continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'span.x1lliihq.x6ikm8r.x10wlt62.x1n2onr6.xlyipyv.xuxw1ft')
                 for button in continue_buttons:
                     if 'Continue as' in button.text:
+                        time.sleep(1)
                         print(f"Button found: {button.text}, clicking...")
                         pyautogui.click(791, 737)
-                        #button.click()
+                        start_time += 1
+                        print(start_time)
+                        if start_time > 3:
+                            pyautogui.keyDown('ctrl')
+                            pyautogui.press('left')
+                            pyautogui.keyUp('ctrl')
+                            time.sleep(2)
+                            start_time  = 1
                         break
 
                 # Check if password input is found
@@ -1382,9 +1544,16 @@ def ipfixer():
     ip = 0
     preip = 0
     respo = 0
+    gg2344 = 0
     query = {"type": "main"}
     update = {"$set": {"response": 'Fixing...🟠'}}
     result = collection.update_one(query, update)
+    for i in CSB1_farms:
+        collection_csb = db[f'Farm{i}']
+        update = {"$set": {"request": 'ipfixer'}}
+        result = collection_csb.update_one(query, update)
+        print('Update Farm', i)
+
     while True:
         query = {"type": "main"}
         doc = collection.find_one(query)
@@ -1403,6 +1572,34 @@ def ipfixer():
                         print("No document found with the specified type.")
                 else:
                     print(f"repo {respo}")
+                    res_farms = []
+                    for frm in CSB1_farms:
+                        collection_csb = db[f'Farm{frm}']
+                        query = {"type": "main"}
+                        doc = collection_csb.find_one(query)
+                        res = doc["response"]
+                        req = doc["request"]
+                        if req == 'ipfixer' and 'Ready IP' in res:
+                            res_farms.append(res)
+                        elif req == 'mainscript' and 'Running' in res:
+                            res_farms.append(res)
+                        elif req == 'mainscript' and 'Ready IP' in res:
+                            res_farms.append(res)
+                        else:
+                            print('aiyo', i)
+                    if len(res_farms) == len(CSB1_farms):
+                        time.sleep(15)
+                        if gg2344 == 1:
+
+                            query = {"type": "main"}
+                            update = {"$set": {"request": 'mainscript'}}
+                            result = collection.update_one(query, update)
+                        else:
+                            gg2344 = 1
+                    else:
+                        gg2344 = 0
+                        
+
                 
             else:
                 respo = 0
@@ -1412,6 +1609,21 @@ def ipfixer():
         else:
             return True
 
+def get_coin_value_redeem(driver ):
+    try:
+        continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'h2.blnc')
+        for button in continue_buttons:
+            if 'You' in button.text:
+                print(f"Button found: {button.text}, clicking...")
+                gg = button.text
+                gg = int(float(gg.split()[2]))
+                return gg
+            else:
+                print(button.text)
+    except Exception as e:
+        pass
+    return 0
+                            
 def control_panel():
     try:
         query = {"type": "main"}
@@ -1427,12 +1639,15 @@ def control_panel():
         elif request == 'reset':
             print(request)
             return 3
-        elif request == 'kill':
+        elif request == 'withdrawsky':
             print(request)
             return 4
         elif request == 'pause':
             print(request)
             return 5
+        elif request == 'withdrawbay':
+            print(request)
+            return 6
         else:
             print('No function Found to Run')
     except Exception as e:
@@ -1440,13 +1655,81 @@ def control_panel():
     return None
 
 
-    #print(f'IP Matched {ip_address}')
+def solve_ocr_number(driver):
+    screenshot = pyautogui.screenshot()
+    left = 886
+    top = 666
+    right = 1035
+    bottom = 715
+    
+    # Ensure coordinates are valid
+    if left < right and top < bottom:
+        # Crop the image
+        cropped_image = screenshot.crop((left, top, right, bottom))
+        cropped_image.save("captcha.png")
+        print('Captcha image saved as captcha.png')
+    else:
+        print(f"Invalid coordinates: left={left}, top={top}, right={right}, bottom={bottom}")
+
+    # Assuming you have a function `captcha_to_text` that processes the image
+    captcha_ocr_list = captcha_to_text(["captcha.png"])
+    # Convert list to string, remove spaces
+    if captcha_ocr_list:
+        captcha_ocr = captcha_ocr_list[0].strip().replace(" ", "")
+    else:
+        captcha_ocr = ''  # Default to empty string if no result
+
+    return captcha_ocr
+
+
+def cloudflare(id,sb):
+    try:
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verify_cloudflare.png", region=(779, 651, 500, 500), confidence=0.95)
+        #pyautogui.click(x, y)
+        print("verify_cloudflare git Found")
+        pyautogui.click(1326, 164)
+        time.sleep(4)
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/logout_bay.png", region=(1260, 223, 700, 800), confidence=0.9)
+            pyautogui.click(x, y)
+            time.sleep(2)
+
+        except Exception as e:
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/logout_sky.png", region=(1250, 223, 700, 800), confidence=0.9)
+                pyautogui.click(x, y)
+                time.sleep(2)
+
+            except Exception as e:
+                print(e)
+                pyautogui.click(1335, 364)
+                time.sleep(2)
+
+        baymack_login(sb)
+    except Exception as e:
+        print(e)
+    page_title = sb.get_title().strip()
+    
+    if page_title == 'Just a moment...':
+        activate_window_by_id(id)
+        print('tru')
+        sb.uc_gui_handle_captcha()
+        sb.uc_gui_click_captcha()
+        sb.post_message("CouldFlare Found", duration=3)
+    elif page_title == 'www.skylom.com | 502: Bad gateway' or page_title == 'www.skylom.com | 503: Bad gateway':
+        print('www.skylom.com | 502: Bad gateway')
+        sb.refresh()
+
+
+
+
 baymack_coins = 0
 vnc_url = 0
 vnc_window = 0
 start_vnc = 0
+
 if run_sb1:
-    sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
+    sb1 = Driver(uc=True, headed= True, undetectable= True, undetected=True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
     sb1.maximize_window()
     id1 = get_current_window_id()
     url = "chrome://extensions/"
@@ -1462,8 +1745,9 @@ if run_sb1:
         print(f"Added new messages to existing document. Updated {result.modified_count} document(s).")
     else:
         print("No document found with the specified type.")
+    sb1.maximize_window()
 
-    if fresh:
+    if fresh >= 3:
         mysterium = install_extensions('mysterium')
         nopecha = install_extensions('nopecha')
         cookie = install_extensions('cookie')
@@ -1471,12 +1755,16 @@ if run_sb1:
         mfhelper = install_extensions('mfhelper')
         if fingerprint and mysterium and nopecha and cookie and mfhelper:
             print('All Extensions are installed..')
-            if pin_extensions():
-                print('All Extensions are pinned')
-                if mysterium_login():
-                    print('Mysterium Login Done...')
-                    facebook_login()
-                    sb1.maximize_window()
+
+    if fresh >= 2:
+        if pin_extensions():
+            print('All Extensions are pinned')
+            if mysterium_login(sb1):
+                print('Mysterium Login Done...')
+
+    if fresh >= 1:            
+        facebook_login()
+        sb1.maximize_window()
     
     current_window = sb1.current_window_handle
     all_windows = sb1.window_handles
@@ -1489,22 +1777,59 @@ if run_sb1:
     ipfixer()
     ip_required = fix_ip(sb1, server_name1)
     ip_address = get_ip(sb1)
-    sb1.open("https://www.skylom.com/videos")
-    skylom_window = sb1.current_window_handle
+
+    # Open Skylom and get the title
+    sb1.uc_open_with_tab("https://www.skylom.com/videos")
     ggt = sb1.get_title()
 
+    # If Skylom loads, perform the login
     if ggt == 'Skylom':
         time.sleep(1)
         baymack_login(sb1)
-    if with_baymack == True:
-        sb1.open_new_window()
-        sb1.open("https://www.baymack.com/videos")
-        baymack_window = sb1.current_window_handle
+
+    # Save Skylom window handle
+    skylom_window = sb1.current_window_handle
+    print(f"Skylom window handle: {skylom_window}")
+
+    # If Baymack is involved, open Zaptaps in a new window
+    if with_baymack:
+        sb1.open_new_window()  # Opens a new window
+        sb1.switch_to_newest_window()  # Switch to the newly opened window
+        sb1.uc_open_with_tab("https://www.zaptaps.com/videos")  # Load Zaptaps in the new window
+
+        # Get the title after opening Zaptaps
         ggt = sb1.get_title()
-        if ggt == 'Baymack':
+        print(f"Title after opening Zaptaps: {ggt}")
+        
+        # Retrieve all window handles and assign the non-matching one to Baymack
+        all_windows = sb1.window_handles
+        print(f"All windows: {all_windows}")
+
+        # Find and assign Baymack window (not matching Skylom window)
+        for window in all_windows:
+            if window != skylom_window:
+                baymack_window = window
+                break
+        
+        print(f"Baymack window handle: {baymack_window}")
+        
+        # Switch to Baymack window and perform login if Zaptaps page loaded
+        sb1.switch_to.window(baymack_window)
+        ggt = sb1.get_title()
+        print(f"Title of Baymack window: {ggt}")
+        
+        if ggt == 'Zaptaps':
             time.sleep(1)
-            baymack_coins =baymack_login(sb1)
-    print(sb1.get_title())
+            baymack_coins = baymack_login(sb1)
+            print(f'Done: {baymack_coins}')
+        
+        # Save the new Baymack window handle after login
+        baymack_window = sb1.current_window_handle
+        print(f"New Baymack window handle after login: {baymack_window}")
+
+    # Ensure you're switching back to the Baymack window manually
+    sb1.switch_to.window(baymack_window)
+    print(f'Switched to Baymack window: {baymack_window}, Skylom window: {skylom_window}')
 
 
 
@@ -1516,48 +1841,39 @@ if ip_address == ip_required:
         #import ocr_captcha
 
         def check_number_captcha_exists(sb, id):
-
             try:
-                # Attempt to find the number captcha image
-                try:
-                    if sb.is_element_visible("#numberCaptcha"):
-                        print("Number captcha exists.")
-                        sb.maximize_window()
-                        activate_window_by_id(id)
-                        #sb1.scroll_to_top()
-                        sb1.execute_script("window.scrollTo(0, 0);")
-                        #answer = ocr_captcha.solve_ocr()
-                        try:
-                            #sb.type("input.captcha[type='text']", str(answer))
-                            answer = sb.get_text("input.captcha[type='text']")
-                            str_value = str(answer)
-                            str_value.isdigit()
-                            if answer:
-                                if str_value.isdigit():
-                                    sb.click("input.btn.btn-info")
-                                else:
-                                    sb.type("input.captcha[type='text']", '1000')
-                                    print(f'answer contain string{answer} {str(str_value.isdigit())}')
+                # Check if the number captcha is present in the DOM
+                if sb.is_element_visible("textarea.captcha-textarea"):
+                    print("Number captcha exists.")
+                    sb.maximize_window()
+                    activate_window_by_id(id)
+                    captcha_element = sb.find_element("textarea.captcha-textarea")
+                    sb.execute_script("arguments[0].scrollIntoView(true);", captcha_element)
+                    answer = solve_ocr_number(sb)
+                    if answer == 'foo':
+                        time.sleep(1)
+                        answer = solve_ocr_number(sb)
+                    if answer == 'foo':
+                        time.sleep(1)
+                        answer = solve_ocr_number(sb)
+                    if answer == None:
+                        answer = solve_ocr_number(sb)
+                    sb.type("textarea.captcha-textarea", str(answer))
+                    time.sleep(1)
+                    # Click the submit button
+                    sb.click("a.themeBtn")
 
-                            print(f"Captcha filled and form submitted. {answer}")
-                            return True
-                        except Exception:
-                            if debug_mode:
-                                print(f"Error finding input box or submit button: {e}")
-                            return False
-                    else:
-                        if debug_mode:
-                            print("Number captcha exists but is not displayed.")
-                        return False
-                except Exception:
+                    return True
+                else:
                     if debug_mode:
-                        print("Number captcha does not exist.")
+                        print("Number captcha exists but is not displayed or visible.")
                     return False
 
             except Exception as e:
                 if debug_mode:
                     print(f"An unexpected error occurred: {e}")
                 return False
+
             
         def check_icon_captcha_exists(sb, id):
             try:
@@ -1574,7 +1890,7 @@ if ip_address == ip_required:
                         img_captcha.solve_image_skylom()
                         time.sleep(1)
                         return True
-                    if title == 'Baymack':
+                    if title == 'Zaptaps':
                         #sb1.scroll_to_top()
                         sb.execute_script("window.scrollTo(0, 0);")
                         # Assuming img_captcha.solve_icon_captcha() is defined elsewhere
@@ -1620,9 +1936,10 @@ if ip_address == ip_required:
                 print('mainscript is 1 ')
                 
 
-                cloudflare(id1,sb1)
+                
                 sb1.switch_to.default_content()
                 sb1.execute_script("window.scrollTo(0, 0);")
+                
                 play_button(sb1)
                 playback_check(sb1)
                 remove_pink(sb1)
@@ -1630,33 +1947,26 @@ if ip_address == ip_required:
                 if title == 'Skylom':
                     previous_duration = current_duration
                     current_duration = get_current_duration(sb=sb1)
-                    if current_duration == previous_duration and current_duration == 0 :
+                    if current_duration == previous_duration: #and current_duration == 0 :
+                        time.sleep(2)
                         print(f'reclick_waits:{reclick_waits}')
                         reclick_waits +=1
-                        if reclick_waits > 155:
+                        if reclick_waits > 70:
                             print(f'reopenning reclick {reclick_waits}')
-                            sb1.quit()
-                            sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
-                            id1 = get_current_window_id()
-                            sb1.maximize_window()
-                            ip_required = fix_ip(sb1, server_name1)
-                            ip_address = get_ip(sb1)
-                            sb1.open("https://www.skylom.com/videos")
-                            skylom_window = sb1.current_window_handle
-                            
-                            if with_baymack == True:
-                                sb1.open_new_window()
-                                sb1.open("https://www.baymack.com/videos")
-                                baymack_window = sb1.current_window_handle
+                            query = {"type": "main"}
+                            update = {"$set": {"request": 'reset'}}
+                            result = collection.update_one(query, update)
 
                             print(sb1.get_title())
-
                             reclick_waits = 0
-                        if reclick_waits > 50:
-                            reclick_button(sb1)
+
+
+                        if reclick_waits == 20 or reclick_waits == 25 or reclick_waits == 30 or reclick_waits == 50:
+                            #reclick_button(sb1)
                             pyautogui.click(990, 430)
+                            pyautogui.press('f5')
                             time.sleep(3)
-                            pyautogui.click(990, 430)
+
                     else:
                         reclick_waits = 1
                     
@@ -1747,41 +2057,36 @@ if ip_address == ip_required:
                             query = {"type": "main"}
                             update = {"$set": {"response": f'IP is not Matched{ip_address}, Required: {ip_required}'}}
                             result = collection.update_one(query, update)
-                            break
-                            ip_required = fix_ip(sb1, server_name1)
-                            ip_address = get_ip(sb1)
+                            update2 = {"$set": {"request": 'ipfixer'}}
+                            result = collection.update_one(query, update2)
+                            time.sleep(3)
+                            #break
+                            #ip_required = fix_ip(sb1, server_name1)
+                            #ip_address = get_ip(sb1)
 
                         
-                if title == 'Baymack':
+                if title == 'Zaptaps':
                     previous_duration_bay = current_duration_bay
                     current_duration_bay = get_current_duration(sb=sb1)
-                    if current_duration_bay == previous_duration_bay and current_duration_bay == 0 :
+                    if current_duration_bay == previous_duration_bay:
+                        time.sleep(2) #and current_duration_bay == 0 :
                         print(f'reclick_waits:{reclick_waits}')
                         reclick_waits +=1
-                        if reclick_waits > 155:
+                        if reclick_waits > 80:
                             print(f'reopenning reclick {reclick_waits}')
-                            sb1.quit()
-                            sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
-                            id1 = get_current_window_id()
-                            sb1.maximize_window()
-                            ip_required = fix_ip(sb1, server_name1)
-                            ip_address = get_ip(sb1)
-                            sb1.open("https://www.skylom.com/videos")
-                            skylom_window = sb1.current_window_handle
-                            
-                            if with_baymack == True:
-                                sb1.open_new_window()
-                                sb1.open("https://www.baymack.com/videos")
-                                baymack_window = sb1.current_window_handle
+                            query = {"type": "main"}
+                            update = {"$set": {"request": 'reset'}}
+                            result = collection.update_one(query, update)
 
                             print(sb1.get_title())
-
                             reclick_waits = 0
-                        if reclick_waits > 50:
-                            reclick_button(sb1)
+
+                        if reclick_waits == 20 or reclick_waits == 25 or reclick_waits == 30 or reclick_waits == 40:
+                            #reclick_button(sb1)
                             pyautogui.click(990, 430)
+                            pyautogui.press('f5')
                             time.sleep(3)
-                            pyautogui.click(990, 430)
+
                     else:
                         reclick_waits = 1
                     
@@ -1808,7 +2113,7 @@ if ip_address == ip_required:
                                     elif "Technology" in category_bay:
                                         category_bay = "Technology"
                                     title = sb1.get_title()
-                                    if title == 'Baymack':        
+                                    if title == 'Zaptaps':        
                                         #ip_address =get_ip(sb1)
                                         #proxycheck = get_proxycheck(sb1, ip_address, server_name= server_name1)
                                         coins = get_coin_value(sb1)
@@ -1841,7 +2146,7 @@ if ip_address == ip_required:
                         if ip_address == ip_address:
                                     if ip_address == ip_address:
                                         title = sb1.get_title()
-                                        if category_bay != 0 and title == 'Baymack':
+                                        if category_bay != 0 and title == 'Zaptaps':
                                             print('starting to answer category confirm')
                                             title = sb1.get_title()
                                             if title:
@@ -1874,22 +2179,27 @@ if ip_address == ip_required:
                             query = {"type": "main"}
                             update = {"$set": {"response": f'IP is not Matched{ip_address}, Required: {ip_required}'}}
                             result = collection.update_one(query, update)
-                            break
-                            ip_required = fix_ip(sb1, server_name1)
-                            ip_address = get_ip(sb1)
+
+                            update2 = {"$set": {"request": 'ipfixer'}}
+                            result = collection.update_one(query, update2)
+                            time.sleep(3)
+                            #break
+                            #ip_required = fix_ip(sb1, server_name1)
+                            #ip_address = get_ip(sb1)
 
 
                 check_icon_captcha_exists(sb1, id1)
+                check_number_captcha_exists(sb1, id1)
+                #cloudflare(id1,sb1)
+
                 if with_baymack == True:
                     title = sb1.get_title()
                     if title == 'Skylom':
                         sb1.switch_to.window(baymack_window)
-                    elif title == 'Baymack':
+                    elif title == 'Zaptaps':
                         sb1.switch_to.window(skylom_window)
                     else:
                         print(f'no title was sky or bay {title}')
-
-
 
 
             elif mainscript == 2:
@@ -1899,8 +2209,9 @@ if ip_address == ip_required:
 
             elif mainscript == 3:
                 sb1.quit()
-                time.sleep(1)
-                sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
+                time.sleep(2)
+
+                sb1 = Driver(uc=True, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
                 sb1.maximize_window()
                 id1 = get_current_window_id()
                 url = "chrome://extensions/"
@@ -1916,7 +2227,67 @@ if ip_address == ip_required:
                     print(f"Added new messages to existing document. Updated {result.modified_count} document(s).")
                 else:
                     print("No document found with the specified type.")
-                
+                sb1.maximize_window()
+                ipfixer()
+                ip_required = fix_ip(sb1, server_name1)
+                ip_address = get_ip(sb1)
+
+                # Open Skylom and get the title
+                sb1.uc_open_with_tab("https://www.skylom.com/videos")
+                ggt = sb1.get_title()
+
+                # If Skylom loads, perform the login
+                if ggt == 'Skylom':
+                    time.sleep(1)
+                    baymack_login(sb1)
+
+                # Save Skylom window handle
+                skylom_window = sb1.current_window_handle
+                print(f"Skylom window handle: {skylom_window}")
+
+                # If Baymack is involved, open Zaptaps in a new window
+                if with_baymack:
+                    sb1.open_new_window()  # Opens a new window
+                    sb1.switch_to_newest_window()  # Switch to the newly opened window
+                    sb1.uc_open_with_tab("https://www.zaptaps.com/videos")  # Load Zaptaps in the new window
+
+                    # Get the title after opening Zaptaps
+                    ggt = sb1.get_title()
+                    print(f"Title after opening Zaptaps: {ggt}")
+                    
+                    # Retrieve all window handles and assign the non-matching one to Baymack
+                    all_windows = sb1.window_handles
+                    print(f"All windows: {all_windows}")
+
+                    # Find and assign Baymack window (not matching Skylom window)
+                    for window in all_windows:
+                        if window != skylom_window:
+                            baymack_window = window
+                            break
+                    
+                    print(f"Baymack window handle: {baymack_window}")
+                    
+                    # Switch to Baymack window and perform login if Zaptaps page loaded
+                    sb1.switch_to.window(baymack_window)
+                    ggt = sb1.get_title()
+                    print(f"Title of Baymack window: {ggt}")
+                    
+                    if ggt == 'Zaptaps':
+                        time.sleep(1)
+                        baymack_coins = baymack_login(sb1)
+                        print(f'Done: {baymack_coins}')
+                    
+                    # Save the new Baymack window handle after login
+                    baymack_window = sb1.current_window_handle
+                    print(f"New Baymack window handle after login: {baymack_window}")
+
+                # Ensure you're switching back to the Baymack window manually
+                sb1.switch_to.window(baymack_window)
+                print(f'Switched to Baymack window: {baymack_window}, Skylom window: {skylom_window}')
+
+
+            elif mainscript == 4:
+                print('Withdraw Skylom..')
                 current_window = sb1.current_window_handle
                 all_windows = sb1.window_handles
                 for window in all_windows:
@@ -1924,24 +2295,57 @@ if ip_address == ip_required:
                         sb1.switch_to.window(window)
                         sb1.close()  # Close the tab
                 sb1.switch_to.window(current_window)
-                #time.sleep(1)
-                ipfixer()
-                ip_required = fix_ip(sb1, server_name1)
-                ip_address = get_ip(sb1)
-                sb1.open("https://www.skylom.com/videos")
-                skylom_window = sb1.current_window_handle
-                if with_baymack == True:
-                    sb1.open_new_window()
-                    sb1.open("https://www.baymack.com/videos")
-                    baymack_window = sb1.current_window_handle
-                print(sb1.get_title())
-
-            elif mainscript == 4:
-                sb1.quit()
+                sb1.uc_open_with_tab('https://www.skylom.com/prizes')
                 time.sleep(1)
-                print('Killing Everything....')
+                print(sb1.get_title())
+                cp = control_panel()
+                bcoins = get_coin_value_redeem(sb1)
+                print(sb1.get_title(), bcoins)
+                attemp = 1
+                while cp == 4:
+                    ip_address = get_ip(sb1)
+                    time.sleep(1)
+                    coins = get_coin_value_redeem(sb1)
+
+                    if coins > 20:
+                        if ip_address == ip_required:
+                            pyautogui.click(100,200)
+                            time.sleep(3)
+                            redeem(sb1)
+                            time.sleep(3)
+                        else:
+                            print('Ip is not matching')
+                            query = {"type": "main"}
+                            update = {"$set": {"response": f'IP is not Matched{ip_address}, Required: {ip_required}'}}
+                            result = collection.update_one(query, update)
+                            time.sleep(5)
+                    else:
+                        print('Low Coins >',{coins})
+                        time.sleep(3)
+
+                    query = {"type": "main"}
+                    update = {"$set": {"response": f'Coins{coins}, Attempts: {attemp}, Before: {bcoins} Withdraw : {int(bcoins) - int(coins)}'}}
+                    result = collection.update_one(query, update)
+                    attemp += 1
+                    cp = control_panel()
+                query = {"type": "main"}
+                update = {"$set": {"request": 'reset'}}
+                result = collection.update_one(query, update)
+                
+
+            elif mainscript == 6:
+                print('Withdraw Baymack..')
+                sb1.close()
+                sb1.close()
+                sb1.close()
                 break
 
+
+
             elif mainscript == 5:
+
                 print('Pausing....')
                 time.sleep(3)
+
+
+                #<span class="cb-lb-t">Verify you are human</span>

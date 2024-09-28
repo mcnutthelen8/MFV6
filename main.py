@@ -2190,7 +2190,7 @@ if ip_address == ip_required:
 
                 check_icon_captcha_exists(sb1, id1)
                 check_number_captcha_exists(sb1, id1)
-                cloudflare(id1,sb1)
+                #cloudflare(id1,sb1)
 
                 if with_baymack == True:
                     title = sb1.get_title()

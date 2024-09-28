@@ -1684,30 +1684,31 @@ def solve_ocr_number(driver):
 
 def cloudflare(id,sb):
     try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verify_cloudflare.png", region=(779, 651, 500, 500), confidence=0.95)
-        #pyautogui.click(x, y)
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(779, 651, 800, 500), confidence=0.95)
         print("verify_cloudflare git Found")
-        pyautogui.click(1326, 164)
-        time.sleep(4)
-        try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/logout_bay.png", region=(1260, 223, 700, 800), confidence=0.9)
-            pyautogui.click(x, y)
-            time.sleep(2)
-
-        except Exception as e:
+        gg = False
+        sb.disconnect() 
+        while gg == False:
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/logout_sky.png", region=(1250, 223, 700, 800), confidence=0.9)
-                pyautogui.click(x, y)
-                time.sleep(2)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(779, 651, 800, 500), confidence=0.95)
+                print("verify_cloudflare git Found")
+                time.sleep(1)
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", region=(779, 651, 500, 500), confidence=0.9)
+                    pyautogui.click(x, y)
+                    time.sleep(3)
 
+                except Exception as e:
+                    print(e)
             except Exception as e:
                 print(e)
-                pyautogui.click(1335, 364)
-                time.sleep(2)
-
-        baymack_login(sb)
+                gg = True
+                
+        sb.connect()
     except Exception as e:
         print(e)
+
+
     page_title = sb.get_title().strip()
     
     if page_title == 'Just a moment...':
@@ -1719,6 +1720,7 @@ def cloudflare(id,sb):
     elif page_title == 'www.skylom.com | 502: Bad gateway' or page_title == 'www.skylom.com | 503: Bad gateway':
         print('www.skylom.com | 502: Bad gateway')
         sb.refresh()
+
 
 
 
@@ -2190,16 +2192,37 @@ if ip_address == ip_required:
 
                 check_icon_captcha_exists(sb1, id1)
                 check_number_captcha_exists(sb1, id1)
-                #cloudflare(id1,sb1)
+                cloudflare(id1,sb1)
 
                 if with_baymack == True:
                     title = sb1.get_title()
                     if title == 'Skylom':
+
+                        skylom_window = sb1.current_window_handle
+                        all_windows = sb1.window_handles
+                        print(f"All windows: {all_windows}")
+
+                        # Find and assign Baymack window (not matching Skylom window)
+                        for window in all_windows:
+                            if window != skylom_window:
+                                baymack_window = window
+                                break
                         sb1.switch_to.window(baymack_window)
                     elif title == 'Zaptaps':
+
+                        baymack_window = sb1.current_window_handle
+                        all_windows = sb1.window_handles
+                        print(f"All windows: {all_windows}")
+
+                        # Find and assign Baymack window (not matching Skylom window)
+                        for window in all_windows:
+                            if window != baymack_window:
+                                skylom_window = window
+                                break
                         sb1.switch_to.window(skylom_window)
                     else:
                         print(f'no title was sky or bay {title}')
+
 
 
             elif mainscript == 2:

@@ -1426,31 +1426,24 @@ def redeem(driver):
         mail = doc["withdraw_mail"]
 
         # Locate all gift card names and values
-        card_names = driver.find_elements('span.card-name a')
-        gift_values = driver.find_elements('span.gift-value')
-        redeem_buttons = driver.find_elements('a.themeBtn.small.smallButton')
-
-        # Loop through gift values and card names to find the correct Airtm $0.01 Gift Card
-        for i, (card_name, gift_value) in enumerate(zip(card_names, gift_values)):
-            if "Airtm" in card_name.text and "$0.01 Gift Card For 15 Coins" in gift_value.text:
-                redeem_buttons[i].click()
-                print("Clicked the Airtm $0.01 Gift Card redeem button.")
-                
+        pyautogui.click(1166, 732)
+        try:
                 # Wait for the email input to appear
-                driver.wait_for_element('input#userEmail', timeout=10)
-                email_input = driver.find_element('input#userEmail')
-                email_input.send_keys(mail)
-                print(f"Filled the email input field with {mail}.")
-                time.sleep(1)
+            driver.wait_for_element('input#userEmail', timeout=5)
+            email_input = driver.find_element('input#userEmail')
+            email_input.send_keys(mail)
+            print(f"Filled the email input field with {mail}.")
+            time.sleep(1)
 
-                submit_button = driver.find_element('input#subGiftCard')
-                submit_button.click()
-                print("Clicked the submit button.")
-                time.sleep(3)
-                break  # Stop after finding and clicking the right button
+            submit_button = driver.find_element('input#subGiftCard')
+            submit_button.click()
+            print("Clicked the submit button.")
+            time.sleep(3)
+
+        except Exception as e:
+            print(e)
     except Exception as e:
         print(e)
-
 
 def baymack_login(driver):
     coin_val = None

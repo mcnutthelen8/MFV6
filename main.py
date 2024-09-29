@@ -295,6 +295,7 @@ def play_button(sb):
                 print(f'Issue{e}')
 
 
+
 def playback_check(sb):
     try: 
         # Locate the <a> element by its id and click it
@@ -2069,25 +2070,25 @@ if ip_address == ip_required:
                     current_duration_bay = get_current_duration(sb=sb1)
                     if current_duration_bay == previous_duration_bay:
                         time.sleep(2) #and current_duration_bay == 0 :
-                        print(f'reclick_waits:{reclick_waits}')
-                        reclick_waits +=1
-                        if reclick_waits > 80:
-                            print(f'reopenning reclick {reclick_waits}')
+                        print(f'reclick_waits2:{reclick_waits2}')
+                        reclick_waits2 +=1
+                        if reclick_waits2 > 80:
+                            print(f'reopenning reclick {reclick_waits2}')
                             query = {"type": "main"}
                             update = {"$set": {"request": 'reset'}}
                             result = collection.update_one(query, update)
 
                             print(sb1.get_title())
-                            reclick_waits = 0
+                            reclick_waits2 = 0
 
-                        if reclick_waits == 20 or reclick_waits == 25 or reclick_waits == 30 or reclick_waits == 40:
+                        if reclick_waits2 == 20 or reclick_waits2 == 25 or reclick_waits2 == 30 or reclick_waits2 == 40:
                             #reclick_button(sb1)
                             pyautogui.click(990, 430)
                             pyautogui.press('f5')
                             time.sleep(3)
 
                     else:
-                        reclick_waits = 1
+                        reclick_waits2 = 1
                     
                     if current_duration_bay:
                         if current_duration_bay >= 20:

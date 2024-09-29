@@ -293,23 +293,7 @@ def play_button(sb):
                         play_button.click()
             except Exception as e:
                 print(f'Issue{e}')
-    if current_duration == None:
-        play_button_selector = '.ytp-large-play-button'
-        try:
-            if sb.is_element_visible('iframe'):
-                sb.switch_to.frame(sb.find_element(By.TAG_NAME, "iframe"))
-                if sb.is_element_visible(play_button_selector):
-                    play_button_elements = sb.find_elements(By.CSS_SELECTOR, play_button_selector)
-                    print("Play button found")
-                    pyautogui.press('f5')
-                    sb.switch_to.default_content()
-            else:
-                print("iframe not found")
-                sb.switch_to.default_content()
-        except Exception as e:
-            if debug_mode:
-                print(f"An error occurred: {e}")
-            sb.switch_to.default_content()
+
 
 def playback_check(sb):
     try: 

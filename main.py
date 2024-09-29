@@ -100,6 +100,7 @@ elif farm_id == 7:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/garthswiff22.json'
     server_name1 = 'chile'
     CSB1_farms = [5, 6, 7, 8]
+
 elif farm_id == 8:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/captaingranda.json'
     server_name1 = 'croatia'
@@ -292,7 +293,23 @@ def play_button(sb):
                         play_button.click()
             except Exception as e:
                 print(f'Issue{e}')
-    
+    if current_duration == None:
+        play_button_selector = '.ytp-large-play-button'
+        try:
+            if sb.is_element_visible('iframe'):
+                sb.switch_to.frame(sb.find_element(By.TAG_NAME, "iframe"))
+                if sb.is_element_visible(play_button_selector):
+                    play_button_elements = sb.find_elements(By.CSS_SELECTOR, play_button_selector)
+                    print("Play button found")
+                    pyautogui.press('f5')
+                    sb.switch_to.default_content()
+            else:
+                print("iframe not found")
+                sb.switch_to.default_content()
+        except Exception as e:
+            if debug_mode:
+                print(f"An error occurred: {e}")
+            sb.switch_to.default_content()
 
 def playback_check(sb):
     try: 
@@ -549,6 +566,7 @@ def get_proxycheck(driver, ip, server_name):
     except requests.RequestException as e:
         print(f"Error retrieving IP address and proxy status: {e}")
         return None
+
 def get_ipscore(ip):
     url = f'https://ipqualityscore.com/api/json/ip/Bfg1dzryVqbpSwtbxgWb1uVkXLrr1Nzr/{ip}?strictness=3&allow_public_access_points=false'
     try:
@@ -581,10 +599,11 @@ def get_ipscore(ip):
         print(f"Bot Status: {bot_status}")
 
         # Ensure fraud_score is an integer for comparison
-        if vpn == False and tor == False and active_vpn == False and active_tor == False and fraud_score < 90:
-            return True
-        else:
-            return None
+        if fraud_score:
+            if vpn == False and tor == False and active_vpn == False and active_tor == False and fraud_score < 90:
+                return True
+            else:
+                return None
     except requests.RequestException as e:
         print(f"Error retrieving IP data: {e}")
         return None
@@ -1445,6 +1464,7 @@ def redeem(driver):
     except Exception as e:
         print(e)
 
+
 def baymack_login(driver):
     coin_val = None
     start_time = 1
@@ -1717,7 +1737,6 @@ def cloudflare(id,sb):
 
 
 
-
 baymack_coins = 0
 vnc_url = 0
 vnc_window = 0
@@ -1797,6 +1816,7 @@ if run_sb1:
         print(f"Title after opening Zaptaps: {ggt}")
         
         # Retrieve all window handles and assign the non-matching one to Baymack
+        #skylom_window = sb1.current_window_handle
         all_windows = sb1.window_handles
         print(f"All windows: {all_windows}")
 
@@ -2217,7 +2237,6 @@ if ip_address == ip_required:
                         print(f'no title was sky or bay {title}')
 
 
-
             elif mainscript == 2:
                 print('mainscript is 2 ')
                 ip_required = fix_ip(sb1, server_name1)
@@ -2351,9 +2370,7 @@ if ip_address == ip_required:
 
             elif mainscript == 6:
                 print('Withdraw Baymack..')
-                sb1.close()
-                sb1.close()
-                sb1.close()
+                sb1.quite()
                 break
 
 

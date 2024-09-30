@@ -68,21 +68,26 @@ facebook_cookies = '0'
 CSB1_farms = [1, 2, 3, 4]
 
 
+mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie.json"
 
 if farm_id == 1:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/alisabro.json'
+    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie.json"
     server_name1 = 'estonia'
     CSB1_farms = [1, 2, 3, 4]
 elif farm_id == 2:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/diludilakshi.json'
+    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie2.json"
     server_name1 = 'romania'
     CSB1_farms = [1, 2, 3, 4]
 elif farm_id == 3:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/williesmith.json'
+    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie3.json"
     server_name1 = 'poland'
     CSB1_farms = [1, 2, 3, 4]
 elif farm_id == 4:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
+    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie4.json"
     server_name1 = 'hungary'
     CSB1_farms = [1, 2, 3, 4]
 
@@ -97,7 +102,7 @@ elif farm_id == 6:
     server_name1 = 'belgium'
     CSB1_farms = [5, 6, 7, 8]
 elif farm_id == 7:
-    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/garthswiff22.json'
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/joeziega.json'
     server_name1 = 'chile'
     CSB1_farms = [5, 6, 7, 8]
 
@@ -183,7 +188,7 @@ def get_ip(driver):
         driver.open_new_window()
         try:
             #driver.switch_to.newest_window()
-            driver.open('https://api.ipify.org/')
+            driver.get('https://api.ipify.org/')
             ip_address = driver.get_text('body')
             print('IP =', ip_address)
             driver.close()
@@ -397,7 +402,7 @@ def get_video_infog(video_url, driver, timeout=8 ):
     driver.open_new_window()
     try:
         #driver.switch_to.newest_window()
-        driver.open(f'view-source:{video_url}')
+        driver.get(f'view-source:{video_url}')
         data = driver.get_text('body')
         html_content = str(data)
         soup = BeautifulSoup(html_content, 'html.parser')
@@ -499,7 +504,7 @@ def get_proxycheck_inbrowser(sb1, ip, server_name):
     try:
         original_window = sb1.current_window_handle
         sb1.open_new_window()
-        sb1.open(url)
+        sb1.get(url)
         ip_address_raw = sb1.get_text('body')
         #print("Raw Response:", ip_address_raw)
         ip_address = json.loads(ip_address_raw)
@@ -633,44 +638,6 @@ def mysterium_vpn_connect(server_name):
         print("No mysterium_icon_empty .")
     return None
 
-def mysterium_vpn_Recon_ip(server_name):
-    try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
-        pyautogui.click(x, y)
-        print("mysterium_icon_empty Found")
-        time.sleep(5)
-        try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/myserium_disconnect.png", region=(1325, 190, 800, 400), confidence=0.95)
-            #pyautogui.click(x, y)
-            print("myserium_disconnect Found")
-            unknown_con = True
-            while unknown_con == True:
-                try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/Unknown.png", region=(1345, 90, 800, 400), confidence=0.95)
-                    #pyautogui.click(x, y)
-                    print("Unkown Found")
-                    unknown_con = True
-                except pyautogui.ImageNotFoundException:
-                    print("No Unkown .")
-                    unknown_con = False
-            
-            try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/recon.png", region=(1345, 90, 800, 600), confidence=0.95)
-                pyautogui.click(x, y)
-                print("recon Found")
-                time.sleep(5)
-                return True
-            except pyautogui.ImageNotFoundException:
-                print("No recon .")
-
-        except pyautogui.ImageNotFoundException:
-            print("No myserium_disconnect .")
-
-
-
-    except pyautogui.ImageNotFoundException:
-        print("No mysterium_icon_empty .")
-    return None
 
 def fix_ip(drive, name):
     ipscore = None
@@ -683,12 +650,11 @@ def fix_ip(drive, name):
         if ipscore and proxycheck == 200:
             print(f'Good IP found: {ip_address}')
             return ip_address
-        elif proxycheck == 50 or proxycheck == 200:
-            print(f'Country ok /Bad IP detected: {ip_address}. Changing IP...')
-            mysterium_vpn_Recon_ip(name)
-            time.sleep(5)
         else:
             print(f'Bad IP detected: {ip_address}. Changing IP...')
+            query = {"type": "main"}
+            update = {"$set": {"response": f'Changed IP🔴: {ip_address}'}}
+            result = collection.update_one(query, update)
             mysterium_vpn_connect(name)
             print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
             time.sleep(5)
@@ -1132,7 +1098,7 @@ def mysterium_web_login(driver):
                 print("import_icon Found")
                 time.sleep(3)
                 for i in range(1,50):
-                    url = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie.json"
+                    url = mysterium_raw #"https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie.json"
                     response = requests.get(url)
                     if response.status_code == 200:
                         text_content = response.text
@@ -1587,7 +1553,7 @@ def ipfixer():
                             print('aiyo', i)
                     if len(res_farms) == len(CSB1_farms):
                         time.sleep(10)
-                        if gg2344 > 3:
+                        if gg2344 > 4:
 
                             query = {"type": "main"}
                             update = {"$set": {"request": 'mainscript'}}

@@ -1586,16 +1586,16 @@ def ipfixer():
                         else:
                             print('aiyo', i)
                     if len(res_farms) == len(CSB1_farms):
-                        time.sleep(15)
-                        if gg2344 == 1:
+                        time.sleep(10)
+                        if gg2344 > 3:
 
                             query = {"type": "main"}
                             update = {"$set": {"request": 'mainscript'}}
                             result = collection.update_one(query, update)
                         else:
-                            gg2344 = 1
+                            gg2344 += 1
                     else:
-                        gg2344 = 0
+                        gg2344 = 1
                         
 
                 

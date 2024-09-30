@@ -14,7 +14,7 @@
     },
     {
         "domain": ".facebook.com",
-        "expirationDate": 1735509614.277766,
+        "expirationDate": 1735509688.544218,
         "hostOnly": false,
         "httpOnly": true,
         "name": "fr",
@@ -23,11 +23,11 @@
         "secure": true,
         "session": false,
         "storeId": null,
-        "value": "02HXagvHl27ABxK14.AWXbHwGndq51BjM93GLJ-QEtcZw.Bm-x9u..AAA.0.0.Bm-x9u.AWWQWPhXtOg"
+        "value": "02HXagvHl27ABxK14.AWWIiFJVcYKCZNQGAbdewPxZs-0.Bm-x9u..AAA.0.0.Bm-x-4.AWVWEy0DBR0"
     },
     {
         "domain": ".facebook.com",
-        "expirationDate": 1759269540.524363,
+        "expirationDate": 1759269688.052048,
         "hostOnly": false,
         "httpOnly": true,
         "name": "xs",
@@ -36,11 +36,11 @@
         "secure": true,
         "session": false,
         "storeId": null,
-        "value": "22%3AE9u3pMUWl2AY8A%3A2%3A1727733306%3A-1%3A-1%3A%3AAcVxaj7HtsYOt1CuKoHLQ9qEvpbnCa5Fn-KRKZwLWw"
+        "value": "2%3A7o7Lu8Tk_G5VwQ%3A2%3A1727733687%3A-1%3A-1"
     },
     {
         "domain": ".facebook.com",
-        "expirationDate": 1759269540.524288,
+        "expirationDate": 1759269688.050614,
         "hostOnly": false,
         "httpOnly": false,
         "name": "c_user",
@@ -61,7 +61,7 @@
         "secure": true,
         "session": true,
         "storeId": null,
-        "value": "C%7B%22t3%22%3A%5B%5D%2C%22utc3%22%3A1727733619895%2C%22v%22%3A1%7D"
+        "value": "C%7B%22t3%22%3A%5B%5D%2C%22utc3%22%3A1727733691717%2C%22v%22%3A1%7D"
     },
     {
         "domain": ".facebook.com",
@@ -78,7 +78,7 @@
     },
     {
         "domain": ".facebook.com",
-        "expirationDate": 1762293308.969544,
+        "expirationDate": 1762293688.051918,
         "hostOnly": false,
         "httpOnly": true,
         "name": "sb",
@@ -91,7 +91,7 @@
     },
     {
         "domain": ".facebook.com",
-        "expirationDate": 1728338419,
+        "expirationDate": 1728338491,
         "hostOnly": false,
         "httpOnly": false,
         "name": "wd",

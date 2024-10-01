@@ -66,49 +66,57 @@ facebook_cookies = '0'
 
 
 CSB1_farms = [1, 2, 3, 4]
-
+fb_pass = 'ashen1997'
 
 mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie.json"
 
 if farm_id == 1:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/alisabro.json'
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie.json"
+    fb_pass = 'ashen1997'
     server_name1 = 'estonia'
     CSB1_farms = [1, 2, 3, 4]
 elif farm_id == 2:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/diludilakshi.json'
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie2.json"
+    fb_pass = 'ashen1997'
     server_name1 = 'romania'
     CSB1_farms = [1, 2, 3, 4]
 elif farm_id == 3:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/williesmith.json'
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie3.json"
+    fb_pass = 'ashen1997'
     server_name1 = 'poland'
     CSB1_farms = [1, 2, 3, 4]
 elif farm_id == 4:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie4.json"
+    fb_pass = 'ashen1997'
     server_name1 = 'hungary'
     CSB1_farms = [1, 2, 3, 4]
 
 ################2d######################
 elif farm_id == 5:
-    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/andrewperera.json'
-    server_name1 = 'belarus'
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/khabibmakanzie.json'
+    fb_pass = 'uwuinsta2005'
+    server_name1 = 'thailand'
     CSB1_farms = [5, 6, 7, 8]
 
 elif farm_id == 6:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/andyrogers.json'
     server_name1 = 'belgium'
+    fb_pass = 'ashen1997'
     CSB1_farms = [5, 6, 7, 8]
 elif farm_id == 7:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/joeziega.json'
-    server_name1 = 'chile'
+    server_name1 = 'egypt'
+    fb_pass = 'ashen1997'
     CSB1_farms = [5, 6, 7, 8]
 
 elif farm_id == 8:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/captaingranda.json'
     server_name1 = 'croatia'
+    fb_pass = 'ashen1997'
     CSB1_farms = [5, 6, 7, 8]
 
 
@@ -163,7 +171,7 @@ def insert_data(ip, amount1, amount2):
 
     query = {"type": "main"}
     sample_document = {
-        "Skylom": amount1,
+        "Popmack": amount1,
         "Baymack": amount2,
         "Status": now,
         "Ip": ip,
@@ -282,7 +290,7 @@ def play_button(sb):
             if debug_mode:
                 print(f"An error occurred: {e}")
             sb.switch_to.default_content()
-    elif current_duration == 1 and title1 == 'Skylom':
+    elif current_duration == 1 and title1 == 'Popmack':
         time.sleep(2)
         current_duration = get_current_duration(sb)
         if current_duration == 1:
@@ -967,7 +975,7 @@ def solve_image_category(drive, category, window):
     titile =drive.get_title()
     print(titile)
     time.sleep(1)
-    if titile == 'Skylom':
+    if titile == 'Popmack':
         #base = print_base64_images(drive)
         base = are_images_loaded(drive)
         if base == True:
@@ -994,7 +1002,7 @@ def solve_image_category(drive, category, window):
                                 position = captcha_ocr.index(similar_word)
                             print(f"The most similar word to '{category}' at index {position} : {fixword_list}")
                             title = drive.get_title()
-                            if title == 'Skylom':
+                            if title == 'Popmack':
                                 print(title,position)
                                 if position == 0:
                                     pyautogui.click(749, 803)
@@ -1469,7 +1477,7 @@ def baymack_login(driver):
                 if driver.is_element_visible('input[name="pass"][type="password"]') and driver.get_title() == 'Facebook':
                     password_field = driver.find_element(By.CSS_SELECTOR, 'input[name="pass"][type="password"]')
                     print("Password field found, typing password...")
-                    password_field.send_keys('ashen1997')
+                    password_field.send_keys(fb_pass)
                     
                     # Look for "Continue" button after entering the password
                     continue_button = driver.find_element(By.CSS_SELECTOR, 'input[type="submit"][value="Continue"][data-testid="sec_ac_button"]')
@@ -1681,8 +1689,8 @@ def cloudflare(id,sb):
         sb.uc_gui_handle_captcha()
         sb.uc_gui_click_captcha()
         sb.post_message("CouldFlare Found", duration=3)
-    elif page_title == 'www.skylom.com | 502: Bad gateway' or page_title == 'www.skylom.com | 503: Bad gateway':
-        print('www.skylom.com | 502: Bad gateway')
+    elif page_title == 'www.popmack.com | 502: Bad gateway' or page_title == 'www.popmack.com | 503: Bad gateway':
+        print('www.popmack.com | 502: Bad gateway')
         sb.refresh()
 
 
@@ -1743,18 +1751,18 @@ if run_sb1:
     ip_required = fix_ip(sb1, server_name1)
     ip_address = get_ip(sb1)
 
-    # Open Skylom and get the title
-    sb1.uc_open_with_tab("https://www.skylom.com/videos")
+    # Open Popmack and get the title
+    sb1.uc_open_with_tab("https://www.popmack.com/videos")
     ggt = sb1.get_title()
 
-    # If Skylom loads, perform the login
-    if ggt == 'Skylom':
+    # If Popmack loads, perform the login
+    if ggt == 'Popmack':
         time.sleep(1)
         baymack_login(sb1)
 
-    # Save Skylom window handle
+    # Save Popmack window handle
     skylom_window = sb1.current_window_handle
-    print(f"Skylom window handle: {skylom_window}")
+    print(f"Popmack window handle: {skylom_window}")
 
     # If Baymack is involved, open Zaptaps in a new window
     if with_baymack:
@@ -1771,7 +1779,7 @@ if run_sb1:
         all_windows = sb1.window_handles
         print(f"All windows: {all_windows}")
 
-        # Find and assign Baymack window (not matching Skylom window)
+        # Find and assign Baymack window (not matching Popmack window)
         for window in all_windows:
             if window != skylom_window:
                 baymack_window = window
@@ -1795,7 +1803,7 @@ if run_sb1:
 
     # Ensure you're switching back to the Baymack window manually
     sb1.switch_to.window(baymack_window)
-    print(f'Switched to Baymack window: {baymack_window}, Skylom window: {skylom_window}')
+    print(f'Switched to Baymack window: {baymack_window}, Popmack window: {skylom_window}')
 
 
 
@@ -1849,7 +1857,7 @@ if ip_address == ip_required:
                     sb.maximize_window()
                     activate_window_by_id(id)
                     title =  sb.get_title()
-                    if title == 'Skylom':
+                    if title == 'Popmack':
                         #sb1.scroll_to_top()
                         sb.execute_script("window.scrollTo(0, 0);")
                         # Assuming img_captcha.solve_icon_captcha() is defined elsewhere
@@ -1910,7 +1918,7 @@ if ip_address == ip_required:
                 playback_check(sb1)
                 remove_pink(sb1)
                 title = sb1.get_title()
-                if title == 'Skylom':
+                if title == 'Popmack':
                     previous_duration = current_duration
                     current_duration = get_current_duration(sb=sb1)
                     if current_duration == previous_duration: #and current_duration == 0 :
@@ -1959,7 +1967,7 @@ if ip_address == ip_required:
                                     elif "Technology" in category:
                                         category = "Technology"
                                     title = sb1.get_title()
-                                    if title == 'Skylom':        
+                                    if title == 'Popmack':        
                                         ip_address =get_ip(sb1)
                                         proxycheck = get_proxycheck(sb1, ip_address, server_name= server_name1)
                                         coins = get_coin_value(sb1)
@@ -1993,7 +2001,7 @@ if ip_address == ip_required:
                                     if ip_address == ip_required:
                                         title = sb1.get_title()
                                         print('starting to answer category')
-                                        if category != 0 and title == 'Skylom':
+                                        if category != 0 and title == 'Popmack':
                                             print(title)
                                             solve_image_category(sb1, category, id1)
 
@@ -2160,13 +2168,13 @@ if ip_address == ip_required:
 
                 if with_baymack == True:
                     title = sb1.get_title()
-                    if title == 'Skylom':
+                    if title == 'Popmack':
 
                         skylom_window = sb1.current_window_handle
                         all_windows = sb1.window_handles
                         print(f"All windows: {all_windows}")
 
-                        # Find and assign Baymack window (not matching Skylom window)
+                        # Find and assign Baymack window (not matching Popmack window)
                         for window in all_windows:
                             if window != skylom_window:
                                 baymack_window = window
@@ -2178,7 +2186,7 @@ if ip_address == ip_required:
                         all_windows = sb1.window_handles
                         print(f"All windows: {all_windows}")
 
-                        # Find and assign Baymack window (not matching Skylom window)
+                        # Find and assign Baymack window (not matching Popmack window)
                         for window in all_windows:
                             if window != baymack_window:
                                 skylom_window = window
@@ -2218,18 +2226,18 @@ if ip_address == ip_required:
                 ip_required = fix_ip(sb1, server_name1)
                 ip_address = get_ip(sb1)
 
-                # Open Skylom and get the title
-                sb1.uc_open_with_tab("https://www.skylom.com/videos")
+                # Open Popmack and get the title
+                sb1.uc_open_with_tab("https://www.popmack.com/videos")
                 ggt = sb1.get_title()
 
-                # If Skylom loads, perform the login
-                if ggt == 'Skylom':
+                # If Popmack loads, perform the login
+                if ggt == 'Popmack':
                     time.sleep(1)
                     baymack_login(sb1)
 
-                # Save Skylom window handle
+                # Save Popmack window handle
                 skylom_window = sb1.current_window_handle
-                print(f"Skylom window handle: {skylom_window}")
+                print(f"Popmack window handle: {skylom_window}")
 
                 # If Baymack is involved, open Zaptaps in a new window
                 if with_baymack:
@@ -2245,7 +2253,7 @@ if ip_address == ip_required:
                     all_windows = sb1.window_handles
                     print(f"All windows: {all_windows}")
 
-                    # Find and assign Baymack window (not matching Skylom window)
+                    # Find and assign Baymack window (not matching Popmack window)
                     for window in all_windows:
                         if window != skylom_window:
                             baymack_window = window
@@ -2269,11 +2277,11 @@ if ip_address == ip_required:
 
                 # Ensure you're switching back to the Baymack window manually
                 sb1.switch_to.window(baymack_window)
-                print(f'Switched to Baymack window: {baymack_window}, Skylom window: {skylom_window}')
+                print(f'Switched to Baymack window: {baymack_window}, Popmack window: {skylom_window}')
 
 
             elif mainscript == 4:
-                print('Withdraw Skylom..')
+                print('Withdraw Popmack..')
                 current_window = sb1.current_window_handle
                 all_windows = sb1.window_handles
                 for window in all_windows:
@@ -2281,7 +2289,7 @@ if ip_address == ip_required:
                         sb1.switch_to.window(window)
                         sb1.close()  # Close the tab
                 sb1.switch_to.window(current_window)
-                sb1.uc_open_with_tab('https://www.skylom.com/prizes')
+                sb1.uc_open_with_tab('https://www.popmack.com/prizes')
                 time.sleep(1)
                 print(sb1.get_title())
                 cp = control_panel()

@@ -6,7 +6,7 @@ function getCurrentURL() {
 // Function to check if we are on a restricted page
 function isOnRestrictedPage() {
     const restrictedUrls = [
-        'https://www.skylom.com/prizes',
+        'https://www.popmack.com/prizes',
         'https://www.zaptaps.com/prizes'
     ];
     const currentURL = getCurrentURL();

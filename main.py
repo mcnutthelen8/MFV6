@@ -171,7 +171,7 @@ def insert_data(ip, amount1, amount2):
 
     query = {"type": "main"}
     sample_document = {
-        "Popmack": amount1,
+        "Skylom": amount1,
         "Baymack": amount2,
         "Status": now,
         "Ip": ip,

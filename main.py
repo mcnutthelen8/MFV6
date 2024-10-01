@@ -2329,7 +2329,10 @@ if ip_address == ip_required:
 
             elif mainscript == 6:
                 print('Withdraw Baymack..')
-                sb1.quite()
+                all_windows = sb1.window_handles
+                for window in all_windows:
+                    sb1.switch_to.window(window)
+                    sb1.close()  # Close the tab
                 break
 
 

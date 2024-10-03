@@ -912,10 +912,14 @@ def get_category_images():
 def get_category_images_baymack():
         # Define regions and paths
     regions = [
-        (610,705, 300, 50),  # Example region 1 (x, y, width, height)
-        (1011,705, 300, 50),  # Example region 2
-        (610,767, 300, 50),  # Example region 3
-        (1011,767, 300, 50)   # Example region 4
+        #(610,705, 300, 50),  # Example region 1 (x, y, width, height)
+        #(1011,705, 300, 50),  # Example region 2
+        #(610,767, 300, 50),  # Example region 3
+        #(1011,767, 300, 50)   # Example region 4
+        (591, 734, 300, 50),  # Example region 1 (x, y, width, height)
+        (1016, 735, 300, 50),  # Example region 2
+        (592, 794, 300, 50),  # Example region 3
+        (1015, 793, 300, 50)   # Example region 4
     ]
     
     output_paths = [
@@ -1056,13 +1060,13 @@ def solve_image_category(drive, category, window):
                             if title == 'Zaptaps':
                                 print(title,position)
                                 if position == 0:
-                                    pyautogui.click(749, 743)
+                                    pyautogui.click(749, 753)
                                 if position == 1:
-                                    pyautogui.click(1100, 743)
+                                    pyautogui.click(1100, 753)
                                 if position == 2:
-                                    pyautogui.click(777, 788)
+                                    pyautogui.click(777, 828)
                                 if position == 3:
-                                    pyautogui.click(1094, 788)
+                                    pyautogui.click(1094, 828)
 
                                 end_time = time.time()
                                 print(f"Completed in {end_time - start_time} seconds")

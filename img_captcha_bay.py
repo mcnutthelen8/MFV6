@@ -27,9 +27,18 @@ def get_image_answer():
 
     def capture_screenshots(regions):
         # Create a subfolder named "cropped" if it doesn't exist
+        cropped_folder = "cropped"
         if not os.path.exists("cropped"):
             os.makedirs("cropped")
-        
+        else:
+            # Delete any existing images or files in the folder
+            for file in os.listdir(cropped_folder):
+                file_path = os.path.join(cropped_folder, file)
+                try:
+                    if os.path.isfile(file_path):  # Check if it's a file
+                        os.remove(file_path)  # Remove the file
+                except Exception as e:
+                    print(f"Error deleting {file_path}: {e}")
         for i, region in enumerate(regions):
             x, y, width, height = region
             # Take a screenshot of the specified region

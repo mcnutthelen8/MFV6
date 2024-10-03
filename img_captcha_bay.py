@@ -16,7 +16,13 @@ def get_image_answer():
         (872, 709, 56, 60),
         (931, 709, 56, 60),
         (990, 709, 56, 60),
-        (1049, 709, 56, 60)
+        (1049, 709, 56, 60),
+        ###########################
+        (806, 737, 56, 60),
+        (865, 737, 56, 60),
+        (924, 737, 56, 60),
+        (982, 737, 56, 60),
+        (1042, 737, 56, 60)
     ]
 
     def capture_screenshots(regions):
@@ -106,22 +112,22 @@ def solve_image_skylom():
     answer = get_image_answer()
     print(answer, "is less similar image in here")
     if answer == "0.png":
-        pyautogui.click(835 ,729)
+        pyautogui.click(835 ,759)
         print(answer,"Clicked...")
     elif answer == "1.png":
-        pyautogui.click(895 ,729)
+        pyautogui.click(885 ,759)
         print(answer,"Clicked...")
     elif answer == "2.png":
-        pyautogui.click(955 ,729)
+        pyautogui.click(955 ,759)
         print(answer,"Clicked...")
     elif answer == "3.png":
-        pyautogui.click(1015 ,729)
+        pyautogui.click(1009 ,759)
         print(answer,"Clicked...")
     elif answer == "4.png":
-        pyautogui.click(1075 ,729)
+        pyautogui.click(1070 ,759)
         print(answer,"Clicked...")       
     else:
         print("No image number found..",answer)
-        pyautogui.click(835 ,729)
+        pyautogui.click(835 ,759)
 
 #get_image_answer()

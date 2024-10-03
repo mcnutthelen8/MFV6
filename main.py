@@ -1656,17 +1656,17 @@ def solve_ocr_number(driver):
 
 def cloudflare(id,sb):
     try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(779, 651, 800, 500), confidence=0.95)
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(489, 186, 909, 791), confidence=0.95)
         print("verify_cloudflare git Found")
         gg = False
         sb.disconnect() 
         while gg == False:
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(779, 651, 800, 500), confidence=0.95)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(489, 186, 909, 791), confidence=0.95)
                 print("verify_cloudflare git Found")
                 time.sleep(1)
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", region=(779, 651, 500, 500), confidence=0.9)
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", region=(489, 186, 909, 791), confidence=0.9)
                     pyautogui.click(x, y)
                     time.sleep(3)
 
@@ -1918,9 +1918,12 @@ if ip_address == ip_required:
                 playback_check(sb1)
                 remove_pink(sb1)
                 title = sb1.get_title()
+                
                 if title == 'Popmack':
                     previous_duration = current_duration
                     current_duration = get_current_duration(sb=sb1)
+
+
                     if current_duration == previous_duration: #and current_duration == 0 :
                         time.sleep(2)
                         print(f'reclick_waits:{reclick_waits}')
@@ -1992,7 +1995,8 @@ if ip_address == ip_required:
                                 print(f"Video duration: {current_duration} and Category is {category}", end="\r")
                                 #print('Video is Fresh')
 
-
+                    else:
+                        cloudflare(id1,sb1)
 
                     if check_category_question(sb1) == True:
                         print('Getting IP at 10 sec..')
@@ -2112,7 +2116,8 @@ if ip_address == ip_required:
                                 print(f"Video duration_bay: {current_duration_bay} and Category is {category_bay}", end="\r")
                                 #print('Video is Fresh')
 
-
+                    else:
+                        cloudflare(id1,sb1)
 
                     if check_category_question(sb1) == True:
                         print('Getting IP at 10 sec..')
@@ -2164,7 +2169,7 @@ if ip_address == ip_required:
 
                 check_icon_captcha_exists(sb1, id1)
                 check_number_captcha_exists(sb1, id1)
-                cloudflare(id1,sb1)
+                
 
                 if with_baymack == True:
                     title = sb1.get_title()

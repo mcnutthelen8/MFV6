@@ -892,10 +892,14 @@ def are_images_loaded(sb):
 def get_category_images():
     # Define regions and paths
     regions = [
-        (622, 766, 320, 85),  # Example region 1 (x, y, width, height)
-        (960, 766, 320, 85),  # Example region 2
-        (622, 862, 320, 85),  # Example region 3
-        (960, 862, 320, 85)   # Example region 4
+        #(622, 766, 320, 85),  # Example region 1 (x, y, width, height)
+        #(960, 766, 320, 85),  # Example region 2
+        #(622, 862, 320, 85),  # Example region 3
+        #(960, 862, 320, 85)   # Example region 4
+        (639,777, 320, 85),  # Example region 1 (x, y, width, height)
+        (969,777, 320, 85),  # Example region 2
+        (639,868, 320, 85),  # Example region 1 (x, y, width, height)
+        (969,868, 320, 85),
     ]
     
     output_paths = [

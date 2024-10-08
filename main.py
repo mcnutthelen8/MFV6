@@ -1849,7 +1849,15 @@ def get_and_click_category(category, sb):
             print(f"An error occurred: {str(e)}")
         return False
 
-
+def new_numbercaptcha(sb):
+    try:
+        if sb.is_element_visible(".text-captcha-question"):
+            print('textCaptcha...')
+            question = sb.get_text('.text-captcha-question')
+            print(f'textCaptcha...{question}')
+            
+    except Exception as e:
+        print(e)
 
 
 baymack_coins = 0
@@ -2326,7 +2334,7 @@ if ip_address == ip_required:
 
 
                 check_icon_captcha_exists(sb1, id1)
-                check_number_captcha_exists(sb1, id1)
+                new_numbercaptcha(sb1)
                 
 
                 if with_baymack == True:

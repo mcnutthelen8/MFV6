@@ -1664,15 +1664,16 @@ def solve_ocr_number(driver):
 
 def cloudflare(sb):
     try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(489, 186, 909, 791), confidence=0.95)
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman.png", region=(489, 186, 909, 791), confidence=0.95)
         print("verify_cloudflare git Found")
         gg = False
         sb.disconnect() 
         while gg == False:
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(489, 186, 909, 791), confidence=0.95)
-                print("verify_cloudflare git Found")
                 time.sleep(1)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman.png", region=(489, 186, 909, 791), confidence=0.95)
+                print("verify_cloudflare git Found")
+
                 try:
                     x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", region=(489, 186, 909, 791), confidence=0.9)
                     pyautogui.click(x, y)
@@ -1682,21 +1683,7 @@ def cloudflare(sb):
                     print(e)
             except Exception as e:
                 print(e)
-                time.sleep(3)
-                try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(489, 186, 909, 791), confidence=0.95)
-                    print("verify_cloudflare git Found")
-                    #time.sleep(1)
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", region=(489, 186, 909, 791), confidence=0.9)
-                        pyautogui.click(x, y)
-                        time.sleep(3)
-
-                    except Exception as e:
-                        print(e)
-                except Exception as e:
-                    print(e)
-                    gg = True
+                gg = True
                 
         sb.connect()
     except Exception as e:
@@ -1739,7 +1726,7 @@ def click_random_category(sb):
         return False
     
 
-def get_and_click_category(category, sb):
+def get_and_click_category_sky(category, sb):
     try:
         # Wait for the category buttons to be present
         category_buttons = WebDriverWait(sb, 1).until(
@@ -1751,95 +1738,81 @@ def get_and_click_category(category, sb):
             print(button.text)
         
         # Find and click the assigned category
+        category_lower = category.lower()
         for button in category_buttons:
             button_text = button.text.strip().lower()
-            category_lower = category.lower()
             
             # Check for partial match
             if category_lower in button_text or button_text in category_lower:
                 print(f"Found and clicked category: {button.text}")
                 button.click()
-                time.sleep(3)
+                time.sleep(5)
                 cloudflare(sb)
                 return True
-            
-        category = 'People'
+        
+        # List of fallback categories in case the provided one is not found
+        fallback_categories = ['People', 'Music', 'Entertainment', 'Technology', 'Science']
+        for fallback_category in fallback_categories:
+            for button in category_buttons:
+                button_text = button.text.strip().lower()
+                fallback_category_lower = fallback_category.lower()
+                
+                # Check for partial match with fallback categories
+                if fallback_category_lower in button_text or button_text in fallback_category_lower:
+                    print(f"Found and clicked fallback category: {button.text}")
+                    button.click()
+                    time.sleep(5)
+                    cloudflare(sb)
+                    return True
+        
+        click_random_category(sb)
+        if debug_mode:
+            print(f"Category '{category}' not found")
+        return False
+    except Exception as e:
+        if debug_mode:
+            print(f"An error occurred: {str(e)}")
+        return False
+
+def get_and_click_category_bay(category, sb):
+    try:
+        # Wait for the category buttons to be present
+        category_buttons = WebDriverWait(sb, 1).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'ul.link-btn-list.video-categ-options li a span'))
+        )
+        
+        # Print the category buttons
+        for button in category_buttons:
+            print(button.text)
+        
+        # Find and click the assigned category
+        category_lower = category.lower()
         for button in category_buttons:
             button_text = button.text.strip().lower()
-            category_lower = category.lower()
             
             # Check for partial match
             if category_lower in button_text or button_text in category_lower:
                 print(f"Found and clicked category: {button.text}")
                 button.click()
-                time.sleep(3)
+                time.sleep(5)
                 cloudflare(sb)
                 return True
-            
-        category = 'Music'
-        for button in category_buttons:
-            button_text = button.text.strip().lower()
-            category_lower = category.lower()
-            
-            # Check for partial match
-            if category_lower in button_text or button_text in category_lower:
-                print(f"Found and clicked category: {button.text}")
-                button.click()
-                time.sleep(3)
-                cloudflare(sb)
-                return True
-            
-        category = 'Entertainment'
-        for button in category_buttons:
-            button_text = button.text.strip().lower()
-            category_lower = category.lower()
-            
-            # Check for partial match
-            if category_lower in button_text or button_text in category_lower:
-                print(f"Found and clicked category: {button.text}")
-                button.click()
-                time.sleep(3)
-                cloudflare(sb)
-                return True
-            
-        category = 'Technology'
-        for button in category_buttons:
-            button_text = button.text.strip().lower()
-            category_lower = category.lower()
-            
-            # Check for partial match
-            if category_lower in button_text or button_text in category_lower:
-                print(f"Found and clicked category: {button.text}")
-                button.click()
-                time.sleep(3)
-                cloudflare(sb)
-                return True
-            
-        category = 'Sci'
-        for button in category_buttons:
-            button_text = button.text.strip().lower()
-            category_lower = category.lower()
-            
-            # Check for partial match
-            if category_lower in button_text or button_text in category_lower:
-                print(f"Found and clicked category: {button.text}")
-                button.click()
-                time.sleep(3)
-                cloudflare(sb)
-                return True
-        category = 'science'
-        for button in category_buttons:
-            button_text = button.text.strip().lower()
-            category_lower = category.lower()
-            
-            # Check for partial match
-            if category_lower in button_text or button_text in category_lower:
-                print(f"Found and clicked category: {button.text}")
-                button.click()
-                time.sleep(3)
-                cloudflare(sb)
-                return True
-            
+        
+        # List of fallback categories in case the provided one is not found
+        fallback_categories = ['People', 'Music', 'Entertainment', 'Technology', 'Science']
+        for fallback_category in fallback_categories:
+            for button in category_buttons:
+                button_text = button.text.strip().lower()
+                fallback_category_lower = fallback_category.lower()
+                
+                # Check for partial match with fallback categories
+                if fallback_category_lower in button_text or button_text in fallback_category_lower:
+                    print(f"Found and clicked fallback category: {button.text}")
+                    button.click()
+                    time.sleep(5)
+                    cloudflare(sb)
+                    return True
+        
         click_random_category(sb)
         if debug_mode:
             print(f"Category '{category}' not found")
@@ -1855,7 +1828,44 @@ def new_numbercaptcha(sb):
             print('textCaptcha...')
             question = sb.get_text('.text-captcha-question')
             print(f'textCaptcha...{question}')
-            
+            if 'largest number' in question:
+                capture_and_crop_regions([(800, 758, 303, 61)], 'captcha.png')
+                result = ocr.ocr('captcha.png')
+                result = ''.join([item[1][0] for item in result[0]])
+                result = ''.join(filter(str.isdigit, str(result)))
+                if result:
+                    if len(result) == 9:
+                        number_list = [int(result[i:i+3]) for i in range(0, 9, 3)]
+                        
+                        # Step 4: Find the largest and smallest numbers
+                        largest = max(number_list)
+                        #smallest = min(number_list)
+                        print(largest)
+                        sb.type("textarea.captcha-textarea", str(largest))
+                        time.sleep(1)
+                        # Click the submit button
+                        sb.click("a.themeBtn")
+
+                    else:
+                        print("Error: The number doesn't contain exactly 9 digits.")
+                else:
+                    print("Error: Results Empty with new numCaptcha.")
+
+
+            elif 'comes before' in question:
+                capture_and_crop_regions([(901, 800, 104, 6)], 'captcha.png')
+                result = ocr.ocr('captcha.png')
+                result = ''.join([item[1][0] for item in result[0]])
+                result = ''.join(filter(str.isdigit, str(result)))
+                if result:
+                    result -= 1
+                    print(result)
+                    sb.type("textarea.captcha-textarea", str(result))
+                    time.sleep(1)
+                        # Click the submit button
+                    sb.click("a.themeBtn")
+
+
     except Exception as e:
         print(e)
 
@@ -2171,7 +2181,7 @@ if ip_address == ip_required:
                                         print('starting to answer category')
                                         if category != 0 and title == 'Popmack':
                                             print(title)
-                                            get_and_click_category(category, sb1)
+                                            get_and_click_category_sky(category, sb1)
                                             #solve_image_category(sb1, category, id1)
 
                                         elif category == 0:
@@ -2295,7 +2305,7 @@ if ip_address == ip_required:
                                             title = sb1.get_title()
                                             if title:
                                                 print(title)
-                                                get_and_click_category(category, sb1)
+                                                get_and_click_category_bay(category, sb1)
                                                 #solve_image_category(sb1, category_bay, id1)
 
                                         elif category_bay == 0:

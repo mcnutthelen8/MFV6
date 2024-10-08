@@ -1664,14 +1664,39 @@ def solve_ocr_number(driver):
 
 def cloudflare(sb):
     try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman.png", region=(489, 186, 909, 791), confidence=0.95)
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman.png", region=(696,171,570,277), confidence=0.9)
         print("verify_cloudflare git Found")
         gg = False
         sb.disconnect() 
         while gg == False:
             try:
                 time.sleep(1)
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman.png", region=(489, 186, 909, 791), confidence=0.95)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman.png", region=(696,171,570,277), confidence=0.9)
+                print("verify_cloudflare git Found")
+
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", region=(489, 186, 909, 791), confidence=0.9)
+                    pyautogui.click(x, y)
+                    time.sleep(3)
+
+                except Exception as e:
+                    print(e)
+            except Exception as e:
+                print(e)
+                gg = True
+                
+        sb.connect()
+    except Exception as e:
+        print(e)
+    try:
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman2.png", region=(696,171,570,277), confidence=0.9)
+        print("verify_cloudflare git Found")
+        gg = False
+        sb.disconnect() 
+        while gg == False:
+            try:
+                time.sleep(1)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman2.png", region=(696,171,570,277), confidence=0.9)
                 print("verify_cloudflare git Found")
 
                 try:
@@ -1689,7 +1714,6 @@ def cloudflare(sb):
     except Exception as e:
         print(e)
 
-
     page_title = sb.get_title().strip()
     
     if page_title == 'Just a moment...':
@@ -1701,6 +1725,61 @@ def cloudflare(sb):
     elif page_title == 'www.popmack.com | 502: Bad gateway' or page_title == 'www.popmack.com | 503: Bad gateway':
         print('www.popmack.com | 502: Bad gateway')
         sb.refresh()
+
+
+def cloudflare2(sb):
+    sb.disconnect() 
+    time.sleep(5)
+    try:
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman.png", region=(696,171,570,277), confidence=0.9)
+        print("verify_cloudflare git Found")
+        gg = False
+        while gg == False:
+            try:
+                time.sleep(1)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman.png", region=(696,171,570,277), confidence=0.9)
+                print("verify_cloudflare git Found")
+
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", region=(489, 186, 909, 791), confidence=0.9)
+                    pyautogui.click(x, y)
+                    time.sleep(3)
+
+                except Exception as e:
+                    print(e)
+            except Exception as e:
+                print(e)
+                gg = True
+                
+    
+    except Exception as e:
+        print(e)
+    try:
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman2.png", region=(696,171,570,277), confidence=0.9)
+        print("verify_cloudflare git Found")
+        gg = False
+        while gg == False:
+            try:
+                time.sleep(1)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman2.png", region=(696,171,570,277), confidence=0.9)
+                print("verify_cloudflare git Found")
+
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", region=(489, 186, 909, 791), confidence=0.9)
+                    pyautogui.click(x, y)
+                    time.sleep(3)
+
+                except Exception as e:
+                    print(e)
+            except Exception as e:
+                print(e)
+                gg = True
+                
+    except Exception as e:
+        print(e)
+
+    sb.connect()
+
 
 def click_random_category(sb):
     try:
@@ -1746,12 +1825,12 @@ def get_and_click_category_sky(category, sb):
             if category_lower in button_text or button_text in category_lower:
                 print(f"Found and clicked category: {button.text}")
                 button.click()
-                time.sleep(5)
-                cloudflare(sb)
+                #time.sleep(5)
+                cloudflare2(sb)
                 return True
         
         # List of fallback categories in case the provided one is not found
-        fallback_categories = ['People', 'Music', 'Entertainment', 'Technology', 'Science']
+        fallback_categories = ['None', 'People', 'Music', 'Entertainment', 'Technology', 'Science']
         for fallback_category in fallback_categories:
             for button in category_buttons:
                 button_text = button.text.strip().lower()
@@ -1761,11 +1840,19 @@ def get_and_click_category_sky(category, sb):
                 if fallback_category_lower in button_text or button_text in fallback_category_lower:
                     print(f"Found and clicked fallback category: {button.text}")
                     button.click()
-                    time.sleep(5)
-                    cloudflare(sb)
+                    #time.sleep(5)
+                    cloudflare2(sb)
                     return True
         
-        click_random_category(sb)
+        for button in category_buttons:
+            print(button.text)
+        
+        # Select a random button and click it
+        random_button = random.choice(category_buttons)
+        #sb.highlight(random_button)
+        random_button.click()
+        print(f"Clicked random category: {random_button.text}")
+        return True
         if debug_mode:
             print(f"Category '{category}' not found")
         return False
@@ -1794,12 +1881,12 @@ def get_and_click_category_bay(category, sb):
             if category_lower in button_text or button_text in category_lower:
                 print(f"Found and clicked category: {button.text}")
                 button.click()
-                time.sleep(5)
-                cloudflare(sb)
+                #time.sleep(5)
+                cloudflare2(sb)
                 return True
         
         # List of fallback categories in case the provided one is not found
-        fallback_categories = ['People', 'Music', 'Entertainment', 'Technology', 'Science']
+        fallback_categories = ['None', 'People', 'Music', 'Entertainment', 'Technology', 'Science']
         for fallback_category in fallback_categories:
             for button in category_buttons:
                 button_text = button.text.strip().lower()
@@ -1809,11 +1896,19 @@ def get_and_click_category_bay(category, sb):
                 if fallback_category_lower in button_text or button_text in fallback_category_lower:
                     print(f"Found and clicked fallback category: {button.text}")
                     button.click()
-                    time.sleep(5)
-                    cloudflare(sb)
+                    #time.sleep(5)
+                    cloudflare2(sb)
                     return True
         
-        click_random_category(sb)
+        for button in category_buttons:
+            print(button.text)
+        
+        # Select a random button and click it
+        random_button = random.choice(category_buttons)
+        #sb.highlight(random_button)
+        random_button.click()
+        print(f"Clicked random category: {random_button.text}")
+        return True
         if debug_mode:
             print(f"Category '{category}' not found")
         return False
@@ -1822,52 +1917,97 @@ def get_and_click_category_bay(category, sb):
             print(f"An error occurred: {str(e)}")
         return False
 
+
+
 def new_numbercaptcha(sb):
     try:
+        title = sb.get_title()
         if sb.is_element_visible(".text-captcha-question"):
             print('textCaptcha...')
             question = sb.get_text('.text-captcha-question')
             print(f'textCaptcha...{question}')
+            
             if 'largest number' in question:
-                capture_and_crop_regions([(800, 758, 303, 61)], 'captcha.png')
-                result = ocr.ocr('captcha.png')
-                result = ''.join([item[1][0] for item in result[0]])
-                result = ''.join(filter(str.isdigit, str(result)))
-                if result:
-                    if len(result) == 9:
-                        number_list = [int(result[i:i+3]) for i in range(0, 9, 3)]
-                        
-                        # Step 4: Find the largest and smallest numbers
-                        largest = max(number_list)
-                        #smallest = min(number_list)
-                        print(largest)
-                        sb.type("textarea.captcha-textarea", str(largest))
-                        time.sleep(1)
-                        # Click the submit button
-                        sb.click("a.themeBtn")
-
+                if 'Zaptaps' in title:
+                    capture_and_crop_regions([(800, 758, 303, 61)], ['captcha.png'])
+                    result = ocr.ocr('captcha.png')
+                    result = ''.join([item[1][0] for item in result[0]])
+                    result = ''.join(filter(str.isdigit, str(result)))
+                    if result:
+                        if len(result) == 9:
+                            number_list = [int(result[i:i+3]) for i in range(0, 9, 3)]
+                            largest = max(number_list)
+                            print(largest)
+                            sb.type("textarea.captcha-textarea", str(largest))  # Convert to string
+                            time.sleep(1)
+                            sb.click("a.themeBtn")
+                        else:
+                            sb.type("textarea.captcha-textarea", '553')  # Convert to string
+                            time.sleep(1)
+                            sb.click("a.themeBtn")
+                            print("Error: The number doesn't contain exactly 9 digits.")
                     else:
-                        print("Error: The number doesn't contain exactly 9 digits.")
+                        print("Error: Results Empty with new numCaptcha.")
                 else:
-                    print("Error: Results Empty with new numCaptcha.")
+                    print('Not Zap')
 
+            elif 'smallest number' in question:
+                if 'Zaptaps' in title:
+                    capture_and_crop_regions([(800, 758, 303, 61)], ['captcha.png'])
+                    result = ocr.ocr('captcha.png')
+                    result = ''.join([item[1][0] for item in result[0]])
+                    result = ''.join(filter(str.isdigit, str(result)))
+                    if result:
+                        if len(result) == 9:
+                            number_list = [int(result[i:i+3]) for i in range(0, 9, 3)]
+                            smallest = min(number_list)
+                            print(smallest)
+                            sb.type("textarea.captcha-textarea", str(smallest))  # Convert to string
+                            time.sleep(1)
+                            sb.click("a.themeBtn")
+                        else:
+                            sb.type("textarea.captcha-textarea", '553')  # Convert to string
+                            time.sleep(1)
+                            sb.click("a.themeBtn")
+                            print("Error: The number doesn't contain exactly 9 digits.")
+                    else:
+                        print("Error: Results Empty with new numCaptcha.")
+                else:
+                    print('Not Zap')
 
             elif 'comes before' in question:
-                capture_and_crop_regions([(901, 800, 104, 6)], 'captcha.png')
-                result = ocr.ocr('captcha.png')
-                result = ''.join([item[1][0] for item in result[0]])
-                result = ''.join(filter(str.isdigit, str(result)))
-                if result:
-                    result -= 1
-                    print(result)
-                    sb.type("textarea.captcha-textarea", str(result))
-                    time.sleep(1)
-                        # Click the submit button
-                    sb.click("a.themeBtn")
+                if 'Popmack' in title:
+                    capture_and_crop_regions([(901, 800, 104, 60)], ['captcha.png'])
+                    result = ocr.ocr('captcha.png')
+                    result = ''.join([item[1][0] for item in result[0]])
+                    result = ''.join(filter(str.isdigit, str(result)))
+                    if result:
+                        result = str(int(result) - 1)  # Convert to int, decrement, and convert back to string
+                        print(result)
+                        sb.type("textarea.captcha-textarea", result)
+                        time.sleep(1)
+                        sb.click("a.themeBtn")
+                else:
+                    print('Not Zap')
 
+            elif 'comes after' in question:
+                if 'Popmack' in title:
+                    capture_and_crop_regions([(901, 800, 104, 60)], ['captcha.png'])
+                    result = ocr.ocr('captcha.png')
+                    result = ''.join([item[1][0] for item in result[0]])
+                    result = ''.join(filter(str.isdigit, str(result)))
+                    if result:
+                        result = str(int(result) + 1)  # Convert to int, increment, and convert back to string
+                        print(result)
+                        sb.type("textarea.captcha-textarea", result)
+                        time.sleep(1)
+                        sb.click("a.themeBtn")
+                else:
+                    print('Not Zap')
 
     except Exception as e:
-        print(e)
+        print(f"Error: {str(e)}")
+
 
 
 baymack_coins = 0
@@ -2345,6 +2485,7 @@ if ip_address == ip_required:
 
                 check_icon_captcha_exists(sb1, id1)
                 new_numbercaptcha(sb1)
+                cloudflare(sb1)
                 
 
                 if with_baymack == True:

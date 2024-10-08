@@ -7,6 +7,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import NoSuchElementException, TimeoutException, StaleElementReferenceException
 from urllib.parse import urlparse, parse_qs
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import time
 import re
 import requests
@@ -1084,8 +1086,6 @@ def solve_image_category(drive, category, window):
             print(base,'Base False')
 
 
-
-
 ################################################################################################################
 skylom_window = 0
 baymack_window = 0
@@ -1662,7 +1662,7 @@ def solve_ocr_number(driver):
     return captcha_ocr
 
 
-def cloudflare(id,sb):
+def cloudflare(sb):
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(489, 186, 909, 791), confidence=0.95)
         print("verify_cloudflare git Found")
@@ -1682,7 +1682,21 @@ def cloudflare(id,sb):
                     print(e)
             except Exception as e:
                 print(e)
-                gg = True
+                time.sleep(3)
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(489, 186, 909, 791), confidence=0.95)
+                    print("verify_cloudflare git Found")
+                    #time.sleep(1)
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", region=(489, 186, 909, 791), confidence=0.9)
+                        pyautogui.click(x, y)
+                        time.sleep(3)
+
+                    except Exception as e:
+                        print(e)
+                except Exception as e:
+                    print(e)
+                    gg = True
                 
         sb.connect()
     except Exception as e:
@@ -1700,6 +1714,140 @@ def cloudflare(id,sb):
     elif page_title == 'www.popmack.com | 502: Bad gateway' or page_title == 'www.popmack.com | 503: Bad gateway':
         print('www.popmack.com | 502: Bad gateway')
         sb.refresh()
+
+def click_random_category(sb):
+    try:
+        # Wait for the category buttons to be present
+        category_buttons = WebDriverWait(sb, 1).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'ul.link-btn-list.video-categ-options li a div'))
+        )
+        
+        # Print the category buttons
+        for button in category_buttons:
+            print(button.text)
+        
+        # Select a random button and click it
+        random_button = random.choice(category_buttons)
+        #sb.highlight(random_button)
+        random_button.click()
+        print(f"Clicked random category: {random_button.text}")
+        return True
+    
+    except Exception as e:
+        if debug_mode:
+            print(f"An error occurred: {e}")
+        return False
+    
+
+def get_and_click_category(category, sb):
+    try:
+        # Wait for the category buttons to be present
+        category_buttons = WebDriverWait(sb, 1).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, 'ul.link-btn-list.video-categ-options li a div'))
+        )
+        
+        # Print the category buttons
+        for button in category_buttons:
+            print(button.text)
+        
+        # Find and click the assigned category
+        for button in category_buttons:
+            button_text = button.text.strip().lower()
+            category_lower = category.lower()
+            
+            # Check for partial match
+            if category_lower in button_text or button_text in category_lower:
+                print(f"Found and clicked category: {button.text}")
+                button.click()
+                time.sleep(3)
+                cloudflare(sb)
+                return True
+            
+        category = 'People'
+        for button in category_buttons:
+            button_text = button.text.strip().lower()
+            category_lower = category.lower()
+            
+            # Check for partial match
+            if category_lower in button_text or button_text in category_lower:
+                print(f"Found and clicked category: {button.text}")
+                button.click()
+                time.sleep(3)
+                cloudflare(sb)
+                return True
+            
+        category = 'Music'
+        for button in category_buttons:
+            button_text = button.text.strip().lower()
+            category_lower = category.lower()
+            
+            # Check for partial match
+            if category_lower in button_text or button_text in category_lower:
+                print(f"Found and clicked category: {button.text}")
+                button.click()
+                time.sleep(3)
+                cloudflare(sb)
+                return True
+            
+        category = 'Entertainment'
+        for button in category_buttons:
+            button_text = button.text.strip().lower()
+            category_lower = category.lower()
+            
+            # Check for partial match
+            if category_lower in button_text or button_text in category_lower:
+                print(f"Found and clicked category: {button.text}")
+                button.click()
+                time.sleep(3)
+                cloudflare(sb)
+                return True
+            
+        category = 'Technology'
+        for button in category_buttons:
+            button_text = button.text.strip().lower()
+            category_lower = category.lower()
+            
+            # Check for partial match
+            if category_lower in button_text or button_text in category_lower:
+                print(f"Found and clicked category: {button.text}")
+                button.click()
+                time.sleep(3)
+                cloudflare(sb)
+                return True
+            
+        category = 'Sci'
+        for button in category_buttons:
+            button_text = button.text.strip().lower()
+            category_lower = category.lower()
+            
+            # Check for partial match
+            if category_lower in button_text or button_text in category_lower:
+                print(f"Found and clicked category: {button.text}")
+                button.click()
+                time.sleep(3)
+                cloudflare(sb)
+                return True
+        category = 'science'
+        for button in category_buttons:
+            button_text = button.text.strip().lower()
+            category_lower = category.lower()
+            
+            # Check for partial match
+            if category_lower in button_text or button_text in category_lower:
+                print(f"Found and clicked category: {button.text}")
+                button.click()
+                time.sleep(3)
+                cloudflare(sb)
+                return True
+            
+        click_random_category(sb)
+        if debug_mode:
+            print(f"Category '{category}' not found")
+        return False
+    except Exception as e:
+        if debug_mode:
+            print(f"An error occurred: {str(e)}")
+        return False
 
 
 
@@ -2003,8 +2151,8 @@ if ip_address == ip_required:
                                 print(f"Video duration: {current_duration} and Category is {category}", end="\r")
                                 #print('Video is Fresh')
 
-                    else:
-                        cloudflare(id1,sb1)
+                    #else:
+                    #    cloudflare(id1,sb1)
 
                     if check_category_question(sb1) == True:
                         print('Getting IP at 10 sec..')
@@ -2015,7 +2163,8 @@ if ip_address == ip_required:
                                         print('starting to answer category')
                                         if category != 0 and title == 'Popmack':
                                             print(title)
-                                            solve_image_category(sb1, category, id1)
+                                            get_and_click_category(category, sb1)
+                                            #solve_image_category(sb1, category, id1)
 
                                         elif category == 0:
                                             video_link = get_youtube_link(sb1) 
@@ -2124,8 +2273,8 @@ if ip_address == ip_required:
                                 print(f"Video duration_bay: {current_duration_bay} and Category is {category_bay}", end="\r")
                                 #print('Video is Fresh')
 
-                    else:
-                        cloudflare(id1,sb1)
+                    #else:
+                        #cloudflare(id1,sb1)
 
                     if check_category_question(sb1) == True:
                         print('Getting IP at 10 sec..')
@@ -2138,7 +2287,8 @@ if ip_address == ip_required:
                                             title = sb1.get_title()
                                             if title:
                                                 print(title)
-                                                solve_image_category(sb1, category_bay, id1)
+                                                get_and_click_category(category, sb1)
+                                                #solve_image_category(sb1, category_bay, id1)
 
                                         elif category_bay == 0:
                                             video_link = get_youtube_link(sb1) 

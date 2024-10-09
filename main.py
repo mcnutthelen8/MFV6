@@ -1927,12 +1927,15 @@ def get_and_click_category_sky(category, sb):
             print(button.text)
         
         # Find and click the assigned category
-        category_lower = category.lower()
+        category_g = fix_broken_words([category])
+        category_lower = category_g[0].lower()
+
         for button in category_buttons:
             button_text = button.text.strip().lower()
-            
+            button_text_g = fix_broken_words([button_text])
+            button_text_lower = button_text_g[0].lower()
             # Check for partial match
-            if category_lower in button_text or button_text in category_lower:
+            if category_lower in button_text_lower or button_text_lower in category_lower:
                 print(f"Found and clicked category: {button.text}")
                 button.click()
                 #time.sleep(5)
@@ -1940,10 +1943,15 @@ def get_and_click_category_sky(category, sb):
                 return True
         
         # List of fallback categories in case the provided one is not found
-        fallback_categories = ['None', 'People', 'Music', 'Entertainment', 'Technology', 'Science', 'Sci']
+        fallback_categoriesa = ['None', 'People', 'Music', 'Entertainment', 'Technology', 'Science', 'Sci']
+        fallback_categoriesb = fix_broken_words([fallback_categoriesa])
+        fallback_categories = fallback_categoriesb[0].lower()
+
         for fallback_category in fallback_categories:
             for button in category_buttons:
                 button_text = button.text.strip().lower()
+                button_text_g = fix_broken_words([button_text])
+                button_text = button_text_g[0].lower()
                 fallback_category_lower = fallback_category.lower()
                 
                 # Check for partial match with fallback categories
@@ -1981,14 +1989,17 @@ def get_and_click_category_bay(category, sb):
         # Print the category buttons
         for button in category_buttons:
             print(button.text)
-        
-        # Find and click the assigned category
-        category_lower = category.lower()
+
+
+        category_g = fix_broken_words([category])
+        category_lower = category_g[0].lower()
+
         for button in category_buttons:
             button_text = button.text.strip().lower()
-            
+            button_text_g = fix_broken_words([button_text])
+            button_text_lower = button_text_g[0].lower()
             # Check for partial match
-            if category_lower in button_text or button_text in category_lower:
+            if category_lower in button_text_lower or button_text_lower in category_lower:
                 print(f"Found and clicked category: {button.text}")
                 button.click()
                 #time.sleep(5)
@@ -1996,10 +2007,15 @@ def get_and_click_category_bay(category, sb):
                 return True
         
         # List of fallback categories in case the provided one is not found
-        fallback_categories = ['None', 'People', 'Music', 'Entertainment', 'Technology', 'Science', 'Sci']
+        fallback_categoriesa = ['None', 'People', 'Music', 'Entertainment', 'Technology', 'Science', 'Sci']
+        fallback_categoriesb = fix_broken_words([fallback_categoriesa])
+        fallback_categories = fallback_categoriesb[0].lower()
+
         for fallback_category in fallback_categories:
             for button in category_buttons:
                 button_text = button.text.strip().lower()
+                button_text_g = fix_broken_words([button_text])
+                button_text = button_text_g[0].lower()
                 fallback_category_lower = fallback_category.lower()
                 
                 # Check for partial match with fallback categories

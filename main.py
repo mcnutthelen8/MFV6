@@ -1675,7 +1675,7 @@ def cloudflare(sb):
                 print("verify_cloudflare git Found")
                 try:
                     time.sleep(1)
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(696,171,570,277), confidence=0.9)
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(757,361,570,277), confidence=0.9)
                     print("verify_cloudflare git Found")
                     try:
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", region=(489, 186, 909, 791), confidence=0.9)
@@ -1684,29 +1684,30 @@ def cloudflare(sb):
 
                     except Exception as e:
                         print(e)
+
+                except Exception as e:
+                        print(e)
                         time.sleep(2)
                         try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(696,171,570,277), confidence=0.9)
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(757,361,570,277), confidence=0.9)
                             print("verify_cloudflare git Found")
                         except Exception as e:
                             print(e)
                             time.sleep(2)
                             try:
-                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(696,171,570,277), confidence=0.9)
+                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(757,361,570,277), confidence=0.9)
                                 print("verify_cloudflare git Found")
                             except Exception as e:
                                 print(e)
                                 time.sleep(2)
                                 try:
-                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(696,171,570,277), confidence=0.9)
+                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(757,361,570,277), confidence=0.9)
                                     print("verify_cloudflare git Found")
                                 except Exception as e:
                                     print(e)
                                     pyautogui.press('f5')
 
 
-                except Exception as e:
-                    print(e)
             except Exception as e:
                 print(e)
                 gg = True
@@ -1727,7 +1728,7 @@ def cloudflare(sb):
 
                 try:
                     time.sleep(1)
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(696,171,570,277), confidence=0.9)
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(757,361,570,277), confidence=0.9)
                     print("verify_cloudflare git Found")
                     try:
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", region=(489, 186, 909, 791), confidence=0.9)
@@ -1736,27 +1737,30 @@ def cloudflare(sb):
 
                     except Exception as e:
                         print(e)
+
+                except Exception as e:
+                        print(e)
                         time.sleep(2)
                         try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(696,171,570,277), confidence=0.9)
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(757,361,570,277), confidence=0.9)
                             print("verify_cloudflare git Found")
                         except Exception as e:
                             print(e)
                             time.sleep(2)
                             try:
-                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(696,171,570,277), confidence=0.9)
+                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(757,361,570,277), confidence=0.9)
                                 print("verify_cloudflare git Found")
                             except Exception as e:
                                 print(e)
                                 time.sleep(2)
                                 try:
-                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(696,171,570,277), confidence=0.9)
+                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(757,361,570,277), confidence=0.9)
                                     print("verify_cloudflare git Found")
                                 except Exception as e:
                                     print(e)
                                     pyautogui.press('f5')
-                except Exception as e:
-                    print(e)
+
+
             except Exception as e:
                 print(e)
                 gg = True
@@ -1793,7 +1797,7 @@ def cloudflare2(sb):
 
                 try:
                     time.sleep(1)
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(696,171,570,277), confidence=0.9)
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(757,361,570,277), confidence=0.9)
                     print("verify_cloudflare git Found")
                     try:
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", region=(489, 186, 909, 791), confidence=0.9)
@@ -1802,27 +1806,29 @@ def cloudflare2(sb):
 
                     except Exception as e:
                         print(e)
+                except Exception as e:
+                        print(e)
                         time.sleep(2)
                         try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(696,171,570,277), confidence=0.9)
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(757,361,570,277), confidence=0.9)
                             print("verify_cloudflare git Found")
                         except Exception as e:
                             print(e)
                             time.sleep(2)
                             try:
-                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(696,171,570,277), confidence=0.9)
+                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(757,361,570,277), confidence=0.9)
                                 print("verify_cloudflare git Found")
                             except Exception as e:
                                 print(e)
                                 time.sleep(2)
                                 try:
-                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(696,171,570,277), confidence=0.9)
+                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(757,361,570,277), confidence=0.9)
                                     print("verify_cloudflare git Found")
                                 except Exception as e:
                                     print(e)
                                     pyautogui.press('f5')
-                except Exception as e:
-                    print(e)
+
+
             except Exception as e:
                 print(e)
                 gg = True
@@ -1842,7 +1848,7 @@ def cloudflare2(sb):
 
                 try:
                     time.sleep(1)
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(696,171,570,277), confidence=0.9)
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(757,361,570,277), confidence=0.9)
                     print("verify_cloudflare git Found")
                     try:
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", region=(489, 186, 909, 791), confidence=0.9)
@@ -1851,27 +1857,30 @@ def cloudflare2(sb):
 
                     except Exception as e:
                         print(e)
+
+                except Exception as e:
+                        print(e)
                         time.sleep(2)
                         try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(696,171,570,277), confidence=0.9)
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(757,361,570,277), confidence=0.9)
                             print("verify_cloudflare git Found")
                         except Exception as e:
                             print(e)
                             time.sleep(2)
                             try:
-                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(696,171,570,277), confidence=0.9)
+                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(757,361,570,277), confidence=0.9)
                                 print("verify_cloudflare git Found")
                             except Exception as e:
                                 print(e)
                                 time.sleep(2)
                                 try:
-                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(696,171,570,277), confidence=0.9)
+                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", region=(757,361,570,277), confidence=0.9)
                                     print("verify_cloudflare git Found")
                                 except Exception as e:
                                     print(e)
                                     pyautogui.press('f5')
-                except Exception as e:
-                    print(e)
+
+
             except Exception as e:
                 print(e)
                 gg = True

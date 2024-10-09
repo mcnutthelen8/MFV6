@@ -1940,7 +1940,7 @@ def get_and_click_category_sky(category, sb):
                 return True
         
         # List of fallback categories in case the provided one is not found
-        fallback_categories = ['None', 'People', 'Music', 'Entertainment', 'Technology', 'Science']
+        fallback_categories = ['None', 'People', 'Music', 'Entertainment', 'Technology', 'Science', 'Sci']
         for fallback_category in fallback_categories:
             for button in category_buttons:
                 button_text = button.text.strip().lower()
@@ -1996,7 +1996,7 @@ def get_and_click_category_bay(category, sb):
                 return True
         
         # List of fallback categories in case the provided one is not found
-        fallback_categories = ['None', 'People', 'Music', 'Entertainment', 'Technology', 'Science']
+        fallback_categories = ['None', 'People', 'Music', 'Entertainment', 'Technology', 'Science', 'Sci']
         for fallback_category in fallback_categories:
             for button in category_buttons:
                 button_text = button.text.strip().lower()

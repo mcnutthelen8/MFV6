@@ -2080,7 +2080,7 @@ def get_and_click_category(category, sb, selector_type='sky'):
                 return True
 
         # List of fallback categories if the provided one is not found
-        fallback_categories = ['None', 'People', 'Music', 'Entertainment', 'Technology', 'Science', 'Sci']
+        fallback_categories = ['Entertainment', 'None', 'People', 'Music', 'Technology', 'Science', 'Sci']
         fixed_fallback_categories = [fix_broken_words([cat])[0].lower() for cat in fallback_categories]
 
         # Try fallback categories

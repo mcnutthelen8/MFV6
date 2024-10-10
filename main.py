@@ -761,6 +761,7 @@ def fix_broken_words(word_list):
 
     return fixed_list
 
+
 def check_words(category, fixed_words):
     if category is None:
         print("Category is None aiyo.")
@@ -2045,6 +2046,65 @@ def get_and_click_category_bay(category, sb):
 
 
 
+def get_and_click_category(category, sb, selector_type='sky'):
+    try:
+        # Define CSS selectors based on selector_type
+        if selector_type == 'sky':
+            selector = 'ul.link-btn-list.video-categ-options li a div'
+        elif selector_type == 'bay':
+            selector = 'ul.link-btn-list.video-categ-options li a span'
+        else:
+            raise ValueError("Invalid selector_type specified")
+
+        # Wait for the category buttons to be present
+        category_buttons = WebDriverWait(sb, 1).until(
+            EC.presence_of_all_elements_located((By.CSS_SELECTOR, selector))
+        )
+
+        # Print all category buttons for debugging
+        for button in category_buttons:
+            print(f"Button text: {button.text.strip()}")
+
+        # Fix the input category word
+        fixed_category = fix_broken_words([category])[0].lower()
+
+        # Try to find and click the matching category button
+        for button in category_buttons:
+            button_text = button.text.strip().lower()
+            fixed_button_text = fix_broken_words([button_text])[0].lower()
+
+            if fixed_category in fixed_button_text or fixed_button_text in fixed_category:
+                print(f"Found and clicked category: {button.text}")
+                button.click()
+                cloudflare2(sb)  # Assuming this is your post-click function
+                return True
+
+        # List of fallback categories if the provided one is not found
+        fallback_categories = ['None', 'People', 'Music', 'Entertainment', 'Technology', 'Science', 'Sci']
+        fixed_fallback_categories = [fix_broken_words([cat])[0].lower() for cat in fallback_categories]
+
+        # Try fallback categories
+        for fallback_category in fixed_fallback_categories:
+            for button in category_buttons:
+                button_text = button.text.strip().lower()
+                fixed_button_text = fix_broken_words([button_text])[0].lower()
+
+                if fallback_category in fixed_button_text or fixed_button_text in fallback_category:
+                    print(f"Found and clicked fallback category: {button.text}")
+                    button.click()
+                    cloudflare2(sb)
+                    return True
+
+        # If no match is found, select a random button and click it
+        random_button = random.choice(category_buttons)
+        random_button.click()
+        print(f"Clicked random category: {random_button.text}")
+        return True
+
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+        return False
+
 def new_numbercaptcha(sb):
     try:
         title = sb.get_title()
@@ -2447,7 +2507,8 @@ if ip_address == ip_required:
                                         print('starting to answer category')
                                         if category != 0 and title == 'Popmack':
                                             print(title)
-                                            get_and_click_category_sky(category, sb1)
+                                            #get_and_click_category_sky(category, sb1)
+                                            get_and_click_category(category, sb1, selector_type='sky')
                                             #solve_image_category(sb1, category, id1)
 
                                         elif category == 0:
@@ -2571,7 +2632,7 @@ if ip_address == ip_required:
                                             title = sb1.get_title()
                                             if title:
                                                 print(title)
-                                                get_and_click_category_bay(category, sb1)
+                                                get_and_click_category(category, sb1, selector_type='bay')
                                                 #solve_image_category(sb1, category_bay, id1)
 
                                         elif category_bay == 0:

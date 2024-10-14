@@ -434,57 +434,81 @@ headers = {
     'User-Agent': 'My User Agent 1.0',
 }
 
-def get_video_infog(video_url, driver, timeout=8 ):
+def get_video_infog(video_url, driver, timeout=8):
     original_window = driver.current_window_handle
     driver.open_new_window()
     try:
-        #driver.switch_to.newest_window()
-        driver.get(f'view-source:{video_url}')
+        # Set page timeout and open the view-source page
+        driver.open(f'view-source:{video_url}')
+        print(f'view-source:{video_url}')
+
+        # Wait for the page to load with a timeout of 8 seconds
+        driver.wait_for_element_visible('body', timeout=timeout)
+        
+        # Get page source and parse it
         data = driver.get_text('body')
         html_content = str(data)
         soup = BeautifulSoup(html_content, 'html.parser')
+
+        # Extract video category
         category_tag = soup.find('meta', itemprop='genre')
         category = category_tag['content'] if category_tag else None
         print(f"Category For This Video is {category}")
+
+        # Close new window and switch back to original
         driver.close()
-
         driver.switch_to.window(original_window)
-        print(video_url)
-        return category
-    
-    except Exception as e:
-        print(e)
-    driver.close()
-    driver.switch_to.window(original_window)
-    return 0
 
+        # Return the category or 0 if not found
+        if category:
+            return category
+        else:
+            return 0
+
+    except Exception as e:
+        print(f"Error occurred: {e}")
+        driver.close()
+        driver.switch_to.window(original_window)
+        return 0
 
 def get_youtube_link(sb):
-    page_source = sb.get_page_source()
-    soup = BeautifulSoup(page_source, 'html.parser')
-    a_tag = soup.find('a', class_='twitter')
-        
+
+    
     try:
+        # Find the iframe that contains "youtube.com/embed" in the src attribute
+        iframe = sb.find_element("iframe[src*='youtube.com/embed']")
+
+        # Switch to the iframe
+        sb.switch_to_frame(iframe)
+
+        # Get the page source after switching to the iframe
+        page_source = sb.get_page_source()
+        soup = BeautifulSoup(page_source, 'html.parser')
+        
+        # Locate the <a> tag inside <div class="ytp-title-text">
+        a_tag = soup.find('a', class_='ytp-title-link')
+
+        # Check if the <a> tag is found and extract the href attribute
         if a_tag:
-            # Extract the href attribute
             href = a_tag.get('href')
-            
+
             # Use regex to find the YouTube URL from the href
             youtube_url_match = re.search(r'https://www\.youtube\.com/watch\?v=[\w-]+', href)
-            
+
             if youtube_url_match:
-                #print(youtube_url_match.group(0))
                 return youtube_url_match.group(0)
             else:
                 return 0
         else:
             return 0
 
- 
     except Exception as e:
-        if debug_mode:
-            print(f"An error occurred: {e}")
+        print(f"An error occurred: {e}")
         return 0
+
+    finally:
+        # Switch back to the default content
+        sb.switch_to.default_content()
 
 
     

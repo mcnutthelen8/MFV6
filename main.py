@@ -121,6 +121,33 @@ elif farm_id == 8:
     fb_pass = 'ashen1997'
     CSB1_farms = [5, 6, 7, 8]
 
+################3rd######################
+elif farm_id == 9:
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/pennyscrambble.json'
+    fb_pass = 'ashen1997'
+    server_name1 = 'malaysia'
+    CSB1_farms = [9, 10, 11, 12]
+
+elif farm_id == 10:
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/amytanisha250.json'
+    server_name1 = 'morocco'
+    fb_pass = 'ashen1997'
+    CSB1_farms = [9, 10, 11, 12]
+
+elif farm_id == 11:
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/leonardkentiff.json'
+    server_name1 = 'georgia'
+    fb_pass = 'ashen1997'
+    CSB1_farms = [9, 10, 11, 12]
+
+elif farm_id == 12:
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/howardrahul838.json'
+    server_name1 = 'moldova'
+    fb_pass = 'ashen1997'
+    CSB1_farms = [9, 10, 11, 12]
+
+
+
 
 else:
     while True:
@@ -708,59 +735,63 @@ def find_most_similar_word(word, word_list):
 
 def fix_broken_words(word_list):
     reference_list = [
-        "comedy", "education", "gaming", "music", "Music", "science","technology",
-        "family" ,"entertainment","family entertainment", 'none', "news","politics", "people",
-        "travel","travel & events", "sports", "beauty", "nonprofit", "howto", "film","pets", "food", "sic-fi","people & blogs","news & politics","auto",
-    
+        "comedy", "education", "gaming", "music", "science", "technology", "family",
+        "entertainment", "none", "news", "politics", "people", "travel", "travel & events",
+        "sports", "beauty", "nonprofit", "howto", "film", "pets", "food", "sci-fi", "people & blogs", 
+        "news & politics", "auto"
     ]
-    fixed_list = []
     
-    for word in word_list:
-        word = word.replace('0', 'o')
-        word = word.replace('5', 's')
-        word = word.replace('6', 's')
-        word = word.replace('$', 's')
-        word = word.replace('8', '&')
-        word = word.replace('1', 'i')
-        word = word.replace('[', 'c')
-        word = word.replace('{', 'c')
-        word = word.replace('(', 'c')
-        word = word.replace('4', 'a')
-        word = word.replace('7', 'e')
-        word = word.replace('<', 'c')
-        word = word.replace('*', 'e')
-        if word == 'F-w':
-            word = 'film'
-        if word == '1F()Ve':
-            print('travel')
-            word = 'travel'
-        letter_count = sum(1 for char in word if char.isalpha())
-        fixed_word = find_most_similar_word(word.lower(), reference_list)
+    replacements = {
+        '0': 'o', '5': 's', '6': 's', '$': 's', '8': '&', '1': 'i', '4': 'a', '7': 'e', 
+        '[': 'c', '{': 'c', '(': 'c', '<': 'c', '*': 'e'
+    }
+    
+    special_cases = {
+        'F-w': 'film',
+        '1F()Ve': 'travel'
+    }
+    
+    # Custom logic for edge cases after replacement
+    category_fixes = {
+        "politics": "news",
+        "blogs": "people",
+        "people & blogs": "people",
+        "news & politics": "news",
+        "family entertainment": "family"
+    }
+    
+    fixed_list = []
 
+    for word in word_list:
+        # Apply basic replacements
+        for old, new in replacements.items():
+            word = word.replace(old, new)
+        
+        # Handle special cases explicitly
+        if word in special_cases:
+            word = special_cases[word]
+        
+        # Find the closest match to the reference list
+        fixed_word = find_most_similar_word(word.lower(), reference_list)
+        
+        # Fix category-specific issues
+        if fixed_word in category_fixes:
+            fixed_word = category_fixes[fixed_word]
+        
+        # Handle short words
+        letter_count = sum(1 for char in word if char.isalpha())
         if letter_count < 10:
-            word = word.replace(' ', '')
-            print(letter_count, word)
+            word = word.replace(' ', '')  # Compact short words if necessary
             if letter_count < 4:
                 fixed_word = find_most_similar_word2(word.lower(), reference_list)
-        else:
-            fixed_word = find_most_similar_word(word.lower(), reference_list)
-        if fixed_word == "politics":
-            fixed_word ="news"
-        if fixed_word == "blogs":
-            fixed_word ="people"
-        if fixed_word == "people & blogs":
-            fixed_word ="people"
-        if fixed_word == "news & politics":
-            fixed_word ="news"
-        if fixed_word == "family entertainment":
-            fixed_word ="family"
-        if fixed_word is None:
-            fixed_word ="none"
+        
+        # Default to 'none' if no match found
+        if not fixed_word:
+            fixed_word = "none"
 
         fixed_list.append(fixed_word)
 
     return fixed_list
-
 
 def check_words(category, fixed_words):
     if category is None:
@@ -2044,8 +2075,6 @@ def get_and_click_category_bay(category, sb):
             print(f"An error occurred: {str(e)}")
         return False
 
-
-
 def get_and_click_category(category, sb, selector_type='sky'):
     try:
         # Define CSS selectors based on selector_type
@@ -2063,15 +2092,16 @@ def get_and_click_category(category, sb, selector_type='sky'):
 
         # Print all category buttons for debugging
         for button in category_buttons:
-            print(f"Button text: {button.text.strip()}")
+            button_text = button.text.strip() if button.text else "No text"
+            print(f"Button text: {button_text}")
 
         # Fix the input category word
         fixed_category = fix_broken_words([category])[0].lower()
 
         # Try to find and click the matching category button
         for button in category_buttons:
-            button_text = button.text.strip().lower()
-            fixed_button_text = fix_broken_words([button_text])[0].lower()
+            button_text = button.text.strip().lower() if button.text else ""
+            fixed_button_text = fix_broken_words([button_text])[0].lower() if button_text else ""
 
             if fixed_category in fixed_button_text or fixed_button_text in fixed_category:
                 print(f"Found and clicked category: {button.text}")
@@ -2080,14 +2110,14 @@ def get_and_click_category(category, sb, selector_type='sky'):
                 return True
 
         # List of fallback categories if the provided one is not found
-        fallback_categories = ['Entertainment', 'None', 'People', 'Music','news', 'Technology', 'Science', 'Sci']
+        fallback_categories = ['Entertainment', 'None', 'People', 'Music', 'news', 'Technology', 'Science', 'Sci']
         fixed_fallback_categories = [fix_broken_words([cat])[0].lower() for cat in fallback_categories]
 
         # Try fallback categories
         for fallback_category in fixed_fallback_categories:
             for button in category_buttons:
-                button_text = button.text.strip().lower()
-                fixed_button_text = fix_broken_words([button_text])[0].lower()
+                button_text = button.text.strip().lower() if button.text else ""
+                fixed_button_text = fix_broken_words([button_text])[0].lower() if button_text else ""
 
                 if fallback_category in fixed_button_text or fixed_button_text in fallback_category:
                     print(f"Found and clicked fallback category: {button.text}")

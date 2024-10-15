@@ -44,7 +44,7 @@ Layout = 1
 fresh = True
 fresh_vms =True 
 vm_count = 1 + 4
-CSB_id = 'markeshalland'
+CSB_id = 'andrewperera70'
 CSB_Script = f'CSB{Layout}'
 waiting_sec = 1700
 #https://www.skylom.com/willem3
@@ -64,6 +64,11 @@ elif Layout == 2:
     command_2 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 6 --fresh 3'
     command_3 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 7 --fresh 3'
     command_4 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 8 --fresh 3'
+elif Layout == 3:
+    command_1 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 9 --fresh 3'
+    command_2 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 10 --fresh 3'
+    command_3 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 11 --fresh 3'
+    command_4 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 12 --fresh 3'
 
 chrome_binary_path = '/opt/google/chrome/google-chrome'
 chrome_user_data_dir = '/root/.config/google-chrome/'
@@ -653,6 +658,71 @@ else:
 
 
 while True:
+    #Wating
+    gg = True
+    start_time = time.time()
+    while gg == True:
+        for i, page in enumerate(page_windows):
+            i += 1
+            sb1.switch_to.window(page)
+            time.sleep(1)
+            collection = db[CSB_Script]
+            query = {"type": "main"}
+            doc = collection.find_one(query)
+            request = doc["request"]
+            if request == f's{i}':
+                command = command_1
+                if   i == 1: command = command_1
+                elif i == 2: command = command_2
+                elif i == 3: command = command_3
+                elif i == 4: command = command_4
+
+                create_devbox(sb1)
+                deploy_docker(command)
+                pyautogui.click(942, 65)
+                collection = db[CSB_Script]
+                query = {"type": "main"}
+                doc = collection.find_one(query)
+                update = {"$set": {"request": 'None'}}
+                result = collection.update_one(query, update)      
+                if result.modified_count > 0:
+                    print(f"Updated {result.modified_count} document(s).")
+                else:
+                    print("No document was updated.")
+
+            time.sleep(5)
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/reload_window.png", region=(144, 118, 1700, 1000), confidence=0.9)
+                pyautogui.click(242, 85)
+                pyautogui.press('f5')
+
+            except Exception as e:
+                print(f'Waiting For Find Directior Listener{i}')
+
+            title =  sb1.get_title()
+            if 'Unable to start the microVM' in title:
+                command = command_1
+                if   i == 1: command = command_1
+                elif i == 2: command = command_2
+                elif i == 3: command = command_3
+                elif i == 4: command = command_4
+
+                create_devbox(sb1)
+                deploy_docker(command)
+                pyautogui.click(942, 65)
+            time.sleep(35)
+
+        elapsed_time = time.time() - start_time
+        mins, secs = divmod(int(elapsed_time), 60)
+        timer = f'{mins:02d}:{secs:02d}'
+        seconds_only = int(elapsed_time)
+        print(f'Next Click {timer}')
+        print(f'Elapsed_time {seconds_only}')
+        if seconds_only > waiting_sec:
+            gg = False
+
+
+
     collection = db[CSB_Script]
     query = {"type": "main"}
     doc = collection.find_one(query)
@@ -743,65 +813,3 @@ while True:
         usage_result = usage_collection.insert_many(usage_list)
         print(f"Inserted usage documents with IDs: {usage_result.inserted_ids}")
 
-    #Wating
-    gg = True
-    start_time = time.time()
-    while gg == True:
-        for i, page in enumerate(page_windows):
-            i += 1
-            sb1.switch_to.window(page)
-            time.sleep(1)
-            collection = db[CSB_Script]
-            query = {"type": "main"}
-            doc = collection.find_one(query)
-            request = doc["request"]
-            if request == f's{i}':
-                command = command_1
-                if   i == 1: command = command_1
-                elif i == 2: command = command_2
-                elif i == 3: command = command_3
-                elif i == 4: command = command_4
-
-                create_devbox(sb1)
-                deploy_docker(command)
-                pyautogui.click(942, 65)
-                collection = db[CSB_Script]
-                query = {"type": "main"}
-                doc = collection.find_one(query)
-                update = {"$set": {"request": 'None'}}
-                result = collection.update_one(query, update)      
-                if result.modified_count > 0:
-                    print(f"Updated {result.modified_count} document(s).")
-                else:
-                    print("No document was updated.")
-
-            time.sleep(5)
-            try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/reload_window.png", region=(144, 118, 1700, 1000), confidence=0.9)
-                pyautogui.click(242, 85)
-                pyautogui.press('f5')
-
-            except Exception as e:
-                print(f'Waiting For Find Directior Listener{i}')
-
-            title =  sb1.get_title()
-            if 'Unable to start the microVM' in title:
-                command = command_1
-                if   i == 1: command = command_1
-                elif i == 2: command = command_2
-                elif i == 3: command = command_3
-                elif i == 4: command = command_4
-
-                create_devbox(sb1)
-                deploy_docker(command)
-                pyautogui.click(942, 65)
-            time.sleep(35)
-
-        elapsed_time = time.time() - start_time
-        mins, secs = divmod(int(elapsed_time), 60)
-        timer = f'{mins:02d}:{secs:02d}'
-        seconds_only = int(elapsed_time)
-        print(f'Next Click {timer}')
-        print(f'Elapsed_time {seconds_only}')
-        if seconds_only > waiting_sec:
-            gg = False

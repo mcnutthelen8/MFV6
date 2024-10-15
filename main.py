@@ -124,24 +124,28 @@ elif farm_id == 8:
 ################3rd######################
 elif farm_id == 9:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/pennyscrambble.json'
+    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     fb_pass = 'ashen1997'
     server_name1 = 'malaysia'
     CSB1_farms = [9, 10, 11, 12]
 
 elif farm_id == 10:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/amytanisha250.json'
+    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     server_name1 = 'morocco'
     fb_pass = 'ashen1997'
     CSB1_farms = [9, 10, 11, 12]
 
 elif farm_id == 11:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/leonardkentiff.json'
+    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     server_name1 = 'georgia'
     fb_pass = 'ashen1997'
     CSB1_farms = [9, 10, 11, 12]
 
 elif farm_id == 12:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/howardrahul838.json'
+    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     server_name1 = 'moldova'
     fb_pass = 'ashen1997'
     CSB1_farms = [9, 10, 11, 12]

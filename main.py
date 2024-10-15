@@ -1702,20 +1702,29 @@ def ipfixer():
         else:
             return True
 
-def get_coin_value_redeem(driver ):
+
+def get_coin_value_redeem(driver):
     try:
         continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'h2.blnc')
         for button in continue_buttons:
             if 'You' in button.text:
                 print(f"Button found: {button.text}, clicking...")
                 gg = button.text
-                gg = int(float(gg.split()[2]))
-                return gg
+                # Use regex to extract the numeric value
+                match = re.search(r'([\d,]+\.\d+)', gg)
+                if match:
+                    gg = match.group(1).replace(',', '')  # Remove commas
+                    gg = int(float(gg))  # Convert to integer
+                    return gg
+                else:
+                    print("No coin value found in text.")
             else:
                 print(button.text)
     except Exception as e:
+        print(f"Error: {e}")
         pass
     return 0
+
                             
 def control_panel():
     try:
@@ -2931,6 +2940,7 @@ if ip_address == ip_required:
                     while cp == 4:
                         ip_address = get_ip(sb1)
                         time.sleep(1)
+                        pyautogui.click(100,200)
                         coins = get_coin_value_redeem(sb1)
 
                         if coins > 20:
@@ -2978,6 +2988,7 @@ if ip_address == ip_required:
                     while cp == 6:
                         ip_address = get_ip(sb1)
                         time.sleep(1)
+                        pyautogui.click(100,200)
                         coins = get_coin_value_redeem(sb1)
 
                         if coins > 100:
@@ -3005,14 +3016,6 @@ if ip_address == ip_required:
                     update = {"$set": {"request": 'reset'}}
                     result = collection.update_one(query, update)
 
-                    #####################
-
-
-                    all_windows = sb1.window_handles
-                    for window in all_windows:
-                        sb1.switch_to.window(window)
-                        sb1.close()  # Close the tab
-                    break
 
 
 
@@ -3039,6 +3042,7 @@ if ip_address == ip_required:
                     while cp == 7:
                         ip_address = get_ip(sb1)
                         time.sleep(1)
+                        pyautogui.click(100,200)
                         coins = get_coin_value_redeem(sb1)
 
                         if coins > 700:

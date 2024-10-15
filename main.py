@@ -1492,6 +1492,59 @@ def redeem(driver):
         print(e)
 
 
+def redeem_1doller(driver):
+    try:    
+        query = {"type": "main"}
+        doc = collection.find_one(query)
+        mail = doc["withdraw_mail"]
+
+        # Locate all gift card names and values
+        pyautogui.click(1166, 617)
+        try:
+                # Wait for the email input to appear
+            driver.wait_for_element('input#userEmail', timeout=5)
+            email_input = driver.find_element('input#userEmail')
+            email_input.send_keys(mail)
+            print(f"Filled the email input field with {mail}.")
+            time.sleep(1)
+
+            submit_button = driver.find_element('input#subGiftCard')
+            submit_button.click()
+            print("Clicked the submit button.")
+            time.sleep(3)
+
+        except Exception as e:
+            print(e)
+    except Exception as e:
+        print(e)
+
+def redeem_bay(driver):
+    try:    
+        query = {"type": "main"}
+        doc = collection.find_one(query)
+        mail = doc["withdraw_mail"]
+
+        # Locate all gift card names and values
+        pyautogui.click(1160, 594)
+        try:
+                # Wait for the email input to appear
+            driver.wait_for_element('input#userEmail', timeout=5)
+            email_input = driver.find_element('input#userEmail')
+            email_input.send_keys(mail)
+            print(f"Filled the email input field with {mail}.")
+            time.sleep(1)
+
+            submit_button = driver.find_element('input#subGiftCard')
+            submit_button.click()
+            print("Clicked the submit button.")
+            time.sleep(3)
+
+        except Exception as e:
+            print(e)
+    except Exception as e:
+        print(e)
+
+
 def baymack_login(driver):
     coin_val = None
     start_time = 1
@@ -1688,6 +1741,14 @@ def control_panel():
         elif request == 'withdrawbay':
             print(request)
             return 6
+        
+        elif request == 'withdrawskydoller':
+            print(request)
+            return 7
+        elif request == 'kill':
+            print(request)
+            return 8
+        
         else:
             print('No function Found to Run')
     except Exception as e:
@@ -1829,7 +1890,7 @@ def cloudflare(sb):
     except Exception as e:
         print(e)
 
-    page_title = sb.get_title().strip()
+    page_title = sb.get_title()
     
     if page_title == 'Just a moment...':
         activate_window_by_id(id)
@@ -1837,7 +1898,7 @@ def cloudflare(sb):
         sb.uc_gui_handle_captcha()
         sb.uc_gui_click_captcha()
         sb.post_message("CouldFlare Found", duration=3)
-    elif page_title == 'www.popmack.com | 502: Bad gateway' or page_title == 'www.popmack.com | 503: Bad gateway':
+    elif '502' in page_title or '503' in page_title or 'Bad gateway' in page_title:
         print('www.popmack.com | 502: Bad gateway')
         sb.refresh()
 
@@ -2460,284 +2521,367 @@ if ip_address == ip_required:
         previous_duration = 0
         print('Starting Loop')
         while True:
-            #time.sleep(1)
-            
-            mainscript = control_panel()
-
-            if mainscript == 1:
-                print('mainscript is 1 ')
+            try:
+                #time.sleep(1)
                 
+                mainscript = control_panel()
 
-                
-                sb1.switch_to.default_content()
-                sb1.execute_script("window.scrollTo(0, 0);")
-                
-                play_button(sb1)
-                playback_check(sb1)
-                remove_pink(sb1)
-                title = sb1.get_title()
-                
-                if title == 'Popmack':
-                    previous_duration = current_duration
-                    current_duration = get_current_duration(sb=sb1)
-
-
-                    if current_duration == previous_duration: #and current_duration == 0 :
-                        time.sleep(2)
-                        print(f'reclick_waits:{reclick_waits}')
-                        reclick_waits +=1
-                        if reclick_waits > 70:
-                            print(f'reopenning reclick {reclick_waits}')
-                            query = {"type": "main"}
-                            update = {"$set": {"request": 'reset'}}
-                            result = collection.update_one(query, update)
-
-                            print(sb1.get_title())
-                            reclick_waits = 0
-
-
-                        if reclick_waits == 20 or reclick_waits == 25 or reclick_waits == 30 or reclick_waits == 50:
-                            #reclick_button(sb1)
-                            pyautogui.click(990, 430)
-                            pyautogui.press('f5')
-                            time.sleep(3)
-
-                    else:
-                        reclick_waits = 1
+                if mainscript == 1:
+                    print('mainscript is 1 ')
                     
-                    if current_duration:
-                        if current_duration >= 20:
-                            if category == 0:
-                                video_link = get_youtube_link(sb1) 
-                                category = get_video_infog(video_link, sb1)
-                                if category:
-                                    if debug_mode:
-                                        print(f"Category: {category}")
-                                    if "Howto" in category:
-                                        category = "How-To"
-                                    elif "Science" in category:
-                                        category = "Sic-fi"
-                                    elif "Beauty" in category:
-                                        category = "Beauty"
-                                    elif "Nonprofit" in category:
-                                        category = "Nonprofit"    
-                                    elif "Film" in category:
-                                        category = "Film"        
-                                    elif "Auto" in category:
-                                        category = "Auto"    
-                                    elif "Technology" in category:
-                                        category = "Technology"
-                                    title = sb1.get_title()
-                                    if title == 'Popmack':        
-                                        ip_address =get_ip(sb1)
-                                        proxycheck = get_proxycheck(sb1, ip_address, server_name= server_name1)
-                                        coins = get_coin_value(sb1)
-                                        if ip_address == ip_required and proxycheck:
-                                            if coins and baymack_coins != 0:
-                                                insert_data(ip= ip_address,amount1=coins, amount2=baymack_coins)
-                                                print('insert Data')
 
-
-                                else:
-                                    print(f'category is not defined{category}')
-                            else:
-                                if basic_info:
-                                    #print("Category is ",category)
-                                    print(f"Video duration: {current_duration} and Category is {category}", end="\r")
-
-        
-                        else:
-                            category = 0
-                            
-                            if basic_info:
-                                print(f"Video duration: {current_duration} and Category is {category}", end="\r")
-                                #print('Video is Fresh')
-
-                    #else:
-                    #    cloudflare(id1,sb1)
-
-                    if check_category_question(sb1) == True:
-                        print('Getting IP at 10 sec..')
-                        #ip_address =get_ip(sb1)
-                        if ip_address == ip_required:
-                                    if ip_address == ip_required:
-                                        title = sb1.get_title()
-                                        print('starting to answer category')
-                                        if category != 0 and title == 'Popmack':
-                                            print(title)
-                                            #get_and_click_category_sky(category, sb1)
-                                            get_and_click_category(category, sb1, selector_type='sky')
-                                            #solve_image_category(sb1, category, id1)
-
-                                        elif category == 0:
-                                            video_link = get_youtube_link(sb1) 
-                                            category = get_video_infog(video_link, sb1)
-
-                                            print(f"Category: {category}")
-                                            if category:
-                                                if "Howto" in category:
-                                                    category = "How-To"
-                                                elif "Science" in category:
-                                                    category = "Sic-fi"
-                                                elif "Nonprofit" in category:
-                                                    category = "Nonprofit"    
-                                                elif "Film" in category:
-                                                    category = "Film"        
-                                                elif "Auto" in category:
-                                                    category = "Auto"    
-                                                elif "Technology" in category:
-                                                    category = "Technology"        
-                        
-                        else:
-                            #ip_address =get_ip(sb)
-                            print(f'IP is not Matched in IF category {ip_address}, Required: {ip_required}')
-                            print('Getting IP at after found category...')
-                            query = {"type": "main"}
-                            update = {"$set": {"response": f'IP is not Matched{ip_address}, Required: {ip_required}'}}
-                            result = collection.update_one(query, update)
-                            update2 = {"$set": {"request": 'ipfixer'}}
-                            result = collection.update_one(query, update2)
-                            time.sleep(3)
-                            #break
-                            #ip_required = fix_ip(sb1, server_name1)
-                            #ip_address = get_ip(sb1)
-
-                        
-                if title == 'Zaptaps':
-                    previous_duration_bay = current_duration_bay
-                    current_duration_bay = get_current_duration(sb=sb1)
-                    if current_duration_bay == previous_duration_bay:
-                        time.sleep(2) #and current_duration_bay == 0 :
-                        print(f'reclick_waits2:{reclick_waits2}')
-                        reclick_waits2 +=1
-                        if reclick_waits2 > 80:
-                            print(f'reopenning reclick {reclick_waits2}')
-                            query = {"type": "main"}
-                            update = {"$set": {"request": 'reset'}}
-                            result = collection.update_one(query, update)
-
-                            print(sb1.get_title())
-                            reclick_waits2 = 0
-
-                        if reclick_waits2 == 20 or reclick_waits2 == 25 or reclick_waits2 == 30 or reclick_waits2 == 40:
-                            #reclick_button(sb1)
-                            pyautogui.click(990, 430)
-                            pyautogui.press('f5')
-                            time.sleep(3)
-
-                    else:
-                        reclick_waits2 = 1
                     
-                    if current_duration_bay:
-                        if current_duration_bay >= 20:
-                            if category_bay == 0:
-                                video_link = get_youtube_link(sb1) 
-                                category_bay = get_video_infog(video_link, sb1)
-                                if category_bay:
-                                    if debug_mode:
-                                        print(f"Category: {category_bay}")
-                                    if "Howto" in category_bay:
-                                        category_bay = "How-To"
-                                    elif "Science" in category_bay:
-                                        category_bay = "Sic-fi"
-                                    elif "Beauty" in category_bay:
-                                        category_bay = "Beauty"
-                                    elif "Nonprofit" in category_bay:
-                                        category_bay = "Nonprofit"    
-                                    elif "Film" in category_bay:
-                                        category_bay = "Film"        
-                                    elif "Auto" in category_bay:
-                                        category_bay = "Auto"    
-                                    elif "Technology" in category_bay:
-                                        category_bay = "Technology"
-                                    title = sb1.get_title()
-                                    if title == 'Zaptaps':        
-                                        #ip_address =get_ip(sb1)
-                                        #proxycheck = get_proxycheck(sb1, ip_address, server_name= server_name1)
-                                        coins = get_coin_value(sb1)
-                                        if coins:
-                                            baymack_coins = coins
-                                        else:
-                                            print('Bymack Coins not availible')
-
-    
-                                else:
-                                    print(f'category_bay is not defined{category_bay}')
-                            else:
-                                if basic_info:
-                                    #print("Category is ",category)
-                                    print(f"Video duration_bay: {current_duration_bay} and Category is {category_bay}", end="\r")
-
-        
-                        else:
-                            category_bay = 0
-                            
-                            if basic_info:
-                                print(f"Video duration_bay: {current_duration_bay} and Category is {category_bay}", end="\r")
-                                #print('Video is Fresh')
-
-                    #else:
-                        #cloudflare(id1,sb1)
-
-                    if check_category_question(sb1) == True:
-                        print('Getting IP at 10 sec..')
-                        #ip_address =get_ip(sb1)
-                        if ip_address == ip_address:
-                                    if ip_address == ip_address:
-                                        title = sb1.get_title()
-                                        if category_bay != 0 and title == 'Zaptaps':
-                                            print('starting to answer category confirm')
-                                            title = sb1.get_title()
-                                            if title:
-                                                print(title)
-                                                get_and_click_category(category, sb1, selector_type='bay')
-                                                #solve_image_category(sb1, category_bay, id1)
-
-                                        elif category_bay == 0:
-                                            video_link = get_youtube_link(sb1) 
-                                            category_bay = get_video_infog(video_link, sb1)
-
-                                            print(f"Category: {category_bay}")
-                                            if category_bay:
-                                                if "Howto" in category_bay:
-                                                    category_bay = "How-To"
-                                                elif "Science" in category_bay:
-                                                    category_bay = "Sic-fi"
-                                                elif "Nonprofit" in category_bay:
-                                                    category_bay = "Nonprofit"    
-                                                elif "Film" in category_bay:
-                                                    category_bay = "Film"        
-                                                elif "Auto" in category_bay:
-                                                    category_bay = "Auto"    
-                                                elif "Technology" in category_bay:
-                                                    category_bay = "Technology"        
-                        
-                        else:
-                            #ip_address =get_ip(sb)
-                            print(f'IP _bays not Matched in IF category {ip_address}, Required: {ip_required}')
-                            print('Getting IP at after found category...')
-                            query = {"type": "main"}
-                            update = {"$set": {"response": f'IP is not Matched{ip_address}, Required: {ip_required}'}}
-                            result = collection.update_one(query, update)
-
-                            update2 = {"$set": {"request": 'ipfixer'}}
-                            result = collection.update_one(query, update2)
-                            time.sleep(3)
-                            #break
-                            #ip_required = fix_ip(sb1, server_name1)
-                            #ip_address = get_ip(sb1)
-
-
-                check_icon_captcha_exists(sb1, id1)
-                new_numbercaptcha(sb1)
-                cloudflare(sb1)
-                
-
-                if with_baymack == True:
+                    sb1.switch_to.default_content()
+                    sb1.execute_script("window.scrollTo(0, 0);")
+                    
+                    play_button(sb1)
+                    playback_check(sb1)
+                    remove_pink(sb1)
                     title = sb1.get_title()
+                    
                     if title == 'Popmack':
+                        previous_duration = current_duration
+                        current_duration = get_current_duration(sb=sb1)
 
-                        skylom_window = sb1.current_window_handle
+
+                        if current_duration == previous_duration: #and current_duration == 0 :
+                            time.sleep(2)
+                            print(f'reclick_waits:{reclick_waits}')
+                            reclick_waits +=1
+                            if reclick_waits > 70:
+                                print(f'reopenning reclick {reclick_waits}')
+                                query = {"type": "main"}
+                                update = {"$set": {"request": 'reset'}}
+                                result = collection.update_one(query, update)
+
+                                print(sb1.get_title())
+                                reclick_waits = 0
+
+
+                            if reclick_waits == 20 or reclick_waits == 25 or reclick_waits == 30 or reclick_waits == 50:
+                                #reclick_button(sb1)
+                                pyautogui.click(990, 430)
+                                pyautogui.press('f5')
+                                time.sleep(3)
+
+                        else:
+                            reclick_waits = 1
+                        
+                        if current_duration:
+                            if current_duration >= 20:
+                                if category == 0:
+                                    video_link = get_youtube_link(sb1) 
+                                    category = get_video_infog(video_link, sb1)
+                                    if category:
+                                        if debug_mode:
+                                            print(f"Category: {category}")
+                                        if "Howto" in category:
+                                            category = "How-To"
+                                        elif "Science" in category:
+                                            category = "Sic-fi"
+                                        elif "Beauty" in category:
+                                            category = "Beauty"
+                                        elif "Nonprofit" in category:
+                                            category = "Nonprofit"    
+                                        elif "Film" in category:
+                                            category = "Film"        
+                                        elif "Auto" in category:
+                                            category = "Auto"    
+                                        elif "Technology" in category:
+                                            category = "Technology"
+                                        title = sb1.get_title()
+                                        if title == 'Popmack':        
+                                            ip_address =get_ip(sb1)
+                                            proxycheck = get_proxycheck(sb1, ip_address, server_name= server_name1)
+                                            coins = get_coin_value(sb1)
+                                            if ip_address == ip_required and proxycheck:
+                                                if coins and baymack_coins != 0:
+                                                    insert_data(ip= ip_address,amount1=coins, amount2=baymack_coins)
+                                                    print('insert Data')
+
+
+                                    else:
+                                        print(f'category is not defined{category}')
+                                else:
+                                    if basic_info:
+                                        #print("Category is ",category)
+                                        print(f"Video duration: {current_duration} and Category is {category}", end="\r")
+
+            
+                            else:
+                                category = 0
+                                
+                                if basic_info:
+                                    print(f"Video duration: {current_duration} and Category is {category}", end="\r")
+                                    #print('Video is Fresh')
+
+                        #else:
+                        #    cloudflare(id1,sb1)
+
+                        if check_category_question(sb1) == True:
+                            print('Getting IP at 10 sec..')
+                            #ip_address =get_ip(sb1)
+                            if ip_address == ip_required:
+                                        if ip_address == ip_required:
+                                            title = sb1.get_title()
+                                            print('starting to answer category')
+                                            if category != 0 and title == 'Popmack':
+                                                print(title)
+                                                #get_and_click_category_sky(category, sb1)
+                                                get_and_click_category(category, sb1, selector_type='sky')
+                                                #solve_image_category(sb1, category, id1)
+
+                                            elif category == 0:
+                                                video_link = get_youtube_link(sb1) 
+                                                category = get_video_infog(video_link, sb1)
+
+                                                print(f"Category: {category}")
+                                                if category:
+                                                    if "Howto" in category:
+                                                        category = "How-To"
+                                                    elif "Science" in category:
+                                                        category = "Sic-fi"
+                                                    elif "Nonprofit" in category:
+                                                        category = "Nonprofit"    
+                                                    elif "Film" in category:
+                                                        category = "Film"        
+                                                    elif "Auto" in category:
+                                                        category = "Auto"    
+                                                    elif "Technology" in category:
+                                                        category = "Technology"        
+                            
+                            else:
+                                #ip_address =get_ip(sb)
+                                print(f'IP is not Matched in IF category {ip_address}, Required: {ip_required}')
+                                print('Getting IP at after found category...')
+                                query = {"type": "main"}
+                                update = {"$set": {"response": f'IP is not Matched{ip_address}, Required: {ip_required}'}}
+                                result = collection.update_one(query, update)
+                                update2 = {"$set": {"request": 'ipfixer'}}
+                                result = collection.update_one(query, update2)
+                                time.sleep(3)
+                                #break
+                                #ip_required = fix_ip(sb1, server_name1)
+                                #ip_address = get_ip(sb1)
+
+                            
+                    if title == 'Zaptaps':
+                        previous_duration_bay = current_duration_bay
+                        current_duration_bay = get_current_duration(sb=sb1)
+                        if current_duration_bay == previous_duration_bay:
+                            time.sleep(2) #and current_duration_bay == 0 :
+                            print(f'reclick_waits2:{reclick_waits2}')
+                            reclick_waits2 +=1
+                            if reclick_waits2 > 80:
+                                print(f'reopenning reclick {reclick_waits2}')
+                                query = {"type": "main"}
+                                update = {"$set": {"request": 'reset'}}
+                                result = collection.update_one(query, update)
+
+                                print(sb1.get_title())
+                                reclick_waits2 = 0
+
+                            if reclick_waits2 == 20 or reclick_waits2 == 25 or reclick_waits2 == 30 or reclick_waits2 == 40:
+                                #reclick_button(sb1)
+                                pyautogui.click(990, 430)
+                                pyautogui.press('f5')
+                                time.sleep(3)
+
+                        else:
+                            reclick_waits2 = 1
+                        
+                        if current_duration_bay:
+                            if current_duration_bay >= 20:
+                                if category_bay == 0:
+                                    video_link = get_youtube_link(sb1) 
+                                    category_bay = get_video_infog(video_link, sb1)
+                                    if category_bay:
+                                        if debug_mode:
+                                            print(f"Category: {category_bay}")
+                                        if "Howto" in category_bay:
+                                            category_bay = "How-To"
+                                        elif "Science" in category_bay:
+                                            category_bay = "Sic-fi"
+                                        elif "Beauty" in category_bay:
+                                            category_bay = "Beauty"
+                                        elif "Nonprofit" in category_bay:
+                                            category_bay = "Nonprofit"    
+                                        elif "Film" in category_bay:
+                                            category_bay = "Film"        
+                                        elif "Auto" in category_bay:
+                                            category_bay = "Auto"    
+                                        elif "Technology" in category_bay:
+                                            category_bay = "Technology"
+                                        title = sb1.get_title()
+                                        if title == 'Zaptaps':        
+                                            #ip_address =get_ip(sb1)
+                                            #proxycheck = get_proxycheck(sb1, ip_address, server_name= server_name1)
+                                            coins = get_coin_value(sb1)
+                                            if coins:
+                                                baymack_coins = coins
+                                            else:
+                                                print('Bymack Coins not availible')
+
+        
+                                    else:
+                                        print(f'category_bay is not defined{category_bay}')
+                                else:
+                                    if basic_info:
+                                        #print("Category is ",category)
+                                        print(f"Video duration_bay: {current_duration_bay} and Category is {category_bay}", end="\r")
+
+            
+                            else:
+                                category_bay = 0
+                                
+                                if basic_info:
+                                    print(f"Video duration_bay: {current_duration_bay} and Category is {category_bay}", end="\r")
+                                    #print('Video is Fresh')
+
+                        #else:
+                            #cloudflare(id1,sb1)
+
+                        if check_category_question(sb1) == True:
+                            print('Getting IP at 10 sec..')
+                            #ip_address =get_ip(sb1)
+                            if ip_address == ip_address:
+                                        if ip_address == ip_address:
+                                            title = sb1.get_title()
+                                            if category_bay != 0 and title == 'Zaptaps':
+                                                print('starting to answer category confirm')
+                                                title = sb1.get_title()
+                                                if title:
+                                                    print(title)
+                                                    get_and_click_category(category, sb1, selector_type='bay')
+                                                    #solve_image_category(sb1, category_bay, id1)
+
+                                            elif category_bay == 0:
+                                                video_link = get_youtube_link(sb1) 
+                                                category_bay = get_video_infog(video_link, sb1)
+
+                                                print(f"Category: {category_bay}")
+                                                if category_bay:
+                                                    if "Howto" in category_bay:
+                                                        category_bay = "How-To"
+                                                    elif "Science" in category_bay:
+                                                        category_bay = "Sic-fi"
+                                                    elif "Nonprofit" in category_bay:
+                                                        category_bay = "Nonprofit"    
+                                                    elif "Film" in category_bay:
+                                                        category_bay = "Film"        
+                                                    elif "Auto" in category_bay:
+                                                        category_bay = "Auto"    
+                                                    elif "Technology" in category_bay:
+                                                        category_bay = "Technology"        
+                            
+                            else:
+                                #ip_address =get_ip(sb)
+                                print(f'IP _bays not Matched in IF category {ip_address}, Required: {ip_required}')
+                                print('Getting IP at after found category...')
+                                query = {"type": "main"}
+                                update = {"$set": {"response": f'IP is not Matched{ip_address}, Required: {ip_required}'}}
+                                result = collection.update_one(query, update)
+
+                                update2 = {"$set": {"request": 'ipfixer'}}
+                                result = collection.update_one(query, update2)
+                                time.sleep(3)
+                                #break
+                                #ip_required = fix_ip(sb1, server_name1)
+                                #ip_address = get_ip(sb1)
+
+
+                    check_icon_captcha_exists(sb1, id1)
+                    new_numbercaptcha(sb1)
+                    cloudflare(sb1)
+                    
+
+                    if with_baymack == True:
+                        title = sb1.get_title()
+                        if title == 'Popmack':
+
+                            skylom_window = sb1.current_window_handle
+                            all_windows = sb1.window_handles
+                            print(f"All windows: {all_windows}")
+
+                            # Find and assign Baymack window (not matching Popmack window)
+                            for window in all_windows:
+                                if window != skylom_window:
+                                    baymack_window = window
+                                    break
+                            sb1.switch_to.window(baymack_window)
+                        elif title == 'Zaptaps':
+
+                            baymack_window = sb1.current_window_handle
+                            all_windows = sb1.window_handles
+                            print(f"All windows: {all_windows}")
+
+                            # Find and assign Baymack window (not matching Popmack window)
+                            for window in all_windows:
+                                if window != baymack_window:
+                                    skylom_window = window
+                                    break
+                            sb1.switch_to.window(skylom_window)
+                        elif '502' in title or '503' in title or 'Bad gateway' in title:
+                            print('www.popmack.com | 502: Bad gateway')
+                            sb1.refresh()
+                        else:
+                            print(f'no title was sky or bay {title}')
+
+
+                elif mainscript == 2:
+                    print('mainscript is 2 ')
+                    ip_required = fix_ip(sb1, server_name1)
+                    ip_address = get_ip(sb1)
+
+                elif mainscript == 3:
+                    sb1.quit()
+                    time.sleep(2)
+
+                    sb1 = Driver(uc=True, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
+                    sb1.maximize_window()
+                    id1 = get_current_window_id()
+                    url = "chrome://extensions/"
+                    sb1.open(url)
+                    print(sb1.get_title())
+                    sb1.maximize_window()
+                    query = {"type": "main"}
+                    update = {"$set": {"response": 'Browser Configuring...'}}
+                    result = collection.update_one(query, update)
+                    update = {"$set": {"request": 'ipfixer'}}
+                    result = collection.update_one(query, update)
+                    if result.matched_count > 0:
+                        print(f"Added new messages to existing document. Updated {result.modified_count} document(s).")
+                    else:
+                        print("No document found with the specified type.")
+                    sb1.maximize_window()
+                    ipfixer()
+                    ip_required = fix_ip(sb1, server_name1)
+                    ip_address = get_ip(sb1)
+
+                    # Open Popmack and get the title
+                    sb1.uc_open_with_tab("https://www.popmack.com/videos")
+                    ggt = sb1.get_title()
+
+                    # If Popmack loads, perform the login
+                    if ggt == 'Popmack':
+                        time.sleep(1)
+                        baymack_login(sb1)
+
+                    # Save Popmack window handle
+                    skylom_window = sb1.current_window_handle
+                    print(f"Popmack window handle: {skylom_window}")
+
+                    # If Baymack is involved, open Zaptaps in a new window
+                    if with_baymack:
+                        sb1.open_new_window()  # Opens a new window
+                        sb1.switch_to_newest_window()  # Switch to the newly opened window
+                        sb1.uc_open_with_tab("https://www.zaptaps.com/videos")  # Load Zaptaps in the new window
+
+                        # Get the title after opening Zaptaps
+                        ggt = sb1.get_title()
+                        print(f"Title after opening Zaptaps: {ggt}")
+                        
+                        # Retrieve all window handles and assign the non-matching one to Baymack
                         all_windows = sb1.window_handles
                         print(f"All windows: {all_windows}")
 
@@ -2746,168 +2890,199 @@ if ip_address == ip_required:
                             if window != skylom_window:
                                 baymack_window = window
                                 break
+                        
+                        print(f"Baymack window handle: {baymack_window}")
+                        
+                        # Switch to Baymack window and perform login if Zaptaps page loaded
                         sb1.switch_to.window(baymack_window)
-                    elif title == 'Zaptaps':
-
+                        ggt = sb1.get_title()
+                        print(f"Title of Baymack window: {ggt}")
+                        
+                        if ggt == 'Zaptaps':
+                            time.sleep(1)
+                            baymack_coins = baymack_login(sb1)
+                            print(f'Done: {baymack_coins}')
+                        
+                        # Save the new Baymack window handle after login
                         baymack_window = sb1.current_window_handle
-                        all_windows = sb1.window_handles
-                        print(f"All windows: {all_windows}")
+                        print(f"New Baymack window handle after login: {baymack_window}")
 
-                        # Find and assign Baymack window (not matching Popmack window)
-                        for window in all_windows:
-                            if window != baymack_window:
-                                skylom_window = window
-                                break
-                        sb1.switch_to.window(skylom_window)
-                    else:
-                        print(f'no title was sky or bay {title}')
-
-
-            elif mainscript == 2:
-                print('mainscript is 2 ')
-                ip_required = fix_ip(sb1, server_name1)
-                ip_address = get_ip(sb1)
-
-            elif mainscript == 3:
-                sb1.quit()
-                time.sleep(2)
-
-                sb1 = Driver(uc=True, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
-                sb1.maximize_window()
-                id1 = get_current_window_id()
-                url = "chrome://extensions/"
-                sb1.open(url)
-                print(sb1.get_title())
-                sb1.maximize_window()
-                query = {"type": "main"}
-                update = {"$set": {"response": 'Browser Configuring...'}}
-                result = collection.update_one(query, update)
-                update = {"$set": {"request": 'ipfixer'}}
-                result = collection.update_one(query, update)
-                if result.matched_count > 0:
-                    print(f"Added new messages to existing document. Updated {result.modified_count} document(s).")
-                else:
-                    print("No document found with the specified type.")
-                sb1.maximize_window()
-                ipfixer()
-                ip_required = fix_ip(sb1, server_name1)
-                ip_address = get_ip(sb1)
-
-                # Open Popmack and get the title
-                sb1.uc_open_with_tab("https://www.popmack.com/videos")
-                ggt = sb1.get_title()
-
-                # If Popmack loads, perform the login
-                if ggt == 'Popmack':
-                    time.sleep(1)
-                    baymack_login(sb1)
-
-                # Save Popmack window handle
-                skylom_window = sb1.current_window_handle
-                print(f"Popmack window handle: {skylom_window}")
-
-                # If Baymack is involved, open Zaptaps in a new window
-                if with_baymack:
-                    sb1.open_new_window()  # Opens a new window
-                    sb1.switch_to_newest_window()  # Switch to the newly opened window
-                    sb1.uc_open_with_tab("https://www.zaptaps.com/videos")  # Load Zaptaps in the new window
-
-                    # Get the title after opening Zaptaps
-                    ggt = sb1.get_title()
-                    print(f"Title after opening Zaptaps: {ggt}")
-                    
-                    # Retrieve all window handles and assign the non-matching one to Baymack
-                    all_windows = sb1.window_handles
-                    print(f"All windows: {all_windows}")
-
-                    # Find and assign Baymack window (not matching Popmack window)
-                    for window in all_windows:
-                        if window != skylom_window:
-                            baymack_window = window
-                            break
-                    
-                    print(f"Baymack window handle: {baymack_window}")
-                    
-                    # Switch to Baymack window and perform login if Zaptaps page loaded
+                    # Ensure you're switching back to the Baymack window manually
                     sb1.switch_to.window(baymack_window)
-                    ggt = sb1.get_title()
-                    print(f"Title of Baymack window: {ggt}")
-                    
-                    if ggt == 'Zaptaps':
+                    print(f'Switched to Baymack window: {baymack_window}, Popmack window: {skylom_window}')
+
+
+                elif mainscript == 4:
+                    print('Withdraw Popmack..')
+                    current_window = sb1.current_window_handle
+                    all_windows = sb1.window_handles
+                    for window in all_windows:
+                        if window != current_window:
+                            sb1.switch_to.window(window)
+                            sb1.close()  # Close the tab
+                    sb1.switch_to.window(current_window)
+                    sb1.uc_open_with_tab('https://www.popmack.com/prizes')
+                    time.sleep(1)
+                    print(sb1.get_title())
+                    cp = control_panel()
+                    bcoins = get_coin_value_redeem(sb1)
+                    print(sb1.get_title(), bcoins)
+                    attemp = 1
+                    while cp == 4:
+                        ip_address = get_ip(sb1)
                         time.sleep(1)
-                        baymack_coins = baymack_login(sb1)
-                        print(f'Done: {baymack_coins}')
+                        coins = get_coin_value_redeem(sb1)
+
+                        if coins > 20:
+                            if ip_address == ip_required:
+                                pyautogui.click(100,200)
+                                time.sleep(3)
+                                redeem(sb1)
+                                time.sleep(3)
+                            else:
+                                print('Ip is not matching')
+                                query = {"type": "main"}
+                                update = {"$set": {"response": f'IP is not Matched{ip_address}, Required: {ip_required}'}}
+                                result = collection.update_one(query, update)
+                                time.sleep(5)
+                        else:
+                            print('Low Coins >',{coins})
+                            time.sleep(3)
+
+                        query = {"type": "main"}
+                        update = {"$set": {"response": f'Coins{coins}, Attempts: {attemp}, Before: {bcoins} Withdraw : {int(bcoins) - int(coins)}'}}
+                        result = collection.update_one(query, update)
+                        attemp += 1
+                        cp = control_panel()
+                    query = {"type": "main"}
+                    update = {"$set": {"request": 'reset'}}
+                    result = collection.update_one(query, update)
                     
-                    # Save the new Baymack window handle after login
-                    baymack_window = sb1.current_window_handle
-                    print(f"New Baymack window handle after login: {baymack_window}")
 
-                # Ensure you're switching back to the Baymack window manually
-                sb1.switch_to.window(baymack_window)
-                print(f'Switched to Baymack window: {baymack_window}, Popmack window: {skylom_window}')
+                elif mainscript == 6:
+                    print('Withdraw Baymack..')
+                    current_window = sb1.current_window_handle
+                    all_windows = sb1.window_handles
+                    for window in all_windows:
+                        if window != current_window:
+                            sb1.switch_to.window(window)
+                            sb1.close()  # Close the tab
+                    sb1.switch_to.window(current_window)
+                    sb1.uc_open_with_tab('https://www.zaptaps.com/prizes')
+                    time.sleep(1)
+                    print(sb1.get_title())
+                    cp = control_panel()
+                    bcoins = get_coin_value_redeem(sb1)
+                    print(sb1.get_title(), bcoins)
+                    attemp = 1
+                    while cp == 6:
+                        ip_address = get_ip(sb1)
+                        time.sleep(1)
+                        coins = get_coin_value_redeem(sb1)
+
+                        if coins > 100:
+                            if ip_address == ip_required:
+                                pyautogui.click(100,200)
+                                time.sleep(3)
+                                redeem_bay(sb1)
+                                time.sleep(3)
+                            else:
+                                print('Ip is not matching')
+                                query = {"type": "main"}
+                                update = {"$set": {"response": f'IP is not Matched{ip_address}, Required: {ip_required}'}}
+                                result = collection.update_one(query, update)
+                                time.sleep(5)
+                        else:
+                            print(f'Low Coins >{coins} Before:{bcoins}')
+                            time.sleep(3)
+
+                        query = {"type": "main"}
+                        update = {"$set": {"response": f'Coins{coins}, Attempts: {attemp}, Before: {bcoins} Withdraw : {int(bcoins) - int(coins)}'}}
+                        result = collection.update_one(query, update)
+                        attemp += 1
+                        cp = control_panel()
+                    query = {"type": "main"}
+                    update = {"$set": {"request": 'reset'}}
+                    result = collection.update_one(query, update)
+
+                    #####################
 
 
-            elif mainscript == 4:
-                print('Withdraw Popmack..')
-                current_window = sb1.current_window_handle
-                all_windows = sb1.window_handles
-                for window in all_windows:
-                    if window != current_window:
+                    all_windows = sb1.window_handles
+                    for window in all_windows:
                         sb1.switch_to.window(window)
                         sb1.close()  # Close the tab
-                sb1.switch_to.window(current_window)
-                sb1.uc_open_with_tab('https://www.popmack.com/prizes')
-                time.sleep(1)
-                print(sb1.get_title())
-                cp = control_panel()
-                bcoins = get_coin_value_redeem(sb1)
-                print(sb1.get_title(), bcoins)
-                attemp = 1
-                while cp == 4:
-                    ip_address = get_ip(sb1)
+                    break
+
+
+
+                elif mainscript == 5:
+                    print('Pausing....')
+                    time.sleep(5)
+
+                elif mainscript == 7:
+                    print('Withdraw Popmack..')
+                    current_window = sb1.current_window_handle
+                    all_windows = sb1.window_handles
+                    for window in all_windows:
+                        if window != current_window:
+                            sb1.switch_to.window(window)
+                            sb1.close()  # Close the tab
+                    sb1.switch_to.window(current_window)
+                    sb1.uc_open_with_tab('https://www.popmack.com/prizes')
                     time.sleep(1)
-                    coins = get_coin_value_redeem(sb1)
-
-                    if coins > 20:
-                        if ip_address == ip_required:
-                            pyautogui.click(100,200)
-                            time.sleep(3)
-                            redeem(sb1)
-                            time.sleep(3)
-                        else:
-                            print('Ip is not matching')
-                            query = {"type": "main"}
-                            update = {"$set": {"response": f'IP is not Matched{ip_address}, Required: {ip_required}'}}
-                            result = collection.update_one(query, update)
-                            time.sleep(5)
-                    else:
-                        print('Low Coins >',{coins})
-                        time.sleep(3)
-
-                    query = {"type": "main"}
-                    update = {"$set": {"response": f'Coins{coins}, Attempts: {attemp}, Before: {bcoins} Withdraw : {int(bcoins) - int(coins)}'}}
-                    result = collection.update_one(query, update)
-                    attemp += 1
+                    print(sb1.get_title())
                     cp = control_panel()
-                query = {"type": "main"}
-                update = {"$set": {"request": 'reset'}}
-                result = collection.update_one(query, update)
-                
+                    bcoins = get_coin_value_redeem(sb1)
+                    print(sb1.get_title(), bcoins)
+                    attemp = 1
+                    while cp == 7:
+                        ip_address = get_ip(sb1)
+                        time.sleep(1)
+                        coins = get_coin_value_redeem(sb1)
 
-            elif mainscript == 6:
-                print('Withdraw Baymack..')
-                all_windows = sb1.window_handles
-                for window in all_windows:
-                    sb1.switch_to.window(window)
-                    sb1.close()  # Close the tab
-                break
+                        if coins > 700:
+                            if ip_address == ip_required:
+                                pyautogui.click(100,200)
+                                time.sleep(3)
+                                redeem_1doller(sb1)
+                                time.sleep(3)
+                            else:
+                                print('Ip is not matching')
+                                query = {"type": "main"}
+                                update = {"$set": {"response": f'IP is not Matched{ip_address}, Required: {ip_required}'}}
+                                result = collection.update_one(query, update)
+                                time.sleep(5)
+                        else:
+                            print('Low Coins >',{coins})
+                            time.sleep(3)
+
+                        query = {"type": "main"}
+                        update = {"$set": {"response": f'Coins{coins}, Attempts: {attemp}, Before: {bcoins} Withdraw : {int(bcoins) - int(coins)}'}}
+                        result = collection.update_one(query, update)
+                        attemp += 1
+                        cp = control_panel()
+                    query = {"type": "main"}
+                    update = {"$set": {"request": 'reset'}}
+                    result = collection.update_one(query, update)
+                    
+                    #<span class="cb-lb-t">Verify you are human</span>
 
 
+                elif mainscript == 8:
+                    print('Pausing....')
+                    time.sleep(5)
+                    all_windows = sb1.window_handles
+                    for window in all_windows:
+                        sb1.switch_to.window(window)
+                        sb1.close()  # Close the tab
+                    break
 
-            elif mainscript == 5:
-
-                print('Pausing....')
-                time.sleep(3)
-
-
-                #<span class="cb-lb-t">Verify you are human</span>
+            except Exception as e:
+                print(f'ERR:{e}')
+                try:
+                    query = {"type": "main"}
+                    update = {"$set": {"response": f'ERR: {e}'}}
+                    result = collection.update_one(query, update)
+                except Exception as e:
+                    print(f'ERR:{e}')

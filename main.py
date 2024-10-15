@@ -670,17 +670,17 @@ def mysterium_vpn_connect(server_name):
         pyautogui.click(x, y)
         print("mysterium_icon_empty Found")
         time.sleep(5)
-        try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/myserium_disconnect.png", region=(1325, 190, 800, 400), confidence=0.95)
-            pyautogui.click(x, y)
-            print("myserium_disconnect Found")
-        except pyautogui.ImageNotFoundException:
-            print("No myserium_disconnect .")
+        #try:
+        #    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/myserium_disconnect.png", region=(1325, 190, 800, 400), confidence=0.95)
+        #    pyautogui.click(x, y)
+        ##    print("myserium_disconnect Found")
+        #except pyautogui.ImageNotFoundException:
+        #    print("No myserium_disconnect .")
 
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/quick_connect.png", region=(1325, 190, 800, 400), confidence=0.95)
+            #x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/quick_connect.png", region=(1325, 190, 800, 400), confidence=0.95)
         
-            print("quick_connect Found")
+            #print("quick_connect Found")
             try:
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/search_mysterium.png", region=(1325, 494, 800, 400), confidence=0.95)
                 pyautogui.click(x, y)

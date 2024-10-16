@@ -1009,7 +1009,12 @@ def remove_lines_from_image(input_image_path, output_image_path, np1 = 2 , np2 =
     closing = cv2.morphologyEx(erosion, cv2.MORPH_CLOSE, kernel_closing)
     cv2.imwrite(output_image_path, closing)
 
-def captcha_to_text(image_paths):
+def grayscale_image_for_ocr(image_path, output_path):
+    image = cv2.imread(image_path)
+    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    cv2.imwrite(output_path, gray_image)
+
+def captcha_to_text2(image_paths):
     temp_output = 'temp_output.png'
     list_img = []
     for image in image_paths:
@@ -1038,6 +1043,31 @@ def captcha_to_text(image_paths):
         list_img.append(result)
 
     return list_img
+
+def captcha_to_text(image_paths):
+    temp_output = 'temp_output.png'
+    list_img = []
+    for image in image_paths:
+        grayscale_image_for_ocr(image, temp_output)
+        result = ocr.ocr(temp_output)
+        if result == [None]:
+            print(f'try 3,3 for {image}')
+            
+            result = ocr.ocr(image)
+            if result == [None]:
+                result = '555'
+            else:
+                result = ''.join([item[1][0] for item in result[0]])
+        else:
+            result = ''.join([item[1][0] for item in result[0]])
+            #result_back = result
+            #letter_count = sum(1 for char in result if char.isalpha())
+        list_img.append(result)
+
+    return list_img
+
+
+
 
 def solve_image_category(drive, category, window):
     start_time = time.time()
@@ -2557,7 +2587,7 @@ if ip_address == ip_required:
                             time.sleep(2)
                             print(f'reclick_waits:{reclick_waits}')
                             reclick_waits +=1
-                            if reclick_waits > 70:
+                            if reclick_waits > 40:
                                 print(f'reopenning reclick {reclick_waits}')
                                 query = {"type": "main"}
                                 update = {"$set": {"request": 'reset'}}
@@ -2567,7 +2597,7 @@ if ip_address == ip_required:
                                 reclick_waits = 0
 
 
-                            if reclick_waits == 20 or reclick_waits == 25 or reclick_waits == 30 or reclick_waits == 50:
+                            if reclick_waits == 15 or reclick_waits == 20 or reclick_waits == 25 or reclick_waits == 30:
                                 #reclick_button(sb1)
                                 pyautogui.click(990, 430)
                                 pyautogui.press('f5')
@@ -2681,7 +2711,7 @@ if ip_address == ip_required:
                             time.sleep(2) #and current_duration_bay == 0 :
                             print(f'reclick_waits2:{reclick_waits2}')
                             reclick_waits2 +=1
-                            if reclick_waits2 > 80:
+                            if reclick_waits2 > 40:
                                 print(f'reopenning reclick {reclick_waits2}')
                                 query = {"type": "main"}
                                 update = {"$set": {"request": 'reset'}}
@@ -2690,7 +2720,7 @@ if ip_address == ip_required:
                                 print(sb1.get_title())
                                 reclick_waits2 = 0
 
-                            if reclick_waits2 == 20 or reclick_waits2 == 25 or reclick_waits2 == 30 or reclick_waits2 == 40:
+                            if reclick_waits2 == 15 or reclick_waits2 == 20 or reclick_waits2 == 26 or reclick_waits2 == 30:
                                 #reclick_button(sb1)
                                 pyautogui.click(990, 430)
                                 pyautogui.press('f5')

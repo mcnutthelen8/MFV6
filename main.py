@@ -664,23 +664,30 @@ def get_ipscore(ip):
         return None
 
 
-def mysterium_vpn_connect(server_name):
+def mysterium_vpn_connect(server_name, driver):
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
         pyautogui.click(x, y)
         print("mysterium_icon_empty Found")
         time.sleep(5)
-        #try:
-        #    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/myserium_disconnect.png", region=(1325, 190, 800, 400), confidence=0.95)
-        #    pyautogui.click(x, y)
-        ##    print("myserium_disconnect Found")
-        #except pyautogui.ImageNotFoundException:
-        #    print("No myserium_disconnect .")
-
         try:
-            #x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/quick_connect.png", region=(1325, 190, 800, 400), confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/myserium_disconnect.png", region=(1325, 190, 800, 400), confidence=0.95)
+            pyautogui.click(x, y)
+            print("myserium_disconnect Found")
+        except pyautogui.ImageNotFoundException:
+            print("No myserium_disconnect .")
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.99)
+            #pyautogui.click(x, y)
+            print("mysterium_login Found")
+            mysterium_login(driver)
+            #return 0
+        except Exception as e:
+            print("mysterium_logged")
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/quick_connect.png", region=(1325, 190, 800, 400), confidence=0.95)
         
-            #print("quick_connect Found")
+            print("quick_connect Found")
             try:
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/search_mysterium.png", region=(1325, 494, 800, 400), confidence=0.95)
                 pyautogui.click(x, y)
@@ -720,7 +727,7 @@ def fix_ip(drive, name):
             query = {"type": "main"}
             update = {"$set": {"response": f'Changed IP🔴: {ip_address}'}}
             result = collection.update_one(query, update)
-            mysterium_vpn_connect(name)
+            mysterium_vpn_connect(name, drive)
             print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
             time.sleep(5)
 
@@ -1214,6 +1221,7 @@ def mysterium_web_login(driver):
                     if text_content:
                         pyautogui.click(1385, 310)
                         time.sleep(1)
+                        
                         pyautogui.typewrite(text_content)
                         time.sleep(5)
                         try:
@@ -1221,10 +1229,10 @@ def mysterium_web_login(driver):
                             pyautogui.click(x, y)
                             print("import_icon Found")
                             
-                            time.sleep(3)
+                            time.sleep(5)
                             pyautogui.click(113, 100)
                             pyautogui.press('f5')
-                            time.sleep(3)
+                            time.sleep(5)
                             #driver.close()
                             return True
                         
@@ -1249,8 +1257,10 @@ def mysterium_web_login(driver):
         #driver.close()
 
 def mysterium_login(driver):
-    for i in range(1,100):
+    while True:
         titile = sb1.get_title()
+        pyautogui.click(113, 100)
+        time.sleep(1)
         if 'Home' in titile:
 
             try:
@@ -2386,10 +2396,17 @@ if run_sb1:
         mfhelper = install_extensions('mfhelper')
         if fingerprint and mysterium and nopecha and cookie and mfhelper:
             print('All Extensions are installed..')
+            query = {"type": "main"}
+            update = {"$set": {"response": 'All Extensions are installed..'}}
+            result = collection.update_one(query, update)
 
     if fresh >= 2:
         if pin_extensions():
             print('All Extensions are pinned')
+            query = {"type": "main"}
+            update = {"$set": {"response": 'All Extensions are pinned'}}
+            result = collection.update_one(query, update)
+
             if mysterium_login(sb1):
                 print('Mysterium Login Done...')
 
@@ -2489,11 +2506,12 @@ if ip_address == ip_required:
                         time.sleep(1)
                         answer = solve_ocr_number(sb)
                     if answer == None:
-                        answer = solve_ocr_number(sb)
+                        answer = 'solve_ocr_number(sb)'
                     sb.type("textarea.captcha-textarea", str(answer))
                     time.sleep(1)
                     # Click the submit button
                     sb.click("a.themeBtn")
+                    time.sleep(2)
 
                     return True
                 else:
@@ -2511,7 +2529,7 @@ if ip_address == ip_required:
             try:
                 if sb.is_element_visible(".captcha-modal__icons .captcha-image"):
                     print("Icon captcha exists.")
-                    time.sleep(2)
+                    #time.sleep(2)
                     sb.maximize_window()
                     activate_window_by_id(id)
                     title =  sb.get_title()
@@ -2527,7 +2545,7 @@ if ip_address == ip_required:
                         sb.execute_script("window.scrollTo(0, 0);")
                         # Assuming img_captcha.solve_icon_captcha() is defined elsewhere
                         img_captcha_bay.solve_image_skylom()
-                        time.sleep(1)
+                        time.sleep(2)
                         return True
                 else:
                     if debug_mode:
@@ -2577,7 +2595,10 @@ if ip_address == ip_required:
                     playback_check(sb1)
                     remove_pink(sb1)
                     title = sb1.get_title()
-                    
+                    check_icon_captcha_exists(sb1, id1)
+                    new_numbercaptcha(sb1)
+                    cloudflare(sb1)
+
                     if title == 'Popmack':
                         previous_duration = current_duration
                         current_duration = get_current_duration(sb=sb1)
@@ -2829,9 +2850,7 @@ if ip_address == ip_required:
                                 #ip_address = get_ip(sb1)
 
 
-                    check_icon_captcha_exists(sb1, id1)
-                    new_numbercaptcha(sb1)
-                    cloudflare(sb1)
+
                     
 
                     if with_baymack == True:

@@ -795,9 +795,9 @@ def find_most_similar_word(word, word_list):
 def fix_broken_words(word_list):
     reference_list = [
         "comedy", "education", "gaming", "music", "science", "technology", "family",
-        "entertainment", "none", "news", "politics", "people", "travel", "travel & events",
-        "sports", "beauty", "nonprofit", "howto", "film", "pets", "food", "sci-fi", "people & blogs", 
-        "news & politics", "auto"
+        "entertainment", "none", "news", "politics", "people", "travel", "travel",
+        "sports", "beauty", "nonprofit", "howto", "film", "pets", "food", "sci", "people", 
+        "news", "auto"
     ]
     
     replacements = {
@@ -2335,7 +2335,7 @@ def get_and_click_category(category, sb, selector_type='sky'):
 
 
         best_match = get_best_matching_category(fixed_category, cateogry_options)
-        print(f"The best match for '{fixed_category}' is '{best_match}'.")
+        print(f"The best match for '{fixed_category}' is '{best_match}'.Category Options:{cateogry_options}")
         fixed_category = fix_broken_words([best_match])[0].lower()
         if best_match:
             # Try to find and click the matching category button

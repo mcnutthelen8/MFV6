@@ -24,7 +24,7 @@ sudo apt-get --fix-broken install -y
 # Install pip and Python packages
 echo "Installing pip and Python packages..."
 sudo apt-get install -y python3-pip
-pip3 install requests beautifulsoup4 selenium clipboard pyautogui opencv-python numpy seleniumbase pillow Levenshtein paddlepaddle paddleocr pymongo pyperclip
+pip3 install requests beautifulsoup4 selenium clipboard pyautogui opencv-python numpy seleniumbase pillow Levenshtein paddlepaddle paddleocr pymongo pyperclip albumentations
 sudo apt-get --fix-broken install -y
 # Install additional tools
 echo "Installing additional tools..."
@@ -61,7 +61,7 @@ sudo apt-get --fix-broken install -y
 # Install pip and Python packages
 echo "Installing pip and Python packages..."
 sudo apt-get install -y python3-pip
-pip3 install requests beautifulsoup4 selenium clipboard pyautogui opencv-python numpy seleniumbase pillow Levenshtein paddlepaddle paddleocr pymongo pyperclip
+pip3 install requests beautifulsoup4 selenium clipboard pyautogui opencv-python numpy seleniumbase pillow Levenshtein paddlepaddle paddleocr pymongo pyperclip albumentations
 sudo apt-get --fix-broken install -y
 # Install additional tools
 echo "Installing additional tools..."

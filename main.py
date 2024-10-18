@@ -2412,14 +2412,19 @@ def cal_ocr(sb, typetnf):
                 result = ocr.ocr('captcha.png')
                 result = ''.join([item[1][0] for item in result[0]])
                 result = ''.join(filter(str.isdigit, str(result)))
+                print(result)
                 if result:
                     gg_cleaned = result.replace('?', '')
-                    calculation, expected_result = gg_cleaned.split(' = ')
-                    calculated_value = eval(calculation)
-                    expected_value = int(expected_result)
-                    if calculated_value == expected_value:
-                        print("True - The equation is correct.")
-                        return 'True'
+                    if ' = ' in gg_cleaned:
+                        calculation, expected_result = gg_cleaned.split(' = ')
+                        calculated_value = eval(calculation)
+                        expected_value = int(expected_result)
+                        if calculated_value == expected_value:
+                            print("True - The equation is correct.")
+                            return 'True'
+                        else:
+                            print("False - The equation is incorrect.")
+                            return 'False'
                     else:
                         print("False - The equation is incorrect.")
                         return 'False'
@@ -2431,6 +2436,7 @@ def cal_ocr(sb, typetnf):
                 result = ocr.ocr('captcha.png')
                 result = ''.join([item[1][0] for item in result[0]])
                 result = ''.join(filter(str.isdigit, str(result)))
+                print(result)
                 if result:
                     gg_cleaned = result.replace('?', '')
                     result = eval(gg_cleaned)
@@ -2446,14 +2452,19 @@ def cal_ocr(sb, typetnf):
                 result = ocr.ocr('captcha.png')
                 result = ''.join([item[1][0] for item in result[0]])
                 result = ''.join(filter(str.isdigit, str(result)))
+                print(result)
                 if result:
                     gg_cleaned = result.replace('?', '')
-                    calculation, expected_result = gg_cleaned.split(' = ')
-                    calculated_value = eval(calculation)
-                    expected_value = int(expected_result)
-                    if calculated_value == expected_value:
-                        print("True - The equation is correct.")
-                        return 'True'
+                    if ' = ' in gg_cleaned:
+                        calculation, expected_result = gg_cleaned.split(' = ')
+                        calculated_value = eval(calculation)
+                        expected_value = int(expected_result)
+                        if calculated_value == expected_value:
+                            print("True - The equation is correct.")
+                            return 'True'
+                        else:
+                            print("False - The equation is incorrect.")
+                            return 'False'
                     else:
                         print("False - The equation is incorrect.")
                         return 'False'
@@ -2465,6 +2476,7 @@ def cal_ocr(sb, typetnf):
                 result = ocr.ocr('captcha.png')
                 result = ''.join([item[1][0] for item in result[0]])
                 result = ''.join(filter(str.isdigit, str(result)))
+                print(result)
                 if result:
                     gg_cleaned = result.replace('?', '')
                     result = eval(gg_cleaned)
@@ -2551,7 +2563,8 @@ def solve_calculating_capcha(sb):
             else:
                 if debug_mode:
                     print("No numeric values found.")
-                return False
+                #return False
+            pyautogui.press('f5')
         else:
             if debug_mode:
                  print("Numeric verification element is not visible.")

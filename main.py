@@ -2255,6 +2255,45 @@ def get_and_click_category_bay(category, sb):
             print(f"An error occurred: {str(e)}")
         return False
 
+category_similarity_map = {
+    'film': ['entertainment', 'none', 'music', 'people', 'gaming', 'nonprofit', 'news'],
+    'auto': ['entertainment', 'none', 'sports', 'film', 'people', 'nonprofit', 'news'],
+    'music': ['entertainment', 'people', 'film', 'none', 'gaming', 'nonprofit', 'news'],
+    'pets': ['none', 'entertainment', 'people', 'film', 'nonprofit', 'howto', 'news'],
+    'sports': ['none', 'entertainment', 'people', 'film', 'gaming', 'nonprofit', 'news'],
+    'travel': ['none', 'people', 'film', 'entertainment', 'howto', 'nonprofit', 'news'],
+    'gaming': ['entertainment', 'none', 'technology', 'people', 'film', 'howto', 'nonprofit', 'news'],
+    'people': ['entertainment', 'none', 'music', 'film', 'nonprofit', 'technology', 'news', 'howto'],
+    'comedy': ['entertainment', 'people', 'film', 'none', 'gaming', 'nonprofit', 'news'],
+    'entertainment': ['people', 'none', 'film', 'gaming', 'nonprofit', 'howto', 'news', 'technology'],
+    'news': ['nonprofit', 'education', 'nonprofit', 'none', 'people', 'film', 'entertainment', 'news'],
+    'howto': ['education', 'science', 'nonprofit', 'none', 'people', 'film', 'news', 'entertainment'],
+    'education': ['howto', 'science', 'nonprofit', 'none', 'people', 'film', 'entertainment', 'news'],
+    'science': ['education', 'none', 'entertainment', 'people', 'film', 'news'],
+    'technology': ['gaming', 'education', 'none', 'entertainment', 'people', 'film', 'news'],
+    'nonprofit': ['none', 'entertainment', 'people', 'film', 'gaming', 'education'],
+    'family': ['entertainment', 'education', 'pets'],
+    'scifi': ['film', 'gaming', 'none', 'entertainment', 'people', 'technology', 'gaming', 'nonprofit', 'news']
+}
+
+# Function to find the best matching category from a list
+def get_best_matching_category(input_category, category_list):
+    # Convert input category to lowercase
+    input_category = input_category.lower()
+    
+    # Check if the input category is in the similarity map
+    if input_category in category_similarity_map:
+        # Get the list of similar categories for the input category
+        similar_categories = [category.lower() for category in category_similarity_map[input_category]]
+        
+        # Find the first category in the provided list that matches the similar categories
+        for category in category_list:
+            if category.lower() in similar_categories:
+                return category
+    
+    # If no match found, return False
+    return False
+
 def get_and_click_category(category, sb, selector_type='sky'):
     try:
         # Define CSS selectors based on selector_type
@@ -2270,10 +2309,14 @@ def get_and_click_category(category, sb, selector_type='sky'):
             EC.presence_of_all_elements_located((By.CSS_SELECTOR, selector))
         )
 
+        cateogry_options =[]
         # Print all category buttons for debugging
         for button in category_buttons:
             button_text = button.text.strip() if button.text else "No text"
-            print(f"Button text: {button_text}")
+            #print(f"Button text: {button_text}")
+            cateogry_options2 = fix_broken_words([button_text])[0].lower()
+            cateogry_options.append(cateogry_options2)
+            print(f"Button text: {button_text}:{cateogry_options2}")
 
         # Fix the input category word
         fixed_category = fix_broken_words([category])[0].lower()
@@ -2284,10 +2327,27 @@ def get_and_click_category(category, sb, selector_type='sky'):
             fixed_button_text = fix_broken_words([button_text])[0].lower() if button_text else ""
 
             if fixed_category in fixed_button_text or fixed_button_text in fixed_category:
-                print(f"Found and clicked category: {button.text}")
+                print(f"Found and clicked category: {fixed_button_text} : Category:{fixed_category}")
                 button.click()
                 #cloudflare2(sb)  # Assuming this is your post-click function
                 return True
+
+
+
+        best_match = get_best_matching_category(fixed_category, cateogry_options)
+        print(f"The best match for '{fixed_category}' is '{best_match}'.")
+        fixed_category = fix_broken_words([best_match])[0].lower()
+        if best_match:
+            # Try to find and click the matching category button
+            for button in category_buttons:
+                button_text = button.text.strip().lower() if button.text else ""
+                fixed_button_text = fix_broken_words([button_text])[0].lower() if button_text else ""
+
+                if fixed_category in fixed_button_text or fixed_button_text in fixed_category:
+                    print(f"Found and clicked category2: {fixed_button_text} : Category:{fixed_category} and Btoon:{button_text}")
+                    button.click()
+                    #cloudflare2(sb)  # Assuming this is your post-click function
+                    return True
 
         # List of fallback categories if the provided one is not found
         fallback_categories = ['Entertainment', 'None', 'People', 'Music', 'news', 'Technology', 'Science', 'Sci']
@@ -3077,7 +3137,7 @@ if ip_address == ip_required:
 
                             skylom_window = sb1.current_window_handle
                             all_windows = sb1.window_handles
-                            print(f"All windows: {all_windows}")
+                            #print(f"All windows: {all_windows}")
 
                             # Find and assign Baymack window (not matching Popmack window)
                             for window in all_windows:
@@ -3089,7 +3149,7 @@ if ip_address == ip_required:
 
                             baymack_window = sb1.current_window_handle
                             all_windows = sb1.window_handles
-                            print(f"All windows: {all_windows}")
+                            #print(f"All windows: {all_windows}")
 
                             # Find and assign Baymack window (not matching Popmack window)
                             for window in all_windows:

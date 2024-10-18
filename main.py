@@ -485,9 +485,10 @@ def get_youtube_link_manual():
         for i in range(1,4):
             time.sleep(1)
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/yt_copy_clip.png", region=(1625, 43, 400, 300), confidence=0.8)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/yt_copy_clip.png", region=(1041,404, 250, 244), confidence=0.8)
                 pyautogui.click(x, y)
                 link = clipboard.paste()
+                link = link.replace('music.', '')
                 return link
             except Exception as e:
                 if debug_mode:

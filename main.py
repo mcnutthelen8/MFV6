@@ -1860,6 +1860,7 @@ def cloudflare(sb):
         solve_calculating_capcha(sb)
     except Exception as e:
         pass
+    return
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman.png", region=(696,171,570,277), confidence=0.9)
         print("verify_cloudflare git Found")
@@ -2149,7 +2150,7 @@ def get_and_click_category_sky(category, sb):
                 print(f"Found and clicked category: {button.text}")
                 button.click()
                 #time.sleep(5)
-                cloudflare2(sb)
+                #cloudflare2(sb)
                 return True
         
         # List of fallback categories in case the provided one is not found
@@ -2169,7 +2170,7 @@ def get_and_click_category_sky(category, sb):
                     print(f"Found and clicked fallback category: {button.text}")
                     button.click()
                     #time.sleep(5)
-                    cloudflare2(sb)
+                    #cloudflare2(sb)
                     return True
         
         for button in category_buttons:
@@ -2213,7 +2214,7 @@ def get_and_click_category_bay(category, sb):
                 print(f"Found and clicked category: {button.text}")
                 button.click()
                 #time.sleep(5)
-                cloudflare2(sb)
+                #cloudflare2(sb)
                 return True
         
         # List of fallback categories in case the provided one is not found
@@ -2233,7 +2234,7 @@ def get_and_click_category_bay(category, sb):
                     print(f"Found and clicked fallback category: {button.text}")
                     button.click()
                     #time.sleep(5)
-                    cloudflare2(sb)
+                    #cloudflare2(sb)
                     return True
         
         for button in category_buttons:
@@ -2284,7 +2285,7 @@ def get_and_click_category(category, sb, selector_type='sky'):
             if fixed_category in fixed_button_text or fixed_button_text in fixed_category:
                 print(f"Found and clicked category: {button.text}")
                 button.click()
-                cloudflare2(sb)  # Assuming this is your post-click function
+                #cloudflare2(sb)  # Assuming this is your post-click function
                 return True
 
         # List of fallback categories if the provided one is not found
@@ -2300,7 +2301,7 @@ def get_and_click_category(category, sb, selector_type='sky'):
                 if fallback_category in fixed_button_text or fixed_button_text in fallback_category:
                     print(f"Found and clicked fallback category: {button.text}")
                     button.click()
-                    cloudflare2(sb)
+                    #cloudflare2(sb)
                     return True
 
         # If no match is found, select a random button and click it
@@ -2512,21 +2513,22 @@ def solve_calculating_capcha(sb):
                     print(f"Button value: {text}")
                     question_type_is_trueorfalse = True
 
+            if question_type_is_trueorfalse == True:
+                answer = cal_ocr(sb, typetnf= True)
+                print('Cal Answer:',answer)
+                if answer:
+                    for button in buttons:
+                        if answer in button.text.strip():
+                            button.click()
+                            print("Clicked the button with the smallest value.")
+                            return True
             if values:
-                if question_type_is_trueorfalse == True:
-                    answer = cal_ocr(sb, typetnf= True)
-                    if answer:
-                        for button in buttons:
-                            if answer in button.text.strip():
-                                button.click()
-                                print("Clicked the button with the smallest value.")
-                                return True
-
-                elif question_type_is_trueorfalse == False:
+                if question_type_is_trueorfalse == False:
 
                     # Find the smallest value
                     min_value = min(values)
                     answer = cal_ocr(sb, typetnf= False)
+                    print('Cal Answer:',answer)
                     if answer:
                         if answer in values:
                             min_value = answer

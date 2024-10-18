@@ -474,10 +474,34 @@ def get_video_infog(video_url, driver, timeout=8):
         driver.close()
         driver.switch_to.window(original_window)
         return 0
-
-def get_youtube_link(sb):
-
     
+
+def get_youtube_link_manual():
+    try:
+        pyautogui.moveTo(1316, 438)
+        time.sleep(1)
+        pyautogui.rightClick(1316, 438)
+
+        for i in range(1,4):
+            time.sleep(1)
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/yt_copy_clip.png", region=(1625, 43, 400, 300), confidence=0.8)
+                pyautogui.click(x, y)
+                link = clipboard.paste()
+                return link
+            except Exception as e:
+                if debug_mode:
+                    print(f'ERR:{e}') 
+        return 0
+        
+    except Exception as e:
+        if debug_mode:
+            print(f'ERR:{e}')
+        return 0
+
+
+
+def get_youtube_link(sb):   
     try:
         # Find the iframe that contains "youtube.com/embed" in the src attribute
         iframe = sb.find_element("iframe[src*='youtube.com/embed']")
@@ -501,10 +525,9 @@ def get_youtube_link(sb):
 
             if youtube_url_match:
                 return youtube_url_match.group(0)
-            else:
-                return 0
-        else:
-            return 0
+        print('Tring Pyauto Get LINK')
+        link = get_youtube_link_manual()
+        return link
 
     except Exception as e:
         print(f"An error occurred: {e}")
@@ -1834,6 +1857,10 @@ def solve_ocr_number(driver):
 
 def cloudflare(sb):
     try:
+        solve_calculating_capcha(sb)
+    except Exception as e:
+        pass
+    try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman.png", region=(696,171,570,277), confidence=0.9)
         print("verify_cloudflare git Found")
         gg = False
@@ -1953,11 +1980,20 @@ def cloudflare(sb):
 
 
 def cloudflare2(sb):
+    try:
+        solve_calculating_capcha(sb)
+    except Exception as e:
+        pass
+
     sb.disconnect() 
     time.sleep(5)
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman.png", region=(696,171,570,277), confidence=0.9)
         print("verify_cloudflare git Found")
+        try:
+            solve_calculating_capcha(sb)
+        except Exception as e:
+            pass
         gg = False
         while gg == False:
             try:
@@ -2009,6 +2045,10 @@ def cloudflare2(sb):
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman2.png", region=(696,171,570,277), confidence=0.9)
         print("verify_cloudflare git Found")
+        try:
+            solve_calculating_capcha(sb)
+        except Exception as e:
+            pass
         gg = False
         while gg == False:
             try:
@@ -2362,7 +2402,163 @@ def new_numbercaptcha(sb):
     except Exception as e:
         print(f"Error: {str(e)}")
 
+def cal_ocr(sb, typetnf):
+    try:
+        title = sb.get_title()
+        if 'Zaptaps' in title:
+            if typetnf == True:
+                capture_and_crop_regions([(871, 386, 247, 52)], ['captcha.png'])
+                result = ocr.ocr('captcha.png')
+                result = ''.join([item[1][0] for item in result[0]])
+                result = ''.join(filter(str.isdigit, str(result)))
+                if result:
+                    gg_cleaned = result.replace('?', '')
+                    calculation, expected_result = gg_cleaned.split(' = ')
+                    calculated_value = eval(calculation)
+                    expected_value = int(expected_result)
+                    if calculated_value == expected_value:
+                        print("True - The equation is correct.")
+                        return 'True'
+                    else:
+                        print("False - The equation is incorrect.")
+                        return 'False'
 
+                else:
+                    print("Error: Results Empty with new numCaptcha.")
+            else:
+                capture_and_crop_regions([(965, 379, 127, 62)], ['captcha.png'])
+                result = ocr.ocr('captcha.png')
+                result = ''.join([item[1][0] for item in result[0]])
+                result = ''.join(filter(str.isdigit, str(result)))
+                if result:
+                    gg_cleaned = result.replace('?', '')
+                    result = eval(gg_cleaned)
+                    print(f"The result of {gg_cleaned} is: {result}")
+                    return result
+                else:
+                    print("Error: Results Empty with new numCaptcha.")
+
+        title = sb.get_title()
+        if 'Popmack' in title:
+            if typetnf == True:
+                capture_and_crop_regions([(871, 393, 247, 52)], ['captcha.png'])
+                result = ocr.ocr('captcha.png')
+                result = ''.join([item[1][0] for item in result[0]])
+                result = ''.join(filter(str.isdigit, str(result)))
+                if result:
+                    gg_cleaned = result.replace('?', '')
+                    calculation, expected_result = gg_cleaned.split(' = ')
+                    calculated_value = eval(calculation)
+                    expected_value = int(expected_result)
+                    if calculated_value == expected_value:
+                        print("True - The equation is correct.")
+                        return 'True'
+                    else:
+                        print("False - The equation is incorrect.")
+                        return 'False'
+
+                else:
+                    print("Error: Results Empty with new numCaptcha.")
+            else:
+                capture_and_crop_regions([(965, 388, 127, 62)], ['captcha.png'])
+                result = ocr.ocr('captcha.png')
+                result = ''.join([item[1][0] for item in result[0]])
+                result = ''.join(filter(str.isdigit, str(result)))
+                if result:
+                    gg_cleaned = result.replace('?', '')
+                    result = eval(gg_cleaned)
+                    print(f"The result of {gg_cleaned} is: {result}")
+                    return result
+                else:
+                    print("Error: Results Empty with new numCaptcha.")
+
+
+
+
+    except Exception as e:
+        print(e)
+    return None
+
+def solve_calculating_capcha(sb):
+    try:
+        if sb.is_element_visible("a.try_again"):
+            sb.click("a.try_again")
+            print("Clicked the 'a.try_again' button.")
+            return True
+        else:
+            if debug_mode:
+                print("'a.try_again' button is not visible.")
+    except Exception as e:
+        if debug_mode:
+            print(f"False' button is not visible.NoSuchElementException")
+
+
+    try:
+        if sb.is_element_visible("ul.link-btn-list.vid-category-options"):
+            print('Numeric verification found')
+
+            ul_element = sb.find_element("ul.link-btn-list.vid-category-options")
+            buttons = ul_element.find_elements(By.TAG_NAME, "a")
+            
+            values = []
+            question_type_is_trueorfalse = None
+            for button in buttons:
+                text = button.text.strip()
+                if text.isdigit():  # Check if the text is a digit
+                    values.append(int(text))
+                    print(f"Button value: {text}")
+                    question_type_is_trueorfalse = False
+                elif 'True' in text or 'False' in text:
+                    print(f"Button value: {text}")
+                    question_type_is_trueorfalse = True
+
+            if values:
+                if question_type_is_trueorfalse == True:
+                    answer = cal_ocr(sb, typetnf= True)
+                    if answer:
+                        for button in buttons:
+                            if answer in button.text.strip():
+                                button.click()
+                                print("Clicked the button with the smallest value.")
+                                return True
+
+                elif question_type_is_trueorfalse == False:
+
+                    # Find the smallest value
+                    min_value = min(values)
+                    answer = cal_ocr(sb, typetnf= False)
+                    if answer:
+                        if answer in values:
+                            min_value = answer
+                    else:
+                        min_value = min(values)
+                    print(f"Answer value: {min_value} values are: {values}")
+                    
+                    # Find the button with the smallest value and click it
+                    for button in buttons:
+                        if button.text.strip() == str(min_value):
+                            try:
+                                button.click()
+                                print("Clicked the button with the smallest value.")
+                                return True
+                            except Exception as click_exception:
+                                print(f"Error clicking the button: {click_exception}")
+                                return False
+                else:
+                    print('Something Wrong with question_type_is_trueorfalse:',question_type_is_trueorfalse)
+            else:
+                if debug_mode:
+                    print("No numeric values found.")
+                return False
+        else:
+            if debug_mode:
+                 print("Numeric verification element is not visible.")
+            return False
+
+    except Exception as e:
+        if debug_mode:
+            print(f"False' button is not visible.NoSuchElementException")
+    
 
 baymack_coins = 0
 vnc_url = 0
@@ -2409,10 +2605,16 @@ if run_sb1:
 
             if mysterium_login(sb1):
                 print('Mysterium Login Done...')
+                query = {"type": "main"}
+                update = {"$set": {"response": 'Mysterium Login Done...'}}
+                result = collection.update_one(query, update)
 
     if fresh >= 1:            
         facebook_login()
         sb1.maximize_window()
+        query = {"type": "main"}
+        update = {"$set": {"response": 'Facebook Login Done...'}}
+        result = collection.update_one(query, update)
     
     current_window = sb1.current_window_handle
     all_windows = sb1.window_handles
@@ -2571,7 +2773,6 @@ if ip_address == ip_required:
 
         basic_info2 = True
         start_time2 = time.time()
-        ip_address = 0
 
         previous_duration_bay = 0
         #baymack_coins = 0
@@ -2687,6 +2888,7 @@ if ip_address == ip_required:
                                             print('starting to answer category')
                                             if category != 0 and title == 'Popmack':
                                                 print(title)
+                                                print(title,'Category:',category)
                                                 #get_and_click_category_sky(category, sb1)
                                                 get_and_click_category(category, sb1, selector_type='sky')
                                                 #solve_image_category(sb1, category, id1)
@@ -2811,7 +3013,7 @@ if ip_address == ip_required:
                                                 print('starting to answer category confirm')
                                                 title = sb1.get_title()
                                                 if title:
-                                                    print(title)
+                                                    print(title,'Category:',category)
                                                     get_and_click_category(category, sb1, selector_type='bay')
                                                     #solve_image_category(sb1, category_bay, id1)
 

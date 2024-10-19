@@ -437,42 +437,110 @@ def remove_pink(sb):
 headers = {
     'User-Agent': 'My User Agent 1.0',
 }
+def get_youtube_video_id(url):
+    pattern = r'(?:https?://)?(?:www\.)?(?:youtube\.com/(?:[^/]+/.*[/?]|(?:v|e(?:mbed)?|shorts|watch|playlist|embed|v/|embed/)|.*[?&]v=)|youtu\.be/)([a-zA-Z0-9_-]{11})|(?:shorts/([a-zA-Z0-9_-]{11}))'
+    match = re.search(pattern, url)
+    if match:
+        return match.group(1) or match.group(2)
+    else:
+        return None
+    
+def yt_api_method(link):
+    try:
+        api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'  # Replace with your API key
+        pattern = r'(?:https?://)?(?:www\.)?(?:youtube\.com/(?:[^/]+/.*[/?]|(?:v|e(?:mbed)?|shorts|watch|playlist|embed|v/|embed/)|.*[?&]v=)|youtu\.be/)([a-zA-Z0-9_-]{11})|(?:shorts/([a-zA-Z0-9_-]{11}))'
+        match = re.search(pattern, link)
+        if match:
+            video_id = match.group(1) or match.group(2)
+            #video_id = '3KRBI8tNL00'  # The YouTube video ID
+            category_mapping = {
+                "1": "Film",
+                "2": "Auto",
+                "10": "Music",
+                "15": "Pets",
+                "17": "Sport",
+                "19": "Travel",
+                "20": "Gaming",
+                "22": "People",
+                "23": "Comedy",
+                "24": "Entertainment",
+                "25": "News",
+                "26": "Howto",
+                "27": "Education",
+                "28": "Technology",
+                "29": "Nonprofit",
+                "34": "Comedy",
+                "37": "Family",
+                "40": "SciFi",
+
+            }
+
+            url = f'https://www.googleapis.com/youtube/v3/videos?part=snippet&id={video_id}&key={api_key}'
+
+            # Send the request to the YouTube Data API
+            response = requests.get(url)
+            data = response.json()
+
+            # Extract the category ID and title from the response
+            if 'items' in data and len(data['items']) > 0:
+                category_id = data['items'][0]['snippet']['categoryId']
+                title = data['items'][0]['snippet']['title']
+                category_name = category_mapping.get(category_id, None)
+                
+                print(f"Video title: {title}")
+                print(f"Category: {category_name}")
+                return category_name
+            else:
+                print("Video details not found.")
+                return None
+
+        else:
+            return None
+    except Exception as e:
+        print(e)
 
 def get_video_infog(video_url, driver, timeout=8):
-    original_window = driver.current_window_handle
-    driver.open_new_window()
-    try:
-        # Set page timeout and open the view-source page
-        driver.open(f'view-source:{video_url}')
-        print(f'view-source:{video_url}')
-
-        # Wait for the page to load with a timeout of 8 seconds
-        driver.wait_for_element_visible('body', timeout=timeout)
-        
-        # Get page source and parse it
-        data = driver.get_text('body')
-        html_content = str(data)
-        soup = BeautifulSoup(html_content, 'html.parser')
-
-        # Extract video category
-        category_tag = soup.find('meta', itemprop='genre')
-        category = category_tag['content'] if category_tag else None
-        print(f"Category For This Video is {category}")
-
-        # Close new window and switch back to original
-        driver.close()
-        driver.switch_to.window(original_window)
-
-        # Return the category or 0 if not found
+    if 'you' in video_url:
+        category = yt_api_method(video_url)
         if category:
             return category
-        else:
-            return 0
+        original_window = driver.current_window_handle
+        driver.open_new_window()
+        try:
+            # Set page timeout and open the view-source page
+            driver.open(f'view-source:{video_url}')
+            print(f'view-source:{video_url}')
 
-    except Exception as e:
-        print(f"Error occurred: {e}")
-        driver.close()
-        driver.switch_to.window(original_window)
+            # Wait for the page to load with a timeout of 8 seconds
+            driver.wait_for_element_visible('body', timeout=timeout)
+            
+            # Get page source and parse it
+            data = driver.get_text('body')
+            html_content = str(data)
+            soup = BeautifulSoup(html_content, 'html.parser')
+
+            # Extract video category
+            category_tag = soup.find('meta', itemprop='genre')
+            category = category_tag['content'] if category_tag else None
+            print(f"Category For This Video is {category}")
+
+            # Close new window and switch back to original
+            driver.close()
+            driver.switch_to.window(original_window)
+
+            # Return the category or 0 if not found
+            if category:
+                return category
+            else:
+                return 0
+
+        except Exception as e:
+            print(f"Error occurred: {e}")
+            driver.close()
+            driver.switch_to.window(original_window)
+            return 0
+    else:
+        print("Youtube Link not valid")
         return 0
     
 
@@ -796,7 +864,7 @@ def fix_broken_words(word_list):
     reference_list = [
         "comedy", "education", "gaming", "music", "science", "technology", "family",
         "entertainment", "none", "news", "politics", "people", "travel", "travel",
-        "sports", "beauty", "nonprofit", "howto", "film", "pets", "food", "sci", "people", 
+        "sports", "beauty", "nonprofit", "howto", "film", "pets", "food", "scifi", "people", 
         "news", "auto"
     ]
     
@@ -2269,8 +2337,8 @@ category_similarity_map = {
     'news': ['nonprofit', 'education', 'nonprofit', 'none', 'people', 'film', 'entertainment', 'news'],
     'howto': ['education', 'science', 'nonprofit', 'none', 'people', 'film', 'news', 'entertainment'],
     'education': ['howto', 'science', 'nonprofit', 'none', 'people', 'film', 'entertainment', 'news'],
-    'science': ['education', 'none', 'entertainment', 'people', 'film', 'news'],
-    'technology': ['gaming', 'education', 'none', 'entertainment', 'people', 'film', 'news'],
+    'science': ['technology', 'education', 'none', 'entertainment', 'people', 'film', 'news'],
+    'technology': ['science', 'gaming', 'education', 'none', 'entertainment', 'people', 'film', 'news'],
     'nonprofit': ['none', 'entertainment', 'people', 'film', 'gaming', 'education'],
     'family': ['entertainment', 'education', 'pets'],
     'scifi': ['film', 'gaming', 'none', 'entertainment', 'people', 'technology', 'gaming', 'nonprofit', 'news']
@@ -2336,15 +2404,15 @@ def get_and_click_category(category, sb, selector_type='sky'):
 
         best_match = get_best_matching_category(fixed_category, cateogry_options)
         print(f"The best match for '{fixed_category}' is '{best_match}'.Category Options:{cateogry_options}")
-        fixed_category = fix_broken_words([best_match])[0].lower()
+        best_match = fix_broken_words([best_match])[0].lower()
         if best_match:
             # Try to find and click the matching category button
             for button in category_buttons:
                 button_text = button.text.strip().lower() if button.text else ""
                 fixed_button_text = fix_broken_words([button_text])[0].lower() if button_text else ""
 
-                if fixed_category in fixed_button_text or fixed_button_text in fixed_category:
-                    print(f"Found and clicked category2: {fixed_button_text} : Category:{fixed_category} and Btoon:{button_text}")
+                if best_match in fixed_button_text or fixed_button_text in best_match:
+                    print(f"Found and clicked category2: {fixed_button_text} : Category:{best_match} and Btoon:{button_text}")
                     button.click()
                     #cloudflare2(sb)  # Assuming this is your post-click function
                     return True
@@ -2909,6 +2977,7 @@ if ip_address == ip_required:
                                 if category == 0:
                                     video_link = get_youtube_link(sb1) 
                                     category = get_video_infog(video_link, sb1)
+
                                     if category:
                                         if debug_mode:
                                             print(f"Category: {category}")
@@ -2935,7 +3004,8 @@ if ip_address == ip_required:
                                                 if coins and baymack_coins != 0:
                                                     insert_data(ip= ip_address,amount1=coins, amount2=baymack_coins)
                                                     print('insert Data')
-
+                                    if category == 0 or category == None:
+                                        pyautogui.press('f5')
 
                                     else:
                                         print(f'category is not defined{category}')
@@ -2987,7 +3057,8 @@ if ip_address == ip_required:
                                                         category = "Auto"    
                                                     elif "Technology" in category:
                                                         category = "Technology"        
-                            
+                                                if category == 0 or category == None:
+                                                    pyautogui.press('f5')
                             else:
                                 #ip_address =get_ip(sb)
                                 print(f'IP is not Matched in IF category {ip_address}, Required: {ip_required}')
@@ -3059,7 +3130,8 @@ if ip_address == ip_required:
                                                 baymack_coins = coins
                                             else:
                                                 print('Bymack Coins not availible')
-
+                                    if category_bay == 0 or category_bay == None:
+                                        pyautogui.press('f5')
         
                                     else:
                                         print(f'category_bay is not defined{category_bay}')
@@ -3089,8 +3161,8 @@ if ip_address == ip_required:
                                                 print('starting to answer category confirm')
                                                 title = sb1.get_title()
                                                 if title:
-                                                    print(title,'Category:',category)
-                                                    get_and_click_category(category, sb1, selector_type='bay')
+                                                    print(title,'Category_bay:',category_bay)
+                                                    get_and_click_category(category_bay, sb1, selector_type='bay')
                                                     #solve_image_category(sb1, category_bay, id1)
 
                                             elif category_bay == 0:
@@ -3111,7 +3183,8 @@ if ip_address == ip_required:
                                                         category_bay = "Auto"    
                                                     elif "Technology" in category_bay:
                                                         category_bay = "Technology"        
-                            
+                                                if category_bay == 0 or category_bay == None:
+                                                    pyautogui.press('f5')
                             else:
                                 #ip_address =get_ip(sb)
                                 print(f'IP _bays not Matched in IF category {ip_address}, Required: {ip_required}')

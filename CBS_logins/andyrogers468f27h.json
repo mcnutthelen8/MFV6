@@ -1,0 +1,78 @@
+[
+    {
+        "domain": ".codesandbox.io",
+        "expirationDate": 1760853069,
+        "hostOnly": false,
+        "httpOnly": false,
+        "name": "AMP_a205ed9b06",
+        "path": "/",
+        "sameSite": "lax",
+        "secure": false,
+        "session": false,
+        "storeId": null,
+        "value": "JTdCJTIyZGV2aWNlSWQlMjIlM0ElMjJhYjE1YzY4My1kZDk3LTRmOWYtYmFiNC0xODRjYTEwNWQyMDMlMjIlMkMlMjJ1c2VySWQlMjIlM0ElMjIwOWEwNjVlOTE0MmFiYTIwMGU2YzhmYmI3YzdhZWUwMDM1MThiYTc4JTIyJTJDJTIyc2Vzc2lvbklkJTIyJTNBMTcyOTMxNzAzNzM4MiUyQyUyMm9wdE91dCUyMiUzQWZhbHNlJTJDJTIybGFzdEV2ZW50VGltZSUyMiUzQTE3MjkzMTcwNjkyMDIlMkMlMjJsYXN0RXZlbnRJZCUyMiUzQTM1JTdE"
+    },
+    {
+        "domain": ".codesandbox.io",
+        "expirationDate": 1745041837,
+        "hostOnly": false,
+        "httpOnly": false,
+        "name": "cc_cookie",
+        "path": "/",
+        "sameSite": "lax",
+        "secure": true,
+        "session": false,
+        "storeId": null,
+        "value": "%7B%22categories%22%3A%5B%22functional%22%2C%22analytical%22%2C%22marketing%22%5D%2C%22revision%22%3A0%2C%22data%22%3Anull%2C%22consentTimestamp%22%3A%222024-10-19T05%3A50%3A37.371Z%22%2C%22consentId%22%3A%22dc0e4a3c-c0df-4d6d-bf52-58775ca2ad52%22%2C%22services%22%3A%7B%22functional%22%3A%5B%5D%2C%22analytical%22%3A%5B%5D%2C%22marketing%22%3A%5B%5D%7D%2C%22lastConsentTimestamp%22%3A%222024-10-19T05%3A50%3A37.371Z%22%2C%22expirationTime%22%3A1745041837371%7D"
+    },
+    {
+        "domain": ".codesandbox.io",
+        "hostOnly": false,
+        "httpOnly": true,
+        "name": "_cfuvid",
+        "path": "/",
+        "sameSite": "no_restriction",
+        "secure": true,
+        "session": true,
+        "storeId": null,
+        "value": "8GuOhrt8BkzgxP6ANhwh8gSG6AZX6NeO_.On3Ee1aik-1729316967659-0.0.1.1-604800000"
+    },
+    {
+        "domain": "codesandbox.io",
+        "hostOnly": true,
+        "httpOnly": true,
+        "name": "_code_sandbox_key",
+        "path": "/",
+        "sameSite": "strict",
+        "secure": true,
+        "session": true,
+        "storeId": null,
+        "value": "XCP.0De6-RYlHjIN1PSNEM3Ixbo9-ml7TjeIuIOhAOy15wnb2xPk4NY6mPDTr6cef3r3_-vlEt4Dipdzixew-Sc_OiBus7ONpRTKqb0hv1hBRGs8n4aCyNldyFQawZLFLRbKzueXR52GxRgW6qO1XDBlwiiFfLX-MaKkfQNksvlhtgg0kq55Xwm2Xz3KFzUf_zFlrNEpWT94lN0biE3Hu8FvQTV6xgPdf00NsueR9IKyqa2m2f6rmbpYRM6tP5iUBlUwjqsL-hXEiwAGSsmyGrYTf7kIvjyjmLhKHyPqVR5z38kP2MwHXgYyO5L6x2q_sOfwTDrzMFiwEdiijowlkAZuA5pgkdSV671ZhCyfj-2Df5KkZ8BqSka8f5qd8glmGY73eH2nTJ7MafdGXN6aXgFgn5ZDq3ld7y2JpIX1XNl9eMjjBWK0cPCa2L2x5CVCpj7vusKyqc-xfet0EG56d_UbQfZox63RZZNS0AuHWznu7yrr-U35RXajcEDJyfjDNkdWJQDAO1N_ImG5IVAMHG3nozPIiULJXCjh6m6Z3Nyu82ZUqvmCFRGJqefm_1axBlNVBFMsKyJlfn1Nc_N_ahqo-_zDL-H9A3NAdNGbTAR3dUbWZnVtkpwk9w"
+    },
+    {
+        "domain": "codesandbox.io",
+        "expirationDate": 1731736255.701551,
+        "hostOnly": true,
+        "httpOnly": true,
+        "name": "guardian_default_token",
+        "path": "/",
+        "sameSite": null,
+        "secure": false,
+        "session": false,
+        "storeId": null,
+        "value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJDb2RlU2FuZGJveCIsImV4cCI6MTczMTczNjI1NiwiaWF0IjoxNzI5MzE3MDU2LCJpc3MiOiJDb2RlU2FuZGJveCIsImp0aSI6IjRkMmE1MjY1LWE4Y2UtNDQ4Mi05MzdhLTI5MDFjYWUxNDcyNSIsIm5iZiI6MTcyOTMxNzA1NSwic3ViIjoiVXNlcjozYzNhODU3YS1mZTdkLTRiYTQtODQ5Ny1kMTg1MjE4ZTJlODUiLCJ0eXAiOiJyZWZyZXNoIn0.kKg3YdIGySYB87epcsAfrr9wr5h-fOvboP2dsQlrjqlNldL27uUjojeLh8ceWxLzbY73XbhQ0fkszDHwIzAHSQ"
+    },
+    {
+        "domain": "codesandbox.io",
+        "expirationDate": 1731736255.249542,
+        "hostOnly": true,
+        "httpOnly": false,
+        "name": "signedIn",
+        "path": "/",
+        "sameSite": null,
+        "secure": false,
+        "session": false,
+        "storeId": null,
+        "value": "true"
+    }
+]

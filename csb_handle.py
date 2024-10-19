@@ -725,8 +725,21 @@ while True:
     gg = True
     start_time = time.time()
     while gg == True:
+        urls =[]
         for i, page in enumerate(page_windows):
             collection = db[CSB_Script]
+            time.sleep(2)
+            pyautogui.click(942, 65)
+            time.sleep(1)
+            pyautogui.hotkey('ctrl', 'l')
+            pyautogui.keyUp('ctrl')
+            time.sleep(0.5)
+            pyautogui.hotkey('ctrl', 'c')
+            pyautogui.keyUp('ctrl')
+            page_url = clipboard.paste()
+                    #page_url = sb1.get_current_url()
+            urls.append(page_url)
+                
             #######################################
             ucredit = CSB_credit_usage(sb1)
             sri_lanka_tz = pytz.timezone('Asia/Colombo')
@@ -797,7 +810,7 @@ while True:
                 result = collection.update_one(query, update)  
             time.sleep(35)
 
-
+        devbox_string = "<br>\n".join([url.replace('https://codesandbox.io/p/', '') for url in urls])
         elapsed_time = time.time() - start_time
         mins, secs = divmod(int(elapsed_time), 60)
         timer = f'{mins:02d}:{secs:02d}'

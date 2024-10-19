@@ -191,7 +191,7 @@ def are_extensions_exist():
         return True
 
 def codesandbox_login(driver, codesandbox_id):
-    driver.open('https://codesandbox.io')
+    driver.open('https://codesandbox.io/dashboard')
     time.sleep(5)
     for i in range(1,100):
         time.sleep(1)
@@ -199,7 +199,7 @@ def codesandbox_login(driver, codesandbox_id):
             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cookie_icon.png", region=(1625, 43, 400, 300), confidence=0.99)
             pyautogui.click(x, y)
             print("cookie_icon Found")
-            time.sleep(3)
+            time.sleep(13)
             try:
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/all_site.png", region=(1300, 212, 600, 300), confidence=0.99)
                 pyautogui.click(x, y)
@@ -730,22 +730,7 @@ while True:
     while gg == True:
         urls =[]
         for i, page in enumerate(page_windows):
-            collection = db[CSB_Script]
-            time.sleep(2)
-            pyautogui.click(942, 65)
-            time.sleep(1)
-            pyautogui.hotkey('ctrl', 'l')
-            pyautogui.keyUp('ctrl')
-            time.sleep(2)
-            pyautogui.hotkey('ctrl', 'a')
-            pyautogui.keyUp('ctrl')
-            time.sleep(1)
-            pyautogui.hotkey('ctrl', 'c')
-            pyautogui.keyUp('ctrl')
-            page_url = clipboard.paste()
-                    #page_url = sb1.get_current_url()
-            urls.append(page_url)
-                
+            collection = db[CSB_Script]                
             #######################################
             ucredit = CSB_credit_usage(sb1)
             sri_lanka_tz = pytz.timezone('Asia/Colombo')
@@ -763,7 +748,21 @@ while True:
             i += 1
             sb1.switch_to.window(page)
             time.sleep(1)
-
+            time.sleep(2)
+            pyautogui.click(942, 65)
+            time.sleep(2)
+            pyautogui.hotkey('ctrl', 'l')
+            pyautogui.keyUp('ctrl')
+            time.sleep(2)
+            pyautogui.hotkey('ctrl', 'a')
+            pyautogui.keyUp('ctrl')
+            time.sleep(1)
+            pyautogui.hotkey('ctrl', 'c')
+            pyautogui.keyUp('ctrl')
+            page_url = clipboard.paste()
+                    #page_url = sb1.get_current_url()
+            urls.append(page_url)
+            print(f'List URLS:{urls} page:{page_url}')
             query = {"type": "main"}
             doc = collection.find_one(query)
             request = doc["request"]
@@ -815,7 +814,7 @@ while True:
                 update = {"$set": {"request": 'None'}}
                 result = collection.update_one(query, update)  
             time.sleep(35)
-            
+
         if len(urls) == 4:
             devbox_string = "<br>\n".join([url.replace('https://codesandbox.io/p/', '') for url in urls])
             query = {"type": "main"}

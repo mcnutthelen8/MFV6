@@ -34,7 +34,7 @@ import pytz
 import datetime
 from datetime import datetime
 
-#csb_handle.py --fresh 1 --vms 1 --layout 1
+#csb_handle.py --fresh 1 --vms 1 --layout 1 --csbid andyrogers468f23h
 sri_lanka_tz = pytz.timezone('Asia/Colombo')
 utc_now = datetime.utcnow().replace(tzinfo=pytz.utc)  
 sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
@@ -44,17 +44,20 @@ parser = argparse.ArgumentParser(description="Process some arguments.")
 parser.add_argument('--fresh', type=int, help="Farm")
 parser.add_argument('--vms', type=int, help="Fresh")
 parser.add_argument('--layout', type=int, help="Fresh")
+
+parser.add_argument('--csbid', type=str, help="Fresh")
 args = parser.parse_args()
 freshar = args.fresh
 vmsar = args.vms
 layoutar = args.layout
+csbid = args.csbid
 
 Layout = layoutar# 1
 
 fresh = True
 fresh_vms =True 
 vm_count = 1 + 4
-CSB_id = ''
+CSB_id = csbid
 CSB_Script = f'CSB{Layout}'
 waiting_sec = 1700
 

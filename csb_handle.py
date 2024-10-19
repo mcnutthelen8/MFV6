@@ -34,6 +34,7 @@ import pytz
 import datetime
 from datetime import datetime
 
+#csb_handle.py --fresh 1 --vms 1 --layout 1
 sri_lanka_tz = pytz.timezone('Asia/Colombo')
 utc_now = datetime.utcnow().replace(tzinfo=pytz.utc)  
 sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
@@ -57,12 +58,12 @@ CSB_id = ''
 CSB_Script = f'CSB{Layout}'
 waiting_sec = 1700
 
-if fresh == 1:
+if freshar == 1:
     fresh = True
 else:
     fresh = False
 
-if fresh == 1:
+if vmsar == 1:
     fresh_vms = True
 else:
     fresh_vms = False

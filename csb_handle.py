@@ -833,19 +833,17 @@ while True:
     for page in page_windows:
         sb1.switch_to.window(page)
         sb1.refresh()
-        for i in range(1,20):
-            time.sleep(2)
-            pyautogui.click(1228,462)
-            time.sleep(2)
-            pyautogui.click(942, 65)
-            time.sleep(1)
-            pyautogui.hotkey('ctrl', 'l')
-            pyautogui.keyUp('ctrl')
-            time.sleep(0.5)
-            pyautogui.hotkey('ctrl', 'c')
-            page_url = clipboard.paste()
+        time.sleep(2)
+        pyautogui.click(942, 65)
+        time.sleep(1)
+        pyautogui.hotkey('ctrl', 'l')
+        pyautogui.keyUp('ctrl')
+        time.sleep(0.5)
+        pyautogui.hotkey('ctrl', 'c')
+        pyautogui.keyUp('ctrl')
+        page_url = clipboard.paste()
                 #page_url = sb1.get_current_url()
-            urls.append(page_url)
+        urls.append(page_url)
             
     #after each Refresh
     collection = db[CSB_Script]

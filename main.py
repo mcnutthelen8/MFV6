@@ -2945,7 +2945,7 @@ if ip_address == ip_required:
         print('Starting Loop')
         while True:
             try:
-                #time.sleep(1)
+                time.sleep(2)
                 
                 mainscript = control_panel()
 

@@ -28,7 +28,7 @@ from PIL import Image
 from pymongo import MongoClient
 
 import json
-
+import argparse
 import pyperclip as clipboard
 import pytz
 import datetime
@@ -39,14 +39,34 @@ utc_now = datetime.utcnow().replace(tzinfo=pytz.utc)
 sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
 now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
 
-Layout = 1
+parser = argparse.ArgumentParser(description="Process some arguments.")
+parser.add_argument('--fresh', type=int, help="Farm")
+parser.add_argument('--vms', type=int, help="Fresh")
+parser.add_argument('--layout', type=int, help="Fresh")
+args = parser.parse_args()
+freshar = args.fresh
+vmsar = args.vms
+layoutar = args.layout
+
+Layout = layoutar# 1
 
 fresh = True
 fresh_vms =True 
 vm_count = 1 + 4
-CSB_id = 'andrewperera70'
+CSB_id = ''
 CSB_Script = f'CSB{Layout}'
 waiting_sec = 1700
+
+if fresh == 1:
+    fresh = True
+else:
+    fresh = False
+
+if fresh == 1:
+    fresh_vms = True
+else:
+    fresh_vms = False
+
 #https://www.skylom.com/willem3
 #https://www.zaptaps.com/willem
 command_1 = '0'
@@ -282,14 +302,17 @@ def create_devbox(driver):
                                 if 'New Devtool - workspace - CodeSandbox' in title:
                                     print(f'Vm Has Loaded:{title}')
                                     return True  
+                                if 'workspace - CodeSandbox' in title:
+                                    print(f'Vm Has Loaded:{title}')
+                                    return True  
             return False
     except Exception as e:
         print(f'Create DevBox:{e}')
         return False
   
 def deploy_docker(farmurl):
-    for i in range(1, 999):
-            
+    while True:
+        time.sleep(2)
         try:
             pyautogui.click(23, 303)
             time.sleep(3)
@@ -305,14 +328,14 @@ def deploy_docker(farmurl):
                 print("workspace git Found")
                 pyautogui.typewrite('docker run -i --platform=linux/amd64 -p 6080:6080 akarita/docker-ubuntu-desktop')
                 pyautogui.press('enter')
-                for i in range(1,9999):
-                    time.sleep(1)  
+                while True:
+                    time.sleep(2)  
                     try:
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/docker_deployed.png", region=(350, 780, 800, 800), confidence=0.9)
                         if x and y:
                             pyautogui.click(x, y)
                             print("docker_deployed git Found")
-                            for i in range(1,990):
+                            while True:
                                 pyautogui.click(23, 303)
                                 time.sleep(3)
                                 pyautogui.click(104, 329)
@@ -324,7 +347,8 @@ def deploy_docker(farmurl):
                                         print("director_lister git Found")
                                         pyautogui.click(1228,462)
                                         time.sleep(3)
-                                        for i in range(1, 999):
+                                        while True:
+                                            time.sleep(2)
                                             pyautogui.rightClick(1467, 346)
                                             time.sleep(5)
                                             try:
@@ -332,7 +356,7 @@ def deploy_docker(farmurl):
                                                 if x and y:
                                                     pyautogui.click(x, y)
                                                     print("open_terminal git Found")
-                                                    for i in range(1, 999):
+                                                    while True:
                                                         time.sleep(3)
                                                         try:
                                                             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/desktop_terminal.png", region=(1120, 223, 1000, 1000), confidence=0.9)
@@ -359,6 +383,38 @@ def deploy_docker(farmurl):
         except Exception as e:
             print(f'Deploy:{e}')
 
+def CSB_credit_usage(driver):
+    original_window = driver.current_window_handle
+    driver.open_new_window()
+    driver.open('https://codesandbox.io/dashboard/')
+    time.sleep(3)
+    usage_list = []
+    ucredit = None
+    try:
+        continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'span.sc-bdnylx')
+
+        for button in continue_buttons:
+            if 'credits' in button.text:
+                print(f"Found and processing: {button.text}")
+                gg = button.text
+
+                # Use regex to extract the numbers before and after the slash
+                match = re.search(r'(\d+)\s*/\s*(\d+)', gg)
+                if match:
+                    current_credits = int(match.group(1))  # Extract current credits (e.g., 253)
+                    total_credits = int(match.group(2))    # Extract total credits (e.g., 400)
+                    
+                    print(f"Current Credits: {current_credits}")
+                    print(f"Total Credits: {total_credits}")
+                    ucredit = current_credits  # Store the current credits if needed
+                else:
+                    print("No credit values found in text.")
+    except Exception as e:
+        print(e)
+    driver.close()
+    driver.switch_to.window(original_window)
+    return ucredit
+                    
 def CSB_Usages(driver):
     original_window = driver.current_window_handle
     driver.open_new_window()
@@ -368,13 +424,6 @@ def CSB_Usages(driver):
     ucredit = 0
     
     try:
-        continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'p.text-csb-green-5')
-        for button in continue_buttons:
-            if 'free credits used' in button.text:
-                print(f"Found and clicking: {button.text}")
-                gg = button.text 
-                gg = gg.replace('free credits used', '').strip()
-                ucredit = gg
 
         continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'a.sc-bdnylx')
         for button in continue_buttons:
@@ -384,7 +433,14 @@ def CSB_Usages(driver):
                 pyautogui.click(217, 1042)
                 
                 time.sleep(5)
-                
+                continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'p.text-csb-green-5')
+                for button in continue_buttons:
+                    if 'free credits used' in button.text:
+                        print(f"Found and clicking: {button.text}")
+                        gg = button.text 
+                        gg = gg.replace('free credits used', '').strip()
+                        ucredit = gg
+
                 rows = driver.find_elements(By.CSS_SELECTOR, "tbody#vm_usage tr")
                 for row in rows:
                     row_id = row.get_attribute("id")
@@ -632,7 +688,10 @@ if fresh_vms:
         sb1.open_new_window()
         create_devbox(sb1)
         deploy_docker(command)
-
+        
+        time.sleep(5)
+        pyautogui.click(942, 65)
+        time.sleep(1)
         pyautogui.click(942, 65)
         time.sleep(1)
         pyautogui.hotkey('ctrl', 'l')
@@ -663,10 +722,25 @@ while True:
     start_time = time.time()
     while gg == True:
         for i, page in enumerate(page_windows):
+            collection = db[CSB_Script]
+            #######################################
+            ucredit = CSB_credit_usage(sb1)
+            sri_lanka_tz = pytz.timezone('Asia/Colombo')
+            utc_now = datetime.utcnow().replace(tzinfo=pytz.utc)  
+            sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
+            now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
+            query = {"type": "main"}
+            sample_document = {
+                "ucredit": ucredit,
+                "status": now
+            }
+            update = {"$set": sample_document}
+            result = collection.update_one(query, update)    
+            ############################################
             i += 1
             sb1.switch_to.window(page)
             time.sleep(1)
-            collection = db[CSB_Script]
+
             query = {"type": "main"}
             doc = collection.find_one(query)
             request = doc["request"]
@@ -689,7 +763,7 @@ while True:
                     print(f"Updated {result.modified_count} document(s).")
                 else:
                     print("No document was updated.")
-
+            
             time.sleep(5)
             try:
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/reload_window.png", region=(144, 118, 1700, 1000), confidence=0.9)
@@ -706,11 +780,19 @@ while True:
                 elif i == 2: command = command_2
                 elif i == 3: command = command_3
                 elif i == 4: command = command_4
-
+                query = {"type": "main"}
+                doc = collection.find_one(query)
+                update = {"$set": {"request": f'Resetting DEV{i}'}}
+                result = collection.update_one(query, update) 
                 create_devbox(sb1)
                 deploy_docker(command)
                 pyautogui.click(942, 65)
+                query = {"type": "main"}
+                doc = collection.find_one(query)
+                update = {"$set": {"request": 'None'}}
+                result = collection.update_one(query, update)  
             time.sleep(35)
+
 
         elapsed_time = time.time() - start_time
         mins, secs = divmod(int(elapsed_time), 60)
@@ -721,7 +803,7 @@ while True:
         if seconds_only > waiting_sec:
             gg = False
 
-
+##############################################
 
     collection = db[CSB_Script]
     query = {"type": "main"}
@@ -747,42 +829,19 @@ while True:
     for page in page_windows:
         sb1.switch_to.window(page)
         sb1.refresh()
-        for i in range(1,559):
-            
-            try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/director_lister.png", region=(1120, 223, 1000, 1000), confidence=0.9)
-                if x and y:
-                    pyautogui.click(x, y)
-                    print("director_lister git Found")
-                    pyautogui.click(1228,462)
-                    time.sleep(2)
-                    pyautogui.click(942, 65)
-                    time.sleep(1)
-                    pyautogui.hotkey('ctrl', 'l')
-                    pyautogui.keyUp('ctrl')
-                    time.sleep(0.5)
-                    pyautogui.hotkey('ctrl', 'c')
-                    page_url = clipboard.paste()
-                    #page_url = sb1.get_current_url()
-                    urls.append(page_url)
-                    break
-
-            except Exception as e:
-                print(f'Waiting For Find Directior Listener{i}')
-            title =  sb1.get_title()
-            if 'Unable to start the microVM' in title:
-                pyautogui.click(1228,462)
-                time.sleep(2)
-                pyautogui.click(942, 65)
-                time.sleep(1)
-                pyautogui.hotkey('ctrl', 'l')
-                pyautogui.keyUp('ctrl')
-                time.sleep(0.5)
-                pyautogui.hotkey('ctrl', 'c')
-                page_url = clipboard.paste()
+        for i in range(1,20):
+            time.sleep(2)
+            pyautogui.click(1228,462)
+            time.sleep(2)
+            pyautogui.click(942, 65)
+            time.sleep(1)
+            pyautogui.hotkey('ctrl', 'l')
+            pyautogui.keyUp('ctrl')
+            time.sleep(0.5)
+            pyautogui.hotkey('ctrl', 'c')
+            page_url = clipboard.paste()
                 #page_url = sb1.get_current_url()
-                urls.append(page_url)
-                break
+            urls.append(page_url)
             
     #after each Refresh
     collection = db[CSB_Script]
@@ -812,4 +871,3 @@ while True:
         usage_collection = db[CSB_Script]
         usage_result = usage_collection.insert_many(usage_list)
         print(f"Inserted usage documents with IDs: {usage_result.inserted_ids}")
-

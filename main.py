@@ -69,30 +69,34 @@ facebook_cookies = '0'
 
 CSB1_farms = [1, 2, 3, 4]
 fb_pass = 'ashen1997'
-
+yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
 mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie.json"
 
 if farm_id == 1:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/alisabro.json'
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie.json"
+    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
     server_name1 = 'estonia'
     CSB1_farms = [1, 2, 3, 4]
 elif farm_id == 2:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/diludilakshi.json'
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie2.json"
+    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
     server_name1 = 'romania'
     CSB1_farms = [1, 2, 3, 4]
 elif farm_id == 3:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/williesmith.json'
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie3.json"
+    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
     server_name1 = 'poland'
     CSB1_farms = [1, 2, 3, 4]
 elif farm_id == 4:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie4.json"
+    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
     server_name1 = 'hungary'
     CSB1_farms = [1, 2, 3, 4]
@@ -101,23 +105,27 @@ elif farm_id == 4:
 elif farm_id == 5:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/khabibmakanzie.json'
     fb_pass = 'uwuinsta2005'
+    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     server_name1 = 'thailand'
     CSB1_farms = [5, 6, 7, 8]
 
 elif farm_id == 6:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/andyrogers.json'
     server_name1 = 'belgium'
+    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
     CSB1_farms = [5, 6, 7, 8]
 elif farm_id == 7:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/joeziega.json'
     server_name1 = 'egypt'
+    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
     CSB1_farms = [5, 6, 7, 8]
 
 elif farm_id == 8:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/captaingranda.json'
     server_name1 = 'croatia'
+    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
     CSB1_farms = [5, 6, 7, 8]
 
@@ -127,6 +135,7 @@ elif farm_id == 9:
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     fb_pass = 'ashen1997'
     server_name1 = 'malaysia'
+    yt_api_key = 'AIzaSyCbT1Zh82t44m4Qt665I-wxSB_S1hCjRIY'
     CSB1_farms = [9, 10, 11, 12]
 
 elif farm_id == 10:
@@ -134,6 +143,7 @@ elif farm_id == 10:
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     server_name1 = 'morocco'
     fb_pass = 'ashen1997'
+    yt_api_key = 'AIzaSyCbT1Zh82t44m4Qt665I-wxSB_S1hCjRIY'
     CSB1_farms = [9, 10, 11, 12]
 
 elif farm_id == 11:
@@ -141,12 +151,14 @@ elif farm_id == 11:
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     server_name1 = 'georgia'
     fb_pass = 'ashen1997'
+    yt_api_key = 'AIzaSyCbT1Zh82t44m4Qt665I-wxSB_S1hCjRIY'
     CSB1_farms = [9, 10, 11, 12]
 
 elif farm_id == 12:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/howardrahul838.json'
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     server_name1 = 'moldova'
+    yt_api_key = 'AIzaSyCbT1Zh82t44m4Qt665I-wxSB_S1hCjRIY'
     fb_pass = 'ashen1997'
     CSB1_farms = [9, 10, 11, 12]
 
@@ -447,7 +459,7 @@ def get_youtube_video_id(url):
     
 def yt_api_method(link):
     try:
-        api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'  # Replace with your API key
+        api_key = yt_api_key  # Replace with your API key
         pattern = r'(?:https?://)?(?:www\.)?(?:youtube\.com/(?:[^/]+/.*[/?]|(?:v|e(?:mbed)?|shorts|watch|playlist|embed|v/|embed/)|.*[?&]v=)|youtu\.be/)([a-zA-Z0-9_-]{11})|(?:shorts/([a-zA-Z0-9_-]{11}))'
         match = re.search(pattern, link)
         if match:
@@ -1843,7 +1855,8 @@ def get_coin_value_redeem(driver):
                 print(f"Button found: {button.text}, clicking...")
                 gg = button.text
                 # Use regex to extract the numeric value
-                match = re.search(r'([\d,]+\.\d+)', gg)
+                #match = re.search(r'([\d,]+\.\d+)', gg)
+                match = re.search(r'([\d,]+)', gg)
                 if match:
                     gg = match.group(1).replace(',', '')  # Remove commas
                     gg = int(float(gg))  # Convert to integer
@@ -2531,6 +2544,14 @@ def new_numbercaptcha(sb):
 
     except Exception as e:
         print(f"Error: {str(e)}")
+        try:
+            result = '55'
+            sb.type("textarea.captcha-textarea", result)
+            time.sleep(1)
+            sb.click("a.themeBtn")
+        except Exception as e:
+            print(f"Error: {e}")
+
 
 def cal_ocr(sb, typetnf):
     try:

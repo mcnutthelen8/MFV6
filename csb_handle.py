@@ -700,7 +700,10 @@ if fresh_vms:
         time.sleep(1)
         pyautogui.hotkey('ctrl', 'l')
         pyautogui.keyUp('ctrl')
-        time.sleep(0.5)
+        time.sleep(2)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.keyUp('ctrl')
+        time.sleep(1)
         pyautogui.hotkey('ctrl', 'c')
         page_url = clipboard.paste()
         page_window = sb1.current_window_handle
@@ -733,7 +736,10 @@ while True:
             time.sleep(1)
             pyautogui.hotkey('ctrl', 'l')
             pyautogui.keyUp('ctrl')
-            time.sleep(0.5)
+            time.sleep(2)
+            pyautogui.hotkey('ctrl', 'a')
+            pyautogui.keyUp('ctrl')
+            time.sleep(1)
             pyautogui.hotkey('ctrl', 'c')
             pyautogui.keyUp('ctrl')
             page_url = clipboard.paste()
@@ -809,8 +815,15 @@ while True:
                 update = {"$set": {"request": 'None'}}
                 result = collection.update_one(query, update)  
             time.sleep(35)
-
-        devbox_string = "<br>\n".join([url.replace('https://codesandbox.io/p/', '') for url in urls])
+            
+        if len(urls) == 4:
+            devbox_string = "<br>\n".join([url.replace('https://codesandbox.io/p/', '') for url in urls])
+            query = {"type": "main"}
+            sample_document = {
+                "devboxes": devbox_string
+            }
+            update = {"$set": sample_document}
+            result = collection.update_one(query, update) 
         elapsed_time = time.time() - start_time
         mins, secs = divmod(int(elapsed_time), 60)
         timer = f'{mins:02d}:{secs:02d}'
@@ -851,7 +864,10 @@ while True:
         time.sleep(1)
         pyautogui.hotkey('ctrl', 'l')
         pyautogui.keyUp('ctrl')
-        time.sleep(0.5)
+        time.sleep(2)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.keyUp('ctrl')
+        time.sleep(1)
         pyautogui.hotkey('ctrl', 'c')
         pyautogui.keyUp('ctrl')
         page_url = clipboard.paste()
@@ -859,30 +875,31 @@ while True:
         urls.append(page_url)
             
     #after each Refresh
-    collection = db[CSB_Script]
-    result = collection.delete_many({})
-    print(f"Deleted {result.deleted_count} documents.")
-    devbox_string = "<br>\n".join([url.replace('https://codesandbox.io/p/', '') for url in urls])
-    sri_lanka_tz = pytz.timezone('Asia/Colombo')
-    utc_now = datetime.utcnow().replace(tzinfo=pytz.utc)  
-    sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
-    now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
-    ucredit, usage_list = CSB_Usages(sb1)
-    
-    csb_panel =     {"csb_script_id": CSB_Script,
-                    "csb_logins": CSB_id,
-                    "devboxes": devbox_string,
-                    "ucredit" : ucredit,
-                    "status": now,
-                    "request": "None",
-                    "response": "None",
-                    "type": "main"}
-    
-    csb_panel_collection = db[CSB_Script]
-    csb_panel_result = csb_panel_collection.insert_one(csb_panel)
-    print(f"Inserted csb_panel with ID: {csb_panel_result.inserted_id}")
+    if len(urls) == 4:
+        collection = db[CSB_Script]
+        result = collection.delete_many({})
+        print(f"Deleted {result.deleted_count} documents.")
+        devbox_string = "<br>\n".join([url.replace('https://codesandbox.io/p/', '') for url in urls])
+        sri_lanka_tz = pytz.timezone('Asia/Colombo')
+        utc_now = datetime.utcnow().replace(tzinfo=pytz.utc)  
+        sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
+        now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
+        ucredit, usage_list = CSB_Usages(sb1)
+        
+        csb_panel =     {"csb_script_id": CSB_Script,
+                        "csb_logins": CSB_id,
+                        "devboxes": devbox_string,
+                        "ucredit" : ucredit,
+                        "status": now,
+                        "request": "None",
+                        "response": "None",
+                        "type": "main"}
+        
+        csb_panel_collection = db[CSB_Script]
+        csb_panel_result = csb_panel_collection.insert_one(csb_panel)
+        print(f"Inserted csb_panel with ID: {csb_panel_result.inserted_id}")
 
-    if usage_list:
-        usage_collection = db[CSB_Script]
-        usage_result = usage_collection.insert_many(usage_list)
-        print(f"Inserted usage documents with IDs: {usage_result.inserted_ids}")
+        if usage_list:
+            usage_collection = db[CSB_Script]
+            usage_result = usage_collection.insert_many(usage_list)
+            print(f"Inserted usage documents with IDs: {usage_result.inserted_ids}")

@@ -70,32 +70,32 @@ facebook_cookies = '0'
 CSB1_farms = [1, 2, 3, 4]
 fb_pass = 'ashen1997'
 yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
-mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
+mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie.json"
 
 if farm_id == 1:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/alisabro.json'
-    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
+    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie.json"
     yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
     server_name1 = 'estonia'
     CSB1_farms = [1, 2, 3, 4]
 elif farm_id == 2:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/diludilakshi.json'
-    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
+    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie2.json"
     yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
     server_name1 = 'romania'
     CSB1_farms = [1, 2, 3, 4]
 elif farm_id == 3:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/williesmith.json'
-    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
+    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie3.json"
     yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
     server_name1 = 'poland'
     CSB1_farms = [1, 2, 3, 4]
 elif farm_id == 4:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
-    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
+    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie4.json"
     yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
     server_name1 = 'hungary'
@@ -1942,7 +1942,7 @@ def cloudflare(sb):
         solve_calculating_capcha(sb)
     except Exception as e:
         pass
-    return
+    #return
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman.png", region=(696,171,570,277), confidence=0.9)
         print("verify_cloudflare git Found")
@@ -2231,8 +2231,8 @@ def get_and_click_category_sky(category, sb):
             if category_lower in button_text_lower or button_text_lower in category_lower:
                 print(f"Found and clicked category: {button.text}")
                 button.click()
-                #time.sleep(5)
-                #cloudflare2(sb)
+                time.sleep(5)
+                cloudflare2(sb)
                 return True
         
         # List of fallback categories in case the provided one is not found
@@ -2251,8 +2251,8 @@ def get_and_click_category_sky(category, sb):
                 if fallback_category_lower in button_text or button_text in fallback_category_lower:
                     print(f"Found and clicked fallback category: {button.text}")
                     button.click()
-                    #time.sleep(5)
-                    #cloudflare2(sb)
+                    time.sleep(5)
+                    cloudflare2(sb)
                     return True
         
         for button in category_buttons:
@@ -2295,8 +2295,8 @@ def get_and_click_category_bay(category, sb):
             if category_lower in button_text_lower or button_text_lower in category_lower:
                 print(f"Found and clicked category: {button.text}")
                 button.click()
-                #time.sleep(5)
-                #cloudflare2(sb)
+                time.sleep(5)
+                cloudflare2(sb)
                 return True
         
         # List of fallback categories in case the provided one is not found
@@ -2315,8 +2315,8 @@ def get_and_click_category_bay(category, sb):
                 if fallback_category_lower in button_text or button_text in fallback_category_lower:
                     print(f"Found and clicked fallback category: {button.text}")
                     button.click()
-                    #time.sleep(5)
-                    #cloudflare2(sb)
+                    time.sleep(5)
+                    cloudflare2(sb)
                     return True
         
         for button in category_buttons:
@@ -2410,7 +2410,8 @@ def get_and_click_category(category, sb, selector_type='sky'):
             if fixed_category in fixed_button_text or fixed_button_text in fixed_category:
                 print(f"Found and clicked category: {fixed_button_text} : Category:{fixed_category}")
                 button.click()
-                #cloudflare2(sb)  # Assuming this is your post-click function
+                
+                cloudflare2(sb)  # Assuming this is your post-click function
                 return True
 
 
@@ -2427,7 +2428,7 @@ def get_and_click_category(category, sb, selector_type='sky'):
                 if best_match in fixed_button_text or fixed_button_text in best_match:
                     print(f"Found and clicked category2: {fixed_button_text} : Category:{best_match} and Btoon:{button_text}")
                     button.click()
-                    #cloudflare2(sb)  # Assuming this is your post-click function
+                    cloudflare2(sb)  # Assuming this is your post-click function
                     return True
 
         # List of fallback categories if the provided one is not found
@@ -2443,7 +2444,7 @@ def get_and_click_category(category, sb, selector_type='sky'):
                 if fallback_category in fixed_button_text or fixed_button_text in fallback_category:
                     print(f"Found and clicked fallback category: {button.text}")
                     button.click()
-                    #cloudflare2(sb)
+                    cloudflare2(sb)
                     return True
 
         # If no match is found, select a random button and click it

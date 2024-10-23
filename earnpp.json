@@ -1,7 +1,7 @@
 [
     {
         "domain": "earn-pepe.com",
-        "expirationDate": 1729679855.044812,
+        "expirationDate": 1729722409.832688,
         "hostOnly": true,
         "httpOnly": true,
         "name": "ci_session",
@@ -10,7 +10,7 @@
         "secure": true,
         "session": false,
         "storeId": null,
-        "value": "k6iedtrl3a7lqhbe6thp5lgph1v87d2g"
+        "value": "palve8o753psanh4445gr1bvm4h9q6bg"
     },
     {
         "domain": "earn-pepe.com",
@@ -27,7 +27,7 @@
     },
     {
         "domain": ".earn-pepe.com",
-        "expirationDate": 1764232652.15344,
+        "expirationDate": 1764275215.280798,
         "hostOnly": false,
         "httpOnly": false,
         "name": "_ga",
@@ -40,7 +40,7 @@
     },
     {
         "domain": ".earn-pepe.com",
-        "expirationDate": 1764232652.153138,
+        "expirationDate": 1764275215.28029,
         "hostOnly": false,
         "httpOnly": false,
         "name": "_ga_VLXYCGD6QG",
@@ -49,11 +49,24 @@
         "secure": false,
         "session": false,
         "storeId": null,
-        "value": "GS1.1.1729672627.11.1.1729672652.0.0.0"
+        "value": "GS1.1.1729713132.15.1.1729715215.0.0.0"
     },
     {
         "domain": "earn-pepe.com",
-        "expirationDate": 1729676086.27204,
+        "expirationDate": 1730577155.274515,
+        "hostOnly": true,
+        "httpOnly": false,
+        "name": "captcha",
+        "path": "/",
+        "sameSite": null,
+        "secure": true,
+        "session": false,
+        "storeId": null,
+        "value": "turnstile"
+    },
+    {
+        "domain": "earn-pepe.com",
+        "expirationDate": 1729720404.328114,
         "hostOnly": true,
         "httpOnly": true,
         "name": "csrf_cookie_name",
@@ -62,6 +75,6 @@
         "secure": true,
         "session": false,
         "storeId": null,
-        "value": "eb301fea4e47244d15dc8c2be2932d83"
+        "value": "196b98b572748b0a955494c65d6b260b"
     }
 ]

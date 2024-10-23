@@ -909,13 +909,14 @@ if feyorra:
             break
         
     print(f"feyorra_window window handle: {feyorra_window}")
-
     sb1.switch_to.window(feyorra_window)
+
     time.sleep(1)
     ggt = sb1.get_title()
 
     ready = True
     while ready == True:
+        sb1.switch_to.window(feyorra_window)
         time.sleep(1)
         ggt = sb1.get_title()
         if 'Home' in ggt:
@@ -924,14 +925,22 @@ if feyorra:
             sb1.uc_gui_click_captcha()
             sb1.uc_gui_handle_captcha()
             cloudflare(sb1)
-        elif 'Faucet' in ggt:
+        elif 'Faucet | Feyorra' in ggt:
             ready = False
         else:
             print(f'{ggt} is wrong')
             sb1.uc_open_with_reconnect("https://feyorra.site/member/faucet", 5)
             sb1.uc_gui_click_captcha()
             sb1.uc_gui_handle_captcha()
-            
+            all_windows = sb1.window_handles
+            print(f"All windows: {all_windows}")
+            for window in all_windows:
+                if window != earnpp_window:
+                    feyorra_window = window
+                    break
+                
+            print(f"feyorra_window window handle: {feyorra_window}")
+            sb1.switch_to.window(feyorra_window)
 
     all_windows = sb1.window_handles
     print(f"All windows: {all_windows}")
@@ -956,19 +965,18 @@ if claimcoin:
 
     all_windows = sb1.window_handles
     print(f"All windows: {all_windows}")
-
-        # Find and assign Baymack window (not matching Popmack window)
     for window in all_windows:
         if window != earnpp_window or window != feyorra_window:
             claimcoin_window = window
             break
-        
+    sb1.switch_to.window(claimcoin_window)
     print(f"claimcoin_window window handle: {claimcoin_window}")
     time.sleep(1)
     ggt = sb1.get_title()
 
     ready = True
     while ready == True:
+        sb1.switch_to.window(claimcoin_window)
         time.sleep(1)
         ggt = sb1.get_title()
         if 'ClaimCoin - MultiCurrency Crypto Earning Platform' in ggt:
@@ -984,7 +992,15 @@ if claimcoin:
             sb1.uc_open_with_reconnect("https://claimcoin.in/faucet", 5)
             sb1.uc_gui_click_captcha()
             sb1.uc_gui_handle_captcha()
-            
+            all_windows = sb1.window_handles
+            print(f"All windows: {all_windows}")
+            for window in all_windows:
+                if window != earnpp_window or window != feyorra_window:
+                    claimcoin_window = window
+                    break
+            sb1.switch_to.window(claimcoin_window)
+            print(f"claimcoin_window window handle: {claimcoin_window}")
+
     print(f"Title after opening Zaptaps: {ggt}")
         
 

@@ -1,0 +1,80 @@
+[
+    {
+        "domain": "feyorra.site",
+        "expirationDate": 1729679974.821282,
+        "hostOnly": true,
+        "httpOnly": true,
+        "name": "csrf_cookie_name",
+        "path": "/",
+        "sameSite": "lax",
+        "secure": true,
+        "session": false,
+        "storeId": null,
+        "value": "d5fe6de423b20fa98f0d9ab216968ae2"
+    },
+    {
+        "domain": ".feyorra.site",
+        "expirationDate": 1764232824.181335,
+        "hostOnly": false,
+        "httpOnly": false,
+        "name": "_ga",
+        "path": "/",
+        "sameSite": null,
+        "secure": false,
+        "session": false,
+        "storeId": null,
+        "value": "GA1.1.499012410.1729586696"
+    },
+    {
+        "domain": "feyorra.site",
+        "expirationDate": 1729712615.509711,
+        "hostOnly": true,
+        "httpOnly": false,
+        "name": "PHPREFS",
+        "path": "/",
+        "sameSite": null,
+        "secure": false,
+        "session": false,
+        "storeId": null,
+        "value": "full"
+    },
+    {
+        "domain": "feyorra.site",
+        "expirationDate": 1764146727.94915,
+        "hostOnly": true,
+        "httpOnly": false,
+        "name": "bitmedia_fid",
+        "path": "/",
+        "sameSite": null,
+        "secure": false,
+        "session": false,
+        "storeId": null,
+        "value": "eyJmaWQiOiI5MDljMTFjOWM5MGRiNTQwMWVkOTA1NGVlYTA1M2IwOCIsImZpZG5vdWEiOiIxNTFkNmQxYThmOTNlNDhkYWE3MWE1OGYyZTEzMjIyOCJ9"
+    },
+    {
+        "domain": ".feyorra.site",
+        "expirationDate": 1764232824.19026,
+        "hostOnly": false,
+        "httpOnly": false,
+        "name": "_ga_0YGJ6JPB1R",
+        "path": "/",
+        "sameSite": null,
+        "secure": false,
+        "session": false,
+        "storeId": null,
+        "value": "GS1.1.1729672776.6.1.1729672824.0.0.0"
+    },
+    {
+        "domain": "feyorra.site",
+        "expirationDate": 1729680024.902363,
+        "hostOnly": true,
+        "httpOnly": true,
+        "name": "ci_session",
+        "path": "/",
+        "sameSite": "lax",
+        "secure": true,
+        "session": false,
+        "storeId": null,
+        "value": "2apqe6u4atvn5pqf46bdjlesslsthh6f"
+    }
+]

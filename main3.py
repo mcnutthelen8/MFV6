@@ -803,7 +803,7 @@ def add_cookies_with(driver, cookies):
                 print("import_icon Found")
                 time.sleep(3)
                 for i in range(1,50):
-                    print(url)
+                    print(cookies)
                     url = cookies
                     response = requests.get(url)
                     if response.status_code == 200:
@@ -847,6 +847,35 @@ def add_cookies_with(driver, cookies):
         except pyautogui.ImageNotFoundException:
             print("No allow_button .")
 
+def login_to_claimcoin(driver, email, password):
+    # Step 1: Go to the login page
+    driver.get("https://claimcoin.in/login")
+
+    # Step 2: Fill in the email and password
+    email_input = WebDriverWait(driver, 10).until(
+        EC.presence_of_element_located((By.ID, "email"))
+    )
+    email_input.send_keys(email)
+    
+    password_input = driver.find_element(By.ID, "password")
+    password_input.send_keys(password)
+
+    # Step 3: Wait for the CAPTCHA checkbox to be validated
+    print("CAPTCHA Check")
+    captcha_unchecked_selector = 'div.recaptcha-checkbox-checkmark[style=""]'
+    WebDriverWait(driver, 300).until(
+        EC.presence_of_element_located((By.CSS_SELECTOR, captcha_unchecked_selector))
+    )
+    print("✅ CAPTCHA validated")
+
+    # Step 4: Click the "Log In" button
+    login_button = driver.find_element(By.CSS_SELECTOR, "button.btn.btn-primary.btn-block.waves-effect.waves-light")
+    login_button.click()
+    
+    print("🚀 Login attempt made!")
+
+email = "khabibmakanzie@gmail.com"
+password = "@$uiJjkFfZU3K@e"
 
 bitmoon_window = None
 earnpp_window = None
@@ -878,7 +907,7 @@ if earnpp:
         time.sleep(1)
         ggt = sb1.get_title()
         if 'Home' in ggt:
-            add_cookies_with(sb1, earnpp_cookie)
+            login_to_claimcoin(sb1, email, password)
         elif 'Just' in ggt:
             sb1.uc_gui_click_captcha()
             sb1.uc_gui_handle_captcha()

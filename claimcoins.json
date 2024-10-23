@@ -26,7 +26,7 @@
     },
     {
         "domain": ".claimcoin.in",
-        "expirationDate": 1764233074.941224,
+        "expirationDate": 1764235011.385008,
         "hostOnly": false,
         "httpOnly": false,
         "name": "_ga_LXG101TQEW",
@@ -35,11 +35,24 @@
         "secure": false,
         "session": false,
         "storeId": null,
-        "value": "GS1.1.1729673060.3.1.1729673074.0.0.0"
+        "value": "GS1.1.1729674998.4.1.1729675011.0.0.0"
+    },
+    {
+        "domain": "claimcoin.in",
+        "expirationDate": 1729676676,
+        "hostOnly": true,
+        "httpOnly": false,
+        "name": "_data_cpc",
+        "path": "/",
+        "sameSite": null,
+        "secure": false,
+        "session": false,
+        "storeId": null,
+        "value": "895-1-1729676676"
     },
     {
         "domain": ".claimcoin.in",
-        "expirationDate": 1764233074.918334,
+        "expirationDate": 1764235011.385533,
         "hostOnly": false,
         "httpOnly": false,
         "name": "_ga",
@@ -52,7 +65,7 @@
     },
     {
         "domain": "claimcoin.in",
-        "expirationDate": 1729759332.686809,
+        "expirationDate": 1729761397.234876,
         "hostOnly": true,
         "httpOnly": true,
         "name": "ci_session",
@@ -61,11 +74,11 @@
         "secure": true,
         "session": false,
         "storeId": null,
-        "value": "e720d969d5f62d7cc5fd94955be9bd9f69fd6da3"
+        "value": "d303d2fc8aba38c5479103e508cb0c24fb466373"
     },
     {
         "domain": "claimcoin.in",
-        "expirationDate": 1729680271.227131,
+        "expirationDate": 1729682210.891462,
         "hostOnly": true,
         "httpOnly": false,
         "name": "csrf_cookie_name",
@@ -74,7 +87,20 @@
         "secure": true,
         "session": false,
         "storeId": null,
-        "value": "9c69fd95d4ca54af1e346fc923031ba8"
+        "value": "53d8c04b5222812293fee0da069e54d7"
+    },
+    {
+        "domain": "claimcoin.in",
+        "expirationDate": 1730277875,
+        "hostOnly": true,
+        "httpOnly": false,
+        "name": "dom3ic8zudi28v8lr6fgphwffqoz0j6c",
+        "path": "/",
+        "sameSite": "lax",
+        "secure": false,
+        "session": false,
+        "storeId": null,
+        "value": "5dcefde1-192a-497f-8b46-6baf14c67d0e%3A3%3A1"
     },
     {
         "domain": "claimcoin.in",
@@ -100,31 +126,5 @@
         "session": false,
         "storeId": null,
         "value": "1"
-    },
-    {
-        "domain": "claimcoin.in",
-        "expirationDate": 1730277875,
-        "hostOnly": true,
-        "httpOnly": false,
-        "name": "dom3ic8zudi28v8lr6fgphwffqoz0j6c",
-        "path": "/",
-        "sameSite": "lax",
-        "secure": false,
-        "session": false,
-        "storeId": null,
-        "value": "5dcefde1-192a-497f-8b46-6baf14c67d0e%3A3%3A1"
-    },
-    {
-        "domain": "claimcoin.in",
-        "expirationDate": 1729676676,
-        "hostOnly": true,
-        "httpOnly": false,
-        "name": "_data_cpc",
-        "path": "/",
-        "sameSite": null,
-        "secure": false,
-        "session": false,
-        "storeId": null,
-        "value": "895-1-1729676676"
     }
 ]

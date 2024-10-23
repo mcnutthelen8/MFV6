@@ -593,6 +593,9 @@ vnc_url = 0
 vnc_window = 0
 start_vnc = 0
 
+earnpp_cookie = 'earnpp'
+feyorra_cookie = 'feyorra'
+claimcoin_cookie = 'claimcoins'
 
 
 if run_sb1:
@@ -780,6 +783,69 @@ def find_and_click_collect_button(sb1):
         return None
 
 
+def add_cookies_with(driver, cookies):
+    for i in range(1,100):
+        time.sleep(1)
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cookie_icon.png", region=(1625, 43, 400, 300), confidence=0.99)
+            pyautogui.click(x, y)
+            print("cookie_icon Found")
+            time.sleep(13)
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/all_site.png", region=(1300, 212, 600, 300), confidence=0.99)
+                pyautogui.click(x, y)
+                print("all_site Found")
+            except pyautogui.ImageNotFoundException:
+                print("No all_site .")
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
+                pyautogui.click(x, y)
+                print("import_icon Found")
+                time.sleep(3)
+                for i in range(1,50):
+                    url = f'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/{cookies}.json'
+                    response = requests.get(url)
+                    if response.status_code == 200:
+                        text_content = response.text
+                    else:
+                        print(f"Failed to retrieve the content. Status code: {response.status_code}")
+                        text_content = None
+                    if text_content:
+                        pyautogui.click(1385, 310)
+                        time.sleep(1)
+                        pyautogui.typewrite(text_content)
+                        time.sleep(5)
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
+                            pyautogui.click(x, y)
+                            print("import_icon Found")
+                            
+                            time.sleep(3)
+                            pyautogui.click(113, 100)
+                            pyautogui.press('f5')
+                            time.sleep(3)
+                            #driver.close()
+                            return True
+                        
+                        except pyautogui.ImageNotFoundException:
+                            print(f"No import_icon .{i}")
+                    time.sleep(1)
+
+
+            except pyautogui.ImageNotFoundException:
+                print("No import_icon .")
+
+        except pyautogui.ImageNotFoundException:
+            print("No cookie_icon .")
+
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/allow_button.png", region=(1080, 247, 400, 300), confidence=0.99)
+            pyautogui.click(x, y)
+            print("allow_button Found")
+                    
+        except pyautogui.ImageNotFoundException:
+            print("No allow_button .")
+
 
 bitmoon_window = None
 earnpp_window = None
@@ -805,6 +871,26 @@ if earnpp:
     sb1.uc_gui_handle_captcha()
     sb1.switch_to_newest_window()
     time.sleep(1)
+    ggt = sb1.get_title()
+    ready = True
+    while ready == True:
+        time.sleep(1)
+        ggt = sb1.get_title()
+        if 'Home' in ggt:
+            add_cookies_with(sb1, earnpp)
+        elif 'Just' in ggt:
+            sb1.uc_gui_click_captcha()
+            sb1.uc_gui_handle_captcha()
+            cloudflare(sb1)
+        elif 'Faucet' in ggt:
+            ready = False
+        else:
+            print(f'{ggt} is wrong')
+            sb1.uc_open_with_reconnect("https://earn-pepe.com/member/faucet", 5)
+            sb1.uc_gui_click_captcha()
+            sb1.uc_gui_handle_captcha()
+            sb1.switch_to_newest_window()
+
     earnpp_window = sb1.current_window_handle
     print(f"earnpp_window handle: {earnpp_window}")
 
@@ -816,8 +902,25 @@ if feyorra:
     sb1.switch_to_newest_window()
     time.sleep(1)
     ggt = sb1.get_title()
-    print(f"Title after opening Zaptaps: {ggt}")
-        
+
+    ready = True
+    while ready == True:
+        time.sleep(1)
+        ggt = sb1.get_title()
+        if 'Home' in ggt:
+            add_cookies_with(sb1, feyorra_cookie)
+        elif 'Just' in ggt:
+            sb1.uc_gui_click_captcha()
+            sb1.uc_gui_handle_captcha()
+            cloudflare(sb1)
+        elif 'Faucet' in ggt:
+            ready = False
+        else:
+            print(f'{ggt} is wrong')
+            sb1.uc_open_with_reconnect("https://feyorra.site/member/faucet", 5)
+            sb1.uc_gui_click_captcha()
+            sb1.uc_gui_handle_captcha()
+            sb1.switch_to_newest_window()
 
     all_windows = sb1.window_handles
     print(f"All windows: {all_windows}")
@@ -842,6 +945,25 @@ if claimcoin:
     sb1.switch_to_newest_window()
     time.sleep(1)
     ggt = sb1.get_title()
+
+    ready = True
+    while ready == True:
+        time.sleep(1)
+        ggt = sb1.get_title()
+        if 'ClaimCoin - MultiCurrency Crypto Earning Platform' in ggt:
+            add_cookies_with(sb1, claimcoin_cookie)
+        elif 'Just' in ggt:
+            sb1.uc_gui_click_captcha()
+            sb1.uc_gui_handle_captcha()
+            cloudflare(sb1)
+        elif 'Faucet | ClaimCoin' in ggt:
+            ready = False
+        else:
+            print(f'{ggt} is wrong')
+            sb1.uc_open_with_reconnect("https://claimcoin.in/faucet", 5)
+            sb1.uc_gui_click_captcha()
+            sb1.uc_gui_handle_captcha()
+            sb1.switch_to_newest_window()
     print(f"Title after opening Zaptaps: {ggt}")
         
 
@@ -860,7 +982,7 @@ if claimcoin:
     ggt = sb1.get_title()
     print(f"Title of Baymack window: {ggt}")
 
-    print(f'{earnpp_window} |{feyorra_window}| {claimcoin_window}')
+print(f'{earnpp_window} |{feyorra_window}| {claimcoin_window}')
 
 
 

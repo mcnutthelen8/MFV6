@@ -593,9 +593,9 @@ vnc_url = 0
 vnc_window = 0
 start_vnc = 0
 
-earnpp_cookie = 'earnpp'
-feyorra_cookie = 'feyorra'
-claimcoin_cookie = 'claimcoins'
+earnpp_cookie = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/earnpp.json'
+feyorra_cookie = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/feyorra.json'
+claimcoin_cookie = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/claimcoins.json'
 
 
 if run_sb1:
@@ -803,7 +803,7 @@ def add_cookies_with(driver, cookies):
                 print("import_icon Found")
                 time.sleep(3)
                 for i in range(1,50):
-                    url = f'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/{cookies}.json'
+                    url = cookies
                     response = requests.get(url)
                     if response.status_code == 200:
                         text_content = response.text

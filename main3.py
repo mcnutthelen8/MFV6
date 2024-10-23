@@ -803,6 +803,7 @@ def add_cookies_with(driver, cookies):
                 print("import_icon Found")
                 time.sleep(3)
                 for i in range(1,50):
+                    print(url)
                     url = cookies
                     response = requests.get(url)
                     if response.status_code == 200:
@@ -869,7 +870,7 @@ if earnpp:
     sb1.uc_open_with_reconnect("https://earn-pepe.com/member/faucet", 5)
     sb1.uc_gui_click_captcha()
     sb1.uc_gui_handle_captcha()
-    sb1.switch_to_newest_window()
+    
     time.sleep(1)
     ggt = sb1.get_title()
     ready = True
@@ -877,7 +878,7 @@ if earnpp:
         time.sleep(1)
         ggt = sb1.get_title()
         if 'Home' in ggt:
-            add_cookies_with(sb1, earnpp)
+            add_cookies_with(sb1, earnpp_cookie)
         elif 'Just' in ggt:
             sb1.uc_gui_click_captcha()
             sb1.uc_gui_handle_captcha()
@@ -889,7 +890,7 @@ if earnpp:
             sb1.uc_open_with_reconnect("https://earn-pepe.com/member/faucet", 5)
             sb1.uc_gui_click_captcha()
             sb1.uc_gui_handle_captcha()
-            sb1.switch_to_newest_window()
+            
 
     earnpp_window = sb1.current_window_handle
     print(f"earnpp_window handle: {earnpp_window}")
@@ -899,7 +900,7 @@ if feyorra:
     sb1.uc_open_with_reconnect("https://feyorra.site/member/faucet", 5)
     sb1.uc_gui_click_captcha()
     sb1.uc_gui_handle_captcha()
-    sb1.switch_to_newest_window()
+    
     time.sleep(1)
     ggt = sb1.get_title()
 
@@ -920,7 +921,7 @@ if feyorra:
             sb1.uc_open_with_reconnect("https://feyorra.site/member/faucet", 5)
             sb1.uc_gui_click_captcha()
             sb1.uc_gui_handle_captcha()
-            sb1.switch_to_newest_window()
+            
 
     all_windows = sb1.window_handles
     print(f"All windows: {all_windows}")
@@ -942,7 +943,7 @@ if claimcoin:
     sb1.uc_open_with_reconnect("https://claimcoin.in/faucet", 5)
     sb1.uc_gui_click_captcha()
     sb1.uc_gui_handle_captcha()
-    sb1.switch_to_newest_window()
+    
     time.sleep(1)
     ggt = sb1.get_title()
 
@@ -963,7 +964,7 @@ if claimcoin:
             sb1.uc_open_with_reconnect("https://claimcoin.in/faucet", 5)
             sb1.uc_gui_click_captcha()
             sb1.uc_gui_handle_captcha()
-            sb1.switch_to_newest_window()
+            
     print(f"Title after opening Zaptaps: {ggt}")
         
 
@@ -999,12 +1000,14 @@ while True:
                     if 'Faucet' in title:
                         solve_icon_captcha(sb1)
                     elif 'Just' in title:
+                        sb1.uc_gui_click_captcha()
+                        sb1.uc_gui_handle_captcha()
                         cloudflare(sb1)
                     else:
                         sb1.uc_open_with_reconnect("https://earn-pepe.com/member/faucet", 9)
                         sb1.uc_gui_click_captcha()
                         sb1.uc_gui_handle_captcha()
-                        sb1.switch_to_newest_window()
+                        
                         earnpp_window = sb1.current_window_handle
                 except Exception as e:
                     print(e)
@@ -1015,12 +1018,14 @@ while True:
                     if 'Faucet' in title:
                         solve_icon_captcha(sb1)
                     elif 'Just' in title:
+                        sb1.uc_gui_click_captcha()
+                        sb1.uc_gui_handle_captcha()
                         cloudflare(sb1)
                     else:
                         sb1.uc_open_with_reconnect("https://feyorra.site/member/faucet", 9)
                         sb1.uc_gui_click_captcha()
                         sb1.uc_gui_handle_captcha()
-                        sb1.switch_to_newest_window()
+                        
                         feyorra_window = sb1.current_window_handle
                 except Exception as e:
                     print(e)
@@ -1038,12 +1043,14 @@ while True:
                                 start_time = time.time()
                             sb1.switch_to.window(claimcoin_window)
                         elif 'Just' in title:
+                            sb1.uc_gui_click_captcha()
+                            sb1.uc_gui_handle_captcha()
                             cloudflare(sb1)
                         else:
                             sb1.uc_open_with_reconnect("https://earn-pepe.com/member/faucet", 9)
                             sb1.uc_gui_click_captcha()
                             sb1.uc_gui_handle_captcha()
-                            sb1.switch_to_newest_window()
+                            
                             claimcoin_window = sb1.current_window_handle
                         
                 except Exception as e:

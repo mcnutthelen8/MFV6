@@ -851,8 +851,9 @@ def add_cookies_with(driver, cookies):
 
 def login_to_claimcoin(driver, email, password):
     # Step 1: Go to the login page
-    driver.get("https://claimcoin.in/login")
+    driver.open("https://claimcoin.in/login")
 
+    print("WebDriver Check")
     # Step 2: Fill in the email and password
     email_input = WebDriverWait(driver, 10).until(
         EC.presence_of_element_located((By.ID, "email"))
@@ -863,6 +864,7 @@ def login_to_claimcoin(driver, email, password):
     password_input.send_keys(password)
 
     # Step 3: Wait for the CAPTCHA checkbox to be validated
+    sb1.execute_script("window.scrollTo(0, 1000);")
     print("CAPTCHA Check")
     for i in range(1, 200):
         time.sleep(1)
@@ -1034,7 +1036,7 @@ if claimcoin:
             for window in all_windows:
                 if window != earnpp_window or window != feyorra_window:
                     claimcoin_window = window
-                    break
+                    
             sb1.switch_to.window(claimcoin_window)
             print(f"claimcoin_window window handle: {claimcoin_window}")
 

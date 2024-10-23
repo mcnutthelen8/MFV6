@@ -1,7 +1,7 @@
 [
     {
         "domain": "feyorra.site",
-        "expirationDate": 1729679974.821282,
+        "expirationDate": 1729722459.260117,
         "hostOnly": true,
         "httpOnly": true,
         "name": "csrf_cookie_name",
@@ -10,11 +10,11 @@
         "secure": true,
         "session": false,
         "storeId": null,
-        "value": "d5fe6de423b20fa98f0d9ab216968ae2"
+        "value": "92ca48de31571b87c2032f9980cc798b"
     },
     {
         "domain": ".feyorra.site",
-        "expirationDate": 1764232824.181335,
+        "expirationDate": 1764275269.894344,
         "hostOnly": false,
         "httpOnly": false,
         "name": "_ga",
@@ -27,7 +27,7 @@
     },
     {
         "domain": "feyorra.site",
-        "expirationDate": 1729712615.509711,
+        "expirationDate": 1729755063.56924,
         "hostOnly": true,
         "httpOnly": false,
         "name": "PHPREFS",
@@ -53,7 +53,7 @@
     },
     {
         "domain": ".feyorra.site",
-        "expirationDate": 1764232824.19026,
+        "expirationDate": 1764275269.893922,
         "hostOnly": false,
         "httpOnly": false,
         "name": "_ga_0YGJ6JPB1R",
@@ -62,11 +62,11 @@
         "secure": false,
         "session": false,
         "storeId": null,
-        "value": "GS1.1.1729672776.6.1.1729672824.0.0.0"
+        "value": "GS1.1.1729715260.7.1.1729715269.0.0.0"
     },
     {
         "domain": "feyorra.site",
-        "expirationDate": 1729680024.902363,
+        "expirationDate": 1729722460.259997,
         "hostOnly": true,
         "httpOnly": true,
         "name": "ci_session",
@@ -75,6 +75,6 @@
         "secure": true,
         "session": false,
         "storeId": null,
-        "value": "2apqe6u4atvn5pqf46bdjlesslsthh6f"
+        "value": "vi7dabk3cvtngqjqvkjketq119i3c6fu"
     }
 ]

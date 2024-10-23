@@ -960,6 +960,15 @@ if feyorra:
             sb1.uc_gui_click_captcha()
             sb1.uc_gui_handle_captcha()
             cloudflare(sb1)
+            all_windows = sb1.window_handles
+            print(f"All windows: {all_windows}")
+            for window in all_windows:
+                if window != earnpp_window:
+                    feyorra_window = window
+                    break
+                
+            print(f"feyorra_window window handle: {feyorra_window}")
+            sb1.switch_to.window(feyorra_window)
         elif 'Faucet | Feyorra' in ggt:
             ready = False
         else:
@@ -1016,10 +1025,29 @@ if claimcoin:
         ggt = sb1.get_title()
         if 'ClaimCoin - MultiCurrency Crypto Earning Platform' in ggt:
             login_to_claimcoin(sb1, email, password)
+            sb1.uc_gui_click_captcha()
+            sb1.uc_gui_handle_captcha()
+            all_windows = sb1.window_handles
+            print(f"All windows: {all_windows}")
+            for window in all_windows:
+                if window != earnpp_window or window != feyorra_window:
+                    claimcoin_window = window
+                    break
+            sb1.switch_to.window(claimcoin_window)
+            print(f"claimcoin_window window handle: {claimcoin_window}")
+
         elif 'Just' in ggt:
             sb1.uc_gui_click_captcha()
             sb1.uc_gui_handle_captcha()
             cloudflare(sb1)
+            all_windows = sb1.window_handles
+            print(f"All windows: {all_windows}")
+            for window in all_windows:
+                if window != earnpp_window or window != feyorra_window:
+                    claimcoin_window = window
+                    break
+            sb1.switch_to.window(claimcoin_window)
+            print(f"claimcoin_window window handle: {claimcoin_window}")
         elif 'Faucet | ClaimCoin' in ggt:
             ready = False
         else:
@@ -1075,11 +1103,18 @@ while True:
                         sb1.uc_gui_handle_captcha()
                         cloudflare(sb1)
                     else:
-                        sb1.uc_open_with_reconnect("https://earn-pepe.com/member/faucet", 9)
+                        sb1.uc_open_with_reconnect("https://earn-pepe.com/member/faucet", 5)
                         sb1.uc_gui_click_captcha()
                         sb1.uc_gui_handle_captcha()
-                        
-                        earnpp_window = sb1.current_window_handle
+                        all_windows = sb1.window_handles
+                        print(f"All windows: {all_windows}")
+                        for window in all_windows:
+                            if window != claimcoin_window or window != feyorra_window:
+                                earnpp_window = window
+                                break
+                        sb1.switch_to.window(earnpp_window)
+                        print(f"earnpp_window window handle: {earnpp_window}")
+
                 except Exception as e:
                     print(e)
             if feyorra:
@@ -1093,11 +1128,17 @@ while True:
                         sb1.uc_gui_handle_captcha()
                         cloudflare(sb1)
                     else:
-                        sb1.uc_open_with_reconnect("https://feyorra.site/member/faucet", 9)
+                        sb1.uc_open_with_reconnect("https://feyorra.site/member/faucet", 5)
                         sb1.uc_gui_click_captcha()
                         sb1.uc_gui_handle_captcha()
-                        
-                        feyorra_window = sb1.current_window_handle
+                        all_windows = sb1.window_handles
+                        print(f"All windows: {all_windows}")
+                        for window in all_windows:
+                            if window != claimcoin_window or window != earnpp_window:
+                                feyorra_window = window
+                                break
+                        sb1.switch_to.window(feyorra_window)
+                        print(f"feyorra_window window handle: {feyorra_window}")
                 except Exception as e:
                     print(e)
 
@@ -1118,11 +1159,18 @@ while True:
                             sb1.uc_gui_handle_captcha()
                             cloudflare(sb1)
                         else:
-                            sb1.uc_open_with_reconnect("https://earn-pepe.com/member/faucet", 9)
+                            sb1.uc_open_with_reconnect("https://earn-pepe.com/member/faucet", 5)
                             sb1.uc_gui_click_captcha()
                             sb1.uc_gui_handle_captcha()
+                            all_windows = sb1.window_handles
+                            print(f"All windows: {all_windows}")
+                            for window in all_windows:
+                                if window != earnpp_window or window != feyorra_window:
+                                    claimcoin_window = window
+                                    break
+                            sb1.switch_to.window(claimcoin_window)
+                            print(f"claimcoin_window window handle: {claimcoin_window}")
                             
-                            claimcoin_window = sb1.current_window_handle
                         
                 except Exception as e:
                     print(e)

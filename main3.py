@@ -102,7 +102,7 @@ mongo_uri = "mongodb+srv://redgta36:J6n7Hoz2ribHmMmx@moneyfarm.wwzcs.mongodb.net
 client = MongoClient(mongo_uri)
 db = client['MoneyFarmV6'] 
 collection = db[f'Farm{farm_id}']
-ocr = PaddleOCR(use_angle_cls=True, lang='en',  drop_score=0)
+#ocr = PaddleOCR(use_angle_cls=True, lang='en',  drop_score=0)
 
 bitmoon = True
 earnpp = True
@@ -599,7 +599,7 @@ claimcoin_cookie = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/cla
 
 
 if run_sb1:
-    sb1 = Driver(uc=True, headed= True, undetectable= True, undetected=True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
+    sb1 = Driver(uc=True, headed= True, undetectable= True, undetected=True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path, page_load_strategy= "none")
     sb1.maximize_window()
     id1 = get_current_window_id()
     url = "chrome://extensions/"
@@ -689,7 +689,9 @@ def solve_icon_captcha(sb1):
         if captcha_icon_class in icon_class:
             option.click()
             print(f"Clicked on the matching icon: {icon_class}")
-    time.sleep(1)
+            return True
+
+    #time.sleep(1)
 
     print("No matching icon found.")
 
@@ -1086,18 +1088,25 @@ print(f'{earnpp_window} |{feyorra_window}| {claimcoin_window}')
 
 
 
+earnpp_count = 0 
+feyorra_count = 0
+claimcoin_count = 0
+
+reset_count = 0
 time.sleep(2)
 start_time = time.time()
 while True:
     try:
         ip_address = get_ip(sb1)
         if ip_address == ip_required:
+
             if earnpp:
                 try:
                     sb1.switch_to.window(earnpp_window)
                     title =sb1.get_title()
                     if 'Faucet' in title:
-                        solve_icon_captcha(sb1)
+                        if solve_icon_captcha(sb1):
+                            earnpp_count = 1 
                     elif 'Just' in title:
                         sb1.uc_gui_click_captcha()
                         sb1.uc_gui_handle_captcha()
@@ -1117,12 +1126,31 @@ while True:
 
                 except Exception as e:
                     print(e)
+            
             if feyorra:
                 try:
                     sb1.switch_to.window(feyorra_window)
+                    try:
+                        if sb1.is_alert_present():
+                            sb1.accept_alert(timeout=1)
+                            sb1.uc_open_with_reconnect("https://feyorra.site/member/faucet", 5)
+                            sb1.uc_gui_click_captcha()
+                            sb1.uc_gui_handle_captcha()
+                            all_windows = sb1.window_handles
+                            print(f"All windows: {all_windows}")
+                            for window in all_windows:
+                                if window != claimcoin_window or window != earnpp_window:
+                                    feyorra_window = window
+                                    break
+                            sb1.switch_to.window(feyorra_window)
+                            print(f"feyorra_window window handle: {feyorra_window}")
+                    except Exception as e:
+                        print(e)
+                    sb1.switch_to.window(feyorra_window)
                     title =sb1.get_title()
                     if 'Faucet' in title:
-                        solve_icon_captcha(sb1)
+                        if solve_icon_captcha(sb1):
+                            feyorra_count = 1 
                     elif 'Just' in title:
                         sb1.uc_gui_click_captcha()
                         sb1.uc_gui_handle_captcha()
@@ -1152,6 +1180,8 @@ while True:
                         if 'Faucet' in title:
                             cc_faucet =  find_and_click_collect_button(sb1)
                             if cc_faucet:
+                                
+                                claimcoin_count = 1 
                                 start_time = time.time()
                             sb1.switch_to.window(claimcoin_window)
                         elif 'Just' in title:
@@ -1174,6 +1204,212 @@ while True:
                         
                 except Exception as e:
                     print(e)
+
+            if claimcoin_count == 1 and feyorra_count == 1 and earnpp_count == 1:
+                earnpp_count = 0 
+                feyorra_count = 0
+                claimcoin_count = 0
+                reset_count = 0
+            else:
+                reset_count += 1
+
+            if reset_count > 20:
+
+                    
+                current_window = sb1.current_window_handle
+                all_windows = sb1.window_handles
+                for window in all_windows:
+                    if window != current_window:
+                        sb1.switch_to.window(window)
+                        sb1.close()  # Close the tab
+                sb1.switch_to.window(current_window)
+
+                if earnpp:
+                    #sb1.open_new_window()
+                    sb1.uc_open_with_reconnect("https://earn-pepe.com/member/faucet", 5)
+                    sb1.uc_gui_click_captcha()
+                    sb1.uc_gui_handle_captcha()
+                    
+                    time.sleep(1)
+                    ggt = sb1.get_title()
+                    ready = True
+                    while ready == True:
+                        time.sleep(1)
+                        ggt = sb1.get_title()
+                        if 'Home' in ggt:
+                            add_cookies_with(sb1, earnpp_cookie)
+                        elif 'Just' in ggt:
+                            sb1.uc_gui_click_captcha()
+                            sb1.uc_gui_handle_captcha()
+                            cloudflare(sb1)
+                        elif 'Faucet' in ggt:
+                            ready = False
+                        else:
+                            print(f'{ggt} is wrong')
+                            sb1.uc_open_with_reconnect("https://earn-pepe.com/member/faucet", 5)
+                            sb1.uc_gui_click_captcha()
+                            sb1.uc_gui_handle_captcha()
+                            
+
+                    earnpp_window = sb1.current_window_handle
+                    print(f"earnpp_window handle: {earnpp_window}")
+
+                if feyorra:
+                    sb1.open_new_window()
+                    sb1.uc_open_with_reconnect("https://feyorra.site/member/faucet", 5)
+                    sb1.uc_gui_click_captcha()
+                    sb1.uc_gui_handle_captcha()
+
+                    all_windows = sb1.window_handles
+                    print(f"All windows: {all_windows}")
+                    for window in all_windows:
+                        if window != earnpp_window:
+                            feyorra_window = window
+                            break
+                        
+                    print(f"feyorra_window window handle: {feyorra_window}")
+                    sb1.switch_to.window(feyorra_window)
+
+                    time.sleep(1)
+                    ggt = sb1.get_title()
+
+                    ready = True
+                    while ready == True:
+                        sb1.switch_to.window(feyorra_window)
+                        time.sleep(1)
+                        ggt = sb1.get_title()
+                        if 'Home' in ggt:
+                            add_cookies_with(sb1, feyorra_cookie)
+                        elif 'Just' in ggt:
+                            sb1.uc_gui_click_captcha()
+                            sb1.uc_gui_handle_captcha()
+                            cloudflare(sb1)
+                            all_windows = sb1.window_handles
+                            print(f"All windows: {all_windows}")
+                            for window in all_windows:
+                                if window != earnpp_window:
+                                    feyorra_window = window
+                                    break
+                                
+                            print(f"feyorra_window window handle: {feyorra_window}")
+                            sb1.switch_to.window(feyorra_window)
+                        elif 'Faucet | Feyorra' in ggt:
+                            ready = False
+                        else:
+                            print(f'{ggt} is wrong')
+                            sb1.uc_open_with_reconnect("https://feyorra.site/member/faucet", 5)
+                            sb1.uc_gui_click_captcha()
+                            sb1.uc_gui_handle_captcha()
+                            all_windows = sb1.window_handles
+                            print(f"All windows: {all_windows}")
+                            for window in all_windows:
+                                if window != earnpp_window:
+                                    feyorra_window = window
+                                    break
+                                
+                            print(f"feyorra_window window handle: {feyorra_window}")
+                            sb1.switch_to.window(feyorra_window)
+
+                    all_windows = sb1.window_handles
+                    print(f"All windows: {all_windows}")
+
+                        # Find and assign Baymack window (not matching Popmack window)
+                    for window in all_windows:
+                        if window != earnpp_window:
+                            feyorra_window = window
+                            break
+                        
+                    print(f"feyorra_window window handle: {feyorra_window}")
+
+                    sb1.switch_to.window(feyorra_window)
+                    ggt = sb1.get_title()
+                    print(f"Title of Baymack window: {ggt}")
+
+                if claimcoin:
+                    sb1.open_new_window()
+                    sb1.uc_open_with_reconnect("https://claimcoin.in/faucet", 5)
+                    sb1.uc_gui_click_captcha()
+                    sb1.uc_gui_handle_captcha()
+
+                    all_windows = sb1.window_handles
+                    print(f"All windows: {all_windows}")
+                    for window in all_windows:
+                        if window != earnpp_window or window != feyorra_window:
+                            claimcoin_window = window
+                            break
+                    sb1.switch_to.window(claimcoin_window)
+                    print(f"claimcoin_window window handle: {claimcoin_window}")
+                    time.sleep(1)
+                    ggt = sb1.get_title()
+
+                    ready = True
+                    while ready == True:
+                        sb1.switch_to.window(claimcoin_window)
+                        time.sleep(1)
+                        ggt = sb1.get_title()
+                        if 'ClaimCoin - MultiCurrency Crypto Earning Platform' in ggt:
+                            login_to_claimcoin(sb1, email, password)
+                            sb1.uc_gui_click_captcha()
+                            sb1.uc_gui_handle_captcha()
+                            all_windows = sb1.window_handles
+                            print(f"All windows: {all_windows}")
+                            for window in all_windows:
+                                if window != earnpp_window or window != feyorra_window:
+                                    claimcoin_window = window
+                                    break
+                            sb1.switch_to.window(claimcoin_window)
+                            print(f"claimcoin_window window handle: {claimcoin_window}")
+
+                        elif 'Just' in ggt:
+                            sb1.uc_gui_click_captcha()
+                            sb1.uc_gui_handle_captcha()
+                            cloudflare(sb1)
+                            all_windows = sb1.window_handles
+                            print(f"All windows: {all_windows}")
+                            for window in all_windows:
+                                if window != earnpp_window or window != feyorra_window:
+                                    claimcoin_window = window
+                                    break
+                            sb1.switch_to.window(claimcoin_window)
+                            print(f"claimcoin_window window handle: {claimcoin_window}")
+                        elif 'Faucet | ClaimCoin' in ggt:
+                            ready = False
+                        else:
+                            print(f'{ggt} is wrong')
+                            sb1.uc_open_with_reconnect("https://claimcoin.in/faucet", 5)
+                            sb1.uc_gui_click_captcha()
+                            sb1.uc_gui_handle_captcha()
+                            all_windows = sb1.window_handles
+                            print(f"All windows: {all_windows}")
+                            for window in all_windows:
+                                if window != earnpp_window or window != feyorra_window:
+                                    claimcoin_window = window
+                                    break
+                            sb1.switch_to.window(claimcoin_window)
+                            print(f"claimcoin_window window handle: {claimcoin_window}")
+
+                    print(f"Title after opening Zaptaps: {ggt}")
+                        
+
+                    all_windows = sb1.window_handles
+                    print(f"All windows: {all_windows}")
+
+                        # Find and assign Baymack window (not matching Popmack window)
+                    for window in all_windows:
+                        if window != earnpp_window or window != feyorra_window:
+                            claimcoin_window = window
+                            break
+                        
+                    print(f"claimcoin_window window handle: {claimcoin_window}")
+
+                    sb1.switch_to.window(claimcoin_window)
+                    ggt = sb1.get_title()
+                    print(f"Title of Baymack window: {ggt}")
+
+                print(f'{earnpp_window} |{feyorra_window}| {claimcoin_window}')
+
+
+
 
         else:
             print('Ip fucked')

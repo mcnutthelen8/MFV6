@@ -862,10 +862,16 @@ def login_to_claimcoin(driver, email, password):
 
     # Step 3: Wait for the CAPTCHA checkbox to be validated
     print("CAPTCHA Check")
-    captcha_unchecked_selector = 'div.recaptcha-checkbox-checkmark[style=""]'
-    WebDriverWait(driver, 300).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, captcha_unchecked_selector))
-    )
+    for i in range(1, 200):
+        time.sleep(1)
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/not_a_robot.png", confidence=0.85)
+            login_button = driver.find_element(By.CSS_SELECTOR, "button.btn.btn-primary.btn-block.waves-effect.waves-light")
+            login_button.click()
+            return
+        except Exception as e:
+            print(f'ERR:{e}') 
+
     print("✅ CAPTCHA validated")
 
     # Step 4: Click the "Log In" button
@@ -907,7 +913,7 @@ if earnpp:
         time.sleep(1)
         ggt = sb1.get_title()
         if 'Home' in ggt:
-            login_to_claimcoin(sb1, email, password)
+            add_cookies_with(sb1, earnpp_cookie)
         elif 'Just' in ggt:
             sb1.uc_gui_click_captcha()
             sb1.uc_gui_handle_captcha()
@@ -1009,7 +1015,7 @@ if claimcoin:
         time.sleep(1)
         ggt = sb1.get_title()
         if 'ClaimCoin - MultiCurrency Crypto Earning Platform' in ggt:
-            add_cookies_with(sb1, claimcoin_cookie)
+            login_to_claimcoin(sb1, email, password)
         elif 'Just' in ggt:
             sb1.uc_gui_click_captcha()
             sb1.uc_gui_handle_captcha()

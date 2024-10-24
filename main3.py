@@ -84,7 +84,7 @@ else:
     while True:
         print('SOmething Wrong Did u use --farm')
 
-debug_mode = False
+debug_mode = True
 
 ip_required = 0
 #farm_id = 1
@@ -722,25 +722,30 @@ def find_and_click_collect_button(sb1):
 
 
 
-def login_to_faucet(url, driver, email, password, captcha_image):
+def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages):
 
     bfr = driver.window_handles
     driver.open(url)
+    time.sleep(2)
+
     all_windows = driver.window_handles
     for window in all_windows:
-        if window not in bfr:
+        if window not in restrict_pages:
             driver.switch_to.window(window)
             
 
 
     print("WebDriver Check")
-    # Step 2: Fill in the email and password
+    current_title = driver.get_title()
+    print(f"Current g title: {current_title}")
+    # Wait for the email input by type attribute
     email_input = WebDriverWait(driver, 60).until(
-        EC.presence_of_element_located((By.ID, "email"))
+        EC.presence_of_element_located((By.CSS_SELECTOR, 'input[type="email"]'))
     )
     email_input.send_keys(email)
-    
-    password_input = driver.find_element(By.ID, "password")
+
+    # Locate the password input by type attribute
+    password_input = driver.find_element(By.CSS_SELECTOR, 'input[type="password"]')
     password_input.send_keys(password)
 
     # Step 3: Wait for the CAPTCHA checkbox to be validated
@@ -752,8 +757,12 @@ def login_to_faucet(url, driver, email, password, captcha_image):
         try:
             x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
             if x and y: 
+
                 login_button = driver.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
+
+                driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
                 login_button.click()
+                #login_button.click()
                 return
         except Exception as e:
             print(f'ERR:{e}') 
@@ -762,6 +771,7 @@ def login_to_faucet(url, driver, email, password, captcha_image):
 
     # Step 4: Click the "Log In" button
     login_button = driver.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
+    driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
     login_button.click()
     print("🚀 Login attempt made!")
 
@@ -793,17 +803,21 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
     ready = False
     while not ready:
         time.sleep(1)
+        all_windows = driver.window_handles
+        for window in all_windows:
+            if window not in window_list:
+                driver.switch_to.window(window)
         current_title = driver.get_title()
         print(f"Current title: {current_title}")
 
         if not_expected_title == current_title:
             if function == 1:
-                login_to_faucet('https://earn-pepe.com/login', sb1, 'khabibmakanzie@gmail.com', 'CQ2pNwi3zsFgat@', 'cloudflare_success')
+                login_to_faucet('https://earn-pepe.com/login', sb1, 'khabibmakanzie@gmail.com', 'CQ2pNwi3zsFgat@', 'cloudflare_success', window_list)
             elif function == 2:
-                login_to_faucet('https://feyorra.site/login', sb1, 'khabibmakanzie@gmail.com', 'D6.6fz9r5QVyziT', 'cloudflare_success')
+                login_to_faucet('https://feyorra.site/login', sb1, 'khabibmakanzie@gmail.com', 'D6.6fz9r5QVyziT', 'cloudflare_success', window_list)
             elif function == 3:
-                login_to_faucet('https://claimcoin.in/login', sb1, 'khabibmakanzie@gmail.com', '@$uiJjkFfZU3K@e', 'not_a_robot')
-                
+                login_to_faucet('https://claimcoin.in/login', sb1, 'khabibmakanzie@gmail.com', '@$uiJjkFfZU3K@e', 'not_a_robot', window_list)
+
         elif expected_title == current_title:
             if driver.current_window_handle not in window_list:
                 ready = True
@@ -814,6 +828,10 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         
         else:
             print(f"{current_title} is not the expected title. Reconnecting...")
+            all_windows = driver.window_handles
+            for window in all_windows:
+                if window not in window_list:
+                    driver.switch_to.window(window)
             driver.uc_open_with_reconnect(url, 5)
             if captcha_handling:
                 handle_captcha_and_cloudflare(driver)
@@ -858,6 +876,9 @@ if run_sb1:
         update = {"$set": {"response": 'Setup Done...'}}
         result = collection.update_one(query, update)
     
+
+    
+def open_faucets():
     current_window = sb1.current_window_handle
     all_windows = sb1.window_handles
     for window in all_windows:
@@ -865,165 +886,137 @@ if run_sb1:
             sb1.switch_to.window(window)
             sb1.close()  # Close the tab
     sb1.switch_to.window(current_window)
-    #time.sleep(1)
+    time.sleep(1)
     #ipfixer()
     ip_required = fix_ip(sb1, server_name1)
     ip_address = get_ip(sb1)
-    
-if earnpp:
-    earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [])
-    print(f"EarnPP window handle: {earnpp_window}")
 
-if feyorra:
-    sb1.open_new_window()
-    feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Home | Feyorra", 2, [earnpp_window])
-    print(f"Feyorra window handle: {feyorra_window}")
+    if earnpp:
+        earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [])
+        print(f"EarnPP window handle: {earnpp_window}")
 
-if claimcoin:
-    sb1.open_new_window()
-    claimcoin_window = handle_site(sb1, "https://claimcoin.in/faucet", "Faucet | ClaimCoin - ClaimCoin Faucet", "ClaimCoin - MultiCurrency Crypto Earning Platform", 3, [earnpp_window, feyorra_window])
-    print(f"ClaimCoin window handle: {claimcoin_window}")
+    if feyorra:
+        sb1.open_new_window()
+        feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Home | Feyorra", 2, [earnpp_window])
+        print(f"Feyorra window handle: {feyorra_window}")
 
-
-all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
-close_extra_windows(sb1, all_window_handles)
-
-print(f"Windows: EarnPP: {earnpp_window}, Feyorra: {feyorra_window}, ClaimCoin: {claimcoin_window}")
-time.sleep(199999)
+    if claimcoin:
+        sb1.open_new_window()
+        claimcoin_window = handle_site(sb1, "https://claimcoin.in/faucet", "Faucet | ClaimCoin - ClaimCoin Faucet", "ClaimCoin - MultiCurrency Crypto Earning Platform", 3, [earnpp_window, feyorra_window])
+        print(f"ClaimCoin window handle: {claimcoin_window}")
 
 
+    all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
+    close_extra_windows(sb1, all_window_handles)
+
+    print(f"Windows: EarnPP: {earnpp_window}, Feyorra: {feyorra_window}, ClaimCoin: {claimcoin_window}")
+    return earnpp_window, feyorra_window, claimcoin_window, ip_address, ip_required
+
+
+def debug_messages(messages):
+    if debug_mode:
+        print(messages)
 
 earnpp_count = 0 
 feyorra_count = 0
 claimcoin_count = 0
 
+earnpp_window, feyorra_window, claimcoin_window, ip_address, ip_required = open_faucets()
 reset_count = 0
 time.sleep(2)
 start_time = time.time()
 while True:
     try:
         ip_address = get_ip(sb1)
+        debug_messages(f'Ip address Found:{ip_address}')
         if ip_address == ip_required:
-
+            debug_messages(f'Ip address Match:{ip_address}')
+            if reset_count > 20:
+                earnpp_window, feyorra_window, claimcoin_window, ip_address, ip_required = open_faucets()
             if earnpp:
                 try:
+                    debug_messages(f'Switching Pages to EarnPP')
                     sb1.switch_to.window(earnpp_window)
+                    debug_messages(f'Getting Pages Titile:EarnPP')
                     title =sb1.get_title()
-                    if 'Faucet' in title:
-                        if solve_icon_captcha(sb1):
-                            earnpp_count = 1 
+                    if 'Faucet | Earn-pepe' in title:
+                        debug_messages(f'Solving Icon Captcha on EarnPP')
+                        solve_icon_captcha(sb1)
+                        debug_messages(f'Solved Icon Captcha on EarnPP')
+
                     elif 'Just' in title:
+                        debug_messages(f'Just.. Found on EarnPP')
                         sb1.uc_gui_click_captcha()
                         sb1.uc_gui_handle_captcha()
                         cloudflare(sb1)
+                        debug_messages(f'Just Fixed EarnPP')
                     else:
-                        sb1.uc_open_with_reconnect("https://earn-pepe.com/member/faucet", 5)
-                        sb1.uc_gui_click_captcha()
-                        sb1.uc_gui_handle_captcha()
-                        all_windows = sb1.window_handles
-                        print(f"All windows: {all_windows}")
-                        for window in all_windows:
-                            if window != claimcoin_window or window != feyorra_window:
-                                earnpp_window = window
-                                break
-                        sb1.switch_to.window(earnpp_window)
-                        print(f"earnpp_window window handle: {earnpp_window}")
+                        debug_messages(f'EarnPP not Found:{title} | reset:{reset_count}')
+                        reset_count +=1
 
                 except Exception as e:
-                    print(e)
+                    debug_messages(f'ERR on EarnPP:{e}')
             
             if feyorra:
                 try:
+                    debug_messages(f'Switching Pages to Feyorra')
                     sb1.switch_to.window(feyorra_window)
-                    try:
-                        if sb1.is_alert_present():
-                            sb1.accept_alert(timeout=1)
-                            sb1.uc_open_with_reconnect("https://feyorra.site/member/faucet", 5)
-                            sb1.uc_gui_click_captcha()
-                            sb1.uc_gui_handle_captcha()
-                            all_windows = sb1.window_handles
-                            print(f"All windows: {all_windows}")
-                            for window in all_windows:
-                                if window != claimcoin_window or window != earnpp_window:
-                                    feyorra_window = window
-                                    break
-                            sb1.switch_to.window(feyorra_window)
-                            print(f"feyorra_window window handle: {feyorra_window}")
-                    except Exception as e:
-                        print(e)
-                    sb1.switch_to.window(feyorra_window)
+                    debug_messages(f'Getting Pages Titile:Feyorra')
+                    pyautogui.press('enter')
                     title =sb1.get_title()
-                    if 'Faucet' in title:
-                        if solve_icon_captcha(sb1):
-                            feyorra_count = 1 
+                    if 'Faucet | Feyorra' in title:
+                        debug_messages(f'Solving Icon Captcha on Feyorra')
+                        solve_icon_captcha(sb1)
+                            
                     elif 'Just' in title:
+                        debug_messages(f'Just.. Found on Feyorra')
                         sb1.uc_gui_click_captcha()
                         sb1.uc_gui_handle_captcha()
                         cloudflare(sb1)
+                        debug_messages(f'Just Fixed Feyorra')
                     else:
-                        sb1.uc_open_with_reconnect("https://feyorra.site/member/faucet", 5)
-                        sb1.uc_gui_click_captcha()
-                        sb1.uc_gui_handle_captcha()
-                        all_windows = sb1.window_handles
-                        print(f"All windows: {all_windows}")
-                        for window in all_windows:
-                            if window != claimcoin_window or window != earnpp_window:
-                                feyorra_window = window
-                                break
-                        sb1.switch_to.window(feyorra_window)
-                        print(f"feyorra_window window handle: {feyorra_window}")
+                        debug_messages(f'Feyorra not Found:{title} | reset:{reset_count}')
+                        reset_count +=1
                 except Exception as e:
-                    print(e)
+                    debug_messages(f'ERR on Feyorra:{e}')
 
             if claimcoin:
                 try:
+                    debug_messages(f'Time capture in ClaimCoins')
                     elapsed_time = time.time() - start_time
                     seconds_only = int(elapsed_time)
+                    debug_messages(f'ClaimCoins Seconds:{seconds_only}')
                     if seconds_only > 12:
+                        debug_messages(f'Switching Pages to ClaimCoins:{seconds_only}')
                         sb1.switch_to.window(claimcoin_window)
+                        debug_messages(f'Getting Pages Titile:ClaimCoins')
                         title =sb1.get_title()
-                        if 'Faucet' in title:
+                        if 'Faucet | ClaimCoin' in title:
+                            debug_messages(f'Solving Icon Captcha on ClaimCoins')
                             cc_faucet =  find_and_click_collect_button(sb1)
                             if cc_faucet:
-                                
+                                debug_messages(f'Solved Icon Captcha on Claimcoins')
                                 claimcoin_count = 1 
                                 start_time = time.time()
                             sb1.switch_to.window(claimcoin_window)
                         elif 'Just' in title:
+                            debug_messages(f'Just.. Found on Claimcoins')
                             sb1.uc_gui_click_captcha()
                             sb1.uc_gui_handle_captcha()
                             cloudflare(sb1)
-                        else:
-                            sb1.switch_to.window(claimcoin_window)
-                            sb1.uc_open_with_reconnect("https://claimcoin.in/faucet", 5)
-                            sb1.uc_gui_click_captcha()
-                            sb1.uc_gui_handle_captcha()
-                            all_windows = sb1.window_handles
-                            print(f"All windows: {all_windows}")
-                            for window in all_windows:
-                                if window != earnpp_window or window != feyorra_window:
-                                    claimcoin_window = window
-                                    break
-                            sb1.switch_to.window(claimcoin_window)
-                            print(f"claimcoin_window window handle: {claimcoin_window}")
-                            
-                        
+                            debug_messages(f'Just Fixed Claimcoins')
+                    else:
+                        debug_messages(f'Feyorra not Found:{title} | reset:{reset_count}')
+                        reset_count +=1
                 except Exception as e:
-                    print(e)
+                    debug_messages(f'ERR on Feyorra:{e}')
 
-            if claimcoin_count == 1 and feyorra_count == 1 and earnpp_count == 1:
-                earnpp_count = 0 
-                feyorra_count = 0
-                claimcoin_count = 0
-                reset_count = 0
-            else:
-                reset_count += 1
+
 
 
 
         else:
             print('Ip fucked')
-            break
             #ip_required = fix_ip(sb1, server_name1)
             #ip_address = get_ip(sb1)
     except Exception as e:

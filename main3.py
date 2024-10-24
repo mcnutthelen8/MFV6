@@ -598,68 +598,6 @@ feyorra_cookie = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/feyor
 claimcoin_cookie = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/claimcoins.json'
 
 
-if run_sb1:
-    sb1 = Driver(uc=True, headed= True, undetectable= True, undetected=True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path, page_load_strategy= "none")
-    sb1.maximize_window()
-    id1 = get_current_window_id()
-    url = "chrome://extensions/"
-    sb1.open(url)
-    print(sb1.get_title())
-    sb1.maximize_window()
-    query = {"type": "main"}
-    update = {"$set": {"response": 'Browser Configuring...'}}
-    result = collection.update_one(query, update)
-    update = {"$set": {"request": 'ipfixer'}}
-    result = collection.update_one(query, update)
-    if result.matched_count > 0:
-        print(f"Added new messages to existing document. Updated {result.modified_count} document(s).")
-    else:
-        print("No document found with the specified type.")
-    sb1.maximize_window()
-
-    if fresh >= 3:
-        mysterium = install_extensions('mysterium')
-        nopecha = install_extensions('nopecha')
-        cookie = install_extensions('cookie')
-        fingerprint = install_extensions('fingerprint')
-        mfhelper = install_extensions('mfhelper')
-        if fingerprint and mysterium and nopecha and cookie and mfhelper:
-            print('All Extensions are installed..')
-            query = {"type": "main"}
-            update = {"$set": {"response": 'All Extensions are installed..'}}
-            result = collection.update_one(query, update)
-
-    if fresh >= 2:
-        if pin_extensions():
-            print('All Extensions are pinned')
-            query = {"type": "main"}
-            update = {"$set": {"response": 'All Extensions are pinned'}}
-            result = collection.update_one(query, update)
-
-            if mysterium_login(sb1):
-                print('Mysterium Login Done...')
-                query = {"type": "main"}
-                update = {"$set": {"response": 'Mysterium Login Done...'}}
-                result = collection.update_one(query, update)
-
-    if fresh >= 1:            
-        #facebook_login()
-        sb1.maximize_window()
-        query = {"type": "main"}
-        update = {"$set": {"response": 'Setup Done...'}}
-        result = collection.update_one(query, update)
-    
-    current_window = sb1.current_window_handle
-    all_windows = sb1.window_handles
-    for window in all_windows:
-        if window != current_window:
-            sb1.switch_to.window(window)
-            sb1.close()  # Close the tab
-    sb1.switch_to.window(current_window)
-    #time.sleep(1)
-    #ipfixer()
-    ip_required = fix_ip(sb1, server_name1)
-    ip_address = get_ip(sb1)
 
 def verify_and_claim(sb1):
     # Check if the "Verified!" message exists
@@ -894,201 +832,112 @@ feyorra_window = None
 
 
 
+def close_extra_windows(driver, keep_window_handles):
+    """ Close all windows except for the ones specified in keep_window_handles """
+    current_window = driver.current_window_handle
+    all_windows = driver.window_handles
+    for window in all_windows:
+        if window not in keep_window_handles:
+            driver.switch_to.window(window)
+            driver.close()
+    driver.switch_to.window(current_window)
 
-    
-current_window = sb1.current_window_handle
-all_windows = sb1.window_handles
-for window in all_windows:
-    if window != current_window:
-        sb1.switch_to.window(window)
-        sb1.close()  # Close the tab
-sb1.switch_to.window(current_window)
+def handle_captcha_and_cloudflare(driver):
+    """ Function to handle captcha and cloudflare challenges """
+    driver.uc_gui_click_captcha()
+    driver.uc_gui_handle_captcha()
+    cloudflare(driver)
 
-if earnpp:
-    #sb1.open_new_window()
-    sb1.uc_open_with_reconnect("https://earn-pepe.com/member/faucet", 5)
-    sb1.uc_gui_click_captcha()
-    sb1.uc_gui_handle_captcha()
-    
-    time.sleep(1)
-    ggt = sb1.get_title()
-    ready = True
-    while ready == True:
+def handle_site(driver, url, expected_title, cookies, captcha_handling=True):
+    """ Generalized function for handling sites with login and captcha """
+    driver.uc_open_with_reconnect(url, 5)
+    ready = False
+    while not ready:
         time.sleep(1)
-        ggt = sb1.get_title()
-        if 'Home' in ggt:
-            add_cookies_with(sb1, earnpp_cookie)
-        elif 'Just' in ggt:
-            sb1.uc_gui_click_captcha()
-            sb1.uc_gui_handle_captcha()
-            cloudflare(sb1)
-        elif 'Faucet' in ggt:
-            ready = False
+        current_title = driver.get_title()
+        print(f"Current title: {current_title}")
+        if expected_title in current_title:
+            add_cookies_with(driver, cookies)
+            ready = True
+        elif 'Just' in current_title:
+            if captcha_handling:
+                handle_captcha_and_cloudflare(driver)
         else:
-            print(f'{ggt} is wrong')
-            sb1.uc_open_with_reconnect("https://earn-pepe.com/member/faucet", 5)
-            sb1.uc_gui_click_captcha()
-            sb1.uc_gui_handle_captcha()
-            
+            print(f"{current_title} is not the expected title. Reconnecting...")
+            driver.uc_open_with_reconnect(url, 5)
+            if captcha_handling:
+                handle_captcha_and_cloudflare(driver)
+    return driver.current_window_handle
 
-    earnpp_window = sb1.current_window_handle
-    print(f"earnpp_window handle: {earnpp_window}")
+# Main logic
+if run_sb1:
+    sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path, page_load_strategy="none")
+    sb1.maximize_window()
+    sb1.open("chrome://extensions/")
+    print(sb1.get_title())
+    if fresh >= 3:
+        mysterium = install_extensions('mysterium')
+        nopecha = install_extensions('nopecha')
+        cookie = install_extensions('cookie')
+        fingerprint = install_extensions('fingerprint')
+        mfhelper = install_extensions('mfhelper')
+        if fingerprint and mysterium and nopecha and cookie and mfhelper:
+            print('All Extensions are installed..')
+            query = {"type": "main"}
+            update = {"$set": {"response": 'All Extensions are installed..'}}
+            result = collection.update_one(query, update)
+
+    if fresh >= 2:
+        if pin_extensions():
+            print('All Extensions are pinned')
+            query = {"type": "main"}
+            update = {"$set": {"response": 'All Extensions are pinned'}}
+            result = collection.update_one(query, update)
+
+            if mysterium_login(sb1):
+                print('Mysterium Login Done...')
+                query = {"type": "main"}
+                update = {"$set": {"response": 'Mysterium Login Done...'}}
+                result = collection.update_one(query, update)
+
+    if fresh >= 1:            
+        #facebook_login()
+        sb1.maximize_window()
+        query = {"type": "main"}
+        update = {"$set": {"response": 'Setup Done...'}}
+        result = collection.update_one(query, update)
+    
+    current_window = sb1.current_window_handle
+    all_windows = sb1.window_handles
+    for window in all_windows:
+        if window != current_window:
+            sb1.switch_to.window(window)
+            sb1.close()  # Close the tab
+    sb1.switch_to.window(current_window)
+    #time.sleep(1)
+    #ipfixer()
+    ip_required = fix_ip(sb1, server_name1)
+    ip_address = get_ip(sb1)
+    
+if earnpp:
+    earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet", "Home | Earn-pepe", earnpp_cookie)
+    print(f"EarnPP window handle: {earnpp_window}")
 
 if feyorra:
     sb1.open_new_window()
-    sb1.uc_open_with_reconnect("https://feyorra.site/member/faucet", 5)
-    sb1.uc_gui_click_captcha()
-    sb1.uc_gui_handle_captcha()
-
-    all_windows = sb1.window_handles
-    print(f"All windows: {all_windows}")
-    for window in all_windows:
-        if window != earnpp_window:
-            feyorra_window = window
-            break
-        
-    print(f"feyorra_window window handle: {feyorra_window}")
-    sb1.switch_to.window(feyorra_window)
-
-    time.sleep(1)
-    ggt = sb1.get_title()
-
-    ready = True
-    while ready == True:
-        sb1.switch_to.window(feyorra_window)
-        time.sleep(1)
-        ggt = sb1.get_title()
-        if 'Home' in ggt:
-            add_cookies_with(sb1, feyorra_cookie)
-        elif 'Just' in ggt:
-            sb1.uc_gui_click_captcha()
-            sb1.uc_gui_handle_captcha()
-            cloudflare(sb1)
-            all_windows = sb1.window_handles
-            print(f"All windows: {all_windows}")
-            for window in all_windows:
-                if window != earnpp_window:
-                    feyorra_window = window
-                    break
-                
-            print(f"feyorra_window window handle: {feyorra_window}")
-            sb1.switch_to.window(feyorra_window)
-        elif 'Faucet | Feyorra' in ggt:
-            ready = False
-        else:
-            print(f'{ggt} is wrong')
-            sb1.uc_open_with_reconnect("https://feyorra.site/member/faucet", 5)
-            sb1.uc_gui_click_captcha()
-            sb1.uc_gui_handle_captcha()
-            all_windows = sb1.window_handles
-            print(f"All windows: {all_windows}")
-            for window in all_windows:
-                if window != earnpp_window:
-                    feyorra_window = window
-                    break
-                
-            print(f"feyorra_window window handle: {feyorra_window}")
-            sb1.switch_to.window(feyorra_window)
-
-    all_windows = sb1.window_handles
-    print(f"All windows: {all_windows}")
-
-        # Find and assign Baymack window (not matching Popmack window)
-    for window in all_windows:
-        if window != earnpp_window:
-            feyorra_window = window
-            break
-        
-    print(f"feyorra_window window handle: {feyorra_window}")
-
-    sb1.switch_to.window(feyorra_window)
-    ggt = sb1.get_title()
-    print(f"Title of Baymack window: {ggt}")
+    feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Home | Feyorra", feyorra_cookie)
+    print(f"Feyorra window handle: {feyorra_window}")
 
 if claimcoin:
     sb1.open_new_window()
-    sb1.uc_open_with_reconnect("https://claimcoin.in/faucet", 5)
-    sb1.uc_gui_click_captcha()
-    sb1.uc_gui_handle_captcha()
+    claimcoin_window = handle_site(sb1, "https://claimcoin.in/faucet", "ClaimCoin - MultiCurrency Crypto Earning Platform", claimcoin_cookie)
+    print(f"ClaimCoin window handle: {claimcoin_window}")
 
-    all_windows = sb1.window_handles
-    print(f"All windows: {all_windows}")
-    for window in all_windows:
-        if window != earnpp_window or window != feyorra_window:
-            claimcoin_window = window
-            break
-    sb1.switch_to.window(claimcoin_window)
-    print(f"claimcoin_window window handle: {claimcoin_window}")
-    time.sleep(1)
-    ggt = sb1.get_title()
+# Close extra windows and switch to the main windows
+all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
+close_extra_windows(sb1, all_window_handles)
 
-    ready = True
-    while ready == True:
-        sb1.switch_to.window(claimcoin_window)
-        time.sleep(1)
-        ggt = sb1.get_title()
-        if 'ClaimCoin - MultiCurrency Crypto Earning Platform' in ggt:
-            login_to_claimcoin(sb1, email, password)
-            sb1.uc_gui_click_captcha()
-            sb1.uc_gui_handle_captcha()
-            all_windows = sb1.window_handles
-            print(f"All windows: {all_windows}")
-            for window in all_windows:
-                if window != earnpp_window or window != feyorra_window:
-                    claimcoin_window = window
-                    
-            sb1.switch_to.window(claimcoin_window)
-            print(f"claimcoin_window window handle: {claimcoin_window}")
-
-        elif 'Just' in ggt:
-            sb1.uc_gui_click_captcha()
-            sb1.uc_gui_handle_captcha()
-            cloudflare(sb1)
-            all_windows = sb1.window_handles
-            print(f"All windows: {all_windows}")
-            for window in all_windows:
-                if window != earnpp_window or window != feyorra_window:
-                    claimcoin_window = window
-                    break
-            sb1.switch_to.window(claimcoin_window)
-            print(f"claimcoin_window window handle: {claimcoin_window}")
-        elif 'Faucet | ClaimCoin' in ggt:
-            ready = False
-        else:
-            print(f'{ggt} is wrong')
-            sb1.uc_open_with_reconnect("https://claimcoin.in/faucet", 5)
-            sb1.uc_gui_click_captcha()
-            sb1.uc_gui_handle_captcha()
-            all_windows = sb1.window_handles
-            print(f"All windows: {all_windows}")
-            for window in all_windows:
-                if window != earnpp_window or window != feyorra_window:
-                    claimcoin_window = window
-                    break
-            sb1.switch_to.window(claimcoin_window)
-            print(f"claimcoin_window window handle: {claimcoin_window}")
-
-    print(f"Title after opening Zaptaps: {ggt}")
-        
-
-    all_windows = sb1.window_handles
-    print(f"All windows: {all_windows}")
-
-        # Find and assign Baymack window (not matching Popmack window)
-    for window in all_windows:
-        if window != earnpp_window or window != feyorra_window:
-            claimcoin_window = window
-            break
-        
-    print(f"claimcoin_window window handle: {claimcoin_window}")
-
-    sb1.switch_to.window(claimcoin_window)
-    ggt = sb1.get_title()
-    print(f"Title of Baymack window: {ggt}")
-
-print(f'{earnpp_window} |{feyorra_window}| {claimcoin_window}')
-
-
+print(f"Windows: EarnPP: {earnpp_window}, Feyorra: {feyorra_window}, ClaimCoin: {claimcoin_window}")
 
 earnpp_count = 0 
 feyorra_count = 0

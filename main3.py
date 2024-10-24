@@ -633,49 +633,47 @@ def solve_icon_captcha(sb1):
 
     print("No matching icon found.")
 
-def cloudflare(sb):
+def cloudflare(sb, login = True):
     try:
         gg = False
         while gg == False:
             try:
 
                 page_title = sb.get_title()
-                
-                if page_title == 'Just a moment...':
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.9)
+                print("verify_cloudflare git Found")
+                if x and y:
                     sb.disconnect() 
-                    try:
-                        time.sleep(1)
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.9)
-                        print("verify_cloudflare git Found")
+                    for i in range(1, 300):
+                        
                         try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.9)
-                            pyautogui.click(x, y)
-                            time.sleep(5)
-
-                        except Exception as e:
-                            print(e)
-
-                    except Exception as e:
-                            print(e)
-                            time.sleep(2)
+                            time.sleep(1)
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.9)
+                            print("verify_cloudflare git Found")
                             try:
-                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.9)
-                                print("verify_cloudflare git Found")
+                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.9)
+                                pyautogui.click(x, y)
+                                time.sleep(5)
+                                if login == False: 
+                                    sb.connect()
+                                    return True
+
                             except Exception as e:
                                 print(e)
-                                time.sleep(2)
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.9)
-                                    print("verify_cloudflare git Found")
-                                except Exception as e:
-                                    print(e)
-                                    time.sleep(2)
-                                    try:
-                                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.9)
-                                        print("verify_cloudflare git Found")
-                                    except Exception as e:
-                                        print(e)
-                                        pyautogui.press('f5')
+                                
+                            try:
+                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_success.png", confidence=0.9)
+                                pyautogui.click(x, y)
+                                time.sleep(1)
+                                if login == True: 
+                                    sb.connect()
+                                    return True
+
+                            except Exception as e:
+                                print(e)
+
+                        except Exception as e:
+                                print('cloudflare not found keep trying')
 
                     sb.connect()
                 else:
@@ -723,73 +721,9 @@ def find_and_click_collect_button(sb1):
         return None
 
 
-def add_cookies_with(driver, cookies):
-    for i in range(1,100):
-        time.sleep(1)
-        try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cookie_icon.png", region=(1625, 43, 400, 300), confidence=0.99)
-            pyautogui.click(x, y)
-            print("cookie_icon Found")
-            time.sleep(13)
-            try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/all_site.png", region=(1300, 212, 600, 300), confidence=0.99)
-                pyautogui.click(x, y)
-                print("all_site Found")
-            except pyautogui.ImageNotFoundException:
-                print("No all_site .")
-            try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
-                pyautogui.click(x, y)
-                print("import_icon Found")
-                time.sleep(3)
-                for i in range(1,50):
-                    print(cookies)
-                    url = cookies
-                    response = requests.get(url)
-                    if response.status_code == 200:
-                        text_content = response.text
-                    else:
-                        print(f"Failed to retrieve the content. Status code: {response.status_code}")
-                        text_content = None
-                    if text_content:
-                        pyautogui.click(1385, 310)
-                        time.sleep(1)
-                        pyautogui.typewrite(text_content)
-                        time.sleep(5)
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
-                            pyautogui.click(x, y)
-                            print("import_icon Found")
-                            
-                            time.sleep(3)
-                            pyautogui.click(113, 100)
-                            pyautogui.press('f5')
-                            time.sleep(3)
-                            #driver.close()
-                            return True
-                        
-                        except pyautogui.ImageNotFoundException:
-                            print(f"No import_icon .{i}")
-                    time.sleep(1)
 
-
-            except pyautogui.ImageNotFoundException:
-                print("No import_icon .")
-
-        except pyautogui.ImageNotFoundException:
-            print("No cookie_icon .")
-
-        try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/allow_button.png", region=(1080, 247, 400, 300), confidence=0.99)
-            pyautogui.click(x, y)
-            print("allow_button Found")
-                    
-        except pyautogui.ImageNotFoundException:
-            print("No allow_button .")
-
-def login_to_claimcoin(driver, email, password):
-    # Step 1: Go to the login page
-    driver.open("https://claimcoin.in/login")
+def login_to_faucet(url, driver, email, password, captcha_image):
+    driver.open(url)
 
     print("WebDriver Check")
     # Step 2: Fill in the email and password
@@ -806,24 +740,24 @@ def login_to_claimcoin(driver, email, password):
     print("CAPTCHA Check")
     for i in range(1, 200):
         time.sleep(1)
+        cloudflare(driver, True)
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/not_a_robot.png", confidence=0.85)
-            login_button = driver.find_element(By.CSS_SELECTOR, "button.btn.btn-primary.btn-block.waves-effect.waves-light")
-            login_button.click()
-            return
+            x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
+            if x and y: 
+                login_button = driver.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
+                login_button.click()
+                return
         except Exception as e:
             print(f'ERR:{e}') 
 
     print("✅ CAPTCHA validated")
 
     # Step 4: Click the "Log In" button
-    login_button = driver.find_element(By.CSS_SELECTOR, "button.btn.btn-primary.btn-block.waves-effect.waves-light")
+    login_button = driver.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
     login_button.click()
-    
     print("🚀 Login attempt made!")
 
-email = "khabibmakanzie@gmail.com"
-password = "@$uiJjkFfZU3K@e"
+
 
 bitmoon_window = None
 earnpp_window = None
@@ -833,7 +767,6 @@ feyorra_window = None
 
 
 def close_extra_windows(driver, keep_window_handles):
-    """ Close all windows except for the ones specified in keep_window_handles """
     current_window = driver.current_window_handle
     all_windows = driver.window_handles
     for window in all_windows:
@@ -843,35 +776,39 @@ def close_extra_windows(driver, keep_window_handles):
     driver.switch_to.window(current_window)
 
 def handle_captcha_and_cloudflare(driver):
-    """ Function to handle captcha and cloudflare challenges """
     driver.uc_gui_click_captcha()
     driver.uc_gui_handle_captcha()
     cloudflare(driver)
 
-def handle_site(driver, url, expected_title, cookies, captcha_handling=True):
-    """ Generalized function for handling sites with login and captcha """
+def handle_site(driver, url, expected_title, not_expected_title , function, window_list ,captcha_handling=True):
     driver.uc_open_with_reconnect(url, 5)
     ready = False
     while not ready:
         time.sleep(1)
         current_title = driver.get_title()
         print(f"Current title: {current_title}")
-        if expected_title in current_title:
-            add_cookies_with(driver, cookies)
-            ready = True
+        if not_expected_title in current_title:
+            function
+
+        elif expected_title in current_title:
+            if driver.current_window_handle not in window_list:
+                ready = True
+
         elif 'Just' in current_title:
             if captcha_handling:
                 handle_captcha_and_cloudflare(driver)
+        
         else:
             print(f"{current_title} is not the expected title. Reconnecting...")
             driver.uc_open_with_reconnect(url, 5)
             if captcha_handling:
                 handle_captcha_and_cloudflare(driver)
+
     return driver.current_window_handle
 
 # Main logic
 if run_sb1:
-    sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path, page_load_strategy="none")
+    sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
     sb1.maximize_window()
     sb1.open("chrome://extensions/")
     print(sb1.get_title())
@@ -920,24 +857,27 @@ if run_sb1:
     ip_address = get_ip(sb1)
     
 if earnpp:
-    earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet", "Home | Earn-pepe", earnpp_cookie)
+    earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", login_to_faucet('https://earn-pepe.com/login', sb1, 'khabibmakanzie@gmail.com', 'CQ2pNwi3zsFgat@', 'cloudflare_success'), [])
     print(f"EarnPP window handle: {earnpp_window}")
 
 if feyorra:
     sb1.open_new_window()
-    feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Home | Feyorra", feyorra_cookie)
+    feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Home | Feyorra", login_to_faucet('https://feyorra.site/login', sb1, 'khabibmakanzie@gmail.com', 'D6.6fz9r5QVyziT', 'cloudflare_success'), [earnpp_window])
     print(f"Feyorra window handle: {feyorra_window}")
 
 if claimcoin:
     sb1.open_new_window()
-    claimcoin_window = handle_site(sb1, "https://claimcoin.in/faucet", "ClaimCoin - MultiCurrency Crypto Earning Platform", claimcoin_cookie)
+    claimcoin_window = handle_site(sb1, "https://claimcoin.in/faucet", "Faucet | ClaimCoin - ClaimCoin Faucet", "ClaimCoin - MultiCurrency Crypto Earning Platform", login_to_faucet('https://claimcoin.in/login', sb1, 'khabibmakanzie@gmail.com', '@$uiJjkFfZU3K@e', 'not_a_robot'), [earnpp_window, feyorra_window])
     print(f"ClaimCoin window handle: {claimcoin_window}")
 
-# Close extra windows and switch to the main windows
+
 all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
 close_extra_windows(sb1, all_window_handles)
 
 print(f"Windows: EarnPP: {earnpp_window}, Feyorra: {feyorra_window}, ClaimCoin: {claimcoin_window}")
+time.sleep(199999)
+
+
 
 earnpp_count = 0 
 feyorra_count = 0

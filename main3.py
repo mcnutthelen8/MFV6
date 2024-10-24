@@ -723,7 +723,15 @@ def find_and_click_collect_button(sb1):
 
 
 def login_to_faucet(url, driver, email, password, captcha_image):
+
+    bfr = driver.window_handles
     driver.open(url)
+    all_windows = driver.window_handles
+    for window in all_windows:
+        if window not in bfr:
+            driver.switch_to.window(window)
+            
+
 
     print("WebDriver Check")
     # Step 2: Fill in the email and password
@@ -787,10 +795,16 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         time.sleep(1)
         current_title = driver.get_title()
         print(f"Current title: {current_title}")
-        if not_expected_title in current_title:
-            function
 
-        elif expected_title in current_title:
+        if not_expected_title == current_title:
+            if function == 1:
+                login_to_faucet('https://earn-pepe.com/login', sb1, 'khabibmakanzie@gmail.com', 'CQ2pNwi3zsFgat@', 'cloudflare_success')
+            elif function == 2:
+                login_to_faucet('https://feyorra.site/login', sb1, 'khabibmakanzie@gmail.com', 'D6.6fz9r5QVyziT', 'cloudflare_success')
+            elif function == 3:
+                login_to_faucet('https://claimcoin.in/login', sb1, 'khabibmakanzie@gmail.com', '@$uiJjkFfZU3K@e', 'not_a_robot')
+                
+        elif expected_title == current_title:
             if driver.current_window_handle not in window_list:
                 ready = True
 
@@ -857,17 +871,17 @@ if run_sb1:
     ip_address = get_ip(sb1)
     
 if earnpp:
-    earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", login_to_faucet('https://earn-pepe.com/login', sb1, 'khabibmakanzie@gmail.com', 'CQ2pNwi3zsFgat@', 'cloudflare_success'), [])
+    earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [])
     print(f"EarnPP window handle: {earnpp_window}")
 
 if feyorra:
     sb1.open_new_window()
-    feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Home | Feyorra", login_to_faucet('https://feyorra.site/login', sb1, 'khabibmakanzie@gmail.com', 'D6.6fz9r5QVyziT', 'cloudflare_success'), [earnpp_window])
+    feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Home | Feyorra", 2, [earnpp_window])
     print(f"Feyorra window handle: {feyorra_window}")
 
 if claimcoin:
     sb1.open_new_window()
-    claimcoin_window = handle_site(sb1, "https://claimcoin.in/faucet", "Faucet | ClaimCoin - ClaimCoin Faucet", "ClaimCoin - MultiCurrency Crypto Earning Platform", login_to_faucet('https://claimcoin.in/login', sb1, 'khabibmakanzie@gmail.com', '@$uiJjkFfZU3K@e', 'not_a_robot'), [earnpp_window, feyorra_window])
+    claimcoin_window = handle_site(sb1, "https://claimcoin.in/faucet", "Faucet | ClaimCoin - ClaimCoin Faucet", "ClaimCoin - MultiCurrency Crypto Earning Platform", 3, [earnpp_window, feyorra_window])
     print(f"ClaimCoin window handle: {claimcoin_window}")
 
 

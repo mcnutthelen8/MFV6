@@ -840,7 +840,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
 
 # Main logic
 if run_sb1:
-    sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
+    sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path,  page_load_strategy='none')
     sb1.maximize_window()
     sb1.open("chrome://extensions/")
     print(sb1.get_title())
@@ -923,6 +923,7 @@ claimcoin_count = 0
 
 earnpp_window, feyorra_window, claimcoin_window, ip_address, ip_required = open_faucets()
 reset_count = 0
+previous_reset_count = 0
 time.sleep(2)
 start_time = time.time()
 while True:
@@ -931,8 +932,18 @@ while True:
         debug_messages(f'Ip address Found:{ip_address}')
         if ip_address == ip_required:
             debug_messages(f'Ip address Match:{ip_address}')
+
+            all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
+            close_extra_windows(sb1, all_window_handles)
+
+
             if reset_count > 20:
                 earnpp_window, feyorra_window, claimcoin_window, ip_address, ip_required = open_faucets()
+
+            if previous_reset_count == reset_count:
+                reset_count = 0
+            else:
+                previous_reset_count = reset_count
             if earnpp:
                 try:
                     debug_messages(f'Switching Pages to EarnPP')
@@ -956,6 +967,7 @@ while True:
 
                 except Exception as e:
                     debug_messages(f'ERR on EarnPP:{e}')
+                    reset_count +=1
             
             if feyorra:
                 try:
@@ -964,6 +976,7 @@ while True:
                     debug_messages(f'Getting Pages Titile:Feyorra')
                     pyautogui.press('enter')
                     title =sb1.get_title()
+
                     if 'Faucet | Feyorra' in title:
                         debug_messages(f'Solving Icon Captcha on Feyorra')
                         solve_icon_captcha(sb1)
@@ -979,6 +992,7 @@ while True:
                         reset_count +=1
                 except Exception as e:
                     debug_messages(f'ERR on Feyorra:{e}')
+                    reset_count +=1
 
             if claimcoin:
                 try:
@@ -1005,11 +1019,13 @@ while True:
                             sb1.uc_gui_handle_captcha()
                             cloudflare(sb1)
                             debug_messages(f'Just Fixed Claimcoins')
-                    else:
-                        debug_messages(f'Feyorra not Found:{title} | reset:{reset_count}')
-                        reset_count +=1
+                        else:
+                            debug_messages(f'ClamCoim not Found:{title} | reset:{reset_count}')
+                            reset_count +=1
+                    
                 except Exception as e:
-                    debug_messages(f'ERR on Feyorra:{e}')
+                    debug_messages(f'ERR on ClamCoim:{e}')
+                    reset_count +=1
 
 
 

@@ -597,8 +597,6 @@ earnpp_cookie = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/earnpp
 feyorra_cookie = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/feyorra.json'
 claimcoin_cookie = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/claimcoins.json'
 
-
-
 def verify_and_claim(sb1):
     # Check if the "Verified!" message exists
     if sb1.is_element_visible('div.hp-bg-success-3'):
@@ -710,7 +708,9 @@ def find_and_click_collect_button(sb1):
                     sb1.close()
             sb1.switch_to.window(original_window)
             
-            sb1.click(button_selector)
+            #sb1.click(button_selector)
+            sb1.execute_script("window.scrollTo(0, 1000);")
+            sb1.uc_click(button_selector)
             print("Collect button clicked.")
             return True
         else:
@@ -749,19 +749,21 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages)
     password_input.send_keys(password)
 
     # Step 3: Wait for the CAPTCHA checkbox to be validated
-    sb1.execute_script("window.scrollTo(0, 1000);")
     print("CAPTCHA Check")
     for i in range(1, 200):
         time.sleep(1)
+        sb1.execute_script("window.scrollTo(0, 1000);")
         cloudflare(driver, True)
         try:
             x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
             if x and y: 
 
                 login_button = driver.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
-
-                driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
-                login_button.click()
+                #click_element_with_pyautogui(driver, login_button)
+                sb1.uc_click('button[type="submit"]')
+                pyautogui.press('enter')
+                #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
+                #login_button.click()
                 #login_button.click()
                 return
         except Exception as e:
@@ -771,8 +773,7 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages)
 
     # Step 4: Click the "Log In" button
     login_button = driver.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
-    driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
-    login_button.click()
+    pyautogui.press('enter')
     print("🚀 Login attempt made!")
 
 
@@ -844,6 +845,7 @@ if run_sb1:
     sb1.maximize_window()
     sb1.open("chrome://extensions/")
     print(sb1.get_title())
+    
     if fresh >= 3:
         mysterium = install_extensions('mysterium')
         nopecha = install_extensions('nopecha')
@@ -877,7 +879,7 @@ if run_sb1:
         result = collection.update_one(query, update)
     
 
-    
+
 def open_faucets():
     current_window = sb1.current_window_handle
     all_windows = sb1.window_handles

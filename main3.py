@@ -34,6 +34,10 @@ import json
 import argparse
 import clipboard
 
+import math
+
+
+# Example usage
 
 # Initialize the argument parser
 parser = argparse.ArgumentParser(description="Process some arguments.")
@@ -684,6 +688,40 @@ def cloudflare(sb, login = True):
         print(e)
 
 
+def click_element_with_pyautogui(driver, selector):
+    # Step 1: Find the element using SeleniumBase
+    element = driver.find_element(selector)
+    
+    # Step 2: Get element's location and size
+    location = element.location
+    size = element.size
+    y_location = location['y'] + 100
+    driver.execute_script(f"window.scrollTo(0, {y_location});")
+    time.sleep(1)
+    element = driver.find_element(selector)
+    
+    # Step 2: Get element's location and size
+    location = element.location
+    size = element.size
+    scroll_y = driver.execute_script("return window.scrollY;")
+    top = location['y'] #- scroll_y
+    # Step 3: Calculate the center of the element
+    center_x = location['x'] + size['width'] / 2
+    center_y = (top) + size['height'] + (size['height'] /2) 
+    # Step 4: Adjust coordinates for the full screen    if the browser is maximized
+    window_position = driver.get_window_position()
+    center_x += window_position['x']
+    center_y += window_position['y']
+    
+    # Step 5: Move the cursor to the center of the element and click
+    pyautogui.moveTo(center_x, center_y)
+    #pyautogui.click(center_x, center_y)
+    
+    #driver.uc_click(selector)
+    pyautogui.click()
+    print(f'y_location:{y_location} | top:{top} | scroll_y:{scroll_y}', location['y'])
+    print(f"Clicked on element at ({center_x}, {center_y})")
+
 def find_and_click_collect_button(sb1):
     # Selector for the button
 
@@ -708,11 +746,22 @@ def find_and_click_collect_button(sb1):
                     sb1.close()
             sb1.switch_to.window(original_window)
             
-            #sb1.click(button_selector)
-            sb1.execute_script("window.scrollTo(0, 1000);")
-            sb1.uc_click(button_selector)
-            print("Collect button clicked.")
-            return True
+
+
+            for i in range(1, 3):
+                sb1.execute_script("window.scrollTo(0, 1000);")
+                time.sleep(1)
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/collect_your_reward.png", region=(507,156, 965, 919), confidence=0.9)
+                    pyautogui.moveTo(x, y, duration= 1)
+                    pyautogui.click(x, y)
+                    print("Collect button clicked.")
+                    return True
+                except Exception as e:
+                    print(e)
+            #sb1.uc_click(button_selector)
+            print("Collect button Not clicked.")
+            return None
         else:
             print("Button found, but it doesn't contain 'Collect your reward' text.")
             return None
@@ -724,7 +773,6 @@ def find_and_click_collect_button(sb1):
 
 def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages):
 
-    bfr = driver.window_handles
     driver.open(url)
     time.sleep(2)
 
@@ -750,30 +798,32 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages)
 
     # Step 3: Wait for the CAPTCHA checkbox to be validated
     print("CAPTCHA Check")
-    for i in range(1, 200):
-        time.sleep(1)
-        sb1.execute_script("window.scrollTo(0, 1000);")
-        cloudflare(driver, True)
-        try:
-            x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
-            if x and y: 
+    if captcha_image:
+        for i in range(1, 200):
+            time.sleep(1)
+            sb1.execute_script("window.scrollTo(0, 1000);")
+            cloudflare(driver, True)
+            try:
+                x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
+                if x and y: 
 
-                login_button = driver.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
-                #click_element_with_pyautogui(driver, login_button)
-                sb1.uc_click('button[type="submit"]')
-                pyautogui.press('enter')
-                #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
-                #login_button.click()
-                #login_button.click()
-                return
-        except Exception as e:
-            print(f'ERR:{e}') 
+                    login_button = driver.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
+                    #click_element_with_pyautogui(driver, login_button)
+                    click_element_with_pyautogui(sb1, 'button[type="submit"]')
+                    sb1.uc_click('button[type="submit"]')
+                    pyautogui.press('enter')
+                    #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
+                    #login_button.click()
+                    #login_button.click()
+                    return
+            except Exception as e:
+                print(f'ERR:{e}') 
 
     print("✅ CAPTCHA validated")
-
-    # Step 4: Click the "Log In" button
-    login_button = driver.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
+    click_element_with_pyautogui(sb1, 'button[type="submit"]')
+    sb1.uc_click('button[type="submit"]')
     pyautogui.press('enter')
+    
     print("🚀 Login attempt made!")
 
 
@@ -817,7 +867,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
             elif function == 2:
                 login_to_faucet('https://feyorra.site/login', sb1, 'khabibmakanzie@gmail.com', 'D6.6fz9r5QVyziT', 'cloudflare_success', window_list)
             elif function == 3:
-                login_to_faucet('https://claimcoin.in/login', sb1, 'khabibmakanzie@gmail.com', '@$uiJjkFfZU3K@e', 'not_a_robot', window_list)
+                login_to_faucet('https://claimcoin.in/login', sb1, 'khabibmakanzie@gmail.com', '@$uiJjkFfZU3K@e', None, window_list) #'not_a_robot'
 
         elif expected_title == current_title:
             if driver.current_window_handle not in window_list:

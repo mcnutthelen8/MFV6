@@ -747,15 +747,19 @@ def find_and_click_collect_button(sb1):
             sb1.switch_to.window(original_window)
             
             sb1.execute_script("window.scrollTo(0, 1000);")
-            time.sleep(1)
+            #time.sleep(1)
             sb1.disconnect()
 
             for i in range(1, 3):
                 try:
                     x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/collect_your_reward.png", region=(507,156, 965, 919), confidence=0.9)
+                    pyautogui.moveTo(random.randint(200, 1700), random.randint(100, 500), duration= 1)
+                    pyautogui.moveTo(random.randint(700, 1700), random.randint(300, 500), duration= 1)
                     pyautogui.moveTo(x, y, duration= 1)
                     pyautogui.click(x, y)
                     print("Collect button clicked.")
+                    time.sleep(2)
+                    pyautogui.press('f5')
                     time.sleep(2)
                     sb1.connect()
                     return True
@@ -950,17 +954,20 @@ def open_faucets():
     if earnpp:
         earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [])
         print(f"EarnPP window handle: {earnpp_window}")
-
+    else:
+        earnpp_window = None
     if feyorra:
         sb1.open_new_window()
         feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Home | Feyorra", 2, [earnpp_window])
         print(f"Feyorra window handle: {feyorra_window}")
-
+    else:
+        feyorra_window = None
     if claimcoin:
         sb1.open_new_window()
         claimcoin_window = handle_site(sb1, "https://claimcoin.in/faucet", "Faucet | ClaimCoin - ClaimCoin Faucet", "ClaimCoin - MultiCurrency Crypto Earning Platform", 3, [earnpp_window, feyorra_window])
         print(f"ClaimCoin window handle: {claimcoin_window}")
-
+    else:
+        claimcoin_window = None
 
     all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
     close_extra_windows(sb1, all_window_handles)

@@ -746,21 +746,24 @@ def find_and_click_collect_button(sb1):
                     sb1.close()
             sb1.switch_to.window(original_window)
             
-
+            sb1.execute_script("window.scrollTo(0, 1000);")
+            time.sleep(1)
+            sb1.disconnect()
 
             for i in range(1, 3):
-                sb1.execute_script("window.scrollTo(0, 1000);")
-                time.sleep(1)
                 try:
                     x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/collect_your_reward.png", region=(507,156, 965, 919), confidence=0.9)
                     pyautogui.moveTo(x, y, duration= 1)
                     pyautogui.click(x, y)
                     print("Collect button clicked.")
+                    time.sleep(2)
+                    sb1.connect()
                     return True
                 except Exception as e:
                     print(e)
             #sb1.uc_click(button_selector)
             print("Collect button Not clicked.")
+            sb1.connect()
             return None
         else:
             print("Button found, but it doesn't contain 'Collect your reward' text.")
@@ -810,6 +813,7 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages)
                     login_button = driver.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
                     #click_element_with_pyautogui(driver, login_button)
                     click_element_with_pyautogui(sb1, 'button[type="submit"]')
+                    sb1.uc_click('button[type="submit"]')
                     sb1.uc_click('button[type="submit"]')
                     pyautogui.press('enter')
                     #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)

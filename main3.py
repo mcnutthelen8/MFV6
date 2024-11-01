@@ -103,9 +103,9 @@ chrome_user_data_dir = '/root/.config/google-chrome/'
 
 bitmoon = True
 earnpp = True
-claimcoin = False
+claimcoin = True
 feyorra = True
-baymack = True
+baymack = False
 
 
 mongo_uri = "mongodb+srv://redgta36:J6n7Hoz2ribHmMmx@moneyfarm.wwzcs.mongodb.net/?retryWrites=true&w=majority&appName=moneyfarm"
@@ -2266,7 +2266,7 @@ def find_and_click_collect_button(sb1):
             for i in range(1, 3):
                 try:
                     x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/collect_your_reward.png", region=(507,156, 965, 919), confidence=0.9)
-                    pyautogui.moveTo(random.randint(200, 1700), random.randint(100, 500), duration= 1)
+                    #pyautogui.moveTo(random.randint(200, 1700), random.randint(100, 500), duration= 1)
                     pyautogui.moveTo(random.randint(700, 1700), random.randint(300, 500), duration= 1)
                     pyautogui.moveTo(x, y, duration= 1)
                     pyautogui.click(x, y)
@@ -2330,9 +2330,10 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                     login_button = driver.find_element(By.CSS_SELECTOR, submit_button)
                     #click_element_with_pyautogui(driver, login_button)
                     #click_element_with_pyautogui(sb1, 'button[type="submit"]')
-                    #sb1.uc_click(submit_button)
-                    #sb1.uc_click('button[type="submit"]')
                     pyautogui.press('enter')
+                    sb1.uc_click(submit_button)
+                    #sb1.uc_click('button[type="submit"]')
+                    
                     #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
                     login_button.click(login_button)
                     time.sleep(5)
@@ -2342,9 +2343,9 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
 
     print("✅ CAPTCHA validated")
     #click_element_with_pyautogui(sb1, 'button[type="submit"]')
-    login_button = driver.find_element(By.CSS_SELECTOR, submit_button)
-    login_button.click(login_button)
     pyautogui.press('enter')
+    login_button.click(submit_button)
+    
     time.sleep(5)
     
     print("🚀 Login attempt made!")

@@ -9,7 +9,6 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException,
 from urllib.parse import urlparse, parse_qs
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import Select
 import time
 import re
 import requests
@@ -104,9 +103,9 @@ chrome_user_data_dir = '/root/.config/google-chrome/'
 
 bitmoon = True
 earnpp = True
-claimcoin = True
+claimcoin = False
 feyorra = True
-baymack = False
+baymack = True
 
 
 mongo_uri = "mongodb+srv://redgta36:J6n7Hoz2ribHmMmx@moneyfarm.wwzcs.mongodb.net/?retryWrites=true&w=majority&appName=moneyfarm"
@@ -2267,6 +2266,7 @@ def find_and_click_collect_button(sb1):
             for i in range(1, 3):
                 try:
                     x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/collect_your_reward.png", region=(507,156, 965, 919), confidence=0.9)
+                    pyautogui.moveTo(random.randint(200, 1700), random.randint(100, 500), duration= 1)
                     pyautogui.moveTo(random.randint(700, 1700), random.randint(300, 500), duration= 1)
                     pyautogui.moveTo(x, y, duration= 1)
                     pyautogui.click(x, y)
@@ -2330,12 +2330,11 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                     login_button = driver.find_element(By.CSS_SELECTOR, submit_button)
                     #click_element_with_pyautogui(driver, login_button)
                     #click_element_with_pyautogui(sb1, 'button[type="submit"]')
-                    pyautogui.press('enter')
-                    sb1.uc_click(submit_button)
+                    #sb1.uc_click(submit_button)
                     #sb1.uc_click('button[type="submit"]')
-                    
+                    pyautogui.press('enter')
                     #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
-                    #login_button.click(submit_button)
+                    login_button.click(login_button)
                     time.sleep(5)
                     return
             except Exception as e:
@@ -2343,74 +2342,13 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
 
     print("✅ CAPTCHA validated")
     #click_element_with_pyautogui(sb1, 'button[type="submit"]')
+    login_button = driver.find_element(By.CSS_SELECTOR, submit_button)
+    login_button.click(login_button)
     pyautogui.press('enter')
-    ogin_button = driver.find_element(By.CSS_SELECTOR, submit_button)
-    login_button.click(submit_button)
-    
     time.sleep(5)
     
     print("🚀 Login attempt made!")
 
-def logging_bitmoon(url, driver, email, password, captcha_image, restrict_pages, submit_button):
-    driver.open(url)
-    time.sleep(2)
-
-    all_windows = driver.window_handles
-    for window in all_windows:
-        if window not in restrict_pages:
-            driver.switch_to.window(window)
-    while True:
-        if driver.is_element_present('a.nav-link.btn.btn-success'):
-            try:
-                # Locate and click the login button
-                button = driver.find_element('a.nav-link.btn.btn-success')
-                button.click()
-                time.sleep(2)
-                print('gggg')
-                email_input = driver.find_element( 'input[type="text"]')
-                email_input.send_keys(email)
-
-                # Locate the password input by type attribute
-                password_input = driver.find_element('input[type="password"]')
-                password_input.send_keys(password)
-                # Find the dropdown element by its id and select "Cloudflare" by value
-                select_element = Select(driver.find_element('select.form-control.custom-select.mb-2'))
-                select_element.select_by_value("2")  # Selects "Cloudflare"
-                # Step 3: Wait for the CAPTCHA checkbox to be validated
-                print("CAPTCHA Check")
-                if captcha_image:
-                    for i in range(1, 200):
-                        time.sleep(1)
-                        sb1.execute_script("window.scrollTo(0, 1000);")
-                        cloudflare(driver, True)
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
-                            if x and y: 
-
-                                login_button = driver.find_element(By.CSS_SELECTOR, submit_button)
-                                #click_element_with_pyautogui(driver, login_button)
-                                #click_element_with_pyautogui(sb1, 'button[type="submit"]')
-                                #sb1.uc_click(submit_button)
-                                #sb1.uc_click('button[type="submit"]')
-                                pyautogui.press('enter')
-                                #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
-                                login_button.click(login_button)
-                                time.sleep(5)
-                                return
-                        except Exception as e:
-                            print(f'ERR:{e}') 
-
-                print("✅ CAPTCHA validated")
-                #click_element_with_pyautogui(sb1, 'button[type="submit"]')
-                login_button = driver.find_element(By.CSS_SELECTOR, submit_button)
-                login_button.click(login_button)
-                pyautogui.press('enter')
-                time.sleep(5)
-                
-                print("🚀 Login attempt made!")
-                
-            except Exception as e:
-                print(f'ERR: {e}')
 
 
 bitmoon_window = None
@@ -2430,7 +2368,9 @@ def close_extra_windows(driver, keep_window_handles):
     driver.switch_to.window(current_window)
 
 def handle_captcha_and_cloudflare(driver):
-    cloudflare(driver, login = False)
+    driver.uc_gui_click_captcha()
+    driver.uc_gui_handle_captcha()
+    cloudflare(driver)
 
 def handle_site(driver, url, expected_title, not_expected_title , function, window_list ,captcha_handling=True):
     driver.uc_open_with_reconnect(url, 5)
@@ -2455,8 +2395,6 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
                 login_to_faucet('https://feyorra.site/login', sb1, 'khabibmakanzie@gmail.com', 'D6.6fz9r5QVyziT', 'cloudflare_success', window_list, 'button#loginBtnText')
             elif function == 3:
                 login_to_faucet('https://claimcoin.in/login', sb1, 'khabibmakanzie@gmail.com', '@$uiJjkFfZU3K@e', None, window_list, 'button[type="submit"]') #'not_a_robot'
-            elif function == 5:
-                logging_bitmoon('https://earnbitmoon.club/', sb1, 'ddilakshi232', 'p~Q18oQjmp}nv6g', 'cloudflare_success', window_list, 'button[type="submit"]') #'not_a_robot'
 
 
         elif expected_title == current_title:
@@ -2666,13 +2604,13 @@ start_time = time.time()
 import img_captcha
 import img_captcha_bay
 
-def check_icon_captcha_exists(sb):
+def check_icon_captcha_exists(sb, id):
             try:
                 if sb.is_element_visible(".captcha-modal__icons .captcha-image"):
                     print("Icon captcha exists.")
                     #time.sleep(2)
                     sb.maximize_window()
-                    #activate_window_by_id(id)
+                    activate_window_by_id(id)
                     title =  sb.get_title()
                     if title == 'Popmack':
                         #sb1.scroll_to_top()
@@ -2749,8 +2687,9 @@ while True:
 
                     elif 'Just' in title:
                         debug_messages(f'Just.. Found on EarnPP')
-
-                        cloudflare(sb1, login = False)
+                        sb1.uc_gui_click_captcha()
+                        sb1.uc_gui_handle_captcha()
+                        cloudflare(sb1)
                         debug_messages(f'Just Fixed EarnPP')
                     else:
                         debug_messages(f'EarnPP not Found:{title} | reset:{reset_count}')
@@ -2774,7 +2713,9 @@ while True:
                             
                     elif 'Just' in title:
                         debug_messages(f'Just.. Found on Feyorra')
-                        cloudflare(sb1, login = False)
+                        sb1.uc_gui_click_captcha()
+                        sb1.uc_gui_handle_captcha()
+                        cloudflare(sb1)
                         debug_messages(f'Just Fixed Feyorra')
                     else:
                         debug_messages(f'Feyorra not Found:{title} | reset:{reset_count}')
@@ -2804,8 +2745,9 @@ while True:
                             sb1.switch_to.window(claimcoin_window)
                         elif 'Just' in title:
                             debug_messages(f'Just.. Found on Claimcoins')
-
-                            cloudflare(sb1, login = False)
+                            sb1.uc_gui_click_captcha()
+                            sb1.uc_gui_handle_captcha()
+                            cloudflare(sb1)
                             debug_messages(f'Just Fixed Claimcoins')
                         else:
                             debug_messages(f'ClamCoim not Found:{title} | reset:{reset_count}')
@@ -2817,18 +2759,11 @@ while True:
 
 
             if baymack:
-
                 try:
                     debug_messages(f'Switching Pages to baymack')
-                    sb1.switch_to.window(baymack_window)
+                    sb1.switch_to.window(feyorra_window)
                     debug_messages(f'Getting Pages Titile:baymack')
-                    play_button(sb1)
-                    playback_check(sb1)
-                    remove_pink(sb1)
-                    check_icon_captcha_exists(sb1)
-
-                    cloudflare(sb1)
-                    solve_calculating_capcha(sb1)
+                    pyautogui.press('enter')
                     title =sb1.get_title()
 
                     if 'Baymack' in title:
@@ -2957,8 +2892,9 @@ while True:
 
                     elif 'Just' in title:
                         debug_messages(f'Just.. Found on baymack')
-
-                        cloudflare(sb1, login = False)
+                        sb1.uc_gui_click_captcha()
+                        sb1.uc_gui_handle_captcha()
+                        cloudflare(sb1)
                         debug_messages(f'Just Fixed baymack')
                     else:
                         debug_messages(f'baymack not Found:{title} | reset:{reset_count}')

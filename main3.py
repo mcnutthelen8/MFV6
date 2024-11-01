@@ -2266,14 +2266,14 @@ def find_and_click_collect_button(sb1):
             for i in range(1, 3):
                 try:
                     x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/collect_your_reward.png", region=(507,156, 965, 919), confidence=0.9)
-                    #pyautogui.moveTo(random.randint(200, 1700), random.randint(100, 500), duration= 1)
+                    pyautogui.moveTo(random.randint(200, 1700), random.randint(100, 500), duration= 1)
                     pyautogui.moveTo(random.randint(700, 1700), random.randint(300, 500), duration= 1)
                     pyautogui.moveTo(x, y, duration= 1)
                     pyautogui.click(x, y)
                     print("Collect button clicked.")
-                    time.sleep(2)
-                    pyautogui.press('f5')
-                    time.sleep(2)
+                    time.sleep(1)
+                    #pyautogui.press('f5')
+                    #time.sleep(2)
                     sb1.connect()
                     return True
                 except Exception as e:
@@ -2327,24 +2327,23 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                 x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
                 if x and y: 
 
-                    login_button = driver.find_element(By.CSS_SELECTOR, submit_button)
+                    #login_button = driver.find_element(By.CSS_SELECTOR, submit_button)
                     #click_element_with_pyautogui(driver, login_button)
-                    #click_element_with_pyautogui(sb1, 'button[type="submit"]')
                     pyautogui.press('enter')
                     sb1.uc_click(submit_button)
                     #sb1.uc_click('button[type="submit"]')
-                    
+                    pyautogui.press('enter')
                     #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
-                    login_button.click(login_button)
+                    #login_button.click(login_button)
                     time.sleep(5)
                     return
             except Exception as e:
                 print(f'ERR:{e}') 
 
     print("✅ CAPTCHA validated")
-    #click_element_with_pyautogui(sb1, 'button[type="submit"]')
     pyautogui.press('enter')
-    login_button.click(submit_button)
+    sb1.uc_click(submit_button)
+    login_button.click(login_button)
     
     time.sleep(5)
     
@@ -2771,7 +2770,6 @@ while True:
                     check_icon_captcha_exists(sb1)
 
                     cloudflare(sb1)
-                    solve_calculating_capcha(sb1)
                     title =sb1.get_title()
 
                     if 'Baymack' in title:

@@ -2330,11 +2330,12 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                     login_button = driver.find_element(By.CSS_SELECTOR, submit_button)
                     #click_element_with_pyautogui(driver, login_button)
                     #click_element_with_pyautogui(sb1, 'button[type="submit"]')
+                    pyautogui.press('enter')
                     sb1.uc_click(submit_button)
                     #sb1.uc_click('button[type="submit"]')
-                    pyautogui.press('enter')
+                    
                     #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
-                    login_button.click(login_button)
+                    #login_button.click(submit_button)
                     time.sleep(5)
                     return
             except Exception as e:
@@ -2342,9 +2343,10 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
 
     print("✅ CAPTCHA validated")
     #click_element_with_pyautogui(sb1, 'button[type="submit"]')
+    pyautogui.press('enter')
     ogin_button = driver.find_element(By.CSS_SELECTOR, submit_button)
     login_button.click(submit_button)
-    pyautogui.press('enter')
+    
     time.sleep(5)
     
     print("🚀 Login attempt made!")

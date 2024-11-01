@@ -2433,7 +2433,7 @@ def handle_captcha_and_cloudflare(driver):
     cloudflare(driver, login = False)
 
 def handle_site(driver, url, expected_title, not_expected_title , function, window_list ,captcha_handling=True):
-    driver.uc_open_with_reconnect(url, 5)
+    driver.uc_open(url)
     ready = False
     while not ready:
         time.sleep(1)
@@ -2475,7 +2475,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
             for window in all_windows:
                 if window not in window_list:
                     driver.switch_to.window(window)
-            driver.uc_open_with_reconnect(url, 5)
+            driver.uc_open(url)
             if captcha_handling:
                 handle_captcha_and_cloudflare(driver)
 

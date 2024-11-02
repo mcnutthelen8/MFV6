@@ -2262,25 +2262,25 @@ def find_and_click_collect_button(sb1):
             
             sb1.execute_script("window.scrollTo(0, 1000);")
             #time.sleep(1)
-            sb1.disconnect()
+            #sb1.disconnect()
 
-            for i in range(1, 3):
-                try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/collect_your_reward.png", region=(507,156, 965, 919), confidence=0.9)
-                    pyautogui.moveTo(random.randint(700, 1700), random.randint(300, 500), duration= 1)
-                    pyautogui.moveTo(x, y, duration= 1)
-                    pyautogui.click(x, y)
-                    print("Collect button clicked.")
-                    time.sleep(2)
-                    pyautogui.press('f5')
-                    time.sleep(2)
-                    sb1.connect()
-                    return True
-                except Exception as e:
-                    print(e)
-            #sb1.uc_click(button_selector)
+            #    for i in range(1, 3):
+            #        try:
+            #            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/collect_your_reward.png", region=(507,156, 965, 919), confidence=0.9)
+            #            #pyautogui.moveTo(random.randint(700, 1700), random.randint(300, 500), duration= 1)
+            #            #pyautogui.moveTo(x, y, duration= 1)
+            #            pyautogui.click(x, y)
+            #            print("Collect button clicked.")
+            #            time.sleep(2)
+            #            pyautogui.press('f5')
+            #            time.sleep(2)
+            #            sb1.connect()
+            #            return True
+            #        except Exception as e:
+            #            print(e)
+            sb1.uc_click(button_selector)
             print("Collect button Not clicked.")
-            sb1.connect()
+            #sb1.connect()
             return None
         else:
             print("Button found, but it doesn't contain 'Collect your reward' text.")
@@ -2344,8 +2344,7 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
     print("✅ CAPTCHA validated")
     #click_element_with_pyautogui(sb1, 'button[type="submit"]')
     pyautogui.press('enter')
-    ogin_button = driver.find_element(By.CSS_SELECTOR, submit_button)
-    login_button.click(submit_button)
+    sb1.uc_click(submit_button)
     
     time.sleep(5)
     
@@ -2396,14 +2395,12 @@ def logging_bitmoon(url, driver, email, password, captcha_image, restrict_pages,
                                 #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
                                 login_button.click(login_button)
                                 time.sleep(5)
-                                return
+                                break
                         except Exception as e:
                             print(f'ERR:{e}') 
 
                 print("✅ CAPTCHA validated")
                 #click_element_with_pyautogui(sb1, 'button[type="submit"]')
-                login_button = driver.find_element(By.CSS_SELECTOR, submit_button)
-                login_button.click(login_button)
                 pyautogui.press('enter')
                 time.sleep(5)
                 
@@ -2411,7 +2408,8 @@ def logging_bitmoon(url, driver, email, password, captcha_image, restrict_pages,
                 
             except Exception as e:
                 print(f'ERR: {e}')
-
+        else:
+            return
 
 bitmoon_window = None
 earnpp_window = None
@@ -2452,7 +2450,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
             if function == 1:
                 login_to_faucet('https://earn-pepe.com/login', sb1, 'khabibmakanzie@gmail.com', 'CQ2pNwi3zsFgat@', 'cloudflare_success', window_list, 'button#loginBtn')
             elif function == 2:
-                login_to_faucet('https://feyorra.site/login', sb1, 'khabibmakanzie@gmail.com', 'D6.6fz9r5QVyziT', 'cloudflare_success', window_list, 'button#loginBtnText')
+                login_to_faucet('https://feyorra.site/login', sb1, 'khabibmakanzie@gmail.com', 'D6.6fz9r5QVyziT', 'cloudflare_success', window_list, 'button#loginBtn')
             elif function == 3:
                 login_to_faucet('https://claimcoin.in/login', sb1, 'khabibmakanzie@gmail.com', '@$uiJjkFfZU3K@e', None, window_list, 'button[type="submit"]') #'not_a_robot'
             elif function == 5:
@@ -2643,6 +2641,13 @@ def open_faucets():
     else:
         baymack_window = None
 
+    if bitmoon:
+        sb1.open_new_window()
+        #baymack_login(sb1)
+        bitmoon_window = handle_site(sb1, "https://earnbitmoon.club/", "Baymack", "Baymack", 5, [earnpp_window, feyorra_window, claimcoin_window,baymack_window])
+        print(f"Baymack window handle: {claimcoin_window}")
+    else:
+        bitmoon_window = None
     all_window_handles = [earnpp_window, feyorra_window, claimcoin_window, baymack_window]
     close_extra_windows(sb1, all_window_handles)
 
@@ -2658,14 +2663,14 @@ earnpp_count = 0
 feyorra_count = 0
 claimcoin_count = 0
 
-earnpp_window, feyorra_window, claimcoin_window, ip_address, ip_required = open_faucets()
+earnpp_window, feyorra_window, baymack_window, claimcoin_window, ip_address, ip_required = open_faucets()
 reset_count = 0
 previous_reset_count = 0
 time.sleep(2)
 start_time = time.time()
 import img_captcha
 import img_captcha_bay
-
+pyautogui.scroll(2000)
 def check_icon_captcha_exists(sb):
             try:
                 if sb.is_element_visible(".captcha-modal__icons .captcha-image"):
@@ -2730,7 +2735,7 @@ while True:
 
 
             if reset_count > 5:
-                earnpp_window, feyorra_window, claimcoin_window, ip_address, ip_required = open_faucets()
+                earnpp_window, feyorra_window, claimcoin_window, baymack_window, ip_address, ip_required = open_faucets()
 
             if previous_reset_count == reset_count:
                 reset_count = 0

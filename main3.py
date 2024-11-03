@@ -37,7 +37,7 @@ import clipboard
 import shutil
 import os
 import math
-
+import easyocr
 
 # Example usage
 
@@ -107,7 +107,7 @@ bitmoon = False
 earnpp = True
 claimcoin = False
 feyorra = True
-feyorratop = True
+feyorratop = False
 baymack = False
 
 
@@ -2834,6 +2834,32 @@ def install_extensions(extension_name):
             print("No load_unpack Button.")
     return None
 
+#import easyocr
+#reader = easyocr.Reader(['en'], gpu= False)
+# Iterate over each image and extract text
+def remove_border(image_path, output_path):
+    # Open the image
+    image = Image.open(image_path)
+    
+    # Define the border size to be removed
+    border_size = 2
+    
+    # Calculate new dimensions
+    width, height = image.size
+    new_width = width - 2 * border_size
+    new_height = height - 2 * border_size
+    
+    # Crop the image to remove the border
+    cropped_image = image.crop((border_size, border_size, width - border_size, height - border_size))
+    
+    # Save the cropped image
+    cropped_image.save(output_path)
+    print(f"Image saved without border at: {output_path}")
+
+# Example usage:
+
+
+
 def feyorratop_claim(driver):
     try:
         original_window = driver.current_window_handle
@@ -2854,16 +2880,20 @@ def feyorratop_claim(driver):
             if driver.is_element_visible('img#Imageid'):        
                 
                 capture_element_screenshot(driver, "img#Imageid")
-                result = ocr.ocr('captcha.png')
-                result = ''.join([item[1][0] for item in result[0]])
-                result = ''.join(filter(str.isdigit, str(result)))
-                print(result)
-                if result:
-                    password_input = driver.find_element(By.CSS_SELECTOR, 'input[type="number"]')
-                    password_input.send_keys(result)  
-                    time.sleep(1)
-                    sb1.uc_click('button[type="submit"]')
-                else:
+                remove_border("element_screenshot.png", "element_screenshot.png")
+                result = ocr.ocr('element_screenshot.png')
+                try:
+                    result = ''.join([item[1][0] for item in result[0]])
+                    result = ''.join(filter(str.isdigit, str(result)))
+                    print(result)
+                    if result:
+                        password_input = driver.find_element(By.CSS_SELECTOR, 'input[type="number"]')
+                        password_input.send_keys(result)  
+                        time.sleep(1)
+                        sb1.uc_click('button[type="submit"]')
+                    else:
+                        pyautogui.press('f5')
+                except Exception as e:
                     pyautogui.press('f5')
         else:
             driver.uc_open('https://feyorra.top/faucet')
@@ -3047,7 +3077,7 @@ while True:
         if ip_address == ip_required:
             debug_messages(f'Ip address Match:{ip_address}')
 
-            all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
+            all_window_handles = [earnpp_window, feyorra_window, claimcoin_window,baymack_window,bitmoon_window, feyorratop_window]
             close_extra_windows(sb1, all_window_handles)
 
 

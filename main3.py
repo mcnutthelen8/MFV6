@@ -2418,11 +2418,13 @@ def solve_icon_captcha(sb1):
 
 def cloudflare(sb, login = True):
     try:
+        page_title = sb.get_title()
         gg = False
         while gg == False:
             try:
 
-                page_title = sb.get_title()
+                if page_title != sb.get_title():
+                    return
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.9)
                 print("verify_cloudflare git Found")
                 if x and y:

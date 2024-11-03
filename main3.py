@@ -2832,7 +2832,41 @@ def install_extensions(extension_name):
             print("No load_unpack Button.")
     return None
 
+def feyorratop_claim(driver):
+    try:
+        original_window = driver.current_window_handle
+        all_windows_before_click = driver.window_handles.copy()
+        pyautogui.click(300, 200)
 
+        all_windows = driver.window_handles
+        for window in all_windows:
+            if window not in all_windows_before_click:
+                print(f"Closing new tab: {window}")
+                driver.switch_to.window(window)
+                driver.close()
+        driver.switch_to.window(original_window)
+        time.sleep(1)
+        if 'Faucet | Feyorra' in driver.get_title():
+            driver.execute_script("window.scrollTo(0, 1000);")
+
+            if driver.is_element_visible('img#Imageid'):        
+                
+                capture_element_screenshot(driver, "img#Imageid")
+                result = ocr.ocr('captcha.png')
+                result = ''.join([item[1][0] for item in result[0]])
+                result = ''.join(filter(str.isdigit, str(result)))
+                print(result)
+                if result:
+                    password_input = driver.find_element(By.CSS_SELECTOR, 'input[type="number"]')
+                    password_input.send_keys(result)  
+                    time.sleep(1)
+                    sb1.uc_click('button[type="submit"]')
+                else:
+                    pyautogui.press('f5')
+        else:
+            driver.uc_open('https://feyorra.top/faucet')
+    except Exception as e:
+        print(f'ERR:{e}')
 
 # Main logic
 if run_sb1:
@@ -2924,7 +2958,7 @@ def open_faucets():
     if feyorratop:
         sb1.open_new_window()
         #baymack_login(sb1)
-        feyorratop_window = handle_site(sb1, "https://feyorra.top/", "Faucet | Feyorra", "Home | Feyorra", 6, [earnpp_window, feyorra_window, claimcoin_window,baymack_window, bitmoon_window])
+        feyorratop_window = handle_site(sb1, "https://feyorra.top/faucet", "Faucet | Feyorra", "Home | Feyorra", 6, [earnpp_window, feyorra_window, claimcoin_window,baymack_window, bitmoon_window])
         print(f"feyorratop_window window handle: {feyorratop_window}")
     else:
         feyorratop_window = None
@@ -2944,7 +2978,7 @@ earnpp_count = 0
 feyorra_count = 0
 claimcoin_count = 0
 
-earnpp_window, feyorra_window, baymack_window, claimcoin_window, ip_address, ip_required = open_faucets()
+earnpp_window, feyorra_window, claimcoin_window,baymack_window,bitmoon_window, feyorratop_window,  ip_address, ip_required = open_faucets()
 reset_count = 0
 previous_reset_count = 0
 time.sleep(2)
@@ -3252,6 +3286,30 @@ while True:
                 except Exception as e:
                     debug_messages(f'ERR on baymack:{e}')
                     reset_count +=1
+
+            if feyorratop:
+                try:
+                        debug_messages(f'Time capture in feyorratop')
+                        sb1.switch_to.window(feyorratop_window)
+                        debug_messages(f'Getting Pages Titile:feyorratop')
+                        title =sb1.get_title()
+                        if 'Faucet | Feyorra' in title:
+                            debug_messages(f'Solving Icon Captcha on feyorratop')
+                            feyorratop_claim(sb1)
+                        elif 'Just' in title:
+                            debug_messages(f'Just.. Found on feyorratop')
+
+                            cloudflare(sb1, login = False)
+                            debug_messages(f'Just Fixed feyorratop')
+                        else:
+                            
+                            debug_messages(f'feyorratop not Found:{title} | reset:{reset_count}')
+                            reset_count +=1
+                    
+                except Exception as e:
+                    debug_messages(f'ERR on feyorratop:{e}')
+                    reset_count +=1
+
         else:
             print('Ip fucked')
             #ip_required = fix_ip(sb1, server_name1)

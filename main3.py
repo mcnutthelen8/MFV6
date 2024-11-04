@@ -37,7 +37,7 @@ import clipboard
 import shutil
 import os
 import math
-import easyocr
+
 
 # Example usage
 

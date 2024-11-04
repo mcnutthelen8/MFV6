@@ -104,7 +104,7 @@ chrome_user_data_dir = '/root/.config/google-chrome/'
 
 bitmoon = False
 earnpp = True
-claimcoin = False
+claimcoin = True
 feyorra = True
 feyorratop = False
 baymack = False

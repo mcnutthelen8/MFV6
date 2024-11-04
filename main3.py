@@ -921,6 +921,8 @@ def solve_icon_captcha(sb1):
 
     print("No matching icon found.")
 
+
+
 def cloudflare(sb, login = True):
     try:
         page_title = sb.get_title()
@@ -932,37 +934,37 @@ def cloudflare(sb, login = True):
                 if x and y:
                     sb.disconnect() 
                     for i in range(1, 300):
-                        if page_title != sb.get_title() or 'Login' not in page_title or 'Just' not in page_title:
+                        if 'Login' in page_title or 'Just' in page_title:
+                            try:
+                                time.sleep(1)
+                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.9)
+                                print("verify_cloudflare git Found")
+                                try:
+                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.9)
+                                    pyautogui.click(x, y)
+                                    time.sleep(5)
+                                    if login == False: 
+                                        sb.connect()
+                                        return True
+
+                                except Exception as e:
+                                    print(e)
+                                    
+                                try:
+                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_success.png", confidence=0.9)
+                                    pyautogui.click(x, y)
+                                    time.sleep(1)
+                                    if login == True: 
+                                        sb.connect()
+                                        return True
+
+                                except Exception as e:
+                                    print(e)
+                            except Exception as e:
+                                print('cloudflare not found keep trying')
+                        else:
                             sb.connect()
                             return
-                        try:
-                            time.sleep(1)
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.9)
-                            print("verify_cloudflare git Found")
-                            try:
-                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.9)
-                                pyautogui.click(x, y)
-                                time.sleep(5)
-                                if login == False: 
-                                    sb.connect()
-                                    return True
-
-                            except Exception as e:
-                                print(e)
-                                
-                            try:
-                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_success.png", confidence=0.9)
-                                pyautogui.click(x, y)
-                                time.sleep(1)
-                                if login == True: 
-                                    sb.connect()
-                                    return True
-
-                            except Exception as e:
-                                print(e)
-
-                        except Exception as e:
-                                print('cloudflare not found keep trying')
 
                     sb.connect()
                 else:
@@ -973,6 +975,9 @@ def cloudflare(sb, login = True):
             
     except Exception as e:
         print(e)
+
+
+
 
 
 def click_element_with_pyautogui(driver, selector):
@@ -1105,7 +1110,10 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                             #login_button = driver.find_element(By.CSS_SELECTOR, submit_button)
                             #click_element_with_pyautogui(driver, login_button)
                             #click_element_with_pyautogui(sb1, 'button[type="submit"]')
-                            #pyautogui.press('enter')
+                            if 'Feyorra' in current_title:
+                                pyautogui.click(932 ,728)
+                                time.sleep(5)
+                                return
                             sb1.uc_click(submit_button)
                             #sb1.uc_click('button[type="submit"]')
                             

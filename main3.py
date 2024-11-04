@@ -38,7 +38,6 @@ import shutil
 import os
 import math
 
-
 # Example usage
 
 # Initialize the argument parser
@@ -116,7 +115,7 @@ mongo_uri = "mongodb+srv://redgta36:J6n7Hoz2ribHmMmx@moneyfarm.wwzcs.mongodb.net
 client = MongoClient(mongo_uri)
 db = client['MoneyFarmV6'] 
 collection = db[f'Farm{farm_id}']
-ocr = PaddleOCR(use_angle_cls=True, lang='en',  drop_score=0)
+ocr = 123 #PaddleOCR(use_angle_cls=True, lang='en',  drop_score=0)
 
 
 def add_messages(type_value, new_messages):
@@ -690,7 +689,7 @@ def get_ipscore(ip):
 
         # Ensure fraud_score is an integer for comparison
         if fraud_score:
-            if vpn == False and tor == False:# and active_vpn == False and active_tor == False and fraud_score < 90:
+            if vpn == False and tor == False and active_vpn == False and active_tor == False and fraud_score < 90:
                 return True
             else:
                 return None
@@ -2570,57 +2569,59 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
         if window not in restrict_pages:
             driver.switch_to.window(window)
             
-
-
     print("WebDriver Check")
     current_title = driver.get_title()
     print(f"Current g title: {current_title}")
-    # Wait for the email input by type attribute
-    email_input = WebDriverWait(driver, 60).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, 'input[type="email"]'))
-    )
-    email_input.send_keys(email)
+    if 'Login' in current_title:
+        # Wait for the email input by type attribute
+        email_input = WebDriverWait(driver, 60).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'input[type="email"]'))
+        )
+        email_input.send_keys(email)
 
-    # Locate the password input by type attribute
-    password_input = driver.find_element(By.CSS_SELECTOR, 'input[type="password"]')
-    password_input.send_keys(password)
+        # Locate the password input by type attribute
+        password_input = driver.find_element(By.CSS_SELECTOR, 'input[type="password"]')
+        password_input.send_keys(password)
 
-    # Step 3: Wait for the CAPTCHA checkbox to be validated
-    print("CAPTCHA Check")
-    if captcha_image:
-        if 'rscaptcha'in captcha_image:
-            solve_least_img(sb1)
-        else:
-            for i in range(1, 10):
-                time.sleep(1)
-                sb1.execute_script("window.scrollTo(0, 1000);")
-                cloudflare(driver, True)
-                try:
-                    x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
-                    if x and y: 
+        # Step 3: Wait for the CAPTCHA checkbox to be validated
+        print("CAPTCHA Check")
+        if captcha_image:
+            if 'rscaptcha'in captcha_image:
+                solve_least_img(sb1)
+            else:
+                for i in range(1, 10):
+                    time.sleep(1)
+                    sb1.execute_script("window.scrollTo(0, 1000);")
+                    cloudflare(driver, True)
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
+                        if x and y: 
 
-                        login_button = driver.find_element(By.CSS_SELECTOR, submit_button)
-                        #click_element_with_pyautogui(driver, login_button)
-                        #click_element_with_pyautogui(sb1, 'button[type="submit"]')
-                        pyautogui.press('enter')
-                        sb1.uc_click(submit_button)
-                        #sb1.uc_click('button[type="submit"]')
-                        
-                        #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
-                        #login_button.click(submit_button)
-                        time.sleep(5)
-                        return
-                except Exception as e:
-                    print(f'ERR:{e}') 
+                            login_button = driver.find_element(By.CSS_SELECTOR, submit_button)
+                            #click_element_with_pyautogui(driver, login_button)
+                            #click_element_with_pyautogui(sb1, 'button[type="submit"]')
+                            #pyautogui.press('enter')
+                            sb1.uc_click(submit_button)
+                            #sb1.uc_click('button[type="submit"]')
+                            
+                            #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
+                            #login_button.click(submit_button)
+                            time.sleep(5)
+                            return
+                    except Exception as e:
+                        print(f'ERR:{e}') 
 
 
-    print("✅ CAPTCHA validated")
-    #click_element_with_pyautogui(sb1, 'button[type="submit"]')
-    pyautogui.press('enter')
-    sb1.uc_click(submit_button)
-    
-    time.sleep(3)
-    print("🚀 Login attempt made!")
+        print("✅ CAPTCHA validated")
+        #click_element_with_pyautogui(sb1, 'button[type="submit"]')
+        #pyautogui.press('enter')
+        sb1.uc_click(submit_button)
+        
+        time.sleep(3)
+        print("🚀 Login attempt made!")
+    else:
+        print('no login in Title')
+
 
 def logging_bitmoon(url, driver, email, password, captcha_image, restrict_pages, submit_button):
     driver.uc_open(url)

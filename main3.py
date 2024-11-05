@@ -1716,7 +1716,7 @@ def withdraw_faucet(driver, sitekey):
                     response_messege('ClaimC Captcha Withdrawed')
                     solve_least_img(driver)
                     time.sleep(2)
-                    driver.uc_click('button.claim-button')
+                    driver.uc_click('button[type="submit"]')
                     driver.uc_open('https://claimcoin.in/withdraw')
                     response_messege('ClaimC FaucetPay Withdrawed')
                     #response_messege('Started')

@@ -1865,7 +1865,8 @@ while True:
                 close_extra_windows(sb1, all_window_handles)
 
 
-                if reset_count > 10:
+                if reset_count > 15:
+                    print('reset count higher')
                     earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
                     reset_count = 0
 

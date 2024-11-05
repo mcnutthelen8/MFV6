@@ -104,7 +104,7 @@ chrome_user_data_dir = '/root/.config/google-chrome/'
 
 bitmoon = False
 earnpp = True
-claimcoin = False
+claimcoin = True
 feyorra = True
 feyorratop = False
 baymack = False
@@ -134,7 +134,7 @@ def add_messages(type_value, new_messages):
     except Exception as e:
         print(e)
 
-def insert_data(ip, amount1, amount2):
+def insert_data(ip, amount1, amount2, amount3):
     sri_lanka_tz = pytz.timezone('Asia/Colombo')
     utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
     sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
@@ -142,8 +142,9 @@ def insert_data(ip, amount1, amount2):
 
     query = {"type": "main"}
     sample_document = {
-        "Skylom": amount1,
-        "Baymack": amount2,
+        "pepelom": amount1,
+        "feyorramack": amount2,
+        "claimcoins": amount3,
         "Status": now,
         "Ip": ip,
         "response": 'Running'
@@ -155,8 +156,9 @@ def insert_data(ip, amount1, amount2):
         print(f"Updated {result.modified_count} document(s).")
     else:
         print("No document was updated.")
-    add_messages('skylom', {now: amount1})
-    add_messages('baymack', {now: amount2})
+    add_messages('pepelom', {now: amount1})
+    add_messages('feyorramack', {now: amount2})
+    add_messages('claimcoins', {now: amount3})
     return
 
 
@@ -1302,7 +1304,29 @@ def remove_border(image_path, output_path):
     cropped_image.save(output_path)
     print(f"Image saved without border at: {output_path}")
 
+def response_messege(response):
+    query = {"type": "main"}
+    update = {"$set": {"response": response}}
+    result = collection.update_one(query, update)
 
+def get_coins(driver, sitekey):
+    coins = None
+    try:
+        
+        if sitekey == 1:
+            coins = driver.get_text('small.hp-text-color-black-100.hp-text-color-dark-0 span.nowrap span')
+            #coins = float(coins.split()[0]) 
+        if sitekey == 2:
+            coins = driver.get_text('select.form-select.w-100 option[selected]').strip()
+        if sitekey == 3:
+            coins = driver.get_text('p.lh-1.mb-1.font-weight-bold')
+            
+            # Split the text to get only the first number and convert it to an integer
+            #curre nt_value = int(full_text.split('/')[0])
+        return coins
+    except Exception as e:
+        print(f"ERR on Getcoin:{sitekey} | {e}")
+    return coins
 # Main logic
 if run_sb1:
     sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path,  page_load_strategy='none')
@@ -1354,20 +1378,23 @@ def open_faucets():
     sb1.switch_to.window(current_window)
     time.sleep(1)
     #ipfixer()
+    response_messege('Fixing IP')
     ip_required = fix_ip(sb1, server_name1)
     ip_address = get_ip(sb1)
-
+    response_messege('EarnPP Loging')
     if earnpp:
         earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [])
         print(f"EarnPP window handle: {earnpp_window}")
     else:
         earnpp_window = None
+    response_messege('Feyorra Loging')
     if feyorra:
         sb1.open_new_window()
         feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Home | Feyorra", 2, [earnpp_window])
         print(f"Feyorra window handle: {feyorra_window}")
     else:
         feyorra_window = None
+    response_messege('ClaimC Loging')
     if claimcoin:
         sb1.open_new_window()
         claimcoin_window = handle_site(sb1, "https://claimcoin.in/faucet", "Faucet | ClaimCoin - ClaimCoin Faucet", "ClaimCoin - MultiCurrency Crypto Earning Platform", 3, [earnpp_window, feyorra_window])
@@ -1396,7 +1423,10 @@ reset_count = 0
 previous_reset_count = 0
 time.sleep(2)
 start_time = time.time()
-
+start_time3 = time.time()
+earnpp_coins = None
+feyorra_coins = None
+claimc_coins = None
 print('Starting Loop')
 while True:
     try:
@@ -1427,6 +1457,7 @@ while True:
                         debug_messages(f'Solving Icon Captcha on EarnPP')
                         solve_icon_captcha(sb1)
                         debug_messages(f'Solved Icon Captcha on EarnPP')
+                        earnpp_coins = get_coins(sb1, 1)
 
                     elif 'Lock' in title:
                         debug_messages(f'Lock.. Found on EarnPP')
@@ -1454,6 +1485,7 @@ while True:
                     if 'Faucet | Feyorra' in title:
                         debug_messages(f'Solving Icon Captcha on Feyorra')
                         solve_icon_captcha(sb1)
+                        feyorra_coins = get_coins(sb1, 2)
                             
                     elif 'Just' in title:
                         debug_messages(f'Just.. Found on Feyorra')
@@ -1482,6 +1514,7 @@ while True:
                         title =sb1.get_title()
                         if 'Faucet | ClaimCoin' in title:
                             debug_messages(f'Solving Icon Captcha on ClaimCoins')
+                            claimc_coins = get_coins(sb1, 3)
                             cc_faucet =  find_and_click_collect_button(sb1)
                             if cc_faucet:
                                 debug_messages(f'Solved Icon Captcha on Claimcoins')
@@ -1505,7 +1538,15 @@ while True:
                     reset_count +=1
 
 
-
+            elapsed_time3 = time.time() - start_time3
+            seconds_only3 = int(elapsed_time)
+            debug_messages(f'MangoDB Seconds:{seconds_only3}')
+            if seconds_only3 > 120:
+                print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}')
+                insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins)
+                start_time3 = time.time()
+            else:
+                print(f'MngoDB:{seconds_only3}')
         else:
             print('Ip fucked')
             reset_count +=1

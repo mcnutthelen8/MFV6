@@ -1317,7 +1317,7 @@ def get_coins(driver, sitekey):
             coins = driver.get_text('small.hp-text-color-black-100.hp-text-color-dark-0 span.nowrap span')
             #coins = float(coins.split()[0]) 
         if sitekey == 2:
-            coins = driver.get_text('select.form-select.w-100 option[selected]').strip()
+            coins = driver.get_text('select.form-select')
         if sitekey == 3:
             coins = driver.get_text('p.lh-1.mb-1.font-weight-bold')
             
@@ -1428,6 +1428,10 @@ earnpp_coins = None
 feyorra_coins = None
 claimc_coins = None
 print('Starting Loop')
+response_messege('Started')
+query = {"type": "main"}
+update = {"$set": {"request": 'mainscript'}}
+result = collection.update_one(query, update)
 while True:
     try:
         ip_address = get_ip(sb1)
@@ -1457,7 +1461,9 @@ while True:
                         debug_messages(f'Solving Icon Captcha on EarnPP')
                         solve_icon_captcha(sb1)
                         debug_messages(f'Solved Icon Captcha on EarnPP')
-                        earnpp_coins = get_coins(sb1, 1)
+                        val = get_coins(sb1, 1)
+                        if val:
+                            earnpp_coins = val
 
                     elif 'Lock' in title:
                         debug_messages(f'Lock.. Found on EarnPP')
@@ -1485,7 +1491,9 @@ while True:
                     if 'Faucet | Feyorra' in title:
                         debug_messages(f'Solving Icon Captcha on Feyorra')
                         solve_icon_captcha(sb1)
-                        feyorra_coins = get_coins(sb1, 2)
+                        val = get_coins(sb1, 2)
+                        if val:
+                            feyorra_coins = val
                             
                     elif 'Just' in title:
                         debug_messages(f'Just.. Found on Feyorra')
@@ -1514,7 +1522,9 @@ while True:
                         title =sb1.get_title()
                         if 'Faucet | ClaimCoin' in title:
                             debug_messages(f'Solving Icon Captcha on ClaimCoins')
-                            claimc_coins = get_coins(sb1, 3)
+                            val = get_coins(sb1, 3)
+                            if val:
+                                claimc_coins = val
                             cc_faucet =  find_and_click_collect_button(sb1)
                             if cc_faucet:
                                 debug_messages(f'Solved Icon Captcha on Claimcoins')
@@ -1541,7 +1551,7 @@ while True:
             elapsed_time3 = time.time() - start_time3
             seconds_only3 = int(elapsed_time)
             debug_messages(f'MangoDB Seconds:{seconds_only3}')
-            if seconds_only3 > 120:
+            if seconds_only3 > 5:
                 print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}')
                 insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins)
                 start_time3 = time.time()

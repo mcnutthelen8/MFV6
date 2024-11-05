@@ -38,9 +38,9 @@ import shutil
 import os
 import math
 
-# Example usage242
+# Example usage3r
 
-# Initialize the argument parser
+# Initialize the argument parserr
 parser = argparse.ArgumentParser(description="Process some arguments.")
 parser.add_argument('--farm', type=int, help="Farm")
 parser.add_argument('--fresh', type=int, help="Fresh")
@@ -1314,20 +1314,20 @@ def get_coins(driver, sitekey):
     try:
         
         if sitekey == 1:
-            if driver.is_element_present('small.hp-text-color-black-100.hp-text-color-dark-0 span.nowrap span'):
-                coins = driver.get_text('small.hp-text-color-black-100.hp-text-color-dark-0 span.nowrap span')
+            if driver.is_element_visible('small.hp-text-color-black-100.hp-text-color-dark-0 span.nowrap span'):
+                coins = driver.get_text('small.hp-text-color-black-100.hp-text-color-dark-0 span.nowrap span', timeout= 1)
             else:
                 print(f'Sitekey:{sitekey} not found')
             #coins = float(coins.split()[0]) 
         if sitekey == 2:
             
-            if driver.is_element_present('select.form-select'):
-                coins = driver.get_text('select.form-select')
+            if driver.is_element_visible('select.form-select'):
+                coins = driver.get_text('select.form-select', timeout= 1)
             else:
                 print(f'Sitekey:{sitekey} not found')
         if sitekey == 3:
             if driver.is_element_present('div.col-md-6.col-xl-3:nth-child(4) p.lh-1.mb-1.font-weight-bold'):
-                coins = driver.get_text('div.col-md-6.col-xl-3:nth-child(4) p.lh-1.mb-1.font-weight-bold')
+                coins = driver.get_text('div.col-md-6.col-xl-3:nth-child(4) p.lh-1.mb-1.font-weight-bold', timeout= 1)
             else:
                 print(f'Sitekey:{sitekey} not found')
 
@@ -1463,6 +1463,7 @@ result = collection.update_one(query, update)
 while True:
     try:
         mainscript = control_panel()
+        print('control_panel', mainscript)
         if mainscript == 1:
             ip_address = get_ip(sb1)
             debug_messages(f'Ip address Found:{ip_address}')
@@ -1615,7 +1616,7 @@ while True:
             withdraw_faucet(sb1, 2) 
         if mainscript == 7:
             withdraw_faucet(sb1, 3) 
-            
+
         if mainscript == 8:
             sb1.quit()
             break

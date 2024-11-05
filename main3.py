@@ -1627,8 +1627,8 @@ def withdraw_faucet(driver, sitekey):
         if sitekey == 1:
             print('Strting PePe withdraw')
             driver.uc_open('https://earn-pepe.com/member/faucetpay')
-            time.sleep(10)
-            for i in range(1,50):
+            time.sleep(5)
+            for i in range(1,10):
                 time.sleep(1)
                 title =sb1.get_title()
                 print(title)
@@ -1644,7 +1644,7 @@ def withdraw_faucet(driver, sitekey):
                     time.sleep(2)
                     solve_icon_captcha(driver)
                     time.sleep(2)
-                    driver.uc_click('button[type="submit"]')
+                    driver.uc_click('button.claim-button')
                     driver.uc_open('https://earn-pepe.com/member/faucet')
                     response_messege('EarnPP FaucetPay Withdrawed')
                     #response_messege('Started')
@@ -1663,8 +1663,8 @@ def withdraw_faucet(driver, sitekey):
         if sitekey == 2:
             print('Strting Feyorra withdraw')
             driver.uc_open('https://feyorra.site/member/faucetpay')
-            time.sleep(10)
-            for i in range(1,50):
+            time.sleep(5)
+            for i in range(1,10):
                 time.sleep(1)
                 title =sb1.get_title()
                 print(title)
@@ -1698,8 +1698,8 @@ def withdraw_faucet(driver, sitekey):
         if sitekey == 3:
             print('Strting ClaimC withdraw')
             driver.uc_open('https://claimcoin.in/withdraw')
-            time.sleep(10)
-            for i in range(1,50):
+            time.sleep(5)
+            for i in range(1,10):
                 time.sleep(1)
                 title =sb1.get_title()
                 print(title)
@@ -1716,7 +1716,7 @@ def withdraw_faucet(driver, sitekey):
                     response_messege('ClaimC Captcha Withdrawed')
                     solve_least_img(driver)
                     time.sleep(2)
-                    driver.uc_click('button[type="submit"]')
+                    driver.uc_click('button.btn.btn-dark')
                     driver.uc_open('https://claimcoin.in/withdraw')
                     response_messege('ClaimC FaucetPay Withdrawed')
                     #response_messege('Started')
@@ -1820,6 +1820,10 @@ def open_faucets():
     else:
         claimcoin_window = None
 
+    response_messege('Started')
+    query = {"type": "main"}
+    update = {"$set": {"request": 'mainscript'}}
+    result = collection.update_one(query, update)
 
     all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
     close_extra_windows(sb1, all_window_handles)
@@ -1846,10 +1850,7 @@ earnpp_coins = None
 feyorra_coins = None
 claimc_coins = None
 print('Starting Loop')
-response_messege('Started')
-query = {"type": "main"}
-update = {"$set": {"request": 'mainscript'}}
-result = collection.update_one(query, update)
+
 while True:
     try:
         mainscript = control_panel()
@@ -1995,15 +1996,11 @@ while True:
         if mainscript == 2:
             earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
             reset_count = 0
-            response_messege('Started')
-            query = {"type": "main"}
-            update = {"$set": {"request": 'mainscript'}}
+
         if mainscript == 3:
             earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
             reset_count = 0
-            response_messege('Started')
-            query = {"type": "main"}
-            update = {"$set": {"request": 'mainscript'}}
+
 
         if mainscript == 4:
             withdraw_faucet(sb1, 1) 

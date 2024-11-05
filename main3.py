@@ -38,9 +38,9 @@ import shutil
 import os
 import math
 
-# Example usage3r
+# Example usage
 
-# Initialize the argument parserr
+# Initialize the argument parser
 parser = argparse.ArgumentParser(description="Process some arguments.")
 parser.add_argument('--farm', type=int, help="Farm")
 parser.add_argument('--fresh', type=int, help="Fresh")
@@ -970,7 +970,8 @@ def cloudflare(sb, login = True):
 
                     sb.connect()
                 else:
-                    gg = True
+                    if login == False: 
+                        gg = True
             except Exception as e:
                 print(e)
                 gg = True
@@ -1347,19 +1348,105 @@ def get_coins(driver, sitekey):
 
 
 def withdraw_faucet(driver, sitekey):
+
     try:
+        current_window = sb1.current_window_handle
+        all_windows = sb1.window_handles
+        for window in all_windows:
+            if window != current_window:
+                sb1.switch_to.window(window)
+                sb1.close()  # Close the tab
+        sb1.switch_to.window(current_window)
+
         if sitekey == 1:
             print('Strting PePe withdraw')
             driver.uc_open('https://earn-pepe.com/member/faucetpay')
+            time.sleep(10)
+            for i in range(1,50):
+                time.sleep(1)
+                title =sb1.get_title()
+                print(title)
+                if 'Just' in title:
+                    cloudflare(sb1, login = False)
+                elif 'Faucetpay Transfer' in title:
+                    print(title, 'FaucetPay found')
+                    response_messege('EarnPP FaucetPay Loaded')
+                    pyautogui.click(605, 754) #trx
+                    #pyautogui.click(967, 754)
+                    time.sleep(5)
+                    driver.execute_script(f"window.scrollTo(0, 1000);")
+                    time.sleep(2)
+                    solve_icon_captcha(driver)
+                    time.sleep(2)
+                    driver.uc_click('button[type="submit"]')
+                    driver.uc_open('https://earn-pepe.com/member/faucet')
+                    response_messege('EarnPP FaucetPay Withdrawed')
+                    #response_messege('Started')
+                    query = {"type": "main"}
+                    update = {"$set": {"request": 'reset'}}
+                    result = collection.update_one(query, update)
+                    return
 
+                else:
+                    print(title, 'restarting')
+                    driver.uc_open('https://earn-pepe.com/member/faucetpay')
+                    time.sleep(10)
+
+    
+        
+        if sitekey == 2:
+            print('Strting Feyorra withdraw')
+            driver.uc_open('https://feyorra.site/member/faucetpay')
+            time.sleep(10)
+            for i in range(1,50):
+                time.sleep(1)
+                title =sb1.get_title()
+                print(title)
+                if 'Just' in title:
+                    cloudflare(sb1, login = False)
+                elif 'Faucetpay Transfer' in title:
+                    print(title, 'FaucetPay found')
+                    response_messege('EarnPP FaucetPay Loaded')
+                    pyautogui.click(1288, 517) #trx
+                    #pyautogui.click(679, 704) #doge
+                    time.sleep(5)
+                    driver.execute_script(f"window.scrollTo(0, 700);")
+                    time.sleep(2)
+                    cloudflare(driver, True)
+                    time.sleep(2)
+                    driver.uc_click('button.claim-button')
+                    driver.uc_open('https://feyorra.site/member/faucet')
+                    response_messege('EarnPP FaucetPay Withdrawed')
+                    #response_messege('Started')
+                    query = {"type": "main"}
+                    update = {"$set": {"request": 'reset'}}
+                    result = collection.update_one(query, update)
+                    return
+
+                else:
+                    print(title, 'restarting')
+                    driver.uc_open('https://feyorra.site/member/faucetpay')
+                    time.sleep(10)
+
+    
+    
     except Exception as e:
         print(f'ERR on withdraw{e}')
+        response_messege(f'EarnPP FaucetPay ERR on withdraw{e}')
     
 # Main logic
 if run_sb1:
     sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path,  page_load_strategy='none')
     sb1.maximize_window()
     sb1.uc_open("chrome://extensions/")
+    current_window = sb1.current_window_handle
+    sb1.open_new_window()
+    current_window2 = sb1.current_window_handle
+    sb1.switch_to.window(current_window)
+    sb1.close()  # Close the tab
+    sb1.switch_to.window(current_window2)
+    sb1.uc_open("chrome://extensions/")
+
     print(sb1.get_title())
     
     if fresh >= 3:
@@ -1411,6 +1498,7 @@ def open_faucets():
     ip_address = get_ip(sb1)
     response_messege('EarnPP Loging')
     if earnpp:
+
         earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [])
         print(f"EarnPP window handle: {earnpp_window}")
     else:
@@ -1612,6 +1700,7 @@ while True:
 
         if mainscript == 4:
             withdraw_faucet(sb1, 1) 
+
         if mainscript == 6:
             withdraw_faucet(sb1, 2) 
         if mainscript == 7:

@@ -38,8 +38,8 @@ import shutil
 import os
 import math
 
-# Example usage
-#g4g4
+# Example usage242
+
 # Initialize the argument parser
 parser = argparse.ArgumentParser(description="Process some arguments.")
 parser.add_argument('--farm', type=int, help="Farm")
@@ -601,17 +601,17 @@ def control_panel():
         elif request == 'reset':
             print(request)
             return 3
-        elif request == 'withdrawsky':
+        elif request == 'withdrawpepe':
             print(request)
             return 4
         elif request == 'pause':
             print(request)
             return 5
-        elif request == 'withdrawbay':
+        elif request == 'withdrawfeyorra':
             print(request)
             return 6
         
-        elif request == 'withdrawskydoller':
+        elif request == 'withdrawclaimc':
             print(request)
             return 7
         elif request == 'kill':
@@ -1314,24 +1314,28 @@ def get_coins(driver, sitekey):
     try:
         
         if sitekey == 1:
-            if driver.is_element_visible('small.hp-text-color-black-100.hp-text-color-dark-0 span.nowrap span'):
+            if driver.is_element_present('small.hp-text-color-black-100.hp-text-color-dark-0 span.nowrap span'):
                 coins = driver.get_text('small.hp-text-color-black-100.hp-text-color-dark-0 span.nowrap span')
             else:
                 print(f'Sitekey:{sitekey} not found')
             #coins = float(coins.split()[0]) 
         if sitekey == 2:
             
-            if driver.is_element_visible('select.form-select'):
+            if driver.is_element_present('select.form-select'):
                 coins = driver.get_text('select.form-select')
             else:
                 print(f'Sitekey:{sitekey} not found')
         if sitekey == 3:
-            if driver.is_element_visible('p.lh-1.mb-1.font-weight-bold'):
-                coins = driver.get_text('p.lh-1.mb-1.font-weight-bold')
+            if driver.is_element_present('div.col-md-6.col-xl-3:nth-child(4) p.lh-1.mb-1.font-weight-bold'):
+                coins = driver.get_text('div.col-md-6.col-xl-3:nth-child(4) p.lh-1.mb-1.font-weight-bold')
             else:
                 print(f'Sitekey:{sitekey} not found')
 
         debug_messages(f'SiteKey{sitekey}{coins}')
+        if '/' in coins and sitekey == 3:
+            numerator = coins.split('/')[0]
+            return numerator
+
         numeric_value = re.search(r"\d+\.\d+", coins)
         if numeric_value:
             debug_messages(f'SiteKey{sitekey}{coins}')
@@ -1340,6 +1344,17 @@ def get_coins(driver, sitekey):
     except Exception as e:
         print(f"ERR on Getcoin:{sitekey} | {e}")
     return False
+
+
+def withdraw_faucet(driver, sitekey):
+    try:
+        if sitekey == 1:
+            print('Strting PePe withdraw')
+            driver.uc_open('https://earn-pepe.com/member/faucetpay')
+
+    except Exception as e:
+        print(f'ERR on withdraw{e}')
+    
 # Main logic
 if run_sb1:
     sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path,  page_load_strategy='none')
@@ -1447,134 +1462,170 @@ update = {"$set": {"request": 'mainscript'}}
 result = collection.update_one(query, update)
 while True:
     try:
-        ip_address = get_ip(sb1)
-        debug_messages(f'Ip address Found:{ip_address}')
-        if ip_address == ip_required:
-            debug_messages(f'Ip address Match:{ip_address}')
+        mainscript = control_panel()
+        if mainscript == 1:
+            ip_address = get_ip(sb1)
+            debug_messages(f'Ip address Found:{ip_address}')
+            if ip_address == ip_required:
+                debug_messages(f'Ip address Match:{ip_address}')
 
-            all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
-            close_extra_windows(sb1, all_window_handles)
+                all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
+                close_extra_windows(sb1, all_window_handles)
 
 
-            if reset_count > 10:
-                earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
+                if reset_count > 10:
+                    earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
+                    reset_count = 0
 
-            if previous_reset_count == reset_count:
-                reset_count = 0
-            else:
-                previous_reset_count = reset_count
+                if previous_reset_count == reset_count:
+                    reset_count = 0
+                else:
+                    previous_reset_count = reset_count
 
-            if earnpp:
-                try:
-                    debug_messages(f'Switching Pages to EarnPP')
-                    sb1.switch_to.window(earnpp_window)
-                    debug_messages(f'Getting Pages Titile:EarnPP')
-                    title =sb1.get_title()
-                    if 'Faucet | Earn-pepe' in title:
-                        debug_messages(f'Solving Icon Captcha on EarnPP')
-                        solve_icon_captcha(sb1)
-                        debug_messages(f'Solved Icon Captcha on EarnPP')
-                        val = get_coins(sb1, 1)
-                        if val:
-                            earnpp_coins = val
-
-                    elif 'Lock' in title:
-                        debug_messages(f'Lock.. Found on EarnPP')
-                    elif 'Just' in title:
-                        debug_messages(f'Just.. Found on EarnPP')
-
-                        cloudflare(sb1, login = False)
-                        debug_messages(f'Just Fixed EarnPP')
-                    else:
-                        debug_messages(f'EarnPP not Found:{title} | reset:{reset_count}')
-                        reset_count +=1
-
-                except Exception as e:
-                    debug_messages(f'ERR on EarnPP:{e}')
-                    reset_count +=1
-            
-            if feyorra:
-                try:
-                    debug_messages(f'Switching Pages to Feyorra')
-                    sb1.switch_to.window(feyorra_window)
-                    debug_messages(f'Getting Pages Titile:Feyorra')
-                    pyautogui.press('enter')
-                    title =sb1.get_title()
-
-                    if 'Faucet | Feyorra' in title:
-                        debug_messages(f'Solving Icon Captcha on Feyorra')
-                        solve_icon_captcha(sb1)
-                        val = get_coins(sb1, 2)
-                        if val:
-                            feyorra_coins = val
-                            
-                    elif 'Just' in title:
-                        debug_messages(f'Just.. Found on Feyorra')
-                        cloudflare(sb1, login = False)
-                        debug_messages(f'Just Fixed Feyorra')
-
-                    elif 'Lock' in title:
-                        debug_messages(f'Lock.. Found on EarnPP')
-                    else:
-                        debug_messages(f'Feyorra not Found:{title} | reset:{reset_count}')
-                        reset_count +=1
-                except Exception as e:
-                    debug_messages(f'ERR on Feyorra:{e}')
-                    reset_count +=1
-
-            if claimcoin:
-                try:
-                    debug_messages(f'Time capture in ClaimCoins')
-                    elapsed_time = time.time() - start_time
-                    seconds_only = int(elapsed_time)
-                    debug_messages(f'ClaimCoins Seconds:{seconds_only}')
-                    if seconds_only > 12:
-                        debug_messages(f'Switching Pages to ClaimCoins:{seconds_only}')
-                        sb1.switch_to.window(claimcoin_window)
-                        debug_messages(f'Getting Pages Titile:ClaimCoins')
+                if earnpp:
+                    try:
+                        debug_messages(f'Switching Pages to EarnPP')
+                        sb1.switch_to.window(earnpp_window)
+                        debug_messages(f'Getting Pages Titile:EarnPP')
                         title =sb1.get_title()
-                        if 'Faucet | ClaimCoin' in title:
-                            debug_messages(f'Solving Icon Captcha on ClaimCoins')
-                            val = get_coins(sb1, 3)
+                        if 'Faucet | Earn-pepe' in title:
+                            debug_messages(f'Solving Icon Captcha on EarnPP')
+                            solve_icon_captcha(sb1)
+                            debug_messages(f'Solved Icon Captcha on EarnPP')
+                            val = get_coins(sb1, 1)
                             if val:
-                                claimc_coins = val
-                            cc_faucet =  find_and_click_collect_button(sb1)
-                            if cc_faucet:
-                                debug_messages(f'Solved Icon Captcha on Claimcoins')
-                                claimcoin_count = 1 
-                                start_time = time.time()
-                            sb1.switch_to.window(claimcoin_window)
-                        elif 'Just' in title:
-                            debug_messages(f'Just.. Found on Claimcoins')
-
-                            cloudflare(sb1, login = False)
-                            debug_messages(f'Just Fixed Claimcoins')
+                                earnpp_coins = val
 
                         elif 'Lock' in title:
                             debug_messages(f'Lock.. Found on EarnPP')
+                            response_messege('Lock.. Found on EarnPP')
+                        elif 'Just' in title:
+                            debug_messages(f'Just.. Found on EarnPP')
+
+                            cloudflare(sb1, login = False)
+                            debug_messages(f'Just Fixed EarnPP')
                         else:
-                            debug_messages(f'ClamCoim not Found:{title} | reset:{reset_count}')
+                            debug_messages(f'EarnPP not Found:{title} | reset:{reset_count}')
                             reset_count +=1
+
+                    except Exception as e:
+                        debug_messages(f'ERR on EarnPP:{e}')
+                        reset_count +=1
+                
+                if feyorra:
+                    try:
+                        debug_messages(f'Switching Pages to Feyorra')
+                        sb1.switch_to.window(feyorra_window)
+                        debug_messages(f'Getting Pages Titile:Feyorra')
+                        pyautogui.press('enter')
+                        title =sb1.get_title()
+
+                        if 'Faucet | Feyorra' in title:
+                            debug_messages(f'Solving Icon Captcha on Feyorra')
+                            solve_icon_captcha(sb1)
+                            val = get_coins(sb1, 2)
+                            if val:
+                                feyorra_coins = val
+                                
+                        elif 'Just' in title:
+                            debug_messages(f'Just.. Found on Feyorra')
+                            cloudflare(sb1, login = False)
+                            debug_messages(f'Just Fixed Feyorra')
+
+                        elif 'Lock' in title:
+                            debug_messages(f'Lock.. Found on Feyorra')
+                            response_messege('Lock.. Found on Feyorra')
+                        else:
+                            debug_messages(f'Feyorra not Found:{title} | reset:{reset_count}')
+                            reset_count +=1
+                    except Exception as e:
+                        debug_messages(f'ERR on Feyorra:{e}')
+                        reset_count +=1
+
+                if claimcoin:
+                    try:
+                        debug_messages(f'Time capture in ClaimCoins')
+                        elapsed_time = time.time() - start_time
+                        seconds_only = int(elapsed_time)
+                        debug_messages(f'ClaimCoins Seconds:{seconds_only}')
+                        if seconds_only > 12:
+                            debug_messages(f'Switching Pages to ClaimCoins:{seconds_only}')
+                            sb1.switch_to.window(claimcoin_window)
+                            debug_messages(f'Getting Pages Titile:ClaimCoins')
+                            title =sb1.get_title()
+                            if 'Faucet | ClaimCoin' in title:
+                                debug_messages(f'Solving Icon Captcha on ClaimCoins')
+                                val = get_coins(sb1, 3)
+                                if val:
+                                    claimc_coins = val
+                                cc_faucet =  find_and_click_collect_button(sb1)
+                                if cc_faucet:
+                                    debug_messages(f'Solved Icon Captcha on Claimcoins')
+                                    claimcoin_count = 1 
+                                    start_time = time.time()
+                                sb1.switch_to.window(claimcoin_window)
+                            elif 'Just' in title:
+                                debug_messages(f'Just.. Found on Claimcoins')
+
+                                cloudflare(sb1, login = False)
+                                debug_messages(f'Just Fixed Claimcoins')
+
+                            elif 'Lock' in title:
+                                debug_messages(f'Lock.. Found on Claimcoins')
+                                response_messege('Lock.. Found on Claimcoins')
+                            else:
+                                debug_messages(f'ClamCoim not Found:{title} | reset:{reset_count}')
+                                reset_count +=1
+                        
+                    except Exception as e:
+                        debug_messages(f'ERR on ClamCoim:{e}')
+                        reset_count +=1
+
+
+                elapsed_time3 = time.time() - start_time3
+                seconds_only3 = int(elapsed_time3)
+                debug_messages(f'MangoDB Seconds:{seconds_only3}')
+                if seconds_only3 > 60:
+                    print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}')
+                    if earnpp_coins and feyorra_coins and claimc_coins:
+                        start_time3 = time.time()
+                        insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins)
                     
-                except Exception as e:
-                    debug_messages(f'ERR on ClamCoim:{e}')
-                    reset_count +=1
 
-
-            elapsed_time3 = time.time() - start_time3
-            seconds_only3 = int(elapsed_time)
-            debug_messages(f'MangoDB Seconds:{seconds_only3}')
-            if seconds_only3 > 5:
-                print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}')
-                insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins)
-                start_time3 = time.time()
+                else:
+                    print(f'MngoDB:{seconds_only3}')
             else:
-                print(f'MngoDB:{seconds_only3}')
-        else:
-            print('Ip fucked')
-            reset_count +=1
-            #ip_required = fix_ip(sb1, server_name1)
-            #ip_address = get_ip(sb1)
+                print('Ip fucked')
+                reset_count +=1
+                #ip_required = fix_ip(sb1, server_name1)
+                #ip_address = get_ip(sb1)
+    
+
+        if mainscript == 2:
+            earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
+            reset_count = 0
+
+        if mainscript == 3:
+            earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
+            reset_count = 0
+
+        if mainscript == 4:
+            withdraw_faucet(sb1, 1) 
+        if mainscript == 6:
+            withdraw_faucet(sb1, 2) 
+        if mainscript == 7:
+            withdraw_faucet(sb1, 3) 
+            
+        if mainscript == 8:
+            sb1.quit()
+            break
+
+        if mainscript == 5:
+            for i in range(1,6):
+                time.sleep(1)
+                print('Pause...')
+
+
     except Exception as e:
         print(f'Oh Hell No{e}')
         reset_count +=1

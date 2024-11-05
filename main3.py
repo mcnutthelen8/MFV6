@@ -39,7 +39,7 @@ import os
 import math
 
 # Example usage
-
+#g4g4
 # Initialize the argument parser
 parser = argparse.ArgumentParser(description="Process some arguments.")
 parser.add_argument('--farm', type=int, help="Farm")
@@ -1027,7 +1027,7 @@ def find_and_click_collect_button(sb1):
         button_text = sb1.get_text(button_selector)
         
         if "Collect your reward" in button_text:
-            print("Button with 'Collect your reward' text found.")
+            print(f"Button with 'Collect your reward' text found.{button_text}")
             original_window = sb1.current_window_handle
             all_windows_before_click = sb1.window_handles.copy()
             pyautogui.click(350, 200)
@@ -1314,19 +1314,32 @@ def get_coins(driver, sitekey):
     try:
         
         if sitekey == 1:
-            coins = driver.get_text('small.hp-text-color-black-100.hp-text-color-dark-0 span.nowrap span')
+            if driver.is_element_visible('small.hp-text-color-black-100.hp-text-color-dark-0 span.nowrap span'):
+                coins = driver.get_text('small.hp-text-color-black-100.hp-text-color-dark-0 span.nowrap span')
+            else:
+                print(f'Sitekey:{sitekey} not found')
             #coins = float(coins.split()[0]) 
         if sitekey == 2:
-            coins = driver.get_text('select.form-select')
-        if sitekey == 3:
-            coins = driver.get_text('p.lh-1.mb-1.font-weight-bold')
             
-            # Split the text to get only the first number and convert it to an integer
-            #curre nt_value = int(full_text.split('/')[0])
-        return coins
+            if driver.is_element_visible('select.form-select'):
+                coins = driver.get_text('select.form-select')
+            else:
+                print(f'Sitekey:{sitekey} not found')
+        if sitekey == 3:
+            if driver.is_element_visible('p.lh-1.mb-1.font-weight-bold'):
+                coins = driver.get_text('p.lh-1.mb-1.font-weight-bold')
+            else:
+                print(f'Sitekey:{sitekey} not found')
+
+        debug_messages(f'SiteKey{sitekey}{coins}')
+        numeric_value = re.search(r"\d+\.\d+", coins)
+        if numeric_value:
+            debug_messages(f'SiteKey{sitekey}{coins}')
+            return float(numeric_value.group())
+        return False
     except Exception as e:
         print(f"ERR on Getcoin:{sitekey} | {e}")
-    return coins
+    return False
 # Main logic
 if run_sb1:
     sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path,  page_load_strategy='none')

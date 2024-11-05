@@ -931,18 +931,18 @@ def cloudflare(sb, login = True):
         gg = False
         while gg == False:
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.9)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
                 print("verify_cloudflare git Found")
                 if x and y:
                     sb.disconnect() 
                     for i in range(1, 300):
-                        if 'Login' in page_title or 'Just' in page_title:
+                        if 'Login' in page_title or 'Just' in page_title or 'Faucetpay' in page_title:
                             try:
                                 time.sleep(1)
-                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.9)
+                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
                                 print("verify_cloudflare git Found")
                                 try:
-                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.9)
+                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.7)
                                     pyautogui.click(x, y)
                                     time.sleep(5)
                                     if login == False: 
@@ -953,7 +953,7 @@ def cloudflare(sb, login = True):
                                     print(e)
                                     
                                 try:
-                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_success.png", confidence=0.9)
+                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_success.png", confidence=0.7)
                                     pyautogui.click(x, y)
                                     time.sleep(1)
                                     if login == True: 
@@ -972,6 +972,8 @@ def cloudflare(sb, login = True):
                 else:
                     if login == False: 
                         gg = True
+                    else:
+                        gg = False
             except Exception as e:
                 print(e)
                 gg = True
@@ -1347,6 +1349,270 @@ def get_coins(driver, sitekey):
     return False
 
 
+
+
+def capture_element_screenshot(driver, selector, screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png"):
+    # Step 1: Find the element using SeleniumBase
+    element = driver.find_element(selector)
+    
+    # Step 2: Get element's location and size
+    location = element.location
+    size = element.size
+    y_location = location['y'] + 100
+    driver.execute_script(f"window.scrollTo(0, {y_location});")
+    #time.sleep(1)
+
+    # Step 3: Capture the full-page screenshot
+    driver.save_screenshot(screenshot_path)
+    element = driver.find_element(selector)
+    
+    # Step 2: Get element's location and size
+    location = element.location
+    size = element.size
+    # Step 4: Load the full screenshot with Pillow
+    screenshot = Image.open(screenshot_path)
+    scroll_y = driver.execute_script("return window.scrollY;")
+    # Step 5: Define the crop area using the element's location and size
+    left = location['x']
+    top = location['y'] - scroll_y
+    right = left + size['width']
+    bottom = top + size['height'] 
+    print(left, top, right, bottom)
+    # Step 6: Crop the image to the element's size
+    cropped_image = screenshot.crop((left, top, right, bottom))
+    
+    # Step 7: Save the cropped image
+    cropped_image.save(cropped_path)
+    
+    print(f"Cropped screenshot saved at {cropped_path}")
+
+
+
+def split_image_by_width(image_path, num_pieces, output_dir="output_pieces"):
+    # Open the image
+    image = Image.open(image_path)
+    img_width, img_height = image.size
+    
+    # Calculate the width of each piece
+    piece_width = img_width // num_pieces
+    if os.path.exists(output_dir):
+        # Remove all files in the directory
+        for filename in os.listdir(output_dir):
+            file_path = os.path.join(output_dir, filename)
+            try:
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)  # Remove file or link
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)  # Remove directory
+            except Exception as e:
+                print(f"Failed to delete {file_path}. Reason: {e}")
+    else:
+        # Create the directory if it doesn't exist
+        os.makedirs(output_dir, exist_ok=True)
+
+    
+    # Loop through the number of pieces and save each slice
+    for i in range(num_pieces):
+        # Calculate the bounding box for each piece
+        left = i * piece_width
+        right = left + piece_width
+        piece = image.crop((left, 0, right, img_height))
+        
+        # Save the piece
+        piece_filename = os.path.join(output_dir, f"piece_{i+1}.png")
+        piece.save(piece_filename)
+        print(f"Saved {piece_filename}")
+
+def generate_transformations(image):
+    """Generate rotated and flipped versions of the image."""
+    transformations = []
+    transformations.append(image)  # Original image
+    transformations.append(cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE))  # 90 degrees clockwise
+    transformations.append(cv2.rotate(image, cv2.ROTATE_180))  # 180 degrees
+    transformations.append(cv2.rotate(image, cv2.ROTATE_90_COUNTERCLOCKWISE))  # 90 degrees counterclockwise
+    transformations.append(cv2.flip(image, 0))  # Flip vertically
+    transformations.append(cv2.flip(image, 1))  # Flip horizontally
+    transformations.append(cv2.flip(image, -1))  # Flip both ways
+    return transformations
+
+def find_least_similar_image(image_dir):
+    if not os.path.isdir(image_dir):
+        print("Directory does not exist.")
+        return False
+
+    image_files = [f for f in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, f))]
+
+    if len(image_files) == 0:
+        print("No images found in the directory.")
+        return False
+
+    threshold = 0.7
+    similarities = {}
+    similarity_groups = {}
+
+    # Load each image and generate transformations
+    transformed_images = {}
+    for img_file in image_files:
+        img_path = os.path.join(image_dir, img_file)
+        img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+        transformed_images[img_file] = generate_transformations(img)
+
+    # Compare images including transformations
+    for i, (img_file, img_transforms) in enumerate(transformed_images.items()):
+        for j in range(i + 1, len(image_files)):
+            other_img_file = image_files[j]
+            other_img_transforms = transformed_images[other_img_file]
+
+            for img1 in img_transforms:
+                for img2 in other_img_transforms:
+                    # Check sizes before comparing
+                    if img1.shape[0] <= img2.shape[0] and img1.shape[1] <= img2.shape[1]:
+                        # Compute similarity
+                        similarity = cv2.matchTemplate(img1, img2, cv2.TM_CCOEFF_NORMED)[0][0]
+                        similarities[(img_file, other_img_file)] = similarity
+
+                        if similarity >= threshold:
+                            similarity_groups.setdefault(img_file, []).append(other_img_file)
+                            similarity_groups.setdefault(other_img_file, []).append(img_file)
+
+    if len(similarity_groups) == 0:
+        print("No similar image combinations found.")
+        return False
+
+    least_similar_image = None
+    min_similar_count = float('inf')
+    for img_file, similar_imgs in similarity_groups.items():
+        similar_count = len(similar_imgs)
+
+        if similar_count < min_similar_count:
+            min_similar_count = similar_count
+            least_similar_image = img_file
+
+    for img_file in image_files:
+        if img_file not in similarity_groups:
+            print(f"Image {img_file} has no similar combination and is unique.")
+            return f'{image_dir}/{img_file}'
+
+    print(f"Image {least_similar_image} has the least similar combinations.")
+    return f'{image_dir}/{least_similar_image}'
+
+def solve_least_captcha(image):
+    split_image_by_width('element_screenshot.png', 5, output_dir="output_pieces")
+    val = find_least_similar_image("output_pieces")
+    if val:
+        print('similar slot 5')
+        return val
+    split_image_by_width('element_screenshot.png', 6, output_dir="output_pieces")
+    val = find_least_similar_image("output_pieces")
+    if val:
+        print('similar slot 6')
+        return val
+    split_image_by_width('element_screenshot.png', 7, output_dir="output_pieces")
+    val = find_least_similar_image("output_pieces")
+    if val:
+        print('similar slot 7')
+        return val
+    split_image_by_width('element_screenshot.png', 8, output_dir="output_pieces")
+    val = find_least_similar_image("output_pieces")
+    if val:
+        print('similar slot 8')
+        return val
+
+    return False
+
+
+
+def solve_least_img(driver):
+    for i in range(15):
+        pyautogui.moveTo(400, 400)
+        time.sleep(1)
+        driver.switch_to.default_content()
+        scroll_height = driver.execute_script("return document.body.scrollHeight")
+        print(scroll_height, 'height')
+        driver.execute_script(f"window.scrollTo(0, {scroll_height});")
+        time.sleep(1)
+        
+        if driver.is_element_visible('img#rscaptcha_img'):
+            print('rscaptcha Found')
+            capture_element_screenshot(sb1, "img#rscaptcha_img")
+            val = solve_least_captcha("element_screenshot.png")
+            print('val', val)
+            if val:
+                try:
+                    x, y = pyautogui.locateCenterOnScreen(val, confidence=0.85)
+                    if x and y:
+                        pyautogui.click(x, y)
+
+                        return True
+                except Exception as e:
+                    print(e)
+            else:
+                return None
+
+            
+        #time.sleep(3)
+        if driver.is_element_visible('div.iconcaptcha-modal__body-title'):
+            print('iconcaptcha-modal__body-title Found')
+            if driver.is_element_visible('div.iconcaptcha-modal__body-title'):
+                
+                text = driver.get_text('div.iconcaptcha-modal__body-title')
+                print(text,'text')
+                if 'Verification complete' in text or 'VERIFICATION COMPLETE' in text:
+                    return True
+            for i in range(5):
+                if driver.is_element_visible('div.iconcaptcha-modal__body-title'):
+                    text = driver.get_text('div.iconcaptcha-modal__body-title')
+                    print(text,'text')
+                    if 'Verification complete' in text or 'VERIFICATION COMPLETE' in text:
+                        return True
+                if driver.is_element_visible('div.iconcaptcha-modal__body-title'):
+                    print('still found iconcaptcha-modal__body-title')
+                    driver.uc_click("div.iconcaptcha-modal__body-title")
+                    #click_element_with_pyautogui(driver, "div.iconcaptcha-modal__body-title")
+                    time.sleep(3)
+                else:
+                    print('not found body titile')
+                    break
+        print('hellow') 
+        if driver.is_element_visible('canvas.iconcaptcha-modal__body-icons'):
+            print('canvas.iconcaptcha-modal__body-icons Found')    
+            capture_element_screenshot(sb1, "canvas.iconcaptcha-modal__body-icons")
+            val = solve_least_captcha("element_screenshot.png")
+            print('val', val)
+            if val:
+                try:
+                    x, y = pyautogui.locateCenterOnScreen(val, confidence=0.85)
+                    if x and y:
+                        pyautogui.click(x, y)
+
+                        #return True
+                except Exception as e:
+                    print(e)
+            else:
+                return None
+        elif driver.is_element_visible('iconcaptcha-modal__body-selection'):
+            print('canvas.iconcaptcha-modal__body-selection Found THo')  
+            print('canvas.iconcaptcha-modal__body-selection')    
+            capture_element_screenshot(sb1, "canvas.iconcaptcha-modal__body-selection")
+            val = solve_least_captcha("element_screenshot.png")
+            print('val', val)
+            if val:
+                try:
+                    x, y = pyautogui.locateCenterOnScreen(val, confidence=0.85)
+                    if x and y:
+                        pyautogui.click(x, y)
+
+                        #return True
+                except Exception as e:
+                    print(e)
+            else:
+                return None
+        else:
+            print('not found enything')
+            driver.execute_script("window.scrollTo(0, 1000);")
+
+     
+      
 def withdraw_faucet(driver, sitekey):
 
     try:
@@ -1406,7 +1672,7 @@ def withdraw_faucet(driver, sitekey):
                     cloudflare(sb1, login = False)
                 elif 'Faucetpay Transfer' in title:
                     print(title, 'FaucetPay found')
-                    response_messege('EarnPP FaucetPay Loaded')
+                    response_messege('Feyorra FaucetPay Loaded')
                     pyautogui.click(1288, 517) #trx
                     #pyautogui.click(679, 704) #doge
                     time.sleep(5)
@@ -1416,7 +1682,7 @@ def withdraw_faucet(driver, sitekey):
                     time.sleep(2)
                     driver.uc_click('button.claim-button')
                     driver.uc_open('https://feyorra.site/member/faucet')
-                    response_messege('EarnPP FaucetPay Withdrawed')
+                    response_messege('Feyorra FaucetPay Withdrawed')
                     #response_messege('Started')
                     query = {"type": "main"}
                     update = {"$set": {"request": 'reset'}}
@@ -1426,6 +1692,42 @@ def withdraw_faucet(driver, sitekey):
                 else:
                     print(title, 'restarting')
                     driver.uc_open('https://feyorra.site/member/faucetpay')
+                    time.sleep(10)
+
+
+        if sitekey == 3:
+            print('Strting ClaimC withdraw')
+            driver.uc_open('https://claimcoin.in/withdraw')
+            time.sleep(10)
+            for i in range(1,50):
+                time.sleep(1)
+                title =sb1.get_title()
+                print(title)
+                if 'Just' in title:
+                    cloudflare(sb1, login = False)
+                elif 'Withdraw' in title:
+                    print(title, 'FaucetPay found')
+                    response_messege('ClaimC FaucetPay Loaded')
+                    pyautogui.click(1381, 602) #trx
+                    #pyautogui.click(564, 737) #doge
+                    time.sleep(5)
+                    driver.execute_script(f"window.scrollTo(0, 1000);")
+                    time.sleep(2)
+                    response_messege('ClaimC Captcha Withdrawed')
+                    solve_least_img(driver)
+                    time.sleep(2)
+                    driver.uc_click('button.claim-button')
+                    driver.uc_open('https://claimcoin.in/withdraw')
+                    response_messege('ClaimC FaucetPay Withdrawed')
+                    #response_messege('Started')
+                    query = {"type": "main"}
+                    update = {"$set": {"request": 'reset'}}
+                    result = collection.update_one(query, update)
+                    return
+
+                else:
+                    print(title, 'restarting')
+                    driver.uc_open('https://claimcoin.in/withdraw')
                     time.sleep(10)
 
     
@@ -1693,10 +1995,15 @@ while True:
         if mainscript == 2:
             earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
             reset_count = 0
-
+            response_messege('Started')
+            query = {"type": "main"}
+            update = {"$set": {"request": 'mainscript'}}
         if mainscript == 3:
             earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
             reset_count = 0
+            response_messege('Started')
+            query = {"type": "main"}
+            update = {"$set": {"request": 'mainscript'}}
 
         if mainscript == 4:
             withdraw_faucet(sb1, 1) 

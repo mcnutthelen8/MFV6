@@ -9,6 +9,7 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException,
 from urllib.parse import urlparse, parse_qs
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import Select
 import time
 import re
 import requests
@@ -33,7 +34,11 @@ import Levenshtein
 import json
 import argparse
 import clipboard
+import shutil
+import os
+import math
 
+# Example usage
 
 # Initialize the argument parser
 parser = argparse.ArgumentParser(description="Process some arguments.")
@@ -51,20 +56,45 @@ fb_pass = 'ashen1997'
 yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
 mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
 
+earnpp_email = 'Nooo'
+earnpp_pass = 'Nooo'
+feyorra_email = 'Nooo'
+feyorra_pass = 'Nooo'
+claimc_email = 'Nooo'
+claimc_pass = 'Nooo'
+
+
+
 if farm_id == 1:
-    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/alisabro.json'
-    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/khabibmakanzie.json'
+    fb_pass = 'uwuinsta2005'
     yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
-    fb_pass = 'ashen1997'
+    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     server_name1 = 'thailand'
     CSB1_farms = [1, 2, 3, 4]
+
+    earnpp_email = 'khabibmakanzie@gmail.com'
+    earnpp_pass = 'CQ2pNwi3zsFgat@'
+    feyorra_email = 'khabibmakanzie@gmail.com'
+    feyorra_pass = 'D6.6fz9r5QVyziT'
+    claimc_email = 'khabibmakanzie@gmail.com'
+    claimc_pass = '@$uiJjkFfZU3K@e'
+
 elif farm_id == 2:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/diludilakshi.json'
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
-    server_name1 = 'romania'
+    server_name1 = 'estonia'
     CSB1_farms = [1, 2, 3, 4]
+
+    earnpp_email = 'mcnutthelen8@gmail.com'
+    earnpp_pass = 'Uwuinsta@2005'
+    feyorra_email = 'mcnutthelen8@gmail.com'
+    feyorra_pass = 'Uwuinsta@2005'
+    claimc_email = 'mcnutthelen8@gmail.com'
+    claimc_pass = 'Uwuinsta@2005'
+
 elif farm_id == 3:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/williesmith.json'
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
@@ -72,6 +102,14 @@ elif farm_id == 3:
     fb_pass = 'ashen1997'
     server_name1 = 'poland'
     CSB1_farms = [1, 2, 3, 4]
+
+    earnpp_email = 'redgta36@gmail.com'
+    earnpp_pass = 'Uwuinsta@2005'
+    feyorra_email = 'redgta36@gmail.com'
+    feyorra_pass = 'Uwuinsta@2005'
+    claimc_email = 'redgta36@gmail.com'
+    claimc_pass = 'Uwuinsta@2005'
+
 elif farm_id == 4:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
@@ -79,6 +117,13 @@ elif farm_id == 4:
     fb_pass = 'ashen1997'
     server_name1 = 'hungary'
     CSB1_farms = [1, 2, 3, 4]
+    earnpp_email = 'ddilakshi232@gmail.com'
+    earnpp_pass = 'Uwuinsta@2005'
+    feyorra_email = 'ddilakshi232@gmail.com'
+    feyorra_pass = 'Uwuinsta@2005'
+    claimc_email = 'ddilakshi232@gmail.com'
+    claimc_pass = 'Uwuinsta@2005'
+
 
 else:
     while True:
@@ -97,18 +142,19 @@ chrome_binary_path = '/opt/google/chrome/google-chrome'
 chrome_user_data_dir = '/root/.config/google-chrome/'
 
 
+bitmoon = False
+earnpp = True
+claimcoin = True
+feyorra = True
+feyorratop = False
+baymack = False
+
+
 mongo_uri = "mongodb+srv://redgta36:J6n7Hoz2ribHmMmx@moneyfarm.wwzcs.mongodb.net/?retryWrites=true&w=majority&appName=moneyfarm"
 
 client = MongoClient(mongo_uri)
 db = client['MoneyFarmV6'] 
 collection = db[f'Farm{farm_id}']
-#ocr = PaddleOCR(use_angle_cls=True, lang='en',  drop_score=0)
-
-bitmoon = True
-earnpp = True
-claimcoin = True
-feyorra = True
-
 
 def add_messages(type_value, new_messages):
     try:
@@ -128,7 +174,7 @@ def add_messages(type_value, new_messages):
     except Exception as e:
         print(e)
 
-def insert_data(ip, amount1, amount2):
+def insert_data(ip, amount1, amount2, amount3):
     sri_lanka_tz = pytz.timezone('Asia/Colombo')
     utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
     sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
@@ -136,8 +182,9 @@ def insert_data(ip, amount1, amount2):
 
     query = {"type": "main"}
     sample_document = {
-        "Skylom": amount1,
-        "Baymack": amount2,
+        "pepelom": amount1,
+        "feyorramack": amount2,
+        "claimcoins": amount3,
         "Status": now,
         "Ip": ip,
         "response": 'Running'
@@ -149,8 +196,9 @@ def insert_data(ip, amount1, amount2):
         print(f"Updated {result.modified_count} document(s).")
     else:
         print("No document was updated.")
-    add_messages('skylom', {now: amount1})
-    add_messages('baymack', {now: amount2})
+    add_messages('pepelom', {now: amount1})
+    add_messages('feyorramack', {now: amount2})
+    add_messages('claimcoins', {now: amount3})
     return
 
 
@@ -185,6 +233,8 @@ def activate_window_by_id(window_id):
     # Run the command to activate the window by its ID
     print(f"Activate Window ID: {window_id}")
     subprocess.run(['xdotool', 'windowactivate', window_id])
+
+
 
 
 def get_proxycheck_inbrowser(sb1, ip, server_name):   
@@ -279,7 +329,7 @@ def get_ipscore(ip):
 
         # Ensure fraud_score is an integer for comparison
         if fraud_score:
-            if vpn == False and tor == False:# and active_vpn == False and active_tor == False and fraud_score < 90:
+            if vpn == False and tor == False and active_vpn == False and active_tor == False and fraud_score < 90:
                 return True
             else:
                 return None
@@ -356,8 +406,9 @@ def fix_ip(drive, name):
             time.sleep(5)
 
 
+####################################Control Panel Shit##########################################################
 def mysterium_web_login(driver):
-    driver.open('https://app.mysteriumvpn.com/')
+    driver.uc_open('https://app.mysteriumvpn.com/')
     time.sleep(5)
     for i in range(1,100):
         time.sleep(1)
@@ -505,6 +556,697 @@ def mysterium_login(driver):
         mysterium_web_login(driver)
 
 
+def ipfixer():
+    ip = 0
+    preip = 0
+    respo = 0
+    gg2344 = 0
+    query = {"type": "main"}
+    update = {"$set": {"response": 'Fixing...🟠'}}
+    result = collection.update_one(query, update)
+    for i in CSB1_farms:
+        collection_csb = db[f'Farm{i}']
+        update = {"$set": {"request": 'ipfixer'}}
+        result = collection_csb.update_one(query, update)
+        print('Update Farm', i)
+
+    while True:
+        query = {"type": "main"}
+        doc = collection.find_one(query)
+        request = doc["request"]
+        if request == 'ipfixer':
+            preip = get_ip(sb1)
+            if ip == preip:
+                print(f'Good IP found: {ip}')
+                if respo == 0:
+                    update = {"$set": {"response": f'Ready IP🟢: {ip}'}}
+                    result = collection.update_one(query, update)
+                    if result.matched_count > 0:
+                        print(f"Added new messages to existing document. Updated {result.modified_count} document(s).")
+                        respo = 1
+                    else:
+                        print("No document found with the specified type.")
+                else:
+                    print(f"repo {respo}")
+                    res_farms = []
+                    for frm in CSB1_farms:
+                        collection_csb = db[f'Farm{frm}']
+                        query = {"type": "main"}
+                        doc = collection_csb.find_one(query)
+                        res = doc["response"]
+                        req = doc["request"]
+                        if req == 'ipfixer' and 'Ready IP' in res:
+                            res_farms.append(res)
+                        elif req == 'mainscript' and 'Running' in res:
+                            res_farms.append(res)
+                        elif req == 'mainscript' and 'Ready IP' in res:
+                            res_farms.append(res)
+                        else:
+                            print('aiyo', i)
+                    if len(res_farms) == len(CSB1_farms):
+                        time.sleep(10)
+                        if gg2344 > 4:
+
+                            query = {"type": "main"}
+                            update = {"$set": {"request": 'mainscript'}}
+                            result = collection.update_one(query, update)
+                        else:
+                            gg2344 += 1
+                    else:
+                        gg2344 = 1
+                        
+
+                
+            else:
+                respo = 0
+                update = {"$set": {"response": f'Changed IP🔴: {ip}'}}
+                result = collection.update_one(query, update)
+                ip = fix_ip(sb1, server_name1)
+        else:
+            return True
+
+                         
+def control_panel():
+    try:
+        query = {"type": "main"}
+        doc = collection.find_one(query)
+        request = doc["request"]
+        print(request)
+        if request == 'ipfixer':
+            ipfixer()
+            return 2
+        elif request == 'mainscript':
+            print(request)
+            return 1
+        elif request == 'reset':
+            print(request)
+            return 3
+        elif request == 'withdrawpepe':
+            print(request)
+            return 4
+        elif request == 'pause':
+            print(request)
+            return 5
+        elif request == 'withdrawfeyorra':
+            print(request)
+            return 6
+        
+        elif request == 'withdrawclaimc':
+            print(request)
+            return 7
+        elif request == 'kill':
+            print(request)
+            return 8
+        
+        else:
+            print('No function Found to Run')
+    except Exception as e:
+        print(f"Control Panel Function Exception:{e}")
+    return None
+
+
+
+def capture_element_screenshot(driver, selector, screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png"):
+    # Step 1: Find the element using SeleniumBase
+    element = driver.find_element(selector)
+    
+    # Step 2: Get element's location and size
+    location = element.location
+    size = element.size
+    y_location = location['y'] + 100
+    driver.execute_script(f"window.scrollTo(0, {y_location});")
+    #time.sleep(1)
+
+    # Step 3: Capture the full-page screenshot
+    driver.save_screenshot(screenshot_path)
+    element = driver.find_element(selector)
+    
+    # Step 2: Get element's location and size
+    location = element.location
+    size = element.size
+    # Step 4: Load the full screenshot with Pillow
+    screenshot = Image.open(screenshot_path)
+    scroll_y = driver.execute_script("return window.scrollY;")
+    # Step 5: Define the crop area using the element's location and size
+    left = location['x']
+    top = location['y'] - scroll_y
+    right = left + size['width']
+    bottom = top + size['height'] 
+    print(left, top, right, bottom)
+    # Step 6: Crop the image to the element's size
+    cropped_image = screenshot.crop((left, top, right, bottom))
+    
+    # Step 7: Save the cropped image
+    cropped_image.save(cropped_path)
+    
+    print(f"Cropped screenshot saved at {cropped_path}")
+
+
+
+def split_image_by_width(image_path, num_pieces, output_dir="output_pieces"):
+    # Open the image
+    image = Image.open(image_path)
+    img_width, img_height = image.size
+    
+    # Calculate the width of each piece
+    piece_width = img_width // num_pieces
+    if os.path.exists(output_dir):
+        # Remove all files in the directory
+        for filename in os.listdir(output_dir):
+            file_path = os.path.join(output_dir, filename)
+            try:
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)  # Remove file or link
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)  # Remove directory
+            except Exception as e:
+                print(f"Failed to delete {file_path}. Reason: {e}")
+    else:
+        # Create the directory if it doesn't exist
+        os.makedirs(output_dir, exist_ok=True)
+
+    
+    # Loop through the number of pieces and save each slice
+    for i in range(num_pieces):
+        # Calculate the bounding box for each piece
+        left = i * piece_width
+        right = left + piece_width
+        piece = image.crop((left, 0, right, img_height))
+        
+        # Save the piece
+        piece_filename = os.path.join(output_dir, f"piece_{i+1}.png")
+        piece.save(piece_filename)
+        print(f"Saved {piece_filename}")
+
+def generate_transformations(image):
+    """Generate rotated and flipped versions of the image."""
+    transformations = []
+    transformations.append(image)  # Original image
+    transformations.append(cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE))  # 90 degrees clockwise
+    transformations.append(cv2.rotate(image, cv2.ROTATE_180))  # 180 degrees
+    transformations.append(cv2.rotate(image, cv2.ROTATE_90_COUNTERCLOCKWISE))  # 90 degrees counterclockwise
+    transformations.append(cv2.flip(image, 0))  # Flip vertically
+    transformations.append(cv2.flip(image, 1))  # Flip horizontally
+    transformations.append(cv2.flip(image, -1))  # Flip both ways
+    return transformations
+
+def find_least_similar_image(image_dir):
+    if not os.path.isdir(image_dir):
+        print("Directory does not exist.")
+        return False
+
+    image_files = [f for f in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, f))]
+
+    if len(image_files) == 0:
+        print("No images found in the directory.")
+        return False
+
+    threshold = 0.7
+    similarities = {}
+    similarity_groups = {}
+
+    # Load each image and generate transformations
+    transformed_images = {}
+    for img_file in image_files:
+        img_path = os.path.join(image_dir, img_file)
+        img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+        transformed_images[img_file] = generate_transformations(img)
+
+    # Compare images including transformations
+    for i, (img_file, img_transforms) in enumerate(transformed_images.items()):
+        for j in range(i + 1, len(image_files)):
+            other_img_file = image_files[j]
+            other_img_transforms = transformed_images[other_img_file]
+
+            for img1 in img_transforms:
+                for img2 in other_img_transforms:
+                    # Check sizes before comparing
+                    if img1.shape[0] <= img2.shape[0] and img1.shape[1] <= img2.shape[1]:
+                        # Compute similarity
+                        similarity = cv2.matchTemplate(img1, img2, cv2.TM_CCOEFF_NORMED)[0][0]
+                        similarities[(img_file, other_img_file)] = similarity
+
+                        if similarity >= threshold:
+                            similarity_groups.setdefault(img_file, []).append(other_img_file)
+                            similarity_groups.setdefault(other_img_file, []).append(img_file)
+
+    if len(similarity_groups) == 0:
+        print("No similar image combinations found.")
+        return False
+
+    least_similar_image = None
+    min_similar_count = float('inf')
+    for img_file, similar_imgs in similarity_groups.items():
+        similar_count = len(similar_imgs)
+
+        if similar_count < min_similar_count:
+            min_similar_count = similar_count
+            least_similar_image = img_file
+
+    for img_file in image_files:
+        if img_file not in similarity_groups:
+            print(f"Image {img_file} has no similar combination and is unique.")
+            return f'{image_dir}/{img_file}'
+
+    print(f"Image {least_similar_image} has the least similar combinations.")
+    return f'{image_dir}/{least_similar_image}'
+
+def solve_least_captcha(image):
+    split_image_by_width('element_screenshot.png', 5, output_dir="output_pieces")
+    val = find_least_similar_image("output_pieces")
+    if val:
+        print('similar slot 5')
+        return val
+    split_image_by_width('element_screenshot.png', 6, output_dir="output_pieces")
+    val = find_least_similar_image("output_pieces")
+    if val:
+        print('similar slot 6')
+        return val
+    split_image_by_width('element_screenshot.png', 7, output_dir="output_pieces")
+    val = find_least_similar_image("output_pieces")
+    if val:
+        print('similar slot 7')
+        return val
+    split_image_by_width('element_screenshot.png', 8, output_dir="output_pieces")
+    val = find_least_similar_image("output_pieces")
+    if val:
+        print('similar slot 8')
+        return val
+
+    return False
+
+
+
+def solve_least_img(driver):
+    for i in range(5):
+        pyautogui.moveTo(400, 400)
+        time.sleep(1)
+        driver.switch_to.default_content()
+        scroll_height = driver.execute_script("return document.body.scrollHeight")
+        print(scroll_height, 'height')
+        driver.execute_script(f"window.scrollTo(0, {scroll_height});")
+        time.sleep(1)
+        
+        if driver.is_element_visible('img#rscaptcha_img'):
+            print('rscaptcha Found')
+            capture_element_screenshot(sb1, "img#rscaptcha_img")
+            val = solve_least_captcha("element_screenshot.png")
+            print('val', val)
+            if val:
+                try:
+                    x, y = pyautogui.locateCenterOnScreen(val, confidence=0.85)
+                    if x and y:
+                        pyautogui.click(x, y)
+
+                        return True
+                except Exception as e:
+                    print(e)
+            else:
+                return None
+
+            
+        #time.sleep(3)
+        if driver.is_element_visible('div.iconcaptcha-modal__body-title'):
+            print('iconcaptcha-modal__body-title Found')
+            if driver.is_element_visible('div.iconcaptcha-modal__body-title'):
+                
+                text = driver.get_text('div.iconcaptcha-modal__body-title')
+                print(text,'text')
+                if 'Verification complete' in text or 'VERIFICATION COMPLETE' in text:
+                    return True
+            for i in range(5):
+                if driver.is_element_visible('div.iconcaptcha-modal__body-title'):
+                    text = driver.get_text('div.iconcaptcha-modal__body-title')
+                    print(text,'text')
+                    if 'Verification complete' in text or 'VERIFICATION COMPLETE' in text:
+                        return True
+                if driver.is_element_visible('div.iconcaptcha-modal__body-title'):
+                    print('still found iconcaptcha-modal__body-title')
+                    driver.uc_click("div.iconcaptcha-modal__body-title")
+                    #click_element_with_pyautogui(driver, "div.iconcaptcha-modal__body-title")
+                    time.sleep(3)
+                else:
+                    print('not found body titile')
+                    break
+        print('hellow') 
+        if driver.is_element_visible('canvas.iconcaptcha-modal__body-icons'):
+            print('canvas.iconcaptcha-modal__body-icons Found')    
+            capture_element_screenshot(sb1, "canvas.iconcaptcha-modal__body-icons")
+            val = solve_least_captcha("element_screenshot.png")
+            print('val', val)
+            if val:
+                try:
+                    x, y = pyautogui.locateCenterOnScreen(val, confidence=0.85)
+                    if x and y:
+                        pyautogui.click(x, y)
+
+                        #return True
+                except Exception as e:
+                    print(e)
+            else:
+                return None
+        elif driver.is_element_visible('iconcaptcha-modal__body-selection'):
+            print('canvas.iconcaptcha-modal__body-selection Found THo')  
+            print('canvas.iconcaptcha-modal__body-selection')    
+            capture_element_screenshot(sb1, "canvas.iconcaptcha-modal__body-selection")
+            val = solve_least_captcha("element_screenshot.png")
+            print('val', val)
+            if val:
+                try:
+                    x, y = pyautogui.locateCenterOnScreen(val, confidence=0.85)
+                    if x and y:
+                        pyautogui.click(x, y)
+
+                        #return True
+                except Exception as e:
+                    print(e)
+            else:
+                return None
+        else:
+            print('not found enything')
+            driver.execute_script("window.scrollTo(0, 1000);")
+
+     
+     
+
+def verify_and_claim(sb1):
+    # Check if the "Verified!" message exists
+    if sb1.is_element_visible('div.hp-bg-success-3'):
+        print("Verified! message found.")
+        
+        # Click the "Claim" button
+        if sb1.is_element_visible('button#claimBtn'):
+            sb1.click('button#claimBtn')
+            print("Claim button clicked.")
+        else:
+            print("Claim button not found.")
+    else:
+        print("Verified! message not found.")
+
+def solve_icon_captcha(sb1):
+    # Extract the class name of the captcha icon (e.g., "fa-arrow-alt-circle-left")
+    captcha_icon_class = sb1.get_attribute('div.captcha-icon', 'class')
+    captcha_icon_class = captcha_icon_class.split(' ')[-1]  # Extract only the icon class part
+
+    # Get the available icon options
+    icon_options = sb1.find_elements('div#icon-options i.icon-option')
+
+    # Iterate through the options to find the matching icon and click it
+    for option in icon_options:
+        icon_class = option.get_attribute('class')
+        if captcha_icon_class in icon_class:
+            option.uc_click()
+            print(f"Clicked on the matching icon: {icon_class}")
+            return True
+
+    #time.sleep(1)
+
+    print("No matching icon found.")
+
+
+
+def cloudflare(sb, login = True):
+    try:
+        page_title = sb.get_title()
+        gg = False
+        while gg == False:
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
+                print("verify_cloudflare git Found")
+                if x and y:
+                    sb.disconnect() 
+                    for i in range(1, 300):
+                        if 'Login' in page_title or 'Just' in page_title or 'Faucetpay' in page_title:
+                            try:
+                                time.sleep(1)
+                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
+                                print("verify_cloudflare git Found")
+                                try:
+                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.7)
+                                    pyautogui.click(x, y)
+                                    time.sleep(5)
+                                    if login == False: 
+                                        sb.connect()
+                                        return True
+
+                                except Exception as e:
+                                    print(e)
+                                    
+                                try:
+                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_success.png", confidence=0.7)
+                                    pyautogui.click(x, y)
+                                    time.sleep(1)
+                                    if login == True: 
+                                        sb.connect()
+                                        return True
+
+                                except Exception as e:
+                                    print(e)
+                            except Exception as e:
+                                print('cloudflare not found keep trying')
+                        else:
+                            sb.connect()
+                            return
+
+                    sb.connect()
+                else:
+                    if login == False: 
+                        gg = True
+                    else:
+                        gg = False
+            except Exception as e:
+                print(e)
+                gg = True
+            
+    except Exception as e:
+        print(e)
+
+
+
+
+
+def click_element_with_pyautogui(driver, selector):
+    # Step 1: Find the element using SeleniumBase
+    element = driver.find_element(selector)
+    
+    # Step 2: Get element's location and size
+    location = element.location
+    size = element.size
+    y_location = location['y'] + 100
+    driver.execute_script(f"window.scrollTo(0, {y_location});")
+    time.sleep(1)
+    element = driver.find_element(selector)
+    
+    # Step 2: Get element's location and size
+    location = element.location
+    size = element.size
+    scroll_y = driver.execute_script("return window.scrollY;")
+    top = location['y'] #- scroll_y
+    # Step 3: Calculate the center of the element
+    center_x = location['x'] + size['width'] / 2
+    center_y = (top) + size['height'] + (size['height'] /2) 
+    # Step 4: Adjust coordinates for the full screen    if the browser is maximized
+    window_position = driver.get_window_position()
+    center_x += window_position['x']
+    center_y += window_position['y']
+    
+    # Step 5: Move the cursor to the center of the element and click
+    pyautogui.moveTo(center_x, center_y)
+    #pyautogui.click(center_x, center_y)
+    
+    #driver.uc_click(selector)
+    pyautogui.click()
+    print(f'y_location:{y_location} | top:{top} | scroll_y:{scroll_y}', location['y'])
+    print(f"Clicked on element at ({center_x}, {center_y})")
+
+def find_and_click_collect_button(sb1):
+    # Selector for the button
+
+    button_selector = 'button.btn.btn-primary.btn-lg.claim-button'
+    #hide_ads(sb1)
+    # Check if the "Collect your reward" button exists and contains the correct text
+    if sb1.is_element_visible(button_selector):
+        sb1.execute_script("window.scrollTo(0, 1000);")
+        button_text = sb1.get_text(button_selector)
+        
+        if "Collect your reward" in button_text:
+            print(f"Button with 'Collect your reward' text found.{button_text}")
+            original_window = sb1.current_window_handle
+            all_windows_before_click = sb1.window_handles.copy()
+            pyautogui.click(350, 200)
+
+            all_windows = sb1.window_handles
+            for window in all_windows:
+                if window not in all_windows_before_click:
+                    print(f"Closing new tab: {window}")
+                    sb1.switch_to.window(window)
+                    sb1.close()
+            sb1.switch_to.window(original_window)
+            
+            sb1.execute_script("window.scrollTo(0, 1000);")
+            #time.sleep(1)
+            #sb1.disconnect()
+
+            #    for i in range(1, 3):
+            #        try:
+            #            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/collect_your_reward.png", region=(507,156, 965, 919), confidence=0.9)
+            #            #pyautogui.moveTo(random.randint(700, 1700), random.randint(300, 500), duration= 1)
+            #            #pyautogui.moveTo(x, y, duration= 1)
+            #            pyautogui.click(x, y)
+            #            print("Collect button clicked.")
+            #            time.sleep(2)
+            #            pyautogui.press('f5')
+            #            time.sleep(2)
+            #            sb1.connect()
+            #            return True
+            #        except Exception as e:
+            #            print(e)
+            sb1.uc_click(button_selector)
+            print("Collect button Not clicked.")
+            #sb1.connect()
+            return None
+        else:
+            print("Button found, but it doesn't contain 'Collect your reward' text.")
+            return None
+    else:
+        print("Collect your reward button not found.")
+        return None
+
+
+
+def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages, submit_button):
+
+    driver.uc_open(url)
+    time.sleep(2)
+
+    all_windows = driver.window_handles
+    for window in all_windows:
+        if window not in restrict_pages:
+            driver.switch_to.window(window)
+            
+    print("WebDriver Check")
+    current_title = driver.get_title()
+    print(f"Current g title: {current_title}")
+    if 'Login' in current_title:
+        # Wait for the email input by type attribute
+        email_input = WebDriverWait(driver, 60).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'input[type="email"]'))
+        )
+        email_input.send_keys(email)
+
+        # Locate the password input by type attribute
+        password_input = driver.find_element(By.CSS_SELECTOR, 'input[type="password"]')
+        password_input.send_keys(password)
+
+        # Step 3: Wait for the CAPTCHA checkbox to be validated
+        print("CAPTCHA Check")
+        if captcha_image:
+            if 'rscaptcha'in captcha_image:
+                solve_least_img(sb1)
+            else:
+                for i in range(1, 10):
+                    time.sleep(1)
+                    sb1.execute_script("window.scrollTo(0, 1000);")
+                    cloudflare(driver, True)
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
+                        if x and y: 
+
+                            #login_button = driver.find_element(By.CSS_SELECTOR, submit_button)
+                            #click_element_with_pyautogui(driver, login_button)
+                            #click_element_with_pyautogui(sb1, 'button[type="submit"]')
+                            if 'Feyorra' in current_title:
+                                pyautogui.click(932 ,728)
+                                time.sleep(5)
+                                return
+                            sb1.uc_click(submit_button)
+                            #sb1.uc_click('button[type="submit"]')
+                            
+                            #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
+                            #login_button.click(submit_button)
+                            time.sleep(5)
+                            return
+                    except Exception as e:
+                        print(f'ERR:{e}') 
+
+
+        print("✅ CAPTCHA validated")
+        #click_element_with_pyautogui(sb1, 'button[type="submit"]')
+        #pyautogui.press('enter')
+        sb1.uc_click(submit_button)
+        
+        time.sleep(3)
+        print("🚀 Login attempt made!")
+    else:
+        print('no login in Title')
+
+
+bitmoon_window = None
+earnpp_window = None
+claimcoin_window = None
+feyorra_window = None
+baymack_window = None
+feyorratop_window = None
+
+def close_extra_windows(driver, keep_window_handles):
+    current_window = driver.current_window_handle
+    all_windows = driver.window_handles
+    for window in all_windows:
+        if window not in keep_window_handles:
+            driver.switch_to.window(window)
+            driver.close()
+    driver.switch_to.window(current_window)
+
+def handle_captcha_and_cloudflare(driver):
+    cloudflare(driver, login = False)
+
+def handle_site(driver, url, expected_title, not_expected_title , function, window_list ,captcha_handling=True):
+    driver.uc_open(url)
+    ready = False
+    while not ready:
+        time.sleep(1)
+        all_windows = driver.window_handles
+        for window in all_windows:
+            if window not in window_list:
+                driver.switch_to.window(window)
+        current_title = driver.get_title()
+        print(f"Current title: {current_title}")
+
+
+            
+            
+
+        if not_expected_title == current_title:
+            if function == 1:
+                login_to_faucet('https://earn-pepe.com/login', sb1, earnpp_email, earnpp_pass, 'cloudflare_success', window_list, 'button#loginBtn')
+            elif function == 2:
+                login_to_faucet('https://feyorra.site/login', sb1, feyorra_email, feyorra_pass, 'cloudflare_success', window_list, 'button#loginBtn')
+            elif function == 3:
+                login_to_faucet('https://claimcoin.in/login', sb1, claimc_email, claimc_pass, None, window_list, 'button[type="submit"]') #'not_a_robot'
+            elif function == 6:
+                login_to_faucet('https://feyorra.top/login', sb1, 'khabibmakanzie@gmail.com', '%aYYcsSfcYjN%5x', 'rscaptcha', window_list, 'button[type="submit"]') #'not_a_robot'
+
+
+        elif expected_title in current_title:
+            if driver.current_window_handle not in window_list:
+                ready = True
+
+        elif 'Just' in current_title:
+            if captcha_handling:
+                handle_captcha_and_cloudflare(driver)
+        
+        else:
+            print(f"{current_title} is not the expected title. Reconnecting...")
+            all_windows = driver.window_handles
+            for window in all_windows:
+                if window not in window_list:
+                    driver.switch_to.window(window)
+            driver.uc_open(url)
+            if captcha_handling:
+                handle_captcha_and_cloudflare(driver)
+
+    return driver.current_window_handle
+
 
 def pin_extensions():
     try:
@@ -533,6 +1275,7 @@ def pin_extensions():
     except pyautogui.ImageNotFoundException:
         print("No extension_icon Button.")
         return False
+
 
 def install_extensions(extension_name):
     #on chrome://extensions/
@@ -585,265 +1328,477 @@ def install_extensions(extension_name):
     return None
 
 
+def remove_border(image_path, output_path):
+    # Open the image
+    image = Image.open(image_path)
+    
+    # Define the border size to be removed
+    border_size = 2
+    
+    # Calculate new dimensions
+    width, height = image.size
+    new_width = width - 2 * border_size
+    new_height = height - 2 * border_size
+    
+    # Crop the image to remove the border
+    cropped_image = image.crop((border_size, border_size, width - border_size, height - border_size))
+    
+    # Save the cropped image
+    cropped_image.save(output_path)
+    print(f"Image saved without border at: {output_path}")
 
+def response_messege(response):
+    query = {"type": "main"}
+    update = {"$set": {"response": response}}
+    result = collection.update_one(query, update)
 
-
-baymack_coins = 0
-vnc_url = 0
-vnc_window = 0
-start_vnc = 0
-
-earnpp_cookie = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/earnpp.json'
-feyorra_cookie = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/feyorra.json'
-claimcoin_cookie = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/claimcoins.json'
-
-def verify_and_claim(sb1):
-    # Check if the "Verified!" message exists
-    if sb1.is_element_visible('div.hp-bg-success-3'):
-        print("Verified! message found.")
+def get_coins(driver, sitekey):
+    coins = None
+    try:
         
-        # Click the "Claim" button
-        if sb1.is_element_visible('button#claimBtn'):
-            sb1.click('button#claimBtn')
-            print("Claim button clicked.")
-        else:
-            print("Claim button not found.")
-    else:
-        print("Verified! message not found.")
+        if sitekey == 1:
+            if driver.is_element_visible('small.hp-text-color-black-100.hp-text-color-dark-0 span.nowrap span'):
+                coins = driver.get_text('small.hp-text-color-black-100.hp-text-color-dark-0 span.nowrap span', timeout= 1)
+            else:
+                print(f'Sitekey:{sitekey} not found')
+            #coins = float(coins.split()[0]) 
+        if sitekey == 2:
+            
+            if driver.is_element_visible('select.form-select'):
+                coins = driver.get_text('select.form-select', timeout= 1)
+            else:
+                print(f'Sitekey:{sitekey} not found')
+        if sitekey == 3:
+            if driver.is_element_present('div.col-md-6.col-xl-3:nth-child(4) p.lh-1.mb-1.font-weight-bold'):
+                coins = driver.get_text('div.col-md-6.col-xl-3:nth-child(4) p.lh-1.mb-1.font-weight-bold', timeout= 1)
+            else:
+                print(f'Sitekey:{sitekey} not found')
 
-def solve_icon_captcha(sb1):
-    # Extract the class name of the captcha icon (e.g., "fa-arrow-alt-circle-left")
-    captcha_icon_class = sb1.get_attribute('div.captcha-icon', 'class')
-    captcha_icon_class = captcha_icon_class.split(' ')[-1]  # Extract only the icon class part
+        debug_messages(f'SiteKey{sitekey}{coins}')
+        if '/' in coins and sitekey == 3:
+            numerator = coins.split('/')[0]
+            return numerator
 
-    # Get the available icon options
-    icon_options = sb1.find_elements('div#icon-options i.icon-option')
+        numeric_value = re.search(r"\d+\.\d+", coins)
+        if numeric_value:
+            debug_messages(f'SiteKey{sitekey}{coins}')
+            return float(numeric_value.group())
+        return False
+    except Exception as e:
+        print(f"ERR on Getcoin:{sitekey} | {e}")
+    return False
 
-    # Iterate through the options to find the matching icon and click it
-    for option in icon_options:
-        icon_class = option.get_attribute('class')
-        if captcha_icon_class in icon_class:
-            option.click()
-            print(f"Clicked on the matching icon: {icon_class}")
-            return True
 
+
+
+def capture_element_screenshot(driver, selector, screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png"):
+    # Step 1: Find the element using SeleniumBase
+    element = driver.find_element(selector)
+    
+    # Step 2: Get element's location and size
+    location = element.location
+    size = element.size
+    y_location = location['y'] + 100
+    driver.execute_script(f"window.scrollTo(0, {y_location});")
     #time.sleep(1)
 
-    print("No matching icon found.")
+    # Step 3: Capture the full-page screenshot
+    driver.save_screenshot(screenshot_path)
+    element = driver.find_element(selector)
+    
+    # Step 2: Get element's location and size
+    location = element.location
+    size = element.size
+    # Step 4: Load the full screenshot with Pillow
+    screenshot = Image.open(screenshot_path)
+    scroll_y = driver.execute_script("return window.scrollY;")
+    # Step 5: Define the crop area using the element's location and size
+    left = location['x']
+    top = location['y'] - scroll_y
+    right = left + size['width']
+    bottom = top + size['height'] 
+    print(left, top, right, bottom)
+    # Step 6: Crop the image to the element's size
+    cropped_image = screenshot.crop((left, top, right, bottom))
+    
+    # Step 7: Save the cropped image
+    cropped_image.save(cropped_path)
+    
+    print(f"Cropped screenshot saved at {cropped_path}")
 
-def cloudflare(sb, login = True):
-    try:
-        gg = False
-        while gg == False:
+
+
+def split_image_by_width(image_path, num_pieces, output_dir="output_pieces"):
+    # Open the image
+    image = Image.open(image_path)
+    img_width, img_height = image.size
+    
+    # Calculate the width of each piece
+    piece_width = img_width // num_pieces
+    if os.path.exists(output_dir):
+        # Remove all files in the directory
+        for filename in os.listdir(output_dir):
+            file_path = os.path.join(output_dir, filename)
             try:
-
-                page_title = sb.get_title()
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.9)
-                print("verify_cloudflare git Found")
-                if x and y:
-                    sb.disconnect() 
-                    for i in range(1, 300):
-                        
-                        try:
-                            time.sleep(1)
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.9)
-                            print("verify_cloudflare git Found")
-                            try:
-                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.9)
-                                pyautogui.click(x, y)
-                                time.sleep(5)
-                                if login == False: 
-                                    sb.connect()
-                                    return True
-
-                            except Exception as e:
-                                print(e)
-                                
-                            try:
-                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_success.png", confidence=0.9)
-                                pyautogui.click(x, y)
-                                time.sleep(1)
-                                if login == True: 
-                                    sb.connect()
-                                    return True
-
-                            except Exception as e:
-                                print(e)
-
-                        except Exception as e:
-                                print('cloudflare not found keep trying')
-
-                    sb.connect()
-                else:
-                    gg = True
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)  # Remove file or link
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)  # Remove directory
             except Exception as e:
-                print(e)
-                gg = True
-            
-    except Exception as e:
-        print(e)
-
-
-def find_and_click_collect_button(sb1):
-    # Selector for the button
-
-    button_selector = 'button.btn.btn-primary.btn-lg.claim-button'
-    #hide_ads(sb1)
-    # Check if the "Collect your reward" button exists and contains the correct text
-    if sb1.is_element_visible(button_selector):
-        sb1.execute_script("window.scrollTo(0, 1000);")
-        button_text = sb1.get_text(button_selector)
-        
-        if "Collect your reward" in button_text:
-            print("Button with 'Collect your reward' text found.")
-            original_window = sb1.current_window_handle
-            all_windows_before_click = sb1.window_handles.copy()
-            pyautogui.click(350, 200)
-
-            all_windows = sb1.window_handles
-            for window in all_windows:
-                if window not in all_windows_before_click:
-                    print(f"Closing new tab: {window}")
-                    sb1.switch_to.window(window)
-                    sb1.close()
-            sb1.switch_to.window(original_window)
-            
-            #sb1.click(button_selector)
-            sb1.execute_script("window.scrollTo(0, 1000);")
-            sb1.uc_click(button_selector)
-            print("Collect button clicked.")
-            return True
-        else:
-            print("Button found, but it doesn't contain 'Collect your reward' text.")
-            return None
+                print(f"Failed to delete {file_path}. Reason: {e}")
     else:
-        print("Collect your reward button not found.")
-        return None
+        # Create the directory if it doesn't exist
+        os.makedirs(output_dir, exist_ok=True)
 
-
-
-def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages):
-
-    bfr = driver.window_handles
-    driver.open(url)
-    time.sleep(2)
-
-    all_windows = driver.window_handles
-    for window in all_windows:
-        if window not in restrict_pages:
-            driver.switch_to.window(window)
-            
-
-
-    print("WebDriver Check")
-    current_title = driver.get_title()
-    print(f"Current g title: {current_title}")
-    # Wait for the email input by type attribute
-    email_input = WebDriverWait(driver, 60).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, 'input[type="email"]'))
-    )
-    email_input.send_keys(email)
-
-    # Locate the password input by type attribute
-    password_input = driver.find_element(By.CSS_SELECTOR, 'input[type="password"]')
-    password_input.send_keys(password)
-
-    # Step 3: Wait for the CAPTCHA checkbox to be validated
-    print("CAPTCHA Check")
-    if captcha_image:
-        for i in range(1, 200):
-            time.sleep(1)
-            sb1.execute_script("window.scrollTo(0, 1000);")
-            cloudflare(driver, True)
-            try:
-                x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
-                if x and y: 
-
-                    login_button = driver.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
-                    #click_element_with_pyautogui(driver, login_button)
-                    sb1.uc_click('button[type="submit"]')
-                    pyautogui.press('enter')
-                    #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
-                    #login_button.click()
-                    #login_button.click()
-                    return
-            except Exception as e:
-                print(f'ERR:{e}') 
-
-    print("✅ CAPTCHA validated")
-
-    sb1.uc_click('button[type="submit"]')
-    pyautogui.press('enter')
-    print("🚀 Login attempt made!")
-
-
-
-bitmoon_window = None
-earnpp_window = None
-claimcoin_window = None
-feyorra_window = None
-
-
-
-def close_extra_windows(driver, keep_window_handles):
-    current_window = driver.current_window_handle
-    all_windows = driver.window_handles
-    for window in all_windows:
-        if window not in keep_window_handles:
-            driver.switch_to.window(window)
-            driver.close()
-    driver.switch_to.window(current_window)
-
-def handle_captcha_and_cloudflare(driver):
-    driver.uc_gui_click_captcha()
-    driver.uc_gui_handle_captcha()
-    cloudflare(driver)
-
-def handle_site(driver, url, expected_title, not_expected_title , function, window_list ,captcha_handling=True):
-    driver.uc_open_with_reconnect(url, 5)
-    ready = False
-    while not ready:
-        time.sleep(1)
-        all_windows = driver.window_handles
-        for window in all_windows:
-            if window not in window_list:
-                driver.switch_to.window(window)
-        current_title = driver.get_title()
-        print(f"Current title: {current_title}")
-
-        if not_expected_title == current_title:
-            if function == 1:
-                login_to_faucet('https://earn-pepe.com/login', sb1, 'khabibmakanzie@gmail.com', 'CQ2pNwi3zsFgat@', 'cloudflare_success', window_list)
-            elif function == 2:
-                login_to_faucet('https://feyorra.site/login', sb1, 'khabibmakanzie@gmail.com', 'D6.6fz9r5QVyziT', 'cloudflare_success', window_list)
-            elif function == 3:
-                login_to_faucet('https://claimcoin.in/login', sb1, 'khabibmakanzie@gmail.com', '@$uiJjkFfZU3K@e', None, window_list) #'not_a_robot'
-
-        elif expected_title == current_title:
-            if driver.current_window_handle not in window_list:
-                ready = True
-
-        elif 'Just' in current_title:
-            if captcha_handling:
-                handle_captcha_and_cloudflare(driver)
+    
+    # Loop through the number of pieces and save each slice
+    for i in range(num_pieces):
+        # Calculate the bounding box for each piece
+        left = i * piece_width
+        right = left + piece_width
+        piece = image.crop((left, 0, right, img_height))
         
+        # Save the piece
+        piece_filename = os.path.join(output_dir, f"piece_{i+1}.png")
+        piece.save(piece_filename)
+        print(f"Saved {piece_filename}")
+
+def generate_transformations(image):
+    """Generate rotated and flipped versions of the image."""
+    transformations = []
+    transformations.append(image)  # Original image
+    transformations.append(cv2.rotate(image, cv2.ROTATE_90_CLOCKWISE))  # 90 degrees clockwise
+    transformations.append(cv2.rotate(image, cv2.ROTATE_180))  # 180 degrees
+    transformations.append(cv2.rotate(image, cv2.ROTATE_90_COUNTERCLOCKWISE))  # 90 degrees counterclockwise
+    transformations.append(cv2.flip(image, 0))  # Flip vertically
+    transformations.append(cv2.flip(image, 1))  # Flip horizontally
+    transformations.append(cv2.flip(image, -1))  # Flip both ways
+    return transformations
+
+def find_least_similar_image(image_dir):
+    if not os.path.isdir(image_dir):
+        print("Directory does not exist.")
+        return False
+
+    image_files = [f for f in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, f))]
+
+    if len(image_files) == 0:
+        print("No images found in the directory.")
+        return False
+
+    threshold = 0.7
+    similarities = {}
+    similarity_groups = {}
+
+    # Load each image and generate transformations
+    transformed_images = {}
+    for img_file in image_files:
+        img_path = os.path.join(image_dir, img_file)
+        img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+        transformed_images[img_file] = generate_transformations(img)
+
+    # Compare images including transformations
+    for i, (img_file, img_transforms) in enumerate(transformed_images.items()):
+        for j in range(i + 1, len(image_files)):
+            other_img_file = image_files[j]
+            other_img_transforms = transformed_images[other_img_file]
+
+            for img1 in img_transforms:
+                for img2 in other_img_transforms:
+                    # Check sizes before comparing
+                    if img1.shape[0] <= img2.shape[0] and img1.shape[1] <= img2.shape[1]:
+                        # Compute similarity
+                        similarity = cv2.matchTemplate(img1, img2, cv2.TM_CCOEFF_NORMED)[0][0]
+                        similarities[(img_file, other_img_file)] = similarity
+
+                        if similarity >= threshold:
+                            similarity_groups.setdefault(img_file, []).append(other_img_file)
+                            similarity_groups.setdefault(other_img_file, []).append(img_file)
+
+    if len(similarity_groups) == 0:
+        print("No similar image combinations found.")
+        return False
+
+    least_similar_image = None
+    min_similar_count = float('inf')
+    for img_file, similar_imgs in similarity_groups.items():
+        similar_count = len(similar_imgs)
+
+        if similar_count < min_similar_count:
+            min_similar_count = similar_count
+            least_similar_image = img_file
+
+    for img_file in image_files:
+        if img_file not in similarity_groups:
+            print(f"Image {img_file} has no similar combination and is unique.")
+            return f'{image_dir}/{img_file}'
+
+    print(f"Image {least_similar_image} has the least similar combinations.")
+    return f'{image_dir}/{least_similar_image}'
+
+def solve_least_captcha(image):
+    split_image_by_width('element_screenshot.png', 5, output_dir="output_pieces")
+    val = find_least_similar_image("output_pieces")
+    if val:
+        print('similar slot 5')
+        return val
+    split_image_by_width('element_screenshot.png', 6, output_dir="output_pieces")
+    val = find_least_similar_image("output_pieces")
+    if val:
+        print('similar slot 6')
+        return val
+    split_image_by_width('element_screenshot.png', 7, output_dir="output_pieces")
+    val = find_least_similar_image("output_pieces")
+    if val:
+        print('similar slot 7')
+        return val
+    split_image_by_width('element_screenshot.png', 8, output_dir="output_pieces")
+    val = find_least_similar_image("output_pieces")
+    if val:
+        print('similar slot 8')
+        return val
+
+    return False
+
+
+
+def solve_least_img(driver):
+    for i in range(15):
+        pyautogui.moveTo(400, 400)
+        time.sleep(1)
+        driver.switch_to.default_content()
+        scroll_height = driver.execute_script("return document.body.scrollHeight")
+        print(scroll_height, 'height')
+        driver.execute_script(f"window.scrollTo(0, {scroll_height});")
+        time.sleep(1)
+        
+        if driver.is_element_visible('img#rscaptcha_img'):
+            print('rscaptcha Found')
+            capture_element_screenshot(sb1, "img#rscaptcha_img")
+            val = solve_least_captcha("element_screenshot.png")
+            print('val', val)
+            if val:
+                try:
+                    x, y = pyautogui.locateCenterOnScreen(val, confidence=0.85)
+                    if x and y:
+                        pyautogui.click(x, y)
+
+                        return True
+                except Exception as e:
+                    print(e)
+            else:
+                return None
+
+            
+        #time.sleep(3)
+        if driver.is_element_visible('div.iconcaptcha-modal__body-title'):
+            print('iconcaptcha-modal__body-title Found')
+            if driver.is_element_visible('div.iconcaptcha-modal__body-title'):
+                
+                text = driver.get_text('div.iconcaptcha-modal__body-title')
+                print(text,'text')
+                if 'Verification complete' in text or 'VERIFICATION COMPLETE' in text:
+                    return True
+            for i in range(5):
+                if driver.is_element_visible('div.iconcaptcha-modal__body-title'):
+                    text = driver.get_text('div.iconcaptcha-modal__body-title')
+                    print(text,'text')
+                    if 'Verification complete' in text or 'VERIFICATION COMPLETE' in text:
+                        return True
+                if driver.is_element_visible('div.iconcaptcha-modal__body-title'):
+                    print('still found iconcaptcha-modal__body-title')
+                    driver.uc_click("div.iconcaptcha-modal__body-title")
+                    #click_element_with_pyautogui(driver, "div.iconcaptcha-modal__body-title")
+                    time.sleep(3)
+                else:
+                    print('not found body titile')
+                    break
+        print('hellow') 
+        if driver.is_element_visible('canvas.iconcaptcha-modal__body-icons'):
+            print('canvas.iconcaptcha-modal__body-icons Found')    
+            capture_element_screenshot(sb1, "canvas.iconcaptcha-modal__body-icons")
+            val = solve_least_captcha("element_screenshot.png")
+            print('val', val)
+            if val:
+                try:
+                    x, y = pyautogui.locateCenterOnScreen(val, confidence=0.85)
+                    if x and y:
+                        pyautogui.click(x, y)
+
+                        #return True
+                except Exception as e:
+                    print(e)
+            else:
+                return None
+        elif driver.is_element_visible('iconcaptcha-modal__body-selection'):
+            print('canvas.iconcaptcha-modal__body-selection Found THo')  
+            print('canvas.iconcaptcha-modal__body-selection')    
+            capture_element_screenshot(sb1, "canvas.iconcaptcha-modal__body-selection")
+            val = solve_least_captcha("element_screenshot.png")
+            print('val', val)
+            if val:
+                try:
+                    x, y = pyautogui.locateCenterOnScreen(val, confidence=0.85)
+                    if x and y:
+                        pyautogui.click(x, y)
+
+                        #return True
+                except Exception as e:
+                    print(e)
+            else:
+                return None
         else:
-            print(f"{current_title} is not the expected title. Reconnecting...")
-            all_windows = driver.window_handles
-            for window in all_windows:
-                if window not in window_list:
-                    driver.switch_to.window(window)
-            driver.uc_open_with_reconnect(url, 5)
-            if captcha_handling:
-                handle_captcha_and_cloudflare(driver)
+            print('not found enything')
+            driver.execute_script("window.scrollTo(0, 1000);")
 
-    return driver.current_window_handle
+     
+      
+def withdraw_faucet(driver, sitekey):
 
+    try:
+        current_window = sb1.current_window_handle
+        all_windows = sb1.window_handles
+        for window in all_windows:
+            if window != current_window:
+                sb1.switch_to.window(window)
+                sb1.close()  # Close the tab
+        sb1.switch_to.window(current_window)
+
+        if sitekey == 1:
+            print('Strting PePe withdraw')
+            driver.uc_open('https://earn-pepe.com/member/faucetpay')
+            time.sleep(5)
+            for i in range(1,10):
+                time.sleep(1)
+                title =sb1.get_title()
+                print(title)
+                if 'Just' in title:
+                    cloudflare(sb1, login = False)
+                elif 'Faucetpay Transfer' in title:
+                    print(title, 'FaucetPay found')
+                    response_messege('EarnPP FaucetPay Loaded')
+                    pyautogui.click(605, 754) #trx
+                    #pyautogui.click(967, 754)
+                    time.sleep(5)
+                    driver.execute_script(f"window.scrollTo(0, 1000);")
+                    time.sleep(2)
+                    solve_icon_captcha(driver)
+                    time.sleep(2)
+                    driver.uc_click('button.claim-button')
+                    driver.uc_open('https://earn-pepe.com/member/faucet')
+                    response_messege('EarnPP FaucetPay Withdrawed')
+                    #response_messege('Started')
+                    query = {"type": "main"}
+                    update = {"$set": {"request": 'reset'}}
+                    result = collection.update_one(query, update)
+                    return
+
+                else:
+                    print(title, 'restarting')
+                    driver.uc_open('https://earn-pepe.com/member/faucetpay')
+                    time.sleep(10)
+
+    
+        
+        if sitekey == 2:
+            print('Strting Feyorra withdraw')
+            driver.uc_open('https://feyorra.site/member/faucetpay')
+            time.sleep(5)
+            for i in range(1,10):
+                time.sleep(1)
+                title =sb1.get_title()
+                print(title)
+                if 'Just' in title:
+                    cloudflare(sb1, login = False)
+                elif 'Faucetpay Transfer' in title:
+                    print(title, 'FaucetPay found')
+                    response_messege('Feyorra FaucetPay Loaded')
+                    pyautogui.click(1288, 517) #trx
+                    #pyautogui.click(679, 704) #doge
+                    time.sleep(5)
+                    driver.execute_script(f"window.scrollTo(0, 700);")
+                    time.sleep(2)
+                    cloudflare(driver, True)
+                    time.sleep(2)
+                    driver.uc_click('button.claim-button')
+                    driver.uc_open('https://feyorra.site/member/faucet')
+                    response_messege('Feyorra FaucetPay Withdrawed')
+                    #response_messege('Started')
+                    query = {"type": "main"}
+                    update = {"$set": {"request": 'reset'}}
+                    result = collection.update_one(query, update)
+                    return
+
+                else:
+                    print(title, 'restarting')
+                    driver.uc_open('https://feyorra.site/member/faucetpay')
+                    time.sleep(10)
+
+
+        if sitekey == 3:
+            print('Strting ClaimC withdraw')
+            driver.uc_open('https://claimcoin.in/withdraw')
+            time.sleep(5)
+            for i in range(1,10):
+                time.sleep(1)
+                title =sb1.get_title()
+                print(title)
+                if 'Just' in title:
+                    cloudflare(sb1, login = False)
+                elif 'Withdraw' in title:
+                    print(title, 'FaucetPay found')
+                    response_messege('ClaimC FaucetPay Loaded')
+                    pyautogui.click(1381, 602) #trx
+                    #pyautogui.click(564, 737) #doge
+                    time.sleep(5)
+                    driver.execute_script(f"window.scrollTo(0, 1000);")
+                    time.sleep(2)
+                    response_messege('ClaimC Captcha Withdrawed')
+                    solve_least_img(driver)
+                    time.sleep(2)
+                    password_input = driver.find_element(By.CSS_SELECTOR, 'input[type="text"][name="wallet"].form-control')
+                    password_input.send_keys(claimc_email)
+                    time.sleep(2)
+                    driver.uc_click('button.btn.btn-dark')
+                    driver.uc_open('https://claimcoin.in/withdraw')
+                    response_messege('ClaimC FaucetPay Withdrawed')
+                    #response_messege('Started')
+                    query = {"type": "main"}
+                    update = {"$set": {"request": 'reset'}}
+                    result = collection.update_one(query, update)
+                    return
+
+                else:
+                    print(title, 'restarting')
+                    driver.uc_open('https://claimcoin.in/withdraw')
+                    time.sleep(10)
+
+    
+    
+    except Exception as e:
+        print(f'ERR on withdraw{e}')
+        response_messege(f'EarnPP FaucetPay ERR on withdraw{e}')
+    
+
+def faucet_limit_check(driver, sitekey):
+    try:
+        if driver.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
+            pass
+    except Exception as e:
+        print(f'LIMITG:ERR{e}')
 # Main logic
 if run_sb1:
     sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path,  page_load_strategy='none')
     sb1.maximize_window()
-    sb1.open("chrome://extensions/")
+    sb1.uc_open("chrome://extensions/")
+    current_window = sb1.current_window_handle
+    sb1.open_new_window()
+    current_window2 = sb1.current_window_handle
+    sb1.switch_to.window(current_window)
+    sb1.close()  # Close the tab
+    sb1.switch_to.window(current_window2)
+    sb1.uc_open("chrome://extensions/")
+
     print(sb1.get_title())
     
     if fresh >= 3:
@@ -890,29 +1845,41 @@ def open_faucets():
     sb1.switch_to.window(current_window)
     time.sleep(1)
     #ipfixer()
+    response_messege('Fixing IP')
     ip_required = fix_ip(sb1, server_name1)
     ip_address = get_ip(sb1)
-
+    response_messege('EarnPP Loging')
     if earnpp:
+
         earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [])
         print(f"EarnPP window handle: {earnpp_window}")
-
+    else:
+        earnpp_window = None
+    response_messege('Feyorra Loging')
     if feyorra:
         sb1.open_new_window()
         feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Home | Feyorra", 2, [earnpp_window])
         print(f"Feyorra window handle: {feyorra_window}")
-
+    else:
+        feyorra_window = None
+    response_messege('ClaimC Loging')
     if claimcoin:
         sb1.open_new_window()
         claimcoin_window = handle_site(sb1, "https://claimcoin.in/faucet", "Faucet | ClaimCoin - ClaimCoin Faucet", "ClaimCoin - MultiCurrency Crypto Earning Platform", 3, [earnpp_window, feyorra_window])
         print(f"ClaimCoin window handle: {claimcoin_window}")
+    else:
+        claimcoin_window = None
 
+    response_messege('Started')
+    query = {"type": "main"}
+    update = {"$set": {"request": 'mainscript'}}
+    result = collection.update_one(query, update)
 
     all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
     close_extra_windows(sb1, all_window_handles)
 
-    print(f"Windows: EarnPP: {earnpp_window}, Feyorra: {feyorra_window}, ClaimCoin: {claimcoin_window}")
-    return earnpp_window, feyorra_window, claimcoin_window, ip_address, ip_required
+    print(f"Windows: EarnPP: {earnpp_window}, Feyorra: {feyorra_window}, ClaimCoin: {claimcoin_window}, Baymack:{baymack_window}")
+    return earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required
 
 
 def debug_messages(messages):
@@ -923,119 +1890,195 @@ earnpp_count = 0
 feyorra_count = 0
 claimcoin_count = 0
 
-earnpp_window, feyorra_window, claimcoin_window, ip_address, ip_required = open_faucets()
+earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
 reset_count = 0
 previous_reset_count = 0
 time.sleep(2)
 start_time = time.time()
+start_time3 = time.time()
+earnpp_coins = None
+feyorra_coins = None
+claimc_coins = None
+print('Starting Loop')
+
 while True:
     try:
-        ip_address = get_ip(sb1)
-        debug_messages(f'Ip address Found:{ip_address}')
-        if ip_address == ip_required:
-            debug_messages(f'Ip address Match:{ip_address}')
+        mainscript = control_panel()
+        print('control_panel', mainscript)
+        if mainscript == 1:
+            ip_address = get_ip(sb1)
+            debug_messages(f'Ip address Found:{ip_address}')
+            if ip_address == ip_required:
+                debug_messages(f'Ip address Match:{ip_address}')
 
-            all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
-            close_extra_windows(sb1, all_window_handles)
+                all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
+                close_extra_windows(sb1, all_window_handles)
 
+                print(f'Reset_count:{reset_count}')
+                if reset_count > 15:
+                    print('reset count higher')
+                    earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
+                    reset_count = 0
 
-            if reset_count > 20:
-                earnpp_window, feyorra_window, claimcoin_window, ip_address, ip_required = open_faucets()
+                if previous_reset_count == reset_count:
+                    reset_count = 0
+                else:
+                    previous_reset_count = reset_count
 
-            if previous_reset_count == reset_count:
-                reset_count = 0
-            else:
-                previous_reset_count = reset_count
-            if earnpp:
-                try:
-                    debug_messages(f'Switching Pages to EarnPP')
-                    sb1.switch_to.window(earnpp_window)
-                    debug_messages(f'Getting Pages Titile:EarnPP')
-                    title =sb1.get_title()
-                    if 'Faucet | Earn-pepe' in title:
-                        debug_messages(f'Solving Icon Captcha on EarnPP')
-                        solve_icon_captcha(sb1)
-                        debug_messages(f'Solved Icon Captcha on EarnPP')
-
-                    elif 'Just' in title:
-                        debug_messages(f'Just.. Found on EarnPP')
-                        sb1.uc_gui_click_captcha()
-                        sb1.uc_gui_handle_captcha()
-                        cloudflare(sb1)
-                        debug_messages(f'Just Fixed EarnPP')
-                    else:
-                        debug_messages(f'EarnPP not Found:{title} | reset:{reset_count}')
-                        reset_count +=1
-
-                except Exception as e:
-                    debug_messages(f'ERR on EarnPP:{e}')
-                    reset_count +=1
-            
-            if feyorra:
-                try:
-                    debug_messages(f'Switching Pages to Feyorra')
-                    sb1.switch_to.window(feyorra_window)
-                    debug_messages(f'Getting Pages Titile:Feyorra')
-                    pyautogui.press('enter')
-                    title =sb1.get_title()
-
-                    if 'Faucet | Feyorra' in title:
-                        debug_messages(f'Solving Icon Captcha on Feyorra')
-                        solve_icon_captcha(sb1)
-                            
-                    elif 'Just' in title:
-                        debug_messages(f'Just.. Found on Feyorra')
-                        sb1.uc_gui_click_captcha()
-                        sb1.uc_gui_handle_captcha()
-                        cloudflare(sb1)
-                        debug_messages(f'Just Fixed Feyorra')
-                    else:
-                        debug_messages(f'Feyorra not Found:{title} | reset:{reset_count}')
-                        reset_count +=1
-                except Exception as e:
-                    debug_messages(f'ERR on Feyorra:{e}')
-                    reset_count +=1
-
-            if claimcoin:
-                try:
-                    debug_messages(f'Time capture in ClaimCoins')
-                    elapsed_time = time.time() - start_time
-                    seconds_only = int(elapsed_time)
-                    debug_messages(f'ClaimCoins Seconds:{seconds_only}')
-                    if seconds_only > 12:
-                        debug_messages(f'Switching Pages to ClaimCoins:{seconds_only}')
-                        sb1.switch_to.window(claimcoin_window)
-                        debug_messages(f'Getting Pages Titile:ClaimCoins')
+                if earnpp:
+                    try:
+                        debug_messages(f'Switching Pages to EarnPP')
+                        sb1.switch_to.window(earnpp_window)
+                        debug_messages(f'Getting Pages Titile:EarnPP')
                         title =sb1.get_title()
-                        if 'Faucet | ClaimCoin' in title:
-                            debug_messages(f'Solving Icon Captcha on ClaimCoins')
-                            cc_faucet =  find_and_click_collect_button(sb1)
-                            if cc_faucet:
-                                debug_messages(f'Solved Icon Captcha on Claimcoins')
-                                claimcoin_count = 1 
-                                start_time = time.time()
-                            sb1.switch_to.window(claimcoin_window)
+                        if 'Faucet | Earn-pepe' in title:
+                            debug_messages(f'Solving Icon Captcha on EarnPP')
+                            solve_icon_captcha(sb1)
+                            debug_messages(f'Solved Icon Captcha on EarnPP')
+                            val = get_coins(sb1, 1)
+                            if val:
+                                earnpp_coins = val
+
+                        elif 'Lock' in title:
+                            debug_messages(f'Lock.. Found on EarnPP')
+                            response_messege('Lock.. Found on EarnPP')
                         elif 'Just' in title:
-                            debug_messages(f'Just.. Found on Claimcoins')
-                            sb1.uc_gui_click_captcha()
-                            sb1.uc_gui_handle_captcha()
-                            cloudflare(sb1)
-                            debug_messages(f'Just Fixed Claimcoins')
+                            debug_messages(f'Just.. Found on EarnPP')
+
+                            cloudflare(sb1, login = False)
+                            debug_messages(f'Just Fixed EarnPP')
                         else:
-                            debug_messages(f'ClamCoim not Found:{title} | reset:{reset_count}')
+                            debug_messages(f'EarnPP not Found:{title} | reset:{reset_count}')
                             reset_count +=1
+
+                    except Exception as e:
+                        if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
+                            debug_messages(f'EarnPP Limit Reached')
+                            response_messege('EarnPP Limit Reached')
+                        else:
+                            debug_messages(f'ERR on EarnPP:{e}')
+                            reset_count +=1
+                
+                if feyorra:
+                    try:
+                        debug_messages(f'Switching Pages to Feyorra')
+                        sb1.switch_to.window(feyorra_window)
+                        debug_messages(f'Getting Pages Titile:Feyorra')
+                        pyautogui.press('enter')
+                        title =sb1.get_title()
+
+                        if 'Faucet | Feyorra' in title:
+                            debug_messages(f'Solving Icon Captcha on Feyorra')
+                            solve_icon_captcha(sb1)
+                            val = get_coins(sb1, 2)
+                            if val:
+                                feyorra_coins = val
+                                
+                        elif 'Just' in title:
+                            debug_messages(f'Just.. Found on Feyorra')
+                            cloudflare(sb1, login = False)
+                            debug_messages(f'Just Fixed Feyorra')
+
+                        elif 'Lock' in title:
+                            debug_messages(f'Lock.. Found on Feyorra')
+                            response_messege('Lock.. Found on Feyorra')
+                        else:
+                            debug_messages(f'Feyorra not Found:{title} | reset:{reset_count}')
+                            reset_count +=1
+                    except Exception as e:
+                        if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
+                            debug_messages(f'Feyorra Limit Reached')
+                            response_messege('Feyorra Limit Reached')
+                        else:
+                            debug_messages(f'ERR on Feyorra:{e}')
+                            reset_count +=1
+
+                if claimcoin:
+                    try:
+                        debug_messages(f'Time capture in ClaimCoins')
+                        elapsed_time = time.time() - start_time
+                        seconds_only = int(elapsed_time)
+                        debug_messages(f'ClaimCoins Seconds:{seconds_only}')
+                        if seconds_only > 14:
+                            debug_messages(f'Switching Pages to ClaimCoins:{seconds_only}')
+                            sb1.switch_to.window(claimcoin_window)
+                            debug_messages(f'Getting Pages Titile:ClaimCoins')
+                            title =sb1.get_title()
+                            if 'Faucet | ClaimCoin' in title:
+                                debug_messages(f'Solving Icon Captcha on ClaimCoins')
+                                val = get_coins(sb1, 3)
+                                if val:
+                                    claimc_coins = val
+                                cc_faucet =  find_and_click_collect_button(sb1)
+                                if cc_faucet:
+                                    debug_messages(f'Solved Icon Captcha on Claimcoins')
+                                    claimcoin_count = 1 
+                                    start_time = time.time()
+                                sb1.switch_to.window(claimcoin_window)
+                            elif 'Just' in title:
+                                debug_messages(f'Just.. Found on Claimcoins')
+
+                                cloudflare(sb1, login = False)
+                                debug_messages(f'Just Fixed Claimcoins')
+
+                            elif 'Lock' in title:
+                                debug_messages(f'Lock.. Found on Claimcoins')
+                                response_messege('Lock.. Found on Claimcoins')
+                            else:
+                                debug_messages(f'ClamCoim not Found:{title} | reset:{reset_count}')
+                                reset_count +=1
+                        
+                    except Exception as e:
+                        debug_messages(f'ERR on ClamCoim:{e}')
+                        reset_count +=1
+
+
+                elapsed_time3 = time.time() - start_time3
+                seconds_only3 = int(elapsed_time3)
+                debug_messages(f'MangoDB Seconds:{seconds_only3}')
+                if seconds_only3 > 60:
+                    print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}')
+                    if earnpp_coins and feyorra_coins and claimc_coins:
+                        start_time3 = time.time()
+                        insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins)
                     
-                except Exception as e:
-                    debug_messages(f'ERR on ClamCoim:{e}')
-                    reset_count +=1
+
+                else:
+                    print(f'MngoDB:{seconds_only3}')
+            else:
+                print('Ip fucked')
+                reset_count +=1
+                #ip_required = fix_ip(sb1, server_name1)
+                #ip_address = get_ip(sb1)
+    
+
+        if mainscript == 2:
+            earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
+            reset_count = 0
+
+        if mainscript == 3:
+            earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
+            reset_count = 0
 
 
+        if mainscript == 4:
+            withdraw_faucet(sb1, 1) 
+
+        if mainscript == 6:
+            withdraw_faucet(sb1, 2) 
+        if mainscript == 7:
+            withdraw_faucet(sb1, 3) 
+
+        if mainscript == 8:
+            sb1.quit()
+            break
+
+        if mainscript == 5:
+            for i in range(1,6):
+                time.sleep(1)
+                print('Pause...')
 
 
-
-        else:
-            print('Ip fucked')
-            #ip_required = fix_ip(sb1, server_name1)
-            #ip_address = get_ip(sb1)
     except Exception as e:
         print(f'Oh Hell No{e}')
+        reset_count +=1

@@ -1956,7 +1956,7 @@ while True:
                         elapsed_time = time.time() - start_time
                         seconds_only = int(elapsed_time)
                         debug_messages(f'ClaimCoins Seconds:{seconds_only}')
-                        if seconds_only > 12:
+                        if seconds_only > 14:
                             debug_messages(f'Switching Pages to ClaimCoins:{seconds_only}')
                             sb1.switch_to.window(claimcoin_window)
                             debug_messages(f'Getting Pages Titile:ClaimCoins')

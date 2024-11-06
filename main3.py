@@ -1736,6 +1736,13 @@ def withdraw_faucet(driver, sitekey):
         print(f'ERR on withdraw{e}')
         response_messege(f'EarnPP FaucetPay ERR on withdraw{e}')
     
+
+def faucet_limit_check(driver, sitekey):
+    try:
+        if driver.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
+            pass
+    except Exception as e:
+        print(f'LIMITG:ERR{e}')
 # Main logic
 if run_sb1:
     sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path,  page_load_strategy='none')
@@ -1864,7 +1871,7 @@ while True:
                 all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
                 close_extra_windows(sb1, all_window_handles)
 
-
+                print(f'Reset_count:{reset_count}')
                 if reset_count > 15:
                     print('reset count higher')
                     earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
@@ -1902,8 +1909,12 @@ while True:
                             reset_count +=1
 
                     except Exception as e:
-                        debug_messages(f'ERR on EarnPP:{e}')
-                        reset_count +=1
+                        if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
+                            debug_messages(f'EarnPP Limit Reached')
+                            response_messege('EarnPP Limit Reached')
+                        else:
+                            debug_messages(f'ERR on EarnPP:{e}')
+                            reset_count +=1
                 
                 if feyorra:
                     try:
@@ -1932,8 +1943,12 @@ while True:
                             debug_messages(f'Feyorra not Found:{title} | reset:{reset_count}')
                             reset_count +=1
                     except Exception as e:
-                        debug_messages(f'ERR on Feyorra:{e}')
-                        reset_count +=1
+                        if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
+                            debug_messages(f'Feyorra Limit Reached')
+                            response_messege('Feyorra Limit Reached')
+                        else:
+                            debug_messages(f'ERR on Feyorra:{e}')
+                            reset_count +=1
 
                 if claimcoin:
                     try:

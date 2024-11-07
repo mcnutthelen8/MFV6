@@ -1696,7 +1696,7 @@ def withdraw_faucet(driver, sitekey):
                     response_messege('EarnPP FaucetPay Withdrawed')
                     #response_messege('Started')
                     query = {"type": "main"}
-                    update = {"$set": {"request": 'reset'}}
+                    update = {"$set": {"request": 'ipfixer'}}
                     result = collection.update_one(query, update)
                     return
 
@@ -1732,7 +1732,7 @@ def withdraw_faucet(driver, sitekey):
                     response_messege('Feyorra FaucetPay Withdrawed')
                     #response_messege('Started')
                     query = {"type": "main"}
-                    update = {"$set": {"request": 'reset'}}
+                    update = {"$set": {"request": 'ipfixer'}}
                     result = collection.update_one(query, update)
                     return
 
@@ -1771,7 +1771,7 @@ def withdraw_faucet(driver, sitekey):
                     response_messege('ClaimC FaucetPay Withdrawed')
                     #response_messege('Started')
                     query = {"type": "main"}
-                    update = {"$set": {"request": 'reset'}}
+                    update = {"$set": {"request": 'ipfixer'}}
                     result = collection.update_one(query, update)
                     return
 
@@ -1917,14 +1917,16 @@ while True:
         mainscript = control_panel()
         print('control_panel', mainscript)
         if mainscript == 1:
-            ip_address = get_ip(sb1)
+            
             debug_messages(f'Ip address Found:{ip_address}')
-            if reset_count_isacc >= 4:
+            if reset_count_isacc >= 5:
                 response_messege('oops.. reset_count_isacc triggers')
                 mysterium_vpn_connect(server_name1, sb1)
+                
                 reset_count = 16
                 reset_count_isacc = 0
-                
+
+            ip_address = get_ip(sb1)    
             if reset_count > 15:
                 print('reset count higher')
                 earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
@@ -2084,8 +2086,12 @@ while True:
             reset_count = 0
 
         if mainscript == 3:
-            earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
-            reset_count = 0
+            response_messege('Ip Resettinggg...')
+            reset_count_isacc = 10
+            query = {"type": "main"}
+            update = {"$set": {"request": 'mainscript'}}
+            result = collection.update_one(query, update)
+
 
 
         if mainscript == 4:

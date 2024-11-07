@@ -329,7 +329,7 @@ def get_ipscore(ip):
 
         # Ensure fraud_score is an integer for comparison
         if fraud_score:
-            if vpn == False and tor == False and active_vpn == False and active_tor == False and fraud_score < 90:
+            if vpn == False and tor == False and fraud_score < 90: #and active_vpn == False and active_tor == False and fraud_score < 90:
                 return True
             else:
                 return None

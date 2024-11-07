@@ -1234,7 +1234,10 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         elif expected_title in current_title:
             if driver.current_window_handle not in window_list:
                 ready = True
-
+        elif 'lock' in current_title:
+            if driver.current_window_handle not in window_list:
+                ready = True
+            
         elif 'Just' in current_title:
             if captcha_handling:
                 handle_captcha_and_cloudflare(driver)
@@ -1899,6 +1902,7 @@ claimcoin_count = 0
 
 earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
 reset_count = 0
+reset_count_isacc = 0
 previous_reset_count = 0
 time.sleep(2)
 start_time = time.time()
@@ -1915,10 +1919,17 @@ while True:
         if mainscript == 1:
             ip_address = get_ip(sb1)
             debug_messages(f'Ip address Found:{ip_address}')
+            if reset_count_isacc >= 4:
+                response_messege('oops.. reset_count_isacc triggers')
+                mysterium_vpn_connect(server_name1, sb1)
+                reset_count = 16
+                reset_count_isacc = 0
+                
             if reset_count > 15:
                 print('reset count higher')
                 earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
                 reset_count = 0
+                reset_count_isacc = 0
 
             if previous_reset_count == reset_count:
                 reset_count = 0
@@ -2007,12 +2018,20 @@ while True:
                         elapsed_time = time.time() - start_time
                         seconds_only = int(elapsed_time)
                         debug_messages(f'ClaimCoins Seconds:{seconds_only}')
-                        if seconds_only > 14:
+                        if claimcoin: #seconds_only > 14:
                             debug_messages(f'Switching Pages to ClaimCoins:{seconds_only}')
                             sb1.switch_to.window(claimcoin_window)
                             debug_messages(f'Getting Pages Titile:ClaimCoins')
                             title =sb1.get_title()
                             if 'Faucet | ClaimCoin' in title:
+                                if sb1.is_text_visible(' Invalid Captcha') or sb1.is_text_visible('Invalid Captcha'):
+                                    debug_messages(f' Invalid Captcha | reset:{reset_count}')
+                                    reset_count_isacc +=1
+                                else:
+                                    if sb1.is_text_visible('Ready'):
+                                        pass
+                                    else:
+                                        reset_count_isacc = 0
                                 debug_messages(f'Solving Icon Captcha on ClaimCoins')
                                 val = get_coins(sb1, 3)
                                 if val:
@@ -2090,3 +2109,4 @@ while True:
     except Exception as e:
         print(f'Oh Hell No{e}')
         reset_count +=1
+        

@@ -1924,6 +1924,9 @@ while True:
             if reset_count_isacc >= 5:
                 response_messege('oops.. reset_count_isacc triggers')
                 mysterium_vpn_connect(server_name1, sb1)
+                time.sleep(7)
+                mysterium_vpn_connect(server_name1, sb1)
+                time.sleep(5)
                 
                 reset_count = 16
                 reset_count_isacc = 0

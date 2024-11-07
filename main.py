@@ -38,7 +38,7 @@ import shutil
 import os
 import math
 
-# Example usage23
+# Example usage
 
 # Initialize the argument parser
 parser = argparse.ArgumentParser(description="Process some arguments.")
@@ -1846,7 +1846,7 @@ def open_faucets():
     time.sleep(1)
     #ipfixer()
     response_messege('Fixing IP')
-    ip_required = ipfixer(sb1, server_name1)
+    ip_required = ipfixer()
     ip_address = get_ip(sb1)
     response_messege('EarnPP Loging')
     if earnpp:

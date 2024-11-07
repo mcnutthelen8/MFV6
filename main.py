@@ -1222,7 +1222,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
             elif function == 2:
                 login_to_faucet('https://feyorra.site/login', sb1, feyorra_email, feyorra_pass, 'cloudflare_success', window_list, 'button#loginBtn')
             elif function == 3:
-                login_to_faucet('https://claimcoin.in/login', sb1, claimc_email, claimc_pass, None, window_list, 'button[type="submit"]') #'not_a_robot'
+                login_to_faucet('https://claimcoin.in/login', sb1, claimc_email, claimc_pass,  'cloudflare_success', window_list, 'button[type="submit"]') #'not_a_robot'
             elif function == 6:
                 login_to_faucet('https://feyorra.top/login', sb1, 'khabibmakanzie@gmail.com', '%aYYcsSfcYjN%5x', 'rscaptcha', window_list, 'button[type="submit"]') #'not_a_robot'
 
@@ -1787,6 +1787,8 @@ def faucet_limit_check(driver, sitekey):
     except Exception as e:
         print(f'LIMITG:ERR{e}')
 # Main logic
+
+
 if run_sb1:
     sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path,  page_load_strategy='none')
     sb1.maximize_window()
@@ -1846,7 +1848,8 @@ def open_faucets():
     time.sleep(1)
     #ipfixer()
     response_messege('Fixing IP')
-    ip_required = ipfixer()
+    ipfixer()
+    ip_required = fix_ip(sb1, server_name1)
     ip_address = get_ip(sb1)
     response_messege('EarnPP Loging')
     if earnpp:

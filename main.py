@@ -1908,6 +1908,16 @@ while True:
         if mainscript == 1:
             ip_address = get_ip(sb1)
             debug_messages(f'Ip address Found:{ip_address}')
+            if reset_count > 15:
+                print('reset count higher')
+                earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
+                reset_count = 0
+
+            if previous_reset_count == reset_count:
+                reset_count = 0
+            else:
+                previous_reset_count = reset_count
+
             if ip_address == ip_required:
                 debug_messages(f'Ip address Match:{ip_address}')
 
@@ -1915,15 +1925,6 @@ while True:
                 close_extra_windows(sb1, all_window_handles)
 
                 print(f'Reset_count:{reset_count}')
-                if reset_count > 15:
-                    print('reset count higher')
-                    earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
-                    reset_count = 0
-
-                if previous_reset_count == reset_count:
-                    reset_count = 0
-                else:
-                    previous_reset_count = reset_count
 
                 if earnpp:
                     try:

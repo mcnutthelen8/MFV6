@@ -56,6 +56,15 @@ fb_pass = 'ashen1997'
 yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
 mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
 
+earnpp_email = 'Nooo'
+earnpp_pass = 'Nooo'
+feyorra_email = 'Nooo'
+feyorra_pass = 'Nooo'
+claimc_email = 'Nooo'
+claimc_pass = 'Nooo'
+
+
+
 if farm_id == 1:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/khabibmakanzie.json'
     fb_pass = 'uwuinsta2005'
@@ -63,13 +72,29 @@ if farm_id == 1:
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     server_name1 = 'thailand'
     CSB1_farms = [1, 2, 3, 4]
+
+    earnpp_email = 'khabibmakanzie@gmail.com'
+    earnpp_pass = 'CQ2pNwi3zsFgat@'
+    feyorra_email = 'khabibmakanzie@gmail.com'
+    feyorra_pass = 'D6.6fz9r5QVyziT'
+    claimc_email = 'khabibmakanzie@gmail.com'
+    claimc_pass = '@$uiJjkFfZU3K@e'
+
 elif farm_id == 2:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/diludilakshi.json'
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
-    server_name1 = 'romania'
+    server_name1 = 'estonia'
     CSB1_farms = [1, 2, 3, 4]
+
+    earnpp_email = 'mcnutthelen8@gmail.com'
+    earnpp_pass = 'Uwuinsta@2005'
+    feyorra_email = 'mcnutthelen8@gmail.com'
+    feyorra_pass = 'Uwuinsta@2005'
+    claimc_email = 'mcnutthelen8@gmail.com'
+    claimc_pass = 'Uwuinsta@2005'
+
 elif farm_id == 3:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/williesmith.json'
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
@@ -77,6 +102,14 @@ elif farm_id == 3:
     fb_pass = 'ashen1997'
     server_name1 = 'poland'
     CSB1_farms = [1, 2, 3, 4]
+
+    earnpp_email = 'redgta36@gmail.com'
+    earnpp_pass = 'Uwuinsta@2005'
+    feyorra_email = 'redgta36@gmail.com'
+    feyorra_pass = 'Uwuinsta@2005'
+    claimc_email = 'redgta36@gmail.com'
+    claimc_pass = 'Uwuinsta@2005'
+
 elif farm_id == 4:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
@@ -84,6 +117,13 @@ elif farm_id == 4:
     fb_pass = 'ashen1997'
     server_name1 = 'hungary'
     CSB1_farms = [1, 2, 3, 4]
+    earnpp_email = 'ddilakshi232@gmail.com'
+    earnpp_pass = 'Uwuinsta@2005'
+    feyorra_email = 'ddilakshi232@gmail.com'
+    feyorra_pass = 'Uwuinsta@2005'
+    claimc_email = 'ddilakshi232@gmail.com'
+    claimc_pass = 'Uwuinsta@2005'
+
 
 else:
     while True:
@@ -289,7 +329,7 @@ def get_ipscore(ip):
 
         # Ensure fraud_score is an integer for comparison
         if fraud_score:
-            if vpn == False and tor == False and active_vpn == False and active_tor == False and fraud_score < 90:
+            if vpn == False:# and tor == False and fraud_score < 90: #and active_vpn == False and active_tor == False and fraud_score < 90:
                 return True
             else:
                 return None
@@ -557,9 +597,9 @@ def ipfixer():
                         req = doc["request"]
                         if req == 'ipfixer' and 'Ready IP' in res:
                             res_farms.append(res)
-                        elif req == 'mainscript' and 'Running' in res:
+                        elif req == 'mainscript': #and 'Running' in res:
                             res_farms.append(res)
-                        elif req == 'mainscript' and 'Ready IP' in res:
+                        elif req == 'mainscript': #and 'Ready IP' in res:
                             res_farms.append(res)
                         else:
                             print('aiyo', i)
@@ -1178,11 +1218,11 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
 
         if not_expected_title == current_title:
             if function == 1:
-                login_to_faucet('https://earn-pepe.com/login', sb1, 'khabibmakanzie@gmail.com', 'CQ2pNwi3zsFgat@', 'cloudflare_success', window_list, 'button#loginBtn')
+                login_to_faucet('https://earn-pepe.com/login', sb1, earnpp_email, earnpp_pass, 'cloudflare_success', window_list, 'button#loginBtn')
             elif function == 2:
-                login_to_faucet('https://feyorra.site/login', sb1, 'khabibmakanzie@gmail.com', 'D6.6fz9r5QVyziT', 'cloudflare_success', window_list, 'button#loginBtn')
+                login_to_faucet('https://feyorra.site/login', sb1, feyorra_email, feyorra_pass, 'cloudflare_success', window_list, 'button#loginBtn')
             elif function == 3:
-                login_to_faucet('https://claimcoin.in/login', sb1, 'khabibmakanzie@gmail.com', '@$uiJjkFfZU3K@e', None, window_list, 'button[type="submit"]') #'not_a_robot'
+                login_to_faucet('https://claimcoin.in/login', sb1, claimc_email, claimc_pass, None, window_list, 'button[type="submit"]') #'not_a_robot'
             elif function == 6:
                 login_to_faucet('https://feyorra.top/login', sb1, 'khabibmakanzie@gmail.com', '%aYYcsSfcYjN%5x', 'rscaptcha', window_list, 'button[type="submit"]') #'not_a_robot'
 
@@ -1716,6 +1756,9 @@ def withdraw_faucet(driver, sitekey):
                     response_messege('ClaimC Captcha Withdrawed')
                     solve_least_img(driver)
                     time.sleep(2)
+                    password_input = driver.find_element(By.CSS_SELECTOR, 'input[type="text"][name="wallet"].form-control')
+                    password_input.send_keys(claimc_email)
+                    time.sleep(2)
                     driver.uc_click('button.btn.btn-dark')
                     driver.uc_open('https://claimcoin.in/withdraw')
                     response_messege('ClaimC FaucetPay Withdrawed')
@@ -1803,7 +1846,7 @@ def open_faucets():
     time.sleep(1)
     #ipfixer()
     response_messege('Fixing IP')
-    ip_required = fix_ip(sb1, server_name1)
+    ip_required = ipfixer()
     ip_address = get_ip(sb1)
     response_messege('EarnPP Loging')
     if earnpp:
@@ -1865,6 +1908,16 @@ while True:
         if mainscript == 1:
             ip_address = get_ip(sb1)
             debug_messages(f'Ip address Found:{ip_address}')
+            if reset_count > 15:
+                print('reset count higher')
+                earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
+                reset_count = 0
+
+            if previous_reset_count == reset_count:
+                reset_count = 0
+            else:
+                previous_reset_count = reset_count
+
             if ip_address == ip_required:
                 debug_messages(f'Ip address Match:{ip_address}')
 
@@ -1872,15 +1925,6 @@ while True:
                 close_extra_windows(sb1, all_window_handles)
 
                 print(f'Reset_count:{reset_count}')
-                if reset_count > 15:
-                    print('reset count higher')
-                    earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
-                    reset_count = 0
-
-                if previous_reset_count == reset_count:
-                    reset_count = 0
-                else:
-                    previous_reset_count = reset_count
 
                 if earnpp:
                     try:

@@ -597,6 +597,8 @@ def ipfixer():
                         req = doc["request"]
                         if req == 'ipfixer' and 'Ready IP' in res:
                             res_farms.append(res)
+                        elif req == 'ipfixer' and 'Loging' in res:
+                            res_farms.append(res)
                         elif req == 'mainscript': #and 'Running' in res:
                             res_farms.append(res)
                         elif req == 'mainscript': #and 'Ready IP' in res:

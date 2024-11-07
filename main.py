@@ -1159,6 +1159,10 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                                 pyautogui.click(932 ,728)
                                 time.sleep(5)
                                 return
+                            if 'ClaimCoin' in current_title:
+                                pyautogui.click(973, 833)
+                                time.sleep(5)
+                                return
                             sb1.uc_click(submit_button)
                             #sb1.uc_click('button[type="submit"]')
                             

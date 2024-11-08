@@ -1899,15 +1899,14 @@ def open_faucets():
     close_extra_windows(sb1, all_window_handles)
 
     print(f"Windows: EarnPP: {earnpp_window}, Feyorra: {feyorra_window}, ClaimCoin: {claimcoin_window}, Baymack:{baymack_window}")
+    global reset_count 
+    global reset_count_isacc 
+    global previous_reset_count
     reset_count = 0
     reset_count_isacc = 0
     previous_reset_count = 0
 
-    start_time = time.time()
-    start_time3 = time.time()
-    earnpp_coins = None
-    feyorra_coins = None
-    claimc_coins = None
+
     return earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required
 
 
@@ -2041,13 +2040,14 @@ while True:
                             debug_messages(f'Getting Pages Titile:ClaimCoins')
                             title =sb1.get_title()
                             if 'Faucet | ClaimCoin' in title:
-                                if sb1.is_text_visible(' Invalid Captcha') or sb1.is_text_visible('Invalid Captcha'):
+                                if sb1.is_text_visible(' Invalid Captcha') or sb1.is_text_visible('Invalid Captcha') and claimcoin_count == 0:
                                     debug_messages(f' Invalid Captcha | reset:{reset_count}')
                                     response_messege(f'Invalid Captcha | reset:{reset_count}')
                                     reset_count_isacc +=1
+                                    claimcoin_count = 1 
                                 else:
                                     if sb1.is_text_visible('Ready'):
-                                        pass
+                                        claimcoin_count = 0
                                     else:
                                         reset_count_isacc = 0
                                 debug_messages(f'Solving Icon Captcha on ClaimCoins')
@@ -2057,7 +2057,7 @@ while True:
                                 cc_faucet =  find_and_click_collect_button(sb1)
                                 if cc_faucet:
                                     debug_messages(f'Solved Icon Captcha on Claimcoins')
-                                    claimcoin_count = 1 
+                                    
                                     start_time = time.time()
                                 sb1.switch_to.window(claimcoin_window)
                             elif 'Just' in title:

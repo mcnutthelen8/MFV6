@@ -1931,7 +1931,7 @@ while True:
         if mainscript == 1:
             
             debug_messages(f'Ip address Found:{ip_address}')
-            if reset_count_isacc >= 5:
+            if reset_count_isacc >= 6:
                 response_messege('oops.. reset_count_isacc triggers')
                 mysterium_vpn_connect(server_name1, sb1)
                 time.sleep(7)

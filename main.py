@@ -400,6 +400,11 @@ def fix_ip(drive, name):
             print(f'Bad IP detected: {ip_address}. Changing IP...')
             query = {"type": "main"}
             update = {"$set": {"response": f'Changed IP🔴: {ip_address}'}}
+            for i in CSB1_farms:
+                collection_csb = db[f'Farm{i}']
+                update = {"$set": {"request": 'ipfixer'}}
+                result = collection_csb.update_one(query, update)
+                print('Update Farm', i)
             result = collection.update_one(query, update)
             mysterium_vpn_connect(name, drive)
             print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
@@ -564,11 +569,11 @@ def ipfixer():
     query = {"type": "main"}
     update = {"$set": {"response": 'Fixing...🟠'}}
     result = collection.update_one(query, update)
-    for i in CSB1_farms:
-        collection_csb = db[f'Farm{i}']
-        update = {"$set": {"request": 'ipfixer'}}
-        result = collection_csb.update_one(query, update)
-        print('Update Farm', i)
+    #for i in CSB1_farms:
+    #    collection_csb = db[f'Farm{i}']
+    #    update = {"$set": {"request": 'ipfixer'}}
+    #    result = collection_csb.update_one(query, update)
+    #    print('Update Farm', i)
 
     while True:
         query = {"type": "main"}
@@ -635,7 +640,6 @@ def control_panel():
         request = doc["request"]
         print(request)
         if request == 'ipfixer':
-            ipfixer()
             return 2
         elif request == 'mainscript':
             print(request)
@@ -1863,11 +1867,11 @@ def open_faucets():
             sb1.close()  # Close the tab
     sb1.switch_to.window(current_window)
     time.sleep(1)
-    #ipfixer()
     response_messege('Fixing IP')
     ipfixer()
     ip_required = fix_ip(sb1, server_name1)
     ip_address = get_ip(sb1)
+    ip_required = ip_address
     response_messege('EarnPP Loging')
     if earnpp:
 

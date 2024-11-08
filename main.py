@@ -1797,7 +1797,15 @@ def faucet_limit_check(driver, sitekey):
         print(f'LIMITG:ERR{e}')
 # Main logic
 
+reset_count = 0
+reset_count_isacc = 0
+previous_reset_count = 0
 
+start_time = time.time()
+start_time3 = time.time()
+earnpp_coins = None
+feyorra_coins = None
+claimc_coins = None
 if run_sb1:
     sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path,  page_load_strategy='none')
     sb1.maximize_window()
@@ -1891,6 +1899,15 @@ def open_faucets():
     close_extra_windows(sb1, all_window_handles)
 
     print(f"Windows: EarnPP: {earnpp_window}, Feyorra: {feyorra_window}, ClaimCoin: {claimcoin_window}, Baymack:{baymack_window}")
+    reset_count = 0
+    reset_count_isacc = 0
+    previous_reset_count = 0
+
+    start_time = time.time()
+    start_time3 = time.time()
+    earnpp_coins = None
+    feyorra_coins = None
+    claimc_coins = None
     return earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required
 
 
@@ -1903,15 +1920,8 @@ feyorra_count = 0
 claimcoin_count = 0
 
 earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
-reset_count = 0
-reset_count_isacc = 0
-previous_reset_count = 0
+
 time.sleep(2)
-start_time = time.time()
-start_time3 = time.time()
-earnpp_coins = None
-feyorra_coins = None
-claimc_coins = None
 print('Starting Loop')
 
 while True:
@@ -2033,6 +2043,7 @@ while True:
                             if 'Faucet | ClaimCoin' in title:
                                 if sb1.is_text_visible(' Invalid Captcha') or sb1.is_text_visible('Invalid Captcha'):
                                     debug_messages(f' Invalid Captcha | reset:{reset_count}')
+                                    response_messege(f'Invalid Captcha | reset:{reset_count}')
                                     reset_count_isacc +=1
                                 else:
                                     if sb1.is_text_visible('Ready'):

@@ -2092,7 +2092,16 @@ while True:
                 seconds_only = int(elapsed_time)
                 debug_messages(f'ClaimCoins Seconds:{seconds_only}')
                 if seconds_only > 5:
-                    if earnpp_coins == earnpp_coins_pre or feyorra_coins == feyorra_coins_pre or claimc_coins == claimc_coins_pre and cc_faucet:
+                    if earnpp_coins == earnpp_coins_pre:
+                        response_messege(f'earnpp_coins same {earnpp_coins}| count:{reset_count}')
+                        start_time = time.time()
+                        reset_count +=3
+                    elif feyorra_coins == feyorra_coins_pre:
+                        response_messege(f'feyorra_coins same {feyorra_coins}| count:{reset_count}')
+                        start_time = time.time()
+                        reset_count +=3
+                    elif claimc_coins == claimc_coins_pre and cc_faucet:
+                        response_messege(f'claimc_coins same {claimc_coins}| count:{reset_count}')
                         start_time = time.time()
                         reset_count +=3
                     else:

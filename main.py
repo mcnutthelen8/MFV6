@@ -1110,7 +1110,7 @@ def find_and_click_collect_button(sb1):
             sb1.uc_click(button_selector)
             print("Collect button Not clicked.")
             #sb1.connect()
-            return None
+            return True
         else:
             print("Button found, but it doesn't contain 'Collect your reward' text.")
             return None
@@ -1810,6 +1810,10 @@ start_time3 = time.time()
 earnpp_coins = None
 feyorra_coins = None
 claimc_coins = None
+
+earnpp_coins_pre = None
+feyorra_coins_pre = None
+claimc_coins_pre = None
 if run_sb1:
     sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path,  page_load_strategy='none')
     sb1.maximize_window()
@@ -1934,6 +1938,7 @@ while True:
         if mainscript == 1:
             
             debug_messages(f'Ip address Found:{ip_address}')
+            cc_faucet = None
             if reset_count_isacc >= 6:
                 response_messege('oops.. reset_count_isacc triggers')
                 mysterium_vpn_connect(server_name1, sb1)
@@ -2035,9 +2040,6 @@ while True:
                 if claimcoin:
                     try:
                         debug_messages(f'Time capture in ClaimCoins')
-                        elapsed_time = time.time() - start_time
-                        seconds_only = int(elapsed_time)
-                        debug_messages(f'ClaimCoins Seconds:{seconds_only}')
                         if claimcoin: #seconds_only > 14:
                             debug_messages(f'Switching Pages to ClaimCoins:{seconds_only}')
                             sb1.switch_to.window(claimcoin_window)
@@ -2061,8 +2063,6 @@ while True:
                                 cc_faucet =  find_and_click_collect_button(sb1)
                                 if cc_faucet:
                                     debug_messages(f'Solved Icon Captcha on Claimcoins')
-                                    
-                                    start_time = time.time()
                                 sb1.switch_to.window(claimcoin_window)
                             elif 'Just' in title:
                                 debug_messages(f'Just.. Found on Claimcoins')
@@ -2081,6 +2081,17 @@ while True:
                         debug_messages(f'ERR on ClamCoim:{e}')
                         reset_count +=1
 
+                elapsed_time = time.time() - start_time
+                seconds_only = int(elapsed_time)
+                debug_messages(f'ClaimCoins Seconds:{seconds_only}')
+                if seconds_only > 5:
+                    if earnpp_coins == earnpp_coins_pre or feyorra_coins == feyorra_coins_pre or claimc_coins == claimc_coins_pre and cc_faucet:
+                        start_time = time.time()
+                        reset_count +=2
+                    else:
+                        earnpp_coins_pre = earnpp_coins
+                        feyorra_coins_pre = feyorra_coins
+                        claimc_coins_pre = claimc_coins
 
                 elapsed_time3 = time.time() - start_time3
                 seconds_only3 = int(elapsed_time3)
@@ -2090,6 +2101,7 @@ while True:
                     if earnpp_coins and feyorra_coins and claimc_coins:
                         start_time3 = time.time()
                         insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins)
+                    
                     
 
                 else:
@@ -2134,4 +2146,23 @@ while True:
 
     except Exception as e:
         print(f'Oh Hell No{e}')
+        if 'no such window' in e or 'disconnect' in e:
+            try:
+                subprocess.run(['pkill', '-f', 'chrome'], check=True)
+                print("All chrome processes killed successfully.")
+            except subprocess.CalledProcessError:
+                print("Failed to kill chrome processes or no processes found.")
+            sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path,  page_load_strategy='none')
+            sb1.maximize_window()
+            sb1.uc_open("chrome://extensions/")
+            current_window = sb1.current_window_handle
+            sb1.open_new_window()
+            current_window2 = sb1.current_window_handle
+            sb1.switch_to.window(current_window)
+            sb1.close()  # Close the tab
+            sb1.switch_to.window(current_window2)
+            sb1.uc_open("chrome://extensions/")
+
+            print(sb1.get_title())
+            reset_count +=15
         reset_count +=1

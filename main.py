@@ -606,7 +606,7 @@ def ipfixer():
                         else:
                             print('aiyo', i)
                     if len(res_farms) == len(CSB1_farms):
-                        time.sleep(10)
+                        time.sleep(6)
                         if gg2344 > 4:
 
                             query = {"type": "main"}

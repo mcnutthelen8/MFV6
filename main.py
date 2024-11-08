@@ -1872,9 +1872,16 @@ def open_faucets():
     sb1.switch_to.window(current_window)
     time.sleep(1)
     response_messege('Fixing IP')
-    ipfixer()
-    ip_required = fix_ip(sb1, server_name1)
     ip_address = get_ip(sb1)
+    ipscore = get_ipscore(ip_address)
+    proxycheck = get_proxycheck(sb1, ip_address, server_name= server_name1)
+    if ipscore and proxycheck == 200:
+        print(f'Good IP found: {ip_address}')
+    else:
+        ipfixer()
+        ip_required = fix_ip(sb1, server_name1)
+        ip_address = get_ip(sb1)
+    #ip_address = get_ip(sb1)
     ip_required = ip_address
     response_messege('EarnPP Loging')
     if earnpp:
@@ -2087,7 +2094,7 @@ while True:
                 if seconds_only > 5:
                     if earnpp_coins == earnpp_coins_pre or feyorra_coins == feyorra_coins_pre or claimc_coins == claimc_coins_pre and cc_faucet:
                         start_time = time.time()
-                        reset_count +=2
+                        reset_count +=3
                     else:
                         earnpp_coins_pre = earnpp_coins
                         feyorra_coins_pre = feyorra_coins

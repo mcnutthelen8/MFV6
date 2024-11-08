@@ -609,7 +609,7 @@ def ipfixer():
                         elif req == 'mainscript': #and 'Ready IP' in res:
                             res_farms.append(res)
                         else:
-                            print('aiyo', i)
+                            print('aiyo', req)
                     if len(res_farms) == len(CSB1_farms):
                         time.sleep(6)
                         if gg2344 > 4:

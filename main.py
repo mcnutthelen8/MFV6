@@ -1915,6 +1915,17 @@ def open_faucets():
     proxycheck = get_proxycheck(sb1, ip_address, server_name= server_name1)
     if ipscore and proxycheck == 200:
         print(f'Good IP found: {ip_address}')
+        for frm in CSB1_farms:
+            collection_csb = db[f'Farm{frm}']
+            query = {"type": "main"}
+            doc = collection_csb.find_one(query)
+            res = doc["response"]
+            req = doc["request"]
+            if req == 'ipfixer' and 'Changed IP' in res:
+                ipfixer()
+                ip_required = fix_ip(sb1, server_name1)
+                ip_address = get_ip(sb1)
+                break
     else:
         ipfixer()
         ip_required = fix_ip(sb1, server_name1)

@@ -52,6 +52,7 @@ facebook_cookies = '0'
 
 
 CSB1_farms = [1, 2, 3, 4]
+blacklistedIP = ['84.50.88.149']
 fb_pass = 'ashen1997'
 yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
 mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
@@ -391,15 +392,10 @@ def fix_ip(drive, name):
     ip_address = 0
     while not (ipscore and proxycheck):
         ip_address = get_ip(drive)
-        ipscore = get_ipscore(ip_address)
-        proxycheck = get_proxycheck(drive, ip_address, server_name= name)
-        if ipscore and proxycheck == 200:
-            print(f'Good IP found: {ip_address}')
-            return ip_address
-        else:
+        if ip_address in blacklistedIP:
             print(f'Bad IP detected: {ip_address}. Changing IP...')
             query = {"type": "main"}
-            update = {"$set": {"response": f'Changed IP🔴: {ip_address}'}}
+            update = {"$set": {"response": f'Blacklisted IP🔴: {ip_address}'}}
             for i in CSB1_farms:
                 collection_csb = db[f'Farm{i}']
                 update = {"$set": {"request": 'ipfixer'}}
@@ -409,6 +405,25 @@ def fix_ip(drive, name):
             mysterium_vpn_connect(name, drive)
             print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
             time.sleep(5)
+        else:
+            ipscore = get_ipscore(ip_address)
+            proxycheck = get_proxycheck(drive, ip_address, server_name= name)
+            if ipscore and proxycheck == 200:
+                print(f'Good IP found: {ip_address}')
+                return ip_address
+            else:
+                print(f'Bad IP detected: {ip_address}. Changing IP...')
+                query = {"type": "main"}
+                update = {"$set": {"response": f'Changed IP🔴: {ip_address}'}}
+                for i in CSB1_farms:
+                    collection_csb = db[f'Farm{i}']
+                    update = {"$set": {"request": 'ipfixer'}}
+                    result = collection_csb.update_one(query, update)
+                    print('Update Farm', i)
+                result = collection.update_one(query, update)
+                mysterium_vpn_connect(name, drive)
+                print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
+                time.sleep(5)
 
 
 ####################################Control Panel Shit##########################################################
@@ -1948,6 +1963,7 @@ while True:
             cc_faucet = None
             if reset_count_isacc >= 6:
                 response_messege('oops.. reset_count_isacc triggers')
+                blacklistedIP.append(ip_address)
                 mysterium_vpn_connect(server_name1, sb1)
                 time.sleep(7)
                 mysterium_vpn_connect(server_name1, sb1)

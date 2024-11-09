@@ -2144,15 +2144,18 @@ while True:
                 if seconds_only > 25:
                     start_time = time.time()
                     if earnpp_coins == earnpp_coins_pre:
-                        response_messege(f'earnpp_coins same {earnpp_coins}| count:{reset_count}')
+                        if reset_count >= 5:
+                            response_messege(f'earnpp_coins same {earnpp_coins}| count:{reset_count}')
                         start_time = time.time()
                         reset_count +=5
                     elif feyorra_coins == feyorra_coins_pre:
-                        response_messege(f'feyorra_coins same {feyorra_coins}| count:{reset_count}')
+                        if reset_count >= 5:
+                            response_messege(f'feyorra_coins same {feyorra_coins}| count:{reset_count}')
                         start_time = time.time()
                         reset_count +=5
                     elif claimc_coins == claimc_coins_pre and cc_faucet:
-                        response_messege(f'claimc_coins same {claimc_coins}| count:{reset_count}')
+                        if reset_count >= 5:
+                            response_messege(f'claimc_coins same {claimc_coins}| count:{reset_count}')
                         start_time = time.time()
                         reset_count +=5
                     else:

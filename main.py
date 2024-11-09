@@ -1797,6 +1797,7 @@ def withdraw_faucet(driver, sitekey):
                     solve_least_img(driver)
                     time.sleep(2)
                     password_input = driver.find_element(By.CSS_SELECTOR, 'input[type="text"][name="wallet"].form-control')
+                    password_input.clear()
                     password_input.send_keys(claimc_email)
                     time.sleep(2)
                     driver.uc_click('button.btn.btn-dark')

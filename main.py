@@ -636,8 +636,8 @@ def ipfixer():
                         else:
                             print('aiyo', req)
                     if len(res_farms) == len(CSB1_farms):
-                        time.sleep(6)
-                        if gg2344 > 4:
+                        time.sleep(8)
+                        if gg2344 > 6:
 
                             query = {"type": "main"}
                             update = {"$set": {"request": 'mainscript'}}

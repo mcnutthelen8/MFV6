@@ -2155,7 +2155,7 @@ while True:
                     start_time = time.time()
                     if earnpp_coins == earnpp_coins_pre:
                         start_time = time.time()
-                        if refresh_count >= 4:
+                        if refresh_count >= 5:
                             response_messege(f'earnpp_coins same {earnpp_coins}| count:{refresh_count} | {seconds_only}')
                             sb1.switch_to.window(earnpp_window)
                             sb1.uc_open('https://earn-pepe.com/member/faucet')
@@ -2164,7 +2164,7 @@ while True:
                         refresh_count +=1
                     elif feyorra_coins == feyorra_coins_pre:
                         start_time = time.time()
-                        if refresh_count >= 4:
+                        if refresh_count >= 5:
                             response_messege(f'feyorra_coins same {feyorra_coins}| count:{refresh_count} | {seconds_only}')
                             refresh_count = 0
                             sb1.switch_to.window(feyorra_window)
@@ -2173,7 +2173,7 @@ while True:
                         refresh_count +=1
                     elif claimc_coins == claimc_coins_pre and cc_faucet:
                         start_time = time.time()
-                        if refresh_count >= 4:
+                        if refresh_count >= 5:
                             response_messege(f'claimc_coins same {claimc_coins}| count:{refresh_count} | {seconds_only}')
                             sb1.switch_to.window(claimcoin_window)
                             sb1.uc_open("https://claimcoin.in/faucet")

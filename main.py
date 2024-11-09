@@ -1980,6 +1980,7 @@ earnpp_count = 0
 feyorra_count = 0
 claimcoin_count = 0
 
+refresh_count = 0
 earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
 
 time.sleep(2)
@@ -2148,27 +2149,40 @@ while True:
                 elapsed_time = time.time() - start_time
                 seconds_only = int(elapsed_time)
                 debug_messages(f'ClaimCoins Seconds:{seconds_only}')
-                if seconds_only > 15:
+                if seconds_only > 10:
                     start_time = time.time()
                     if earnpp_coins == earnpp_coins_pre:
-                        if reset_count >= 5:
-                            response_messege(f'earnpp_coins same {earnpp_coins}| count:{reset_count}')
                         start_time = time.time()
-                        reset_count +=5
+                        if refresh_count >= 2:
+                            response_messege(f'earnpp_coins same {earnpp_coins}| count:{reset_count} | {seconds_only}')
+                            sb1.switch_to.window(earnpp_window)
+                            sb1.uc_click('https://earn-pepe.com/member/faucet')
+                            refresh_count = 0
+
+                        refresh_count +=1
                     elif feyorra_coins == feyorra_coins_pre:
-                        if reset_count >= 5:
-                            response_messege(f'feyorra_coins same {feyorra_coins}| count:{reset_count}')
                         start_time = time.time()
-                        reset_count +=5
+                        if refresh_count >= 2:
+                            response_messege(f'feyorra_coins same {feyorra_coins}| count:{reset_count} | {seconds_only}')
+                            refresh_count = 0
+                            sb1.switch_to.window(feyorra_window)
+                            sb1.uc_click('https://feyorra.site/member/faucet')
+
+                        refresh_count +=1
                     elif claimc_coins == claimc_coins_pre and cc_faucet:
-                        if reset_count >= 5:
-                            response_messege(f'claimc_coins same {claimc_coins}| count:{reset_count}')
                         start_time = time.time()
-                        reset_count +=5
+                        if refresh_count >= 2:
+                            response_messege(f'claimc_coins same {claimc_coins}| count:{reset_count} | {seconds_only}')
+                            sb1.switch_to.window(claimcoin_window)
+                            sb1.uc_click("https://claimcoin.in/faucet")
+                            refresh_count = 0
+                        
+                        refresh_count +=1
                     else:
                         earnpp_coins_pre = earnpp_coins
                         feyorra_coins_pre = feyorra_coins
                         claimc_coins_pre = claimc_coins
+                        refresh_count = 0
 
                 elapsed_time3 = time.time() - start_time3
                 seconds_only3 = int(elapsed_time3)

@@ -1985,7 +1985,7 @@ while True:
                 reset_count_isacc = 0
 
             ip_address = get_ip(sb1)    
-            if reset_count > 15:
+            if reset_count >= 15:
                 print('reset count higher')
                 earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
                 reset_count = 0

@@ -52,7 +52,9 @@ facebook_cookies = '0'
 
 
 CSB1_farms = [1, 2, 3, 4]
-blacklistedIP = ['84.50.88.149']
+
+
+
 fb_pass = 'ashen1997'
 yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
 mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
@@ -156,6 +158,16 @@ mongo_uri = "mongodb+srv://redgta36:J6n7Hoz2ribHmMmx@moneyfarm.wwzcs.mongodb.net
 client = MongoClient(mongo_uri)
 db = client['MoneyFarmV6'] 
 collection = db[f'Farm{farm_id}']
+
+collectionbip = db[f'LocalCSB']
+quer2y = {"type": "main"}
+dochh = collectionbip.find_one(quer2y)
+blacklistedIP = dochh["blacklistedIP"]
+print(blacklistedIP)
+ 
+
+
+
 
 def add_messages(type_value, new_messages):
     try:
@@ -2069,7 +2081,7 @@ while True:
                             debug_messages(f'Getting Pages Titile:ClaimCoins')
                             title =sb1.get_title()
                             if 'Faucet | ClaimCoin' in title:
-                                if sb1.is_text_visible(' Invalid Captcha') or sb1.is_text_visible('Invalid Captcha') and claimcoin_count == 0:
+                                if sb1.is_text_visible(' Invalid Captcha') or sb1.is_text_visible('Invalid Captcha'): #and claimcoin_count == 0:
                                     debug_messages(f' Invalid Captcha | reset:{reset_count}')
                                     response_messege(f'Invalid Captcha | reset:{reset_count}')
                                     reset_count_isacc +=1

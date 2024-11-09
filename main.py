@@ -614,15 +614,9 @@ def ipfixer():
             result = collection.update_one(query, update)
             if ip == preip:
                 print(f'Good IP found: {ip}')
-                if respo == 0:
+                if ip == preip:#if respo == 0:
                     update = {"$set": {"response": f'Ready IP🟢: {ip}'}}
                     result = collection.update_one(query, update)
-                    if result.matched_count > 0:
-                        print(f"Added new messages to existing document. Updated {result.modified_count} document(s).")
-                        respo = 1
-                    else:
-                        print("No document found with the specified type.")
-                else:
                     print(f"repo {respo}")
                     res_farms = []
                     for frm in CSB1_farms:

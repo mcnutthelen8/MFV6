@@ -2120,6 +2120,7 @@ while True:
                 seconds_only = int(elapsed_time)
                 debug_messages(f'ClaimCoins Seconds:{seconds_only}')
                 if seconds_only > 10:
+                    start_time = time.time()
                     if earnpp_coins == earnpp_coins_pre:
                         response_messege(f'earnpp_coins same {earnpp_coins}| count:{reset_count}')
                         start_time = time.time()

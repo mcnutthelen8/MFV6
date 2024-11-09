@@ -2164,7 +2164,7 @@ while True:
                         refresh_count +=1
                     elif feyorra_coins == feyorra_coins_pre:
                         start_time = time.time()
-                        if refresh_count >= 5:
+                        if refresh_count >= 10:
                             response_messege(f'feyorra_coins same {feyorra_coins}| count:{refresh_count} | {seconds_only}')
                             refresh_count = 0
                             sb1.switch_to.window(feyorra_window)

@@ -2100,11 +2100,13 @@ while True:
                             reset_count +=1
 
                 if claimcoin:
+
                     try:
                         debug_messages(f'Time capture in ClaimCoins')
                         if claimcoin: #seconds_only > 14:
                             debug_messages(f'Switching Pages to ClaimCoins:{seconds_only}')
                             sb1.switch_to.window(claimcoin_window)
+                            #pyautogui.press('enter')
                             debug_messages(f'Getting Pages Titile:ClaimCoins')
                             title =sb1.get_title()
                             if 'Faucet | ClaimCoin' in title:
@@ -2113,7 +2115,7 @@ while True:
                                         debug_messages(f' Invalid Captcha | reset:{reset_count_isacc}')
                                         if reset_count_isacc > 1:
                                             response_messege(f'Invalid Captcha | reset:{reset_count_isacc}')
-                                        reset_count_isacc +=2
+                                        reset_count_isacc +=1
                                         claimcoin_count = 1 
                                     else:
                                         if sb1.is_text_visible('Ready'):
@@ -2154,7 +2156,7 @@ while True:
                     if earnpp_coins == earnpp_coins_pre:
                         start_time = time.time()
                         if refresh_count >= 4:
-                            response_messege(f'earnpp_coins same {earnpp_coins}| count:{reset_count} | {seconds_only}')
+                            response_messege(f'earnpp_coins same {earnpp_coins}| count:{refresh_count} | {seconds_only}')
                             sb1.switch_to.window(earnpp_window)
                             sb1.uc_open('https://earn-pepe.com/member/faucet')
                             refresh_count = 0
@@ -2163,7 +2165,7 @@ while True:
                     elif feyorra_coins == feyorra_coins_pre:
                         start_time = time.time()
                         if refresh_count >= 4:
-                            response_messege(f'feyorra_coins same {feyorra_coins}| count:{reset_count} | {seconds_only}')
+                            response_messege(f'feyorra_coins same {feyorra_coins}| count:{refresh_count} | {seconds_only}')
                             refresh_count = 0
                             sb1.switch_to.window(feyorra_window)
                             sb1.uc_open('https://feyorra.site/member/faucet')
@@ -2172,7 +2174,7 @@ while True:
                     elif claimc_coins == claimc_coins_pre and cc_faucet:
                         start_time = time.time()
                         if refresh_count >= 4:
-                            response_messege(f'claimc_coins same {claimc_coins}| count:{reset_count} | {seconds_only}')
+                            response_messege(f'claimc_coins same {claimc_coins}| count:{refresh_count} | {seconds_only}')
                             sb1.switch_to.window(claimcoin_window)
                             sb1.uc_open("https://claimcoin.in/faucet")
                             refresh_count = 0

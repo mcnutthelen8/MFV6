@@ -1898,6 +1898,16 @@ def open_faucets():
             sb1.close()  # Close the tab
     sb1.switch_to.window(current_window)
     time.sleep(1)
+    global blacklistedIP
+    collectionbip = db[f'LocalCSB']
+    quer2y = {"type": "main"}
+    dochh = collectionbip.find_one(quer2y)
+    blacklistedIP2 = dochh["blacklistedIP"]
+    if len(blacklistedIP) <= len(blacklistedIP2):
+        blacklistedIP = blacklistedIP2
+
+    print(blacklistedIP)
+    
     response_messege('Fixing IP')
     ip_address = get_ip(sb1)
     ipscore = get_ipscore(ip_address)
@@ -2119,7 +2129,7 @@ while True:
                 elapsed_time = time.time() - start_time
                 seconds_only = int(elapsed_time)
                 debug_messages(f'ClaimCoins Seconds:{seconds_only}')
-                if seconds_only > 10:
+                if seconds_only > 13:
                     start_time = time.time()
                     if earnpp_coins == earnpp_coins_pre:
                         response_messege(f'earnpp_coins same {earnpp_coins}| count:{reset_count}')

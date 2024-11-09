@@ -2217,7 +2217,7 @@ while True:
     except Exception as e:
         print(f'Oh Hell No{e}')
         response_messege(f'Oh Hell No{e}')
-        if 'no such window' in e or 'disconnect' in e:
+        if 'no such window' in e or 'invalid session' in e:
             response_messege(f'Resetting Browser')
             try:
                 subprocess.run(['pkill', '-f', 'chrome'], check=True)

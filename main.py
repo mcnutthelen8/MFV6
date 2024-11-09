@@ -2082,8 +2082,8 @@ while True:
                             title =sb1.get_title()
                             if 'Faucet | ClaimCoin' in title:
                                 if sb1.is_text_visible(' Invalid Captcha') or sb1.is_text_visible('Invalid Captcha'): #and claimcoin_count == 0:
-                                    debug_messages(f' Invalid Captcha | reset:{reset_count}')
-                                    response_messege(f'Invalid Captcha | reset:{reset_count}')
+                                    debug_messages(f' Invalid Captcha | reset:{reset_count_isacc}')
+                                    response_messege(f'Invalid Captcha | reset:{reset_count_isacc}')
                                     reset_count_isacc +=1
                                     claimcoin_count = 1 
                                 else:

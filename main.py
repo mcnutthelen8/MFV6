@@ -2156,7 +2156,7 @@ while True:
                         if refresh_count >= 2:
                             response_messege(f'earnpp_coins same {earnpp_coins}| count:{reset_count} | {seconds_only}')
                             sb1.switch_to.window(earnpp_window)
-                            sb1.uc_click('https://earn-pepe.com/member/faucet')
+                            sb1.uc_open('https://earn-pepe.com/member/faucet')
                             refresh_count = 0
 
                         refresh_count +=1
@@ -2166,7 +2166,7 @@ while True:
                             response_messege(f'feyorra_coins same {feyorra_coins}| count:{reset_count} | {seconds_only}')
                             refresh_count = 0
                             sb1.switch_to.window(feyorra_window)
-                            sb1.uc_click('https://feyorra.site/member/faucet')
+                            sb1.uc_open('https://feyorra.site/member/faucet')
 
                         refresh_count +=1
                     elif claimc_coins == claimc_coins_pre and cc_faucet:
@@ -2174,7 +2174,7 @@ while True:
                         if refresh_count >= 2:
                             response_messege(f'claimc_coins same {claimc_coins}| count:{reset_count} | {seconds_only}')
                             sb1.switch_to.window(claimcoin_window)
-                            sb1.uc_click("https://claimcoin.in/faucet")
+                            sb1.uc_open("https://claimcoin.in/faucet")
                             refresh_count = 0
                         
                         refresh_count +=1

@@ -382,7 +382,7 @@ def mysterium_vpn_connect(server_name, driver):
                 time.sleep(2)
                 pyautogui.typewrite(server_name)
                 pyautogui.press('enter')
-                time.sleep(5)
+                time.sleep(10)
                 pyautogui.scroll(-500)
                 time.sleep(2)
                 pyautogui.click(1627, 568)
@@ -408,12 +408,13 @@ def fix_ip(drive, name):
             print(f'Bad IP detected: {ip_address}. Changing IP...')
             query = {"type": "main"}
             update = {"$set": {"response": f'Blacklisted IP🔴: {ip_address}'}}
+            result = collection.update_one(query, update)
             for i in CSB1_farms:
                 collection_csb = db[f'Farm{i}']
                 update = {"$set": {"request": 'ipfixer'}}
                 result = collection_csb.update_one(query, update)
                 print('Update Farm', i)
-            result = collection.update_one(query, update)
+
             mysterium_vpn_connect(name, drive)
             print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
             time.sleep(5)
@@ -427,12 +428,13 @@ def fix_ip(drive, name):
                 print(f'Bad IP detected: {ip_address}. Changing IP...')
                 query = {"type": "main"}
                 update = {"$set": {"response": f'Changed IP🔴: {ip_address}'}}
+                result = collection.update_one(query, update)
                 for i in CSB1_farms:
                     collection_csb = db[f'Farm{i}']
                     update = {"$set": {"request": 'ipfixer'}}
                     result = collection_csb.update_one(query, update)
                     print('Update Farm', i)
-                result = collection.update_one(query, update)
+
                 mysterium_vpn_connect(name, drive)
                 print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
                 time.sleep(5)
@@ -608,6 +610,8 @@ def ipfixer():
         request = doc["request"]
         if request == 'ipfixer':
             preip = get_ip(sb1)
+            update = {"$set": {"response": f'Ip is: {preip}'}}
+            result = collection.update_one(query, update)
             if ip == preip:
                 print(f'Good IP found: {ip}')
                 if respo == 0:
@@ -1843,7 +1847,7 @@ earnpp_coins_pre = None
 feyorra_coins_pre = None
 claimc_coins_pre = None
 if run_sb1:
-    sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path,  page_load_strategy='none')
+    sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path, disable_gpu=True, page_load_strategy='none' )
     sb1.maximize_window()
     sb1.uc_open("chrome://extensions/")
     current_window = sb1.current_window_handle
@@ -2048,6 +2052,9 @@ while True:
 
                             cloudflare(sb1, login = False)
                             debug_messages(f'Just Fixed EarnPP')
+                        elif 'aintenance' in title:
+                            debug_messages(f'maintenance.. Found on EarnPP')
+                            response_messege('maintenance.. Found on EarnPP')
                         else:
                             debug_messages(f'EarnPP not Found:{title} | reset:{reset_count}')
                             reset_count +=1
@@ -2079,6 +2086,9 @@ while True:
                             debug_messages(f'Just.. Found on Feyorra')
                             cloudflare(sb1, login = False)
                             debug_messages(f'Just Fixed Feyorra')
+                        elif 'aintenance' in title:
+                            debug_messages(f'maintenance.. Found on Feyorra')
+                            response_messege('maintenance.. Found on Feyorra')
 
                         elif 'Lock' in title:
                             debug_messages(f'Lock.. Found on Feyorra')
@@ -2103,22 +2113,24 @@ while True:
                             debug_messages(f'Getting Pages Titile:ClaimCoins')
                             title =sb1.get_title()
                             if 'Faucet | ClaimCoin' in title:
-                                if sb1.is_text_visible(' Invalid Captcha') or sb1.is_text_visible('Invalid Captcha') and claimcoin_count == 0:
-                                    debug_messages(f' Invalid Captcha | reset:{reset_count_isacc}')
-                                    response_messege(f'Invalid Captcha | reset:{reset_count_isacc}')
-                                    reset_count_isacc +=2
-                                    claimcoin_count = 1 
-                                else:
-                                    if sb1.is_text_visible('Ready'):
-                                        claimcoin_count = 0
+                                if claimcoin_count == 0:
+                                    if sb1.is_text_visible(' Invalid Captcha') or sb1.is_text_visible('Invalid Captcha'):
+                                        debug_messages(f' Invalid Captcha | reset:{reset_count_isacc}')
+                                        response_messege(f'Invalid Captcha | reset:{reset_count_isacc}')
+                                        reset_count_isacc +=2
+                                        claimcoin_count = 1 
                                     else:
-                                        reset_count_isacc = 0
+                                        if sb1.is_text_visible('Ready'):
+                                            claimcoin_count = 1 
+                                        else:
+                                            reset_count_isacc = 0
                                 debug_messages(f'Solving Icon Captcha on ClaimCoins')
                                 val = get_coins(sb1, 3)
                                 if val:
                                     claimc_coins = val
                                 cc_faucet =  find_and_click_collect_button(sb1)
                                 if cc_faucet:
+                                    claimcoin_count = 0
                                     debug_messages(f'Solved Icon Captcha on Claimcoins')
                                 sb1.switch_to.window(claimcoin_window)
                             elif 'Just' in title:
@@ -2141,7 +2153,7 @@ while True:
                 elapsed_time = time.time() - start_time
                 seconds_only = int(elapsed_time)
                 debug_messages(f'ClaimCoins Seconds:{seconds_only}')
-                if seconds_only > 25:
+                if seconds_only > 15:
                     start_time = time.time()
                     if earnpp_coins == earnpp_coins_pre:
                         if reset_count >= 5:
@@ -2217,7 +2229,7 @@ while True:
     except Exception as e:
         print(f'Oh Hell No{e}')
         response_messege(f'Oh Hell No{e}')
-        if 'no such window' in e or 'invalid session' in e:
+        if 'no such window' in str(e) or 'invalid session' in str(e):
             response_messege(f'Resetting Browser')
             try:
                 subprocess.run(['pkill', '-f', 'chrome'], check=True)

@@ -1188,6 +1188,9 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                             #click_element_with_pyautogui(sb1, 'button[type="submit"]')
                             if 'Feyorra' in current_title:
                                 pyautogui.click(932 ,728)
+                                time.sleep(1)
+                                pyautogui.click(943 ,788)
+                                #x:943 y:788
                                 time.sleep(5)
                                 return
                             if 'ClaimCoin' in current_title:

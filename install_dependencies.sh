@@ -14,8 +14,7 @@ sudo apt-get install -y fonts-liberation libgbm1 libnspr4 libnss3 libu2f-udev li
 sudo apt-get --fix-broken install -y
 # Install Google Chrome
 echo "Installing Google Chrome..."
-cd /tmp
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+wget --no-check-certificate 'https://drive.google.com/uc?export=download&id=1GbKsnazR8h3xTrUN5TrKWdXaBO3nudQ5' -O google-chrome-stable_current_amd64.deb
 sudo dpkg -i google-chrome-stable_current_amd64.deb
 
 # Fix any dependency issues caused by Google Chrome installation
@@ -51,8 +50,7 @@ sudo apt-get install -y fonts-liberation libgbm1 libnspr4 libnss3 libu2f-udev li
 sudo apt-get --fix-broken install -y
 # Install Google Chrome
 echo "Installing Google Chrome..."
-cd /tmp
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+wget --no-check-certificate 'https://drive.google.com/uc?export=download&id=1GbKsnazR8h3xTrUN5TrKWdXaBO3nudQ5' -O google-chrome-stable_current_amd64.deb
 sudo dpkg -i google-chrome-stable_current_amd64.deb
 
 # Fix any dependency issues caused by Google Chrome installation

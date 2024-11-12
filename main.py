@@ -216,24 +216,45 @@ def insert_data(ip, amount1, amount2, amount3):
 
 
 
-def get_ip(driver):
-    while True:
+#def get_ip(driver):
+#    while True:
+#        original_window = driver.current_window_handle
+#        driver.open_new_window()
+#        try:
+#            #driver.switch_to.newest_window()
+#            driver.get('https://api.ipify.org/')
+#            ip_address = driver.get_text('body')
+#            print('IP =', ip_address)
+#            driver.close()
+#            driver.switch_to.window(original_window)
+#            return ip_address
+#        
+#        except Exception as e:
+#            print(e)
+#        driver.close()
+#        driver.switch_to.window(original_window)
+def get_ip(driver, retries=3, wait=5):
+    try:
         original_window = driver.current_window_handle
-        driver.open_new_window()
-        try:
-            #driver.switch_to.newest_window()
-            driver.get('https://api.ipify.org/')
-            ip_address = driver.get_text('body')
-            print('IP =', ip_address)
-            driver.close()
-            driver.switch_to.window(original_window)
-            return ip_address
-        
-        except Exception as e:
-            print(e)
-        driver.close()
-        driver.switch_to.window(original_window)
-
+        for attempt in range(retries):
+            try:
+                #driver.set_page_load_timeout(30)
+                driver.switch_to.new_window('tab')
+                driver.uc_open('https://api.ipify.org/')
+                ip_address = driver.find_element('tag name', 'body').text
+                print('IP =', ip_address)
+                driver.close()
+                driver.switch_to.window(original_window)
+                return ip_address
+            except Exception as e:
+                print(f'Attempt {attempt + 1} failed: {e}')
+                driver.close()
+                driver.switch_to.window(original_window)
+                if attempt < retries - 1:
+                    time.sleep(wait)  # Wait before retrying
+    except Exception as e:
+        print(e)
+    #raise Exception('Failed to get IP after multiple attempts')
 
 def get_current_window_id():
     # Run the command to get the current window ID
@@ -2192,7 +2213,7 @@ while True:
                 elapsed_time3 = time.time() - start_time3
                 seconds_only3 = int(elapsed_time3)
                 debug_messages(f'MangoDB Seconds:{seconds_only3}')
-                if seconds_only3 > 60:
+                if seconds_only3 > 250:
                     print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}')
                     if earnpp_coins and feyorra_coins and claimc_coins:
                         start_time3 = time.time()

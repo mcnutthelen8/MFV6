@@ -59,7 +59,7 @@ fresh_vms =True
 vm_count = 1 + 4
 CSB_id = csbid
 CSB_Script = f'CSB{Layout}'
-waiting_sec = 1700
+waiting_sec = 3700
 
 if freshar == 1:
     fresh = True

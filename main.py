@@ -216,45 +216,28 @@ def insert_data(ip, amount1, amount2, amount3):
 
 
 
-#def get_ip(driver):
-#    while True:
-#        original_window = driver.current_window_handle
-#        driver.open_new_window()
-#        try:
-#            #driver.switch_to.newest_window()
-#            driver.get('https://api.ipify.org/')
-#            ip_address = driver.get_text('body')
-#            print('IP =', ip_address)
-#            driver.close()
-#            driver.switch_to.window(original_window)
-#            return ip_address
-#        
-#        except Exception as e:
-#            print(e)
-#        driver.close()
-#        driver.switch_to.window(original_window)
-def get_ip(driver, retries=3, wait=5):
-    try:
-        original_window = driver.current_window_handle
-        for attempt in range(retries):
+def get_ip(driver):
+    while True:
+        try:
+            driver.set_page_load_timeout(20)
+            original_window = driver.current_window_handle
+            driver.open_new_window()
             try:
-                #driver.set_page_load_timeout(30)
-                driver.switch_to.new_window('tab')
+                #driver.switch_to.newest_window()
                 driver.uc_open('https://api.ipify.org/')
-                ip_address = driver.find_element('tag name', 'body').text
+                ip_address = driver.get_text('body')
                 print('IP =', ip_address)
                 driver.close()
                 driver.switch_to.window(original_window)
                 return ip_address
+            
             except Exception as e:
-                print(f'Attempt {attempt + 1} failed: {e}')
-                driver.close()
-                driver.switch_to.window(original_window)
-                if attempt < retries - 1:
-                    time.sleep(wait)  # Wait before retrying
-    except Exception as e:
-        print(e)
-    #raise Exception('Failed to get IP after multiple attempts')
+                print(e)
+            driver.close()
+            driver.switch_to.window(original_window)
+        except Exception as e:
+            print(e)
+            
 
 def get_current_window_id():
     # Run the command to get the current window ID

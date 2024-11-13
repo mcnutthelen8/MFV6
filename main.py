@@ -2457,7 +2457,7 @@ while True:
                 elapsed_time3 = time.time() - start_time3
                 seconds_only3 = int(elapsed_time3)
                 debug_messages(f'MangoDB Seconds:{seconds_only3}')
-                if seconds_only3 > 250:
+                if seconds_only3 > 160:
                     print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}| Bitmo:{bitmoon_coins}')
                     if earnpp_coins and feyorra_coins and claimc_coins and bitmoon_coins:
                         start_time3 = time.time()

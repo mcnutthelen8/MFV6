@@ -1018,7 +1018,7 @@ def cloudflare(sb, login = True):
                 if x and y:
                     sb.disconnect() 
                     for i in range(1, 300):
-                        if 'Login' in page_title or 'Just' in page_title or 'Faucetpay' in page_title:
+                        if 'Login' in page_title or 'Just' in page_title or 'Faucetpay' in page_title or 'Earnbitmoon' in page_title:
                             try:
                                 time.sleep(1)
                                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
@@ -1228,68 +1228,79 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
         print("🚀 Login attempt made!")
     
     elif 'Earnbitmoon' in current_title:
-        # Wait for the email input by type attribute
-        email_input = WebDriverWait(driver, 60).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, 'input[type="text"]'))
-        )
-        email_input.send_keys(email)
+        if driver.is_element_visible('a.nav-link.btn.btn-success'):
+            driver.click('a.nav-link.btn.btn-success')
+            # Wait for the email input by type attribute
+            email_input = WebDriverWait(driver, 60).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, 'input[type="text"]'))
+            )
+            email_input.send_keys(email)
 
-        # Locate the password input by type attribute
-        password_input = driver.find_element(By.CSS_SELECTOR, 'input[type="password"]')
-        password_input.send_keys(password)
-        dropdown = driver.find_elements(By.CSS_SELECTOR, 'select.form-control.custom-select.mb-2')
-        for x in dropdown:
-            try:
-                select = Select(dropdown)
-                select.select_by_visible_text("Cloudflare")
-            except Exception as e:
-                print(e)
-        # Step 3: Wait for the CAPTCHA checkbox to be validated
-        print("CAPTCHA Check")
-        if captcha_image:
-            if 'rscaptcha'in captcha_image:
-                solve_least_img(sb1)
-            else:
-                for i in range(1, 10):
-                    time.sleep(1)
-                    sb1.execute_script("window.scrollTo(0, 1000);")
-                    cloudflare(driver, True)
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
-                        if x and y: 
+            # Locate the password input by type attribute
+            password_input = driver.find_element(By.CSS_SELECTOR, 'input[type="password"]')
+            password_input.send_keys(password)
+            dropdowns = driver.find_elements(By.CSS_SELECTOR, 'select.form-control.custom-select.mb-2')
+            for dropdown in dropdowns:
+                try:
+                    # Only handle the first visible dropdown
+                    if dropdown.is_displayed():
+                        select = Select(dropdown)
+                        select.select_by_visible_text("Cloudflare")
+                        print("Cloudflare selected")
+                        break  # Exit the loop after selecting the first visible dropdown
+                except Exception as e:
+                    print(f"Error selecting from dropdown: {e}")
+            checkbox = driver.find_element(By.CSS_SELECTOR, 'input[type="checkbox"]')
+            checkbox.click()
+            time.sleep(5)
+            # Step 3: Wait for the CAPTCHA checkbox to be validated
+            print("CAPTCHA Check")
+            if captcha_image:
+                if 'rscaptcha'in captcha_image:
+                    solve_least_img(sb1)
+                else:
+                    for i in range(1, 10):
+                        time.sleep(1)
+                        sb1.execute_script("window.scrollTo(0, 1000);")
+                        cloudflare(driver, True)
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
+                            if x and y: 
 
-                            #login_button = driver.find_element(By.CSS_SELECTOR, submit_button)
-                            #click_element_with_pyautogui(driver, login_button)
-                            #click_element_with_pyautogui(sb1, 'button[type="submit"]')
-                            if 'Feyorra' in current_title:
-                                pyautogui.click(932 ,728)
-                                time.sleep(1)
-                                pyautogui.click(943 ,788)
-                                #x:943 y:788
+                                #login_button = driver.find_element(By.CSS_SELECTOR, submit_button)
+                                #click_element_with_pyautogui(driver, login_button)
+                                #click_element_with_pyautogui(sb1, 'button[type="submit"]')
+                                if 'Feyorra' in current_title:
+                                    pyautogui.click(932 ,728)
+                                    time.sleep(1)
+                                    pyautogui.click(943 ,788)
+                                    #x:943 y:788
+                                    time.sleep(5)
+                                    return
+                                if 'ClaimCoin' in current_title:
+                                    pyautogui.click(973, 833)
+                                    time.sleep(5)
+                                    return
+                                pyautogui.click(957 ,886)
+                                time.sleep(5)
+                                sb1.uc_click(submit_button)
+                                #sb1.uc_click('button[type="submit"]')
+                                
+                                #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
+                                #login_button.click(submit_button)
                                 time.sleep(5)
                                 return
-                            if 'ClaimCoin' in current_title:
-                                pyautogui.click(973, 833)
-                                time.sleep(5)
-                                return
-                            sb1.uc_click(submit_button)
-                            #sb1.uc_click('button[type="submit"]')
-                            
-                            #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
-                            #login_button.click(submit_button)
-                            time.sleep(5)
-                            return
-                    except Exception as e:
-                        print(f'ERR:{e}') 
+                        except Exception as e:
+                            print(f'ERR:{e}') 
 
 
-        print("✅ CAPTCHA validated")
-        #click_element_with_pyautogui(sb1, 'button[type="submit"]')
-        #pyautogui.press('enter')
-        sb1.uc_click(submit_button)
-        
-        time.sleep(3)
-        print("🚀 Login attempt made!")
+            print("✅ CAPTCHA validated")
+            #click_element_with_pyautogui(sb1, 'button[type="submit"]')
+            #pyautogui.press('enter')
+            sb1.uc_click(submit_button)
+            
+            time.sleep(3)
+            print("🚀 Login attempt made!")
     else:
         print('no login in Title')
 
@@ -1329,18 +1340,12 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
 
 
         if function == 4:
-            if expected_title == current_title:
-                pyautogui.click(50, 130)
+            if expected_title in current_title:
                 if driver.is_element_visible('a.nav-link.btn.btn-success'):
-                    driver.click('a.nav-link.btn.btn-success')
-                    for i in range(5):
-                        time.sleep(2)
-                        if driver.is_element_visible('button.btn.btn-primary.btn-block'):
-                            login_to_faucet(url, sb1, earnpp_email, earnpp_pass, 'cloudflare_success', window_list, 'button.btn.btn-primary.btn-block') #'not_a_robot'
+                    login_to_faucet(url, sb1, bitmoon_email, bitmoon_pass, 'cloudflare_success', window_list, 'button[type="submit"]') #'not_a_robot'
                 else:
                     if driver.current_window_handle not in window_list:
                         ready = True
-                        
 
         if not_expected_title == current_title:
             if function == 1:
@@ -2058,9 +2063,9 @@ def open_faucets():
                 update = {"$set": {"request": 'mainscript'}}
                 result = collection.update_one(query, update)
 
-                all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
+                all_window_handles = [earnpp_window, feyorra_window, claimcoin_window, bitmoon_window]
                 close_extra_windows(sb1, all_window_handles)
-
+                sb1.switch_to.window(earnpp_window)
                 print(f"Windows: EarnPP: {earnpp_window}, Feyorra: {feyorra_window}, ClaimCoin: {claimcoin_window}, Baymack:{baymack_window}")
                 global reset_count 
                 global reset_count_isacc 
@@ -2268,6 +2273,53 @@ while True:
                     except Exception as e:
                         debug_messages(f'ERR on ClamCoim:{e}')
                         reset_count +=1
+
+
+
+                if bitmoon:
+                    try:
+                        debug_messages(f'Switching Pages to Bitmoon')
+                        sb1.switch_to.window(bitmoon_window)
+                        debug_messages(f'Getting Pages Titile:Bitmoon')
+                        title =sb1.get_title()
+                        if 'Earnbitmoon' in title:
+                            debug_messages(f'Solving Icon Captcha on Bitmoon')
+                            pyautogui.click(50, 130)
+                            if sb1.is_element_visible('btn close-btn'):
+                                sb1.uc_click('btn close-btn')
+                                
+                            if sb1.is_element_visible("button[style*='background: #FFA500;'][type='button']"):
+                                sb1.uc_click("button[style*='background: #FFA500;'][type='button']")
+                                time.sleep(3)
+                                img3 = solve_least_img(sb1)
+                                if img3:
+                                    sb1.uc_click("button[style*='background: #FFA500;'][type='button']")
+
+                            elif sb1.is_text_visible('You can claim again'): 
+                                print('Waiting....You can claim again')
+                                
+                        elif 'Lock' in title:
+                            debug_messages(f'Lock.. Found on EarnPP')
+                            response_messege('Lock.. Found on EarnPP')
+                        elif 'Just' in title:
+                            debug_messages(f'Just.. Found on EarnPP')
+
+                            cloudflare(sb1, login = False)
+                            debug_messages(f'Just Fixed EarnPP')
+                        elif 'aintenance' in title:
+                            debug_messages(f'maintenance.. Found on EarnPP')
+                            response_messege('maintenance.. Found on EarnPP')
+                        else:
+                            debug_messages(f'EarnPP not Found:{title} | reset:{reset_count}')
+                            reset_count +=1
+
+                    except Exception as e:
+                        if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
+                            debug_messages(f'EarnPP Limit Reached')
+                            response_messege('EarnPP Limit Reached')
+                        else:
+                            debug_messages(f'ERR on EarnPP:{e}')
+                            reset_count +=1
 
                 elapsed_time = time.time() - start_time
                 seconds_only = int(elapsed_time)

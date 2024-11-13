@@ -147,7 +147,7 @@ chrome_binary_path = '/opt/google/chrome/google-chrome'
 chrome_user_data_dir = '/root/.config/google-chrome/'
 
 
-bitmoon = False
+bitmoon = True
 earnpp = True
 claimcoin = True
 feyorra = True
@@ -1250,8 +1250,8 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                         break  # Exit the loop after selecting the first visible dropdown
                 except Exception as e:
                     print(f"Error selecting from dropdown: {e}")
-            checkbox = driver.find_element(By.CSS_SELECTOR, 'input[type="checkbox"]')
-            checkbox.click()
+            #checkbox = driver.find_element(By.CSS_SELECTOR, 'input[type="checkbox"]')
+            #driver.check_if_unchecked('input[type="checkbox"]')
             time.sleep(5)
             # Step 3: Wait for the CAPTCHA checkbox to be validated
             print("CAPTCHA Check")
@@ -1700,31 +1700,12 @@ def solve_least_img(driver):
     for i in range(15):
         pyautogui.moveTo(400, 400)
         time.sleep(1)
-        driver.switch_to.default_content()
-        scroll_height = driver.execute_script("return document.body.scrollHeight")
-        print(scroll_height, 'height')
-        driver.execute_script(f"window.scrollTo(0, {scroll_height});")
+        #driver.switch_to.default_content()
+        #scroll_height = driver.execute_script("return document.body.scrollHeight")
+        #print(scroll_height, 'height')
+        #driver.execute_script(f"window.scrollTo(0, {scroll_height});")
         time.sleep(1)
         
-        if driver.is_element_visible('img#rscaptcha_img'):
-            print('rscaptcha Found')
-            capture_element_screenshot(sb1, "img#rscaptcha_img")
-            val = solve_least_captcha("element_screenshot.png")
-            print('val', val)
-            if val:
-                try:
-                    x, y = pyautogui.locateCenterOnScreen(val, confidence=0.85)
-                    if x and y:
-                        pyautogui.click(x, y)
-
-                        return True
-                except Exception as e:
-                    print(e)
-            else:
-                return None
-
-            
-        #time.sleep(3)
         if driver.is_element_visible('div.iconcaptcha-modal__body-title'):
             print('iconcaptcha-modal__body-title Found')
             if driver.is_element_visible('div.iconcaptcha-modal__body-title'):
@@ -1785,7 +1766,53 @@ def solve_least_img(driver):
             print('not found enything')
             driver.execute_script("window.scrollTo(0, 1000);")
 
-     
+def earnbitmoon_claim():
+    try:
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman_gray.png", region=(671, 118, 873, 892), confidence=0.85)
+        pyautogui.click(x, y)
+        time.sleep(2)
+        print("Verify Human Found")
+        for i in range(100):
+            time.sleep(1)
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman_gray.png", region=(671, 118, 873, 892), confidence=0.85)
+                pyautogui.click(x, y)
+                time.sleep(2)
+                print("Verify Human Found")
+
+            except pyautogui.ImageNotFoundException:
+                print("No Verify Human.")
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/icon_image_loaded.png", region=(671, 118, 873, 892), confidence=0.85)
+                #pyautogui.click(x, y)
+                print("icon_image_loaded Found")
+                screenshot = pyautogui.screenshot(region=(314, 48, 794, 415))
+                screenshot.save('element_screenshot.png') 
+                val = solve_least_captcha("element_screenshot.png")
+                print('val', val)
+                if val:
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen(val, confidence=0.85)
+                        if x and y:
+                            pyautogui.click(x, y)
+                    except Exception as e:
+                        print(e)
+
+            except pyautogui.ImageNotFoundException:
+                print("No icon_image_loaded Human.")
+
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verified_complete_icons.png", region=(671, 118, 873, 892), confidence=0.85)
+                #pyautogui.click(x, y)
+                print("icon_image_loaded Found")
+                pyautogui.click(944,470)
+                return True
+
+            except pyautogui.ImageNotFoundException:
+                print("No icon_image_loaded Human.")
+    except pyautogui.ImageNotFoundException:
+        print("No Verify Human.")
+
       
 def withdraw_faucet(driver, sitekey):
 
@@ -1952,7 +1979,7 @@ if run_sb1:
     
     if fresh >= 3:
         mysterium = install_extensions('mysterium')
-        nopecha = install_extensions('nopecha')
+        nopecha = True#install_extensions('nopecha')
         cookie = install_extensions('cookie')
         fingerprint = install_extensions('fingerprint')
         mfhelper = install_extensions('mfhelper')
@@ -2146,7 +2173,7 @@ while True:
             if ip_address == ip_required:
                 debug_messages(f'Ip address Match:{ip_address}')
 
-                all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
+                all_window_handles = [earnpp_window, feyorra_window, claimcoin_window, bitmoon_window]
                 close_extra_windows(sb1, all_window_handles)
 
                 print(f'Reset_count:{reset_count}')
@@ -2291,9 +2318,10 @@ while True:
                             if sb1.is_element_visible("button[style*='background: #FFA500;'][type='button']"):
                                 sb1.uc_click("button[style*='background: #FFA500;'][type='button']")
                                 time.sleep(3)
-                                img3 = solve_least_img(sb1)
+                                earnbitmoon_claim()
+                                img3 = earnbitmoon_claim(sb1)
                                 if img3:
-                                    sb1.uc_click("button[style*='background: #FFA500;'][type='button']")
+                                    print('Claim Bitmoon')
 
                             elif sb1.is_text_visible('You can claim again'): 
                                 print('Waiting....You can claim again')

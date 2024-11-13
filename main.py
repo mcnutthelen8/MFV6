@@ -1814,31 +1814,23 @@ def earnbitmoon_claim():
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/icon_image_loaded.png", region=(671, 118, 873, 892), confidence=0.85)
                 #pyautogui.click(x, y)
                 print("icon_image_loaded Found")
-                screenshot = pyautogui.screenshot(region=(794, 420, 55, 43))
-                screenshot.save('captcha.png') 
-                image = Image.open('captcha.png')
-                image = image.convert('RGB')
-                pixels = list(image.getdata())
-                is_all_white = all(pixel == (76,76,76) for pixel in pixels)
-                if is_all_white:
-                    screenshot = pyautogui.screenshot(region=(794, 415, 312, 50))
-                    screenshot.save('element_screenshot.png') 
-                    val = solve_least_captcha("element_screenshot.png")
-                    print('val', val)
-                    if val:
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen(val, confidence=0.85)
-                            if x and y:
-                                pyautogui.click(x, y)
-                        except Exception as e:
-                            print(e)
-                    else:
-                        #pyautogui.press('f5')
-                        pyautogui.click(810, 425,)
-                        #return None
+
+                screenshot = pyautogui.screenshot(region=(794, 415, 312, 50))
+                screenshot.save('element_screenshot.png') 
+                val = solve_least_captcha("element_screenshot.png")
+                print('val', val)
+                if val:
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen(val, confidence=0.85)
+                        if x and y:
+                            pyautogui.click(x, y)
+                    except Exception as e:
+                        print(e)
                 else:
+                        #pyautogui.press('f5')
+                    pyautogui.click(810, 425,)
                     white_del += 1
-                    if white_del > 10:
+                    if white_del > 3:
                         pyautogui.press('f5')
                         return None
                     

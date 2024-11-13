@@ -1343,9 +1343,10 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
             if expected_title in current_title:
                 if driver.is_element_visible('a.nav-link.btn.btn-success'):
                     login_to_faucet(url, sb1, bitmoon_email, bitmoon_pass, 'cloudflare_success', window_list, 'button[type="submit"]') #'not_a_robot'
-                else:
+                elif sb1.is_element_present("#sidebarCoins"):
                     if driver.current_window_handle not in window_list:
                         ready = True
+
 
         if not_expected_title == current_title:
             if function == 1:
@@ -1772,7 +1773,7 @@ def earnbitmoon_claim():
         pyautogui.click(x, y)
         time.sleep(2)
         print("Verify Human Found")
-        for i in range(100):
+        for i in range(10):
             time.sleep(1)
             try:
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman_gray.png", region=(671, 118, 873, 892), confidence=0.85)
@@ -2136,7 +2137,7 @@ claimcoin_count = 0
 
 refresh_count = 0
 earnpp_window, feyorra_window, claimcoin_window, bitmoon_window,  ip_address, ip_required = open_faucets()
-
+start_time4 = 0
 time.sleep(2)
 print('Starting Loop')
 
@@ -2311,26 +2312,31 @@ while True:
                         debug_messages(f'Getting Pages Titile:Bitmoon')
                         title =sb1.get_title()
                         if 'Earnbitmoon' in title:
+                            elapsed_time4 = time.time() - start_time4
+                            seconds_only4 = int(elapsed_time4)
+                            if seconds_only4 > 60:
+                                pyautogui.press('f5')
+                                print('Claim Bitmoon 60 refresh')
                             debug_messages(f'Solving Icon Captcha on Bitmoon')
                             pyautogui.click(50, 130)
-                            if sb1.is_element_visible('btn close-btn'):
-                                sb1.uc_click('btn close-btn')
                                 
                             if sb1.is_element_visible("button[style*='background: #FFA500;'][type='button']"):
                                 sb1.uc_click("button[style*='background: #FFA500;'][type='button']")
                                 time.sleep(3)
-                                earnbitmoon_claim()
-                                img3 = earnbitmoon_claim(sb1)
+                                img3 = earnbitmoon_claim()
                                 if img3:
+                                    time.sleep(3)
+                                    pyautogui.press('f5')
                                     print('Claim Bitmoon')
 
                             elif sb1.is_text_visible('You can claim again'): 
                                 print('Waiting....You can claim again')
+                                pyautogui.press('f5')
+
                             if sb1.is_element_present("#sidebarCoins"):
                                 bitmoon_coins = sb1.get_text("#sidebarCoins")
                                 print('bitmoon_coins:',bitmoon_coins )
-                            if sb1.is_element_visible('button.btn.btn-default'):
-                                pyautogui.press('f5')
+
                         elif 'Lock' in title:
                             debug_messages(f'Lock.. Found on EarnPP')
                             response_messege('Lock.. Found on EarnPP')

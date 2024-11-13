@@ -189,7 +189,7 @@ def add_messages(type_value, new_messages):
     except Exception as e:
         print(e)
 
-def insert_data(ip, amount1, amount2, amount3):
+def insert_data(ip, amount1, amount2, amount3, amount4):
     sri_lanka_tz = pytz.timezone('Asia/Colombo')
     utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
     sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
@@ -200,6 +200,7 @@ def insert_data(ip, amount1, amount2, amount3):
         "pepelom": amount1,
         "feyorramack": amount2,
         "claimcoins": amount3,
+        "bitmoon": amount4,
         "Status": now,
         "Ip": ip,
         "response": 'Running'
@@ -214,6 +215,7 @@ def insert_data(ip, amount1, amount2, amount3):
     add_messages('pepelom', {now: amount1})
     add_messages('feyorramack', {now: amount2})
     add_messages('claimcoins', {now: amount3})
+    add_messages('bitmoon', {now: amount4})
     return
 
 
@@ -1773,14 +1775,14 @@ def earnbitmoon_claim():
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman_gray.png", region=(671, 118, 873, 892), confidence=0.85)
         pyautogui.click(x, y)
-        time.sleep(2)
+        time.sleep(4)
         print("Verify Human Found")
         for i in range(10):
             time.sleep(1)
             try:
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman_gray.png", region=(671, 118, 873, 892), confidence=0.85)
                 pyautogui.click(x, y)
-                time.sleep(2)
+                time.sleep(4)
                 print("Verify Human Found")
 
             except pyautogui.ImageNotFoundException:
@@ -2335,7 +2337,6 @@ while True:
 
                             elif sb1.is_text_visible('You can claim again'): 
                                 print('Waiting....You can claim again')
-                                pyautogui.press('f5')
 
                             if sb1.is_element_present("#sidebarCoins"):
                                 bitmoon_coins = sb1.get_text("#sidebarCoins")
@@ -2409,10 +2410,10 @@ while True:
                 seconds_only3 = int(elapsed_time3)
                 debug_messages(f'MangoDB Seconds:{seconds_only3}')
                 if seconds_only3 > 250:
-                    print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}')
-                    if earnpp_coins and feyorra_coins and claimc_coins:
+                    print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}| Bitmo:{bitmoon_coins}')
+                    if earnpp_coins and feyorra_coins and claimc_coins and bitmoon_coins:
                         start_time3 = time.time()
-                        insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins)
+                        insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins, bitmoon_coins)
                     
                     
 

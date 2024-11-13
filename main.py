@@ -1786,7 +1786,7 @@ def earnbitmoon_claim():
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/icon_image_loaded.png", region=(671, 118, 873, 892), confidence=0.85)
                 #pyautogui.click(x, y)
                 print("icon_image_loaded Found")
-                screenshot = pyautogui.screenshot(region=(314, 48, 794, 415))
+                screenshot = pyautogui.screenshot(region=(794, 415, 312, 50))
                 screenshot.save('element_screenshot.png') 
                 val = solve_least_captcha("element_screenshot.png")
                 print('val', val)
@@ -1959,7 +1959,7 @@ start_time3 = time.time()
 earnpp_coins = None
 feyorra_coins = None
 claimc_coins = None
-
+bitmoon_coins = None
 earnpp_coins_pre = None
 feyorra_coins_pre = None
 claimc_coins_pre = None
@@ -2097,6 +2097,7 @@ def open_faucets():
                 global reset_count 
                 global reset_count_isacc 
                 global previous_reset_count
+                
                 reset_count = 0
                 reset_count_isacc = 0
                 previous_reset_count = 0
@@ -2325,7 +2326,11 @@ while True:
 
                             elif sb1.is_text_visible('You can claim again'): 
                                 print('Waiting....You can claim again')
-
+                            if sb1.is_element_present("#sidebarCoins"):
+                                bitmoon_coins = sb1.get_text("#sidebarCoins")
+                                print('bitmoon_coins:',bitmoon_coins )
+                            if sb1.is_element_visible('button.btn.btn-default'):
+                                pyautogui.press('f5')
                         elif 'Lock' in title:
                             debug_messages(f'Lock.. Found on EarnPP')
                             response_messege('Lock.. Found on EarnPP')

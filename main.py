@@ -2320,7 +2320,7 @@ while True:
                                 if claimcoin_count == 0:
                                     if sb1.is_text_visible(' Invalid Captcha') or sb1.is_text_visible('Invalid Captcha'):
                                         debug_messages(f' Invalid Captcha | reset:{reset_count_isacc}')
-                                        if reset_count_isacc > 1:
+                                        if reset_count_isacc > 3:
                                             response_messege(f'Invalid Captcha | reset:{reset_count_isacc}')
                                         reset_count_isacc +=1
                                         claimcoin_count = 1 

@@ -216,15 +216,17 @@ def insert_data(ip, amount1, amount2, amount3):
 
 
 
+
+
 def get_ip(driver):
     while True:
         try:
-            driver.set_page_load_timeout(20)
+            driver.set_page_load_timeout(20)  
             original_window = driver.current_window_handle
             driver.open_new_window()
             try:
                 #driver.switch_to.newest_window()
-                driver.uc_open('https://api.ipify.org/')
+                driver.get('https://api.ipify.org/')
                 ip_address = driver.get_text('body')
                 print('IP =', ip_address)
                 driver.close()
@@ -237,7 +239,6 @@ def get_ip(driver):
             driver.switch_to.window(original_window)
         except Exception as e:
             print(e)
-            
 
 def get_current_window_id():
     # Run the command to get the current window ID
@@ -1896,88 +1897,109 @@ if run_sb1:
 
 
 def open_faucets():
-    current_window = sb1.current_window_handle
-    all_windows = sb1.window_handles
-    for window in all_windows:
-        if window != current_window:
-            sb1.switch_to.window(window)
-            sb1.close()  # Close the tab
-    sb1.switch_to.window(current_window)
-    time.sleep(1)
-    global blacklistedIP
-    collectionbip = db[f'LocalCSB']
-    quer2y = {"type": "main"}
-    dochh = collectionbip.find_one(quer2y)
-    blacklistedIP2 = dochh["blacklistedIP"]
-    if len(blacklistedIP) <= len(blacklistedIP2):
-        blacklistedIP = blacklistedIP2
+    while True:
+        try:
+            current_window = sb1.current_window_handle
+            all_windows = sb1.window_handles
+            for window in all_windows:
+                if window != current_window:
+                    sb1.switch_to.window(window)
+                    sb1.close()  # Close the tab
+            sb1.switch_to.window(current_window)
+            time.sleep(1)
+            global blacklistedIP
+            collectionbip = db[f'LocalCSB']
+            quer2y = {"type": "main"}
+            dochh = collectionbip.find_one(quer2y)
+            blacklistedIP2 = dochh["blacklistedIP"]
+            if len(blacklistedIP) <= len(blacklistedIP2):
+                blacklistedIP = blacklistedIP2
 
-    print(blacklistedIP)
-    
-    response_messege('Fixing IP')
-    ip_address = get_ip(sb1)
-    ipscore = get_ipscore(ip_address)
-    proxycheck = get_proxycheck(sb1, ip_address, server_name= server_name1)
-    if ipscore and proxycheck == 200:
-        print(f'Good IP found: {ip_address}')
-        for frm in CSB1_farms:
-            collection_csb = db[f'Farm{frm}']
-            query = {"type": "main"}
-            doc = collection_csb.find_one(query)
-            res = doc["response"]
-            req = doc["request"]
-            if req == 'ipfixer' and 'Changed IP' in res:
+            print(blacklistedIP)
+            
+            response_messege('Fixing IP')
+            ip_address = get_ip(sb1)
+            ipscore = get_ipscore(ip_address)
+            proxycheck = get_proxycheck(sb1, ip_address, server_name= server_name1)
+            if ipscore and proxycheck == 200:
+                print(f'Good IP found: {ip_address}')
+                for frm in CSB1_farms:
+                    collection_csb = db[f'Farm{frm}']
+                    query = {"type": "main"}
+                    doc = collection_csb.find_one(query)
+                    res = doc["response"]
+                    req = doc["request"]
+                    if req == 'ipfixer' and 'Changed IP' in res:
+                        ipfixer()
+                        ip_required = fix_ip(sb1, server_name1)
+                        ip_address = get_ip(sb1)
+                        break
+            else:
                 ipfixer()
                 ip_required = fix_ip(sb1, server_name1)
                 ip_address = get_ip(sb1)
-                break
-    else:
-        ipfixer()
-        ip_required = fix_ip(sb1, server_name1)
-        ip_address = get_ip(sb1)
-    #ip_address = get_ip(sb1)
-    ip_required = ip_address
-    response_messege('EarnPP Loging')
-    if earnpp:
+            #ip_address = get_ip(sb1)
+            ip_required = ip_address
+            response_messege('EarnPP Loging')
+            if earnpp:
 
-        earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [])
-        print(f"EarnPP window handle: {earnpp_window}")
-    else:
-        earnpp_window = None
-    response_messege('Feyorra Loging')
-    if feyorra:
-        sb1.open_new_window()
-        feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Home | Feyorra", 2, [earnpp_window])
-        print(f"Feyorra window handle: {feyorra_window}")
-    else:
-        feyorra_window = None
-    response_messege('ClaimC Loging')
-    if claimcoin:
-        sb1.open_new_window()
-        claimcoin_window = handle_site(sb1, "https://claimcoin.in/faucet", "Faucet | ClaimCoin - ClaimCoin Faucet", "ClaimCoin - MultiCurrency Crypto Earning Platform", 3, [earnpp_window, feyorra_window])
-        print(f"ClaimCoin window handle: {claimcoin_window}")
-    else:
-        claimcoin_window = None
+                earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [])
+                print(f"EarnPP window handle: {earnpp_window}")
+            else:
+                earnpp_window = None
+            response_messege('Feyorra Loging')
+            if feyorra:
+                sb1.open_new_window()
+                feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Home | Feyorra", 2, [earnpp_window])
+                print(f"Feyorra window handle: {feyorra_window}")
+            else:
+                feyorra_window = None
+            response_messege('ClaimC Loging')
+            if claimcoin:
+                sb1.open_new_window()
+                claimcoin_window = handle_site(sb1, "https://claimcoin.in/faucet", "Faucet | ClaimCoin - ClaimCoin Faucet", "ClaimCoin - MultiCurrency Crypto Earning Platform", 3, [earnpp_window, feyorra_window])
+                print(f"ClaimCoin window handle: {claimcoin_window}")
+            else:
+                claimcoin_window = None
 
-    response_messege('Started')
-    query = {"type": "main"}
-    update = {"$set": {"request": 'mainscript'}}
-    result = collection.update_one(query, update)
+            response_messege('Started')
+            query = {"type": "main"}
+            update = {"$set": {"request": 'mainscript'}}
+            result = collection.update_one(query, update)
 
-    all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
-    close_extra_windows(sb1, all_window_handles)
+            all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
+            close_extra_windows(sb1, all_window_handles)
 
-    print(f"Windows: EarnPP: {earnpp_window}, Feyorra: {feyorra_window}, ClaimCoin: {claimcoin_window}, Baymack:{baymack_window}")
-    global reset_count 
-    global reset_count_isacc 
-    global previous_reset_count
-    reset_count = 0
-    reset_count_isacc = 0
-    previous_reset_count = 0
+            print(f"Windows: EarnPP: {earnpp_window}, Feyorra: {feyorra_window}, ClaimCoin: {claimcoin_window}, Baymack:{baymack_window}")
+            global reset_count 
+            global reset_count_isacc 
+            global previous_reset_count
+            reset_count = 0
+            reset_count_isacc = 0
+            previous_reset_count = 0
 
 
-    return earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required
+            return earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required
+        except Exception as e:
+                response_messege(f'Resetting Browser')
+                try:
+                    subprocess.run(['pkill', '-f', 'chrome'], check=True)
+                    print("All chrome processes killed successfully.")
+                except subprocess.CalledProcessError:
+                    print("Failed to kill chrome processes or no processes found.")
+                sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path,  page_load_strategy='none')
+                sb1.maximize_window()
+                sb1.uc_open("chrome://extensions/")
+                current_window = sb1.current_window_handle
+                sb1.open_new_window()
+                current_window2 = sb1.current_window_handle
+                sb1.switch_to.window(current_window)
+                sb1.close()  # Close the tab
+                sb1.switch_to.window(current_window2)
+                sb1.uc_open("chrome://extensions/")
 
+                print(sb1.get_title())
+                reset_count +=15
 
 def debug_messages(messages):
     if debug_mode:

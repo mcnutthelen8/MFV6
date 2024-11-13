@@ -1656,7 +1656,7 @@ def find_least_similar_image(image_dir):
 
     if len(similarity_groups) == 0:
         print("No similar image combinations found.")
-        return False
+        return None
 
     least_similar_image = None
     min_similar_count = float('inf')
@@ -1697,7 +1697,7 @@ def solve_least_captcha(image):
         print('similar slot 8')
         return val
 
-    return False
+    return None
 
 
 
@@ -1773,11 +1773,33 @@ def solve_least_img(driver):
 
 def earnbitmoon_claim():
     white_del = 0
+    captcha_found = False
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman_gray.png", region=(671, 118, 873, 892), confidence=0.85)
         pyautogui.click(x, y)
         time.sleep(4)
         print("Verify Human Found")
+        captcha_found = True
+    except pyautogui.ImageNotFoundException:
+        print("No Verify Human.")
+    try:
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verified_complete_icons.png", region=(671, 118, 873, 892), confidence=0.85)
+        pyautogui.click(x, y)
+        time.sleep(4)
+        print("Verify Human Found")
+        captcha_found = True
+    except pyautogui.ImageNotFoundException:
+        print("No Verify Human.")
+    try:
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/icon_image_loaded.png", region=(671, 118, 873, 892), confidence=0.85)
+        pyautogui.click(x, y)
+        time.sleep(4)
+        print("Verify Human Found")
+        captcha_found = True
+    except pyautogui.ImageNotFoundException:
+        print("No Verify Human.")
+      
+    if captcha_found:
         for i in range(10):
             time.sleep(1)
             try:
@@ -1810,6 +1832,10 @@ def earnbitmoon_claim():
                                 pyautogui.click(x, y)
                         except Exception as e:
                             print(e)
+                    else:
+                        #pyautogui.press('f5')
+                        pyautogui.click(810, 425,)
+                        #return None
                 else:
                     white_del += 1
                     if white_del > 10:
@@ -1828,9 +1854,6 @@ def earnbitmoon_claim():
 
             except pyautogui.ImageNotFoundException:
                 print("No icon_image_loaded Human.")
-    except pyautogui.ImageNotFoundException:
-        print("No Verify Human.")
-
       
 def withdraw_faucet(driver, sitekey):
 
@@ -2337,7 +2360,7 @@ while True:
                                 start_time4 = time.time()
                                 print('Claim Bitmoon 60 refresh')
                             debug_messages(f'Solving Icon Captcha on Bitmoon')
-                            pyautogui.click(50, 130)
+                            #pyautogui.click(50, 130)
                                 
                             if sb1.is_element_visible("button[style*='background: #FFA500;'][type='button']"):
                                 sb1.uc_click("button[style*='background: #FFA500;'][type='button']")

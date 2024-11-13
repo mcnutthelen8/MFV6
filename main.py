@@ -1972,8 +1972,8 @@ reset_count = 0
 reset_count_isacc = 0
 previous_reset_count = 0
 
-start_time = time.time()
-start_time3 = time.time()
+start_time = 0
+start_time3 = 0
 earnpp_coins = None
 feyorra_coins = None
 claimc_coins = None

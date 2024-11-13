@@ -1772,6 +1772,7 @@ def solve_least_img(driver):
             driver.execute_script("window.scrollTo(0, 1000);")
 
 def earnbitmoon_claim():
+    white_del = 0
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman_gray.png", region=(671, 118, 873, 892), confidence=0.85)
         pyautogui.click(x, y)
@@ -1791,18 +1792,30 @@ def earnbitmoon_claim():
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/icon_image_loaded.png", region=(671, 118, 873, 892), confidence=0.85)
                 #pyautogui.click(x, y)
                 print("icon_image_loaded Found")
-                screenshot = pyautogui.screenshot(region=(794, 415, 312, 50))
-                screenshot.save('element_screenshot.png') 
-                val = solve_least_captcha("element_screenshot.png")
-                print('val', val)
-                if val:
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen(val, confidence=0.85)
-                        if x and y:
-                            pyautogui.click(x, y)
-                    except Exception as e:
-                        print(e)
-
+                screenshot = pyautogui.screenshot(region=(794, 420, 55, 43))
+                screenshot.save('captcha.png') 
+                image = Image.open('captcha.png')
+                image = image.convert('RGB')
+                pixels = list(image.getdata())
+                is_all_white = all(pixel == (76,76,76) for pixel in pixels)
+                if is_all_white:
+                    screenshot = pyautogui.screenshot(region=(794, 415, 312, 50))
+                    screenshot.save('element_screenshot.png') 
+                    val = solve_least_captcha("element_screenshot.png")
+                    print('val', val)
+                    if val:
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen(val, confidence=0.85)
+                            if x and y:
+                                pyautogui.click(x, y)
+                        except Exception as e:
+                            print(e)
+                else:
+                    white_del += 1
+                    if white_del > 10:
+                        pyautogui.press('f5')
+                        return None
+                    
             except pyautogui.ImageNotFoundException:
                 print("No icon_image_loaded Human.")
 

@@ -1362,10 +1362,12 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         elif expected_title in current_title:
             if driver.current_window_handle not in window_list:
                 ready = True
-        elif 'lock' in current_title:
+        elif 'Lock' in current_title:
             if driver.current_window_handle not in window_list:
                 ready = True
-            
+        elif 'Maintenance' in current_title:
+            if driver.current_window_handle not in window_list:
+                ready = True
         elif 'Just' in current_title:
             if captcha_handling:
                 handle_captcha_and_cloudflare(driver)
@@ -2314,8 +2316,9 @@ while True:
                         if 'Earnbitmoon' in title:
                             elapsed_time4 = time.time() - start_time4
                             seconds_only4 = int(elapsed_time4)
-                            if seconds_only4 > 60:
+                            if seconds_only4 > 120:
                                 pyautogui.press('f5')
+                                start_time4 = time.time()
                                 print('Claim Bitmoon 60 refresh')
                             debug_messages(f'Solving Icon Captcha on Bitmoon')
                             pyautogui.click(50, 130)
@@ -2325,6 +2328,7 @@ while True:
                                 time.sleep(3)
                                 img3 = earnbitmoon_claim()
                                 if img3:
+                                    start_time4 = time.time()
                                     time.sleep(3)
                                     pyautogui.press('f5')
                                     print('Claim Bitmoon')
@@ -2336,6 +2340,9 @@ while True:
                             if sb1.is_element_present("#sidebarCoins"):
                                 bitmoon_coins = sb1.get_text("#sidebarCoins")
                                 print('bitmoon_coins:',bitmoon_coins )
+                            if sb1.is_element_visible('a.nav-link.btn.btn-success'):
+                                reset_count +=4
+
 
                         elif 'Lock' in title:
                             debug_messages(f'Lock.. Found on EarnPP')

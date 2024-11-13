@@ -218,6 +218,7 @@ def insert_data(ip, amount1, amount2, amount3):
 
 
 
+
 def get_ip(driver):
     while True:
         try:
@@ -239,6 +240,7 @@ def get_ip(driver):
             driver.switch_to.window(original_window)
         except Exception as e:
             print(e)
+
 
 def get_current_window_id():
     # Run the command to get the current window ID

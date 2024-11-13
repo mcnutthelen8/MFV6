@@ -2335,6 +2335,19 @@ while True:
                                 cc_faucet =  find_and_click_collect_button(sb1)
                                 if cc_faucet:
                                     claimcoin_count = 0
+                                    if reset_count_isacc > 3:
+                                        time.sleep(3)
+                                        if sb1.is_text_visible(' Invalid Captcha') or sb1.is_text_visible('Invalid Captcha'):
+                                            debug_messages(f' Invalid Captcha | reset:{reset_count_isacc}')
+                                            if reset_count_isacc > 1:
+                                                response_messege(f'Invalid Captcha | reset:{reset_count_isacc}')
+                                            reset_count_isacc +=1
+                                            claimcoin_count = 1 
+                                        else:
+                                            if sb1.is_text_visible('Ready'):
+                                                claimcoin_count = 1 
+                                            else:
+                                                reset_count_isacc = 0
                                     debug_messages(f'Solved Icon Captcha on Claimcoins')
                                 sb1.switch_to.window(claimcoin_window)
                             elif 'Just' in title:

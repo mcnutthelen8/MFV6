@@ -2066,7 +2066,7 @@ def open_faucets():
                 all_window_handles = [earnpp_window, feyorra_window, claimcoin_window, bitmoon_window]
                 close_extra_windows(sb1, all_window_handles)
                 sb1.switch_to.window(earnpp_window)
-                print(f"Windows: EarnPP: {earnpp_window}, Feyorra: {feyorra_window}, ClaimCoin: {claimcoin_window}, Baymack:{baymack_window}")
+                print(f"Windows: EarnPP: {earnpp_window}, Feyorra: {feyorra_window}, ClaimCoin: {claimcoin_window}, bitmoon_window:{bitmoon_window}")
                 global reset_count 
                 global reset_count_isacc 
                 global previous_reset_count
@@ -2075,7 +2075,7 @@ def open_faucets():
                 previous_reset_count = 0
 
 
-                return earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required
+                return earnpp_window, feyorra_window, claimcoin_window, bitmoon_window,  ip_address, ip_required
         except Exception as e:
                 response_messege(f'Resetting Browser')
                 try:
@@ -2107,7 +2107,7 @@ feyorra_count = 0
 claimcoin_count = 0
 
 refresh_count = 0
-earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
+earnpp_window, feyorra_window, claimcoin_window, bitmoon_window,  ip_address, ip_required = open_faucets()
 
 time.sleep(2)
 print('Starting Loop')
@@ -2134,7 +2134,7 @@ while True:
             ip_address = get_ip(sb1) 
             if reset_count >= 15:
                 print('reset count higher')
-                earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
+                earnpp_window, feyorra_window, claimcoin_window, bitmoon_window,  ip_address, ip_required = open_faucets()
                 reset_count = 0
                 reset_count_isacc = 0
 
@@ -2297,7 +2297,7 @@ while True:
 
                             elif sb1.is_text_visible('You can claim again'): 
                                 print('Waiting....You can claim again')
-                                
+
                         elif 'Lock' in title:
                             debug_messages(f'Lock.. Found on EarnPP')
                             response_messege('Lock.. Found on EarnPP')
@@ -2380,7 +2380,7 @@ while True:
     
 
         if mainscript == 2:
-            earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
+            earnpp_window, feyorra_window, claimcoin_window, bitmoon_window,  ip_address, ip_required = open_faucets()
             reset_count = 0
 
         if mainscript == 3:

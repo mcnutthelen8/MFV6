@@ -1814,26 +1814,36 @@ def earnbitmoon_claim():
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/icon_image_loaded.png", region=(671, 118, 873, 892), confidence=0.85)
                 #pyautogui.click(x, y)
                 print("icon_image_loaded Found")
-
-                screenshot = pyautogui.screenshot(region=(794, 415, 312, 50))
-                screenshot.save('element_screenshot.png') 
-                val = solve_least_captcha("element_screenshot.png")
-                print('val', val)
-                if val:
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen(val, confidence=0.85)
-                        if x and y:
-                            pyautogui.click(x, y)
-                    except Exception as e:
-                        print(e)
-                else:
-                        #pyautogui.press('f5')
-                    pyautogui.click(810, 425,)
+                screenshot = pyautogui.screenshot(region=(794, 420, 55, 43))
+                screenshot.save('captcha.png') 
+                image = Image.open('captcha.png')
+                image = image.convert('RGB')
+                pixels = list(image.getdata())
+                is_all_white = all(pixel == (76,76,76) for pixel in pixels)
+                if is_all_white:
                     white_del += 1
-                    if white_del > 3:
+                    if white_del > 10:
                         pyautogui.press('f5')
                         return None
-                    
+                else:
+
+                    screenshot = pyautogui.screenshot(region=(794, 415, 312, 50))
+                    screenshot.save('element_screenshot.png') 
+                    val = solve_least_captcha("element_screenshot.png")
+                    print('val', val)
+                    if val:
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen(val, confidence=0.85)
+                            if x and y:
+                                pyautogui.click(x, y)
+                        except Exception as e:
+                            print(e)
+                    else:
+                        #pyautogui.press('f5')
+                        pyautogui.click(810, 425,)
+                        #return None
+                        
+
             except pyautogui.ImageNotFoundException:
                 print("No icon_image_loaded Human.")
 
@@ -2368,7 +2378,9 @@ while True:
                                 print('Waiting....You can claim again')
 
                             if sb1.is_element_present("#sidebarCoins"):
-                                bitmoon_coins = sb1.get_text("#sidebarCoins")
+                                bitmoon_coins_dummy = sb1.get_text("#sidebarCoins")
+                                bitmoon_coins = re.search(r'\d+\.\d+', bitmoon_coins_dummy).group()
+
                                 print('bitmoon_coins:',bitmoon_coins )
                             if sb1.is_element_visible('a.nav-link.btn.btn-success'):
                                 reset_count +=4

@@ -2027,6 +2027,7 @@ def open_faucets():
                     sb1.switch_to.window(window)
                     sb1.close()  # Close the tab
             sb1.switch_to.window(current_window)
+            sb1.uc_open("chrome://extensions/")
             time.sleep(1)
             global blacklistedIP
             collectionbip = db[f'LocalCSB']

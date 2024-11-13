@@ -1152,10 +1152,11 @@ def find_and_click_collect_button(sb1):
             #            return True
             #        except Exception as e:
             #            print(e)
-            sb1.uc_click(button_selector)
-            print("Collect button Not clicked.")
-            #sb1.connect()
-            return True
+            if sb1.is_element_clickable(button_selector):
+                sb1.uc_click(button_selector)
+                print("Collect button Not clicked.")
+                #sb1.connect()
+                return True
         else:
             print("Button found, but it doesn't contain 'Collect your reward' text.")
             return None

@@ -99,6 +99,9 @@ elif farm_id == 2:
     feyorra_pass = 'Uwuinsta@2005'
     claimc_email = 'mcnutthelen8@gmail.com'
     claimc_pass = 'Uwuinsta@2005'
+    bitmoon_email = 'mcnutthelen8'
+    bitmoon_pass = 'p~Q18oQjmp}nv6g'
+
 
 elif farm_id == 3:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/williesmith.json'
@@ -114,6 +117,9 @@ elif farm_id == 3:
     feyorra_pass = 'Uwuinsta@2005'
     claimc_email = 'yvonne12463@gmail.com'
     claimc_pass = 'Uwuinsta@2005'
+    bitmoon_email = 'yvonne12463'
+    bitmoon_pass = 'p~Q18oQjmp}nv6g'
+
 
 elif farm_id == 4:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
@@ -128,7 +134,8 @@ elif farm_id == 4:
     feyorra_pass = 'Uwuinsta@2005'
     claimc_email = 'ddilakshi232@gmail.com'
     claimc_pass = 'Uwuinsta@2005'
-
+    bitmoon_email = 'grandkolla990'
+    bitmoon_pass = 'p~Q18oQjmp}nv6g'
 
 else:
     while True:

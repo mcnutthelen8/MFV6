@@ -82,6 +82,8 @@ if farm_id == 1:
     feyorra_pass = 'D6.6fz9r5QVyziT'
     claimc_email = 'khabibmakanzie@gmail.com'
     claimc_pass = '@$uiJjkFfZU3K@e'
+    bitmoon_email = 'ddilakshi232'
+    bitmoon_pass = 'p~Q18oQjmp}nv6g'
 
 elif farm_id == 2:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/diludilakshi.json'
@@ -220,9 +222,8 @@ def insert_data(ip, amount1, amount2, amount3):
 
 
 def get_ip(driver):
-    while True:
+    for i in range(1,5):
         try:
-            driver.set_page_load_timeout(20)  
             original_window = driver.current_window_handle
             driver.open_new_window()
             try:
@@ -236,10 +237,12 @@ def get_ip(driver):
             
             except Exception as e:
                 print(e)
-            driver.close()
+            driver.close() 
             driver.switch_to.window(original_window)
         except Exception as e:
             print(e)
+
+    return None
 
 
 def get_current_window_id():
@@ -619,48 +622,49 @@ def ipfixer():
             preip = get_ip(sb1)
             update = {"$set": {"response": f'Ip is: {preip}'}}
             result = collection.update_one(query, update)
-            if ip == preip:
-                print(f'Good IP found: {ip}')
-                if ip == preip:#if respo == 0:
-                    update = {"$set": {"response": f'Ready IP🟢: {ip}'}}
-                    result = collection.update_one(query, update)
-                    print(f"repo {respo}")
-                    res_farms = []
-                    for frm in CSB1_farms:
-                        collection_csb = db[f'Farm{frm}']
-                        query = {"type": "main"}
-                        doc = collection_csb.find_one(query)
-                        res = doc["response"]
-                        req = doc["request"]
-                        if req == 'ipfixer' and 'Ready IP' in res:
-                            res_farms.append(res)
-                        elif req == 'ipfixer' and 'Loging' in res:
-                            res_farms.append(res)
-                        elif req == 'mainscript': #and 'Running' in res:
-                            res_farms.append(res)
-                        elif req == 'mainscript': #and 'Ready IP' in res:
-                            res_farms.append(res)
-                        else:
-                            print('aiyo', req)
-                    if len(res_farms) == len(CSB1_farms):
-                        time.sleep(8)
-                        if gg2344 > 6:
-
+            if preip:
+                if ip == preip:
+                    print(f'Good IP found: {ip}')
+                    if ip == preip:#if respo == 0:
+                        update = {"$set": {"response": f'Ready IP🟢: {ip}'}}
+                        result = collection.update_one(query, update)
+                        print(f"repo {respo}")
+                        res_farms = []
+                        for frm in CSB1_farms:
+                            collection_csb = db[f'Farm{frm}']
                             query = {"type": "main"}
-                            update = {"$set": {"request": 'mainscript'}}
-                            result = collection.update_one(query, update)
-                        else:
-                            gg2344 += 1
-                    else:
-                        gg2344 = 1
-                        
+                            doc = collection_csb.find_one(query)
+                            res = doc["response"]
+                            req = doc["request"]
+                            if req == 'ipfixer' and 'Ready IP' in res:
+                                res_farms.append(res)
+                            elif req == 'ipfixer' and 'Loging' in res:
+                                res_farms.append(res)
+                            elif req == 'mainscript': #and 'Running' in res:
+                                res_farms.append(res)
+                            elif req == 'mainscript': #and 'Ready IP' in res:
+                                res_farms.append(res)
+                            else:
+                                print('aiyo', req)
+                        if len(res_farms) == len(CSB1_farms):
+                            time.sleep(8)
+                            if gg2344 > 6:
 
-                
-            else:
-                respo = 0
-                update = {"$set": {"response": f'Changed IP🔴: {ip}'}}
-                result = collection.update_one(query, update)
-                ip = fix_ip(sb1, server_name1)
+                                query = {"type": "main"}
+                                update = {"$set": {"request": 'mainscript'}}
+                                result = collection.update_one(query, update)
+                            else:
+                                gg2344 += 1
+                        else:
+                            gg2344 = 1
+                            
+
+                    
+                else:
+                    respo = 0
+                    update = {"$set": {"response": f'Changed IP🔴: {ip}'}}
+                    result = collection.update_one(query, update)
+                    ip = fix_ip(sb1, server_name1)
         else:
             return True
 
@@ -1222,8 +1226,74 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
         
         time.sleep(3)
         print("🚀 Login attempt made!")
+    
+    elif 'Earnbitmoon' in current_title:
+        # Wait for the email input by type attribute
+        email_input = WebDriverWait(driver, 60).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'input[type="text"]'))
+        )
+        email_input.send_keys(email)
+
+        # Locate the password input by type attribute
+        password_input = driver.find_element(By.CSS_SELECTOR, 'input[type="password"]')
+        password_input.send_keys(password)
+        dropdown = driver.find_elements(By.CSS_SELECTOR, 'select.form-control.custom-select.mb-2')
+        for x in dropdown:
+            try:
+                select = Select(dropdown)
+                select.select_by_visible_text("Cloudflare")
+            except Exception as e:
+                print(e)
+        # Step 3: Wait for the CAPTCHA checkbox to be validated
+        print("CAPTCHA Check")
+        if captcha_image:
+            if 'rscaptcha'in captcha_image:
+                solve_least_img(sb1)
+            else:
+                for i in range(1, 10):
+                    time.sleep(1)
+                    sb1.execute_script("window.scrollTo(0, 1000);")
+                    cloudflare(driver, True)
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
+                        if x and y: 
+
+                            #login_button = driver.find_element(By.CSS_SELECTOR, submit_button)
+                            #click_element_with_pyautogui(driver, login_button)
+                            #click_element_with_pyautogui(sb1, 'button[type="submit"]')
+                            if 'Feyorra' in current_title:
+                                pyautogui.click(932 ,728)
+                                time.sleep(1)
+                                pyautogui.click(943 ,788)
+                                #x:943 y:788
+                                time.sleep(5)
+                                return
+                            if 'ClaimCoin' in current_title:
+                                pyautogui.click(973, 833)
+                                time.sleep(5)
+                                return
+                            sb1.uc_click(submit_button)
+                            #sb1.uc_click('button[type="submit"]')
+                            
+                            #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
+                            #login_button.click(submit_button)
+                            time.sleep(5)
+                            return
+                    except Exception as e:
+                        print(f'ERR:{e}') 
+
+
+        print("✅ CAPTCHA validated")
+        #click_element_with_pyautogui(sb1, 'button[type="submit"]')
+        #pyautogui.press('enter')
+        sb1.uc_click(submit_button)
+        
+        time.sleep(3)
+        print("🚀 Login attempt made!")
     else:
         print('no login in Title')
+
+
 
 
 bitmoon_window = None
@@ -1258,8 +1328,19 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         print(f"Current title: {current_title}")
 
 
-            
-            
+        if function == 4:
+            if expected_title == current_title:
+                pyautogui.click(50, 130)
+                if driver.is_element_visible('a.nav-link.btn.btn-success'):
+                    driver.click('a.nav-link.btn.btn-success')
+                    for i in range(5):
+                        time.sleep(2)
+                        if driver.is_element_visible('button.btn.btn-primary.btn-block'):
+                            login_to_faucet(url, sb1, earnpp_email, earnpp_pass, 'cloudflare_success', window_list, 'button.btn.btn-primary.btn-block') #'not_a_robot'
+                else:
+                    if driver.current_window_handle not in window_list:
+                        ready = True
+                        
 
         if not_expected_title == current_title:
             if function == 1:
@@ -1899,6 +1980,7 @@ if run_sb1:
 
 
 def open_faucets():
+    global sb1
     while True:
         try:
             current_window = sb1.current_window_handle
@@ -1941,47 +2023,54 @@ def open_faucets():
                 ip_required = fix_ip(sb1, server_name1)
                 ip_address = get_ip(sb1)
             #ip_address = get_ip(sb1)
-            ip_required = ip_address
-            response_messege('EarnPP Loging')
-            if earnpp:
+            if ip_address:
+                ip_required = ip_address
+                response_messege('EarnPP Loging')
+                if earnpp:
 
-                earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [])
-                print(f"EarnPP window handle: {earnpp_window}")
-            else:
-                earnpp_window = None
-            response_messege('Feyorra Loging')
-            if feyorra:
-                sb1.open_new_window()
-                feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Home | Feyorra", 2, [earnpp_window])
-                print(f"Feyorra window handle: {feyorra_window}")
-            else:
-                feyorra_window = None
-            response_messege('ClaimC Loging')
-            if claimcoin:
-                sb1.open_new_window()
-                claimcoin_window = handle_site(sb1, "https://claimcoin.in/faucet", "Faucet | ClaimCoin - ClaimCoin Faucet", "ClaimCoin - MultiCurrency Crypto Earning Platform", 3, [earnpp_window, feyorra_window])
-                print(f"ClaimCoin window handle: {claimcoin_window}")
-            else:
-                claimcoin_window = None
+                    earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [])
+                    print(f"EarnPP window handle: {earnpp_window}")
+                else:
+                    earnpp_window = None
+                response_messege('Feyorra Loging')
+                if feyorra:
+                    sb1.open_new_window()
+                    feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Home | Feyorra", 2, [earnpp_window])
+                    print(f"Feyorra window handle: {feyorra_window}")
+                else:
+                    feyorra_window = None
+                response_messege('ClaimC Loging')
+                if claimcoin:
+                    sb1.open_new_window()
+                    claimcoin_window = handle_site(sb1, "https://claimcoin.in/faucet", "Faucet | ClaimCoin - ClaimCoin Faucet", "ClaimCoin - MultiCurrency Crypto Earning Platform", 3, [earnpp_window, feyorra_window])
+                    print(f"ClaimCoin window handle: {claimcoin_window}")
+                else:
+                    claimcoin_window = None
+                if bitmoon:
+                    sb1.open_new_window()
+                    bitmoon_window = handle_site(sb1, "https://earnbitmoon.club/", "Earnbitmoon", "Earnbitmoon", 4, [earnpp_window, feyorra_window,claimcoin_window ])
+                    print(f"bitmoon window handle: {bitmoon_window}")
+                else:
+                    bitmoon_window = None
 
-            response_messege('Started')
-            query = {"type": "main"}
-            update = {"$set": {"request": 'mainscript'}}
-            result = collection.update_one(query, update)
+                response_messege('Started')
+                query = {"type": "main"}
+                update = {"$set": {"request": 'mainscript'}}
+                result = collection.update_one(query, update)
 
-            all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
-            close_extra_windows(sb1, all_window_handles)
+                all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
+                close_extra_windows(sb1, all_window_handles)
 
-            print(f"Windows: EarnPP: {earnpp_window}, Feyorra: {feyorra_window}, ClaimCoin: {claimcoin_window}, Baymack:{baymack_window}")
-            global reset_count 
-            global reset_count_isacc 
-            global previous_reset_count
-            reset_count = 0
-            reset_count_isacc = 0
-            previous_reset_count = 0
+                print(f"Windows: EarnPP: {earnpp_window}, Feyorra: {feyorra_window}, ClaimCoin: {claimcoin_window}, Baymack:{baymack_window}")
+                global reset_count 
+                global reset_count_isacc 
+                global previous_reset_count
+                reset_count = 0
+                reset_count_isacc = 0
+                previous_reset_count = 0
 
 
-            return earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required
+                return earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required
         except Exception as e:
                 response_messege(f'Resetting Browser')
                 try:
@@ -1989,6 +2078,7 @@ def open_faucets():
                     print("All chrome processes killed successfully.")
                 except subprocess.CalledProcessError:
                     print("Failed to kill chrome processes or no processes found.")
+                time.sleep(10)
                 sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path,  page_load_strategy='none')
                 sb1.maximize_window()
                 sb1.uc_open("chrome://extensions/")
@@ -2036,7 +2126,7 @@ while True:
                 reset_count = 16
                 reset_count_isacc = 0
 
-            ip_address = get_ip(sb1)    
+            ip_address = get_ip(sb1) 
             if reset_count >= 15:
                 print('reset count higher')
                 earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
@@ -2278,6 +2368,7 @@ while True:
                 print("All chrome processes killed successfully.")
             except subprocess.CalledProcessError:
                 print("Failed to kill chrome processes or no processes found.")
+            time.sleep(10)
             sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path,  page_load_strategy='none')
             sb1.maximize_window()
             sb1.uc_open("chrome://extensions/")

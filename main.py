@@ -1625,30 +1625,34 @@ def solve_least_img(driver):
 def earnbitmoon_claim():
     white_del = 0
     captcha_found = False
-    try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman_gray.png", region=(671, 118, 873, 892), confidence=0.85)
-        pyautogui.click(x, y)
-        time.sleep(2)
-        print("Verify Human Found")
-        captcha_found = True
-    except pyautogui.ImageNotFoundException:
-        print("No Verify Human.")
-    try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verified_complete_icons.png", region=(671, 118, 873, 892), confidence=0.85)
-        pyautogui.click(x, y)
-        print("Verify Human Found")
-        captcha_found = True
-    except pyautogui.ImageNotFoundException:
-        print("No Verify Human.")
-    try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/icon_image_loaded.png", region=(671, 118, 873, 892), confidence=0.85)
-        pyautogui.click(x, y)
+    for i in range(3):
+        time.sleep(1)
+        if captcha_found:
+            break
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman_gray.png", region=(671, 118, 873, 892), confidence=0.85)
+            pyautogui.click(x, y)
+            time.sleep(2)
+            print("Verify Human Found")
+            captcha_found = True
+        except pyautogui.ImageNotFoundException:
+            print("No Verify Human.")
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verified_complete_icons.png", region=(671, 118, 873, 892), confidence=0.85)
+            pyautogui.click(x, y)
+            print("Verify Human Found")
+            captcha_found = True
+        except pyautogui.ImageNotFoundException:
+            print("No Verify Human.")
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/icon_image_loaded.png", region=(671, 118, 873, 892), confidence=0.85)
+            pyautogui.click(x, y)
 
-        print("Verify Human Found")
-        captcha_found = True
-    except pyautogui.ImageNotFoundException:
-        print("No Verify Human.")
-      
+            print("Verify Human Found")
+            captcha_found = True
+        except pyautogui.ImageNotFoundException:
+            print("No Verify Human.")
+
     if captcha_found:
         for i in range(10):
             time.sleep(1)

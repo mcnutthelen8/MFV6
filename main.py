@@ -370,6 +370,45 @@ def get_ipscore(ip):
         return None
 
 
+def mysterium_vpn_Recon_ip(server_name):
+    try:
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
+        pyautogui.click(x, y)
+        print("mysterium_icon_empty Found")
+        time.sleep(5)
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/myserium_disconnect.png", region=(1325, 190, 800, 400), confidence=0.95)
+            #pyautogui.click(x, y)
+            print("myserium_disconnect Found")
+            unknown_con = True
+            while unknown_con == True:
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/Unknown.png", region=(1345, 90, 800, 400), confidence=0.95)
+                    #pyautogui.click(x, y)
+                    print("Unkown Found")
+                    unknown_con = True
+                except pyautogui.ImageNotFoundException:
+                    print("No Unkown .")
+                    unknown_con = False
+            
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/recon.png", region=(1345, 90, 800, 600), confidence=0.95)
+                pyautogui.click(x, y)
+                print("recon Found")
+                time.sleep(5)
+                return True
+            except pyautogui.ImageNotFoundException:
+                print("No recon .")
+
+        except pyautogui.ImageNotFoundException:
+            print("No myserium_disconnect .")
+
+
+
+    except pyautogui.ImageNotFoundException:
+        print("No mysterium_icon_empty .")
+    return None
+
 def mysterium_vpn_connect(server_name, driver):
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
@@ -453,8 +492,10 @@ def fix_ip(drive, name):
                     update = {"$set": {"request": 'ipfixer'}}
                     result = collection_csb.update_one(query, update)
                     print('Update Farm', i)
-
-                mysterium_vpn_connect(name, drive)
+                if proxycheck == 50 or proxycheck == 200:
+                    mysterium_vpn_Recon_ip(name)
+                else:
+                    mysterium_vpn_connect(name, drive)
                 print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
                 time.sleep(5)
 
@@ -1094,7 +1135,7 @@ def close_extra_windows(driver, keep_window_handles):
 def handle_captcha_and_cloudflare(driver):
     cloudflare(driver, login = False)
 
-def handle_site(driver, url, expected_title, not_expected_title , function, window_list ,captcha_handling=True):
+def handle_site(driver, url, expected_title, not_expected_title , function, window_list ,ip_required):
     driver.uc_open(url)
     ready = False
     while not ready:
@@ -1106,7 +1147,9 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         current_title = driver.get_title()
         print(f"Current title: {current_title}")
 
-
+        ip_address = get_ip(driver)
+        if ip_required == ip_address:
+            return 404
         if function == 4:
             if expected_title in current_title:
                 if driver.is_element_visible('a.nav-link.btn.btn-success'):
@@ -1137,8 +1180,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
             if driver.current_window_handle not in window_list:
                 ready = True
         elif 'Just' in current_title:
-            if captcha_handling:
-                handle_captcha_and_cloudflare(driver)
+            handle_captcha_and_cloudflare(driver)
         
         else:
             print(f"{current_title} is not the expected title. Reconnecting...")
@@ -1147,8 +1189,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
                 if window not in window_list:
                     driver.switch_to.window(window)
             driver.uc_open(url)
-            if captcha_handling:
-                handle_captcha_and_cloudflare(driver)
+            handle_captcha_and_cloudflare(driver)
 
     return driver.current_window_handle
 
@@ -1971,37 +2012,55 @@ def open_faucets():
                     response_messege('EarnPP Loging')
                     if earnpp:
 
-                        earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [])
+                        earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [], ip_required)
+                        if earnpp_window == 404:
+                            raise Exception(" earnpp_window == 404")
                         print(f"EarnPP window handle: {earnpp_window}")
                     else:
                         earnpp_window = None
+                else:
+                    raise Exception("Ip changed")
                 ip_address = get_ip(sb1)
                 if ip_required == ip_address:
                     response_messege('Feyorra Loging')
                     if feyorra:
                         sb1.open_new_window()
-                        feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Home | Feyorra", 2, [earnpp_window])
+                        feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Home | Feyorra", 2, [earnpp_window], ip_required)
+                        if feyorra_window == 404:
+                            raise Exception(" feyorra_window == 404")
                         print(f"Feyorra window handle: {feyorra_window}")
                     else:
                         feyorra_window = None
+                else:
+                    raise Exception("Ip changed")
                 ip_address = get_ip(sb1)
                 if ip_required == ip_address:
                     response_messege('ClaimC Loging')
                     if claimcoin:
                         sb1.open_new_window()
-                        claimcoin_window = handle_site(sb1, "https://claimcoin.in/faucet", "Faucet | ClaimCoin - ClaimCoin Faucet", "ClaimCoin - MultiCurrency Crypto Earning Platform", 3, [earnpp_window, feyorra_window])
+                        claimcoin_window = handle_site(sb1, "https://claimcoin.in/faucet", "Faucet | ClaimCoin - ClaimCoin Faucet", "ClaimCoin - MultiCurrency Crypto Earning Platform", 3, [earnpp_window, feyorra_window], ip_required)
+                        if claimcoin_window == 404:
+                            raise Exception(" claimcoin_window == 404")
                         print(f"ClaimCoin window handle: {claimcoin_window}")
                     else:
                         claimcoin_window = None
+                else:
+                    raise Exception("Ip changed")
                 ip_address = get_ip(sb1)
                 if ip_required == ip_address:
                     response_messege('bitmoon Loging')
                     if bitmoon:
                         sb1.open_new_window()
-                        bitmoon_window = handle_site(sb1, "https://earnbitmoon.club/", "Earnbitmoon", "Earnbitmoon", 4, [earnpp_window, feyorra_window,claimcoin_window ])
+                        bitmoon_window = handle_site(sb1, "https://earnbitmoon.club/", "Earnbitmoon", "Earnbitmoon", 4, [earnpp_window, feyorra_window,claimcoin_window ],ip_required)
+                        if bitmoon_window == 404:
+                            raise Exception(" bitmoon_window == 404")
+                        
                         print(f"bitmoon window handle: {bitmoon_window}")
                     else:
                         bitmoon_window = None
+                else:
+                    raise Exception("Ip changed")
+                
                 ip_address = get_ip(sb1)
                 if ip_required == ip_address:
                     response_messege('Started')

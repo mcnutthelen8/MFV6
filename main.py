@@ -329,7 +329,7 @@ def get_proxycheck(driver, ip, server_name):
         return None
 
 def get_ipscore(ip):
-    url = f'https://ipqualityscore.com/api/json/ip/Bfg1dzryVqbpSwtbxgWb1uVkXLrr1Nzr/{ip}?strictness=3&allow_public_access_points=false'
+    url = f'https://ipqualityscore.com/api/json/ip/Bfg1dzryVqbpSwtbxgWb1uVkXLrr1Nzr/{ip}?strictness=3&allow_public_access_points=true&lighter_penalties=true&mobile=true'
     try:
         response = requests.get(url)
         response.raise_for_status()  # Raise an HTTPError for bad responses
@@ -361,7 +361,7 @@ def get_ipscore(ip):
 
         # Ensure fraud_score is an integer for comparison
         if fraud_score:
-            if vpn == False and tor == False and fraud_score < 90: #and active_vpn == False and active_tor == False and fraud_score < 90:
+            if vpn == False and tor == False and fraud_score <= 90: #and active_vpn == False and active_tor == False and fraud_score < 90:
                 return True
             else:
                 return None
@@ -674,6 +674,7 @@ def ipfixer():
                     update = {"$set": {"response": f'Changed IP🔴: {ip}'}}
                     result = collection.update_one(query, update)
                     ip = fix_ip(sb1, server_name1)
+                    gg2344 = 0
         else:
             return True
 
@@ -1964,54 +1965,64 @@ def open_faucets():
             #ip_address = get_ip(sb1)
             if ip_address:
                 ip_required = ip_address
-                response_messege('EarnPP Loging')
-                if earnpp:
-
-                    earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [])
-                    print(f"EarnPP window handle: {earnpp_window}")
-                else:
-                    earnpp_window = None
-                response_messege('Feyorra Loging')
-                if feyorra:
-                    sb1.open_new_window()
-                    feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Home | Feyorra", 2, [earnpp_window])
-                    print(f"Feyorra window handle: {feyorra_window}")
-                else:
-                    feyorra_window = None
-                response_messege('ClaimC Loging')
-                if claimcoin:
-                    sb1.open_new_window()
-                    claimcoin_window = handle_site(sb1, "https://claimcoin.in/faucet", "Faucet | ClaimCoin - ClaimCoin Faucet", "ClaimCoin - MultiCurrency Crypto Earning Platform", 3, [earnpp_window, feyorra_window])
-                    print(f"ClaimCoin window handle: {claimcoin_window}")
-                else:
-                    claimcoin_window = None
-                response_messege('bitmoon Loging')
-                if bitmoon:
-                    sb1.open_new_window()
-                    bitmoon_window = handle_site(sb1, "https://earnbitmoon.club/", "Earnbitmoon", "Earnbitmoon", 4, [earnpp_window, feyorra_window,claimcoin_window ])
-                    print(f"bitmoon window handle: {bitmoon_window}")
-                else:
-                    bitmoon_window = None
-
-                response_messege('Started')
-                query = {"type": "main"}
-                update = {"$set": {"request": 'mainscript'}}
-                result = collection.update_one(query, update)
-
-                all_window_handles = [earnpp_window, feyorra_window, claimcoin_window, bitmoon_window]
-                close_extra_windows(sb1, all_window_handles)
-                sb1.switch_to.window(earnpp_window)
-                print(f"Windows: EarnPP: {earnpp_window}, Feyorra: {feyorra_window}, ClaimCoin: {claimcoin_window}, bitmoon_window:{bitmoon_window}")
-                global reset_count 
-                global reset_count_isacc 
-                global previous_reset_count
                 
-                reset_count = 0
-                reset_count_isacc = 0
-                previous_reset_count = 0
+                ip_address = get_ip(sb1)
+                if ip_required == ip_address:
+                    response_messege('EarnPP Loging')
+                    if earnpp:
+
+                        earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [])
+                        print(f"EarnPP window handle: {earnpp_window}")
+                    else:
+                        earnpp_window = None
+                ip_address = get_ip(sb1)
+                if ip_required == ip_address:
+                    response_messege('Feyorra Loging')
+                    if feyorra:
+                        sb1.open_new_window()
+                        feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Home | Feyorra", 2, [earnpp_window])
+                        print(f"Feyorra window handle: {feyorra_window}")
+                    else:
+                        feyorra_window = None
+                ip_address = get_ip(sb1)
+                if ip_required == ip_address:
+                    response_messege('ClaimC Loging')
+                    if claimcoin:
+                        sb1.open_new_window()
+                        claimcoin_window = handle_site(sb1, "https://claimcoin.in/faucet", "Faucet | ClaimCoin - ClaimCoin Faucet", "ClaimCoin - MultiCurrency Crypto Earning Platform", 3, [earnpp_window, feyorra_window])
+                        print(f"ClaimCoin window handle: {claimcoin_window}")
+                    else:
+                        claimcoin_window = None
+                ip_address = get_ip(sb1)
+                if ip_required == ip_address:
+                    response_messege('bitmoon Loging')
+                    if bitmoon:
+                        sb1.open_new_window()
+                        bitmoon_window = handle_site(sb1, "https://earnbitmoon.club/", "Earnbitmoon", "Earnbitmoon", 4, [earnpp_window, feyorra_window,claimcoin_window ])
+                        print(f"bitmoon window handle: {bitmoon_window}")
+                    else:
+                        bitmoon_window = None
+                ip_address = get_ip(sb1)
+                if ip_required == ip_address:
+                    response_messege('Started')
+                    query = {"type": "main"}
+                    update = {"$set": {"request": 'mainscript'}}
+                    result = collection.update_one(query, update)
+
+                    all_window_handles = [earnpp_window, feyorra_window, claimcoin_window, bitmoon_window]
+                    close_extra_windows(sb1, all_window_handles)
+                    sb1.switch_to.window(earnpp_window)
+                    print(f"Windows: EarnPP: {earnpp_window}, Feyorra: {feyorra_window}, ClaimCoin: {claimcoin_window}, bitmoon_window:{bitmoon_window}")
+                    global reset_count 
+                    global reset_count_isacc 
+                    global previous_reset_count
+                    
+                    reset_count = 0
+                    reset_count_isacc = 0
+                    previous_reset_count = 0
 
 
-                return earnpp_window, feyorra_window, claimcoin_window, bitmoon_window,  ip_address, ip_required
+                    return earnpp_window, feyorra_window, claimcoin_window, bitmoon_window,  ip_address, ip_required
         except Exception as e:
                 response_messege(f'Resetting Browser')
                 try:
@@ -2341,6 +2352,8 @@ while True:
                     if earnpp_coins and feyorra_coins and claimc_coins and bitmoon_coins:
                         start_time3 = time.time()
                         insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins, bitmoon_coins)
+                    else:
+                        response_messege(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}| Bitmo:{bitmoon_coins}')
                     #elif earnpp_coins and feyorra_coins and claimc_coins:
                     #    start_time3 = time.time()
                     #    insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins, 0)

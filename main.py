@@ -1386,7 +1386,7 @@ def find_least_similar_image(image_dir):
         image_dir = os.path.join(root_folder, 'output_pieces')
 
         # Threshold value for filtering similar images
-        threshold = 0.82
+        threshold = 0.9
 
         # Dictionary to store image similarities
         similarities = {}
@@ -1424,7 +1424,7 @@ def find_least_similar_image(image_dir):
             min_image_name = os.path.basename(min_images[0])
             print(f"Image {min_image_name} has the least similarity with an average score of {min_score}")
             #clipboard.copy(min_image_name)
-            return min_image_name
+            return f'{image_dir}/{min_image_name}'
         else:
             # If there are multiple images with the same minimum similarity score,
             # choose the image with the smallest file size as the least similar image
@@ -1438,7 +1438,7 @@ def find_least_similar_image(image_dir):
             min_image_name = os.path.basename(min_image)
             print(f"Image {min_image_name} has the least similarity with an average score of {min_score}")
             #clipboard.copy(min_image_name)
-            return min_image_name
+            return f'{image_dir}/{min_image_name}'
         
 
 
@@ -1622,6 +1622,8 @@ def solve_least_img(driver):
             print('not found enything')
             driver.execute_script("window.scrollTo(0, 1000);")
 
+
+
 def earnbitmoon_claim():
     white_del = 0
     captcha_found = False
@@ -1671,15 +1673,22 @@ def earnbitmoon_claim():
                 screenshot = pyautogui.screenshot(region=(794, 420, 55, 43))
                 screenshot.save('captcha.png') 
                 image = Image.open('captcha.png')
-                gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-                is_all_white = np.all(gray_image == gray_image[0, 0])
-                if is_all_white:
+
+                # Convert the image to a numpy array
+                image_np = np.array(image)
+
+                # Get the first pixel color (this is the color to compare all pixels against)
+                first_pixel = image_np[0, 0]
+                is_single_color = np.all(image_np == first_pixel)
+                if is_single_color:
+                    print('Image is all white')
                     white_del += 1
                     if white_del > 10:
                         pyautogui.press('f5')
                         return None
                 else:
 
+                    print('Image is not all white')
                     screenshot = pyautogui.screenshot(region=(794, 415, 312, 50))
                     screenshot.save('element_screenshot.png') 
                     val = solve_least_captcha("element_screenshot.png")
@@ -2247,9 +2256,11 @@ while True:
                                     time.sleep(3)
                                     pyautogui.press('f5')
                                     print('Claim Bitmoon')
+                                pyautogui.click(50, 130)
 
-                            elif sb1.is_text_visible('You can claim again'): 
+                            elif sb1.is_text_visible('Refresh Page'): 
                                 print('Waiting....You can claim again')
+                                pyautogui.press('f5')
 
                             if sb1.is_element_present("#sidebarCoins"):
                                 bitmoon_coins_dummy = sb1.get_text("#sidebarCoins")
@@ -2329,9 +2340,9 @@ while True:
                     if earnpp_coins and feyorra_coins and claimc_coins and bitmoon_coins:
                         start_time3 = time.time()
                         insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins, bitmoon_coins)
-                    elif earnpp_coins and feyorra_coins and claimc_coins:
-                        start_time3 = time.time()
-                        insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins, 0)
+                    #elif earnpp_coins and feyorra_coins and claimc_coins:
+                    #    start_time3 = time.time()
+                    #    insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins, 0)
                     
                     
 

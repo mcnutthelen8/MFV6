@@ -2491,6 +2491,7 @@ while True:
             else:
                 print('Ip fucked')
                 reset_count +=1
+                response_messege(f'Ip fucked|{reset_count}|{ip_address}')
                 #ip_required = fix_ip(sb1, server_name1)
                 #ip_address = get_ip(sb1)
     

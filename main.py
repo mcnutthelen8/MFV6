@@ -1533,7 +1533,7 @@ def earnbitmoon_claim():
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verifyhuman_gray.png", region=(671, 118, 873, 892), confidence=0.85)
         pyautogui.click(x, y)
-        time.sleep(4)
+        time.sleep(2)
         print("Verify Human Found")
         captcha_found = True
     except pyautogui.ImageNotFoundException:
@@ -1541,7 +1541,6 @@ def earnbitmoon_claim():
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verified_complete_icons.png", region=(671, 118, 873, 892), confidence=0.85)
         pyautogui.click(x, y)
-        time.sleep(4)
         print("Verify Human Found")
         captcha_found = True
     except pyautogui.ImageNotFoundException:
@@ -1549,7 +1548,7 @@ def earnbitmoon_claim():
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/icon_image_loaded.png", region=(671, 118, 873, 892), confidence=0.85)
         pyautogui.click(x, y)
-        time.sleep(4)
+
         print("Verify Human Found")
         captcha_found = True
     except pyautogui.ImageNotFoundException:

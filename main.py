@@ -2424,11 +2424,11 @@ while True:
                 elapsed_time = time.time() - start_time
                 seconds_only = int(elapsed_time)
                 debug_messages(f'ClaimCoins Seconds:{seconds_only}')
-                if seconds_only > 10:
+                if seconds_only > 20:
                     start_time = time.time()
                     if earnpp_coins == earnpp_coins_pre:
                         start_time = time.time()
-                        if refresh_count >= 10:
+                        if refresh_count >= 15:
                             response_messege(f'earnpp_coins same {earnpp_coins}| count:{refresh_count} | {seconds_only}')
                             sb1.switch_to.window(earnpp_window)
                             sb1.uc_open('https://earn-pepe.com/member/faucet')

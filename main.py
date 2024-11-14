@@ -1784,7 +1784,8 @@ def withdraw_faucet(driver, sitekey):
                     time.sleep(5)
                     driver.execute_script(f"window.scrollTo(0, 700);")
                     time.sleep(2)
-                    cloudflare(driver, True)
+                    #cloudflare(driver, True)
+                    solve_icon_captcha(driver)
                     time.sleep(2)
                     driver.uc_click('button.claim-button')
                     driver.uc_open('https://feyorra.site/member/faucet')
@@ -2055,7 +2056,7 @@ while True:
             
             debug_messages(f'Ip address Found:{ip_address}')
             cc_faucet = None
-            if reset_count_isacc > 6:
+            if reset_count_isacc > 8:
                 response_messege('oops.. reset_count_isacc triggers')
                 blacklistedIP.append(ip_address)
                 mysterium_vpn_connect(server_name1, sb1)

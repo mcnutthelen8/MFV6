@@ -2056,7 +2056,7 @@ while True:
             
             debug_messages(f'Ip address Found:{ip_address}')
             cc_faucet = None
-            if reset_count_isacc > 8:
+            if reset_count_isacc >= 7:
                 response_messege('oops.. reset_count_isacc triggers')
                 blacklistedIP.append(ip_address)
                 mysterium_vpn_connect(server_name1, sb1)
@@ -2144,7 +2144,7 @@ while True:
                             debug_messages(f'Just.. Found on Feyorra')
                             cloudflare(sb1, login = False)
                             debug_messages(f'Just Fixed Feyorra')
-                        elif 'aintenance' in title:
+                        elif 'Maintenance' in title:
                             debug_messages(f'maintenance.. Found on Feyorra')
                             response_messege('maintenance.. Found on Feyorra')
 
@@ -2192,7 +2192,7 @@ while True:
                                 cc_faucet =  find_and_click_collect_button(sb1)
                                 if cc_faucet:
                                     claimcoin_count = 0
-                                    if reset_count_isacc > 3:
+                                    if reset_count_isacc > 4:
                                         ggg = 0
                                         while ggg < 5:
                                             time.sleep(1)
@@ -2336,7 +2336,7 @@ while True:
                 elapsed_time3 = time.time() - start_time3
                 seconds_only3 = int(elapsed_time3)
                 debug_messages(f'MangoDB Seconds:{seconds_only3}')
-                if seconds_only3 > 160:
+                if seconds_only3 > 130:
                     print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}| Bitmo:{bitmoon_coins}')
                     if earnpp_coins and feyorra_coins and claimc_coins and bitmoon_coins:
                         start_time3 = time.time()
@@ -2351,7 +2351,7 @@ while True:
                     print(f'MngoDB:{seconds_only3}')
             else:
                 print('Ip fucked')
-                reset_count +=1
+                reset_count +=4
                 response_messege(f'Ip fucked|{reset_count}|{ip_address}')
                 #ip_required = fix_ip(sb1, server_name1)
                 #ip_address = get_ip(sb1)

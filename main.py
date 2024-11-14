@@ -1377,80 +1377,175 @@ def find_least_similar_image(image_dir):
     if len(image_files) == 0:
         print("No images found in the directory.")
         return False
+    else:
+        print("The image is not blank.")
+        # Get the current script's directory (assuming this is the root folder)
+        root_folder = os.path.dirname(os.path.abspath(__file__))
 
-    threshold = 0.7
-    similarities = {}
-    similarity_groups = {}
+        # Define the relative path to the 'cropped' directory inside the root folder
+        image_dir = os.path.join(root_folder, 'output_pieces')
 
-    # Load each image
-    loaded_images = {}
-    for img_file in image_files:
-        img_path = os.path.join(image_dir, img_file)
-        img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
-        if img is not None:
-            loaded_images[img_file] = img
+        # Threshold value for filtering similar images
+        threshold = 0.82
 
-    # Compare images directly
-    image_files_list = list(loaded_images.keys())
-    for i, img_file in enumerate(image_files_list):
-        img1 = loaded_images[img_file]
-        for j in range(i + 1, len(image_files_list)):
-            other_img_file = image_files_list[j]
-            img2 = loaded_images[other_img_file]
+        # Dictionary to store image similarities
+        similarities = {}
 
-            # Check sizes before comparing
-            if img1.shape[0] <= img2.shape[0] and img1.shape[1] <= img2.shape[1]:
-                # Compute similarity
+        # Iterate over all image pairs and calculate their structural similarity
+        for i, img_file in enumerate(os.listdir(image_dir)):
+            img_path = os.path.join(image_dir, img_file)
+            if not os.path.isfile(img_path):
+                continue
+            img1 = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+            for j in range(i+1, len(os.listdir(image_dir))):
+                other_img_file = os.listdir(image_dir)[j]
+                other_img_path = os.path.join(image_dir, other_img_file)
+                if not os.path.isfile(other_img_path):
+                    continue
+                img2 = cv2.imread(other_img_path, cv2.IMREAD_GRAYSCALE)
                 similarity = cv2.matchTemplate(img1, img2, cv2.TM_CCOEFF_NORMED)[0][0]
-                similarities[(img_file, other_img_file)] = similarity
+                similarities[(img_path, other_img_path)] = similarity
+                similarities[(other_img_path, img_path)] = similarity
 
-                if similarity >= threshold:
-                    similarity_groups.setdefault(img_file, []).append(other_img_file)
-                    similarity_groups.setdefault(other_img_file, []).append(img_file)
+        # Calculate the average similarity score for each image
+        image_scores = {}
+        for img_path in os.listdir(image_dir):
+            img_path = os.path.join(image_dir, img_path)
+            if not os.path.isfile(img_path):
+                continue
+            similar_scores = [v for k, v in similarities.items() if k[0] == img_path]
+            avg_score = np.mean(similar_scores)
+            image_scores[img_path] = avg_score
 
-    if len(similarity_groups) == 0:
-        print("No similar image combinations found.")
-        return None
+        # Find the image with the least similarity to other images
+        min_score = min(image_scores.values())
+        min_images = [k for k, v in image_scores.items() if v == min_score]
+        if len(min_images) == 1:
+            min_image_name = os.path.basename(min_images[0])
+            print(f"Image {min_image_name} has the least similarity with an average score of {min_score}")
+            #clipboard.copy(min_image_name)
+            return min_image_name
+        else:
+            # If there are multiple images with the same minimum similarity score,
+            # choose the image with the smallest file size as the least similar image
+            min_size = float('inf')
+            min_image = None
+            for image in min_images:
+                size = os.path.getsize(image)
+                if size < min_size:
+                    min_size = size
+                    min_image = image
+            min_image_name = os.path.basename(min_image)
+            print(f"Image {min_image_name} has the least similarity with an average score of {min_score}")
+            #clipboard.copy(min_image_name)
+            return min_image_name
+        
 
-    least_similar_image = None
-    min_similar_count = float('inf')
-    for img_file, similar_imgs in similarity_groups.items():
-        similar_count = len(similar_imgs)
 
-        if similar_count < min_similar_count:
-            min_similar_count = similar_count
-            least_similar_image = img_file
 
-    for img_file in image_files:
-        if img_file not in similarity_groups:
-            print(f"Image {img_file} has no similar combination and is unique.")
-            return f'{image_dir}/{img_file}'
+def image_counter(image_path):
+    image = Image.open(image_path)
 
-    print(f"Image {least_similar_image} has the least similar combinations.")
-    return f'{image_dir}/{least_similar_image}'
+    # Get the dimensions of the image
+    width, height = image.size
+
+    # Crop the image to a 1-pixel high horizontal line in the middle
+    middle_height = height // 2
+    cropped_image = image.crop((0, middle_height, width, middle_height + 1))
+
+    # Convert the image to RGBA mode (in case it is in a different mode)
+    cropped_image = cropped_image.convert("RGBA")
+
+
+    # Get the pixels of the cropped image
+    pixels = cropped_image.load()
+
+    # Define the target RGBA color to count
+    target_rgba = (70, 70, 70, 255)
+    background = (76,76,76, 255)
+
+    # Set the tolerance level for each channel (e.g., ±5 for each color component)
+    tolerance = 1
+
+    # Function to calculate the Euclidean distance between two colors
+    def color_distance(c1, c2):
+        return math.sqrt(sum((c1[i] - c2[i]) ** 2 for i in range(4)))
+
+    # Initialize a counter for the target color
+    color_count = 0
+
+    # Loop through the pixels and count how many match the target RGBA color within tolerance
+    for x in range(width):
+        pixel_color = pixels[x, 0]
+        if color_distance(pixel_color, target_rgba) <= tolerance:
+            if pixel_color == background:
+                pass
+                #print('fuck')
+            else:
+                color_count += 1
+    if color_count == 0:
+        for x in range(width):
+            pixel_color = pixels[x, 0]
+            if color_distance(pixel_color, target_rgba) <= 5:
+                if pixel_color == background:
+                    pass
+                    #print('fuck')
+                else:
+                    color_count += 1
+    if color_count == 0:
+        for x in range(width):
+            pixel_color = pixels[x, 0]
+            if color_distance(pixel_color, target_rgba) <= 8:
+                if pixel_color == background:
+                    pass
+                    #print('fuck')
+                else:
+                    color_count += 1
+    if color_count == 0:
+        for x in range(width):
+            pixel_color = pixels[x, 0]
+            if color_distance(pixel_color, target_rgba) <= 10:
+                if pixel_color == background:
+                    pass
+                    #print('fuck')
+                else:
+                    color_count += 1
+    if color_count == 0:
+        for x in range(width):
+            pixel_color = pixels[x, 0]
+            if color_distance(pixel_color, target_rgba) <= 11:
+                if pixel_color == background:
+                    pass
+                    #print('fuck')
+                else:
+                    color_count += 1
+    if color_count == 0:
+        for x in range(width):
+            pixel_color = pixels[x, 0]
+            if color_distance(pixel_color, target_rgba) <= 12:
+                if pixel_color == background:
+                    pass
+                    #print('fuck')
+                else:
+                    color_count += 1
+    # Output the result
+    print(f"The number of lines with a color similar to rgba(70, 70, 70, 255) is: {color_count+1}")
+
+    return color_count+1
+
+
 
 
 
 def solve_least_captcha(image):
-    split_image_by_width('element_screenshot.png', 5, output_dir="output_pieces")
+    count = image_counter(image)
+    if count >= 8:
+        count//=2
+
+    split_image_by_width('element_screenshot.png', count, output_dir="output_pieces")
+
     val = find_least_similar_image("output_pieces")
     if val:
-        print('similar slot 5')
-        return val
-    split_image_by_width('element_screenshot.png', 6, output_dir="output_pieces")
-    val = find_least_similar_image("output_pieces")
-    if val:
-        print('similar slot 6')
-        return val
-    split_image_by_width('element_screenshot.png', 7, output_dir="output_pieces")
-    val = find_least_similar_image("output_pieces")
-    if val:
-        print('similar slot 7')
-        return val
-    split_image_by_width('element_screenshot.png', 8, output_dir="output_pieces")
-    val = find_least_similar_image("output_pieces")
-    if val:
-        print('similar slot 8')
         return val
 
     return None
@@ -1572,9 +1667,8 @@ def earnbitmoon_claim():
                 screenshot = pyautogui.screenshot(region=(794, 420, 55, 43))
                 screenshot.save('captcha.png') 
                 image = Image.open('captcha.png')
-                image = image.convert('RGB')
-                pixels = list(image.getdata())
-                is_all_white = all(pixel == (76,76,76) for pixel in pixels)
+                gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+                is_all_white = np.all(gray_image == gray_image[0, 0])
                 if is_all_white:
                     white_del += 1
                     if white_del > 10:
@@ -2231,6 +2325,9 @@ while True:
                     if earnpp_coins and feyorra_coins and claimc_coins and bitmoon_coins:
                         start_time3 = time.time()
                         insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins, bitmoon_coins)
+                    elif earnpp_coins and feyorra_coins and claimc_coins:
+                        start_time3 = time.time()
+                        insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins, 0)
                     
                     
 

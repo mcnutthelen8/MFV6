@@ -1135,28 +1135,11 @@ def find_and_click_collect_button(sb1):
             sb1.switch_to.window(original_window)
             
             sb1.execute_script("window.scrollTo(0, 1000);")
-            #time.sleep(1)
-            #sb1.disconnect()
-
-            #    for i in range(1, 3):
-            #        try:
-            #            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/collect_your_reward.png", region=(507,156, 965, 919), confidence=0.9)
-            #            #pyautogui.moveTo(random.randint(700, 1700), random.randint(300, 500), duration= 1)
-            #            #pyautogui.moveTo(x, y, duration= 1)
-            #            pyautogui.click(x, y)
-            #            print("Collect button clicked.")
-            #            time.sleep(2)
-            #            pyautogui.press('f5')
-            #            time.sleep(2)
-            #            sb1.connect()
-            #            return True
-            #        except Exception as e:
-            #            print(e)
-            if sb1.is_element_clickable(button_selector):
-                sb1.uc_click(button_selector)
-                print("Collect button Not clicked.")
+            time.sleep(1)
+            sb1.uc_click(button_selector)
+            print("Collect button Not clicked.")
                 #sb1.connect()
-                return True
+            return True
         else:
             print("Button found, but it doesn't contain 'Collect your reward' text.")
             return None
@@ -2215,6 +2198,7 @@ while True:
             ip_address = get_ip(sb1) 
             if reset_count >= 15:
                 print('reset count higher')
+                
                 earnpp_window, feyorra_window, claimcoin_window, bitmoon_window,  ip_address, ip_required = open_faucets()
                 reset_count = 0
                 reset_count_isacc = 0

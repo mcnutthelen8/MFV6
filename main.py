@@ -134,7 +134,7 @@ elif farm_id == 4:
     feyorra_pass = 'Uwuinsta@2005'
     claimc_email = 'ddilakshi232@gmail.com'
     claimc_pass = 'Uwuinsta@2005'
-    bitmoon_email = 'grandkolla990'
+    bitmoon_email = 'rondolftapatio'
     bitmoon_pass = 'p~Q18oQjmp}nv6g'
 
 else:

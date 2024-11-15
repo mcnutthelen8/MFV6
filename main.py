@@ -370,7 +370,7 @@ def get_ipscore(ip):
         return None
 
 
-def mysterium_vpn_Recon_ip(server_name):
+def mysterium_vpn_Recon_ip(server_name, driver):
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
         pyautogui.click(x, y)
@@ -402,6 +402,35 @@ def mysterium_vpn_Recon_ip(server_name):
 
         except pyautogui.ImageNotFoundException:
             print("No myserium_disconnect .")
+
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.99)
+            #pyautogui.click(x, y)
+            print("mysterium_login Found")
+            mysterium_login(driver)
+            #return 0
+        except Exception as e:
+            print("mysterium_logged")
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/quick_connect.png", region=(1325, 190, 800, 400), confidence=0.95)
+        
+            print("quick_connect Found")
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/search_mysterium.png", region=(1325, 494, 800, 400), confidence=0.95)
+                pyautogui.click(x, y)
+                print("search_mysterium Found")
+                time.sleep(2)
+                pyautogui.typewrite(server_name)
+                pyautogui.press('enter')
+                time.sleep(10)
+                pyautogui.scroll(-500)
+                time.sleep(2)
+                pyautogui.click(1627, 568)
+                return True
+            except pyautogui.ImageNotFoundException:
+                print("No search_mysterium .")
+        except pyautogui.ImageNotFoundException:
+            print("No quick_connect .")
 
 
 
@@ -492,8 +521,8 @@ def fix_ip(drive, name):
                     update = {"$set": {"request": 'ipfixer'}}
                     result = collection_csb.update_one(query, update)
                     print('Update Farm', i)
-                if proxycheck == 50 or proxycheck == 200:
-                    mysterium_vpn_Recon_ip(name)
+                if proxycheck == 50 or proxycheck == 200 or proxycheck == None:
+                    mysterium_vpn_Recon_ip(name, drive)
                 else:
                     mysterium_vpn_connect(name, drive)
                 print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
@@ -2121,9 +2150,9 @@ while True:
             if reset_count_isacc >= 7:
                 response_messege('oops.. reset_count_isacc triggers')
                 blacklistedIP.append(ip_address)
-                mysterium_vpn_Recon_ip(server_name1)
+                mysterium_vpn_Recon_ip(server_name1, sb1)
                 time.sleep(7)
-                mysterium_vpn_Recon_ip(server_name1)
+                mysterium_vpn_Recon_ip(server_name1, sb1)
                 time.sleep(5)
                 
                 reset_count = 16

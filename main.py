@@ -506,11 +506,14 @@ def fix_ip(drive, name):
                 update = {"$set": {"request": 'ipfixer'}}
                 result = collection_csb.update_one(query, update)
                 print('Update Farm', i)
-            proxycheck = get_proxycheck(drive, ip_address, server_name= name)
+                
+            # Ensure this block is properly indented
+            proxycheck = get_proxycheck(drive, ip_address, server_name=name)
             if proxycheck == 50 or proxycheck == 200 or proxycheck != 301:
                 mysterium_vpn_Recon_ip(name, drive)
             else:
                 mysterium_vpn_connect(name, drive)
+                
             print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
             time.sleep(5)
         else:

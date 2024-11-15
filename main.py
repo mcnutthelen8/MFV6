@@ -1060,7 +1060,8 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                                 pyautogui.click(973, 833)
                                 time.sleep(5)
                                 return
-                            sb1.uc_click(submit_button)
+                            if driver.is_element_visible(submit_button):
+                                sb1.uc_click(submit_button)
                             #sb1.uc_click('button[type="submit"]')
                             
                             #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
@@ -1074,7 +1075,8 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
         print("✅ CAPTCHA validated")
         #click_element_with_pyautogui(sb1, 'button[type="submit"]')
         #pyautogui.press('enter')
-        sb1.uc_click(submit_button)
+        if driver.is_element_visible(submit_button):
+            sb1.uc_click(submit_button)
         
         time.sleep(3)
         print("🚀 Login attempt made!")
@@ -1135,7 +1137,8 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                                     return
                                 pyautogui.click(957 ,886)
                                 time.sleep(5)
-                                sb1.uc_click(submit_button)
+                                if driver.is_element_visible(submit_button):
+                                    sb1.uc_click(submit_button)
                                 #sb1.uc_click('button[type="submit"]')
                                 
                                 #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
@@ -1149,8 +1152,8 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
             print("✅ CAPTCHA validated")
             #click_element_with_pyautogui(sb1, 'button[type="submit"]')
             #pyautogui.press('enter')
-            sb1.uc_click(submit_button)
-            
+            if driver.is_element_visible(submit_button):
+                sb1.uc_click(submit_button)
             time.sleep(3)
             print("🚀 Login attempt made!")
     else:

@@ -271,7 +271,7 @@ def activate_window_by_id(window_id):
 
 def get_proxycheck_inbrowser(sb1, ip, server_name):   
     url = f'https://proxycheck.io/v2/{ip}?vpn=1&asn=1'
-    val = None
+    val = False
     try:
         original_window = sb1.current_window_handle
         sb1.open_new_window()
@@ -289,6 +289,8 @@ def get_proxycheck_inbrowser(sb1, ip, server_name):
             else:
                 print(f'{country} is valid with not proxy status.')
                 val = 50
+        else:
+            return False
         sb1.close()
         sb1.switch_to.window(original_window)
         
@@ -320,13 +322,15 @@ def get_proxycheck(driver, ip, server_name):
                 else:
                     print(f'{country} is not {200}')
                     return 50
+            else:
+                return False
         else:
             print("Error: Status not OK : Trying Inbrowser Way")
             val = get_proxycheck_inbrowser(driver, ip, server_name)
             return val
     except requests.RequestException as e:
         print(f"Error retrieving IP address and proxy status: {e}")
-        return None
+        return False
 
 def get_ipscore(ip):
     url = f'https://ipqualityscore.com/api/json/ip/Bfg1dzryVqbpSwtbxgWb1uVkXLrr1Nzr/{ip}?strictness=3&allow_public_access_points=true&lighter_penalties=true&mobile=true'
@@ -371,6 +375,7 @@ def get_ipscore(ip):
 
 
 def mysterium_vpn_Recon_ip(server_name, driver):
+    print('Rcon')
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
         pyautogui.click(x, y)
@@ -403,34 +408,34 @@ def mysterium_vpn_Recon_ip(server_name, driver):
         except pyautogui.ImageNotFoundException:
             print("No myserium_disconnect .")
 
-        try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.99)
-            #pyautogui.click(x, y)
-            print("mysterium_login Found")
-            mysterium_login(driver)
-            #return 0
-        except Exception as e:
-            print("mysterium_logged")
-        try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/quick_connect.png", region=(1325, 190, 800, 400), confidence=0.95)
-        
-            print("quick_connect Found")
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/search_mysterium.png", region=(1325, 494, 800, 400), confidence=0.95)
-                pyautogui.click(x, y)
-                print("search_mysterium Found")
-                time.sleep(2)
-                pyautogui.typewrite(server_name)
-                pyautogui.press('enter')
-                time.sleep(10)
-                pyautogui.scroll(-500)
-                time.sleep(2)
-                pyautogui.click(1627, 568)
-                return True
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.99)
+                #pyautogui.click(x, y)
+                print("mysterium_login Found")
+                mysterium_login(driver)
+                #return 0
+            except Exception as e:
+                print("mysterium_logged")
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/quick_connect.png", region=(1325, 190, 800, 400), confidence=0.95)
+            
+                print("quick_connect Found")
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/search_mysterium.png", region=(1325, 494, 800, 400), confidence=0.95)
+                    pyautogui.click(x, y)
+                    print("search_mysterium Found")
+                    time.sleep(2)
+                    pyautogui.typewrite(server_name)
+                    pyautogui.press('enter')
+                    time.sleep(10)
+                    pyautogui.scroll(-500)
+                    time.sleep(2)
+                    pyautogui.click(1627, 568)
+                    return True
+                except pyautogui.ImageNotFoundException:
+                    print("No search_mysterium .")
             except pyautogui.ImageNotFoundException:
-                print("No search_mysterium .")
-        except pyautogui.ImageNotFoundException:
-            print("No quick_connect .")
+                print("No quick_connect .")
 
 
 
@@ -501,7 +506,8 @@ def fix_ip(drive, name):
                 update = {"$set": {"request": 'ipfixer'}}
                 result = collection_csb.update_one(query, update)
                 print('Update Farm', i)
-
+            proxycheck = get_proxycheck(drive, ip_address, server_name= name)
+            if proxycheck == 50 or proxycheck == 200 or proxycheck == None:
             mysterium_vpn_connect(name, drive)
             print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
             time.sleep(5)

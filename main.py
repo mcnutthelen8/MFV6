@@ -1555,59 +1555,20 @@ def image_counter(image_path):
     color_count = 0
 
     # Loop through the pixels and count how many match the target RGBA color within tolerance
-    for x in range(width):
-        pixel_color = pixels[x, 0]
-        if color_distance(pixel_color, target_rgba) <= tolerance:
-            if pixel_color == background:
-                pass
-                #print('fuck')
-            else:
-                color_count += 1
-    if color_count == 0:
+    for i in range(1, 20):
+        color_count = 0
         for x in range(width):
             pixel_color = pixels[x, 0]
-            if color_distance(pixel_color, target_rgba) <= 5:
+            if color_distance(pixel_color, target_rgba) <= i:
                 if pixel_color == background:
                     pass
                     #print('fuck')
                 else:
                     color_count += 1
-    if color_count == 0:
-        for x in range(width):
-            pixel_color = pixels[x, 0]
-            if color_distance(pixel_color, target_rgba) <= 8:
-                if pixel_color == background:
-                    pass
-                    #print('fuck')
-                else:
-                    color_count += 1
-    if color_count == 0:
-        for x in range(width):
-            pixel_color = pixels[x, 0]
-            if color_distance(pixel_color, target_rgba) <= 10:
-                if pixel_color == background:
-                    pass
-                    #print('fuck')
-                else:
-                    color_count += 1
-    if color_count == 0:
-        for x in range(width):
-            pixel_color = pixels[x, 0]
-            if color_distance(pixel_color, target_rgba) <= 11:
-                if pixel_color == background:
-                    pass
-                    #print('fuck')
-                else:
-                    color_count += 1
-    if color_count == 0:
-        for x in range(width):
-            pixel_color = pixels[x, 0]
-            if color_distance(pixel_color, target_rgba) <= 12:
-                if pixel_color == background:
-                    pass
-                    #print('fuck')
-                else:
-                    color_count += 1
+        if color_count >= 4:
+            return color_count+1
+            #break
+
     # Output the result
     print(f"The number of lines with a color similar to rgba(70, 70, 70, 255) is: {color_count+1}")
 
@@ -1621,7 +1582,6 @@ def solve_least_captcha(image):
     count = image_counter(image)
     if count >= 8:
         count//=2
-
     split_image_by_width('element_screenshot.png', count, output_dir="output_pieces")
 
     val = find_least_similar_image("output_pieces")
@@ -1749,6 +1709,7 @@ def earnbitmoon_claim():
             try:
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/icon_image_loaded.png", region=(671, 118, 873, 892), confidence=0.85)
                 #pyautogui.click(x, y)
+                pyautogui.moveTo(100,130)
                 print("icon_image_loaded Found")
                 screenshot = pyautogui.screenshot(region=(794, 420, 55, 43))
                 screenshot.save('captcha.png') 
@@ -1769,6 +1730,8 @@ def earnbitmoon_claim():
                 else:
 
                     print('Image is not all white')
+                    pyautogui.moveTo(100,130)
+                    time.sleep(1)
                     screenshot = pyautogui.screenshot(region=(794, 415, 312, 50))
                     screenshot.save('element_screenshot.png') 
                     val = solve_least_captcha("element_screenshot.png")

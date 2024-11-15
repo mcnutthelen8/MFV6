@@ -1085,6 +1085,7 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
         print('Bigmoon')
         if driver.is_element_visible('a.nav-link.btn.btn-success'):
             driver.click('a.nav-link.btn.btn-success')
+            time.sleep(5)
             print('Bigmoon click')
             # Wait for the email input by type attribute
             email_input = WebDriverWait(driver, 60).until(

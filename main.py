@@ -1082,8 +1082,10 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
         print("🚀 Login attempt made!")
     
     elif 'Earnbitmoon' in current_title:
+        print('Bigmoon')
         if driver.is_element_visible('a.nav-link.btn.btn-success'):
             driver.click('a.nav-link.btn.btn-success')
+            print('Bigmoon click')
             # Wait for the email input by type attribute
             email_input = WebDriverWait(driver, 60).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, 'input[type="text"]'))
@@ -2121,7 +2123,7 @@ def open_faucets():
                 response_messege(f'Resetting Browser{e}')
                 try:
                     subprocess.run(['pkill', '-f', 'chrome'], check=True)
-                    print("All chrome processes killed successfully.")
+                    print(f"All chrome processes killed successfully.{e}")
                 except subprocess.CalledProcessError:
                     print(f"Failed to kill chrome processes or no processes found.{e}")
                 time.sleep(10)

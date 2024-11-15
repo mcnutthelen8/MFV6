@@ -1151,7 +1151,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         print(f"Current title: {current_title}")
 
         ip_address = get_ip(driver)
-        if ip_required == ip_address:
+        if ip_required != ip_address:
             return 404
         if function == 4:
             if expected_title in current_title:
@@ -1306,14 +1306,14 @@ def get_coins(driver, sitekey):
     try:
         
         if sitekey == 1:
-            if driver.is_element_visible('small.hp-text-color-black-100.hp-text-color-dark-0 span.nowrap span'):
-                coins = driver.get_text('small.hp-text-color-black-100.hp-text-color-dark-0 span.nowrap span', timeout= 1)
+            if driver.is_element_present('small.hp-text-color-black-100 span.nowrap span'):
+                coins = driver.get_text('small.hp-text-color-black-100 span.nowrap span', timeout= 1)
             else:
                 print(f'Sitekey:{sitekey} not found')
             #coins = float(coins.split()[0]) 
         if sitekey == 2:
             
-            if driver.is_element_visible('select.form-select'):
+            if driver.is_element_present('select.form-select'):
                 coins = driver.get_text('select.form-select', timeout= 1)
             else:
                 print(f'Sitekey:{sitekey} not found')
@@ -1412,6 +1412,8 @@ def split_image_by_width(image_path, num_pieces, output_dir="output_pieces"):
         piece.save(piece_filename)
         print(f"Saved {piece_filename}")
 
+from skimage.metrics import structural_similarity as ssim
+
 def find_least_similar_image(image_dir):
     if not os.path.isdir(image_dir):
         print("Directory does not exist.")
@@ -1422,71 +1424,58 @@ def find_least_similar_image(image_dir):
     if len(image_files) == 0:
         print("No images found in the directory.")
         return False
-    else:
-        print("The image is not blank.")
-        # Get the current script's directory (assuming this is the root folder)
-        root_folder = os.path.dirname(os.path.abspath(__file__))
 
-        # Define the relative path to the 'cropped' directory inside the root folder
-        image_dir = os.path.join(root_folder, 'output_pieces')
+    # Dictionary to store image similarities
+    similarities = {}
 
-        # Threshold value for filtering similar images
-        threshold = 0.9
+    # Iterate over all image pairs and calculate their structural similarity
+    for i, img_file in enumerate(image_files):
+        img_path = os.path.join(image_dir, img_file)
+        img1 = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
 
-        # Dictionary to store image similarities
-        similarities = {}
+        for j in range(i + 1, len(image_files)):
+            other_img_file = image_files[j]
+            other_img_path = os.path.join(image_dir, other_img_file)
+            img2 = cv2.imread(other_img_path, cv2.IMREAD_GRAYSCALE)
 
-        # Iterate over all image pairs and calculate their structural similarity
-        for i, img_file in enumerate(os.listdir(image_dir)):
-            img_path = os.path.join(image_dir, img_file)
-            if not os.path.isfile(img_path):
+            # Ensure images are valid and have the same dimensions
+            if img1 is None or img2 is None or img1.shape != img2.shape:
                 continue
-            img1 = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
-            for j in range(i+1, len(os.listdir(image_dir))):
-                other_img_file = os.listdir(image_dir)[j]
-                other_img_path = os.path.join(image_dir, other_img_file)
-                if not os.path.isfile(other_img_path):
-                    continue
-                img2 = cv2.imread(other_img_path, cv2.IMREAD_GRAYSCALE)
-                similarity = cv2.matchTemplate(img1, img2, cv2.TM_CCOEFF_NORMED)[0][0]
-                similarities[(img_path, other_img_path)] = similarity
-                similarities[(other_img_path, img_path)] = similarity
 
-        # Calculate the average similarity score for each image
-        image_scores = {}
-        for img_path in os.listdir(image_dir):
-            img_path = os.path.join(image_dir, img_path)
-            if not os.path.isfile(img_path):
-                continue
-            similar_scores = [v for k, v in similarities.items() if k[0] == img_path]
+            similarity, _ = ssim(img1, img2, full=True)
+            similarities[(img_path, other_img_path)] = similarity
+            similarities[(other_img_path, img_path)] = similarity
+
+    # Calculate the average similarity score for each image
+    image_scores = {}
+    for img_path in image_files:
+        img_full_path = os.path.join(image_dir, img_path)
+        similar_scores = [v for k, v in similarities.items() if k[0] == img_full_path]
+        if similar_scores:
             avg_score = np.mean(similar_scores)
-            image_scores[img_path] = avg_score
+            image_scores[img_full_path] = avg_score
 
-        # Find the image with the least similarity to other images
-        min_score = min(image_scores.values())
-        min_images = [k for k, v in image_scores.items() if v == min_score]
-        if len(min_images) == 1:
-            min_image_name = os.path.basename(min_images[0])
-            print(f"Image {min_image_name} has the least similarity with an average score of {min_score}")
-            #clipboard.copy(min_image_name)
-            return f'{image_dir}/{min_image_name}'
-        else:
-            # If there are multiple images with the same minimum similarity score,
-            # choose the image with the smallest file size as the least similar image
-            min_size = float('inf')
-            min_image = None
-            for image in min_images:
-                size = os.path.getsize(image)
-                if size < min_size:
-                    min_size = size
-                    min_image = image
-            min_image_name = os.path.basename(min_image)
-            print(f"Image {min_image_name} has the least similarity with an average score of {min_score}")
-            #clipboard.copy(min_image_name)
-            return f'{image_dir}/{min_image_name}'
-        
+    # Find the image with the least similarity to other images
+    min_score = min(image_scores.values())
+    min_images = [k for k, v in image_scores.items() if v == min_score]
 
+    if len(min_images) == 1:
+        min_image_name = os.path.basename(min_images[0])
+        print(f"Image {min_image_name} has the least similarity with an average score of {min_score}")
+        return f'{image_dir}/{min_image_name}'
+    else:
+        # If multiple images have the same minimum similarity score, pick the smallest file size
+        min_size = float('inf')
+        min_image = None
+        for image in min_images:
+            size = os.path.getsize(image)
+            if size < min_size:
+                min_size = size
+                min_image = image
 
+        min_image_name = os.path.basename(min_image)
+        print(f"Image {min_image_name} has the least similarity with an average score of {min_score}")
+        return f'{image_dir}/{min_image_name}'
 
 def image_counter(image_path):
     image = Image.open(image_path)
@@ -1989,7 +1978,7 @@ def open_faucets():
             ip_address = get_ip(sb1)
             ipscore = get_ipscore(ip_address)
             proxycheck = get_proxycheck(sb1, ip_address, server_name= server_name1)
-            if ipscore and proxycheck == 200:
+            if ipscore and proxycheck == 200 and ip_address not in blacklistedIP:
                 print(f'Good IP found: {ip_address}')
                 for frm in CSB1_farms:
                     collection_csb = db[f'Farm{frm}']
@@ -2001,7 +1990,7 @@ def open_faucets():
                         ipfixer()
                         ip_required = fix_ip(sb1, server_name1)
                         ip_address = get_ip(sb1)
-                        break
+
             else:
                 ipfixer()
                 ip_required = fix_ip(sb1, server_name1)
@@ -2086,12 +2075,12 @@ def open_faucets():
 
                     return earnpp_window, feyorra_window, claimcoin_window, bitmoon_window,  ip_address, ip_required
         except Exception as e:
-                response_messege(f'Resetting Browser')
+                response_messege(f'Resetting Browser{e}')
                 try:
                     subprocess.run(['pkill', '-f', 'chrome'], check=True)
                     print("All chrome processes killed successfully.")
                 except subprocess.CalledProcessError:
-                    print("Failed to kill chrome processes or no processes found.")
+                    print(f"Failed to kill chrome processes or no processes found.{e}")
                 time.sleep(10)
                 sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path,  page_load_strategy='none')
                 sb1.maximize_window()
@@ -2132,9 +2121,9 @@ while True:
             if reset_count_isacc >= 7:
                 response_messege('oops.. reset_count_isacc triggers')
                 blacklistedIP.append(ip_address)
-                mysterium_vpn_connect(server_name1, sb1)
+                mysterium_vpn_Recon_ip(server_name1)
                 time.sleep(7)
-                mysterium_vpn_connect(server_name1, sb1)
+                mysterium_vpn_Recon_ip(server_name1)
                 time.sleep(5)
                 
                 reset_count = 16
@@ -2169,7 +2158,11 @@ while True:
                         title =sb1.get_title()
                         if 'Faucet | Earn-pepe' in title:
                             debug_messages(f'Solving Icon Captcha on EarnPP')
-                            solve_icon_captcha(sb1)
+                            gg = solve_icon_captcha(sb1)
+                            if gg:
+                                pass
+                            else:
+                                refresh_count +=5
                             debug_messages(f'Solved Icon Captcha on EarnPP')
                             val = get_coins(sb1, 1)
                             if val:
@@ -2210,7 +2203,11 @@ while True:
 
                         if 'Faucet | Feyorra' in title:
                             debug_messages(f'Solving Icon Captcha on Feyorra')
-                            solve_icon_captcha(sb1)
+                            gg = solve_icon_captcha(sb1)
+                            if gg:
+                                pass
+                            else:
+                                refresh_count +=5
                             val = get_coins(sb1, 2)
                             if val:
                                 feyorra_coins = val
@@ -2316,59 +2313,59 @@ while True:
 
                 if bitmoon:
                     try:
-                        debug_messages(f'Switching Pages to Bitmoon')
-                        sb1.switch_to.window(bitmoon_window)
-                        debug_messages(f'Getting Pages Titile:Bitmoon')
-                        title =sb1.get_title()
-                        if 'Earnbitmoon' in title:
-                            elapsed_time4 = time.time() - start_time4
-                            seconds_only4 = int(elapsed_time4)
-                            if seconds_only4 > 120:
-                                pyautogui.press('f5')
-                                start_time4 = time.time()
-                                print('Claim Bitmoon 60 refresh')
-                            debug_messages(f'Solving Icon Captcha on Bitmoon')
-                            #pyautogui.click(50, 130)
-                                
-                            if sb1.is_element_visible("button[style*='background: #FFA500;'][type='button']"):
-                                sb1.uc_click("button[style*='background: #FFA500;'][type='button']")
-                                time.sleep(3)
-                                img3 = earnbitmoon_claim()
-                                if img3:
-                                    start_time4 = time.time()
+                        elapsed_time4 = time.time() - start_time4
+                        seconds_only4 = int(elapsed_time4)
+                        if seconds_only4 > 60:
+                            debug_messages(f'Switching Pages to Bitmoon')
+                            sb1.switch_to.window(bitmoon_window)
+                            debug_messages(f'Getting Pages Titile:Bitmoon')
+                            title =sb1.get_title()
+                            if 'Earnbitmoon' in title:
+                                debug_messages(f'Solving Icon Captcha on Bitmoon')
+                                #pyautogui.click(50, 130)
+                                    
+                                if sb1.is_element_visible("button[style*='background: #FFA500;'][type='button']"):
+                                    sb1.uc_click("button[style*='background: #FFA500;'][type='button']")
                                     time.sleep(3)
+                                    img3 = earnbitmoon_claim()
+                                    if img3:
+                                        start_time4 = time.time()
+                                        time.sleep(3)
+                                        pyautogui.press('f5')
+                                        print('Claim Bitmoon')
+                                    pyautogui.click(50, 130)
+
+                                elif sb1.is_text_visible('Refresh Page'): 
+                                    print('Waiting....You can claim again')
                                     pyautogui.press('f5')
-                                    print('Claim Bitmoon')
-                                pyautogui.click(50, 130)
 
-                            elif sb1.is_text_visible('Refresh Page'): 
-                                print('Waiting....You can claim again')
-                                pyautogui.press('f5')
+                                if sb1.is_element_present("#sidebarCoins"):
+                                    bitmoon_coins_dummy = sb1.get_text("#sidebarCoins")
+                                    bitmoon_coins = re.search(r'\d+\.\d+', bitmoon_coins_dummy).group()
 
-                            if sb1.is_element_present("#sidebarCoins"):
-                                bitmoon_coins_dummy = sb1.get_text("#sidebarCoins")
-                                bitmoon_coins = re.search(r'\d+\.\d+', bitmoon_coins_dummy).group()
-
-                                print('bitmoon_coins:',bitmoon_coins )
-                            if sb1.is_element_visible('a.nav-link.btn.btn-success'):
-                                reset_count +=4
+                                    print('bitmoon_coins:',bitmoon_coins )
+                                if sb1.is_element_visible('a.nav-link.btn.btn-success'):
+                                    reset_count +=4
 
 
-                        elif 'Lock' in title:
-                            debug_messages(f'Lock.. Found on EarnPP')
-                            response_messege('Lock.. Found on EarnPP')
-                        elif 'Just' in title:
-                            debug_messages(f'Just.. Found on EarnPP')
+                            elif 'Lock' in title:
+                                debug_messages(f'Lock.. Found on EarnPP')
+                                response_messege('Lock.. Found on EarnPP')
+                            elif 'Just' in title:
+                                debug_messages(f'Just.. Found on EarnPP')
 
-                            cloudflare(sb1, login = False)
-                            debug_messages(f'Just Fixed EarnPP')
-                        elif 'aintenance' in title:
-                            debug_messages(f'maintenance.. Found on EarnPP')
-                            response_messege('maintenance.. Found on EarnPP')
-                        else:
-                            debug_messages(f'EarnPP not Found:{title} | reset:{reset_count}')
-                            reset_count +=1
+                                cloudflare(sb1, login = False)
+                                debug_messages(f'Just Fixed EarnPP')
+                            elif 'aintenance' in title:
+                                debug_messages(f'maintenance.. Found on EarnPP')
+                                response_messege('maintenance.. Found on EarnPP')
+                            else:
+                                debug_messages(f'EarnPP not Found:{title} | reset:{reset_count}')
+                                reset_count +=1
 
+                            pyautogui.press('f5')
+                            start_time4 = time.time()
+                            print('Claim Bitmoon 60 refresh')
                     except Exception as e:
                         if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
                             debug_messages(f'EarnPP Limit Reached')
@@ -2384,7 +2381,7 @@ while True:
                     start_time = time.time()
                     if earnpp_coins == earnpp_coins_pre:
                         start_time = time.time()
-                        if refresh_count >= 50:
+                        if refresh_count >= 30:
                             response_messege(f'earnpp_coins same {earnpp_coins}| count:{refresh_count} | {seconds_only}')
                             sb1.switch_to.window(earnpp_window)
                             sb1.uc_open('https://earn-pepe.com/member/faucet')
@@ -2393,7 +2390,7 @@ while True:
                         refresh_count +=1
                     elif feyorra_coins == feyorra_coins_pre:
                         start_time = time.time()
-                        if refresh_count >= 80:
+                        if refresh_count >= 30:
                             response_messege(f'feyorra_coins same {feyorra_coins}| count:{refresh_count} | {seconds_only}')
                             refresh_count = 0
                             sb1.switch_to.window(feyorra_window)

@@ -2190,6 +2190,11 @@ while True:
                             debug_messages(f'maintenance.. Found on EarnPP')
                             response_messege('maintenance.. Found on EarnPP')
                             earnpp_coins = 'Lock'
+                        elif 'Home | Earn-pepe' in title or 'Login' in title:
+                            debug_messages(f'LOGIN.. Found on EarnPP')
+                            response_messege('LOGIN.. Found on EarnPP')
+                            earnpp_coins = 'Lock'
+                            reset_count +=5
                         else:
                             debug_messages(f'EarnPP not Found:{title} | reset:{reset_count}')
                             reset_count +=1
@@ -2234,6 +2239,11 @@ while True:
                             debug_messages(f'Lock.. Found on Feyorra')
                             response_messege('Lock.. Found on Feyorra')
                             feyorra_coins = 'Lock'
+                        elif 'Home | Feyorra' in title or 'Login' in title:
+                            debug_messages(f'LOGIN.. Found on Feyorra')
+                            response_messege('LOGIN.. Found on Feyorra')
+                            earnpp_coins = 'Lock'
+                            reset_count +=5
                         else:
                             debug_messages(f'Feyorra not Found:{title} | reset:{reset_count}')
                             reset_count +=1
@@ -2306,6 +2316,11 @@ while True:
                                 debug_messages(f'Lock.. Found on Claimcoins')
                                 response_messege('Lock.. Found on Claimcoins')
                                 claimc_coins = 'Lock'
+                            elif 'ClaimCoin - MultiCurrency Crypto Earning Platform' in title or 'Login' in title:
+                                debug_messages(f'LOGIN.. Found on ClaimCoin')
+                                response_messege('LOGIN.. Found on ClaimCoin')
+                                earnpp_coins = 'Lock'
+                                reset_count +=5
                             elif 'aintenance' in title:
                                 debug_messages(f'aintenance.. Found on Claimcoins')
                                 response_messege('aintenance.. Found on Claimcoins')
@@ -2351,7 +2366,7 @@ while True:
                                 if sb1.is_element_present("#sidebarCoins"):
                                     bitmoon_coins_dummy = sb1.get_text("#sidebarCoins")
                                     bitmoon_coins = re.search(r'\d+\.\d+', bitmoon_coins_dummy).group()
-
+                    
                                     print('bitmoon_coins:',bitmoon_coins )
                                 if sb1.is_element_visible('a.nav-link.btn.btn-success'):
                                     reset_count +=4

@@ -290,7 +290,7 @@ def get_proxycheck_inbrowser(sb1, ip, server_name):
                 print(f'{country} is valid with not proxy status.')
                 val = 50
         else:
-            return False
+            return 301
         sb1.close()
         sb1.switch_to.window(original_window)
         
@@ -323,7 +323,7 @@ def get_proxycheck(driver, ip, server_name):
                     print(f'{country} is not {200}')
                     return 50
             else:
-                return False
+                return 301
         else:
             print("Error: Status not OK : Trying Inbrowser Way")
             val = get_proxycheck_inbrowser(driver, ip, server_name)
@@ -507,8 +507,8 @@ def fix_ip(drive, name):
                 result = collection_csb.update_one(query, update)
                 print('Update Farm', i)
             proxycheck = get_proxycheck(drive, ip_address, server_name= name)
-            if proxycheck == 50 or proxycheck == 200 or proxycheck == None:
-            mysterium_vpn_connect(name, drive)
+            if proxycheck == 50 or proxycheck == 200 or proxycheck != 301:
+                mysterium_vpn_Recon_ip(name, drive)
             print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
             time.sleep(5)
         else:
@@ -527,7 +527,7 @@ def fix_ip(drive, name):
                     update = {"$set": {"request": 'ipfixer'}}
                     result = collection_csb.update_one(query, update)
                     print('Update Farm', i)
-                if proxycheck == 50 or proxycheck == 200 or proxycheck == None:
+                if proxycheck == 50 or proxycheck == 200 or proxycheck != 301:
                     mysterium_vpn_Recon_ip(name, drive)
                 else:
                     mysterium_vpn_connect(name, drive)

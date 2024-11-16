@@ -156,7 +156,7 @@ chrome_user_data_dir = '/root/.config/google-chrome/'
 
 bitmoon = False
 earnpp = True
-claimcoin = False
+claimcoin = True
 feyorra = True
 feyorratop = False
 baymack = False
@@ -220,7 +220,7 @@ def insert_data(ip, amount1, amount2, amount3):
         print("No document was updated.")
     add_messages('pepelom', {now: amount1})
     add_messages('feyorramack', {now: amount2})
-    add_messages('claimcoins', {now: amount3})
+    #add_messages('claimcoins', {now: amount3})
 
     return
 
@@ -967,6 +967,74 @@ def click_element_with_pyautogui(driver, selector):
     print(f'y_location:{y_location} | top:{top} | scroll_y:{scroll_y}', location['y'])
     print(f"Clicked on element at ({center_x}, {center_y})")
 
+import base64
+# Function to find and save the Anti-Bot instruction image
+def save_antibot_image(driver, output_filename='captcha.png'):
+    try:
+        # Locate the instruction element
+        antibot_element = driver.find_element("id", "atb-instruction")
+        
+        if antibot_element:
+            # Locate the image element within the instruction
+            image_element = antibot_element.find_element("tag name", "img")
+            
+            # Get the src attribute which contains the base64 string
+            image_src = image_element.get_attribute("src")
+            
+            # Check if the src starts with 'data:image/png;base64,'
+            if image_src.startswith("data:image/png;base64,"):
+                base64_data = image_src.split(",")[1]
+                
+                # Decode the base64 string
+                image_data = base64.b64decode(base64_data)
+                
+                # Save the image to a file
+                with open(output_filename, "wb") as image_file:
+                    image_file.write(image_data)
+                print(f"Image saved as {output_filename}")
+                return True
+            else:
+                print("Image src does not contain base64 data")
+        else:
+            print("Anti-Bot instruction element not found")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+# Function to find and save images from Anti-Bot links
+def save_antibot_link_images(driver):
+    try:
+        # Locate all link elements containing Anti-Bot images
+        antibot_link_elements = driver.find_elements_by_css_selector(".antibotlinks a img")
+        
+        for i, img_element in enumerate(antibot_link_elements):
+            # Get the src attribute containing the base64 string
+            image_src = img_element.get_attribute("src")
+            
+            if image_src.startswith("data:image/png;base64,"):
+                base64_data = image_src.split(",")[1]
+                
+                # Decode the base64 string
+                image_data = base64.b64decode(base64_data)
+                
+                # Save the image with a unique filename
+                output_filename = f"answer{i + 1}.png"
+                with open(output_filename, "wb") as image_file:
+                    image_file.write(image_data)
+                print(f"Image saved as {output_filename}")
+                return True
+            else:
+                print(f"Image {i + 1} src does not contain base64 data")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+
+def solve_antibotlinks(driver):
+    g1 = save_antibot_image(driver, output_filename='captcha.png')
+    g2 = save_antibot_link_images(driver)
+    if g1 and g2:
+        print('Nice')
+        time.sleep(900000)
+
 def find_and_click_collect_button(sb1):
     # Selector for the button
 
@@ -978,6 +1046,7 @@ def find_and_click_collect_button(sb1):
         button_text = sb1.get_text(button_selector)
         
         if "Collect your reward" in button_text:
+            solve_antibotlinks(sb1)
             print(f"Button with 'Collect your reward' text found.{button_text}")
             original_window = sb1.current_window_handle
             all_windows_before_click = sb1.window_handles.copy()

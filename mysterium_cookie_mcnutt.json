@@ -14,7 +14,7 @@
     },
     {
         "domain": ".mysteriumvpn.com",
-        "expirationDate": 1754887314,
+        "expirationDate": 1755063593,
         "hostOnly": false,
         "httpOnly": false,
         "name": "intercom-device-id-sjkeehf4",
@@ -48,11 +48,11 @@
         "secure": true,
         "session": true,
         "storeId": null,
-        "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdHRyIjoiIiwiYXVkIjpbImR2cG4iXSwiZXhwIjoxNzM0MTQ5MzMyLCJpYXQiOjE3MzE1NTczMzIsImlzcyI6Im15c3Qtc2VudGluZWwiLCJpc3N0IjoicGFzc3dvcmRsZXNzIiwianRpIjoiYTE3ZGQ5YjAtNDk0Yi00NGU5LWI3N2MtNDA4MzYxMDRmMDU3IiwibmJmIjoxNzMxNTU3MzMyLCJzdWIiOiI5ZTVjNmQzZS1kZDFkLTQ2NmMtYmFlYS1hNDQ3NzQ3NmYyZmQifQ.gT4CUcpmMdhQh9PMYoJZD08eXphaQmbEGCAaWSGNCQgxwjlO7uBxMgh2mHA6SSuRP90c7N6hcY1huNdfvgYkJN7nx0RwiMrR7Ak09Ny_6mGDSRfW3AV1BRl4u8LR9pJSZFBjUEUJyqxSXv_RXrnWqUZ_wKEE6JF8glyD0xGuJZBqP1c2oEFE57Y2mSDFN0Uwv8xkI65_UU3C2fI3eNOxLofZIncP4QxjqrOQ3baAEomE6m67on9RsST4vlXI1TbSTP5K86JRrYs-yzXJSlMX9-Gv6bOprA6tuuWsHAKXjv6R4u2Bl51_b2yrt6UnK0nIL3OPj-_3KuLhWP49v8iTpSZML6C3R8MEMK2gpXytHoj_acGm8gr2YP1vJAZRKh4A66QcDKqWHVMA3VuBQTFgzaZQlf1dEJ7UkaNzObtAJARDy96CdZ3uCb9idVp7c3V1uuFaVmpkGKkL4pwtQ1Do8kjiyZWD6RFk5DdvmckfntIxpvOWl4rSchtkyzW-bTcrKjNB52URxtXEKjAlHDrBteNyF6y3Fje4NWCavMJOkefDUQB96kT6Nuiuwctr800BbUa5pw27AEsrUwxraHeNe8QgmNFxMMNUoIjQhidFCQ1Gc57hLyTSN6gbq1gtWBCTy2qVYD8vGEm8gvxq9oBF7tD64DaBh9YodwMC6yUjRik"
+        "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdHRyIjoiIiwiYXVkIjpbImR2cG4iXSwiZXhwIjoxNzM0MzI1NDg1LCJpYXQiOjE3MzE3MzM0ODUsImlzcyI6Im15c3Qtc2VudGluZWwiLCJpc3N0IjoicGFzc3dvcmRsZXNzIiwianRpIjoiOGMxNjllNTMtMTdkZi00MWU2LTg1YWEtNGVkOGJiZDFhZGM0IiwibmJmIjoxNzMxNzMzNDg1LCJzdWIiOiI1NTc2MDA4MS1mZGE0LTQ5MDEtOTJlNi03YjY4ZjFmYzJiZmIifQ.nsTxLBXKTl2o_S4SxbRyt-z2NKfwbQ3kDBqJbV0DLWi6FIrWkbAbbETxvWxwrPfzHJtGWPENaEFMvyvNcEOuhR7YqPvjS8vk31BJJU0R7GIAfrludElepKMq1cwQxzVNYHvyD-1IByPEdVEWPIuVdtbeVAIlu3JnFJ2x7Lx2dbPYDnzp8d5sLoydmEMcwn6ZTfIsjuhmdtbBpp1mFvxrRj8oTyAoffCy5p3W2FTexRAJnI_sIZWw4_y5ywpsHMhqfJ159Nyp2ei3WwOJNJQm1FlZdrap5jukAlliW5oZMmlow5jnqluXJA__E8FfhkggAsDszh6yoGgmwWy7pJJnW8W0oXQY-KOqauMTS3xIk9vwbgnOxahAYjsBVN6zPN30d6Ic-dhZ6jvgAYERuqYjyWJ0AVlFe0elREu8O4Er8Bb24V1agPjKGkxm3vIZyKVHO4WJxwzzG3tE6HEcTuRhg9hw89iIxzhYzEh6rHOwxyoQlta4L8qfUFenbh67I716buJk1VHmJFxfPNcyc2zqfvYDHaocILRP_bAJ18EXrHl6t_r4BH7QrT67_JQqg_FM-eikbTduuvPBTUscK755aCGjVRFBIuDRmGcIZA5NQRvkiCaMFcxdRotFkaWSiJdg5M5DxlsA1YKOmT7_y2xTgyV_P8rnOlLwk04iXXyxoIc"
     },
     {
         "domain": ".mysteriumvpn.com",
-        "expirationDate": 1732162114,
+        "expirationDate": 1732338393,
         "hostOnly": false,
         "httpOnly": false,
         "name": "intercom-session-sjkeehf4",
@@ -88,6 +88,19 @@
         "session": false,
         "storeId": null,
         "value": "1orj3ak%7C2%7Cfpm%7C0%7C1734"
+    },
+    {
+        "domain": ".app.mysteriumvpn.com",
+        "expirationDate": 1763189151,
+        "hostOnly": false,
+        "httpOnly": false,
+        "name": "__stripe_mid",
+        "path": "/",
+        "sameSite": "strict",
+        "secure": true,
+        "session": false,
+        "storeId": null,
+        "value": "e18a4bc9-b955-4dfa-9242-5bcc7bf062eae341aa"
     },
     {
         "domain": ".mysteriumvpn.com",
@@ -156,7 +169,7 @@
     },
     {
         "domain": ".mysteriumvpn.com",
-        "expirationDate": 1754887314,
+        "expirationDate": 1755063593,
         "hostOnly": false,
         "httpOnly": false,
         "name": "intercom-id-sjkeehf4",

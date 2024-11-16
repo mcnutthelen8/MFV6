@@ -337,9 +337,9 @@ def deploy_docker(farmurl, driver):
             
 
             try:
-                pyautogui.click(23, 303)
+                pyautogui.click(21, 303)
                 time.sleep(3)
-                pyautogui.click(320, 397)
+                pyautogui.click(319, 419)
                 time.sleep(3)
                 pyautogui.click(500, 840)
                 time.sleep(3)
@@ -361,7 +361,7 @@ def deploy_docker(farmurl, driver):
                                 while True:
                                     pyautogui.click(23, 303)
                                     time.sleep(3)
-                                    pyautogui.click(104, 329)
+                                    pyautogui.click(104, 345)
                                     time.sleep(5)
                                     try:
                                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/director_lister.png", region=(1120, 223, 1000, 1000), confidence=0.9)

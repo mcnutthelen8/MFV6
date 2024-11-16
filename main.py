@@ -154,7 +154,7 @@ chrome_binary_path = '/opt/google/chrome/google-chrome'
 chrome_user_data_dir = '/root/.config/google-chrome/'
 
 
-bitmoon = True
+bitmoon = False
 earnpp = True
 claimcoin = True
 feyorra = True
@@ -207,7 +207,6 @@ def insert_data(ip, amount1, amount2, amount3, amount4):
         "pepelom": amount1,
         "feyorramack": amount2,
         "claimcoins": amount3,
-        "bitmoon": amount4,
         "Status": now,
         "Ip": ip,
         "response": 'Running'
@@ -222,7 +221,7 @@ def insert_data(ip, amount1, amount2, amount3, amount4):
     add_messages('pepelom', {now: amount1})
     add_messages('feyorramack', {now: amount2})
     add_messages('claimcoins', {now: amount3})
-    add_messages('bitmoon', {now: amount4})
+
     return
 
 
@@ -2441,11 +2440,11 @@ while True:
                 debug_messages(f'MangoDB Seconds:{seconds_only3}')
                 if seconds_only3 > 130:
                     print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}| Bitmo:{bitmoon_coins}')
-                    if earnpp_coins and feyorra_coins and claimc_coins and bitmoon_coins:
+                    if earnpp_coins and feyorra_coins and claimc_coins: #and bitmoon_coins:
                         start_time3 = time.time()
-                        insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins, bitmoon_coins)
+                        insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins)
                     else:
-                        response_messege(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}| Bitmo:{bitmoon_coins}')
+                        response_messege(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}')
                     #elif earnpp_coins and feyorra_coins and claimc_coins:
                     #    start_time3 = time.time()
                     #    insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins, 0)

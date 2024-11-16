@@ -343,7 +343,7 @@ def deploy_docker(farmurl, driver):
                 time.sleep(3)
                 pyautogui.click(500, 840)
                 time.sleep(3)
-                pyautogui.press('enter')
+                pyautogui.press('a')
                 time.sleep(3)
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/workspace_git.png", region=(350, 780, 800, 800), confidence=0.9)
                 if x and y:
@@ -406,6 +406,7 @@ def deploy_docker(farmurl, driver):
                             if x and y:
                                 pyautogui.click(x, y)
                                 print("press_anykey_cbs git Found")
+                                pyautogui.press('a')
                             
                         except Exception as e:
                             print('press_anykey_cbs not found')

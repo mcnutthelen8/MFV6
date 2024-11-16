@@ -196,7 +196,7 @@ def add_messages(type_value, new_messages):
     except Exception as e:
         print(e)
 
-def insert_data(ip, amount1, amount2, amount3, amount4):
+def insert_data(ip, amount1, amount2, amount3):
     sri_lanka_tz = pytz.timezone('Asia/Colombo')
     utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
     sri_lanka_time = utc_now.astimezone(sri_lanka_tz)

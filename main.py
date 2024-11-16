@@ -509,7 +509,8 @@ def fix_ip(drive, name):
             # Ensure this block is properly indented
             proxycheck = get_proxycheck(drive, ip_address, server_name=name)
             if proxycheck == 50 or proxycheck == 200 or proxycheck != 301:
-                mysterium_vpn_Recon_ip(name, drive)
+                #mysterium_vpn_Recon_ip(name, drive)
+                mysterium_vpn_connect(name, drive)
             else:
                 mysterium_vpn_connect(name, drive)
                 
@@ -532,7 +533,8 @@ def fix_ip(drive, name):
                     result = collection_csb.update_one(query, update)
                     print('Update Farm', i)
                 if proxycheck == 50 or proxycheck == 200 or proxycheck != 301:
-                    mysterium_vpn_Recon_ip(name, drive)
+                    #mysterium_vpn_Recon_ip(name, drive)
+                    mysterium_vpn_connect(name, drive)
                 else:
                     mysterium_vpn_connect(name, drive)
                 print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
@@ -636,44 +638,41 @@ def mysterium_login(driver):
                                     x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
                                     pyautogui.click(x, y)
                                     print("mysterium_icon_empty 2 Found")
-                                    time.sleep(9)
-                                    pyautogui.click(100, 100)
-                                    print("refresh_ip_on Found")
-                                    return True
-                                    #for i in range(1,100):
-                                        #time.sleep(1)
-                                        #try:
-                                        #    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/settings_mysterium.png", region=(1445, 630, 400, 300), confidence=0.99)
-                                        #    pyautogui.click(x, y)
-                                        #    print("settings_mysterium 2 Found")
-                                        #    time.sleep(1)
-                                        #except pyautogui.ImageNotFoundException:
-                                        #    print("No settings_mysterium 2.")
+                                    time.sleep(3)
+                                    for i in range(1,100):
+                                        time.sleep(1)
+                                        try:
+                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/settings_mysterium.png", region=(1445, 630, 400, 300), confidence=0.99)
+                                            pyautogui.click(x, y)
+                                            print("settings_mysterium 2 Found")
+                                            time.sleep(1)
+                                        except pyautogui.ImageNotFoundException:
+                                            print("No settings_mysterium 2.")
 
-                                        #try:
-                                        #    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/connection_mysterium_option.png", region=(1325, 109, 800, 900), confidence=0.99)
-                                        #    pyautogui.click(x, y)
-                                        #    print("connection_mysterium_option Found")
-                                        #    time.sleep(1)
-                                        #except pyautogui.ImageNotFoundException:
-                                        #    print("No connection_mysterium_option.")
+                                        try:
+                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/connection_mysterium_option.png", region=(1325, 109, 800, 900), confidence=0.99)
+                                            pyautogui.click(x, y)
+                                            print("connection_mysterium_option Found")
+                                            time.sleep(1)
+                                        except pyautogui.ImageNotFoundException:
+                                            print("No connection_mysterium_option.")
 
-                                        #try:
-                                        #    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/refresh_ip_off.png", region=(1325, 109, 800, 900), confidence=0.99)
-                                        #    pyautogui.click(1640, 300)
-                                        ##    pyautogui.click(1668, 300)
-                                        #    print("refresh_ip_off Found")
-                                        #    time.sleep(1)
-                                        #except pyautogui.ImageNotFoundException:
-                                        #    print("No refresh_ip_off.")
+                                        try:
+                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/refresh_ip_off.png", region=(1325, 109, 800, 900), confidence=0.99)
+                                            pyautogui.click(1640, 300)
+                                            pyautogui.click(1668, 300)
+                                            print("refresh_ip_off Found")
+                                            time.sleep(1)
+                                        except pyautogui.ImageNotFoundException:
+                                            print("No refresh_ip_off.")
 
-                                        #try:
-                                        #    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/refresh_ip_on.png", region=(1325, 109, 800, 900), confidence=0.99)
-                                        #    pyautogui.click(300, 300)
-                                        #    print("refresh_ip_on Found")
-                                        #    return True
-                                        #except pyautogui.ImageNotFoundException:
-                                        #    print("No refresh_ip_on.")
+                                        try:
+                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/refresh_ip_on.png", region=(1325, 109, 800, 900), confidence=0.99)
+                                            pyautogui.click(300, 300)
+                                            print("refresh_ip_on Found")
+                                            return True
+                                        except pyautogui.ImageNotFoundException:
+                                            print("No refresh_ip_on.")
 
                                                         #return True
                                 except pyautogui.ImageNotFoundException:
@@ -2116,9 +2115,9 @@ while True:
             if reset_count_isacc >= 7:
                 response_messege('oops.. reset_count_isacc triggers')
                 blacklistedIP.append(ip_address)
-                mysterium_vpn_Recon_ip(server_name1, sb1)
+                mysterium_vpn_connect(server_name1, sb1)
                 time.sleep(7)
-                mysterium_vpn_Recon_ip(server_name1, sb1)
+                mysterium_vpn_connect(server_name1, sb1)
                 time.sleep(5)
                 
                 reset_count = 16

@@ -280,6 +280,10 @@ def create_devbox(driver):
     driver.open('https://codesandbox.io/dashboard')
     time.sleep(2)
     try:
+        title = driver.get_title()
+        print(f'Titile: {title},create_devbox wait for Recent')
+        if 'Recent - CodeSandbox' in title:
+            print(f'Vm Has Loaded:{title}')
             continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'button.sc-bdnylx')
             for button in continue_buttons:
                 if 'Create' in button.text:
@@ -295,11 +299,11 @@ def create_devbox(driver):
                         for button in python_buttons:
                             print(f"Found button with title: {button.get_attribute('submit')}, clicking...")
                             button.click() 
-                            for i in range(1,9999):
+                            while True:
                                 time.sleep(2)
             
                                 title = driver.get_title()
-                                print(f'Titile: {title}, Sec : {i}')
+                                print(f'Titile: {title}, create_devbox D')
                                 if 'README.md - workspace - CodeSandbox' in title:
                                     print(f'Vm Has Loaded:{title}')
                                     return True               
@@ -314,78 +318,104 @@ def create_devbox(driver):
         print(f'Create DevBox:{e}')
         return False
   
-def deploy_docker(farmurl):
+def deploy_docker(farmurl, driver):
     while True:
+        currecto = False
         time.sleep(2)
-        try:
-            pyautogui.click(23, 303)
-            time.sleep(3)
-            pyautogui.click(320, 397)
-            time.sleep(3)
-            pyautogui.click(500, 840)
-            time.sleep(3)
-            pyautogui.press('enter')
-            time.sleep(3)
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/workspace_git.png", region=(350, 780, 800, 800), confidence=0.9)
-            if x and y:
-                pyautogui.click(x, y)
-                print("workspace git Found")
-                pyautogui.typewrite('docker run -i --platform=linux/amd64 -p 6080:6080 akarita/docker-ubuntu-desktop')
-                pyautogui.press('enter')
-                while True:
-                    time.sleep(2)  
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/docker_deployed.png", region=(350, 780, 800, 800), confidence=0.9)
-                        if x and y:
-                            pyautogui.click(x, y)
-                            print("docker_deployed git Found")
-                            while True:
-                                pyautogui.click(23, 303)
-                                time.sleep(3)
-                                pyautogui.click(104, 329)
-                                time.sleep(5)
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/director_lister.png", region=(1120, 223, 1000, 1000), confidence=0.9)
-                                    if x and y:
-                                        pyautogui.click(x, y)
-                                        print("director_lister git Found")
-                                        pyautogui.click(1228,462)
-                                        time.sleep(3)
-                                        while True:
-                                            time.sleep(2)
-                                            pyautogui.rightClick(1467, 346)
-                                            time.sleep(5)
-                                            try:
-                                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/open_terminal.png", region=(1120, 223, 1000, 1000), confidence=0.9)
-                                                if x and y:
-                                                    pyautogui.click(x, y)
-                                                    print("open_terminal git Found")
-                                                    while True:
-                                                        time.sleep(3)
-                                                        try:
-                                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/desktop_terminal.png", region=(1120, 223, 1000, 1000), confidence=0.9)
-                                                            if x and y:
-                                                                pyautogui.click(x, y)
-                                                                print("desktop_terminal git Found")
-                                                                pyautogui.typewrite(farmurl)
-                                                                pyautogui.press('enter')
-                                                                return True
-                                                        except Exception as e:
-                                                            print('desktop_terminal not found')
-
-
-                                            except Exception as e:
-                                                print('open_terminal not found')
-                                        
-                                except Exception as e:
-                                    print('director_lister not found')
-
-                    except Exception as e:
-                        print('docker_deployed not found')
-                
+        title = driver.get_title()
+        print(f'Titile: {title}')
+        if 'README.md - workspace - CodeSandbox' in title:
+            print(f'Vm Has Loaded:{title}')
+            currecto = True               
+        if 'New Devtool - workspace - CodeSandbox' in title:
+            print(f'Vm Has Loaded:{title}')
+            currecto = True  
+        if 'workspace - CodeSandbox' in title:
+            print(f'Vm Has Loaded:{title}')
+            currecto = True  
+        if currecto:
             
-        except Exception as e:
-            print(f'Deploy:{e}')
+
+            try:
+                pyautogui.click(23, 303)
+                time.sleep(3)
+                pyautogui.click(320, 397)
+                time.sleep(3)
+                pyautogui.click(500, 840)
+                time.sleep(3)
+                pyautogui.press('enter')
+                time.sleep(3)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/workspace_git.png", region=(350, 780, 800, 800), confidence=0.9)
+                if x and y:
+                    pyautogui.click(x, y)
+                    print("workspace git Found")
+                    pyautogui.typewrite('docker run -i --platform=linux/amd64 -p 6080:6080 akarita/docker-ubuntu-desktop')
+                    pyautogui.press('enter')
+                    while True:
+                        time.sleep(2)  
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/docker_deployed.png", region=(350, 780, 800, 800), confidence=0.9)
+                            if x and y:
+                                pyautogui.click(x, y)
+                                print("docker_deployed git Found")
+                                while True:
+                                    pyautogui.click(23, 303)
+                                    time.sleep(3)
+                                    pyautogui.click(104, 329)
+                                    time.sleep(5)
+                                    try:
+                                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/director_lister.png", region=(1120, 223, 1000, 1000), confidence=0.9)
+                                        if x and y:
+                                            pyautogui.click(x, y)
+                                            print("director_lister git Found")
+                                            pyautogui.click(1228,462)
+                                            time.sleep(3)
+                                            while True:
+                                                time.sleep(2)
+                                                pyautogui.rightClick(1467, 346)
+                                                time.sleep(5)
+                                                try:
+                                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/open_terminal.png", region=(1120, 223, 1000, 1000), confidence=0.9)
+                                                    if x and y:
+                                                        pyautogui.click(x, y)
+                                                        print("open_terminal git Found")
+                                                        while True:
+                                                            time.sleep(3)
+                                                            try:
+                                                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/desktop_terminal.png", region=(1120, 223, 1000, 1000), confidence=0.9)
+                                                                if x and y:
+                                                                    pyautogui.click(x, y)
+                                                                    print("desktop_terminal git Found")
+                                                                    pyautogui.typewrite(farmurl)
+                                                                    pyautogui.press('enter')
+                                                                    return True
+                                                            except Exception as e:
+                                                                print('desktop_terminal not found')
+
+
+                                                except Exception as e:
+                                                    print('open_terminal not found')
+                                            
+                                    except Exception as e:
+                                        print('director_lister not found')
+
+                        except Exception as e:
+                            print('docker_deployed not found')
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/press_anykey_cbs.png", region=(350, 780, 1500, 800), confidence=0.9)
+                            if x and y:
+                                pyautogui.click(x, y)
+                                print("press_anykey_cbs git Found")
+                            
+                        except Exception as e:
+                            print('press_anykey_cbs not found')
+                    
+                
+            except Exception as e:
+                print(f'Deploy:{e}')
+        else:
+            print("No correcto")
+
 
 def CSB_credit_usage(driver):
     original_window = driver.current_window_handle

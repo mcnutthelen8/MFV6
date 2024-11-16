@@ -156,7 +156,7 @@ chrome_user_data_dir = '/root/.config/google-chrome/'
 
 bitmoon = False
 earnpp = True
-claimcoin = True
+claimcoin = False
 feyorra = True
 feyorratop = False
 baymack = False
@@ -1004,7 +1004,7 @@ def save_antibot_image(driver, output_filename='captcha.png'):
 def save_antibot_link_images(driver):
     try:
         # Locate all link elements containing Anti-Bot images
-        antibot_link_elements = driver.find_elements_by_css_selector(".antibotlinks a img")
+        antibot_link_elements = driver.find_elements(".antibotlinks a img")
         
         for i, img_element in enumerate(antibot_link_elements):
             # Get the src attribute containing the base64 string
@@ -1024,6 +1024,7 @@ def save_antibot_link_images(driver):
                 return True
             else:
                 print(f"Image {i + 1} src does not contain base64 data")
+        return True
     except Exception as e:
         print(f"An error occurred: {e}")
 

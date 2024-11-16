@@ -2046,20 +2046,7 @@ def open_faucets():
                         claimcoin_window = None
                 else:
                     raise Exception("Ip changed")
-                ip_address = get_ip(sb1)
-                if ip_required == ip_address:
-                    response_messege('bitmoon Loging')
-                    if bitmoon:
-                        sb1.open_new_window()
-                        bitmoon_window = handle_site(sb1, "https://earnbitmoon.club/", "Earnbitmoon", "Earnbitmoon", 4, [earnpp_window, feyorra_window,claimcoin_window ],ip_required)
-                        if bitmoon_window == 404:
-                            raise Exception(" bitmoon_window == 404")
-                        
-                        print(f"bitmoon window handle: {bitmoon_window}")
-                    else:
-                        bitmoon_window = None
-                else:
-                    raise Exception("Ip changed")
+
                 
                 ip_address = get_ip(sb1)
                 if ip_required == ip_address:
@@ -2068,10 +2055,10 @@ def open_faucets():
                     update = {"$set": {"request": 'mainscript'}}
                     result = collection.update_one(query, update)
 
-                    all_window_handles = [earnpp_window, feyorra_window, claimcoin_window, bitmoon_window]
+                    all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
                     close_extra_windows(sb1, all_window_handles)
                     sb1.switch_to.window(earnpp_window)
-                    print(f"Windows: EarnPP: {earnpp_window}, Feyorra: {feyorra_window}, ClaimCoin: {claimcoin_window}, bitmoon_window:{bitmoon_window}")
+                    print(f"Windows: EarnPP: {earnpp_window}, Feyorra: {feyorra_window}, ClaimCoin: {claimcoin_window}")
                     global reset_count 
                     global reset_count_isacc 
                     global previous_reset_count
@@ -2081,7 +2068,7 @@ def open_faucets():
                     previous_reset_count = 0
 
 
-                    return earnpp_window, feyorra_window, claimcoin_window, bitmoon_window,  ip_address, ip_required
+                    return earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required
         except Exception as e:
                 response_messege(f'Resetting Browser{e}')
                 try:
@@ -2113,7 +2100,7 @@ feyorra_count = 0
 claimcoin_count = 0
 
 refresh_count = 0
-earnpp_window, feyorra_window, claimcoin_window, bitmoon_window,  ip_address, ip_required = open_faucets()
+earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
 start_time4 = 0
 time.sleep(2)
 print('Starting Loop')
@@ -2141,7 +2128,7 @@ while True:
             if reset_count >= 15:
                 print('reset count higher')
                 
-                earnpp_window, feyorra_window, claimcoin_window, bitmoon_window,  ip_address, ip_required = open_faucets()
+                earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
                 reset_count = 0
                 reset_count_isacc = 0
 
@@ -2153,7 +2140,7 @@ while True:
             if ip_address == ip_required:
                 debug_messages(f'Ip address Match:{ip_address}')
 
-                all_window_handles = [earnpp_window, feyorra_window, claimcoin_window, bitmoon_window]
+                all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
                 close_extra_windows(sb1, all_window_handles)
 
                 print(f'Reset_count:{reset_count}')
@@ -2334,69 +2321,6 @@ while True:
 
 
 
-                if bitmoon:
-                    try:
-                        elapsed_time4 = time.time() - start_time4
-                        seconds_only4 = int(elapsed_time4)
-                        if seconds_only4 > 60:
-                            debug_messages(f'Switching Pages to Bitmoon')
-                            sb1.switch_to.window(bitmoon_window)
-                            debug_messages(f'Getting Pages Titile:Bitmoon')
-                            title =sb1.get_title()
-                            if 'Earnbitmoon' in title:
-                                debug_messages(f'Solving Icon Captcha on Bitmoon')
-                                #pyautogui.click(50, 130)
-                                    
-                                if sb1.is_element_visible("button[style*='background: #FFA500;'][type='button']"):
-                                    sb1.uc_click("button[style*='background: #FFA500;'][type='button']")
-                                    time.sleep(3)
-                                    img3 = earnbitmoon_claim()
-                                    if img3:
-                                        start_time4 = time.time()
-                                        time.sleep(3)
-                                        pyautogui.press('f5')
-                                        print('Claim Bitmoon')
-                                    pyautogui.click(50, 130)
-
-                                elif sb1.is_text_visible('Refresh Page'): 
-                                    print('Waiting....You can claim again')
-                                    pyautogui.press('f5')
-
-                                if sb1.is_element_present("#sidebarCoins"):
-                                    bitmoon_coins_dummy = sb1.get_text("#sidebarCoins")
-                                    bitmoon_coins = re.search(r'\d+\.\d+', bitmoon_coins_dummy).group()
-                    
-                                    print('bitmoon_coins:',bitmoon_coins )
-                                if sb1.is_element_visible('a.nav-link.btn.btn-success'):
-                                    reset_count +=4
-
-
-                            elif 'Lock' in title:
-                                debug_messages(f'Lock.. Found on EarnPP')
-                                response_messege('Lock.. Found on EarnPP')
-                            elif 'Just' in title:
-                                debug_messages(f'Just.. Found on EarnPP')
-
-                                cloudflare(sb1, login = False)
-                                debug_messages(f'Just Fixed EarnPP')
-                            elif 'aintenance' in title:
-                                debug_messages(f'maintenance.. Found on EarnPP')
-                                response_messege('maintenance.. Found on EarnPP')
-                            else:
-                                debug_messages(f'EarnPP not Found:{title} | reset:{reset_count}')
-                                reset_count +=1
-
-                            pyautogui.press('f5')
-                            start_time4 = time.time()
-                            print('Claim Bitmoon 60 refresh')
-                    except Exception as e:
-                        if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
-                            debug_messages(f'EarnPP Limit Reached')
-                            response_messege('EarnPP Limit Reached')
-                        else:
-                            debug_messages(f'ERR on EarnPP:{e}')
-                            reset_count +=1
-
                 elapsed_time = time.time() - start_time
                 seconds_only = int(elapsed_time)
                 debug_messages(f'ClaimCoins Seconds:{seconds_only}')
@@ -2439,7 +2363,7 @@ while True:
                 seconds_only3 = int(elapsed_time3)
                 debug_messages(f'MangoDB Seconds:{seconds_only3}')
                 if seconds_only3 > 130:
-                    print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}| Bitmo:{bitmoon_coins}')
+                    print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}| ')
                     if earnpp_coins and feyorra_coins and claimc_coins: #and bitmoon_coins:
                         start_time3 = time.time()
                         insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins)
@@ -2462,7 +2386,7 @@ while True:
     
 
         if mainscript == 2:
-            earnpp_window, feyorra_window, claimcoin_window, bitmoon_window,  ip_address, ip_required = open_faucets()
+            earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
             reset_count = 0
 
         if mainscript == 3:

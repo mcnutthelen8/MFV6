@@ -721,7 +721,7 @@ if fresh_vms:
 
         sb1.open_new_window()
         create_devbox(sb1)
-        deploy_docker(command)
+        deploy_docker(command,sb1)
         
         time.sleep(5)
         pyautogui.click(942, 65)
@@ -804,7 +804,7 @@ while True:
                 elif i == 4: command = command_4
 
                 create_devbox(sb1)
-                deploy_docker(command)
+                deploy_docker(command, sb1)
                 pyautogui.click(942, 65)
                 collection = db[CSB_Script]
                 query = {"type": "main"}
@@ -837,7 +837,7 @@ while True:
                 update = {"$set": {"request": f'Resetting DEV{i}'}}
                 result = collection.update_one(query, update) 
                 create_devbox(sb1)
-                deploy_docker(command)
+                deploy_docker(command , sb1)
                 pyautogui.click(942, 65)
                 query = {"type": "main"}
                 doc = collection.find_one(query)

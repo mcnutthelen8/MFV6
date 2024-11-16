@@ -156,7 +156,7 @@ chrome_user_data_dir = '/root/.config/google-chrome/'
 
 bitmoon = False
 earnpp = True
-claimcoin = True
+claimcoin = False
 feyorra = True
 feyorratop = False
 baymack = False
@@ -2344,7 +2344,7 @@ while True:
                 debug_messages(f'MangoDB Seconds:{seconds_only3}')
                 if seconds_only3 > 130:
                     print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}| ')
-                    if earnpp_coins and feyorra_coins and claimc_coins: #and bitmoon_coins:
+                    if earnpp_coins and feyorra_coins: #and claimc_coins: #and bitmoon_coins:
                         start_time3 = time.time()
                         insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins)
                     else:

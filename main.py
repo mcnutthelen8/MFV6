@@ -142,6 +142,23 @@ elif farm_id == 5:
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
+    server_name1 = 'philippines'
+    CSB1_farms = [1, 2, 3, 4, 5]
+    earnpp_email = 'andyrogers468@gmail.com'
+    earnpp_pass = 'Uwuinsta@2005'
+    feyorra_email = 'andyrogers468@gmail.com'
+    feyorra_pass = 'Uwuinsta@2005'
+    claimc_email = 'andyrogers468@gmail.com'
+    claimc_pass = 'Uwuinsta@2005'
+    bitmoon_email = 'rondolftapatio'
+    bitmoon_pass = 'p~Q18oQjmp}nv6g'
+
+
+elif farm_id == 6:
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
+    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
+    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
+    fb_pass = 'ashen1997'
     server_name1 = 'vietnam'
     CSB1_farms = [1, 2, 3, 4, 5]
     earnpp_email = 'grandkolla990@gmail.com'

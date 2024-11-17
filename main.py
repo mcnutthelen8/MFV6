@@ -37,6 +37,8 @@ import clipboard
 import shutil
 import os
 import math
+import subprocess
+
 
 # Example usage
 
@@ -159,15 +161,81 @@ elif farm_id == 6:
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
-    server_name1 = 'vietnam'
-    CSB1_farms = [1, 2, 3, 4, 5]
-    earnpp_email = 'grandkolla990@gmail.com'
+    server_name1 = 'bulgaria'
+    CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+    earnpp_email = 'andrewperera70@gmail.com'
     earnpp_pass = 'Uwuinsta@2005'
-    feyorra_email = 'grandkolla990@gmail.com'
+    feyorra_email = 'andrewperera70@gmail.com'
     feyorra_pass = 'Uwuinsta@2005'
-    claimc_email = 'grandkolla990@gmail.com'
+    claimc_email = 'andrewperera70@gmail.com'
     claimc_pass = 'Uwuinsta@2005'
     bitmoon_email = 'rondolftapatio'
+    bitmoon_pass = 'p~Q18oQjmp}nv6g'
+
+
+elif farm_id == 7:
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
+    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
+    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
+    fb_pass = 'ashen1997'
+    server_name1 = 'moldova'
+    CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+    earnpp_email = 'joeziega@gmail.com'
+    earnpp_pass = 'Uwuinsta@2005'
+    feyorra_email = 'joeziega@gmail.com'
+    feyorra_pass = 'Uwuinsta@2005'
+    claimc_email = 'joeziega@gmail.com'
+    claimc_pass = 'Uwuinsta@2005'
+    bitmoon_email = 'joeziega'
+    bitmoon_pass = 'p~Q18oQjmp}nv6g'
+
+
+elif farm_id == 8:
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
+    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
+    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
+    fb_pass = 'ashen1997'
+    server_name1 = 'belgium'
+    CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+    earnpp_email = 'markeshalland@gmail.com'
+    earnpp_pass = 'Uwuinsta@2005'
+    feyorra_email = 'markeshalland@gmail.com'
+    feyorra_pass = 'Uwuinsta@2005'
+    claimc_email = 'markeshalland@gmail.com'
+    claimc_pass = 'Uwuinsta@2005'
+    bitmoon_email = 'joeziega'
+    bitmoon_pass = 'p~Q18oQjmp}nv6g'
+
+elif farm_id == 9:
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
+    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
+    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
+    fb_pass = 'ashen1997'
+    server_name1 = 'georgia'
+    CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+    earnpp_email = 'sheldonkumar54@gmail.com'
+    earnpp_pass = 'p~Q18oQjmp}nv6g'
+    feyorra_email = 'sheldonkumar54@gmail.com'
+    feyorra_pass = 'p~Q18oQjmp}nv6g'
+    claimc_email = 'sheldonkumar54@gmail.com'
+    claimc_pass = 'p~Q18oQjmp}nv6g'
+    bitmoon_email = 'joeziega'
+    bitmoon_pass = 'p~Q18oQjmp}nv6g'
+
+elif farm_id == 10:
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
+    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
+    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
+    fb_pass = 'ashen1997'
+    server_name1 = 'chile'
+    CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+    earnpp_email = 'berendkalpana@gmail.com'
+    earnpp_pass = 'OYzKhFdLO5oEmwI2'
+    feyorra_email = 'berendkalpana@gmail.com'
+    feyorra_pass = 'OYzKhFdLO5oEmwI2'
+    claimc_email = 'berendkalpana@gmail.com'
+    claimc_pass = 'OYzKhFdLO5oEmwI2'
+    bitmoon_email = 'joeziega'
     bitmoon_pass = 'p~Q18oQjmp}nv6g'
 else:
     while True:
@@ -740,6 +808,7 @@ def ipfixer():
 
     while True:
         query = {"type": "main"}
+        pyautogui.press('j')
         doc = collection.find_one(query)
         request = doc["request"]
         if request == 'ipfixer':
@@ -917,6 +986,7 @@ def cloudflare(sb, login = True):
                 if x and y:
                     sb.disconnect() 
                     for i in range(1, 300):
+                        #pyautogui.press('j')
                         if 'Login' in page_title or 'Just' in page_title or 'Faucetpay' in page_title or 'Earnbitmoon' in page_title:
                             try:
                                 time.sleep(1)
@@ -1228,6 +1298,7 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
             else:
                 for i in range(1, 10):
                     time.sleep(1)
+                    #pyautogui.press('j')
                     sb1.execute_script("window.scrollTo(0, 1000);")
                     cloudflare(driver, True)
                     try:
@@ -1306,7 +1377,9 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                 else:
                     for i in range(1, 10):
                         time.sleep(1)
+                        #pyautogui.press('j')
                         sb1.execute_script("window.scrollTo(0, 1000);")
+                        
                         cloudflare(driver, True)
                         try:
                             x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
@@ -1377,6 +1450,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
     ready = False
     while not ready:
         time.sleep(1)
+        pyautogui.press('j')
         all_windows = driver.window_handles
         for window in all_windows:
             if window not in window_list:
@@ -1960,6 +2034,7 @@ def withdraw_faucet(driver, sitekey):
                 sb1.switch_to.window(window)
                 sb1.close()  # Close the tab
         sb1.switch_to.window(current_window)
+        pyautogui.press('j')
 
         if sitekey == 1:
             print('Strting PePe withdraw')
@@ -2147,11 +2222,24 @@ if run_sb1:
         result = collection.update_one(query, update)
     
 
+# Path to your shell script
+shell_script_path = "./monitor_inactivity.sh"
+try:
+    # Run the script as a background process
+    subprocess.Popen(["bash", shell_script_path])
+
+    print("Shell script is running in the background...")
+    response_messege('Shell script is running in the background...')
+except Exception as e:
+    print(f"An error occurred: {e}")
+    response_messege(f'ERR on SH Running {e}')
+
 
 def open_faucets():
     global sb1
     while True:
         try:
+            pyautogui.press('j')
             current_window = sb1.current_window_handle
             all_windows = sb1.window_handles
             for window in all_windows:
@@ -2296,6 +2384,7 @@ print('Starting Loop')
 
 while True:
     try:
+        pyautogui.press('j')
         mainscript = control_panel()
         print('control_panel', mainscript)
         if mainscript == 1:

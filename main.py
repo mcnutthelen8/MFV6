@@ -190,7 +190,7 @@ blacklistedIP = dochh["blacklistedIP"]
 print(blacklistedIP)
  
 
-ocr = PaddleOCR(use_angle_cls=True, lang='en',  drop_score=0)
+ocr = None #PaddleOCR(use_angle_cls=True, lang='en',  drop_score=0)
 
 
 

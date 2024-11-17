@@ -56,7 +56,7 @@ Layout = layoutar# 1
 
 fresh = True
 fresh_vms =True 
-vm_count = 1 + 4
+vm_count = 1 + 5
 CSB_id = csbid
 CSB_Script = f'CSB{Layout}'
 waiting_sec = 3700
@@ -77,12 +77,16 @@ command_1 = '0'
 command_2 = '0'
 command_3 = '0'
 command_4 = '0'
+command_5 = '0'
 
 if Layout == 1:
     command_1 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 1 --fresh 3'
     command_2 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 2 --fresh 3'
     command_3 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 3 --fresh 3'
     command_4 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 4 --fresh 3'
+    command_5 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 5 --fresh 3'
+
+
 elif Layout == 2:
     command_1 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 5 --fresh 3'
     command_2 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 6 --fresh 3'
@@ -132,7 +136,7 @@ def pin_extensions():
 def install_extensions(extension_name):
     #on chrome://extensions/
 
-    for i in range(1,4):
+    for i in range(1,5):
         try:
             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/dev_off.png", region=(1700, 95, 300, 300), confidence=0.9)
             pyautogui.click(x, y)
@@ -723,6 +727,7 @@ if fresh_vms:
         elif i == 2: command = command_2
         elif i == 3: command = command_3
         elif i == 4: command = command_4
+        elif i == 5: command = command_5
 
         sb1.open_new_window()
         create_devbox(sb1)
@@ -807,6 +812,7 @@ while True:
                 elif i == 2: command = command_2
                 elif i == 3: command = command_3
                 elif i == 4: command = command_4
+                elif i == 5: command = command_5
 
                 create_devbox(sb1)
                 deploy_docker(command, sb1)
@@ -837,6 +843,7 @@ while True:
                 elif i == 2: command = command_2
                 elif i == 3: command = command_3
                 elif i == 4: command = command_4
+                elif i == 5: command = command_5
                 query = {"type": "main"}
                 doc = collection.find_one(query)
                 update = {"$set": {"request": f'Resetting DEV{i}'}}
@@ -850,7 +857,7 @@ while True:
                 result = collection.update_one(query, update)  
             time.sleep(35)
 
-        if len(urls) == 4:
+        if len(urls) == 5:
             devbox_string = "<br>\n".join([url.replace('https://codesandbox.io/p/', '') for url in urls])
             query = {"type": "main"}
             sample_document = {
@@ -909,7 +916,7 @@ while True:
         urls.append(page_url)
             
     #after each Refresh
-    if len(urls) == 4:
+    if len(urls) == 5:
         collection = db[CSB_Script]
         result = collection.delete_many({})
         print(f"Deleted {result.deleted_count} documents.")

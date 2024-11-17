@@ -95,16 +95,16 @@ elif farm_id == 2:
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
-    server_name1 = 'moldova'
+    server_name1 = 'portugal'
     CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-    earnpp_email = 'joeziega@gmail.com'
-    earnpp_pass = 'Uwuinsta@2005'
-    feyorra_email = 'joeziega@gmail.com'
-    feyorra_pass = 'Uwuinsta@2005'
-    claimc_email = 'joeziega@gmail.com'
-    claimc_pass = 'Uwuinsta@2005'
-    bitmoon_email = 'joeziega'
-    bitmoon_pass = 'p~Q18oQjmp}nv6g'
+    earnpp_email = 'merlelcn@gmail.com'
+    earnpp_pass = 'I2Ne7C329jJt'
+    feyorra_email = 'merlelcn@gmail.com'
+    feyorra_pass = 'I2Ne7C329jJt'
+    claimc_email = 'merlelcn@gmail.com'
+    claimc_pass = 'I2Ne7C329jJt'
+    bitmoon_email = 'merlelcn'
+    bitmoon_pass = 'I2Ne7C329jJt'
 
 
 elif farm_id == 3:

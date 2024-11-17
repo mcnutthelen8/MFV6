@@ -808,7 +808,8 @@ def ipfixer():
 
     while True:
         query = {"type": "main"}
-        pyautogui.press('j')
+        pyautogui.moveTo(100, 200)
+        pyautogui.moveTo(200, 400)
         doc = collection.find_one(query)
         request = doc["request"]
         if request == 'ipfixer':
@@ -986,7 +987,8 @@ def cloudflare(sb, login = True):
                 if x and y:
                     sb.disconnect() 
                     for i in range(1, 300):
-                        #pyautogui.press('j')
+                        #pyautogui.moveTo(100, 200)
+
                         if 'Login' in page_title or 'Just' in page_title or 'Faucetpay' in page_title or 'Earnbitmoon' in page_title:
                             try:
                                 time.sleep(1)
@@ -1298,7 +1300,8 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
             else:
                 for i in range(1, 10):
                     time.sleep(1)
-                    #pyautogui.press('j')
+                    #pyautogui.moveTo(100, 200)
+
                     sb1.execute_script("window.scrollTo(0, 1000);")
                     cloudflare(driver, True)
                     try:
@@ -1377,7 +1380,8 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                 else:
                     for i in range(1, 10):
                         time.sleep(1)
-                        #pyautogui.press('j')
+                        #pyautogui.moveTo(100, 200)
+                        #pyautogui.moveTo(200, 400)
                         sb1.execute_script("window.scrollTo(0, 1000);")
                         
                         cloudflare(driver, True)
@@ -1450,7 +1454,8 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
     ready = False
     while not ready:
         time.sleep(1)
-        pyautogui.press('j')
+        pyautogui.moveTo(100, 200)
+        pyautogui.moveTo(200, 400)
         all_windows = driver.window_handles
         for window in all_windows:
             if window not in window_list:
@@ -2034,7 +2039,8 @@ def withdraw_faucet(driver, sitekey):
                 sb1.switch_to.window(window)
                 sb1.close()  # Close the tab
         sb1.switch_to.window(current_window)
-        pyautogui.press('j')
+        pyautogui.moveTo(100, 200)
+        pyautogui.moveTo(200, 400)
 
         if sitekey == 1:
             print('Strting PePe withdraw')
@@ -2239,7 +2245,8 @@ def open_faucets():
     global sb1
     while True:
         try:
-            pyautogui.press('j')
+            pyautogui.moveTo(100, 200)
+            pyautogui.moveTo(200, 400)
             current_window = sb1.current_window_handle
             all_windows = sb1.window_handles
             for window in all_windows:
@@ -2384,7 +2391,8 @@ print('Starting Loop')
 
 while True:
     try:
-        pyautogui.press('j')
+        pyautogui.moveTo(100, 200)
+        pyautogui.moveTo(200, 400)
         mainscript = control_panel()
         print('control_panel', mainscript)
         if mainscript == 1:

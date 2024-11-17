@@ -51,7 +51,7 @@ facebook_cookies = '0'
 
 
 
-CSB1_farms = [1, 2, 3, 4]
+CSB1_farms = [1, 2, 3, 4, 5]
 
 
 
@@ -74,7 +74,7 @@ if farm_id == 1:
     yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     server_name1 = 'thailand'
-    CSB1_farms = [1, 2, 3, 4]
+    CSB1_farms = [1, 2, 3, 4, 5]
 
     earnpp_email = 'khabibmakanzie@gmail.com'
     earnpp_pass = 'CQ2pNwi3zsFgat@'
@@ -91,7 +91,7 @@ elif farm_id == 2:
     yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
     server_name1 = 'estonia'
-    CSB1_farms = [1, 2, 3, 4]
+    CSB1_farms = [1, 2, 3, 4, 5]
 
     earnpp_email = 'mcnutthelen8@gmail.com'
     earnpp_pass = 'Uwuinsta@2005'
@@ -109,7 +109,7 @@ elif farm_id == 3:
     yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
     server_name1 = 'egypt'
-    CSB1_farms = [1, 2, 3, 4]
+    CSB1_farms = [1, 2, 3, 4, 5]
 
     earnpp_email = 'yvonne12463@gmail.com'
     earnpp_pass = 'Uwuinsta@2005'
@@ -127,7 +127,7 @@ elif farm_id == 4:
     yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
     server_name1 = 'hungary'
-    CSB1_farms = [1, 2, 3, 4]
+    CSB1_farms = [1, 2, 3, 4, 5]
     earnpp_email = 'ddilakshi232@gmail.com'
     earnpp_pass = 'Uwuinsta@2005'
     feyorra_email = 'ddilakshi232@gmail.com'
@@ -137,6 +137,21 @@ elif farm_id == 4:
     bitmoon_email = 'rondolftapatio'
     bitmoon_pass = 'p~Q18oQjmp}nv6g'
 
+elif farm_id == 5:
+    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
+    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
+    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
+    fb_pass = 'ashen1997'
+    server_name1 = 'vietnam'
+    CSB1_farms = [1, 2, 3, 4, 5]
+    earnpp_email = 'grandkolla990@gmail.com'
+    earnpp_pass = 'Uwuinsta@2005'
+    feyorra_email = 'grandkolla990@gmail.com'
+    feyorra_pass = 'Uwuinsta@2005'
+    claimc_email = 'grandkolla990@gmail.com'
+    claimc_pass = 'Uwuinsta@2005'
+    bitmoon_email = 'rondolftapatio'
+    bitmoon_pass = 'p~Q18oQjmp}nv6g'
 else:
     while True:
         print('SOmething Wrong Did u use --farm')
@@ -156,7 +171,7 @@ chrome_user_data_dir = '/root/.config/google-chrome/'
 
 bitmoon = False
 earnpp = True
-claimcoin = True
+claimcoin = False
 feyorra = True
 feyorratop = False
 baymack = False
@@ -1022,7 +1037,6 @@ def save_antibot_link_images(driver):
                 with open(output_filename, "wb") as image_file:
                     image_file.write(image_data)
                 print(f"Image saved as {output_filename}")
-                return True
             else:
                 print(f"Image {i + 1} src does not contain base64 data")
         return True
@@ -1088,36 +1102,38 @@ def get_correct_order(quiz, answers):
         return []
 
 def solve_antibotlinks(driver):
-    g1 = save_antibot_image(driver, output_filename='captcha.png')
+    g1 = save_antibot_image(driver, output_filename='captcha.jpg')
     g2 = save_antibot_link_images(driver)
     if g1 and g2:
         antibot_link_elements = driver.find_elements(".antibotlinks a img")
-        quiz = get_ocr('captcha.png')
-        a1 = get_ocr('answer1.png')
-        a2 = get_ocr('answer2.png')
-        a3 = get_ocr('answer3.png')
-        #-----------------------------------------
-        quiz = words_or_roman_to_numbers(quiz)
-        a1 = words_or_roman_to_numbers(a1)
-        a2 = words_or_roman_to_numbers(a2)
-        a3 = words_or_roman_to_numbers(a3)
-        #-----------------------------------------
-        if any(char.isdigit() for char in quiz):
-            answer = get_correct_order(quiz, [a1, a2, a3])
-            print('Correct Order is', answer)
-            for i in answer:
-                if '1' in i:
-                    antibot_link_elements[0].click()
-                elif '2' in i:
-                    antibot_link_elements[1].click()
-                elif '3' in i:
-                    antibot_link_elements[2].click()
+        quiz = get_ocr('captcha.jpg')
+        a1 = get_ocr('answer1.jpg')
+        a2 = get_ocr('answer2.jpg')
+        a3 = get_ocr('answer3.jpg')
+        if quiz and a1 and a2 and a3:
+            #-----------------------------------------
+            quiz = words_or_roman_to_numbers(quiz)
+            a1 = words_or_roman_to_numbers(a1)
+            a2 = words_or_roman_to_numbers(a2)
+            a3 = words_or_roman_to_numbers(a3)
+            #-----------------------------------------
+            if any(char.isdigit() for char in quiz):
+                answer = get_correct_order(quiz, [a1, a2, a3])
+                print('Correct Order is', answer)
+                for i in answer:
+                    if '1' in i:
+                        antibot_link_elements[0].click()
+                    elif '2' in i:
+                        antibot_link_elements[1].click()
+                    elif '3' in i:
+                        antibot_link_elements[2].click()
 
-            return True
+                return True
+            else:
+                print('There are no Numbers in', quiz)
         else:
-            print('There are no Numbers in', quiz)
-
-        
+            print(f'quiz:{quiz} | a1:{a1}| a2:{a2}| a3:{a3}|')
+                    
 
         
 
@@ -2481,7 +2497,7 @@ while True:
                             sb1.uc_open('https://feyorra.site/member/faucet')
 
                         refresh_count +=1
-                    elif claimc_coins == claimc_coins_pre and cc_faucet:
+                    elif claimc_coins == claimc_coins_pre and cc_faucet and claimcoin:
                         start_time = time.time()
                         if refresh_count >= 30:
                             response_messege(f'claimc_coins same {claimc_coins}| count:{refresh_count} | {seconds_only}')
@@ -2501,7 +2517,7 @@ while True:
                 debug_messages(f'MangoDB Seconds:{seconds_only3}')
                 if seconds_only3 > 130:
                     print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}| ')
-                    if earnpp_coins and feyorra_coins and claimc_coins: #and bitmoon_coins:
+                    if earnpp_coins and feyorra_coins: #and claimc_coins: #and bitmoon_coins:
                         start_time3 = time.time()
                         insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins)
                     else:

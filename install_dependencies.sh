@@ -10,7 +10,7 @@ sudo apt-get --fix-broken install -y
 
 # Install Python core dependencies
 echo "Installing Python core dependencies..."
-sudo apt-get install -y fonts-liberation libgbm1 libnspr4 libnss3 libu2f-udev libvulkan1 xdg-utils
+sudo apt-get install -y fonts-liberation libgbm1 libnspr4 libnss3 libu2f-udev libvulkan1 xdg-utils xprintidle
 sudo apt-get --fix-broken install -y
 # Install Google Chrome
 echo "Installing Google Chrome..."
@@ -46,7 +46,9 @@ sudo apt-get --fix-broken install -y
 
 # Install Python core dependencies
 echo "Installing Python core dependencies..."
-sudo apt-get install -y fonts-liberation libgbm1 libnspr4 libnss3 libu2f-udev libvulkan1 xdg-utils
+sudo apt-get install -y fonts-liberation libgbm1 libnspr4 libnss3 libu2f-udev libvulkan1 xdg-utils xprintidle
+
+
 sudo apt-get --fix-broken install -y
 # Install Google Chrome
 echo "Installing Google Chrome..."

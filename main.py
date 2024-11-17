@@ -156,7 +156,7 @@ chrome_user_data_dir = '/root/.config/google-chrome/'
 
 bitmoon = False
 earnpp = True
-claimcoin = False
+claimcoin = True
 feyorra = True
 feyorratop = False
 baymack = False
@@ -175,6 +175,7 @@ blacklistedIP = dochh["blacklistedIP"]
 print(blacklistedIP)
  
 
+ocr = PaddleOCR(use_angle_cls=True, lang='en',  drop_score=0)
 
 
 
@@ -220,7 +221,7 @@ def insert_data(ip, amount1, amount2, amount3):
         print("No document was updated.")
     add_messages('pepelom', {now: amount1})
     add_messages('feyorramack', {now: amount2})
-    #add_messages('claimcoins', {now: amount3})
+    add_messages('claimcoins', {now: amount3})
 
     return
 
@@ -1028,13 +1029,99 @@ def save_antibot_link_images(driver):
     except Exception as e:
         print(f"An error occurred: {e}")
 
+def get_ocr(image):
+    result = ocr.ocr(image)
+    result = ''.join([item[1][0] for item in result[0]])
+    result = ''.join(filter(str.isdigit, str(result)))
+    print(result)
+    if result:
+        return result
+    else:
+        print(f"Error: Results Empty with get_ocr{image}.")
+        return None
+def words_or_roman_to_numbers(input_string):
+    # Dictionary for word to number conversion
+    word_to_num = {
+        "one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
+        "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10,
+        "eleven": 11, "twelve": 12, "thirteen": 13, "fourteen": 14, "fifteen": 15,
+        "sixteen": 16, "seventeen": 17, "eighteen": 18, "nineteen": 19, "twenty": 20
+    }
+
+    # Dictionary for Roman numeral to number conversion
+    roman_to_num = {
+        "i": 1, "ii": 2, "iii": 3, "iv": 4, "v": 5,
+        "vi": 6, "vii": 7, "viii": 8, "ix": 9, "x": 10,
+        "xi": 11, "xii": 12, "xiii": 13, "xiv": 14, "xv": 15,
+        "xvi": 16, "xvii": 17, "xviii": 18, "xix": 19, "xx": 20
+    }
+
+    # Normalize input to lowercase and split by commas
+    words = input_string.lower().replace(" ", "").split(',')
+
+    # Convert words or Roman numerals to numbers
+    result = []
+    for word in words:
+        if word in word_to_num:
+            result.append(str(word_to_num[word]))
+        elif word in roman_to_num:
+            result.append(str(roman_to_num[word]))
+        else:
+            result.append("?")  # Placeholder for unrecognized values
+
+    # Join the converted numbers into a string
+    return ','.join(result)
+
+
+# Function to find the correct order to match quiz and answer lists
+def get_correct_order(quiz, answers):
+    try:
+        # Create a dictionary to map answers to their indices
+        answer_index_map = {value: idx + 1 for idx, value in enumerate(answers)}
+
+        # Create a list for the correct order
+        correct_order = [answer_index_map[q] for q in quiz]
+        
+        return correct_order
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return []
 
 def solve_antibotlinks(driver):
     g1 = save_antibot_image(driver, output_filename='captcha.png')
     g2 = save_antibot_link_images(driver)
     if g1 and g2:
-        print('Nice')
-        time.sleep(900000)
+        antibot_link_elements = driver.find_elements(".antibotlinks a img")
+        quiz = get_ocr('captcha.png')
+        a1 = get_ocr('answer1.png')
+        a2 = get_ocr('answer2.png')
+        a3 = get_ocr('answer3.png')
+        #-----------------------------------------
+        quiz = words_or_roman_to_numbers(quiz)
+        a1 = words_or_roman_to_numbers(a1)
+        a2 = words_or_roman_to_numbers(a2)
+        a3 = words_or_roman_to_numbers(a3)
+        #-----------------------------------------
+        if any(char.isdigit() for char in quiz):
+            answer = get_correct_order(quiz, [a1, a2, a3])
+            print('Correct Order is', answer)
+            for i in answer:
+                if '1' in i:
+                    antibot_link_elements[0].click()
+                elif '2' in i:
+                    antibot_link_elements[1].click()
+                elif '3' in i:
+                    antibot_link_elements[2].click()
+
+            return True
+        else:
+            print('There are no Numbers in', quiz)
+
+        
+
+        
+
+
 
 def find_and_click_collect_button(sb1):
     # Selector for the button
@@ -2414,7 +2501,7 @@ while True:
                 debug_messages(f'MangoDB Seconds:{seconds_only3}')
                 if seconds_only3 > 130:
                     print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}| ')
-                    if earnpp_coins and feyorra_coins: #and claimc_coins: #and bitmoon_coins:
+                    if earnpp_coins and feyorra_coins and claimc_coins: #and bitmoon_coins:
                         start_time3 = time.time()
                         insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins)
                     else:

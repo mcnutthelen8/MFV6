@@ -236,7 +236,7 @@ def insert_data(ip, amount1, amount2, amount3):
         print("No document was updated.")
     add_messages('pepelom', {now: amount1})
     add_messages('feyorramack', {now: amount2})
-    add_messages('claimcoins', {now: amount3})
+    #add_messages('claimcoins', {now: amount3})
 
     return
 

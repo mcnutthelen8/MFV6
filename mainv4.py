@@ -1,117 +1,112 @@
-import os
+from seleniumbase import Driver
 import subprocess
-import shutil
+import pyautogui
+import time
+import clipboard
+import re
+from selenium.webdriver.common.by import By
+import numpy as np
+from pymongo import MongoClient
+import time
+from datetime import datetime
+import pytz
+import datetime
+import time
+import numpy as np
 
-CRD_SSH_Code = input("Google CRD SSH Code :")
-username = "user" #@param {type:"string"}
-password = "root" #@param {type:"string"}
-os.system(f"useradd -m {username}")
-os.system(f"adduser {username} sudo")
-os.system(f"echo '{username}:{password}' | sudo chpasswd")
-os.system("sed -i 's/\/bin\/sh/\/bin\/bash/g' /etc/passwd")
 
-Pin = 123456 #@param {type: "integer"}
-Autostart = True #@param {type: "boolean"}
+mongo_uri = "mongodb+srv://redgta36:J6n7Hoz2ribHmMmx@moneyfarm.wwzcs.mongodb.net/?retryWrites=true&w=majority&appName=moneyfarm"
+client = MongoClient(mongo_uri)
+db = client['CrashFarmV1'] 
+collection = db['Results']
 
-class CRDSetup:
-    def __init__(self, user):
-        os.system("apt update")
-        self.installCRD()
-        self.installDesktopEnvironment()
-        #self.changewall()
-        #self.installGoogleChrome()
-        #self.installTelegram()
-        #self.installQbit()
-        self.finish(user)
+def get_current_window_id():
+    result = subprocess.run(['xdotool', 'getactivewindow'], stdout=subprocess.PIPE)
+    window_id = result.stdout.decode('utf-8').strip()
+    print(f"Current Window ID: {window_id}")
+    return window_id
 
-    @staticmethod
-    def installCRD():
-        subprocess.run(['wget', 'https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb'])
-        subprocess.run(['dpkg', '--install', 'chrome-remote-desktop_current_amd64.deb'])
-        subprocess.run(['apt', 'install', '--assume-yes', '--fix-broken'])
-        print("Chrome Remoted Desktop Installed !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+def activate_window_by_id(window_id):
+    print(f"Activate Window ID: {window_id}")
+    subprocess.run(['xdotool', 'windowactivate', window_id])
 
-    @staticmethod
-    def installDesktopEnvironment():
-        os.system("export DEBIAN_FRONTEND=noninteractive")
-        os.system("apt install --assume-yes xfce4 desktop-base xfce4-terminal")
-        os.system("bash -c 'echo \"exec /etc/X11/Xsession /usr/bin/xfce4-session\" > /etc/chrome-remote-desktop-session'")
-        os.system("apt remove --assume-yes gnome-terminal")
-        os.system("apt install --assume-yes xscreensaver")
-        os.system("sudo service lightdm stop")
-        os.system("sudo apt-get install dbus-x11 -y")
-        os.system("service dbus start")
-        print("Installed XFCE4 Desktop Environment !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+def copy_determine():
+    pyautogui.keyDown('ctrl')
+    pyautogui.keyDown('left')
+    pyautogui.press('a')
+    pyautogui.keyUp('left')
+    pyautogui.keyUp('ctrl')
+    pyautogui.keyDown('ctrl')
+    pyautogui.keyDown('left')
+    pyautogui.press('c')
+    pyautogui.keyUp('left')
+    pyautogui.keyUp('ctrl')
+    clip = clipboard.paste()
+    return clip
 
-    @staticmethod
-    def installGoogleChrome():
-        subprocess.run(["wget", "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"])
-        subprocess.run(["dpkg", "--install", "google-chrome-stable_current_amd64.deb"])
-        subprocess.run(['apt', 'install', '--assume-yes', '--fix-broken'])
-        print("Google Chrome Installed !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+def extract_number(input_text):
+
+    input_text = input_text.strip()
+    input_text = input_text.strip()
+    bet_accepted_match = re.search(r'Bet accepted!\s+(\d+(\.\d+)?x?)', input_text, re.DOTALL)
+    if bet_accepted_match:
+        return bet_accepted_match.group(1)
     
-    @staticmethod
-    def installTelegram():
-        subprocess.run(["apt", "install", "--assume-yes", "telegram-desktop"])
-        print("Telegram Installed !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    match_with_x = re.search(r'\b\d+(\.\d+)?x\b', input_text)
+    if match_with_x:
+        return match_with_x.group()
 
-    @staticmethod
-    def changewall():
-        os.system(f"sudo curl -s -L -o /etc/alternatives/desktop-theme/wallpaper/contents/images/1280x1024.svg https://gitlab.com/chamod12/gcrd_deb_codesandbox.io_rdp/-/raw/main/walls/1280x1024.svg")
-        os.system(f"sudo curl -s -L -o /etc/alternatives/desktop-theme/wallpaper/contents/images/1280x800.svg https://gitlab.com/chamod12/gcrd_deb_codesandbox.io_rdp/-/raw/main/walls/1280x800.svg")
-        os.system(f"sudo curl -s -L -o /etc/alternatives/desktop-theme/wallpaper/contents/images/1600x1200.svg https://gitlab.com/chamod12/gcrd_deb_codesandbox.io_rdp/-/raw/main/walls/1600x1200.svg")
-        os.system(f"sudo curl -s -L -o /etc/alternatives/desktop-theme/wallpaper/contents/images/1920x1080.svg https://gitlab.com/chamod12/gcrd_deb_codesandbox.io_rdp/-/raw/main/walls/1920x1080.svg")
-        os.system(f"sudo curl -s -L -o /etc/alternatives/desktop-theme/wallpaper/contents/images/1920x1200.svg https://gitlab.com/chamod12/gcrd_deb_codesandbox.io_rdp/-/raw/main/walls/1920x1200.svg")
-        os.system(f"sudo curl -s -L -o /etc/alternatives/desktop-theme/wallpaper/contents/images/2560x1440.svg https://gitlab.com/chamod12/gcrd_deb_codesandbox.io_rdp/-/raw/main/walls/2560x1440.svg")
-        os.system(f"sudo curl -s -L -o /etc/alternatives/desktop-theme/wallpaper/contents/images/2560x1600.svg https://gitlab.com/chamod12/gcrd_deb_codesandbox.io_rdp/-/raw/main/walls/2560x1600.svg")
-        os.system(f"sudo curl -s -L -o /etc/alternatives/desktop-theme/wallpaper/contents/images/3200x1800.svg https://gitlab.com/chamod12/gcrd_deb_codesandbox.io_rdp/-/raw/main/walls/3200x1800.svg")
-        os.system(f"sudo curl -s -L -o /etc/alternatives/desktop-theme/wallpaper/contents/images/3200x2000.svg https://gitlab.com/chamod12/gcrd_deb_codesandbox.io_rdp/-/raw/main/walls/3200x2000.svg")
-        os.system(f"sudo curl -s -L -o /etc/alternatives/desktop-theme/wallpaper/contents/images/3840x2160.svg https://gitlab.com/chamod12/gcrd_deb_codesandbox.io_rdp/-/raw/main/walls/3840x2160.svg")
-        os.system(f"sudo curl -s -L -o /etc/alternatives/desktop-theme/wallpaper/contents/images/5120x2880.svg https://gitlab.com/chamod12/gcrd_deb_codesandbox.io_rdp/-/raw/main/walls/5120x2880.svg")
-        print("Wallpaper Changed !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-   
-    @staticmethod
-    def installQbit():
-        subprocess.run(["sudo", "apt", "update"])
-        subprocess.run(["sudo", "apt", "install", "-y", "qbittorrent"])
-        print("Qbittorrent Installed !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    return None
+def add_messages(type_value, new_messages):
+    try:
+        query = {"type": type_value}
+        existing_doc = collection.find_one(query)
+        print("Existing document before update")
+        new_message = new_messages
+        messages = existing_doc['messages']
+        messages.update(new_message)
+        update = {"$set": {"messages": messages}}
+        result = collection.update_one(query, update)
+        print("Updated document")
+        if result.matched_count > 0:
+            print(f"Added new messages to existing document. Updated {result.modified_count} document(s).")
+        else:
+            print("No document found with the specified type.")
+    except Exception as e:
+        print(e)
 
-    @staticmethod
-    def finish(user):
-        if Autostart:
-            os.makedirs(f"/home/{user}/.config/autostart", exist_ok=True)
-            link = "www.youtube.com/@The_Disala"
-            colab_autostart = """[Desktop Entry]
-            print("Finalizing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 
-Type=Application
-Name=Colab
-Exec=sh -c "sensible-browser {}"
-Icon=
-Comment=Open a predefined notebook at session signin.
-X-GNOME-Autostart-enabled=true""".format(link)
-            with open(f"/home/{user}/.config/autostart/colab.desktop", "w") as f:
-                f.write(colab_autostart)
-            os.system(f"chmod +x /home/{user}/.config/autostart/colab.desktop")
-            os.system(f"chown {user}:{user} /home/{user}/.config")
-            
-        os.system(f"adduser {user} chrome-remote-desktop")
-        command = f"{CRD_SSH_Code} --pin={Pin}"
-        os.system(f"su - {user} -c '{command}'")
-        os.system("service chrome-remote-desktop start")
-        
-        print("Log in PIN : 123456") 
-        print("User Name : user") 
-        print("User Pass : root") 
-        while True:
-            pass
 
-try:
-    if CRD_SSH_Code == "":
-        print("Please enter authcode from the given link")
-    elif len(str(Pin)) < 6:
-        print("Enter a pin more or equal to 6 digits")
+sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True)
+sb1.maximize_window()
+sb1.open("https://1xbet.com/en/allgamesentrance/crash")
+xbet_window = get_current_window_id()
+print(sb1.get_title())
+time.sleep(10)
+
+ongoing = 0
+upload = False
+while True:
+    activate_window_by_id(xbet_window)
+    clip = copy_determine()
+    value = extract_number(clip)
+    if value:
+        if 'x'in value:
+            upload = False
+            ongoing = value
+            print(f'Ongoing:{value}', end="\r")
+        else:
+            if upload:
+                print(f'Starting:{value}',end="\r")
+            else:
+                numeric_value = float(value.rstrip('x'))
+                sri_lanka_tz = pytz.timezone('Asia/Colombo')
+                utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
+                sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
+                now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
+                add_messages('results', {now: numeric_value})
+
+                upload = True
     else:
-        CRDSetup(username)
-except NameError as e:
-    print("'username' variable not found, Create a user first")
+        print('There are no VAluesERR', value)
+

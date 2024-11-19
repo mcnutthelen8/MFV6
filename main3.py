@@ -144,14 +144,14 @@ elif farm_id == 5:
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
-    server_name1 = 'qatar' #'chile'
+    server_name1 = 'malaysia' #'chile'
     CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-    earnpp_email = 'berendkalpana@gmail.com'
-    earnpp_pass = 'OYzKhFdLO5oEmwI2'
-    feyorra_email = 'berendkalpana@gmail.com'
-    feyorra_pass = 'OYzKhFdLO5oEmwI2'
-    claimc_email = 'berendkalpana@gmail.com'
-    claimc_pass = 'OYzKhFdLO5oEmwI2'
+    earnpp_email = 'howardrahul838@gmail.com'
+    earnpp_pass = 'howardrahul838'
+    feyorra_email = 'howardrahul838@gmail.com'
+    feyorra_pass = 'howardrahul838'
+    claimc_email = 'howardrahul838@gmail.com'
+    claimc_pass = 'howardrahul838'
     bitmoon_email = 'joeziega'
     bitmoon_pass = 'p~Q18oQjmp}nv6g'
 else:

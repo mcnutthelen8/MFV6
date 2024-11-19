@@ -88,10 +88,12 @@ if Layout == 1:
 
 
 elif Layout == 2:
-    command_1 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 5 --fresh 3'
-    command_2 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 6 --fresh 3'
-    command_3 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 7 --fresh 3'
-    command_4 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 8 --fresh 3'
+    command_1 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main3.py --farm 1 --fresh 3'
+    command_2 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main3.py --farm 2 --fresh 3'
+    command_3 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main3.py --farm 3 --fresh 3'
+    command_4 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main3.py --farm 4 --fresh 3'
+    command_5 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main3.py --farm 5 --fresh 3'
+
 elif Layout == 3:
     command_1 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 9 --fresh 3'
     command_2 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 10 --fresh 3'
@@ -99,7 +101,7 @@ elif Layout == 3:
     command_4 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 12 --fresh 3'
 
 chrome_binary_path = '/opt/google/chrome/google-chrome'
-chrome_user_data_dir = '/root/.config/google-chrome/'
+chrome_user_data_dir = '/root/.config/google-chrome/v632'
 
 mongo_uri = "mongodb+srv://redgta36:J6n7Hoz2ribHmMmx@moneyfarm.wwzcs.mongodb.net/?retryWrites=true&w=majority&appName=moneyfarm"
 client = MongoClient(mongo_uri)
@@ -286,38 +288,42 @@ def create_devbox(driver):
     try:
         title = driver.get_title()
         print(f'Titile: {title},create_devbox wait for Recent')
-        if 'Recent - CodeSandbox' in title:
+        time.sleep(5)
+        if title in title:
             print(f'Vm Has Loaded:{title}')
-            continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'button.sc-bdnylx')
-            for button in continue_buttons:
-                if 'Create' in button.text:
-                    print(f"found: {button.text}, clicking...")
-                    button.click()
-                    time.sleep(3)
-                    python_buttons = driver.find_elements(By.CSS_SELECTOR, 'button[title="Python"]')
-                    for button in python_buttons:
-                        print(f"Found button with title: {button.get_attribute('title')}, clicking...")
+
+            for i in range(1, 20):
+                time.sleep(2)
+                continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'button.sc-bdnylx')
+                for button in continue_buttons:
+                    if 'Create' in button.text:
+                        print(f"found: {button.text}, clicking...")
                         button.click()
-                        time.sleep(5)
-                        python_buttons = driver.find_elements(By.CSS_SELECTOR, 'button[type="submit"]')
+                        time.sleep(3)
+                        python_buttons = driver.find_elements(By.CSS_SELECTOR, 'button[title="Python"]')
                         for button in python_buttons:
-                            print(f"Found button with title: {button.get_attribute('submit')}, clicking...")
-                            button.click() 
-                            while True:
-                                time.sleep(2)
-            
-                                title = driver.get_title()
-                                print(f'Titile: {title}, create_devbox D')
-                                if 'README.md - workspace - CodeSandbox' in title:
-                                    print(f'Vm Has Loaded:{title}')
-                                    return True               
-                                if 'New Devtool - workspace - CodeSandbox' in title:
-                                    print(f'Vm Has Loaded:{title}')
-                                    return True  
-                                if 'workspace - CodeSandbox' in title:
-                                    print(f'Vm Has Loaded:{title}')
-                                    return True  
-            return False
+                            print(f"Found button with title: {button.get_attribute('title')}, clicking...")
+                            button.click()
+                            time.sleep(5)
+                            python_buttons = driver.find_elements(By.CSS_SELECTOR, 'button[type="submit"]')
+                            for button in python_buttons:
+                                print(f"Found button with title: {button.get_attribute('submit')}, clicking...")
+                                button.click() 
+                                while True:
+                                    time.sleep(2)
+                
+                                    title = driver.get_title()
+                                    print(f'Titile: {title}, create_devbox D')
+                                    if 'README.md - workspace - CodeSandbox' in title:
+                                        print(f'Vm Has Loaded:{title}')
+                                        return True               
+                                    if 'New Devtool - workspace - CodeSandbox' in title:
+                                        print(f'Vm Has Loaded:{title}')
+                                        return True  
+                                    if 'workspace - CodeSandbox' in title:
+                                        print(f'Vm Has Loaded:{title}')
+                                        return True  
+            print('Failed bruh...')
     except Exception as e:
         print(f'Create DevBox:{e}')
         return False
@@ -338,7 +344,7 @@ def deploy_docker(farmurl, driver):
             print(f'Vm Has Loaded:{title}')
             currecto = True  
         if 'Recent - CodeSandbox' in title:
-            print(f'Vm Has Loaded:{title}')
+            print(f'going again create:{title} ')
             create_devbox(driver)
 
         if currecto:
@@ -799,6 +805,7 @@ while True:
             time.sleep(1)
             pyautogui.hotkey('ctrl', 'c')
             pyautogui.keyUp('ctrl')
+            pyautogui.click(1220 ,208)
             page_url = clipboard.paste()
                     #page_url = sb1.get_current_url()
             urls.append(page_url)
@@ -855,8 +862,30 @@ while True:
                 doc = collection.find_one(query)
                 update = {"$set": {"request": 'None'}}
                 result = collection.update_one(query, update)  
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/505-screen.png", region=(1120, 223, 1000, 1000), confidence=0.9)
+                if x and y:
+                    command = command_1
+                    if   i == 1: command = command_1
+                    elif i == 2: command = command_2
+                    elif i == 3: command = command_3
+                    elif i == 4: command = command_4
+                    elif i == 5: command = command_5
+                    query = {"type": "main"}
+                    doc = collection.find_one(query)
+                    update = {"$set": {"request": f'Resetting DEV{i}'}}
+                    result = collection.update_one(query, update) 
+                    create_devbox(sb1)
+                    deploy_docker(command , sb1)
+                    pyautogui.click(942, 65)
+                    query = {"type": "main"}
+                    doc = collection.find_one(query)
+                    update = {"$set": {"request": 'None'}}
+                    result = collection.update_one(query, update)  
+            except Exception as e:
+                print(f'ERR{e}')
             time.sleep(35)
-
+            
         if len(urls) == 5:
             devbox_string = "<br>\n".join([url.replace('https://codesandbox.io/p/', '') for url in urls])
             query = {"type": "main"}

@@ -27,7 +27,7 @@ def get_current_window_id():
     return window_id
 
 def activate_window_by_id(window_id):
-    print(f"Activate Window ID: {window_id}")
+    #print(f"Activate Window ID: {window_id}")
     subprocess.run(['xdotool', 'windowactivate', window_id])
 
 def copy_determine():
@@ -84,8 +84,8 @@ xbet_window = get_current_window_id()
 print(sb1.get_title())
 time.sleep(10)
 
-ongoing = 0
-upload = False
+ongoing = '1.00x'
+upload = True
 while True:
     activate_window_by_id(xbet_window)
     clip = copy_determine()
@@ -94,16 +94,17 @@ while True:
         if 'x'in value:
             upload = False
             ongoing = value
-            print(f'Ongoing:{value}', end="\r")
+            print(f'Ongoing:{value}')
         else:
             if upload:
-                print(f'Starting:{value}',end="\r")
+                print(f'Starting:{value}')
             else:
-                numeric_value = float(value.rstrip('x'))
+                numeric_value = float(ongoing.rstrip('x'))
                 sri_lanka_tz = pytz.timezone('Asia/Colombo')
                 utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
                 sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
                 now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
+                print(now, numeric_value)
                 add_messages('results', {now: numeric_value})
 
                 upload = True

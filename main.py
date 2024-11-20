@@ -2181,6 +2181,8 @@ bitmoon_coins = None
 earnpp_coins_pre = None
 feyorra_coins_pre = None
 claimc_coins_pre = None
+earnpp_limit_reached = None
+feyorra_limit_reached = None
 if run_sb1:
     sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path, disable_gpu=True, page_load_strategy='none' )
     sb1.maximize_window()
@@ -2346,6 +2348,10 @@ def open_faucets():
                     global reset_count 
                     global reset_count_isacc 
                     global previous_reset_count
+                    global earnpp_limit_reached 
+                    global feyorra_limit_reached 
+                    earnpp_limit_reached = None
+                    feyorra_limit_reached = None
                     
                     reset_count = 0
                     reset_count_isacc = 0
@@ -2388,6 +2394,7 @@ earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open
 start_time4 = 0
 time.sleep(2)
 print('Starting Loop')
+
 
 while True:
     try:
@@ -2441,7 +2448,7 @@ while True:
                             debug_messages(f'Solving Icon Captcha on EarnPP')
                             gg = solve_icon_captcha(sb1)
                             if gg:
-                                pass
+                                earnpp_limit_reached = None
                             else:
                                 refresh_count +=5
                             debug_messages(f'Solved Icon Captcha on EarnPP')
@@ -2475,6 +2482,7 @@ while True:
                         if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
                             debug_messages(f'EarnPP Limit Reached')
                             response_messege('EarnPP Limit Reached')
+                            earnpp_limit_reached = True
                         else:
                             debug_messages(f'ERR on EarnPP:{e}')
                             reset_count +=1
@@ -2491,7 +2499,7 @@ while True:
                             debug_messages(f'Solving Icon Captcha on Feyorra')
                             gg = solve_icon_captcha(sb1)
                             if gg:
-                                pass
+                                feyorra_limit_reached =None
                             else:
                                 refresh_count +=5
                             val = get_coins(sb1, 2)
@@ -2523,6 +2531,7 @@ while True:
                         if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
                             debug_messages(f'Feyorra Limit Reached')
                             response_messege('Feyorra Limit Reached')
+                            feyorra_limit_reached =True
                         else:
                             debug_messages(f'ERR on Feyorra:{e}')
                             reset_count +=1
@@ -2601,7 +2610,10 @@ while True:
                             sb1.uc_open('https://earn-pepe.com/member/faucet')
                             refresh_count = 0
 
-                        refresh_count +=1
+                        if earnpp_limit_reached:
+                            pass
+                        else:
+                            refresh_count +=1
                     elif feyorra_coins == feyorra_coins_pre:
                         start_time = time.time()
                         if refresh_count >= 30:
@@ -2609,8 +2621,10 @@ while True:
                             refresh_count = 0
                             sb1.switch_to.window(feyorra_window)
                             sb1.uc_open('https://feyorra.site/member/faucet')
-
-                        refresh_count +=1
+                        if feyorra_limit_reached:
+                            pass
+                        else:
+                            refresh_count +=1
                     elif claimc_coins == claimc_coins_pre and cc_faucet and claimcoin:
                         start_time = time.time()
                         if refresh_count >= 30:

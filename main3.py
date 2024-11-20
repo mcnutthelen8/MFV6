@@ -78,15 +78,15 @@ if farm_id == 1:
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
-    server_name1 = 'morocco' #'bulgaria'
+    server_name1 = 'malta' # 'morocco' #'bulgaria'
     CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-    earnpp_email = 'ernestostewe@gmail.com'
-    earnpp_pass = ' 1CQoUEVVJgpSxLo'
-    feyorra_email = 'ernestostewe@gmail.com'
-    feyorra_pass = ' 1CQoUEVVJgpSxLo'
-    claimc_email = 'ernestostewe@gmail.com'
+    earnpp_email = 'amytanisha250@gmail.com'
+    earnpp_pass = 'amytanisha250'
+    feyorra_email = 'amytanisha250@gmail.com'
+    feyorra_pass = 'amytanisha250'
+    claimc_email = 'amytanisha250@gmail.com'
     claimc_pass = 'Uwuinsta@2005'
-    bitmoon_email = ' 1CQoUEVVJgpSxLo'
+    bitmoon_email = 'amytanisha250'
     bitmoon_pass = 'p~Q18oQjmp}nv6g'
 
 
@@ -112,14 +112,14 @@ elif farm_id == 3:
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
-    server_name1 = 'belgium'
+    server_name1 = 'spain' #'belgium'
     CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-    earnpp_email = 'markeshalland@gmail.com'
-    earnpp_pass = 'Uwuinsta@2005'
-    feyorra_email = 'markeshalland@gmail.com'
-    feyorra_pass = 'Uwuinsta@2005'
-    claimc_email = 'markeshalland@gmail.com'
-    claimc_pass = 'Uwuinsta@2005'
+    earnpp_email = 'pennyscrambble@gmail.com'
+    earnpp_pass = 'pennyscrambble'
+    feyorra_email = 'pennyscrambble@gmail.com'
+    feyorra_pass = 'pennyscrambble'
+    claimc_email = 'pennyscrambble@gmail.com'
+    claimc_pass = 'pennyscrambble'
     bitmoon_email = 'joeziega'
     bitmoon_pass = 'p~Q18oQjmp}nv6g'
 

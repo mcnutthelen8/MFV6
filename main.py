@@ -789,7 +789,10 @@ def mysterium_login(driver):
             except pyautogui.ImageNotFoundException:
                 print("No mysterium_icon_empty .")
                             #return True
-        mysterium_web_login(driver)
+        elif 'Just' in title:
+            cloudflare(driver, login = False)
+        else:
+            mysterium_web_login(driver)
 
 
 def ipfixer():

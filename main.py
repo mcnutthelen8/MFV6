@@ -95,13 +95,13 @@ elif farm_id == 2:
     server_name1 = 'estonia'
     CSB1_farms = [1, 2, 3, 4, 5]
 
-    earnpp_email = 'mcnutthelen8@gmail.com'
-    earnpp_pass = 'Uwuinsta@2005'
-    feyorra_email = 'mcnutthelen8@gmail.com'
-    feyorra_pass = 'Uwuinsta@2005'
-    claimc_email = 'mcnutthelen8@gmail.com'
-    claimc_pass = 'Uwuinsta@2005'
-    bitmoon_email = 'mcnutthelen8'
+    earnpp_email = 'metroboom910@gmail.com'
+    earnpp_pass = 'metroboom910'
+    feyorra_email = 'metroboom910@gmail.com'
+    feyorra_pass = 'metroboom910'
+    claimc_email = 'metroboom910@gmail.com'
+    claimc_pass = 'metroboom910'
+    bitmoon_email = 'metroboom910'
     bitmoon_pass = 'p~Q18oQjmp}nv6g'
 
 

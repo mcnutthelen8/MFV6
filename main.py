@@ -2233,17 +2233,7 @@ if run_sb1:
         result = collection.update_one(query, update)
     
 
-# Path to your shell script
-shell_script_path = "./monitor_inactivity.sh"
-try:
-    # Run the script as a background process
-    subprocess.Popen(["bash", shell_script_path])
 
-    print("Shell script is running in the background...")
-    response_messege('Shell script is running in the background...')
-except Exception as e:
-    print(f"An error occurred: {e}")
-    response_messege(f'ERR on SH Running {e}')
 
 
 def open_faucets():

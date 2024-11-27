@@ -706,7 +706,7 @@ def mysterium_login(driver):
             except pyautogui.ImageNotFoundException:
                 print("No mysterium_icon_empty .")
                             #return True
-        elif 'Just' in title:
+        elif 'Just' in titile:
             cloudflare(driver, login = False)
         else:
             mysterium_web_login(driver)

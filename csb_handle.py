@@ -884,6 +884,28 @@ while True:
                     result = collection.update_one(query, update)  
             except Exception as e:
                 print(f'ERR{e}')
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/502.png", region=(1120, 223, 1000, 1000), confidence=0.9)
+                if x and y:
+                    command = command_1
+                    if   i == 1: command = command_1
+                    elif i == 2: command = command_2
+                    elif i == 3: command = command_3
+                    elif i == 4: command = command_4
+                    elif i == 5: command = command_5
+                    query = {"type": "main"}
+                    doc = collection.find_one(query)
+                    update = {"$set": {"request": f'Resetting DEV{i}'}}
+                    result = collection.update_one(query, update) 
+                    create_devbox(sb1)
+                    deploy_docker(command , sb1)
+                    pyautogui.click(942, 65)
+                    query = {"type": "main"}
+                    doc = collection.find_one(query)
+                    update = {"$set": {"request": 'None'}}
+                    result = collection.update_one(query, update)  
+            except Exception as e:
+                print(f'ERR{e}')
             time.sleep(35)
             
         if len(urls) == 5:

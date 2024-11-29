@@ -1975,8 +1975,8 @@ def withdraw_faucet(driver, sitekey):
                 elif 'Faucetpay Transfer' in title:
                     print(title, 'FaucetPay found')
                     response_messege('EarnPP FaucetPay Loaded')
-                    pyautogui.click(605, 754) #trx
-                    #pyautogui.click(967, 754)
+                    #pyautogui.click(605, 754) #trx
+                    pyautogui.click(967, 754)
                     time.sleep(5)
                     driver.execute_script(f"window.scrollTo(0, 1000);")
                     time.sleep(2)
@@ -2011,8 +2011,8 @@ def withdraw_faucet(driver, sitekey):
                 elif 'Faucetpay Transfer' in title:
                     print(title, 'FaucetPay found')
                     response_messege('Feyorra FaucetPay Loaded')
-                    pyautogui.click(1288, 517) #trx
-                    #pyautogui.click(679, 704) #doge
+                    #pyautogui.click(1288, 517) #trx
+                    pyautogui.click(679, 704) #doge
                     time.sleep(5)
                     driver.execute_script(f"window.scrollTo(0, 700);")
                     time.sleep(2)

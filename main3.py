@@ -1216,7 +1216,27 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
         print("CAPTCHA Check")
         if captcha_image:
             if 'rscaptcha'in captcha_image:
-                solve_least_img(sb1)
+                    try:
+                        solve_least_img(sb1)
+                        if 'Feyorra' in current_title:
+                            pyautogui.click(932 ,728)
+                            time.sleep(1)
+                            pyautogui.click(943 ,788)
+                                    #x:943 y:788
+                            time.sleep(5)
+                            return
+                        if 'ClaimCoin' in current_title:
+                            pyautogui.click(973, 833)
+                            time.sleep(5)
+                            return
+                        pyautogui.click(957 ,886)
+                        time.sleep(5)
+                        if driver.is_element_visible(submit_button):
+                            sb1.uc_click(submit_button)
+                        time.sleep(5)
+                        return
+                    except Exception as e:
+                        print(f'ERR:{e}') 
             else:
                 for i in range(1, 10):
                     time.sleep(1)
@@ -1296,7 +1316,27 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
             print("CAPTCHA Check")
             if captcha_image:
                 if 'rscaptcha'in captcha_image:
-                    solve_least_img(sb1)
+                    try:
+                        solve_least_img(sb1)
+                        if 'Feyorra' in current_title:
+                            pyautogui.click(932 ,728)
+                            time.sleep(1)
+                            pyautogui.click(943 ,788)
+                                    #x:943 y:788
+                            time.sleep(5)
+                            return
+                        if 'ClaimCoin' in current_title:
+                            pyautogui.click(973, 833)
+                            time.sleep(5)
+                            return
+                        pyautogui.click(957 ,886)
+                        time.sleep(5)
+                        if driver.is_element_visible(submit_button):
+                            sb1.uc_click(submit_button)
+                        time.sleep(5)
+                        return
+                    except Exception as e:
+                        print(f'ERR:{e}') 
                 else:
                     for i in range(1, 10):
                         time.sleep(1)

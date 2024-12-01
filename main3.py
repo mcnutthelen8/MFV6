@@ -78,16 +78,16 @@ if farm_id == 1:
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
-    server_name1 = 'malta' # 'morocco' #'bulgaria'
+    server_name1 = 'brazil' # 'morocco' #'bulgaria'
     CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-    earnpp_email = 'amytanisha250@gmail.com'
-    earnpp_pass = 'amytanisha250'
-    feyorra_email = 'amytanisha250@gmail.com'
-    feyorra_pass = 'amytanisha250'
-    claimc_email = 'amytanisha250@gmail.com'
+    earnpp_email = 'grandkolla999br@gmail.com'
+    earnpp_pass = 'grandkolla999br'
+    feyorra_email = 'grandkolla999br@gmail.com'
+    feyorra_pass = 'grandkolla999br'
+    claimc_email = 'grandkolla999br@gmail.com'
     claimc_pass = 'Uwuinsta@2005'
-    bitmoon_email = 'amytanisha250'
-    bitmoon_pass = 'p~Q18oQjmp}nv6g'
+    bitmoon_email = 'grandkolla999br'
+    bitmoon_pass = 'grandkolla.9.9.0@gmail.com' #faucet Login
 
 
 elif farm_id == 2:
@@ -95,16 +95,16 @@ elif farm_id == 2:
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
-    server_name1 = 'finland' #'portugal'
+    server_name1 = 'albania' #'portugal'
     CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-    earnpp_email = 'merlelcn@gmail.com'
-    earnpp_pass = 'I2Ne7C329jJt'
-    feyorra_email = 'merlelcn@gmail.com'
-    feyorra_pass = 'I2Ne7C329jJt'
-    claimc_email = 'merlelcn@gmail.com'
-    claimc_pass = 'I2Ne7C329jJt'
-    bitmoon_email = 'merlelcn'
-    bitmoon_pass = 'I2Ne7C329jJt'
+    earnpp_email = 'rondolftapatio2@gmail.com'
+    earnpp_pass = 'rondolftapatio2'
+    feyorra_email = 'rondolftapatio2@gmail.com'
+    feyorra_pass = 'rondolftapatio2'
+    claimc_email = 'rondolftapatio2@gmail.com'
+    claimc_pass = 'rondolftapatio2'
+    bitmoon_email = 'rondolftapatio2'
+    bitmoon_pass = 'rondolftapa.ti.o@gmail.com' #Faucet Login
 
 
 elif farm_id == 3:
@@ -112,48 +112,48 @@ elif farm_id == 3:
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
-    server_name1 = 'spain' #'belgium'
+    server_name1 = 'new zealand' #'belgium'
     CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-    earnpp_email = 'pennyscrambble@gmail.com'
-    earnpp_pass = 'pennyscrambble'
-    feyorra_email = 'pennyscrambble@gmail.com'
-    feyorra_pass = 'pennyscrambble'
-    claimc_email = 'pennyscrambble@gmail.com'
-    claimc_pass = 'pennyscrambble'
+    earnpp_email = 'berendkalpana2@gmail.com'
+    earnpp_pass = 'berendkalpana2'
+    feyorra_email = 'berendkalpana2@gmail.com'
+    feyorra_pass = 'berendkalpana2'
+    claimc_email = 'berendkalpana2@gmail.com'
+    claimc_pass = 'berendkalpana2'
     bitmoon_email = 'joeziega'
-    bitmoon_pass = 'p~Q18oQjmp}nv6g'
+    bitmoon_pass = 'p~Q18oQjmp}nv6g' #berendkalpana@gmail.com
 
 elif farm_id == 4:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
-    server_name1 = 'hong kong' #'georgia'# 
+    server_name1 = 'jordan' #'georgia'# 
     CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-    earnpp_email = 'sheldonkumar54@gmail.com'
-    earnpp_pass = 'p~Q18oQjmp}nv6g'
-    feyorra_email = 'sheldonkumar54@gmail.com'
-    feyorra_pass = 'p~Q18oQjmp}nv6g'
-    claimc_email = 'sheldonkumar54@gmail.com'
-    claimc_pass = 'p~Q18oQjmp}nv6g'
+    earnpp_email = 'markeshalland2@gmail.com'
+    earnpp_pass = 'markeshalland2'
+    feyorra_email = 'markeshalland2@gmail.com'
+    feyorra_pass = 'markeshalland2'
+    claimc_email = 'markeshalland2@gmail.com'
+    claimc_pass = 'markeshalland2'
     bitmoon_email = 'joeziega'
-    bitmoon_pass = 'p~Q18oQjmp}nv6g'
+    bitmoon_pass = 'markeshalla.n.d@gmail.com' #markeshalla.n.d@gmail.com
 
 elif farm_id == 5:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
-    server_name1 = 'malaysia' #'chile'
+    server_name1 = 'turkey' #'chile'
     CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-    earnpp_email = 'howardrahul838@gmail.com'
-    earnpp_pass = 'howardrahul838'
-    feyorra_email = 'howardrahul838@gmail.com'
-    feyorra_pass = 'howardrahul838'
-    claimc_email = 'howardrahul838@gmail.com'
-    claimc_pass = 'howardrahul838'
-    bitmoon_email = 'joeziega'
-    bitmoon_pass = 'p~Q18oQjmp}nv6g'
+    earnpp_email = 'redgta362@gmail.com'
+    earnpp_pass = 'redgta362'
+    feyorra_email = 'redgta362@gmail.com'
+    feyorra_pass = 'redgta362'
+    claimc_email = 'redgta362@gmail.com'
+    claimc_pass = 'redgta362'
+    bitmoon_email = 'redgta362'
+    bitmoon_pass = 'redgta3.6@gmail.com' #redgta3.6@gmail.com
 else:
     while True:
         print('SOmething Wrong Did u use --farm')

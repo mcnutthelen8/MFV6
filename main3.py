@@ -1437,8 +1437,8 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
 
         if not_expected_title == current_title:
             if function == 1:
-                #login_to_faucet('https://earn-pepe.com/login', sb1, earnpp_email, earnpp_pass, 'cloudflare_success', window_list, 'button#loginBtn')
-                login_to_faucet('https://earn-pepe.com/login', sb1, earnpp_email, earnpp_pass, 'rscaptcha', window_list, 'button#loginBtn')
+                login_to_faucet('https://earn-pepe.com/login', sb1, earnpp_email, earnpp_pass, 'cloudflare_success', window_list, 'button#ClaimBtn')
+                #login_to_faucet('https://earn-pepe.com/login', sb1, earnpp_email, earnpp_pass, 'rscaptcha', window_list, 'button#loginBtn')
             elif function == 2:
                 login_to_faucet('https://feyorra.site/login', sb1, feyorra_email, feyorra_pass, 'cloudflare_success', window_list, 'button#loginBtn')
             elif function == 3:
@@ -1806,17 +1806,75 @@ def image_counter(image_path):
 
 
 
+def check_similar_images_exist(image_dir, similarity_threshold=0.9):
+    """
+    Checks if there are any similar images in the given directory based on SSIM.
+
+    :param image_dir: Directory containing the images.
+    :param similarity_threshold: Threshold above which images are considered similar (default: 0.9).
+    :return: True if similar images are found, False otherwise.
+    """
+    if not os.path.isdir(image_dir):
+        print("Directory does not exist.")
+        return False
+
+    image_files = [f for f in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, f))]
+
+    if len(image_files) < 2:
+        print("Not enough images to compare.")
+        return False
+
+    # Iterate over all image pairs and calculate their structural similarity
+    for i, img_file in enumerate(image_files):
+        img_path = os.path.join(image_dir, img_file)
+        img1 = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+
+        for j in range(i + 1, len(image_files)):
+            other_img_file = image_files[j]
+            other_img_path = os.path.join(image_dir, other_img_file)
+            img2 = cv2.imread(other_img_path, cv2.IMREAD_GRAYSCALE)
+
+            # Ensure images are valid and have the same dimensions
+            if img1 is None or img2 is None or img1.shape != img2.shape:
+                continue
+
+            similarity, _ = ssim(img1, img2, full=True)
+
+            # If similarity exceeds the threshold, similar images exist
+            if similarity >= similarity_threshold:
+                print(f"Similar images found: {img_file} and {other_img_file} with similarity {similarity:.2f}")
+                return True
+
+    print("No similar images found.")
+    return False
+
+
 def solve_least_captcha(image):
-    count = image_counter(image)
-    if count >= 8:
-        count//=2
-    split_image_by_width('element_screenshot.png', count, output_dir="output_pieces")
-
-    val = find_least_similar_image("output_pieces")
-    if val:
-        return val
-
-    return None
+    #count = image_counter(image)
+    #if count >= 8:
+    #    count//=2
+    val = None
+    split_image_by_width('element_screenshot.png', 5, output_dir="output_pieces")
+    if check_similar_images_exist("output_pieces", similarity_threshold=0.9):
+        val = find_least_similar_image("output_pieces")
+        if val:
+            return val
+    split_image_by_width('element_screenshot.png', 6, output_dir="output_pieces")
+    if check_similar_images_exist("output_pieces", similarity_threshold=0.9):
+        val = find_least_similar_image("output_pieces")
+        if val:
+            return val
+    split_image_by_width('element_screenshot.png', 7, output_dir="output_pieces")
+    if check_similar_images_exist("output_pieces", similarity_threshold=0.9):
+        val = find_least_similar_image("output_pieces")
+        if val:
+            return val
+    split_image_by_width('element_screenshot.png', 8, output_dir="output_pieces")
+    if check_similar_images_exist("output_pieces", similarity_threshold=0.9):
+        val = find_least_similar_image("output_pieces")
+        if val:
+            return val
+    return val
 
 
 

@@ -1397,7 +1397,8 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
 
         if not_expected_title == current_title:
             if function == 1:
-                login_to_faucet('https://earn-pepe.com/login', sb1, earnpp_email, earnpp_pass, 'cloudflare_success', window_list, 'button#loginBtn')
+                #login_to_faucet('https://earn-pepe.com/login', sb1, earnpp_email, earnpp_pass, 'cloudflare_success', window_list, 'button#loginBtn')
+                login_to_faucet('https://earn-pepe.com/login', sb1, earnpp_email, earnpp_pass, 'rscaptcha', window_list, 'button#loginBtn')
             elif function == 2:
                 login_to_faucet('https://feyorra.site/login', sb1, feyorra_email, feyorra_pass, 'cloudflare_success', window_list, 'button#loginBtn')
             elif function == 3:

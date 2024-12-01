@@ -1948,10 +1948,51 @@ def earnbitmoon_claim():
 
             except pyautogui.ImageNotFoundException:
                 print("No icon_image_loaded Human.")
+
+
+
+
+  
       
 def withdraw_faucet(driver, sitekey):
 
     try:
+        collectionbip = db[f'LocalCSB']
+        quer2y = {"type": "main"}
+        dochh = collectionbip.find_one(quer2y)
+        currency = dochh["currency"]
+        pep_x =605
+        pep_y = 754
+        fey_x = 1288
+        fey_y = 517
+
+        #defualts are for TRX
+        if 'LTC' in currency:
+            pep_x = 1330
+            pep_y =  592
+            fey_x =  983
+            fey_y =  707
+        elif 'SOL' in currency:
+            pep_x = 606
+            pep_y =  916
+            fey_x =  681
+            fey_y =  897
+        elif 'BNB' in currency:
+            pep_x = 1330
+            pep_y =  756
+            fey_x =  1288
+            fey_y =  707
+        elif 'TRX' in currency:
+            pep_x = 605
+            pep_y =  754
+            fey_x =  1288
+            fey_y =  517
+        elif 'Doge' in currency:
+            pep_x = 967
+            pep_y =  754
+            fey_x =  679 
+            fey_y =  704
+
         current_window = sb1.current_window_handle
         all_windows = sb1.window_handles
         for window in all_windows:
@@ -1974,9 +2015,10 @@ def withdraw_faucet(driver, sitekey):
                     cloudflare(sb1, login = False)
                 elif 'Faucetpay Transfer' in title:
                     print(title, 'FaucetPay found')
-                    response_messege('EarnPP FaucetPay Loaded')
+                    response_messege(f'EarnPP FaucetPay Loaded{currency}')
+                    pyautogui.click(pep_x, pep_y)
                     #pyautogui.click(605, 754) #trx
-                    pyautogui.click(967, 754)
+                    #pyautogui.click(967, 754)
                     time.sleep(5)
                     driver.execute_script(f"window.scrollTo(0, 1000);")
                     time.sleep(2)
@@ -1984,7 +2026,7 @@ def withdraw_faucet(driver, sitekey):
                     time.sleep(2)
                     driver.uc_click('button.claim-button')
                     driver.uc_open('https://earn-pepe.com/member/faucet')
-                    response_messege('EarnPP FaucetPay Withdrawed')
+                    response_messege(f'EarnPP FaucetPay Withdrawed{currency}')
                     #response_messege('Started')
                     query = {"type": "main"}
                     update = {"$set": {"request": 'ipfixer'}}
@@ -2010,9 +2052,10 @@ def withdraw_faucet(driver, sitekey):
                     cloudflare(sb1, login = False)
                 elif 'Faucetpay Transfer' in title:
                     print(title, 'FaucetPay found')
-                    response_messege('Feyorra FaucetPay Loaded')
+                    response_messege(f'Feyorra FaucetPay Loaded{currency}')
+                    pyautogui.click(fey_x, fey_y)
                     #pyautogui.click(1288, 517) #trx
-                    pyautogui.click(679, 704) #doge
+                    #pyautogui.click(679, 704) #doge
                     time.sleep(5)
                     driver.execute_script(f"window.scrollTo(0, 700);")
                     time.sleep(2)
@@ -2021,7 +2064,7 @@ def withdraw_faucet(driver, sitekey):
                     time.sleep(2)
                     driver.uc_click('button.claim-button')
                     driver.uc_open('https://feyorra.site/member/faucet')
-                    response_messege('Feyorra FaucetPay Withdrawed')
+                    response_messege(f'Feyorra FaucetPay Withdrawed{currency}')
                     #response_messege('Started')
                     query = {"type": "main"}
                     update = {"$set": {"request": 'ipfixer'}}
@@ -2079,6 +2122,8 @@ def withdraw_faucet(driver, sitekey):
         print(f'ERR on withdraw{e}')
         response_messege(f'EarnPP FaucetPay ERR on withdraw{e}')
     
+
+
 
 def faucet_limit_check(driver, sitekey):
     try:

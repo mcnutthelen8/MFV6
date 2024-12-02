@@ -2572,7 +2572,7 @@ feyorra_count = 0
 claimcoin_count = 0
 
 refresh_count = 0
-earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
+earnpp_window, feyorra_window, claimcoin_window,feyorratop_window,  ip_address, ip_required = open_faucets()
 start_time4 = 0
 time.sleep(2)
 print('Starting Loop')
@@ -2603,7 +2603,7 @@ while True:
             if reset_count >= 15:
                 print('reset count higher')
                 
-                earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
+                earnpp_window, feyorra_window, claimcoin_window,feyorratop_window,  ip_address, ip_required = open_faucets()
                 reset_count = 0
                 reset_count_isacc = 0
 
@@ -2913,7 +2913,7 @@ while True:
     
 
         if mainscript == 2:
-            earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
+            earnpp_window, feyorra_window, claimcoin_window,feyorratop_window,  ip_address, ip_required = open_faucets()
             reset_count = 0
 
         if mainscript == 3:

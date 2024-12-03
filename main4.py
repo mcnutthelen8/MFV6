@@ -67,8 +67,7 @@ feyorra_email = 'Nooo'
 feyorra_pass = 'Nooo'
 claimc_email = 'Nooo'
 claimc_pass = 'Nooo'
-feyorratop_email = 'Noo'
-feyorratop_pass = 'Noo'
+
 
 
 if farm_id == 1:
@@ -87,9 +86,6 @@ if farm_id == 1:
     claimc_pass = '@$uiJjkFfZU3K@e'
     bitmoon_email = 'ddilakshi232'
     bitmoon_pass = 'p~Q18oQjmp}nv6g'
-    feyorratop_email = 'khabibmakanzie@gmail.com'
-    feyorratop_pass = 'CQ2pNwi3zsFgat@'
-
 
 elif farm_id == 2:
     facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/diludilakshi.json'
@@ -262,7 +258,7 @@ bitmoon = False
 earnpp = True
 claimcoin = False
 feyorra = True
-feyorratop = False
+feyorratop = True
 baymack = False
 
 
@@ -1306,6 +1302,11 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
             if 'rscaptcha'in captcha_image:
                     try:
                         solve_least_img(sb1)
+
+                        if driver.is_element_visible(submit_button):
+                            sb1.uc_click(submit_button)
+                            time.sleep(5)
+                            return
                         if 'Feyorra' in current_title:
                             pyautogui.click(932 ,728)
                             time.sleep(1)
@@ -1406,6 +1407,11 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                 if 'rscaptcha'in captcha_image:
                     try:
                         solve_least_img(sb1)
+                        if driver.is_element_visible(submit_button):
+                            sb1.uc_click(submit_button)
+                            time.sleep(5)
+                            return
+                        
                         if 'Feyorra' in current_title:
                             pyautogui.click(932 ,728)
                             time.sleep(1)
@@ -1515,7 +1521,13 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         ip_address = get_ip(driver)
         if ip_required != ip_address:
             return 404
-
+        if function == 14:
+            if expected_title in current_title:
+                if driver.is_element_visible('a.nav-link.btn.btn-success'):
+                    login_to_faucet(url, sb1, bitmoon_email, bitmoon_pass, 'cloudflare_success', window_list, 'button[type="submit"]') #'not_a_robot'
+                elif sb1.is_element_present("#sidebarCoins"):
+                    if driver.current_window_handle not in window_list:
+                        ready = True
 
 
         if not_expected_title == current_title:
@@ -1954,6 +1966,16 @@ def solve_least_captcha(image):
         val = find_least_similar_image("output_pieces")
         if val:
             return val
+    split_image_by_width('element_screenshot.png', 9, output_dir="output_pieces")
+    if check_similar_images_exist("output_pieces", similarity_threshold=0.9):
+        val = find_least_similar_image("output_pieces")
+        if val:
+            return val
+    split_image_by_width('element_screenshot.png', 10, output_dir="output_pieces")
+    if check_similar_images_exist("output_pieces", similarity_threshold=0.9):
+        val = find_least_similar_image("output_pieces")
+        if val:
+            return val
     return val
 
 
@@ -1962,12 +1984,29 @@ def solve_least_img(driver):
     for i in range(15):
         pyautogui.moveTo(400, 400)
         time.sleep(1)
-        #driver.switch_to.default_content()
-        #scroll_height = driver.execute_script("return document.body.scrollHeight")
-        #print(scroll_height, 'height')
-        #driver.execute_script(f"window.scrollTo(0, {scroll_height});")
+        driver.switch_to.default_content()
+        scroll_height = driver.execute_script("return document.body.scrollHeight")
+        print(scroll_height, 'height')
+        driver.execute_script(f"window.scrollTo(0, {scroll_height});")
         time.sleep(1)
-        
+
+        if driver.is_element_visible('img#rscaptcha_img'):
+            print('rscaptcha_img Found THo')  
+ 
+            capture_element_screenshot(sb1, "img#rscaptcha_img")
+            val = solve_least_captcha("element_screenshot.png")
+            print('val', val)
+            if val:
+                try:
+                    x, y = pyautogui.locateCenterOnScreen(val, confidence=0.85)
+                    if x and y:
+                        pyautogui.click(x, y)
+                        return True
+                except Exception as e:
+                    print(e)
+            else:
+                return None
+
         if driver.is_element_visible('div.iconcaptcha-modal__body-title'):
             print('iconcaptcha-modal__body-title Found')
             if driver.is_element_visible('div.iconcaptcha-modal__body-title'):
@@ -2128,46 +2167,7 @@ def earnbitmoon_claim():
             except pyautogui.ImageNotFoundException:
                 print("No icon_image_loaded Human.")
 
-def custom_ocr_model():
-    x_coodinators =[]
-    numbers =[]
-    for i in range(4):
-        for i in range(0,10):
-            try:
-                x, y = pyautogui.locateCenterOnScreen(f"C:/Users/Coder/Pictures/tex/output_pieces/{i}.png", confidence=0.95)
-                x_coodinators.append(x)
-                numbers.append(i)
-                #pyautogui.moveTo(x,y)
-                #pyautogui.sleep(1)
-                print('Found',i, x)
-            except Exception as e:
-                pass
-        y = list(dict.fromkeys(numbers))
-        if len(y) >= 4:
-            break
-    return x_coodinators, numbers
-
-
-def number_captcha_solver():
-    x_coodinators, numbers = custom_ocr_model()
-    x_coodinators = list(dict.fromkeys(x_coodinators))
-    numbers = list(dict.fromkeys(numbers))
-    print(x_coodinators, numbers)
-    A = x_coodinators
-    B = numbers
-
-    sorted_indices = [i for i, _ in sorted(enumerate(A), key=lambda x: x[1])]
-    B_sorted = [B[i] for i in sorted_indices]
-
-    print("Sorted A:", sorted(A))
-    print("Rearranged B:", B_sorted)
-    answer = ''
-    for i in B_sorted:
-        i = str(i)
-        answer+=i
-    print(f'Answer is {answer}')
-    return answer
-
+  
       
 def withdraw_faucet(driver, sitekey):
 
@@ -2344,8 +2344,100 @@ def faucet_limit_check(driver, sitekey):
             pass
     except Exception as e:
         print(f'LIMITG:ERR{e}')
-# Main logic
 
+
+
+from PIL import ImageGrab
+
+def custom_ocr_model(image_path):
+    x_coodinators = []
+    numbers = []
+    for _ in range(4):  # Attempt 4 rounds of matching
+        for i in range(10):  # Match digits 0 through 9
+            try:
+                # Load template and source image
+                template = cv2.imread(f"C:/Users/Coder/Pictures/tex/output_pieces/{i}.jpg", cv2.IMREAD_GRAYSCALE)
+                screen_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+
+                if template is None or screen_image is None:
+                    print(f"Error loading image for digit {i}")
+                    continue
+
+                # Perform template matching
+                res = cv2.matchTemplate(screen_image, template, cv2.TM_CCOEFF_NORMED)
+                loc = np.where(res >= 0.95)  # Adjust confidence threshold if needed
+
+                for pt in zip(*loc[::-1]):  # Swap x and y coordinates
+                    x_coodinators.append(pt[0])  # Append x-coordinate
+                    numbers.append(i)
+                    print('Found', i, pt[0])
+                    
+                # Stop if we have enough unique digits
+                if len(set(numbers)) >= 4:
+                    break
+            except Exception as e:
+                print(f"Error matching digit {i}: {e}")
+    return x_coodinators, numbers
+
+def number_captcha_solver(image_path):
+    x_coodinators, numbers = custom_ocr_model(image_path)
+    x_coodinators = list(dict.fromkeys(x_coodinators))
+    numbers = list(dict.fromkeys(numbers))
+    print("X-coordinates:", x_coodinators)
+    print("Numbers:", numbers)
+    A = x_coodinators
+    B = numbers
+
+    # Sort numbers based on their x-coordinates
+    sorted_indices = [i for i, _ in sorted(enumerate(A), key=lambda x: x[1])]
+    B_sorted = [B[i] for i in sorted_indices]
+
+    print("Sorted X-coordinates:", sorted(A))
+    print("Rearranged Numbers:", B_sorted)
+    answer = ''.join(map(str, B_sorted))
+    print(f"Answer is {answer}")
+    return answer
+
+def claim_feytrx(driver):
+    try:
+        if driver.is_element_visible('input[type="number"]'):
+            capture_element_screenshot(driver,'input[type="number"]')
+            answer = number_captcha_solver("element_screenshot.png")
+            if answer:
+                elemnt_inp = driver.find_element(By.CSS_SELECTOR, 'input[type="number"]')
+                elemnt_inp.clear()
+                elemnt_inp.send_keys(answer)
+                return True
+            else:
+                pyautogui.press('f5')
+                return None
+    except Exception as e:
+        print('ERR:',e)
+    return None
+
+
+def get_coin_balance(driver):
+    # Locate all elements containing the coin balance
+    balance_elements = driver.find_elements("xpath", "//div[contains(@class, 'topStat_card')]")
+
+    for element in balance_elements:
+        try:
+            # Check if the element contains the 'Balance' text
+            balance_label = element.find_element("xpath", ".//p[contains(text(), 'Balance')]")
+            if balance_label:
+                # Get the text from the <h3> tag within the same parent
+                balance_text = element.find_element("xpath", ".//h3").text
+                # Extract numeric part using regex
+                balance = re.search(r'\d+', balance_text).group()
+                return balance
+        except Exception as e:
+            print(f"Error processing element: {e}")
+    return None  # Return None if no balance found
+
+
+
+# Main logic
+start_time4 = 0
 reset_count = 0
 reset_count_isacc = 0
 previous_reset_count = 0
@@ -2361,6 +2453,7 @@ feyorra_coins_pre = None
 claimc_coins_pre = None
 earnpp_limit_reached = None
 feyorra_limit_reached = None
+feyorratop_coin = None
 if run_sb1:
     sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path, disable_gpu=True, page_load_strategy='none' )
     sb1.maximize_window()
@@ -2409,7 +2502,7 @@ if run_sb1:
     
 
 
-start_time2 = time.time()
+
 
 def open_faucets():
     global sb1
@@ -2487,34 +2580,37 @@ def open_faucets():
                         feyorra_window = None
                 else:
                     raise Exception("Ip changed")
-                ip_address = get_ip(sb1)
-                if ip_required == ip_address:
-                    response_messege('ClaimC Loging')
-                    if claimcoin:
+                
+                if claimcoin:
+                    ip_address = get_ip(sb1)
+                    if ip_required == ip_address:
+                        response_messege('ClaimC Loging')  
                         sb1.open_new_window()
                         claimcoin_window = handle_site(sb1, "https://claimcoin.in/faucet", "Faucet | ClaimCoin - ClaimCoin Faucet", "ClaimCoin - MultiCurrency Crypto Earning Platform", 3, [earnpp_window, feyorra_window], ip_required)
                         if claimcoin_window == 404:
                             raise Exception(" claimcoin_window == 404")
                         print(f"ClaimCoin window handle: {claimcoin_window}")
                     else:
-                        claimcoin_window = None
+                        raise Exception("Ip changed")
+                        
                 else:
-                    raise Exception("Ip changed")
-                
+                    claimcoin_window = None
 
-                ip_address = get_ip(sb1)
-                if ip_required == ip_address:
-                    response_messege('FeyorraTop Loging')
-                    if claimcoin:
+
+                if feyorratop:
+                    ip_address = get_ip(sb1)
+                    if ip_required == ip_address:
+                        response_messege('feyorratop Loging')  
                         sb1.open_new_window()
-                        feyorratop_window = handle_site(sb1, "https://feyorra.top/faucet", "Faucet | Feyorra", "Home | Feyorra", 4, [earnpp_window, feyorra_window, claimcoin_window], ip_required)
+                        feyorratop_window  = handle_site(sb1, "https://feyorra.top/faucet", "Faucet | Feyorra", "Home | Feyorra", 4, [earnpp_window, feyorra_window, claimcoin_window], ip_required)
                         if feyorratop_window == 404:
                             raise Exception(" feyorratop_window == 404")
                         print(f"feyorratop_window window handle: {feyorratop_window}")
                     else:
-                        feyorratop_window = None
+                        raise Exception("Ip changed")
+                        
                 else:
-                    raise Exception("Ip changed")
+                    feyorratop_window = None
                 
                 ip_address = get_ip(sb1)
                 if ip_required == ip_address:
@@ -2523,7 +2619,7 @@ def open_faucets():
                     update = {"$set": {"request": 'mainscript'}}
                     result = collection.update_one(query, update)
 
-                    all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
+                    all_window_handles = [earnpp_window, feyorra_window, claimcoin_window, feyorratop_window]
                     close_extra_windows(sb1, all_window_handles)
                     sb1.switch_to.window(earnpp_window)
                     print(f"Windows: EarnPP: {earnpp_window}, Feyorra: {feyorra_window}, ClaimCoin: {claimcoin_window}")
@@ -2572,7 +2668,7 @@ feyorra_count = 0
 claimcoin_count = 0
 
 refresh_count = 0
-earnpp_window, feyorra_window, claimcoin_window,feyorratop_window,  ip_address, ip_required = open_faucets()
+earnpp_window, feyorra_window, claimcoin_window,feyorratop_window,  ip_address, ip_required= open_faucets()
 start_time4 = 0
 time.sleep(2)
 print('Starting Loop')
@@ -2615,7 +2711,7 @@ while True:
             if ip_address == ip_required:
                 debug_messages(f'Ip address Match:{ip_address}')
 
-                all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
+                all_window_handles = [earnpp_window, feyorra_window, claimcoin_window, feyorratop_window]
                 close_extra_windows(sb1, all_window_handles)
 
                 print(f'Reset_count:{reset_count}')
@@ -2708,6 +2804,7 @@ while True:
                             reset_count +=5
                         else:
                             debug_messages(f'Feyorra not Found:{title} | reset:{reset_count}')
+                            
                             reset_count +=1
                     except Exception as e:
                         if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
@@ -2777,70 +2874,44 @@ while True:
                         debug_messages(f'ERR on ClamCoim:{e}')
                         reset_count +=1
 
-            
                 if feyorratop:
                     try:
-                        elapsed_time2 = time.time() - start_time2
-                        seconds_only = int(elapsed_time)
-                        debug_messages(f'ClaimCoins Seconds:{seconds_only}')
-                        if seconds_only > 20:
-                            start_time2 = time.time()
+                        elapsed_time4 = time.time() - start_time4
+                        seconds_only4 = int(elapsed_time4)
+                        debug_messages(f'feyorratop Seconds:{seconds_only4}')
+                        if seconds_only4 > 15:
                             debug_messages(f'Switching Pages to feyorratop')
                             sb1.switch_to.window(feyorratop_window)
-                            debug_messages(f'Getting Pages Titile:feyorratop')
+                            debug_messages(f'Getting Pages Titile:Feyorra')
                             pyautogui.press('enter')
                             title =sb1.get_title()
 
                             if 'Faucet | Feyorra' in title:
-                                pyautogui.click(200,200)
-                                sb1.switch_to.window(feyorratop_window)
-                                title =sb1.get_title()
-                                if 'Faucet | Feyorra' not in title:
-                                    sb1.uc_open("https://feyorra.top/faucet")
-                                debug_messages(f'Solving Icon Captcha on feyorratop')
-                                if sb1.is_element_visible('input[type="number"]'):
-                                    answer = number_captcha_solver()
-                                    if answer:
-                                        element = sb1.find_element(By.CSS_SELECTOR, 'input[type="number"]')
-                                        element.send_keys(answer)
-                                        sb1.execute_script("window.scrollTo(0, 1000);")
-                                        time.sleep(1)
-                                        sb1.uc_click('submit_button')
-                                    else:
-                                        pyautogui.press('f5')
                                 
-
-                                    
+                                debug_messages(f'Solving Icon Captcha on FeyorraTop')
+                                gg = claim_feytrx(sb1)
+                                val = get_coin_balance(sb1)
+                                if val:
+                                    feyorratop_coin = val
+                                pyautogui.click(500,130)
+                                start_time = time.time()
                             elif 'Just' in title:
-                                debug_messages(f'Just.. Found on feyorratop')
+                                debug_messages(f'Just.. Found on FeyorraTop')
                                 cloudflare(sb1, login = False)
-                                debug_messages(f'Just Fixed feyorratop')
-                            elif 'aintenance' in title:
-                                debug_messages(f'maintenance.. Found on feyorratop')
-                                response_messege('maintenance.. Found on feyorratop')
-                                feyorra_coins = 0
+                                debug_messages(f'Just Fixed FeyorraTop')
 
-                            elif 'Lock' in title:
-                                debug_messages(f'Lock.. Found on feyorratop')
-                                response_messege('Lock.. Found on feyorratop')
-                                feyorra_coins =0
                             elif 'Home | Feyorra' in title or 'Login' in title:
-                                debug_messages(f'LOGIN.. Found on feyorratop')
-                                response_messege('LOGIN.. Found on feyorratop')
-                                feyorra_coins = 0
+                                debug_messages(f'LOGIN.. Found on FeyorraTop')
+                                response_messege('LOGIN.. Found on FeyorraTop')
+                                
                                 reset_count +=5
                             else:
-                                debug_messages(f'feyorratop not Found:{title} | reset:{reset_count}')
+                                debug_messages(f'Feyorra not Found:{title} | reset:{reset_count}')
                                 sb1.uc_open("https://feyorra.top/faucet")
                                 reset_count +=1
                     except Exception as e:
-                        if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
-                            debug_messages(f'Feyorra Limit Reached')
-                            response_messege('feyorratop Limit Reached')
-                            feyorra_limit_reached =True
-                        else:
-                            debug_messages(f'ERR on Feyorra:{e}')
-                            reset_count +=1
+                        debug_messages(f'ERR on FeyorraTop:{e}')
+                        reset_count +=1
 
 
                 elapsed_time = time.time() - start_time

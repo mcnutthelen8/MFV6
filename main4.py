@@ -1941,41 +1941,54 @@ def check_similar_images_exist(image_dir, similarity_threshold=0.9):
     return False
 
 
-def solve_least_captcha(image):
-    #count = image_counter(image)
-    #if count >= 8:
-    #    count//=2
+def flip_images_in_directory(directory_path):
+    """
+    This function flips images in four directions (horizontal, vertical, upside-down, and mirror),
+    and saves them with new filenames indicating the flip type.
+    
+    Args:
+    directory_path (str): Path to the directory containing images.
+    """
+    # Get all image files in the directory
+    image_files = [f for f in os.listdir(directory_path) if os.path.isfile(os.path.join(directory_path, f))]
+    
+    for image_file in image_files:
+        # Check if it's an image by extension
+        if image_file.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp')):
+            image_path = os.path.join(directory_path, image_file)
+            
+            # Open the image
+            image = Image.open(image_path)
+            
+            # Flip image in 4 directions
+            flips = {
+                "vertical": image.transpose(Image.FLIP_TOP_BOTTOM),
+                "horizontal": image.transpose(Image.FLIP_LEFT_RIGHT),
+                "upside_down": image.rotate(180),
+                "ninete": image.rotate(90),
+                "negninete": image.rotate(-90),
+               # "mirror": image.transpose(Image.FLIP_LEFT_RIGHT).rotate(180)
+            }
+            
+            # Save each flipped image with a new name
+            for flip_name, flipped_image in flips.items():
+                flipped_image_name = f"{os.path.splitext(image_file)[0]}_{flip_name}.png"
+                flipped_image_path = os.path.join(directory_path, flipped_image_name)
+                flipped_image.save(flipped_image_path)
+                print(f"Saved flipped image: {flipped_image_path}")
+
+
+def solve_least_captcha(image, rscaptcha = False):
     val = None
-    split_image_by_width('element_screenshot.png', 5, output_dir="output_pieces")
-    if check_similar_images_exist("output_pieces", similarity_threshold=0.9):
-        val = find_least_similar_image("output_pieces")
-        if val:
-            return val
-    split_image_by_width('element_screenshot.png', 6, output_dir="output_pieces")
-    if check_similar_images_exist("output_pieces", similarity_threshold=0.9):
-        val = find_least_similar_image("output_pieces")
-        if val:
-            return val
-    split_image_by_width('element_screenshot.png', 7, output_dir="output_pieces")
-    if check_similar_images_exist("output_pieces", similarity_threshold=0.9):
-        val = find_least_similar_image("output_pieces")
-        if val:
-            return val
-    split_image_by_width('element_screenshot.png', 8, output_dir="output_pieces")
-    if check_similar_images_exist("output_pieces", similarity_threshold=0.9):
-        val = find_least_similar_image("output_pieces")
-        if val:
-            return val
-    split_image_by_width('element_screenshot.png', 9, output_dir="output_pieces")
-    if check_similar_images_exist("output_pieces", similarity_threshold=0.9):
-        val = find_least_similar_image("output_pieces")
-        if val:
-            return val
-    split_image_by_width('element_screenshot.png', 10, output_dir="output_pieces")
-    if check_similar_images_exist("output_pieces", similarity_threshold=0.9):
-        val = find_least_similar_image("output_pieces")
-        if val:
-            return val
+    for i in range(4,11):
+        split_image_by_width(image, i, output_dir="output_pieces")
+        if check_similar_images_exist("output_pieces", similarity_threshold=0.9):
+            if rscaptcha == True:
+                flip_images_in_directory("output_pieces")
+                #delete_duplicate_images("output_pieces")
+            val = find_least_similar_image("output_pieces")
+            if val:
+                return val
     return val
 
 
@@ -1994,7 +2007,7 @@ def solve_least_img(driver):
             print('rscaptcha_img Found THo')  
  
             capture_element_screenshot(sb1, "img#rscaptcha_img")
-            val = solve_least_captcha("element_screenshot.png")
+            val = solve_least_captcha("element_screenshot.png", True)
             print('val', val)
             if val:
                 try:

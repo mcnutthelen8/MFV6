@@ -78,7 +78,7 @@ if farm_id == 1:
     mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
     yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
     fb_pass = 'ashen1997'
-    server_name1 = 'malta' # 'morocco' #'bulgaria'
+    server_name1 = 'romania' # 'morocco' #'bulgaria'
     CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
     earnpp_email = 'amytanisha250@gmail.com'
     earnpp_pass = 'amytanisha250'

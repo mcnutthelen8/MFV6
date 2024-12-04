@@ -874,25 +874,32 @@ def verify_and_claim(sb1):
     else:
         print("Verified! message not found.")
 
+
 def solve_icon_captcha(sb1):
-    # Extract the class name of the captcha icon (e.g., "fa-arrow-alt-circle-left")
-    captcha_icon_class = sb1.get_attribute('div.captcha-icon', 'class')
-    captcha_icon_class = captcha_icon_class.split(' ')[-1]  # Extract only the icon class part
+    # Extract the class name of the captcha icon (e.g., "fa-bug")
+    captcha_icon = sb1.find_element('div[class*="fas"]')  # Find 'div' containing 'fas' in class
+    captcha_icon_class = captcha_icon.get_attribute('class').split()
+    captcha_icon_class = [cls for cls in captcha_icon_class if "fa-" in cls]  # Filter for 'fa-' classes
+
+    if not captcha_icon_class:
+        print("No valid captcha icon found.")
+        return False
+
+    captcha_icon_class = captcha_icon_class[0]  # Assuming the first match is relevant
 
     # Get the available icon options
-    icon_options = sb1.find_elements('div#icon-options i.icon-option')
+    icon_options = sb1.find_elements('i[class*="fas"]')  # Find 'i' elements containing 'fas'
 
     # Iterate through the options to find the matching icon and click it
     for option in icon_options:
-        icon_class = option.get_attribute('class')
-        if captcha_icon_class in icon_class:
+        icon_classes = option.get_attribute('class').split()
+        if captcha_icon_class in icon_classes:
             option.uc_click()
-            print(f"Clicked on the matching icon: {icon_class}")
+            print(f"Clicked on the matching icon: {captcha_icon_class}")
             return True
 
-    #time.sleep(1)
-
     print("No matching icon found.")
+    return False
 
 
 

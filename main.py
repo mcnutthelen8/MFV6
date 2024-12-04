@@ -69,174 +69,163 @@ claimc_email = 'Nooo'
 claimc_pass = 'Nooo'
 
 
+mongo_uri = "mongodb+srv://redgta36:J6n7Hoz2ribHmMmx@moneyfarm.wwzcs.mongodb.net/?retryWrites=true&w=majority&appName=moneyfarm"
+
+client = MongoClient(mongo_uri)
+db = client['MoneyFarmV6'] 
+collection = db[f'Farm{farm_id}']
+
+collectionbip = db[f'LocalCSB']
+quer2y = {"type": "main"}
+dochh = collectionbip.find_one(quer2y)
+blacklistedIP = dochh["blacklistedIP"]
+print(blacklistedIP)
+
+dochh2 = collection.find_one(quer2y)
+layout = dochh2["withdraw_mail"]
+print(f'Farm ID:{farm_id} | Layout: {layout}')
 
 if farm_id == 1:
-    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/khabibmakanzie.json'
-    fb_pass = 'uwuinsta2005'
-    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
-    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
-    server_name1 = 'thailand'
-    CSB1_farms = [1, 2, 3, 4, 5]
 
-    earnpp_email = 'khabibmakanzie@gmail.com'
-    earnpp_pass = 'CQ2pNwi3zsFgat@'
-    feyorra_email = 'khabibmakanzie@gmail.com'
-    feyorra_pass = 'D6.6fz9r5QVyziT'
-    claimc_email = 'khabibmakanzie@gmail.com'
-    claimc_pass = '@$uiJjkFfZU3K@e'
-    bitmoon_email = 'ddilakshi232'
-    bitmoon_pass = 'p~Q18oQjmp}nv6g'
+    if '1' in layout:
+        server_name1 = 'thailand'
+        CSB1_farms = [1, 2, 3, 4, 5]
+        earnpp_email = 'khabibmakanzie@gmail.com'
+        earnpp_pass = 'CQ2pNwi3zsFgat@'
+        feyorra_email = 'khabibmakanzie@gmail.com'
+        feyorra_pass = 'D6.6fz9r5QVyziT'
+    elif '2' in layout:
+        server_name1 = 'bulgaria' # 'morocco' #'bulgaria'
+        CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+        earnpp_email = 'amytanisha250@gmail.com'
+        earnpp_pass = 'amytanisha250'
+        feyorra_email = 'amytanisha250@gmail.com'
+        feyorra_pass = 'amytanisha250'
+    elif '3' in layout:
+        server_name1 = 'brazil' # 'morocco' #'bulgaria'
+        CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+        earnpp_email = 'grandkolla999br@gmail.com'
+        earnpp_pass = 'grandkolla999br'
+        feyorra_email = 'grandkolla999br@gmail.com'
+        feyorra_pass = 'grandkolla999br'
+    else:
+        print('Layout issue', layout)
 
 elif farm_id == 2:
-    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/diludilakshi.json'
-    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
-    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
-    fb_pass = 'ashen1997'
-    server_name1 = 'estonia'
-    CSB1_farms = [1, 2, 3, 4, 5]
 
-    earnpp_email = 'metroboom910@gmail.com'
-    earnpp_pass = 'metroboom910'
-    feyorra_email = 'metroboom910@gmail.com'
-    feyorra_pass = 'metroboom910'
-    claimc_email = 'metroboom910@gmail.com'
-    claimc_pass = 'metroboom910'
-    bitmoon_email = 'metroboom910'
-    bitmoon_pass = 'p~Q18oQjmp}nv6g'
+    if '1' in layout:
+        server_name1 = 'estonia'
+        CSB1_farms = [1, 2, 3, 4, 5]
+        earnpp_email = 'metroboom910@gmail.com'
+        earnpp_pass = 'metroboom910'
+        feyorra_email = 'metroboom910@gmail.com'
+        feyorra_pass = 'metroboom910'
+
+    elif '2' in layout:
+        server_name1 = 'finland' #'portugal'
+        CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+        earnpp_email = 'merlelcn@gmail.com'
+        earnpp_pass = 'I2Ne7C329jJt'
+        feyorra_email = 'merlelcn@gmail.com'
+        feyorra_pass = 'I2Ne7C329jJt'
+
+    elif '3' in layout:
+        server_name1 = 'albania' #'portugal'
+        CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+        earnpp_email = 'rondolftapatio2@gmail.com'
+        earnpp_pass = 'rondolftapatio2'
+        feyorra_email = 'rondolftapatio2@gmail.com'
+        feyorra_pass = 'rondolftapatio2'
+    else:
+        print('Layout issue', layout)
 
 
 elif farm_id == 3:
-    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/williesmith.json'
-    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
-    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
-    fb_pass = 'ashen1997'
-    server_name1 = 'egypt'
-    CSB1_farms = [1, 2, 3, 4, 5]
 
-    earnpp_email = 'yvonne12463@gmail.com'
-    earnpp_pass = 'Uwuinsta@2005'
-    feyorra_email = 'yvonne12463@gmail.com'
-    feyorra_pass = 'Uwuinsta@2005'
-    claimc_email = 'yvonne12463@gmail.com'
-    claimc_pass = 'Uwuinsta@2005'
-    bitmoon_email = 'yvonne12463'
-    bitmoon_pass = 'p~Q18oQjmp}nv6g'
+    if '1' in layout:
+        server_name1 = 'egypt'
+        CSB1_farms = [1, 2, 3, 4, 5]
+        earnpp_email = 'yvonne12463@gmail.com'
+        earnpp_pass = 'Uwuinsta@2005'
+        feyorra_email = 'yvonne12463@gmail.com'
+        feyorra_pass = 'Uwuinsta@2005'
+
+
+    elif '2' in layout:
+        server_name1 = 'spain' #'belgium'
+        CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+        earnpp_email = 'pennyscrambble@gmail.com'
+        earnpp_pass = 'pennyscrambble'
+        feyorra_email = 'pennyscrambble@gmail.com'
+        feyorra_pass = 'pennyscrambble'
+
+    elif '3' in layout:
+        server_name1 = 'new zealand' #'belgium'
+        CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+        earnpp_email = 'berendkalpana2@gmail.com'
+        earnpp_pass = 'berendkalpana2'
+        feyorra_email = 'berendkalpana2@gmail.com'
+        feyorra_pass = 'berendkalpana2'
+
+
+    else:
+        print('Layout issue', layout)
 
 
 elif farm_id == 4:
-    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
-    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
-    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
-    fb_pass = 'ashen1997'
-    server_name1 = 'hungary'
-    CSB1_farms = [1, 2, 3, 4, 5]
-    earnpp_email = 'ddilakshi232@gmail.com'
-    earnpp_pass = 'Uwuinsta@2005'
-    feyorra_email = 'ddilakshi232@gmail.com'
-    feyorra_pass = 'Uwuinsta@2005'
-    claimc_email = 'ddilakshi232@gmail.com'
-    claimc_pass = 'Uwuinsta@2005'
-    bitmoon_email = 'rondolftapatio'
-    bitmoon_pass = 'p~Q18oQjmp}nv6g'
+
+    if '1' in layout:
+        server_name1 = 'hungary'
+        CSB1_farms = [1, 2, 3, 4, 5]
+        earnpp_email = 'ddilakshi232@gmail.com'
+        earnpp_pass = 'Uwuinsta@2005'
+        feyorra_email = 'ddilakshi232@gmail.com'
+        feyorra_pass = 'Uwuinsta@2005'
+    elif '2' in layout:
+        server_name1 = 'hong kong' #'georgia'# 
+        CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+        earnpp_email = 'sheldonkumar54@gmail.com'
+        earnpp_pass = 'p~Q18oQjmp}nv6g'
+        feyorra_email = 'sheldonkumar54@gmail.com'
+        feyorra_pass = 'p~Q18oQjmp}nv6g'
+    elif '3' in layout:
+        server_name1 = 'jordan' #'georgia'# 
+        CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+        earnpp_email = 'markeshalland2@gmail.com'
+        earnpp_pass = 'markeshalland2'
+        feyorra_email = 'markeshalland2@gmail.com'
+        feyorra_pass = 'markeshalland2'
+    else:
+        print('Layout issue', layout)
+
 
 elif farm_id == 5:
-    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
-    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
-    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
-    fb_pass = 'ashen1997'
-    server_name1 = 'philippines'
-    CSB1_farms = [1, 2, 3, 4, 5]
-    earnpp_email = 'andyrogers468@gmail.com'
-    earnpp_pass = 'Uwuinsta@2005'
-    feyorra_email = 'andyrogers468@gmail.com'
-    feyorra_pass = 'Uwuinsta@2005'
-    claimc_email = 'andyrogers468@gmail.com'
-    claimc_pass = 'Uwuinsta@2005'
-    bitmoon_email = 'rondolftapatio'
-    bitmoon_pass = 'p~Q18oQjmp}nv6g'
+
+    if '1' in layout:
+        server_name1 = 'philippines'
+        CSB1_farms = [1, 2, 3, 4, 5]
+        earnpp_email = 'andyrogers468@gmail.com'
+        earnpp_pass = 'Uwuinsta@2005'
+        feyorra_email = 'andyrogers468@gmail.com'
+        feyorra_pass = 'Uwuinsta@2005'
+    elif '2' in layout:
+        server_name1 = 'malaysia' #'chile'
+        CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+        earnpp_email = 'howardrahul838@gmail.com'
+        earnpp_pass = 'howardrahul838'
+        feyorra_email = 'howardrahul838@gmail.com'
+        feyorra_pass = 'howardrahul838'
+    elif '3' in layout:
+        server_name1 = 'turkey' #'chile'
+        CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+        earnpp_email = 'redgta362@gmail.com'
+        earnpp_pass = 'redgta362'
+        feyorra_email = 'redgta362@gmail.com'
+        feyorra_pass = 'redgta362'
+    else:
+        print('Layout issue', layout)
 
 
-elif farm_id == 6:
-    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
-    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
-    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
-    fb_pass = 'ashen1997'
-    server_name1 = 'bulgaria'
-    CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-    earnpp_email = 'andrewperera70@gmail.com'
-    earnpp_pass = 'Uwuinsta@2005'
-    feyorra_email = 'andrewperera70@gmail.com'
-    feyorra_pass = 'Uwuinsta@2005'
-    claimc_email = 'andrewperera70@gmail.com'
-    claimc_pass = 'Uwuinsta@2005'
-    bitmoon_email = 'rondolftapatio'
-    bitmoon_pass = 'p~Q18oQjmp}nv6g'
-
-
-elif farm_id == 7:
-    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
-    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
-    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
-    fb_pass = 'ashen1997'
-    server_name1 = 'moldova'
-    CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-    earnpp_email = 'joeziega@gmail.com'
-    earnpp_pass = 'Uwuinsta@2005'
-    feyorra_email = 'joeziega@gmail.com'
-    feyorra_pass = 'Uwuinsta@2005'
-    claimc_email = 'joeziega@gmail.com'
-    claimc_pass = 'Uwuinsta@2005'
-    bitmoon_email = 'joeziega'
-    bitmoon_pass = 'p~Q18oQjmp}nv6g'
-
-
-elif farm_id == 8:
-    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
-    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
-    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
-    fb_pass = 'ashen1997'
-    server_name1 = 'belgium'
-    CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-    earnpp_email = 'markeshalland@gmail.com'
-    earnpp_pass = 'Uwuinsta@2005'
-    feyorra_email = 'markeshalland@gmail.com'
-    feyorra_pass = 'Uwuinsta@2005'
-    claimc_email = 'markeshalland@gmail.com'
-    claimc_pass = 'Uwuinsta@2005'
-    bitmoon_email = 'joeziega'
-    bitmoon_pass = 'p~Q18oQjmp}nv6g'
-
-elif farm_id == 9:
-    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
-    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
-    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
-    fb_pass = 'ashen1997'
-    server_name1 = 'georgia'
-    CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-    earnpp_email = 'sheldonkumar54@gmail.com'
-    earnpp_pass = 'p~Q18oQjmp}nv6g'
-    feyorra_email = 'sheldonkumar54@gmail.com'
-    feyorra_pass = 'p~Q18oQjmp}nv6g'
-    claimc_email = 'sheldonkumar54@gmail.com'
-    claimc_pass = 'p~Q18oQjmp}nv6g'
-    bitmoon_email = 'joeziega'
-    bitmoon_pass = 'p~Q18oQjmp}nv6g'
-
-elif farm_id == 10:
-    facebook_cookies = 'https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/Facebook_Logins/metroboom.json'
-    mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
-    yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
-    fb_pass = 'ashen1997'
-    server_name1 = 'chile'
-    CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-    earnpp_email = 'berendkalpana@gmail.com'
-    earnpp_pass = 'OYzKhFdLO5oEmwI2'
-    feyorra_email = 'berendkalpana@gmail.com'
-    feyorra_pass = 'OYzKhFdLO5oEmwI2'
-    claimc_email = 'berendkalpana@gmail.com'
-    claimc_pass = 'OYzKhFdLO5oEmwI2'
-    bitmoon_email = 'joeziega'
-    bitmoon_pass = 'p~Q18oQjmp}nv6g'
 else:
     while True:
         print('SOmething Wrong Did u use --farm')
@@ -262,19 +251,6 @@ feyorratop = False
 baymack = False
 
 
-mongo_uri = "mongodb+srv://redgta36:J6n7Hoz2ribHmMmx@moneyfarm.wwzcs.mongodb.net/?retryWrites=true&w=majority&appName=moneyfarm"
-
-client = MongoClient(mongo_uri)
-db = client['MoneyFarmV6'] 
-collection = db[f'Farm{farm_id}']
-
-collectionbip = db[f'LocalCSB']
-quer2y = {"type": "main"}
-dochh = collectionbip.find_one(quer2y)
-blacklistedIP = dochh["blacklistedIP"]
-print(blacklistedIP)
- 
-
 ocr = None #PaddleOCR(use_angle_cls=True, lang='en',  drop_score=0)
 
 
@@ -297,7 +273,7 @@ def add_messages(type_value, new_messages):
     except Exception as e:
         print(e)
 
-def insert_data(ip, amount1, amount2, amount3):
+def insert_data(ip, amount1, amount2, amount3,emailg):
     sri_lanka_tz = pytz.timezone('Asia/Colombo')
     utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
     sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
@@ -305,6 +281,7 @@ def insert_data(ip, amount1, amount2, amount3):
 
     query = {"type": "main"}
     sample_document = {
+        "Email": emailg,
         "pepelom": amount1,
         "feyorramack": amount2,
         "claimcoins": amount3,
@@ -1375,110 +1352,6 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
         time.sleep(3)
         print("🚀 Login attempt made!")
     
-    elif 'Earnbitmoon' in current_title:
-        print('Bigmoon')
-        if driver.is_element_visible('a.nav-link.btn.btn-success'):
-            driver.click('a.nav-link.btn.btn-success')
-            time.sleep(5)
-            print('Bigmoon click')
-            # Wait for the email input by type attribute
-            email_input = WebDriverWait(driver, 60).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, 'input[type="text"]'))
-            )
-            email_input.send_keys(email)
-
-            # Locate the password input by type attribute
-            password_input = driver.find_element(By.CSS_SELECTOR, 'input[type="password"]')
-            password_input.send_keys(password)
-            dropdowns = driver.find_elements(By.CSS_SELECTOR, 'select.form-control.custom-select.mb-2')
-            for dropdown in dropdowns:
-                try:
-                    # Only handle the first visible dropdown
-                    if dropdown.is_displayed():
-                        select = Select(dropdown)
-                        select.select_by_visible_text("Cloudflare")
-                        print("Cloudflare selected")
-                        break  # Exit the loop after selecting the first visible dropdown
-                except Exception as e:
-                    print(f"Error selecting from dropdown: {e}")
-            #checkbox = driver.find_element(By.CSS_SELECTOR, 'input[type="checkbox"]')
-            #driver.check_if_unchecked('input[type="checkbox"]')
-            time.sleep(5)
-            # Step 3: Wait for the CAPTCHA checkbox to be validated
-            print("CAPTCHA Check")
-            if captcha_image:
-                if 'rscaptcha'in captcha_image:
-                    try:
-                        solve_least_img(sb1)
-                        if 'Feyorra' in current_title:
-                            pyautogui.click(932 ,728)
-                            time.sleep(1)
-                            pyautogui.click(943 ,788)
-                                    #x:943 y:788
-                            time.sleep(5)
-                            return
-                        if 'ClaimCoin' in current_title:
-                            pyautogui.click(973, 833)
-                            time.sleep(5)
-                            return
-                        pyautogui.click(957 ,886)
-                        time.sleep(5)
-                        if driver.is_element_visible(submit_button):
-                            sb1.uc_click(submit_button)
-                        time.sleep(5)
-                        return
-                    except Exception as e:
-                        print(f'ERR:{e}') 
-                else:
-                    for i in range(1, 10):
-                        time.sleep(1)
-                        #pyautogui.moveTo(100, 200)
-                        #pyautogui.moveTo(200, 400)
-                        sb1.execute_script("window.scrollTo(0, 1000);")
-                        
-                        cloudflare(driver, True)
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
-                            if x and y: 
-
-                                #login_button = driver.find_element(By.CSS_SELECTOR, submit_button)
-                                #click_element_with_pyautogui(driver, login_button)
-                                #click_element_with_pyautogui(sb1, 'button[type="submit"]')
-                                if 'Feyorra' in current_title:
-                                    pyautogui.click(932 ,728)
-                                    time.sleep(1)
-                                    pyautogui.click(943 ,788)
-                                    #x:943 y:788
-                                    time.sleep(5)
-                                    return
-                                if 'ClaimCoin' in current_title:
-                                    pyautogui.click(973, 833)
-                                    time.sleep(5)
-                                    return
-                                pyautogui.click(957 ,886)
-                                time.sleep(5)
-                                if driver.is_element_visible(submit_button):
-                                    sb1.uc_click(submit_button)
-                                #sb1.uc_click('button[type="submit"]')
-                                
-                                #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
-                                #login_button.click(submit_button)
-                                time.sleep(5)
-                                return
-                        except Exception as e:
-                            print(f'ERR:{e}') 
-
-
-            print("✅ CAPTCHA validated")
-            #click_element_with_pyautogui(sb1, 'button[type="submit"]')
-            #pyautogui.press('enter')
-            if driver.is_element_visible(submit_button):
-                sb1.uc_click(submit_button)
-            time.sleep(3)
-            print("🚀 Login attempt made!")
-    else:
-        print('no login in Title')
-
 
 
 
@@ -1519,13 +1392,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         ip_address = get_ip(driver)
         if ip_required != ip_address:
             return 404
-        if function == 4:
-            if expected_title in current_title:
-                if driver.is_element_visible('a.nav-link.btn.btn-success'):
-                    login_to_faucet(url, sb1, bitmoon_email, bitmoon_pass, 'cloudflare_success', window_list, 'button[type="submit"]') #'not_a_robot'
-                elif sb1.is_element_present("#sidebarCoins"):
-                    if driver.current_window_handle not in window_list:
-                        ready = True
+
 
 
         if not_expected_title == current_title:
@@ -2592,7 +2459,12 @@ while True:
                             if gg:
                                 earnpp_limit_reached = None
                             else:
-                                refresh_count +=5
+                                if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
+                                    debug_messages(f'EarnPP Limit Reached')
+                                    response_messege('EarnPP Limit Reached')
+                                    earnpp_limit_reached = True
+                                else:
+                                    refresh_count +=5
                             debug_messages(f'Solved Icon Captcha on EarnPP')
                             val = get_coins(sb1, 1)
                             if val:
@@ -2643,7 +2515,12 @@ while True:
                             if gg:
                                 feyorra_limit_reached =None
                             else:
-                                refresh_count +=5
+                                if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
+                                    debug_messages(f'Feyorra Limit Reached')
+                                    response_messege('Feyorra Limit Reached')
+                                    feyorra_limit_reached =True
+                                else:
+                                    refresh_count +=5
                             val = get_coins(sb1, 2)
                             if val:
                                 feyorra_coins = val
@@ -2789,7 +2666,8 @@ while True:
                     print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}| ')
                     if earnpp_coins and feyorra_coins: #and claimc_coins: #and bitmoon_coins:
                         start_time3 = time.time()
-                        insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins)
+                        emailgg = f'{earnpp_email} <br>country: {server_name1} <br>Current Layout:{layout} <br>Farm:{farm_id}'
+                        insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins, emailgg)
                     else:
                         response_messege(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}')
                     #elif earnpp_coins and feyorra_coins and claimc_coins:

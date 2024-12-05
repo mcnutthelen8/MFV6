@@ -202,12 +202,12 @@ elif farm_id == 4:
 elif farm_id == 5:
 
     if '1' in layout:
-        server_name1 = 'philippines'
+        server_name1 = 'czech'
         CSB1_farms = [1, 2, 3, 4, 5]
-        earnpp_email = 'andyrogers4682@gmail.com' #andyrogers46.8@gmail.com
-        earnpp_pass = 'andyrogers4682'
-        feyorra_email = 'andyrogers4682@gmail.com'
-        feyorra_pass = 'andyrogers4682'
+        earnpp_email = 'gihanfer907@gmail.com' #gihanfer907@gmail.com
+        earnpp_pass = 'gihanfer907'
+        feyorra_email = 'gihanfer907@gmail.com'
+        feyorra_pass = 'gihanfer907'
     elif '2' in layout:
         server_name1 = 'malaysia' #'chile'
         CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]

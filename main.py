@@ -2397,9 +2397,10 @@ def debug_messages(messages):
 earnpp_count = 0 
 feyorra_count = 0
 claimcoin_count = 0
-
+query = {"type": "main"}
 refresh_count = 0
 for frm in CSB1_farms:
+    
     update = {"$set": {"response": f'Changed IP🔴: Starting Farm:{farm_id}'}}
     result = collection.update_one(query, update)
     update = {"$set": {"request": 'ipfixer'}}

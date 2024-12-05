@@ -2399,6 +2399,12 @@ feyorra_count = 0
 claimcoin_count = 0
 
 refresh_count = 0
+for frm in CSB1_farms:
+    update = {"$set": {"response": f'Changed IP🔴: Starting Farm:{farm_id}'}}
+    result = collection.update_one(query, update)
+    update = {"$set": {"request": 'ipfixer'}}
+    result = collection.update_one(query, update)
+
 earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
 start_time4 = 0
 time.sleep(2)

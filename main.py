@@ -189,12 +189,12 @@ elif farm_id == 4:
         feyorra_email = 'sheldonkumar54@gmail.com'
         feyorra_pass = 'p~Q18oQjmp}nv6g'
     elif '3' in layout:
-        server_name1 = 'jordan' #'georgia'# 
+        server_name1 = 'belgium' #'georgia'# 
         CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-        earnpp_email = 'markeshalland2@gmail.com'
-        earnpp_pass = 'markeshalland2'
-        feyorra_email = 'markeshalland2@gmail.com'
-        feyorra_pass = 'markeshalland2'
+        earnpp_email = 'markeshalland3@gmail.com'
+        earnpp_pass = 'markeshalland3'
+        feyorra_email = 'markeshalland3@gmail.com'
+        feyorra_pass = 'markeshalland3'
     else:
         print('Layout issue', layout)
 
@@ -204,10 +204,10 @@ elif farm_id == 5:
     if '1' in layout:
         server_name1 = 'philippines'
         CSB1_farms = [1, 2, 3, 4, 5]
-        earnpp_email = 'andyrogers468@gmail.com'
-        earnpp_pass = 'Uwuinsta@2005'
-        feyorra_email = 'andyrogers468@gmail.com'
-        feyorra_pass = 'Uwuinsta@2005'
+        earnpp_email = 'andyrogers4682@gmail.com' #andyrogers46.8@gmail.com
+        earnpp_pass = 'andyrogers4682'
+        feyorra_email = 'andyrogers4682@gmail.com'
+        feyorra_pass = 'andyrogers4682'
     elif '2' in layout:
         server_name1 = 'malaysia' #'chile'
         CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]

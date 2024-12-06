@@ -160,7 +160,7 @@ elif farm_id == 3:
         feyorra_pass = 'pennyscrambble'
 
     elif '3' in layout:
-        server_name1 = 'new zealand' #'belgium'
+        server_name1 = 'austria' #'belgium'
         CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
         earnpp_email = 'berendkalpana2@gmail.com'
         earnpp_pass = 'berendkalpana2'

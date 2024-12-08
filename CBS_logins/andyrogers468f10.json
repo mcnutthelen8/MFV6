@@ -1,7 +1,7 @@
 [
     {
         "domain": ".codesandbox.io",
-        "expirationDate": 1760110911,
+        "expirationDate": 1765178464,
         "hostOnly": false,
         "httpOnly": false,
         "name": "AMP_a205ed9b06",
@@ -10,11 +10,11 @@
         "secure": false,
         "session": false,
         "storeId": null,
-        "value": "JTdCJTIyZGV2aWNlSWQlMjIlM0ElMjJkNDk5NDBjYy00MWMwLTQ1ZjEtYTc0NS0wYjdlZTgxZmY0MDMlMjIlMkMlMjJ1c2VySWQlMjIlM0ElMjJhNjQ0ZDhkN2Y5ZWI4Zjk4NDk3MTE3ZmJmZjYzMGE1OTIwNWM3YjNlJTIyJTJDJTIyc2Vzc2lvbklkJTIyJTNBMTcyODU3NDc1NDE4MiUyQyUyMm9wdE91dCUyMiUzQWZhbHNlJTJDJTIybGFzdEV2ZW50VGltZSUyMiUzQTE3Mjg1NzQ5MTE3MTclMkMlMjJsYXN0RXZlbnRJZCUyMiUzQTM2JTdE"
+        "value": "JTdCJTIyZGV2aWNlSWQlMjIlM0ElMjIxZGZjYjFiNS1mMDI4LTQ1MTUtYWU1Ni0wNmE4MGNlNTBjZWYlMjIlMkMlMjJ1c2VySWQlMjIlM0ElMjJkYTZkODhmZTcyMGQ1ZWZmOTdhMWZkZDY5NzcwNjZhYmM4YTYzMWViJTIyJTJDJTIyc2Vzc2lvbklkJTIyJTNBMTczMzY0MjMwMzQ4MyUyQyUyMm9wdE91dCUyMiUzQWZhbHNlJTJDJTIybGFzdEV2ZW50VGltZSUyMiUzQTE3MzM2NDI0NjQ2MzElMkMlMjJsYXN0RXZlbnRJZCUyMiUzQTQ0JTdE"
     },
     {
         "domain": ".codesandbox.io",
-        "expirationDate": 1744299554,
+        "expirationDate": 1749367103,
         "hostOnly": false,
         "httpOnly": false,
         "name": "cc_cookie",
@@ -23,7 +23,7 @@
         "secure": true,
         "session": false,
         "storeId": null,
-        "value": "%7B%22categories%22%3A%5B%22functional%22%2C%22analytical%22%2C%22marketing%22%5D%2C%22revision%22%3A0%2C%22data%22%3Anull%2C%22consentTimestamp%22%3A%222024-10-10T15%3A39%3A14.180Z%22%2C%22consentId%22%3A%229b235f86-8e7f-45b0-a58e-51d344cae230%22%2C%22services%22%3A%7B%22functional%22%3A%5B%5D%2C%22analytical%22%3A%5B%5D%2C%22marketing%22%3A%5B%5D%7D%2C%22lastConsentTimestamp%22%3A%222024-10-10T15%3A39%3A14.180Z%22%2C%22expirationTime%22%3A1744299554180%7D"
+        "value": "%7B%22categories%22%3A%5B%22functional%22%2C%22analytical%22%2C%22marketing%22%5D%2C%22revision%22%3A0%2C%22data%22%3Anull%2C%22consentTimestamp%22%3A%222024-12-08T07%3A18%3A23.478Z%22%2C%22consentId%22%3A%22ab62ce44-1196-424c-be6d-43633f8db24c%22%2C%22services%22%3A%7B%22functional%22%3A%5B%5D%2C%22analytical%22%3A%5B%5D%2C%22marketing%22%3A%5B%5D%7D%2C%22lastConsentTimestamp%22%3A%222024-12-08T07%3A18%3A23.478Z%22%2C%22expirationTime%22%3A1749367103478%7D"
     },
     {
         "domain": ".codesandbox.io",
@@ -35,7 +35,7 @@
         "secure": true,
         "session": true,
         "storeId": null,
-        "value": "Z7oBdoIZarZNJjI4Rs4NhPf.kxxdlKLltz0rXDiT7Hg-1728574752302-0.0.1.1-604800000"
+        "value": "pJI3OrjkRyhQZnaBHaKd5cGIWLDWfYI7lWPlr8YNot0-1733642191580-0.0.1.1-604800000"
     },
     {
         "domain": "codesandbox.io",
@@ -47,11 +47,11 @@
         "secure": true,
         "session": true,
         "storeId": null,
-        "value": "XCP.S-79YdY7VtcQ6QALIKsaU28smjbqXTl7HeLhXBxu9dkvmmjzkd3psYAZens4JS8YoEnxM0KYPz-Gw3Ig2gaqDrpRoVyWWM6fXLHYLYry5XosCS4V00xrEiDQnGyA7EAuXCtNSX3vlXwIAyYVcq3aI46oYNGMR1-lHdfkoAgqq35PLC6i9notzJ5ajfIP9Cqk3q5j5J3NPuEjs3K_cwmAu0qWlRN3d5Z2ZFt0wbL2O4zb69qfcG1ea6zfv9no3Eg3mNAcVxatN9tQDOc5nke5I0Mucm_foKE49RjWT7OkYncUdMtAyabhX3QYtHolCsWbdsMfLdVZQ4odRBRvvXJpIYfPTmfUekCklB8GcXSIKEX1r3DmSSEIkzzfE0sE5SRoD5C-McqWpRghOBJvGjPOrUy08KEsHEjWu88AU-xrBbzd1bXffLZqGKMQTcJMykGT48I4JY-6SkqCa0CTaCnYuJg5noSHch2lbrEnk26wD9yjrWcmFDtCYLDJePxv03XdWfai0oxeE7Qb8bdJoR4E-ZZ4S3vgSukYMDlzq8TkpZqn5gIaA3gHIiCzehKv7LPQ2bq_md-LHmXquyWd2mcC_NoFFqAgq6VaZOzd8FWpmtRPqNpcDbrYYw"
+        "value": "XCP._Xkaap6jdXWRxrM6-JvRiJ3w1SiMis2m5ZLlXCPr-QZ46O8ZHVDUNS3EOHsKCnK5mlY0o7HWSrDS_E8cuG-eF_-VhpoNvo0sWdRIFnYyszPCsv6bx3AA75Ar4WNKojBU1RYT5h64iqzn4Kdzp37VghiuRKoKsGlYJedYfZ97EEabDaiR0gT0UXY-DhljSi4ki0OtIaZDH6ED4V2pDR5XnaKEyEUKEalTA-1pOJF95k4-j0YptLUokAxyAaKXts4OcjWx2V9RT67FnoFRHW3YFNnaNNYVmzr6Ez7tRjkxS4ogn7J2oDaVR5qL4QUuEEWKReig06gymrUDqOluCVMMEUat5CkspsNJvi1D9va2Jd1AMy6oFA7Bn99xWlL5TWjBAsq_v9-aLSic0f0Ivq1bFaO_ZQAvjLOvE8sd0HBH1vD7orrffr16v6818fjlCnKzBOZx4JImUEXXCvbqRQ2Irg8GHYIQdSFFPyCKAuovIOtSybvyQm79b5gDCcx7TIW2iSPOY_fo4xaPoB8UWpbDJ7LNS8zqEQWx5nXmzkG9NmeqWvwHKBkOL4eGUm92JnSF0eXLfS6LIiWt37J4XZi9IEQpIQMA2qn-dg1agg"
     },
     {
         "domain": "codesandbox.io",
-        "expirationDate": 1730994103.945863,
+        "expirationDate": 1736061654.786758,
         "hostOnly": true,
         "httpOnly": true,
         "name": "guardian_default_token",
@@ -60,11 +60,11 @@
         "secure": false,
         "session": false,
         "storeId": null,
-        "value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJDb2RlU2FuZGJveCIsImV4cCI6MTczMDk5NDEwNCwiaWF0IjoxNzI4NTc0OTA0LCJpc3MiOiJDb2RlU2FuZGJveCIsImp0aSI6IjU4Y2JjOTA1LTFlODQtNGExNy1hN2JhLWEwZDBjYjI5YjZjYyIsIm5iZiI6MTcyODU3NDkwMywic3ViIjoiVXNlcjoyNTZkYjgwMC01MjIwLTQxZjQtODdkMy02ZDU4MTk3OTNlNjMiLCJ0eXAiOiJyZWZyZXNoIn0.1u7-GsDPHdgG8-jBUC_KpzdNVKqprcGXem6_SjAw5hZGbgJxJnKVXbyIjslVHr8awhy6ybJfL04VLWAJZKDMxw"
+        "value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJDb2RlU2FuZGJveCIsImV4cCI6MTczNjA2MTY1NSwiaWF0IjoxNzMzNjQyNDU1LCJpc3MiOiJDb2RlU2FuZGJveCIsImp0aSI6IjUzOTcyNTQ2LTkxYzMtNGM2Mi1hM2JkLTdkNzRhYWY0Mzc3NiIsIm5iZiI6MTczMzY0MjQ1NCwic3ViIjoiVXNlcjp1c2VyXzNTN205Z1lGTnp0WGpBajgyenA1UWEiLCJ0eXAiOiJyZWZyZXNoIn0.PgnSxJQd13N2XxLsig4261o3o_lINPzpDkErtUphY49i8KaOc6PyQ484OZnCDDaQkU2Mn27xQ55lB7_tsC5tcA"
     },
     {
         "domain": "codesandbox.io",
-        "expirationDate": 1730994104.710239,
+        "expirationDate": 1736061655.01827,
         "hostOnly": true,
         "httpOnly": false,
         "name": "signedIn",

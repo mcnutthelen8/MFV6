@@ -1139,6 +1139,7 @@ def capture_element_screenshot(driver, selector, screenshot_path="full_screensho
 if run_sb1:
     sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path )
     sb1.maximize_window()
+    time.sleep(99999990)
     sb1.uc_open("chrome://extensions/")
     current_window = sb1.current_window_handle
     sb1.open_new_window()

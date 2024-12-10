@@ -638,6 +638,8 @@ def mysterium_web_login(driver):
                 print("No all_site .")
             try:
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
+                time.sleep(3)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
                 pyautogui.click(x, y)
                 print("import_icon Found")
                 time.sleep(3)

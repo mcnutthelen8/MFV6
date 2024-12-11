@@ -652,10 +652,13 @@ def mysterium_web_login(driver):
                         print(f"Failed to retrieve the content. Status code: {response.status_code}")
                         text_content = None
                     if text_content:
+                        clipboard.copy(text_content)
                         pyautogui.click(1385, 310)
                         time.sleep(1)
-                        
-                        pyautogui.typewrite(text_content)
+                        pyautogui.keyDown('ctrl')
+                        pyautogui.press('v')
+                        pyautogui.keyUp('ctrl')
+                        #pyautogui.typewrite(text_content)
                         time.sleep(5)
                         try:
                             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)

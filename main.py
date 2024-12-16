@@ -81,154 +81,176 @@ dochh = collectionbip.find_one(quer2y)
 blacklistedIP = dochh["blacklistedIP"]
 print(blacklistedIP)
 
-dochh2 = collection.find_one(quer2y)
-layout = dochh2["withdraw_mail"]
-print(f'Farm ID:{farm_id} | Layout: {layout}')
 
-if farm_id == 1:
+server_name1 = ''
+CSB1_farms  = ''
+earnpp_email = ''
+earnpp_pass = ''
+feyorra_email = ''
+feyorra_pass = ''
+layout = ''
 
-    if '1' in layout:
-        server_name1 = 'thailand'
-        CSB1_farms = [1, 2, 3, 4, 5]
-        earnpp_email = 'khabibmakanzie@gmail.com'
-        earnpp_pass = 'CQ2pNwi3zsFgat@'
-        feyorra_email = 'khabibmakanzie@gmail.com'
-        feyorra_pass = 'D6.6fz9r5QVyziT'
-    elif '2' in layout:
-        server_name1 = 'bulgaria' # 'morocco' #'bulgaria'
-        CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-        earnpp_email = 'amytanisha250@gmail.com'
-        earnpp_pass = 'amytanisha250'
-        feyorra_email = 'amytanisha250@gmail.com'
-        feyorra_pass = 'amytanisha250'
-    elif '3' in layout:
-        server_name1 = 'brazil' # 'morocco' #'bulgaria'
-        CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-        earnpp_email = 'grandkolla999br@gmail.com'
-        earnpp_pass = 'grandkolla999br'
-        feyorra_email = 'grandkolla999br@gmail.com'
-        feyorra_pass = 'grandkolla999br'
+def get_mails_passowrds(farm_id):
+    global server_name1
+    global CSB1_farms
+    global earnpp_email
+    global earnpp_pass
+    global feyorra_email
+    global feyorra_pass
+    global layout
+
+    collection = db[f'Farm{farm_id}']
+    quer2y = {"type": "main"}
+    dochh2 = collection.find_one(quer2y)
+    layout = dochh2["withdraw_mail"]
+    print(f'Farm ID:{farm_id} | Layout: {layout}')
+
+    if farm_id == 1:
+
+        if '1' in layout:
+            server_name1 = 'thailand'
+            CSB1_farms = [1, 2, 3, 4, 5]
+            earnpp_email = 'khabibmakanzie@gmail.com'
+            earnpp_pass = 'CQ2pNwi3zsFgat@'
+            feyorra_email = 'khabibmakanzie@gmail.com'
+            feyorra_pass = 'D6.6fz9r5QVyziT'
+        elif '2' in layout:
+            server_name1 = 'bulgaria' # 'morocco' #'bulgaria'
+            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+            earnpp_email = 'amytanisha250@gmail.com'
+            earnpp_pass = 'amytanisha250'
+            feyorra_email = 'amytanisha250@gmail.com'
+            feyorra_pass = 'amytanisha250'
+        elif '3' in layout:
+            server_name1 = 'bulgaria' # 'morocco' #'bulgaria'
+            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+            earnpp_email = 'grandkolla999br@gmail.com'
+            earnpp_pass = 'grandkolla999br'
+            feyorra_email = 'grandkolla999br@gmail.com'
+            feyorra_pass = 'grandkolla999br'
+        else:
+            print('Layout issue', layout)
+
+    elif farm_id == 2:
+
+        if '1' in layout:
+            server_name1 = 'estonia'
+            CSB1_farms = [1, 2, 3, 4, 5]
+            earnpp_email = 'metroboom910@gmail.com'
+            earnpp_pass = 'metroboom910'
+            feyorra_email = 'metroboom910@gmail.com'
+            feyorra_pass = 'metroboom910'
+
+        elif '2' in layout:
+            server_name1 = 'finland' #'portugal'
+            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+            earnpp_email = 'merlelcn@gmail.com'
+            earnpp_pass = 'I2Ne7C329jJt'
+            feyorra_email = 'merlelcn@gmail.com'
+            feyorra_pass = 'I2Ne7C329jJt'
+
+        elif '3' in layout:
+            server_name1 = 'finland' #'portugal'
+            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+            earnpp_email = 'rondolftapatio2@gmail.com'
+            earnpp_pass = 'rondolftapatio2'
+            feyorra_email = 'rondolftapatio2@gmail.com'
+            feyorra_pass = 'rondolftapatio2'
+        else:
+            print('Layout issue', layout)
+
+
+    elif farm_id == 3:
+
+        if '1' in layout:
+            server_name1 = 'egypt'
+            CSB1_farms = [1, 2, 3, 4, 5]
+            earnpp_email = 'yvonne12463@gmail.com'
+            earnpp_pass = 'Uwuinsta@2005'
+            feyorra_email = 'yvonne12463@gmail.com'
+            feyorra_pass = 'Uwuinsta@2005'
+
+
+        elif '2' in layout:
+            server_name1 = 'spain' #'belgium'
+            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+            earnpp_email = 'pennyscrambble@gmail.com'
+            earnpp_pass = 'pennyscrambble'
+            feyorra_email = 'pennyscrambble@gmail.com'
+            feyorra_pass = 'pennyscrambble'
+
+        elif '3' in layout:
+            server_name1 = 'spain' #'belgium'
+            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+            earnpp_email = 'berendkalpana2@gmail.com'
+            earnpp_pass = 'berendkalpana2'
+            feyorra_email = 'berendkalpana2@gmail.com'
+            feyorra_pass = 'berendkalpana2'
+
+
+        else:
+            print('Layout issue', layout)
+
+
+    elif farm_id == 4:
+
+        if '1' in layout:
+            server_name1 = 'hungary'
+            CSB1_farms = [1, 2, 3, 4, 5]
+            earnpp_email = 'ddilakshi232@gmail.com'
+            earnpp_pass = 'Uwuinsta@2005'
+            feyorra_email = 'ddilakshi232@gmail.com'
+            feyorra_pass = 'Uwuinsta@2005'
+        elif '2' in layout:
+            server_name1 = 'hong kong' #'georgia'# 
+            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+            earnpp_email = 'sheldonkumar54@gmail.com'
+            earnpp_pass = 'p~Q18oQjmp}nv6g'
+            feyorra_email = 'sheldonkumar54@gmail.com'
+            feyorra_pass = 'p~Q18oQjmp}nv6g'
+        elif '3' in layout:
+            server_name1 = 'hong kong' #'georgia'# 
+            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+            earnpp_email = 'markeshalland3@gmail.com'
+            earnpp_pass = 'markeshalland3'
+            feyorra_email = 'markeshalland3@gmail.com'
+            feyorra_pass = 'markeshalland3'
+        else:
+            print('Layout issue', layout)
+
+
+    elif farm_id == 5:
+
+        if '1' in layout:
+            server_name1 = 'argentina'
+            CSB1_farms = [1, 2, 3, 4, 5]
+            earnpp_email = 'gihanfer907@gmail.com' #gihanfer907@gmail.com
+            earnpp_pass = 'gihanfer907'
+            feyorra_email = 'gihanfer907@gmail.com'
+            feyorra_pass = 'gihanfer907'
+        elif '2' in layout:
+            server_name1 = 'malaysia' #'chile'
+            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+            earnpp_email = 'howardrahul838@gmail.com'
+            earnpp_pass = 'howardrahul838'
+            feyorra_email = 'howardrahul838@gmail.com'
+            feyorra_pass = 'howardrahul838'
+        elif '3' in layout:
+            server_name1 = 'malaysia' #'chile'
+            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+            earnpp_email = 'redgta362@gmail.com'
+            earnpp_pass = 'redgta362'
+            feyorra_email = 'redgta362@gmail.com'
+            feyorra_pass = 'redgta362'
+        else:
+            print('Layout issue', layout)
+
+
     else:
-        print('Layout issue', layout)
-
-elif farm_id == 2:
-
-    if '1' in layout:
-        server_name1 = 'estonia'
-        CSB1_farms = [1, 2, 3, 4, 5]
-        earnpp_email = 'metroboom910@gmail.com'
-        earnpp_pass = 'metroboom910'
-        feyorra_email = 'metroboom910@gmail.com'
-        feyorra_pass = 'metroboom910'
-
-    elif '2' in layout:
-        server_name1 = 'finland' #'portugal'
-        CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-        earnpp_email = 'merlelcn@gmail.com'
-        earnpp_pass = 'I2Ne7C329jJt'
-        feyorra_email = 'merlelcn@gmail.com'
-        feyorra_pass = 'I2Ne7C329jJt'
-
-    elif '3' in layout:
-        server_name1 = 'albania' #'portugal'
-        CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-        earnpp_email = 'rondolftapatio2@gmail.com'
-        earnpp_pass = 'rondolftapatio2'
-        feyorra_email = 'rondolftapatio2@gmail.com'
-        feyorra_pass = 'rondolftapatio2'
-    else:
-        print('Layout issue', layout)
+        while True:
+            print('SOmething Wrong Did u use --farm')
 
 
-elif farm_id == 3:
-
-    if '1' in layout:
-        server_name1 = 'egypt'
-        CSB1_farms = [1, 2, 3, 4, 5]
-        earnpp_email = 'yvonne12463@gmail.com'
-        earnpp_pass = 'Uwuinsta@2005'
-        feyorra_email = 'yvonne12463@gmail.com'
-        feyorra_pass = 'Uwuinsta@2005'
-
-
-    elif '2' in layout:
-        server_name1 = 'spain' #'belgium'
-        CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-        earnpp_email = 'pennyscrambble@gmail.com'
-        earnpp_pass = 'pennyscrambble'
-        feyorra_email = 'pennyscrambble@gmail.com'
-        feyorra_pass = 'pennyscrambble'
-
-    elif '3' in layout:
-        server_name1 = 'austria' #'belgium'
-        CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-        earnpp_email = 'berendkalpana2@gmail.com'
-        earnpp_pass = 'berendkalpana2'
-        feyorra_email = 'berendkalpana2@gmail.com'
-        feyorra_pass = 'berendkalpana2'
-
-
-    else:
-        print('Layout issue', layout)
-
-
-elif farm_id == 4:
-
-    if '1' in layout:
-        server_name1 = 'hungary'
-        CSB1_farms = [1, 2, 3, 4, 5]
-        earnpp_email = 'ddilakshi232@gmail.com'
-        earnpp_pass = 'Uwuinsta@2005'
-        feyorra_email = 'ddilakshi232@gmail.com'
-        feyorra_pass = 'Uwuinsta@2005'
-    elif '2' in layout:
-        server_name1 = 'hong kong' #'georgia'# 
-        CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-        earnpp_email = 'sheldonkumar54@gmail.com'
-        earnpp_pass = 'p~Q18oQjmp}nv6g'
-        feyorra_email = 'sheldonkumar54@gmail.com'
-        feyorra_pass = 'p~Q18oQjmp}nv6g'
-    elif '3' in layout:
-        server_name1 = 'belgium' #'georgia'# 
-        CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-        earnpp_email = 'markeshalland3@gmail.com'
-        earnpp_pass = 'markeshalland3'
-        feyorra_email = 'markeshalland3@gmail.com'
-        feyorra_pass = 'markeshalland3'
-    else:
-        print('Layout issue', layout)
-
-
-elif farm_id == 5:
-
-    if '1' in layout:
-        server_name1 = 'argentina'
-        CSB1_farms = [1, 2, 3, 4, 5]
-        earnpp_email = 'gihanfer907@gmail.com' #gihanfer907@gmail.com
-        earnpp_pass = 'gihanfer907'
-        feyorra_email = 'gihanfer907@gmail.com'
-        feyorra_pass = 'gihanfer907'
-    elif '2' in layout:
-        server_name1 = 'malaysia' #'chile'
-        CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-        earnpp_email = 'howardrahul838@gmail.com'
-        earnpp_pass = 'howardrahul838'
-        feyorra_email = 'howardrahul838@gmail.com'
-        feyorra_pass = 'howardrahul838'
-    elif '3' in layout:
-        server_name1 = 'turkey' #'chile'
-        CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-        earnpp_email = 'redgta362@gmail.com'
-        earnpp_pass = 'redgta362'
-        feyorra_email = 'redgta362@gmail.com'
-        feyorra_pass = 'redgta362'
-    else:
-        print('Layout issue', layout)
-
-
-else:
-    while True:
-        print('SOmething Wrong Did u use --farm')
 
 debug_mode = True
 
@@ -658,7 +680,7 @@ def mysterium_web_login(driver):
                         pyautogui.keyDown('ctrl')
                         pyautogui.press('v')
                         pyautogui.keyUp('ctrl')
-                        #pyautogui.typewrite(text_content)
+                        pyautogui.typewrite(text_content)
                         time.sleep(5)
                         try:
                             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
@@ -1397,7 +1419,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         ip_address = get_ip(driver)
         if ip_required != ip_address:
             return 404
-
+        get_mails_passowrds(farm_id)
 
 
         if not_expected_title == current_title:
@@ -1552,12 +1574,20 @@ def get_coins(driver, sitekey):
                 print(f'Sitekey:{sitekey} not found')
             #coins = float(coins.split()[0]) 
         if sitekey == 2:
-            if driver.is_element_present('select.form-select'):
-                select_element = driver.find_element('css selector', 'select.form-select')
-                selected_option = select_element.find_element('css selector', 'option[selected]')
-                selected_text = selected_option.text  # Corrected line
-                print(f"Selected option text: {selected_text}")
-                coins = selected_text
+            pyautogui.keyDown('ctrl')
+            pyautogui.press('a')
+            pyautogui.keyUp('ctrl')
+            time.sleep(1)
+            pyautogui.keyDown('ctrl')
+            pyautogui.press('v')
+            pyautogui.keyUp('ctrl')
+            input_text = clipboard.paste()
+            trx_values = re.findall(r'(\d+\.\d+) TRX', input_text)
+            if trx_values:
+                trx_value = trx_values[0]
+                print(f"Extracted TRX value: {trx_value}")
+
+                coins = trx_value
             else:
                 print(f'Sitekey:{sitekey} not found')
         if sitekey == 3:
@@ -2207,7 +2237,62 @@ feyorra_coins_pre = None
 claimc_coins_pre = None
 earnpp_limit_reached = None
 feyorra_limit_reached = None
-if run_sb1:
+#if run_sb1:
+sb1 = None
+def are_extensions_exist():
+    try:
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/extension_icon.png", region=(1700, 30, 300, 300), confidence=0.9)
+        #pyautogui.click(x, y)
+        print("extension_icon Button Found")
+        return False
+
+    except pyautogui.ImageNotFoundException:
+        print("No extension_icon Button.")
+        return True
+    
+
+def get_blacklistedip2(input):
+    ips = []
+    collectionbip = db[f'LocalCSB']
+    quer2y = {"type": "main"}
+    dochh = collectionbip.find_one(quer2y)
+    blacklistedIP = dochh["blacklistedIP2"]
+    if input in blacklistedIP:
+        ips = blacklistedIP[input]
+    print(ips)
+
+    return ips
+
+
+def add_blacklistedip2(input, ip):
+    collectionbip = db[f'LocalCSB']
+    query = {"type": "main"}
+    update = {
+        "$addToSet": {  # Ensures the IP is added only if it doesn't already exist
+            f"blacklistedIP2.{input}": ip
+        }
+    }
+    result = collectionbip.update_one(query, update)
+    if result.modified_count > 0:
+        print(f"Successfully added IP '{ip}' to {input}.")
+    else:
+        print(f"No update occurred. IP '{ip}' might already exist.")
+
+
+
+
+
+def open_browsers():
+    global sb1
+    global chrome_user_data_dir
+    global layout
+
+    quer2y = {"type": "main"}
+    dochh2 = collection.find_one(quer2y)
+    layout = dochh2["withdraw_mail"]
+    print(f'Farm ID:{farm_id} | Layout: {layout}')
+    chrome_user_data_dir = f'/root/.config/google-chrome/{layout}'
+
     sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path, disable_gpu=True, page_load_strategy='none' )
     sb1.maximize_window()
     sb1.uc_open("chrome://extensions/")
@@ -2220,47 +2305,65 @@ if run_sb1:
     sb1.uc_open("chrome://extensions/")
 
     print(sb1.get_title())
-    
-    if fresh >= 3:
-        mysterium = install_extensions('mysterium')
-        nopecha = True#install_extensions('nopecha')
-        cookie = install_extensions('cookie')
-        fingerprint = install_extensions('fingerprint')
-        mfhelper = install_extensions('mfhelper')
-        if fingerprint and mysterium and nopecha and cookie and mfhelper:
-            print('All Extensions are installed..')
-            query = {"type": "main"}
-            update = {"$set": {"response": 'All Extensions are installed..'}}
-            result = collection.update_one(query, update)
-
-    if fresh >= 2:
-        if pin_extensions():
-            print('All Extensions are pinned')
-            query = {"type": "main"}
-            update = {"$set": {"response": 'All Extensions are pinned'}}
-            result = collection.update_one(query, update)
-
-            if mysterium_login(sb1):
-                print('Mysterium Login Done...')
+    gggv = are_extensions_exist()
+    if gggv:
+        if fresh >= 3:
+            mysterium = install_extensions('mysterium')
+            nopecha = True#install_extensions('nopecha')
+            cookie = install_extensions('cookie')
+            fingerprint = install_extensions('fingerprint')
+            mfhelper = install_extensions('mfhelper')
+            if fingerprint and mysterium and nopecha and cookie and mfhelper:
+                print('All Extensions are installed..')
                 query = {"type": "main"}
-                update = {"$set": {"response": 'Mysterium Login Done...'}}
+                update = {"$set": {"response": 'All Extensions are installed..'}}
                 result = collection.update_one(query, update)
 
+        if fresh >= 2:
+            if pin_extensions():
+                print('All Extensions are pinned')
+                query = {"type": "main"}
+                update = {"$set": {"response": 'All Extensions are pinned'}}
+                result = collection.update_one(query, update)
+
+                if mysterium_login(sb1):
+                    print('Mysterium Login Done...')
+                    query = {"type": "main"}
+                    update = {"$set": {"response": 'Mysterium Login Done...'}}
+                    result = collection.update_one(query, update)
+
     if fresh >= 1:            
-        #facebook_login()
+            #facebook_login()
         sb1.maximize_window()
         query = {"type": "main"}
         update = {"$set": {"response": 'Setup Done...'}}
         result = collection.update_one(query, update)
-    
-
-
+        
+    return sb1
 
 
 def open_faucets():
     global sb1
     while True:
         try:
+            quer2y = {"type": "main"}
+            dochh2 = collection.find_one(quer2y)
+            layout2 = dochh2["withdraw_mail"]
+            print(f'Farm ID:{farm_id} | Layout: {layout2}')
+            chrome_user_data_dir2 = f'/root/.config/google-chrome/{layout2}'
+            if chrome_user_data_dir2 == chrome_user_data_dir and layout == layout2:
+                response_messege('Same Browser ...')
+                pass
+            else:
+                response_messege(f'Resetting Browser{e}')
+                try:
+                    subprocess.run(['pkill', '-f', 'chrome'], check=True)
+                    print(f"All chrome processes killed successfully.{e}")
+                except subprocess.CalledProcessError:
+                    print(f"Failed to kill chrome processes or no processes found.{e}")
+                time.sleep(10)
+                sb1 = open_browsers()
+                continue
             pyautogui.moveTo(100, 200)
             pyautogui.moveTo(200, 400)
             current_window = sb1.current_window_handle
@@ -2279,9 +2382,11 @@ def open_faucets():
             blacklistedIP2 = dochh["blacklistedIP"]
             if len(blacklistedIP) <= len(blacklistedIP2):
                 blacklistedIP = blacklistedIP2
-
             print(blacklistedIP)
-            
+            lay = re.search(r'\d+', layout2).group()
+            other_blacklists = get_blacklistedip2(f'F{farm_id}L{lay}')
+            if other_blacklists:
+                blacklistedIP = blacklistedIP + other_blacklists
             response_messege('Fixing IP')
             ip_address = get_ip(sb1)
             ipscore = get_ipscore(ip_address)
@@ -2303,9 +2408,13 @@ def open_faucets():
                 ipfixer()
                 ip_required = fix_ip(sb1, server_name1)
                 ip_address = get_ip(sb1)
+
             #ip_address = get_ip(sb1)
+            
             if ip_address:
                 ip_required = ip_address
+                add_blacklistedip2(f'F{farm_id}L{lay}', ip_address)
+                get_mails_passowrds(farm_id)
                 
                 ip_address = get_ip(sb1)
                 if ip_required == ip_address:
@@ -2381,18 +2490,7 @@ def open_faucets():
                 except subprocess.CalledProcessError:
                     print(f"Failed to kill chrome processes or no processes found.{e}")
                 time.sleep(10)
-                sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path,  page_load_strategy='none')
-                sb1.maximize_window()
-                sb1.uc_open("chrome://extensions/")
-                current_window = sb1.current_window_handle
-                sb1.open_new_window()
-                current_window2 = sb1.current_window_handle
-                sb1.switch_to.window(current_window)
-                sb1.close()  # Close the tab
-                sb1.switch_to.window(current_window2)
-                sb1.uc_open("chrome://extensions/")
-
-                print(sb1.get_title())
+                sb1 = open_browsers()
                 reset_count +=15
 
 def debug_messages(messages):
@@ -2740,17 +2838,6 @@ while True:
             except subprocess.CalledProcessError:
                 print("Failed to kill chrome processes or no processes found.")
             time.sleep(10)
-            sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path,  page_load_strategy='none')
-            sb1.maximize_window()
-            sb1.uc_open("chrome://extensions/")
-            current_window = sb1.current_window_handle
-            sb1.open_new_window()
-            current_window2 = sb1.current_window_handle
-            sb1.switch_to.window(current_window)
-            sb1.close()  # Close the tab
-            sb1.switch_to.window(current_window2)
-            sb1.uc_open("chrome://extensions/")
-
-            print(sb1.get_title())
+            sb1 = open_browsers()
             reset_count +=15
         reset_count +=1

@@ -594,6 +594,7 @@ def fix_ip(drive, name):
     proxycheck = None
     ip_address = 0
     while not (ipscore and proxycheck):
+        get_mails_passowrds(farm_id)
         ip_address = get_ip(drive)
         if ip_address in blacklistedIP:
             print(f'Bad IP detected: {ip_address}. Changing IP...')
@@ -680,7 +681,7 @@ def mysterium_web_login(driver):
                         pyautogui.keyDown('ctrl')
                         pyautogui.press('v')
                         pyautogui.keyUp('ctrl')
-                        pyautogui.typewrite(text_content)
+                        #pyautogui.typewrite(text_content)
                         time.sleep(5)
                         try:
                             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
@@ -2257,10 +2258,20 @@ def get_blacklistedip2(input):
     quer2y = {"type": "main"}
     dochh = collectionbip.find_one(quer2y)
     blacklistedIP = dochh["blacklistedIP2"]
-    if input in blacklistedIP:
-        ips = blacklistedIP[input]
-    print(ips)
 
+    for x in range(1,5):
+        fn = f'F{farm_id}L{x}'
+        try:
+            if fn == input:
+                continue
+            else:
+                data_list = blacklistedIP[fn]
+                ips = ips + data_list
+                print('Layout:',x)
+
+        except Exception as e:
+            pass
+    print(ips)
     return ips
 
 
@@ -2306,6 +2317,7 @@ def open_browsers():
 
     print(sb1.get_title())
     gggv = are_extensions_exist()
+    get_mails_passowrds(farm_id)
     if gggv:
         if fresh >= 3:
             mysterium = install_extensions('mysterium')

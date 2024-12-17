@@ -723,7 +723,7 @@ def mysterium_login(driver):
         if 'Home' in titile:
 
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
                 pyautogui.click(x, y)
                 print("mysterium_icon_empty Found")
                 i = 1

@@ -2234,7 +2234,7 @@ feyorra_limit_reached = None
 sb1 = None
 def are_extensions_exist():
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cookie_icon.png", region=(1700, 30, 300, 300), confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cookie_icon.png", region=(1625, 43, 400, 300), confidence=0.9)
             #pyautogui.click(x, y)
             print("extension_icon Button Found")
             return False
@@ -2290,7 +2290,9 @@ def get_browser_proxy():
     dochh = collectionbip.find_one(quer2y)
     proxy = dochh["browser_proxy"]
     print('BRowser PRoxy :', proxy)
-    return proxy
+    global browser_proxy
+    browser_proxy = proxy
+    return browser_proxy
 
 browser_proxy = ''
 def open_browsers():
@@ -2368,7 +2370,7 @@ def open_faucets():
             print(f'Farm ID:{farm_id} | Layout: {layout2}')
             browser_proxy2  =get_browser_proxy()
             chrome_user_data_dir2 = f'/root/.config/google-chrome/{browser_proxy2}{layout2}'
-            if chrome_user_data_dir2 in layout2 and layout == layout2 and browser_proxy2 == browser_proxy:
+            if layout2 in chrome_user_data_dir2 and layout == layout2 and browser_proxy2 == browser_proxy:
                 response_messege('Same Browser ...')
                 pass
             else:

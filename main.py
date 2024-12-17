@@ -1575,20 +1575,12 @@ def get_coins(driver, sitekey):
                 print(f'Sitekey:{sitekey} not found')
             #coins = float(coins.split()[0]) 
         if sitekey == 2:
-            pyautogui.keyDown('ctrl')
-            pyautogui.press('a')
-            pyautogui.keyUp('ctrl')
-            time.sleep(1)
-            pyautogui.keyDown('ctrl')
-            pyautogui.press('v')
-            pyautogui.keyUp('ctrl')
-            input_text = clipboard.paste()
-            trx_values = re.findall(r'(\d+\.\d+) TRX', input_text)
-            if trx_values:
-                trx_value = trx_values[0]
-                print(f"Extracted TRX value: {trx_value}")
-
-                coins = trx_value
+            if driver.is_element_present('select.form-select'):
+                select_element = driver.find_element('css selector', 'select.form-select')
+                selected_option = select_element.find_element('css selector', 'option[selected]')
+                selected_text = selected_option.text  # Corrected line
+                print(f"Selected option text: {selected_text}")
+                coins = selected_text
             else:
                 print(f'Sitekey:{sitekey} not found')
         if sitekey == 3:
@@ -2291,12 +2283,21 @@ def add_blacklistedip2(input, ip):
 
 
 
+def get_browser_proxy():
+    collectionbip = db[f'LocalCSB']
+    quer2y = {"type": "main"}
+    dochh = collectionbip.find_one(quer2y)
+    proxy = dochh["browser_proxy"]
+    return proxy
 
-
+browser_proxy = ''
 def open_browsers():
     global sb1
     global chrome_user_data_dir
     global layout
+    global browser_proxy
+
+    browser_proxy  =get_browser_proxy()
 
     quer2y = {"type": "main"}
     dochh2 = collection.find_one(quer2y)
@@ -2304,7 +2305,7 @@ def open_browsers():
     print(f'Farm ID:{farm_id} | Layout: {layout}')
     chrome_user_data_dir = f'/root/.config/google-chrome/{layout}'
 
-    sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path, disable_gpu=True, page_load_strategy='none' )
+    sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path, page_load_strategy='none', proxy=browser_proxy )
     sb1.maximize_window()
     sb1.uc_open("chrome://extensions/")
     current_window = sb1.current_window_handle

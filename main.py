@@ -2233,10 +2233,6 @@ feyorra_limit_reached = None
 #if run_sb1:
 sb1 = None
 def are_extensions_exist():
-    try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/extension_icon.png", region=(1700, 30, 300, 300), confidence=0.9)
-        #pyautogui.click(x, y)
-        print("extension_icon Button Found")
         try:
             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cookie_icon.png", region=(1700, 30, 300, 300), confidence=0.9)
             #pyautogui.click(x, y)
@@ -2247,10 +2243,7 @@ def are_extensions_exist():
             print("No extension_icon Button.")
             return True
         
-    except pyautogui.ImageNotFoundException:
-        print("No extension_icon Button.")
-        return True
-    
+
 
 def get_blacklistedip2(input):
     ips = []
@@ -2296,6 +2289,7 @@ def get_browser_proxy():
     quer2y = {"type": "main"}
     dochh = collectionbip.find_one(quer2y)
     proxy = dochh["browser_proxy"]
+    print('BRowser PRoxy :', proxy)
     return proxy
 
 browser_proxy = ''
@@ -2323,7 +2317,7 @@ def open_browsers():
     sb1.close()  # Close the tab
     sb1.switch_to.window(current_window2)
     sb1.uc_open("chrome://extensions/")
-
+    time.sleep(7)
     print(sb1.get_title())
     gggv = are_extensions_exist()
     get_mails_passowrds(farm_id)
@@ -2359,7 +2353,8 @@ def open_browsers():
         query = {"type": "main"}
         update = {"$set": {"response": 'Setup Done...'}}
         result = collection.update_one(query, update)
-        
+    
+    time.sleep(10)
     return sb1
 
 
@@ -2371,17 +2366,18 @@ def open_faucets():
             dochh2 = collection.find_one(quer2y)
             layout2 = dochh2["withdraw_mail"]
             print(f'Farm ID:{farm_id} | Layout: {layout2}')
-            chrome_user_data_dir2 = f'/root/.config/google-chrome/{layout2}'
-            if chrome_user_data_dir2 == chrome_user_data_dir and layout == layout2:
+            browser_proxy2  =get_browser_proxy()
+            chrome_user_data_dir2 = f'/root/.config/google-chrome/{browser_proxy2}{layout2}'
+            if chrome_user_data_dir2 in layout2 and layout == layout2 and browser_proxy2 == browser_proxy:
                 response_messege('Same Browser ...')
                 pass
             else:
-                response_messege(f'Resetting Browser{e}')
+                response_messege(f'Resetting Browser')
                 try:
                     subprocess.run(['pkill', '-f', 'chrome'], check=True)
-                    print(f"All chrome processes killed successfully.{e}")
+                    print(f"All chrome processes killed successfully.")
                 except subprocess.CalledProcessError:
-                    print(f"Failed to kill chrome processes or no processes found.{e}")
+                    print(f"Failed to kill chrome processes or no processes found.")
                 time.sleep(10)
                 sb1 = open_browsers()
                 continue

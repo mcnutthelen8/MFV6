@@ -2237,8 +2237,16 @@ def are_extensions_exist():
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/extension_icon.png", region=(1700, 30, 300, 300), confidence=0.9)
         #pyautogui.click(x, y)
         print("extension_icon Button Found")
-        return False
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cookie_icon.png", region=(1700, 30, 300, 300), confidence=0.9)
+            #pyautogui.click(x, y)
+            print("extension_icon Button Found")
+            return False
 
+        except pyautogui.ImageNotFoundException:
+            print("No extension_icon Button.")
+            return True
+        
     except pyautogui.ImageNotFoundException:
         print("No extension_icon Button.")
         return True

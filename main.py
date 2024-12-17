@@ -2307,7 +2307,7 @@ def open_browsers():
     dochh2 = collection.find_one(quer2y)
     layout = dochh2["withdraw_mail"]
     print(f'Farm ID:{farm_id} | Layout: {layout}')
-    chrome_user_data_dir = f'/root/.config/google-chrome/{layout}'
+    chrome_user_data_dir = f'/root/.config/google-chrome/{browser_proxy}{layout}'
 
     sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path, page_load_strategy='none', proxy=browser_proxy )
     sb1.maximize_window()
@@ -2370,7 +2370,7 @@ def open_faucets():
             print(f'Farm ID:{farm_id} | Layout: {layout2}')
             browser_proxy2  =get_browser_proxy()
             chrome_user_data_dir2 = f'/root/.config/google-chrome/{browser_proxy2}{layout2}'
-            if layout2 in chrome_user_data_dir2 and layout == layout2 and browser_proxy2 == browser_proxy:
+            if chrome_user_data_dir == chrome_user_data_dir2 and layout == layout2 and browser_proxy2 == browser_proxy:
                 response_messege('Same Browser ...')
                 pass
             else:

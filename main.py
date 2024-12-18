@@ -717,6 +717,9 @@ def mysterium_web_login(driver):
 
 def mysterium_login(driver):
     while True:
+        sweet_enable()
+        driver.uc_open('https://app.mysteriumvpn.com/')
+        time.sleep(5)
         titile = sb1.get_title()
         pyautogui.click(113, 100)
         time.sleep(1)
@@ -2294,6 +2297,24 @@ def get_browser_proxy():
     browser_proxy = proxy
     return browser_proxy
 
+def sweet_enable():
+    for x in range(2):
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_dis_icon.png",  region=(1625, 43, 400, 300), confidence=0.9)
+            pyautogui.click(x, y)
+            for i in range(5):
+                time.sleep(3)
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_connect.png", confidence=0.8)
+                    pyautogui.click(x, y)
+                    time.sleep(5)
+                    return
+                except pyautogui.ImageNotFoundException:
+                    print("Waiting for Sweet to pop")
+        except pyautogui.ImageNotFoundException:
+            print("No icon_image_loaded Human.")
+
+
 browser_proxy = ''
 def open_browsers():
     global sb1
@@ -2325,12 +2346,13 @@ def open_browsers():
     get_mails_passowrds(farm_id)
     if gggv:
         if fresh >= 3:
+            
+            sweet = install_extensions('sweet')
             mysterium = install_extensions('mysterium')
-            nopecha = True#install_extensions('nopecha')
             cookie = install_extensions('cookie')
             fingerprint = install_extensions('fingerprint')
             mfhelper = install_extensions('mfhelper')
-            if fingerprint and mysterium and nopecha and cookie and mfhelper:
+            if fingerprint and mysterium and sweet and cookie and mfhelper:
                 print('All Extensions are installed..')
                 query = {"type": "main"}
                 update = {"$set": {"response": 'All Extensions are installed..'}}

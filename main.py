@@ -2324,6 +2324,7 @@ def mysterium_reinstaller():
     #find externsion
     #delete
     #install 
+    sb1.uc_open("chrome://extensions/")
     pyautogui.click(300, 300)
     time.sleep(3)
     try:
@@ -2342,6 +2343,7 @@ def mysterium_reinstaller():
                         time.sleep(1)
                         pyautogui.click(x, y)
                         time.sleep(1)
+
                         mysterium = install_extensions('mysterium')
                         time.sleep(2)
                         pin_extensions()

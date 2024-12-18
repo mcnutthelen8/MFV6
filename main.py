@@ -2334,6 +2334,11 @@ def mysterium_reinstaller():
                     try:
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/remove_button.png", confidence=0.95)
                         pyautogui.click(x, y)
+                        time.sleep(3)
+                        pyautogui.click(x, y)
+                        time.sleep(1)
+                        pyautogui.click(x, y)
+                        time.sleep(1)
                         mysterium = install_extensions('mysterium')
                         pin_extensions()
                         return mysterium

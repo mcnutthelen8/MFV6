@@ -2502,6 +2502,15 @@ def open_faucets():
             #ip_address = get_ip(sb1)
             
             if ip_address:
+                current_window = sb1.current_window_handle
+                all_windows = sb1.window_handles
+                for window in all_windows:
+                    if window != current_window:
+                        sb1.switch_to.window(window)
+                        sb1.close()  # Close the tab
+                sb1.switch_to.window(current_window)
+                sb1.uc_open("chrome://extensions/")
+                time.sleep(2)
                 ip_required = ip_address
                 add_blacklistedip2(f'F{farm_id}L{lay}', ip_address)
                 get_mails_passowrds(farm_id)

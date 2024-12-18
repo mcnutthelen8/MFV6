@@ -2348,8 +2348,8 @@ def open_browsers():
         if fresh >= 3:
             
             sweet = install_extensions('sweet')
-            mysterium = install_extensions('mysterium')
             cookie = install_extensions('cookie')
+            mysterium = install_extensions('mysterium')
             fingerprint = install_extensions('fingerprint')
             mfhelper = install_extensions('mfhelper')
             if fingerprint and mysterium and sweet and cookie and mfhelper:

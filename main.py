@@ -2340,6 +2340,7 @@ def mysterium_reinstaller():
                         pyautogui.click(x, y)
                         time.sleep(1)
                         mysterium = install_extensions('mysterium')
+                        time.sleep(2)
                         pin_extensions()
                         return mysterium
                     except pyautogui.ImageNotFoundException:
@@ -2355,7 +2356,9 @@ def mysterium_reinstaller():
         return
     except pyautogui.ImageNotFoundException:
         print("No icon_image_loaded Human.")
-
+        mysterium = install_extensions('mysterium')
+        time.sleep(2)
+        pin_extensions()
 browser_proxy = ''
 def open_browsers():
     global sb1

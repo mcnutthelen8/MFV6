@@ -717,6 +717,8 @@ def mysterium_web_login(driver):
 
 def mysterium_login(driver):
     while True:
+        mysterium_reinstaller()
+        time.sleep(1)
         sweet_enable()
         driver.uc_open('https://app.mysteriumvpn.com/')
         time.sleep(5)
@@ -770,6 +772,7 @@ def mysterium_login(driver):
                                             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/refresh_ip_off.png", region=(1325, 109, 800, 900), confidence=0.99)
                                             pyautogui.click(1640, 300)
                                             pyautogui.click(1668, 300)
+                                            pyautogui.click(1714, 300)
                                             print("refresh_ip_off Found")
                                             time.sleep(1)
                                         except pyautogui.ImageNotFoundException:
@@ -2314,6 +2317,38 @@ def sweet_enable():
         except pyautogui.ImageNotFoundException:
             print("No icon_image_loaded Human.")
 
+
+def mysterium_reinstaller():
+    #find externsion
+    #delete
+    #install 
+
+    try:
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_connected.png", region=(1625, 43, 400, 300), confidence=0.99)
+        pyautogui.rightClick(x, y)
+        for i in range(5):
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/remove_from_chrome.png", confidence=0.95)
+                pyautogui.click(x, y)
+                for i in range(5):
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/remove_button.png", confidence=0.95)
+                        pyautogui.click(x, y)
+                        mysterium = install_extensions('mysterium')
+                        return mysterium
+                    except pyautogui.ImageNotFoundException:
+                        print("No icon_image_loaded Human.")
+
+            except pyautogui.ImageNotFoundException:
+                print("No icon_image_loaded Human.")
+
+    except pyautogui.ImageNotFoundException:
+        print("No icon_image_loaded Human.")
+    try:
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
+        return
+    except pyautogui.ImageNotFoundException:
+        print("No icon_image_loaded Human.")
 
 browser_proxy = ''
 def open_browsers():

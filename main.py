@@ -2335,6 +2335,7 @@ def mysterium_reinstaller():
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/remove_button.png", confidence=0.95)
                         pyautogui.click(x, y)
                         mysterium = install_extensions('mysterium')
+                        pin_extensions()
                         return mysterium
                     except pyautogui.ImageNotFoundException:
                         print("No icon_image_loaded Human.")

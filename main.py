@@ -2311,6 +2311,8 @@ def sweet_enable():
                     x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_connect.png", confidence=0.8)
                     pyautogui.click(x, y)
                     time.sleep(5)
+                    pyautogui.click(300, 300)
+                    time.sleep(3)
                     return
                 except pyautogui.ImageNotFoundException:
                     print("Waiting for Sweet to pop")
@@ -2322,7 +2324,8 @@ def mysterium_reinstaller():
     #find externsion
     #delete
     #install 
-
+    pyautogui.click(300, 300)
+    time.sleep(3)
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_connected.png", region=(1625, 43, 400, 300), confidence=0.99)
         pyautogui.rightClick(x, y)

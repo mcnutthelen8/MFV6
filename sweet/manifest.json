@@ -1,0 +1,27 @@
+{
+   "action": {
+      "default_icon": {
+         "16": "assets/images/icon16.png",
+         "24": "assets/images/icon24.png",
+         "32": "assets/images/icon32.png"
+      },
+      "default_popup": "assets/popup.html",
+      "default_title": "__MSG_name__"
+   },
+   "background": {
+      "service_worker": "js/background.js"
+   },
+   "default_locale": "en",
+   "description": "__MSG_description__",
+   "host_permissions": [ "https://ipapi.co/json/", "https://ip.seeip.org/geoip", "https://api.myip.com/", "https://ifconfig.co/json" ],
+   "icons": {
+      "128": "/assets/images/icon128.png",
+      "32": "/assets/images/icon32.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAq2r9omCCYNLPSmCgmoH9t5O4CgIBKAtcLyxGn6V+B3e45YOEvAvnavpJf9DQry78njV3Vff3QPdEMXK4XSP9gXeUrA3nt9OJVfuBOF5QqZLp0otDPAgzUBcKuUZT/voaj7ItJXbBB8GnS23OfF7TELYEpLq7kyLYLbypOotu7fDlRU97GO50XN6W06sunKEbU0QV4+RBZBNuB8VY6PStnl3yLp24ObHo+efzHP27r0x9frDkwP0F+msVDVAB6zz/H6IrV2iMeLVJaGsoD0ddNUzT55evk0cJd9jy13oQB/lh5KY1IBCwQBPQjn4m5uqyhl3svqoffyyCAA+jCONf4QIDAQAB",
+   "manifest_version": 3,
+   "name": "__MSG_name__",
+   "permissions": [ "proxy", "storage", "tabs" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "1.1.5"
+}

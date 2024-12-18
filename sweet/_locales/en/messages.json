@@ -1,0 +1,53 @@
+{
+   "access_connect": {
+      "message": "Successful connection to"
+   },
+   "connected_title": {
+      "message": "Сonnected"
+   },
+   "description": {
+      "message": "Most stable and reliable VPN connection for your safe and private surfing. VPN with multiple GEO options."
+   },
+   "error": {
+      "message": "Connection error. \u003Cbr> Please select another country."
+   },
+   "loading_subtitle": {
+      "message": "Please wait a moment"
+   },
+   "loading_title": {
+      "message": "Connecting..."
+   },
+   "name": {
+      "message": "Sweet VPN"
+   },
+   "noproxy": {
+      "message": "Proxy for this country not found"
+   },
+   "not_connected_subtitle": {
+      "message": "Click to connect to VPN"
+   },
+   "not_connected_title": {
+      "message": "VPN is not connected"
+   },
+   "pls_disconnect_other_vpn": {
+      "message": "You are using another VPN now. Please disable it to continue"
+   },
+   "proxies_getting_error": {
+      "message": "Error when getting available proxies"
+   },
+   "proxy_connection_is_not_allowed": {
+      "message": "Proxy connection is not allowed by system settings"
+   },
+   "rate_clear": {
+      "message": "clear"
+   },
+   "rate_it": {
+      "message": "Enjoying extension?"
+   },
+   "select_geo": {
+      "message": "Select Geo"
+   },
+   "title": {
+      "message": "Sweet VPN"
+   }
+}

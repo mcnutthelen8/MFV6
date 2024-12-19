@@ -2367,7 +2367,7 @@ def mysterium_reinstaller():
 browser_proxy = ''
 query = {"type": "main"}
 refresh_count = 0
-
+get_mails_passowrds(farm_id)
 for frm in CSB1_farms:
     collection_csb = db[f'Farm{frm}']
     update = {"$set": {"response": f'Changed IP🔴: Starting Farm:{farm_id}'}}

@@ -2365,6 +2365,16 @@ def mysterium_reinstaller():
         time.sleep(2)
         pin_extensions()
 browser_proxy = ''
+query = {"type": "main"}
+refresh_count = 0
+
+for frm in CSB1_farms:
+    collection_csb = db[f'Farm{frm}']
+    update = {"$set": {"response": f'Changed IP🔴: Starting Farm:{farm_id}'}}
+    result = collection_csb.update_one(query, update)
+    update = {"$set": {"request": 'ipfixer'}}
+    result = collection_csb.update_one(query, update)
+
 def open_browsers():
     global sb1
     global chrome_user_data_dir
@@ -2599,14 +2609,7 @@ def debug_messages(messages):
 earnpp_count = 0 
 feyorra_count = 0
 claimcoin_count = 0
-query = {"type": "main"}
-refresh_count = 0
-for frm in CSB1_farms:
-    collection_csb = db[f'Farm{frm}']
-    update = {"$set": {"response": f'Changed IP🔴: Starting Farm:{farm_id}'}}
-    result = collection_csb.update_one(query, update)
-    update = {"$set": {"request": 'ipfixer'}}
-    result = collection_csb.update_one(query, update)
+
 
 earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
 start_time4 = 0

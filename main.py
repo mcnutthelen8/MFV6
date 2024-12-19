@@ -110,10 +110,10 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'thailand'
             CSB1_farms = [1, 2, 3, 4, 5]
-            earnpp_email = 'khabibmakanzie@gmail.com'
-            earnpp_pass = 'CQ2pNwi3zsFgat@'
-            feyorra_email = 'khabibmakanzie@gmail.com'
-            feyorra_pass = 'D6.6fz9r5QVyziT'
+            earnpp_email = 'khabibmakanzie2@gmail.com'
+            earnpp_pass = 'khabibmakanzie2'
+            feyorra_email = 'khabibmakanzie2@gmail.com'
+            feyorra_pass = 'khabibmakanzie2'
         elif '2' in layout:
             server_name1 = 'bulgaria' # 'morocco' #'bulgaria'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]

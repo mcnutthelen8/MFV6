@@ -215,10 +215,10 @@ def get_mails_passowrds(farm_id):
         elif '2' in layout:
             server_name1 = 'hong kong' #'georgia'# 
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'sheldonkumar54@gmail.com'
-            earnpp_pass = 'p~Q18oQjmp}nv6g'
-            feyorra_email = 'sheldonkumar54@gmail.com'
-            feyorra_pass = 'p~Q18oQjmp}nv6g'
+            earnpp_email = 'kumarsheln@gmail.com'
+            earnpp_pass = 'kumarsheln'
+            feyorra_email = 'kumarsheln@gmail.com'
+            feyorra_pass = 'kumarsheln'
         elif '3' in layout:
             server_name1 = 'hong kong' #'georgia'# 
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]

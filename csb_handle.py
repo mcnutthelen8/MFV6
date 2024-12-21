@@ -425,8 +425,9 @@ def deploy_docker(farmurl, driver):
                             if x and y:
                                 pyautogui.click(x, y)
                                 print("Docker Failed Found")
-                                currecto = False
+                                
                                 create_devbox(driver)
+                                break
                                 
                             
                         except Exception as e:

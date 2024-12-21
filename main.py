@@ -53,7 +53,7 @@ facebook_cookies = '0'
 
 
 
-CSB1_farms = [1, 2, 3, 4, 5]
+CSB1_farms = []
 
 
 
@@ -259,7 +259,7 @@ def get_mails_passowrds(farm_id):
 
         if '1' in layout:
             server_name1 = 'indonesia'
-            CSB1_farms = [1, 2, 3, 4, 5]
+            CSB1_farms = [6,7,8,9,10]
             earnpp_email = 'sevensevengk@gmail.com'
             earnpp_pass = 'sevensevengk'
             feyorra_email = 'sevensevengk@gmail.com'
@@ -269,7 +269,7 @@ def get_mails_passowrds(farm_id):
 
         if '1' in layout:
             server_name1 = 'belgium'
-            CSB1_farms = [1, 2, 3, 4, 5]
+            CSB1_farms = [6,7,8,9,10]
             earnpp_email = 'shevgraaa@gmail.com'
             earnpp_pass = 'sevensevengk'
             feyorra_email = 'sevensevengk@gmail.com'
@@ -279,7 +279,7 @@ def get_mails_passowrds(farm_id):
 
         if '1' in layout:
             server_name1 = 'croatia'
-            CSB1_farms = [1, 2, 3, 4, 5]
+            CSB1_farms = [6,7,8,9,10]
             earnpp_email = 'ahenrxaaa@gmail.com'
             earnpp_pass = 'sevensevengk'
             feyorra_email = 'sevensevengk@gmail.com'
@@ -289,7 +289,7 @@ def get_mails_passowrds(farm_id):
 
         if '1' in layout:
             server_name1 = 'chile'
-            CSB1_farms = [1, 2, 3, 4, 5]
+            CSB1_farms = [6,7,8,9,10]
             earnpp_email = 'semiprraaa@gmail.com'
             earnpp_pass = 'semiprraaa'
             feyorra_email = 'semiprraaa@gmail.com'
@@ -299,7 +299,7 @@ def get_mails_passowrds(farm_id):
 
         if '1' in layout:
             server_name1 = 'austria'
-            CSB1_farms = [1, 2, 3, 4, 5]
+            CSB1_farms = [6,7,8,9,10]
             earnpp_email = 'melosandsong@gmail.com'
             earnpp_pass = 'melosandsong'
             feyorra_email = 'melosandsong@gmail.com'

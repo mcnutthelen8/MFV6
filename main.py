@@ -2607,7 +2607,7 @@ def open_faucets():
 
             ip_address = get_ip(sb1)
             
-            if ip_required == ip_address:
+            if ip_address:
                 current_window = sb1.current_window_handle
                 all_windows = sb1.window_handles
                 for window in all_windows:

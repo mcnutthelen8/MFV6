@@ -59,7 +59,7 @@ CSB1_farms = [1, 2, 3, 4, 5]
 
 fb_pass = 'ashen1997'
 yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
-mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
+mysterium_raw = ""
 
 earnpp_email = 'Nooo'
 earnpp_pass = 'Nooo'
@@ -98,12 +98,20 @@ def get_mails_passowrds(farm_id):
     global feyorra_email
     global feyorra_pass
     global layout
+    global mysterium_raw
 
     collection = db[f'Farm{farm_id}']
     quer2y = {"type": "main"}
     dochh2 = collection.find_one(quer2y)
     layout = dochh2["withdraw_mail"]
     print(f'Farm ID:{farm_id} | Layout: {layout}')
+
+    if farm_id <= 5:
+        mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie.json"
+
+    else:
+        mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
+
 
     if farm_id == 1:
 
@@ -228,6 +236,7 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'gihanfer907'
             feyorra_email = 'gihanfer907@gmail.com'
             feyorra_pass = 'gihanfer907'
+
         elif '2' in layout:
             server_name1 = 'malaysia' #'chile'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
@@ -244,6 +253,59 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'redgta362'
         else:
             print('Layout issue', layout)
+
+##################################################
+    elif farm_id == 6:
+
+        if '1' in layout:
+            server_name1 = 'indonesia'
+            CSB1_farms = [1, 2, 3, 4, 5]
+            earnpp_email = 'sevensevengk@gmail.com'
+            earnpp_pass = 'sevensevengk'
+            feyorra_email = 'sevensevengk@gmail.com'
+            feyorra_pass = 'sevensevengk'
+
+    elif farm_id == 7:
+
+        if '1' in layout:
+            server_name1 = 'belgium'
+            CSB1_farms = [1, 2, 3, 4, 5]
+            earnpp_email = 'shevgraaa@gmail.com'
+            earnpp_pass = 'sevensevengk'
+            feyorra_email = 'sevensevengk@gmail.com'
+            feyorra_pass = 'sevensevengk'
+
+    elif farm_id == 8:
+
+        if '1' in layout:
+            server_name1 = 'croatia'
+            CSB1_farms = [1, 2, 3, 4, 5]
+            earnpp_email = 'ahenrxaaa@gmail.com'
+            earnpp_pass = 'sevensevengk'
+            feyorra_email = 'sevensevengk@gmail.com'
+            feyorra_pass = 'sevensevengk'
+
+    elif farm_id == 9:
+
+        if '1' in layout:
+            server_name1 = 'chile'
+            CSB1_farms = [1, 2, 3, 4, 5]
+            earnpp_email = 'semiprraaa@gmail.com'
+            earnpp_pass = 'semiprraaa'
+            feyorra_email = 'semiprraaa@gmail.com'
+            feyorra_pass = 'semiprraaa'
+
+    elif farm_id == 10:
+
+        if '1' in layout:
+            server_name1 = 'austria'
+            CSB1_farms = [1, 2, 3, 4, 5]
+            earnpp_email = 'melosandsong@gmail.com'
+            earnpp_pass = 'melosandsong'
+            feyorra_email = 'melosandsong@gmail.com'
+            feyorra_pass = 'melosandsong'
+
+
 
 
     else:

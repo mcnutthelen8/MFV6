@@ -109,9 +109,11 @@ def get_mails_passowrds(farm_id):
 
     if farm_id <= 5:
         mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
+        CSB1_farms = [1, 2, 3, 4, 5]
     else:
 
         mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie.json"
+        CSB1_farms = [6,7,8,9,10]
 
 
     if farm_id == 1:
@@ -659,6 +661,21 @@ def fix_ip(drive, name):
     while not (ipscore and proxycheck):
         get_mails_passowrds(farm_id)
         ip_address = get_ip(drive)
+        quer2y = {"type": "main"}
+        dochh2 = collection.find_one(quer2y)
+        layout2 = dochh2["withdraw_mail"]
+        global blacklistedIP
+        collectionbip = db[f'LocalCSB']
+        quer2y = {"type": "main"}
+        dochh = collectionbip.find_one(quer2y)
+        blacklistedIP2 = dochh["blacklistedIP"]
+        if len(blacklistedIP) <= len(blacklistedIP2):
+            blacklistedIP += blacklistedIP2
+        print(blacklistedIP)
+        lay = re.search(r'\d+', layout2).group()
+        other_blacklists = get_blacklistedip2(f'F{farm_id}L{lay}')
+        if other_blacklists:
+                blacklistedIP = blacklistedIP + other_blacklists
         if ip_address in blacklistedIP:
             print(f'Bad IP detected: {ip_address}. Changing IP...')
             query = {"type": "main"}
@@ -2581,9 +2598,9 @@ def open_faucets():
                 ip_required = fix_ip(sb1, server_name1)
                 ip_address = get_ip(sb1)
 
-            #ip_address = get_ip(sb1)
+            ip_address = get_ip(sb1)
             
-            if ip_address:
+            if ip_required == ip_address:
                 current_window = sb1.current_window_handle
                 all_windows = sb1.window_handles
                 for window in all_windows:

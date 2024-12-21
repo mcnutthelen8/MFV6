@@ -90,6 +90,7 @@ feyorra_email = ''
 feyorra_pass = ''
 layout = ''
 
+
 def get_mails_passowrds(farm_id):
     global server_name1
     global CSB1_farms
@@ -107,10 +108,10 @@ def get_mails_passowrds(farm_id):
     print(f'Farm ID:{farm_id} | Layout: {layout}')
 
     if farm_id <= 5:
-        mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie.json"
-
-    else:
         mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
+    else:
+
+        mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie.json"
 
 
     if farm_id == 1:
@@ -315,7 +316,7 @@ def get_mails_passowrds(farm_id):
 
 
 debug_mode = True
-
+get_mails_passowrds(farm_id)
 ip_required = 0
 #farm_id = 1
 

@@ -274,9 +274,9 @@ def get_mails_passowrds(farm_id):
             server_name1 = 'belgium'
             CSB1_farms = [6,7,8,9,10]
             earnpp_email = 'shevgraaa@gmail.com'
-            earnpp_pass = 'sevensevengk'
-            feyorra_email = 'sevensevengk@gmail.com'
-            feyorra_pass = 'sevensevengk'
+            earnpp_pass = 'shevgraaa'
+            feyorra_email = 'shevgraaa@gmail.com'
+            feyorra_pass = 'shevgraaa'
 
     elif farm_id == 8:
 
@@ -284,9 +284,9 @@ def get_mails_passowrds(farm_id):
             server_name1 = 'croatia'
             CSB1_farms = [6,7,8,9,10]
             earnpp_email = 'ahenrxaaa@gmail.com'
-            earnpp_pass = 'sevensevengk'
-            feyorra_email = 'sevensevengk@gmail.com'
-            feyorra_pass = 'sevensevengk'
+            earnpp_pass = 'ahenrxaaa'
+            feyorra_email = 'ahenrxaaa@gmail.com'
+            feyorra_pass = 'ahenrxaaa'
 
     elif farm_id == 9:
 

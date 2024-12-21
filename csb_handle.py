@@ -97,7 +97,7 @@ elif Layout == 2:
 
 
 chrome_binary_path = '/opt/google/chrome/google-chrome'
-chrome_user_data_dir = '/root/.config/google-chrome/v632'
+chrome_user_data_dir = f'/root/.config/google-chrome/{csbid}'
 
 mongo_uri = "mongodb+srv://redgta36:J6n7Hoz2ribHmMmx@moneyfarm.wwzcs.mongodb.net/?retryWrites=true&w=majority&appName=moneyfarm"
 client = MongoClient(mongo_uri)

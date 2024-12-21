@@ -1,7 +1,7 @@
 [
     {
         "domain": ".mysteriumvpn.com",
-        "expirationDate": 1757662617,
+        "expirationDate": 1757821946,
         "hostOnly": false,
         "httpOnly": false,
         "name": "intercom-device-id-sjkeehf4",
@@ -39,7 +39,7 @@
     },
     {
         "domain": ".mysteriumvpn.com",
-        "expirationDate": 1734937417,
+        "expirationDate": 1735096746,
         "hostOnly": false,
         "httpOnly": false,
         "name": "intercom-session-sjkeehf4",
@@ -143,7 +143,7 @@
     },
     {
         "domain": ".mysteriumvpn.com",
-        "expirationDate": 1757662617,
+        "expirationDate": 1757821946,
         "hostOnly": false,
         "httpOnly": false,
         "name": "intercom-id-sjkeehf4",

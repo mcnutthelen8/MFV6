@@ -1607,6 +1607,7 @@ def get_coins(driver, sitekey):
         return False
     except Exception as e:
         print(f"ERR on Getcoin:{sitekey} | {e}")
+        pyautogui.press('enter')
     return False
 
 
@@ -2481,7 +2482,7 @@ def open_faucets():
             dochh = collectionbip.find_one(quer2y)
             blacklistedIP2 = dochh["blacklistedIP"]
             if len(blacklistedIP) <= len(blacklistedIP2):
-                blacklistedIP = blacklistedIP2
+                blacklistedIP += blacklistedIP2
             print(blacklistedIP)
             lay = re.search(r'\d+', layout2).group()
             other_blacklists = get_blacklistedip2(f'F{farm_id}L{lay}')
@@ -2491,18 +2492,26 @@ def open_faucets():
             ip_address = get_ip(sb1)
             ipscore = get_ipscore(ip_address)
             proxycheck = get_proxycheck(sb1, ip_address, server_name= server_name1)
-            if ipscore and proxycheck == 200 and ip_address not in blacklistedIP:
-                print(f'Good IP found: {ip_address}')
-                for frm in CSB1_farms:
-                    collection_csb = db[f'Farm{frm}']
-                    query = {"type": "main"}
-                    doc = collection_csb.find_one(query)
-                    res = doc["response"]
-                    req = doc["request"]
-                    if req == 'ipfixer' and 'Changed IP' in res:
-                        ipfixer()
-                        ip_required = fix_ip(sb1, server_name1)
-                        ip_address = get_ip(sb1)
+            if ipscore and proxycheck == 200:
+                if ip_address in blacklistedIP:
+                    print('IP Blacklisted')
+                    response_messege(f'IP Blacklisted{ip_address}')
+                    ipfixer()
+                    ip_required = fix_ip(sb1, server_name1)
+                    ip_address = get_ip(sb1)
+
+                else:
+                    print(f'Good IP found: {ip_address}')
+                    for frm in CSB1_farms:
+                        collection_csb = db[f'Farm{frm}']
+                        query = {"type": "main"}
+                        doc = collection_csb.find_one(query)
+                        res = doc["response"]
+                        req = doc["request"]
+                        if req == 'ipfixer' and 'Changed IP' in res:
+                            ipfixer()
+                            ip_required = fix_ip(sb1, server_name1)
+                            ip_address = get_ip(sb1)
 
             else:
                 ipfixer()
@@ -2759,6 +2768,7 @@ while True:
                             debug_messages(f'Feyorra not Found:{title} | reset:{reset_count}')
                             reset_count +=1
                     except Exception as e:
+                        pyautogui.press('enter')
                         if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
                             debug_messages(f'Feyorra Limit Reached')
                             response_messege('Feyorra Limit Reached')

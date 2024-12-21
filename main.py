@@ -314,7 +314,14 @@ def get_mails_passowrds(farm_id):
     else:
         while True:
             print('SOmething Wrong Did u use --farm')
-
+    print(server_name1)
+    print(CSB1_farms)
+    print(earnpp_email)
+    print(earnpp_pass)
+    print(feyorra_email)
+    print(feyorra_pass)
+    print(layout)
+    print(mysterium_raw)
 
 
 debug_mode = True

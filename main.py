@@ -319,7 +319,7 @@ def get_mails_passowrds(farm_id):
     elif farm_id == 9:
 
         if '1' in layout:
-            server_name1 = 'chile'
+            server_name1 = 'canada'
             CSB1_farms = [6,7,8,9,10]
             earnpp_email = 'semiprraaa@gmail.com'
             earnpp_pass = 'semiprraaa'
@@ -327,7 +327,7 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'semiprraaa'
 
         elif '2' in layout:
-            server_name1 = 'chile' 
+            server_name1 = 'canada' 
             CSB1_farms = [6, 7, 8, 9, 10]
             earnpp_email = 'pereramishee@gmail.com'
             earnpp_pass = 'pereramishee'

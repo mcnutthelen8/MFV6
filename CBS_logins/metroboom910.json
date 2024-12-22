@@ -1,7 +1,7 @@
 [
     {
         "domain": ".codesandbox.io",
-        "expirationDate": 1764486433,
+        "expirationDate": 1796022433,
         "hostOnly": false,
         "httpOnly": false,
         "name": "AMP_a205ed9b06",
@@ -14,7 +14,7 @@
     },
     {
         "domain": ".codesandbox.io",
-        "expirationDate": 1748614152,
+        "expirationDate": 1780150152,
         "hostOnly": false,
         "httpOnly": false,
         "name": "cc_cookie",
@@ -51,7 +51,7 @@
     },
     {
         "domain": "codesandbox.io",
-        "expirationDate": 1735369616.517177,
+        "expirationDate": 1766905616.517177,
         "hostOnly": true,
         "httpOnly": true,
         "name": "guardian_default_token",
@@ -64,7 +64,7 @@
     },
     {
         "domain": "codesandbox.io",
-        "expirationDate": 1735369616.081826,
+        "expirationDate": 1766905616.081826,
         "hostOnly": true,
         "httpOnly": false,
         "name": "signedIn",

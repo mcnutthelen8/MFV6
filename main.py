@@ -163,10 +163,10 @@ def get_mails_passowrds(farm_id):
         elif '3' in layout:
             server_name1 = 'finland' #'portugal'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'rondolftapatio2@gmail.com'
-            earnpp_pass = 'rondolftapatio2'
-            feyorra_email = 'rondolftapatio2@gmail.com'
-            feyorra_pass = 'rondolftapatio2'
+            earnpp_email = 'anrogedyyr@gmail.com'
+            earnpp_pass = 'anrogedyyr'
+            feyorra_email = 'anrogedyyr@gmail.com'
+            feyorra_pass = 'anrogedyyr'
         else:
             print('Layout issue', layout)
 
@@ -222,10 +222,10 @@ def get_mails_passowrds(farm_id):
         elif '3' in layout:
             server_name1 = 'hong kong' #'georgia'# 
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'markeshalland3@gmail.com'
-            earnpp_pass = 'markeshalland3'
-            feyorra_email = 'markeshalland3@gmail.com'
-            feyorra_pass = 'markeshalland3'
+            earnpp_email = 'andrpewrea@gmail.com'
+            earnpp_pass = 'andrpewrea'
+            feyorra_email = 'andrpewrea@gmail.com'
+            feyorra_pass = 'andrpewrea'
         else:
             print('Layout issue', layout)
 
@@ -268,6 +268,17 @@ def get_mails_passowrds(farm_id):
             feyorra_email = 'sevensevengk@gmail.com'
             feyorra_pass = 'sevensevengk'
 
+
+        elif '2' in layout:
+            server_name1 = 'indonesia' 
+            CSB1_farms = [6, 7, 8, 9, 10]
+            earnpp_email = 'gksevn77@gmail.com'
+            earnpp_pass = 'gksevn77'
+            feyorra_email = 'gksevn77@gmail.com'
+            feyorra_pass = 'gksevn77'
+
+
+
     elif farm_id == 7:
 
         if '1' in layout:
@@ -277,6 +288,15 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'shevgraaa'
             feyorra_email = 'shevgraaa@gmail.com'
             feyorra_pass = 'shevgraaa'
+
+        elif '2' in layout:
+            server_name1 = 'belgium' 
+            CSB1_farms = [6, 7, 8, 9, 10]
+            earnpp_email = 'grshevvvv@gmail.com'
+            earnpp_pass = 'grshevvvv'
+            feyorra_email = 'grshevvvv@gmail.com'
+            feyorra_pass = 'grshevvvv'
+
 
     elif farm_id == 8:
 
@@ -288,6 +308,14 @@ def get_mails_passowrds(farm_id):
             feyorra_email = 'ahenrxaaa@gmail.com'
             feyorra_pass = 'ahenrxaaa'
 
+        elif '2' in layout:
+            server_name1 = 'croatia' 
+            CSB1_farms = [6, 7, 8, 9, 10]
+            earnpp_email = 'rxshenaxa@gmail.com'
+            earnpp_pass = 'rxshenaxa'
+            feyorra_email = 'rxshenaxa@gmail.com'
+            feyorra_pass = 'rxshenaxa'
+
     elif farm_id == 9:
 
         if '1' in layout:
@@ -297,6 +325,16 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'semiprraaa'
             feyorra_email = 'semiprraaa@gmail.com'
             feyorra_pass = 'semiprraaa'
+
+        elif '2' in layout:
+            server_name1 = 'chile' 
+            CSB1_farms = [6, 7, 8, 9, 10]
+            earnpp_email = 'pereramishee@gmail.com'
+            earnpp_pass = 'pereramishee'
+            feyorra_email = 'pereramishee@gmail.com'
+            feyorra_pass = 'pereramishee'
+
+
 
     elif farm_id == 10:
 
@@ -308,6 +346,13 @@ def get_mails_passowrds(farm_id):
             feyorra_email = 'melosandsong@gmail.com'
             feyorra_pass = 'melosandsong'
 
+        elif '2' in layout:
+            server_name1 = 'austria' 
+            CSB1_farms = [6, 7, 8, 9, 10]
+            earnpp_email = 'sadrameloonsan@gmail.com'
+            earnpp_pass = 'sadrameloonsan'
+            feyorra_email = 'sadrameloonsan@gmail.com'
+            feyorra_pass = 'sadrameloonsan'
 
 
 
@@ -2932,6 +2977,8 @@ while True:
                     start_time = time.time()
                     if earnpp_coins == earnpp_coins_pre:
                         start_time = time.time()
+                        if refresh_count >= 50:
+                            reset_count +=5
                         if refresh_count >= 30:
                             response_messege(f'earnpp_coins same {earnpp_coins}| count:{refresh_count} | {seconds_only}')
                             sb1.switch_to.window(earnpp_window)
@@ -2944,7 +2991,10 @@ while True:
                             refresh_count +=1
                     elif feyorra_coins == feyorra_coins_pre:
                         start_time = time.time()
+                        if refresh_count >= 50:
+                            reset_count +=5
                         if refresh_count >= 30:
+                            pyautogui.press('enter')
                             response_messege(f'feyorra_coins same {feyorra_coins}| count:{refresh_count} | {seconds_only}')
                             refresh_count = 0
                             sb1.switch_to.window(feyorra_window)

@@ -277,6 +277,13 @@ def get_mails_passowrds(farm_id):
             feyorra_email = 'gksevn77@gmail.com'
             feyorra_pass = 'gksevn77'
 
+        elif '3' in layout:
+            server_name1 = 'south korea' 
+            CSB1_farms = [6, 7, 8, 9, 10]
+            earnpp_email = 'kg7seven@gmail.com'
+            earnpp_pass = 'kg7seven'
+            feyorra_email = 'kg7seven@gmail.com'
+            feyorra_pass = 'kg7seven'
 
 
     elif farm_id == 7:
@@ -298,6 +305,15 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'grshevvvv'
 
 
+        elif '3' in layout:
+            server_name1 = 'denmark' 
+            CSB1_farms = [6, 7, 8, 9, 10]
+            earnpp_email = 'sevongrda@gmail.com'
+            earnpp_pass = 'sevongrda'
+            feyorra_email = 'sevongrda@gmail.com'
+            feyorra_pass = 'sevongrda'
+
+
     elif farm_id == 8:
 
         if '1' in layout:
@@ -315,6 +331,16 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'rxshenaxa'
             feyorra_email = 'rxshenaxa@gmail.com'
             feyorra_pass = 'rxshenaxa'
+
+
+        elif '3' in layout:
+            server_name1 = 'saudi arabia' 
+            CSB1_farms = [6, 7, 8, 9, 10]
+            earnpp_email = 'rooxshenn@gmail.com'
+            earnpp_pass = 'rooxshenn'
+            feyorra_email = 'rooxshenn@gmail.com'
+            feyorra_pass = 'rooxshenn'
+
 
     elif farm_id == 9:
 
@@ -336,6 +362,16 @@ def get_mails_passowrds(farm_id):
 
 
 
+        elif '3' in layout:
+            server_name1 = 'sweden' 
+            CSB1_farms = [6, 7, 8, 9, 10]
+            earnpp_email = 'sheperaremi@gmail.com'
+            earnpp_pass = 'sheperaremi'
+            feyorra_email = 'sheperaremi@gmail.com'
+            feyorra_pass = 'sheperaremi'
+
+
+
     elif farm_id == 10:
 
         if '1' in layout:
@@ -353,6 +389,17 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'sadrameloonsan'
             feyorra_email = 'sadrameloonsan@gmail.com'
             feyorra_pass = 'sadrameloonsan'
+
+
+        elif '3' in layout:
+            server_name1 = 'ireland' 
+            CSB1_farms = [6, 7, 8, 9, 10]
+            earnpp_email = 'mlsansonone@gmail.com'
+            earnpp_pass = 'mlsansonone'
+            feyorra_email = 'mlsansonone@gmail.com'
+            feyorra_pass = 'mlsansonone'
+
+
 
 
 
@@ -857,6 +904,7 @@ def mysterium_login(driver):
         titile = sb1.get_title()
         pyautogui.click(113, 100)
         time.sleep(1)
+
         if 'Home' in titile:
 
             try:
@@ -932,7 +980,7 @@ def mysterium_login(driver):
             except pyautogui.ImageNotFoundException:
                 print("No mysterium_icon_empty .")
                             #return True
-        elif 'Just' in titile:
+        elif 'Dashboard' in titile:
             cloudflare(driver, login = False)
         else:
             mysterium_web_login(driver)
@@ -2457,6 +2505,13 @@ def mysterium_reinstaller():
     #find externsion
     #delete
     #install 
+    current_window = sb1.current_window_handle
+    all_windows = sb1.window_handles
+    for window in all_windows:
+        if window != current_window:
+            sb1.switch_to.window(window)
+            sb1.close()  # Close the tab
+    sb1.switch_to.window(current_window)
     sb1.uc_open("chrome://extensions/")
     pyautogui.click(300, 300)
     time.sleep(3)
@@ -2497,6 +2552,8 @@ def mysterium_reinstaller():
         mysterium = install_extensions('mysterium')
         time.sleep(2)
         pin_extensions()
+
+
 browser_proxy = ''
 query = {"type": "main"}
 refresh_count = 0
@@ -2977,8 +3034,7 @@ while True:
                     start_time = time.time()
                     if earnpp_coins == earnpp_coins_pre:
                         start_time = time.time()
-                        if refresh_count >= 50:
-                            reset_count +=5
+
                         if refresh_count >= 30:
                             response_messege(f'earnpp_coins same {earnpp_coins}| count:{refresh_count} | {seconds_only}')
                             sb1.switch_to.window(earnpp_window)
@@ -2988,11 +3044,12 @@ while True:
                         if earnpp_limit_reached:
                             pass
                         else:
+                            if refresh_count >= 50:
+                                reset_count +=5
                             refresh_count +=1
                     elif feyorra_coins == feyorra_coins_pre:
                         start_time = time.time()
-                        if refresh_count >= 50:
-                            reset_count +=5
+
                         if refresh_count >= 30:
                             pyautogui.press('enter')
                             response_messege(f'feyorra_coins same {feyorra_coins}| count:{refresh_count} | {seconds_only}')
@@ -3002,6 +3059,8 @@ while True:
                         if feyorra_limit_reached:
                             pass
                         else:
+                            if refresh_count >= 50:
+                                reset_count +=5
                             refresh_count +=1
                     elif claimc_coins == claimc_coins_pre and cc_faucet and claimcoin:
                         start_time = time.time()

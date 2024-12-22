@@ -427,7 +427,7 @@ def deploy_docker(farmurl, driver):
                                 pyautogui.click(x, y)
                                 print("Docker Failed Found")
                                 create_devbox(driver)
-                                ggg2 = False
+                                return False
                                 
 
                         except Exception as e:
@@ -744,7 +744,10 @@ if fresh_vms:
 
         sb1.open_new_window()
         create_devbox(sb1)
-        deploy_docker(command,sb1)
+        ggt = False
+        while ggt == False:
+            ggt = deploy_docker(command,sb1)
+            time.sleep(5)
         
         time.sleep(5)
         pyautogui.click(942, 65)
@@ -820,14 +823,23 @@ while True:
             query = {"type": "main"}
             doc = collection.find_one(query)
             request = doc["request"]
-            if request == f's{i}':
+            if 's' in request:
+                x = ''
+                for z in range(1,6):
+                    y = str(z)
+                    if y in request:
+                        x = z - 1
+                        break
+                page = page_windows[x]
+                sb1.switch_to.window(page)
+                time.sleep(2)
                 command = command_1
                 if   i == 1: command = command_1
                 elif i == 2: command = command_2
                 elif i == 3: command = command_3
                 elif i == 4: command = command_4
                 elif i == 5: command = command_5
-
+            
                 create_devbox(sb1)
                 deploy_docker(command, sb1)
                 pyautogui.click(942, 65)

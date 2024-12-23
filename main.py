@@ -980,10 +980,15 @@ def mysterium_login(driver):
             except pyautogui.ImageNotFoundException:
                 print("No mysterium_icon_empty .")
                             #return True
-        elif 'Dashboard' in titile:
+        elif 'Just' in titile:
             cloudflare(driver, login = False)
-        else:
+        elif 'Dashboard' in titile:
             mysterium_web_login(driver)
+        else:
+            try:
+                response_messege('Mysterium Login')
+            except Exception as e:
+                pass
 
 
 def ipfixer():

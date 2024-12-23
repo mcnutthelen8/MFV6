@@ -1165,8 +1165,8 @@ def verify_and_claim(sb1):
 
 def solve_icon_captcha(sb1):
     try:
-        # Extract the class name of the captcha icon (e.g., "fa-bug")
-        captcha_icon = sb1.find_element('div[class*="fas"]')  # Find 'div' containing 'fas' in class
+        # Extract the class name of the captcha icon (e.g., "fa-compress")
+        captcha_icon = sb1.find_element('div[class*="fas fa-"]')  # Locate 'div' with 'fas fa-' in class
         captcha_icon_class = captcha_icon.get_attribute('class').split()
         captcha_icon_class = [cls for cls in captcha_icon_class if "fa-" in cls]  # Filter for 'fa-' classes
 
@@ -1177,19 +1177,20 @@ def solve_icon_captcha(sb1):
         captcha_icon_class = captcha_icon_class[0]  # Assuming the first match is relevant
 
         # Get the available icon options
-        icon_options = sb1.find_elements('i[class*="fas"]')  # Find 'i' elements containing 'fas'
+        icon_options = sb1.find_elements('i[class*="fas fa-"]')  # Find 'i' elements with 'fas fa-' in class
 
         # Iterate through the options to find the matching icon and click it
         for option in icon_options:
-            icon_classes = option.get_attribute('class').split()
-            if captcha_icon_class in icon_classes:
-                option.uc_click()
+            option_classes = option.get_attribute('class').split()
+            if captcha_icon_class in option_classes:
+                option.uc_click()  # Custom click method to handle undetected Selenium
                 print(f"Clicked on the matching icon: {captcha_icon_class}")
                 return True
 
         print("No matching icon found.")
         return False
     except Exception as e:
+        print(f"Error solving captcha: {e}")
         return False
 
 def cloudflare(sb, login = True):

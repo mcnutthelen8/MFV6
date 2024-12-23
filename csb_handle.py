@@ -422,16 +422,24 @@ def deploy_docker(farmurl, driver):
                         except Exception as e:
                             print('press_anykey_cbs not found')
                         try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/docker_failed.png", region=(320, 760, 1500, 900), confidence=0.9)
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/docker_failed2.png", region=(320, 760, 1500, 900), confidence=0.9)
                             if x and y:
                                 pyautogui.click(x, y)
                                 print("Docker Failed Found")
                                 create_devbox(driver)
                                 return False
-                                
-
                         except Exception as e:
                             print('press_anykey_cbs not found')
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/workspace_git.png", region=(320, 760, 1500, 900), confidence=0.9)
+                            if x and y:
+                                pyautogui.click(x, y)
+                                print("workspace git Found")
+                                pyautogui.typewrite('docker run -i --platform=linux/amd64 -p 6080:6080 akarita/docker-ubuntu-desktop')
+                                pyautogui.press('enter')
+                        except Exception as e:
+                            print('press_anykey_cbs not found')
+
 
             except Exception as e:
                 print(f'Deploy:{e}')

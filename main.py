@@ -1022,8 +1022,6 @@ def ipfixer():
         request = doc["request"]
         if request == 'ipfixer':
             preip = get_ip(sb1)
-            update = {"$set": {"response": f'Ip is: {preip}'}}
-            result = collection.update_one(query, update)
             if preip:
                 if ip == preip:
                     print(f'Good IP found: {ip}')

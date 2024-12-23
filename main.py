@@ -901,6 +901,7 @@ def mysterium_web_login(driver):
 def mysterium_login(driver):
     while True:
         mysterium_reinstaller()
+        fix_wrong_pins()
         time.sleep(1)
         sweet_enable()
         driver.uc_open('https://app.mysteriumvpn.com/')
@@ -1662,7 +1663,7 @@ def pin_extensions():
         pyautogui.click(x, y)
         print("extension_icon Button Found")
 
-        for i in range(1,400):
+        for i in range(1,50):
             time.sleep(1)
             pyautogui.moveTo(1700, 30)
             try:
@@ -1680,6 +1681,7 @@ def pin_extensions():
                 return True   
             except pyautogui.ImageNotFoundException:
                 print("No all_pinned Button.")
+        return False
     except pyautogui.ImageNotFoundException:
         print("No extension_icon Button.")
         return False
@@ -2528,43 +2530,69 @@ def mysterium_reinstaller():
     sb1.uc_open("chrome://extensions/")
     pyautogui.click(300, 300)
     time.sleep(3)
+    for i in range(4):
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_connected.png", region=(1625, 43, 400, 300), confidence=0.99)
+            pyautogui.rightClick(x, y)
+            for i in range(5):
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/remove_from_chrome.png", confidence=0.95)
+                    pyautogui.click(x, y)
+                    for i in range(5):
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/remove_button.png", confidence=0.95)
+                            pyautogui.click(x, y)
+                            time.sleep(3)
+                            pyautogui.click(x, y)
+                            time.sleep(1)
+                            pyautogui.click(x, y)
+                            time.sleep(1)
+
+                            mysterium = install_extensions('mysterium')
+                            time.sleep(2)
+                            gg = pin_extensions()
+                            
+                            if gg:
+                                fix_wrong_pins()
+                                return mysterium
+                            else:
+                                break
+                        except pyautogui.ImageNotFoundException:
+                            print("No icon_image_loaded Human.")
+
+                except pyautogui.ImageNotFoundException:
+                    print("No icon_image_loaded Human.")
+
+        except pyautogui.ImageNotFoundException:
+            print("No icon_image_loaded Human.")
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
+            return
+        except pyautogui.ImageNotFoundException:
+            print("No icon_image_loaded Human.")
+            mysterium = install_extensions('mysterium')
+            time.sleep(2)
+            gg = pin_extensions()
+            if gg:
+                fix_wrong_pins()
+                return mysterium
+            
+
+
+def fix_wrong_pins():
     try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_connected.png", region=(1625, 43, 400, 300), confidence=0.99)
-        pyautogui.rightClick(x, y)
-        for i in range(5):
-            try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/remove_from_chrome.png", confidence=0.95)
-                pyautogui.click(x, y)
-                for i in range(5):
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/remove_button.png", confidence=0.95)
-                        pyautogui.click(x, y)
-                        time.sleep(3)
-                        pyautogui.click(x, y)
-                        time.sleep(1)
-                        pyautogui.click(x, y)
-                        time.sleep(1)
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/wrong_pin.png", region=(1625, 40, 400, 300), confidence=0.9)
+        pyautogui.moveTo( 1778,82)
+        time.sleep(1)
+        pyautogui.mouseDown( 1778,82 ,button='left')
+        time.sleep(1)
+        pyautogui.moveTo( 1741,82 )
+        time.sleep(1)
+        pyautogui.mouseUp( 1741,82 ,button='left')
+        time.sleep(1)
+    except Exception as e:
+        print('ERR fix wrong pin',e)
 
-                        mysterium = install_extensions('mysterium')
-                        time.sleep(2)
-                        pin_extensions()
-                        return mysterium
-                    except pyautogui.ImageNotFoundException:
-                        print("No icon_image_loaded Human.")
-
-            except pyautogui.ImageNotFoundException:
-                print("No icon_image_loaded Human.")
-
-    except pyautogui.ImageNotFoundException:
-        print("No icon_image_loaded Human.")
-    try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
-        return
-    except pyautogui.ImageNotFoundException:
-        print("No icon_image_loaded Human.")
-        mysterium = install_extensions('mysterium')
-        time.sleep(2)
-        pin_extensions()
 
 
 browser_proxy = ''

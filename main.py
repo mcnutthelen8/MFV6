@@ -642,6 +642,8 @@ def get_ipscore(ip):
 
 
 def mysterium_vpn_Recon_ip(server_name, driver):
+    mysterium_reinstaller()
+    fix_wrong_pins()
     print('Rcon')
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
@@ -711,6 +713,8 @@ def mysterium_vpn_Recon_ip(server_name, driver):
     return None
 
 def mysterium_vpn_connect(server_name, driver):
+    mysterium_reinstaller()
+    fix_wrong_pins()
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
         pyautogui.click(x, y)
@@ -1768,16 +1772,17 @@ def get_coins(driver, sitekey):
     try:
         
         if sitekey == 1:
-            if driver.is_element_present('small.hp-text-color-black-100 span.nowrap span'):
-                coins = driver.get_text('small.hp-text-color-black-100 span.nowrap span', timeout= 1)
+            if driver.is_element_present('small span span'):
+                select_element = driver.find_element('css selector', 'small span span')
+                selected_text = select_element.text.strip()  # Extract and clean the text
+                coins = selected_text
             else:
                 print(f'Sitekey:{sitekey} not found')
             #coins = float(coins.split()[0]) 
         if sitekey == 2:
-            if driver.is_element_present('select.form-select'):
-                select_element = driver.find_element('css selector', 'select.form-select')
-                selected_option = select_element.find_element('css selector', 'option[selected]')
-                selected_text = selected_option.text  # Corrected line
+            if driver.is_element_present('select'):
+                select_element = driver.find_element('css selector', 'select.form-select option[selected]')  # Locate the selected option
+                selected_text = select_element.text.strip()  # Extract and clean the text
                 print(f"Selected option text: {selected_text}")
                 coins = selected_text
             else:
@@ -2581,7 +2586,7 @@ def mysterium_reinstaller():
 
 def fix_wrong_pins():
     try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/wrong_pin.png", region=(1625, 40, 400, 300), confidence=0.9)
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/wrong_pin.png", region=(1625, 40, 400, 300), confidence=0.98)
         pyautogui.moveTo( 1778,82)
         time.sleep(1)
         pyautogui.mouseDown( 1778,82 ,button='left')

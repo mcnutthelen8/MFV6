@@ -862,7 +862,9 @@ while True:
                         time.sleep(5)
                     else:
                         break
-                    
+            elif 'kill' in request:
+                sb1.quit()
+                break
             time.sleep(5)
             try:
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/reload_window.png", region=(144, 118, 1700, 1000), confidence=0.9)

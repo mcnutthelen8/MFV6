@@ -504,12 +504,15 @@ def get_ip(driver):
                 ip_address = driver.get_text('body')
                 print('IP =', ip_address)
                 driver.close()
+                driver.connect()
                 driver.switch_to.window(original_window)
+                
                 return ip_address
             
             except Exception as e:
                 print(e)
             driver.close() 
+            driver.connect()
             driver.switch_to.window(original_window)
         except Exception as e:
             print(e)
@@ -555,6 +558,7 @@ def get_proxycheck_inbrowser(sb1, ip, server_name):
         else:
             return 301
         sb1.close()
+        sb1.connect()
         sb1.switch_to.window(original_window)
         
         return val
@@ -1458,6 +1462,7 @@ def find_and_click_collect_button(sb1):
                     print(f"Closing new tab: {window}")
                     sb1.switch_to.window(window)
                     sb1.close()
+                    sb1.connect()
             sb1.switch_to.window(original_window)
             
             sb1.execute_script("window.scrollTo(0, 1000);")
@@ -1589,6 +1594,7 @@ def close_extra_windows(driver, keep_window_handles):
         if window not in keep_window_handles:
             driver.switch_to.window(window)
             driver.close()
+            driver.connect()
     driver.switch_to.window(current_window)
 
 def handle_captcha_and_cloudflare(driver):
@@ -2275,6 +2281,7 @@ def withdraw_faucet(driver, sitekey):
             if window != current_window:
                 sb1.switch_to.window(window)
                 sb1.close()  # Close the tab
+                sb1.connect()
         sb1.switch_to.window(current_window)
         pyautogui.moveTo(100, 200)
         pyautogui.moveTo(200, 400)
@@ -2516,6 +2523,7 @@ def mysterium_reinstaller():
         if window != current_window:
             sb1.switch_to.window(window)
             sb1.close()  # Close the tab
+            sb1.connect()
     sb1.switch_to.window(current_window)
     sb1.uc_open("chrome://extensions/")
     pyautogui.click(300, 300)
@@ -2592,6 +2600,7 @@ def open_browsers():
     current_window2 = sb1.current_window_handle
     sb1.switch_to.window(current_window)
     sb1.close()  # Close the tab
+    sb1.connect()
     sb1.switch_to.window(current_window2)
     sb1.uc_open("chrome://extensions/")
     time.sleep(7)
@@ -2667,6 +2676,7 @@ def open_faucets():
                 if window != current_window:
                     sb1.switch_to.window(window)
                     sb1.close()  # Close the tab
+                    sb1.connect()
             sb1.switch_to.window(current_window)
             sb1.uc_open("chrome://extensions/")
             time.sleep(1)
@@ -2721,6 +2731,7 @@ def open_faucets():
                     if window != current_window:
                         sb1.switch_to.window(window)
                         sb1.close()  # Close the tab
+                        sb1.connect()
                 sb1.switch_to.window(current_window)
                 sb1.uc_open("chrome://extensions/")
                 time.sleep(2)

@@ -1160,33 +1160,37 @@ def verify_and_claim(sb1):
     else:
         print("Verified! message not found.")
 
-
 def solve_icon_captcha(sb1):
     try:
-        # Extract the class name of the captcha icon (e.g., "fa-compress")
-        captcha_icon = sb1.find_element('div[class*="fas fa-"]')  # Locate 'div' with 'fas fa-' in class
-        captcha_icon_class = captcha_icon.get_attribute('class').split()
-        captcha_icon_class = [cls for cls in captcha_icon_class if "fa-" in cls]  # Filter for 'fa-' classes
+        # Extract all captcha icons
+        captcha_icons = sb1.find_elements('div[class*="fas fa-"]')  # Locate 'div' with 'fas fa-' in class
+        
+        for captcha_icon in captcha_icons:
+            # Get the class names of the captcha icon
+            captcha_icon_classes = captcha_icon.get_attribute('class').split()
+            captcha_icon_classes = [cls for cls in captcha_icon_classes if cls.startswith("fa-")]
 
-        if not captcha_icon_class:
-            print("No valid captcha icon found.")
-            return False
+            if not captcha_icon_classes:
+                continue  # Skip if no valid 'fa-' class found
 
-        captcha_icon_class = captcha_icon_class[0]  # Assuming the first match is relevant
+            captcha_icon_class = captcha_icon_classes[0]  # Use the first valid 'fa-' class
 
-        # Get the available icon options
-        icon_options = sb1.find_elements('i[class*="fas fa-"]')  # Find 'i' elements with 'fas fa-' in class
+            # Get the available icon options (filter out decoys)
+            icon_options = sb1.find_elements('i[class*="fas fa-"]')  # Find 'i' elements with 'fas fa-' in class
 
-        # Iterate through the options to find the matching icon and click it
-        for option in icon_options:
-            option_classes = option.get_attribute('class').split()
-            if captcha_icon_class in option_classes:
-                option.uc_click()  # Custom click method to handle undetected Selenium
-                print(f"Clicked on the matching icon: {captcha_icon_class}")
-                return True
+            for option in icon_options:
+                option_classes = option.get_attribute('class').split()
+                if captcha_icon_class in option_classes:
+                    try:
+                        option.uc_click()  # Custom click method to handle undetected Selenium
+                        print(f"Clicked on the matching icon: {captcha_icon_class}")
+                        return True  # Return immediately after a successful click
+                    except Exception as e:
+                        print(f"Error clicking on icon: {e}")
+                        continue  # Continue to the next option if clicking fails
 
         print("No matching icon found.")
-        return False
+        return False  # Return False if no matching icon was clicked
     except Exception as e:
         print(f"Error solving captcha: {e}")
         return False

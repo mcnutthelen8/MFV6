@@ -429,16 +429,7 @@ def deploy_docker(farmurl, driver):
                                 create_devbox(driver)
                                 return False
                         except Exception as e:
-                            print('press_anykey_cbs not found')
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/workspace_git.png", region=(320, 760, 1500, 900), confidence=0.9)
-                            if x and y:
-                                pyautogui.click(x, y)
-                                print("workspace git Found")
-                                pyautogui.typewrite('docker run -i --platform=linux/amd64 -p 6080:6080 akarita/docker-ubuntu-desktop')
-                                pyautogui.press('enter')
-                        except Exception as e:
-                            print('press_anykey_cbs not found')
+                            print('docker_failed2 not found')
 
 
             except Exception as e:
@@ -861,6 +852,17 @@ while True:
                 else:
                     print("No document was updated.")
             
+            elif 'wait' in request:
+                for i in range(3000):
+                    query = {"type": "main"}
+                    doc = collection.find_one(query)
+                    request = doc["request"]
+                    if 'wait' in request:
+                        print(f'Waiting{request} | {i}')
+                        time.sleep(5)
+                    else:
+                        break
+                    
             time.sleep(5)
             try:
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/reload_window.png", region=(144, 118, 1700, 1000), confidence=0.9)

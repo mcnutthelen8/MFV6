@@ -1083,7 +1083,7 @@ def ipfixer():
     #    print('Update Farm', i)
 
     while True:
-        query = {"type": "main"}
+        
         pyautogui.moveTo(100, 200)
         pyautogui.moveTo(200, 400)
         doc = collection.find_one(query)
@@ -1092,10 +1092,11 @@ def ipfixer():
             preip = get_ip(sb1)
             if preip:
                 if ip == preip:
-                    print(f'Good IP found: {ip}')
-                    if ip == preip:#if respo == 0:
+                        print(f'Good IP found: {ip}')
+                        query = {"type": "main"}
                         update = {"$set": {"response": f'Ready IP🟢: {ip}'}}
                         result = collection.update_one(query, update)
+                        print('Result:',result)
                         print(f"repo {respo}")
                         res_farms = []
                         for frm in CSB1_farms:
@@ -1130,7 +1131,7 @@ def ipfixer():
                     
                 else:
                     respo = 0
-                    update = {"$set": {"response": f'Changed IP🔴: {ip}'}}
+                    update = {"$set": {"response": f'Changed IP🔴: {preip}'}}
                     result = collection.update_one(query, update)
                     ip = fix_ip(sb1, server_name1)
                     gg2344 = 0

@@ -780,32 +780,219 @@ else:
 
 while True:
     #Wating
-    gg = True
-    start_time = time.time()
-    while gg == True:
+    try:
+        gg = True
+        start_time = time.time()
+        while gg == True:
+            urls =[]
+            for i, page in enumerate(page_windows):
+                collection = db[CSB_Script]                
+                #######################################
+                ucredit = CSB_credit_usage(sb1)
+                sri_lanka_tz = pytz.timezone('Asia/Colombo')
+                utc_now = datetime.utcnow().replace(tzinfo=pytz.utc)  
+                sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
+                now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
+                query = {"type": "main"}
+                sample_document = {
+                    "ucredit": ucredit,
+                    "status": now
+                }
+                update = {"$set": sample_document}
+                result = collection.update_one(query, update)    
+                ############################################
+                i += 1
+                sb1.switch_to.window(page)
+                time.sleep(1)
+                time.sleep(2)
+                pyautogui.click(942, 69)
+                time.sleep(2)
+                pyautogui.hotkey('ctrl', 'l')
+                pyautogui.keyUp('ctrl')
+                time.sleep(2)
+                pyautogui.hotkey('ctrl', 'a')
+                pyautogui.keyUp('ctrl')
+                time.sleep(1)
+                pyautogui.hotkey('ctrl', 'c')
+                pyautogui.keyUp('ctrl')
+                pyautogui.click(1220 ,208)
+                page_url = clipboard.paste()
+                        #page_url = sb1.get_current_url()
+                urls.append(page_url)
+                print(f'List URLS:{urls} page:{page_url}')
+                try:
+                    query = {"type": "main"}
+                    doc = collection.find_one(query)
+                    request = doc["request"]
+                    if 's' in request:
+                        
+                            x = ''
+                            g = 0
+                            for z in range(1,6):
+                                y = str(z)
+                                
+                                if y in request:
+                                    x = z - 1
+                                    break
+                            page = page_windows[x]
+                            sb1.switch_to.window(page)
+                            time.sleep(2)
+                            i = x +1
+                            command = command_1
+                            if   i == 1: command = command_1
+                            elif i == 2: command = command_2
+                            elif i == 3: command = command_3
+                            elif i == 4: command = command_4
+                            elif i == 5: command = command_5
+                        
+                            create_devbox(sb1)
+                            deploy_docker(command, sb1)
+                            pyautogui.click(942, 65)
+                            collection = db[CSB_Script]
+                            query = {"type": "main"}
+                            doc = collection.find_one(query)
+                            update = {"$set": {"request": 'None'}}
+                            result = collection.update_one(query, update)      
+                            if result.modified_count > 0:
+                                print(f"Updated {result.modified_count} document(s).")
+                            else:
+                                print("No document was updated.")
+                        
+                    elif 'wait' in request:
+                        for i in range(3000):
+                            query = {"type": "main"}
+                            doc = collection.find_one(query)
+                            request = doc["request"]
+                            if 'wait' in request:
+                                print(f'Waiting{request} | {i}')
+                                time.sleep(5)
+                            else:
+                                break
+                    elif 'kill' in request:
+                        sb1.quit()
+                        break
+                    time.sleep(5)
+                except Exception as e:
+                    print('ERR',e)
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/reload_window.png", region=(144, 118, 1700, 1000), confidence=0.9)
+                    pyautogui.click(242, 85)
+                    pyautogui.press('f5')
+
+                except Exception as e:
+                    print(f'Waiting For Find Directior Listener{i}')
+
+                title =  sb1.get_title()
+                if 'Unable to start the microVM' in title:
+                    command = command_1
+                    if   i == 1: command = command_1
+                    elif i == 2: command = command_2
+                    elif i == 3: command = command_3
+                    elif i == 4: command = command_4
+                    elif i == 5: command = command_5
+                    query = {"type": "main"}
+                    doc = collection.find_one(query)
+                    update = {"$set": {"request": f'Resetting DEV{i}'}}
+                    result = collection.update_one(query, update) 
+                    create_devbox(sb1)
+                    deploy_docker(command , sb1)
+                    pyautogui.click(942, 65)
+                    query = {"type": "main"}
+                    doc = collection.find_one(query)
+                    update = {"$set": {"request": 'None'}}
+                    result = collection.update_one(query, update)  
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/505-screen.png", region=(1120, 223, 1000, 1000), confidence=0.9)
+                    if x and y:
+                        command = command_1
+                        if   i == 1: command = command_1
+                        elif i == 2: command = command_2
+                        elif i == 3: command = command_3
+                        elif i == 4: command = command_4
+                        elif i == 5: command = command_5
+                        query = {"type": "main"}
+                        doc = collection.find_one(query)
+                        update = {"$set": {"request": f'Resetting DEV{i}'}}
+                        result = collection.update_one(query, update) 
+                        create_devbox(sb1)
+                        deploy_docker(command , sb1)
+                        pyautogui.click(942, 65)
+                        query = {"type": "main"}
+                        doc = collection.find_one(query)
+                        update = {"$set": {"request": 'None'}}
+                        result = collection.update_one(query, update)  
+                except Exception as e:
+                    print(f'ERR{e}')
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/502.png", region=(1120, 223, 1000, 1000), confidence=0.9)
+                    if x and y:
+                        command = command_1
+                        if   i == 1: command = command_1
+                        elif i == 2: command = command_2
+                        elif i == 3: command = command_3
+                        elif i == 4: command = command_4
+                        elif i == 5: command = command_5
+                        query = {"type": "main"}
+                        doc = collection.find_one(query)
+                        update = {"$set": {"request": f'Resetting DEV{i}'}}
+                        result = collection.update_one(query, update) 
+                        create_devbox(sb1)
+                        deploy_docker(command , sb1)
+                        pyautogui.click(942, 65)
+                        query = {"type": "main"}
+                        doc = collection.find_one(query)
+                        update = {"$set": {"request": 'None'}}
+                        result = collection.update_one(query, update)  
+                except Exception as e:
+                    print(f'ERR{e}')
+                time.sleep(35)
+                
+            if len(urls) == 5:
+                devbox_string = "<br>\n".join([url.replace('https://codesandbox.io/p/', '') for url in urls])
+                query = {"type": "main"}
+                sample_document = {
+                    "devboxes": devbox_string
+                }
+                update = {"$set": sample_document}
+                result = collection.update_one(query, update) 
+            elapsed_time = time.time() - start_time
+            mins, secs = divmod(int(elapsed_time), 60)
+            timer = f'{mins:02d}:{secs:02d}'
+            seconds_only = int(elapsed_time)
+            print(f'Next Click {timer}')
+            print(f'Elapsed_time {seconds_only}')
+            if seconds_only > waiting_sec:
+                gg = False
+
+    ##############################################
+
+        collection = db[CSB_Script]
+        query = {"type": "main"}
+        doc = collection.find_one(query)
+        #request = doc["request"]
+        #print(request)
+        update = {"$set": {"request": 'None'}}
+        result = collection.update_one(query, update)      
+        if result.modified_count > 0:
+            print(f"Updated {result.modified_count} document(s).")
+        else:
+            print("No document was updated.")
+
+        update = {"$set": {"response": 'None'}}
+        result = collection.update_one(query, update)      
+        if result.modified_count > 0:
+            print(f"Updated {result.modified_count} document(s).")
+        else:
+            print("No document was updated.")
+
+
         urls =[]
-        for i, page in enumerate(page_windows):
-            collection = db[CSB_Script]                
-            #######################################
-            ucredit = CSB_credit_usage(sb1)
-            sri_lanka_tz = pytz.timezone('Asia/Colombo')
-            utc_now = datetime.utcnow().replace(tzinfo=pytz.utc)  
-            sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
-            now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
-            query = {"type": "main"}
-            sample_document = {
-                "ucredit": ucredit,
-                "status": now
-            }
-            update = {"$set": sample_document}
-            result = collection.update_one(query, update)    
-            ############################################
-            i += 1
+        for page in page_windows:
             sb1.switch_to.window(page)
-            time.sleep(1)
+            sb1.refresh()
             time.sleep(2)
             pyautogui.click(942, 69)
-            time.sleep(2)
+            time.sleep(1)
             pyautogui.hotkey('ctrl', 'l')
             pyautogui.keyUp('ctrl')
             time.sleep(2)
@@ -814,222 +1001,38 @@ while True:
             time.sleep(1)
             pyautogui.hotkey('ctrl', 'c')
             pyautogui.keyUp('ctrl')
-            pyautogui.click(1220 ,208)
             page_url = clipboard.paste()
                     #page_url = sb1.get_current_url()
             urls.append(page_url)
-            print(f'List URLS:{urls} page:{page_url}')
-            try:
-                query = {"type": "main"}
-                doc = collection.find_one(query)
-                request = doc["request"]
-                if 's' in request:
-                    
-                        x = ''
-                        g = 0
-                        for z in range(1,6):
-                            y = str(z)
-                            
-                            if y in request:
-                                x = z - 1
-                                break
-                        page = page_windows[x]
-                        sb1.switch_to.window(page)
-                        time.sleep(2)
-                        i = x +1
-                        command = command_1
-                        if   i == 1: command = command_1
-                        elif i == 2: command = command_2
-                        elif i == 3: command = command_3
-                        elif i == 4: command = command_4
-                        elif i == 5: command = command_5
-                    
-                        create_devbox(sb1)
-                        deploy_docker(command, sb1)
-                        pyautogui.click(942, 65)
-                        collection = db[CSB_Script]
-                        query = {"type": "main"}
-                        doc = collection.find_one(query)
-                        update = {"$set": {"request": 'None'}}
-                        result = collection.update_one(query, update)      
-                        if result.modified_count > 0:
-                            print(f"Updated {result.modified_count} document(s).")
-                        else:
-                            print("No document was updated.")
-                    
-                elif 'wait' in request:
-                    for i in range(3000):
-                        query = {"type": "main"}
-                        doc = collection.find_one(query)
-                        request = doc["request"]
-                        if 'wait' in request:
-                            print(f'Waiting{request} | {i}')
-                            time.sleep(5)
-                        else:
-                            break
-                elif 'kill' in request:
-                    sb1.quit()
-                    break
-                time.sleep(5)
-            except Exception as e:
-                print('ERR',e)
-            try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/reload_window.png", region=(144, 118, 1700, 1000), confidence=0.9)
-                pyautogui.click(242, 85)
-                pyautogui.press('f5')
-
-            except Exception as e:
-                print(f'Waiting For Find Directior Listener{i}')
-
-            title =  sb1.get_title()
-            if 'Unable to start the microVM' in title:
-                command = command_1
-                if   i == 1: command = command_1
-                elif i == 2: command = command_2
-                elif i == 3: command = command_3
-                elif i == 4: command = command_4
-                elif i == 5: command = command_5
-                query = {"type": "main"}
-                doc = collection.find_one(query)
-                update = {"$set": {"request": f'Resetting DEV{i}'}}
-                result = collection.update_one(query, update) 
-                create_devbox(sb1)
-                deploy_docker(command , sb1)
-                pyautogui.click(942, 65)
-                query = {"type": "main"}
-                doc = collection.find_one(query)
-                update = {"$set": {"request": 'None'}}
-                result = collection.update_one(query, update)  
-            try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/505-screen.png", region=(1120, 223, 1000, 1000), confidence=0.9)
-                if x and y:
-                    command = command_1
-                    if   i == 1: command = command_1
-                    elif i == 2: command = command_2
-                    elif i == 3: command = command_3
-                    elif i == 4: command = command_4
-                    elif i == 5: command = command_5
-                    query = {"type": "main"}
-                    doc = collection.find_one(query)
-                    update = {"$set": {"request": f'Resetting DEV{i}'}}
-                    result = collection.update_one(query, update) 
-                    create_devbox(sb1)
-                    deploy_docker(command , sb1)
-                    pyautogui.click(942, 65)
-                    query = {"type": "main"}
-                    doc = collection.find_one(query)
-                    update = {"$set": {"request": 'None'}}
-                    result = collection.update_one(query, update)  
-            except Exception as e:
-                print(f'ERR{e}')
-            try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/502.png", region=(1120, 223, 1000, 1000), confidence=0.9)
-                if x and y:
-                    command = command_1
-                    if   i == 1: command = command_1
-                    elif i == 2: command = command_2
-                    elif i == 3: command = command_3
-                    elif i == 4: command = command_4
-                    elif i == 5: command = command_5
-                    query = {"type": "main"}
-                    doc = collection.find_one(query)
-                    update = {"$set": {"request": f'Resetting DEV{i}'}}
-                    result = collection.update_one(query, update) 
-                    create_devbox(sb1)
-                    deploy_docker(command , sb1)
-                    pyautogui.click(942, 65)
-                    query = {"type": "main"}
-                    doc = collection.find_one(query)
-                    update = {"$set": {"request": 'None'}}
-                    result = collection.update_one(query, update)  
-            except Exception as e:
-                print(f'ERR{e}')
-            time.sleep(35)
-            
+                
+        #after each Refresh
         if len(urls) == 5:
+            collection = db[CSB_Script]
+            result = collection.delete_many({})
+            print(f"Deleted {result.deleted_count} documents.")
             devbox_string = "<br>\n".join([url.replace('https://codesandbox.io/p/', '') for url in urls])
-            query = {"type": "main"}
-            sample_document = {
-                "devboxes": devbox_string
-            }
-            update = {"$set": sample_document}
-            result = collection.update_one(query, update) 
-        elapsed_time = time.time() - start_time
-        mins, secs = divmod(int(elapsed_time), 60)
-        timer = f'{mins:02d}:{secs:02d}'
-        seconds_only = int(elapsed_time)
-        print(f'Next Click {timer}')
-        print(f'Elapsed_time {seconds_only}')
-        if seconds_only > waiting_sec:
-            gg = False
-
-##############################################
-
-    collection = db[CSB_Script]
-    query = {"type": "main"}
-    doc = collection.find_one(query)
-    #request = doc["request"]
-    #print(request)
-    update = {"$set": {"request": 'None'}}
-    result = collection.update_one(query, update)      
-    if result.modified_count > 0:
-        print(f"Updated {result.modified_count} document(s).")
-    else:
-        print("No document was updated.")
-
-    update = {"$set": {"response": 'None'}}
-    result = collection.update_one(query, update)      
-    if result.modified_count > 0:
-        print(f"Updated {result.modified_count} document(s).")
-    else:
-        print("No document was updated.")
-
-
-    urls =[]
-    for page in page_windows:
-        sb1.switch_to.window(page)
-        sb1.refresh()
-        time.sleep(2)
-        pyautogui.click(942, 69)
-        time.sleep(1)
-        pyautogui.hotkey('ctrl', 'l')
-        pyautogui.keyUp('ctrl')
-        time.sleep(2)
-        pyautogui.hotkey('ctrl', 'a')
-        pyautogui.keyUp('ctrl')
-        time.sleep(1)
-        pyautogui.hotkey('ctrl', 'c')
-        pyautogui.keyUp('ctrl')
-        page_url = clipboard.paste()
-                #page_url = sb1.get_current_url()
-        urls.append(page_url)
+            sri_lanka_tz = pytz.timezone('Asia/Colombo')
+            utc_now = datetime.utcnow().replace(tzinfo=pytz.utc)  
+            sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
+            now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
+            ucredit, usage_list = CSB_Usages(sb1)
             
-    #after each Refresh
-    if len(urls) == 5:
-        collection = db[CSB_Script]
-        result = collection.delete_many({})
-        print(f"Deleted {result.deleted_count} documents.")
-        devbox_string = "<br>\n".join([url.replace('https://codesandbox.io/p/', '') for url in urls])
-        sri_lanka_tz = pytz.timezone('Asia/Colombo')
-        utc_now = datetime.utcnow().replace(tzinfo=pytz.utc)  
-        sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
-        now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
-        ucredit, usage_list = CSB_Usages(sb1)
-        
-        csb_panel =     {"csb_script_id": CSB_Script,
-                        "csb_logins": CSB_id,
-                        "devboxes": devbox_string,
-                        "ucredit" : ucredit,
-                        "status": now,
-                        "request": "None",
-                        "response": "None",
-                        "type": "main"}
-        
-        csb_panel_collection = db[CSB_Script]
-        csb_panel_result = csb_panel_collection.insert_one(csb_panel)
-        print(f"Inserted csb_panel with ID: {csb_panel_result.inserted_id}")
+            csb_panel =     {"csb_script_id": CSB_Script,
+                            "csb_logins": CSB_id,
+                            "devboxes": devbox_string,
+                            "ucredit" : ucredit,
+                            "status": now,
+                            "request": "None",
+                            "response": "None",
+                            "type": "main"}
+            
+            csb_panel_collection = db[CSB_Script]
+            csb_panel_result = csb_panel_collection.insert_one(csb_panel)
+            print(f"Inserted csb_panel with ID: {csb_panel_result.inserted_id}")
 
-        if usage_list:
-            usage_collection = db[CSB_Script]
-            usage_result = usage_collection.insert_many(usage_list)
-            print(f"Inserted usage documents with IDs: {usage_result.inserted_ids}")
+            if usage_list:
+                usage_collection = db[CSB_Script]
+                usage_result = usage_collection.insert_many(usage_list)
+                print(f"Inserted usage documents with IDs: {usage_result.inserted_ids}")
+    except Exception as e:
+        print('ERR:',e)

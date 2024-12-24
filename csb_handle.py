@@ -422,7 +422,7 @@ def deploy_docker(farmurl, driver):
                         except Exception as e:
                             print('press_anykey_cbs not found')
                         try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/docker_failed2.png", region=(320, 760, 1500, 900), confidence=0.9)
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/docker_failed2.png", region=(11,570,1917,1075), confidence=0.9)
                             if x and y:
                                 pyautogui.click(x, y)
                                 print("Docker Failed Found")
@@ -819,56 +819,60 @@ while True:
                     #page_url = sb1.get_current_url()
             urls.append(page_url)
             print(f'List URLS:{urls} page:{page_url}')
-            query = {"type": "main"}
-            doc = collection.find_one(query)
-            request = doc["request"]
-            if 's' in request:
-                x = ''
-                g = 0
-                for z in range(1,6):
-                    y = str(z)
-                    
-                    if y in request:
-                        x = z - 1
-                        break
-                page = page_windows[x]
-                sb1.switch_to.window(page)
-                time.sleep(2)
-                i = x +1
-                command = command_1
-                if   i == 1: command = command_1
-                elif i == 2: command = command_2
-                elif i == 3: command = command_3
-                elif i == 4: command = command_4
-                elif i == 5: command = command_5
-            
-                create_devbox(sb1)
-                deploy_docker(command, sb1)
-                pyautogui.click(942, 65)
-                collection = db[CSB_Script]
+            try:
                 query = {"type": "main"}
                 doc = collection.find_one(query)
-                update = {"$set": {"request": 'None'}}
-                result = collection.update_one(query, update)      
-                if result.modified_count > 0:
-                    print(f"Updated {result.modified_count} document(s).")
-                else:
-                    print("No document was updated.")
-            
-            elif 'wait' in request:
-                for i in range(3000):
-                    query = {"type": "main"}
-                    doc = collection.find_one(query)
-                    request = doc["request"]
-                    if 'wait' in request:
-                        print(f'Waiting{request} | {i}')
-                        time.sleep(5)
-                    else:
-                        break
-            elif 'kill' in request:
-                sb1.quit()
-                break
-            time.sleep(5)
+                request = doc["request"]
+                if 's' in request:
+                    
+                        x = ''
+                        g = 0
+                        for z in range(1,6):
+                            y = str(z)
+                            
+                            if y in request:
+                                x = z - 1
+                                break
+                        page = page_windows[x]
+                        sb1.switch_to.window(page)
+                        time.sleep(2)
+                        i = x +1
+                        command = command_1
+                        if   i == 1: command = command_1
+                        elif i == 2: command = command_2
+                        elif i == 3: command = command_3
+                        elif i == 4: command = command_4
+                        elif i == 5: command = command_5
+                    
+                        create_devbox(sb1)
+                        deploy_docker(command, sb1)
+                        pyautogui.click(942, 65)
+                        collection = db[CSB_Script]
+                        query = {"type": "main"}
+                        doc = collection.find_one(query)
+                        update = {"$set": {"request": 'None'}}
+                        result = collection.update_one(query, update)      
+                        if result.modified_count > 0:
+                            print(f"Updated {result.modified_count} document(s).")
+                        else:
+                            print("No document was updated.")
+                    
+                elif 'wait' in request:
+                    for i in range(3000):
+                        query = {"type": "main"}
+                        doc = collection.find_one(query)
+                        request = doc["request"]
+                        if 'wait' in request:
+                            print(f'Waiting{request} | {i}')
+                            time.sleep(5)
+                        else:
+                            break
+                elif 'kill' in request:
+                    sb1.quit()
+                    break
+                time.sleep(5)
+            except Exception as e:
+                print('ERR',e)
             try:
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/reload_window.png", region=(144, 118, 1700, 1000), confidence=0.9)
                 pyautogui.click(242, 85)

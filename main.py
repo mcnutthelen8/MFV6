@@ -2596,7 +2596,7 @@ def mysterium_reinstaller():
     #find externsion
     #delete
     #install 
-    response_messege('Mysterium Reinstaller')
+    response_messege('Changed IP🔴 :Mys Reinstaller')
     current_window = sb1.current_window_handle
     all_windows = sb1.window_handles
     for window in all_windows:

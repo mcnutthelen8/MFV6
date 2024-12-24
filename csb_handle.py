@@ -79,6 +79,7 @@ command_3 = '0'
 command_4 = '0'
 command_5 = '0'
 
+
 if Layout == 1:
     command_1 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 1 --fresh 3'
     command_2 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 2 --fresh 3'
@@ -88,17 +89,12 @@ if Layout == 1:
 
 
 elif Layout == 2:
-    command_1 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main3.py --farm 1 --fresh 3'
-    command_2 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main3.py --farm 2 --fresh 3'
-    command_3 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main3.py --farm 3 --fresh 3'
-    command_4 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main3.py --farm 4 --fresh 3'
-    command_5 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main3.py --farm 5 --fresh 3'
+    command_1 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 6 --fresh 3'
+    command_2 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 7 --fresh 3'
+    command_3 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 8 --fresh 3'
+    command_4 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 9 --fresh 3'
+    command_5 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 10 --fresh 3'
 
-elif Layout == 3:
-    command_1 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 9 --fresh 3'
-    command_2 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 10 --fresh 3'
-    command_3 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 11 --fresh 3'
-    command_4 = 'git clone https://github.com/mcnutthelen8/MFV6.git && cd MFV6 && chmod +x install_dependencies.sh && ./install_dependencies.sh && python3 main.py --farm 12 --fresh 3'
 
 chrome_binary_path = '/opt/google/chrome/google-chrome'
 chrome_user_data_dir = '/root/.config/google-chrome/v632f2'
@@ -327,7 +323,8 @@ def create_devbox(driver):
     except Exception as e:
         print(f'Create DevBox:{e}')
         return False
-  
+
+
 def deploy_docker(farmurl, driver):
     while True:
         currecto = False
@@ -365,7 +362,8 @@ def deploy_docker(farmurl, driver):
                     print("workspace git Found")
                     pyautogui.typewrite('docker run -i --platform=linux/amd64 -p 6080:6080 akarita/docker-ubuntu-desktop')
                     pyautogui.press('enter')
-                    while True:
+                    ggg2 = True
+                    while ggg2 == True:
                         time.sleep(2)  
                         try:
                             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/docker_deployed.png", region=(350, 780, 800, 800), confidence=0.9)
@@ -424,12 +422,22 @@ def deploy_docker(farmurl, driver):
                             
                         except Exception as e:
                             print('press_anykey_cbs not found')
-                    
-                
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/docker_failed3.png", region=(303,673,1917,1060), confidence=0.9)
+                            if x and y:
+                                pyautogui.click(x, y)
+                                print("Docker Failed Found")
+                                create_devbox(driver)
+                                ggg2 = False
+                        except Exception as e:
+                            print('docker_failed2 not found')
+
+
             except Exception as e:
                 print(f'Deploy:{e}')
         else:
             print("No correcto")
+
 
 
 def CSB_credit_usage(driver):

@@ -1232,7 +1232,8 @@ def verify_and_claim(sb1):
 def solve_icon_captcha(sb1):
     try:
         # Extract all captcha icons
-        captcha_icons = sb1.find_elements('div[class*="fas fa-"]')  # Locate 'div' with 'fas fa-' in class
+        #captcha_icons = sb1.find_elements('div[class*="fas fa-"]')  # Locate 'div' with 'fas fa-' in class
+        captcha_icons = sb1.find_elements('[class*="fas fa-"]')
         
         for captcha_icon in captcha_icons:
             # Get the class names of the captcha icon

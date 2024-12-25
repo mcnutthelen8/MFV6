@@ -350,10 +350,10 @@ def get_mails_passowrds(farm_id):
         elif '3' in layout:
             server_name1 = 'denmark' 
             CSB1_farms = [6, 7, 8, 9, 10]
-            earnpp_email = 'sevongrda@gmail.com'
-            earnpp_pass = 'sevongrda'
-            feyorra_email = 'sevongrda@gmail.com'
-            feyorra_pass = 'sevongrda'
+            earnpp_email = 'grevonshld@gmail.com'
+            earnpp_pass = 'grevonshld'
+            feyorra_email = 'grevonshld@gmail.com'
+            feyorra_pass = 'grevonshld'
         elif '4' in layout:
             server_name1 = 'denmark'
             CSB1_farms = [1, 2, 3, 4, 5]
@@ -385,10 +385,10 @@ def get_mails_passowrds(farm_id):
         elif '3' in layout:
             server_name1 = 'saudi arabia' 
             CSB1_farms = [6, 7, 8, 9, 10]
-            earnpp_email = 'rooxshenn@gmail.com'
-            earnpp_pass = 'rooxshenn'
-            feyorra_email = 'rooxshenn@gmail.com'
-            feyorra_pass = 'rooxshenn'
+            earnpp_email = 'rhexnargg@gmail.com'
+            earnpp_pass = 'rhexnargg'
+            feyorra_email = 'rhexnargg@gmail.com'
+            feyorra_pass = 'rhexnargg'
 
         elif '4' in layout:
             server_name1 = 'saudi arabia'
@@ -421,10 +421,10 @@ def get_mails_passowrds(farm_id):
         elif '3' in layout:
             server_name1 = 'sweden' 
             CSB1_farms = [6, 7, 8, 9, 10]
-            earnpp_email = 'sheperaremi@gmail.com'
-            earnpp_pass = 'sheperaremi'
-            feyorra_email = 'sheperaremi@gmail.com'
-            feyorra_pass = 'sheperaremi'
+            earnpp_email = 'ramishepera@gmail.com'
+            earnpp_pass = 'ramishepera'
+            feyorra_email = 'ramishepera@gmail.com'
+            feyorra_pass = 'ramishepera'
         elif '4' in layout:
             server_name1 = 'sweden'
             CSB1_farms = [6,7,8,9,10]

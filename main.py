@@ -393,10 +393,10 @@ def get_mails_passowrds(farm_id):
         elif '4' in layout:
             server_name1 = 'saudi arabia'
             CSB1_farms = [6, 7, 8, 9, 10]
-            earnpp_email = 'asenarbia97@gmail.com'
-            earnpp_pass = 'asenarbia97'
-            feyorra_email = 'asenarbia97@gmail.com'
-            feyorra_pass = 'asenarbia97'
+            earnpp_email = 'senarxbiag@gmail.com'
+            earnpp_pass = 'senarxbiag'
+            feyorra_email = 'senarxbiag@gmail.com'
+            feyorra_pass = 'senarxbiag'
 
     elif farm_id == 9:
 

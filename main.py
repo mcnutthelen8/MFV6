@@ -1243,7 +1243,7 @@ def verify_and_claim(sb1):
     else:
         print("Verified! message not found.")
 
-def solve_icon_captcha(sb1):
+def solve_icon_captcha_v1(sb1):
     try:
         # Extract all captcha icons
         #captcha_icons = sb1.find_elements('div[class*="fas fa-"]')  # Locate 'div' with 'fas fa-' in class
@@ -1278,6 +1278,52 @@ def solve_icon_captcha(sb1):
     except Exception as e:
         print(f"Error solving captcha: {e}")
         return False
+
+
+#V2
+def solve_icon_captcha(sb1):
+    try:
+        # Extract all captcha icons
+        captcha_icons = sb1.find_elements('[class*="fas fa-"]')
+
+        for captcha_icon in captcha_icons:
+            # Skip icons with inline styles
+            if captcha_icon.get_attribute('style'):
+                continue
+
+            # Get the class names of the captcha icon
+            captcha_icon_classes = captcha_icon.get_attribute('class').split()
+            captcha_icon_classes = [cls for cls in captcha_icon_classes if cls.startswith("fa-")]
+
+            if not captcha_icon_classes:
+                continue  # Skip if no valid 'fa-' class found
+
+            captcha_icon_class = captcha_icon_classes[0]  # Use the first valid 'fa-' class
+
+            # Get the available icon options (filter out decoys)
+            icon_options = sb1.find_elements('i[class*="fas fa-"]')
+
+            for option in icon_options:
+                # Skip options with inline styles
+                if option.get_attribute('style'):
+                    continue
+
+                option_classes = option.get_attribute('class').split()
+                if captcha_icon_class in option_classes:
+                    try:
+                        option.uc_click()  # Custom click method to handle undetected Selenium
+                        print(f"Clicked on the matching icon: {captcha_icon_class}")
+                        return True  # Return immediately after a successful click
+                    except Exception as e:
+                        print(f"Error clicking on icon: {e}")
+                        continue  # Continue to the next option if clicking fails
+
+        print("No matching icon found.")
+        return False  # Return False if no matching icon was clicked
+    except Exception as e:
+        print(f"Error solving captcha: {e}")
+        return False
+
 
 def cloudflare(sb, login = True):
     try:

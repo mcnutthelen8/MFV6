@@ -65,8 +65,8 @@ earnpp_email = 'Nooo'
 earnpp_pass = 'Nooo'
 feyorra_email = 'Nooo'
 feyorra_pass = 'Nooo'
-claimc_email = 'Nooo'
-claimc_pass = 'Nooo'
+claimc_email = 'yvonne12463@gmail.com'
+claimc_pass = 'Uwuinsta@2005'
 
 
 mongo_uri = "mongodb+srv://redgta36:J6n7Hoz2ribHmMmx@moneyfarm.wwzcs.mongodb.net/?retryWrites=true&w=majority&appName=moneyfarm"
@@ -125,6 +125,7 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'khabibmakanzie2'
             feyorra_email = 'khabibmakanzie2@gmail.com'
             feyorra_pass = 'khabibmakanzie2'
+
         elif '2' in layout:
             server_name1 = 'bulgaria' # 'morocco' #'bulgaria'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
@@ -196,6 +197,8 @@ def get_mails_passowrds(farm_id):
             feyorra_email = 'yvonne12463@gmail.com'
             feyorra_pass = 'Uwuinsta@2005'
 
+            claimc_email = 'yvonne12463@gmail.com'
+            claimc_pass = 'Uwuinsta@2005'
 
         elif '2' in layout:
             server_name1 = 'spain' #'belgium'
@@ -499,7 +502,7 @@ chrome_user_data_dir = '/root/.config/google-chrome/'
 
 bitmoon = False
 earnpp = True
-claimcoin = False
+claimcoin = True
 feyorra = True
 feyorratop = False
 baymack = False
@@ -552,7 +555,7 @@ def insert_data(ip, amount1, amount2, amount3,emailg):
         print("No document was updated.")
     add_messages('pepelom', {now: amount1})
     add_messages('feyorramack', {now: amount2})
-    #add_messages('claimcoins', {now: amount3})
+    add_messages('claimcoins', {now: amount3})
 
     return
 
@@ -1092,9 +1095,14 @@ def ipfixer():
             preip = get_ip(sb1)
             if preip:
                 if ip == preip:
-                        print(f'Good IP found: {ip}')
+                        sri_lanka_tz = pytz.timezone('Asia/Colombo')
+                        utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
+                        sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
+                        now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
+                        print(now)
+                        print(f'Good IP found: {ip} |{now}')
                         query = {"type": "main"}
-                        update = {"$set": {"response": f'Ready IP🟢: {ip}'}}
+                        update = {"$set": {"response": f'Ready IP🟢: {ip} | {now}'}}
                         result = collection.update_one(query, update)
                         print('Result:',result)
                         print(f"repo {respo}")
@@ -1131,7 +1139,13 @@ def ipfixer():
                     
                 else:
                     respo = 0
-                    update = {"$set": {"response": f'Changed IP🔴: {preip}'}}
+                    
+                    sri_lanka_tz = pytz.timezone('Asia/Colombo')
+                    utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
+                    sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
+                    now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
+                    print(now)
+                    update = {"$set": {"response": f'Changed IP🔴: {preip} |{now}'}}
                     result = collection.update_one(query, update)
                     ip = fix_ip(sb1, server_name1)
                     gg2344 = 0

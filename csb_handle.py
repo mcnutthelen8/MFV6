@@ -893,7 +893,7 @@ while True:
             except Exception as e:
                 print(f'ERR{e}')
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/502_screen.png",  confidence=0.9)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/502.png",  confidence=0.9)
                 if x and y:
                     command = command_1
                     if   i == 1: command = command_1

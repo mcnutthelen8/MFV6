@@ -3114,6 +3114,8 @@ while True:
                                     print("verify_cloudflare git Found")
                                     debug_messages(f'cloudflare Found')
                                     cloudflare(sb1, login=True)
+                                    time.sleep(1)
+                                    sb1.uc_click('#loginBtnText')
                                 except Exception as e:
                                     print('No clousflare on feyorra')
                                 if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):

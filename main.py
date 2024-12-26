@@ -3165,7 +3165,7 @@ while True:
                                         debug_messages(f' Invalid Captcha | reset:{reset_count_isacc}')
                                         if reset_count_isacc > 1:
                                             response_messege(f'Invalid Captcha | reset:{reset_count_isacc}')
-                                        reset_count_isacc +=1
+                                        pyautogui.press('f5')
                                         claimcoin_count = 1 
                                     else:
                                         if sb1.is_text_visible('Ready'):

@@ -1134,6 +1134,7 @@ def ipfixer():
                                 gg2344 += 1
                         else:
                             gg2344 = 1
+                        time.sleep(7)
                             
 
                     
@@ -1338,7 +1339,7 @@ def cloudflare(sb, login = True):
                     for i in range(1, 300):
                         #pyautogui.moveTo(100, 200)
 
-                        if 'Login' in page_title or 'Just' in page_title or 'Faucetpay' in page_title or 'Earnbitmoon' in page_title:
+                        if 'Login' in page_title or 'Just' in page_title or 'Faucet' in page_title or 'Earnbitmoon' in page_title:
                             try:
                                 time.sleep(1)
                                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
@@ -3108,6 +3109,13 @@ while True:
                             if gg:
                                 feyorra_limit_reached =None
                             else:
+                                try:
+                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
+                                    print("verify_cloudflare git Found")
+                                    debug_messages(f'cloudflare Found')
+                                    cloudflare(sb1, login=True)
+                                except Exception as e:
+                                    print('No clousflare on feyorra')
                                 if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
                                     debug_messages(f'Feyorra Limit Reached')
                                     response_messege('Feyorra Limit Reached')

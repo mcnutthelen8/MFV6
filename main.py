@@ -1385,6 +1385,42 @@ def cloudflare(sb, login = True):
         print(e)
 
 
+def cloudflare_withoutSB():
+    try:
+        gg = False
+        while gg == False:
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
+                print("verify_cloudflare git Found")
+                if x and y:
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
+                        print("verify_cloudflare git Found")
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.7)
+                            pyautogui.click(x, y)
+                            time.sleep(5)
+
+                        except Exception as e:
+                            print(e)
+                    except Exception as e:
+                        print(e)             
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_success.png", confidence=0.7)
+                        pyautogui.click(x, y)
+                        time.sleep(1)
+                        return True
+
+                    except Exception as e:
+                        print(e)
+            except Exception as e:
+                print(e)
+                gg = True
+            
+    except Exception as e:
+        print(e)
+
+
 
 
 
@@ -2717,6 +2753,46 @@ def mysterium_reinstaller():
                 fix_wrong_pins()
                 return mysterium
             
+def get_current_window_title():
+    try:
+        # Use xdotool to get the active window's title
+        result = subprocess.run(
+            ["xdotool", "getwindowfocus", "getwindowname"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        if result.returncode == 0:
+            return result.stdout.strip()
+        else:
+            raise Exception(result.stderr.strip())
+    except FileNotFoundError:
+        return "xdotool is not installed. Please install it using: sudo apt install xdotool"
+    except Exception as e:
+        return f"An error occurred: {e}"
+
+def solve_icon_captcha_gui():
+    clipboard.copy('gg')
+    pyautogui.scroll(2000)
+    time.sleep(1)
+    clip = clipboard.paste()
+    if 'x is' in clip:
+        coin = clip.split()[0]
+        x_match = re.search(r"x is (\d+)", clip)
+        x = int(x_match.group(1)) if x_match else None
+        ip_match = re.search(r"ip is (\d+\.\d+\.\d+\.\d+)", clip)
+        ip = ip_match.group(1) if ip_match else None
+        for i in range(1,11):
+            z = 5 * i
+            y = 400 + z
+            pyautogui.moveTo(x,y)
+            pyautogui.click(x,y)
+        return coin, ip
+
+    else:
+        print('There is no X is :',clip)
+    return None, None
+
 
 
 def fix_wrong_pins():
@@ -2998,6 +3074,12 @@ start_time4 = 0
 time.sleep(2)
 print('Starting Loop')
 
+def switching_tabs(tab_name):
+    if tab_name ==1:
+        pyautogui.click(55,102)
+        pyautogui.mouseDown('ctrl')
+        pyautogui.press('1')
+        pyautogui.mouseUp('ctrl')
 
 while True:
     try:
@@ -3006,63 +3088,35 @@ while True:
         mainscript = control_panel()
         print('control_panel', mainscript)
         if mainscript == 1:
-            
-            debug_messages(f'Ip address Found:{ip_address}')
-            cc_faucet = None
-            if reset_count_isacc >= 7:
-                response_messege('oops.. reset_count_isacc triggers')
-                blacklistedIP.append(ip_address)
-                mysterium_vpn_connect(server_name1, sb1)
-                time.sleep(7)
-                mysterium_vpn_connect(server_name1, sb1)
-                time.sleep(5)
-                
-                reset_count = 16
-                reset_count_isacc = 0
-
-            ip_address = get_ip(sb1) 
-            if reset_count >= 15:
-                print('reset count higher')
-                
-                earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
-                reset_count = 0
-                reset_count_isacc = 0
-
-            if previous_reset_count == reset_count:
-                reset_count = 0
-            else:
-                previous_reset_count = reset_count
-
-            if ip_address == ip_required:
-                debug_messages(f'Ip address Match:{ip_address}')
-
-                all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
-                close_extra_windows(sb1, all_window_handles)
-
-                print(f'Reset_count:{reset_count}')
-
+            sb1.disconnect()
+            if earnpp:
                 if earnpp:
                     try:
                         debug_messages(f'Switching Pages to EarnPP')
-                        sb1.switch_to.window(earnpp_window)
+                        pyautogui.click(55,102)
+                        pyautogui.mouseDown('ctrl')
+                        pyautogui.press('1')
+                        pyautogui.mouseUp('ctrl')
                         debug_messages(f'Getting Pages Titile:EarnPP')
-                        title =sb1.get_title()
+                        title = get_current_window_title()
+                        print(title)
                         if 'Faucet | Earn-pepe' in title:
                             debug_messages(f'Solving Icon Captcha on EarnPP')
-                            gg = solve_icon_captcha(sb1)
-                            if gg:
+                            earnpp_coins, ip_address = solve_icon_captcha_gui()
+                            
+                            if ip_address:
                                 earnpp_limit_reached = None
                             else:
-                                if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
-                                    debug_messages(f'EarnPP Limit Reached')
-                                    response_messege('EarnPP Limit Reached')
-                                    earnpp_limit_reached = True
-                                else:
-                                    refresh_count +=5
+                                
+                                cloudflare_withoutSB()
+                                try:
+                                    x,y = pyautogui.locateCenterOnScreen(image='/root/Desktop/MFV6/images/claim_pp.png',confidence=0.94)
+                                    pyautogui.click(x,y)
+                                except Exception as e:
+                                    print('not found claim on pp')
+                                refresh_count +=3
                             debug_messages(f'Solved Icon Captcha on EarnPP')
-                            val = get_coins(sb1, 1)
-                            if val:
-                                earnpp_coins = val
+
 
                         elif 'Lock' in title:
                             debug_messages(f'Lock.. Found on EarnPP')
@@ -3070,7 +3124,7 @@ while True:
                             earnpp_coins = 0
                         elif 'Just' in title:
                             debug_messages(f'Just.. Found on EarnPP')
-
+                            sb1.connect()
                             cloudflare(sb1, login = False)
                             debug_messages(f'Just Fixed EarnPP')
                         elif 'aintenance' in title:
@@ -3087,208 +3141,9 @@ while True:
                             reset_count +=1
 
                     except Exception as e:
-                        if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
-                            debug_messages(f'EarnPP Limit Reached')
-                            response_messege('EarnPP Limit Reached')
-                            earnpp_limit_reached = True
-                        else:
                             debug_messages(f'ERR on EarnPP:{e}')
                             reset_count +=1
                 
-                if feyorra:
-                    try:
-                        debug_messages(f'Switching Pages to Feyorra')
-                        sb1.switch_to.window(feyorra_window)
-                        debug_messages(f'Getting Pages Titile:Feyorra')
-                        pyautogui.press('enter')
-                        title =sb1.get_title()
-
-                        if 'Faucet | Feyorra' in title:
-                            debug_messages(f'Solving Icon Captcha on Feyorra')
-                            gg = solve_icon_captcha(sb1)
-                            if gg:
-                                feyorra_limit_reached =None
-                            else:
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
-                                    print("verify_cloudflare git Found")
-                                    debug_messages(f'cloudflare Found')
-                                    cloudflare(sb1, login=True)
-                                    time.sleep(1)
-                                    sb1.uc_click('#loginBtnText')
-                                except Exception as e:
-                                    print('No clousflare on feyorra')
-                                if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
-                                    debug_messages(f'Feyorra Limit Reached')
-                                    response_messege('Feyorra Limit Reached')
-                                    feyorra_limit_reached =True
-                                else:
-                                    refresh_count +=5
-                            val = get_coins(sb1, 2)
-                            if val:
-                                feyorra_coins = val
-                                
-                        elif 'Just' in title:
-                            debug_messages(f'Just.. Found on Feyorra')
-                            cloudflare(sb1, login = False)
-                            debug_messages(f'Just Fixed Feyorra')
-                        elif 'aintenance' in title:
-                            debug_messages(f'maintenance.. Found on Feyorra')
-                            response_messege('maintenance.. Found on Feyorra')
-                            feyorra_coins = 0
-
-                        elif 'Lock' in title:
-                            debug_messages(f'Lock.. Found on Feyorra')
-                            response_messege('Lock.. Found on Feyorra')
-                            feyorra_coins =0
-                        elif 'Home | Feyorra' in title or 'Login' in title:
-                            debug_messages(f'LOGIN.. Found on Feyorra')
-                            response_messege('LOGIN.. Found on Feyorra')
-                            feyorra_coins = 0
-                            reset_count +=5
-                        else:
-                            debug_messages(f'Feyorra not Found:{title} | reset:{reset_count}')
-                            reset_count +=1
-                    except Exception as e:
-                        pyautogui.press('enter')
-                        if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
-                            debug_messages(f'Feyorra Limit Reached')
-                            response_messege('Feyorra Limit Reached')
-                            feyorra_limit_reached =True
-                        else:
-                            debug_messages(f'ERR on Feyorra:{e}')
-                            reset_count +=1
-
-                if claimcoin:
-
-                    try:
-                        debug_messages(f'Time capture in ClaimCoins')
-                        if claimcoin: #seconds_only > 14:
-                            debug_messages(f'Switching Pages to ClaimCoins:{seconds_only}')
-                            sb1.switch_to.window(claimcoin_window)
-                            #pyautogui.press('enter')
-                            debug_messages(f'Getting Pages Titile:ClaimCoins')
-                            title =sb1.get_title()
-                            if 'Faucet | ClaimCoin' in title:
-                                if claimcoin_count == 0:
-                                    if sb1.is_text_visible(' Invalid Captcha') or sb1.is_text_visible('Invalid Captcha'):
-                                        debug_messages(f' Invalid Captcha | reset:{reset_count_isacc}')
-                                        if reset_count_isacc > 1:
-                                            response_messege(f'Invalid Captcha | reset:{reset_count_isacc}')
-                                        pyautogui.press('f5')
-                                        claimcoin_count = 1 
-                                    else:
-                                        if sb1.is_text_visible('Ready'):
-                                            claimcoin_count = 1 
-                                        else:
-                                            reset_count_isacc = 0
-                                debug_messages(f'Solving Icon Captcha on ClaimCoins')
-                                val = get_coins(sb1, 3)
-                                if val:
-                                    claimc_coins = val
-                                cc_faucet =  find_and_click_collect_button(sb1)
-                                if cc_faucet:
-                                    claimcoin_count = 0
-                                    debug_messages(f'Solved Icon Captcha on Claimcoins')
-                                sb1.switch_to.window(claimcoin_window)
-                            elif 'Just' in title:
-                                debug_messages(f'Just.. Found on Claimcoins')
-
-                                cloudflare(sb1, login = False)
-                                debug_messages(f'Just Fixed Claimcoins')
-
-                            elif 'Lock' in title:
-                                debug_messages(f'Lock.. Found on Claimcoins')
-                                response_messege('Lock.. Found on Claimcoins')
-                                claimc_coins = 0
-                            elif 'ClaimCoin - MultiCurrency Crypto Earning Platform' in title or 'Login' in title:
-                                debug_messages(f'LOGIN.. Found on ClaimCoin')
-                                response_messege('LOGIN.. Found on ClaimCoin')
-                                claimc_coins = 0
-                                reset_count +=5
-                            elif 'aintenance' in title:
-                                debug_messages(f'aintenance.. Found on Claimcoins')
-                                response_messege('aintenance.. Found on Claimcoins')
-                                claimc_coins = 0
-                            else:
-                                debug_messages(f'ClamCoim not Found:{title} | reset:{reset_count}')
-                                reset_count +=1
-                        
-                    except Exception as e:
-                        debug_messages(f'ERR on ClamCoim:{e}')
-                        reset_count +=1
-
-
-
-                elapsed_time = time.time() - start_time
-                seconds_only = int(elapsed_time)
-                debug_messages(f'ClaimCoins Seconds:{seconds_only}')
-                if seconds_only > 20:
-                    start_time = time.time()
-                    if earnpp_coins == earnpp_coins_pre:
-                        start_time = time.time()
-
-                        if refresh_count >= 30:
-                            response_messege(f'earnpp_coins same {earnpp_coins}| count:{refresh_count} | {seconds_only}')
-                            sb1.switch_to.window(earnpp_window)
-                            sb1.uc_open('https://earn-pepe.com/member/faucet')
-                            refresh_count = 0
-
-                        if earnpp_limit_reached:
-                            pass
-                        else:
-                            if refresh_count >= 50:
-                                reset_count +=5
-                            refresh_count +=1
-                    elif feyorra_coins == feyorra_coins_pre:
-                        start_time = time.time()
-
-                        if refresh_count >= 30:
-                            pyautogui.press('enter')
-                            response_messege(f'feyorra_coins same {feyorra_coins}| count:{refresh_count} | {seconds_only}')
-                            refresh_count = 0
-                            sb1.switch_to.window(feyorra_window)
-                            sb1.uc_open('https://feyorra.site/member/faucet')
-                        if feyorra_limit_reached:
-                            pass
-                        else:
-                            if refresh_count >= 50:
-                                reset_count +=5
-                            refresh_count +=1
-                    elif claimc_coins == claimc_coins_pre and cc_faucet and claimcoin:
-                        start_time = time.time()
-                        if refresh_count >= 30:
-                            response_messege(f'claimc_coins same {claimc_coins}| count:{refresh_count} | {seconds_only}')
-                            sb1.switch_to.window(claimcoin_window)
-                            sb1.uc_open("https://claimcoin.in/faucet")
-                            refresh_count = 0
-                        
-                        refresh_count +=1
-                    else:
-                        earnpp_coins_pre = earnpp_coins
-                        feyorra_coins_pre = feyorra_coins
-                        claimc_coins_pre = claimc_coins
-                        refresh_count = 0
-
-                elapsed_time3 = time.time() - start_time3
-                seconds_only3 = int(elapsed_time3)
-                debug_messages(f'MangoDB Seconds:{seconds_only3}')
-                if seconds_only3 > 130:
-                    print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}| ')
-                    if earnpp_coins and feyorra_coins: #and claimc_coins: #and bitmoon_coins:
-                        start_time3 = time.time()
-                        emailgg = f'{earnpp_email} <br>country: {server_name1} <br>Current Layout:{layout} <br>Farm:{farm_id}'
-                        insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins, emailgg)
-                    else:
-                        response_messege(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}')
-                    #elif earnpp_coins and feyorra_coins and claimc_coins:
-                    #    start_time3 = time.time()
-                    #    insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins, 0)
-                    
-                    
-
-                else:
-                    print(f'MngoDB:{seconds_only3}')
             else:
                 print('Ip fucked')
                 reset_count +=4
@@ -3298,10 +3153,12 @@ while True:
     
 
         if mainscript == 2:
+            sb1.connect()
             earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
             reset_count = 0
 
         if mainscript == 3:
+            sb1.connect()
             response_messege('Ip Resettinggg...')
             reset_count_isacc = 10
             query = {"type": "main"}
@@ -3311,24 +3168,30 @@ while True:
 
 
         if mainscript == 4:
+            sb1.connect()
             withdraw_faucet(sb1, 1) 
 
         if mainscript == 6:
+            sb1.connect()
             withdraw_faucet(sb1, 2) 
         if mainscript == 7:
+            sb1.connect()
             withdraw_faucet(sb1, 3) 
 
         if mainscript == 8:
+            sb1.connect()
             sb1.quit()
             break
 
         if mainscript == 5:
+            
             for i in range(1,6):
                 time.sleep(1)
                 print('Pause...')
 
 
     except Exception as e:
+        sb1.connect()
         print(f'Oh Hell No{e}')
         response_messege(f'Oh Hell No{e}')
         if 'no such window' in str(e) or 'invalid session' in str(e) or 'NoHTTPConnectionPool' in str(e):

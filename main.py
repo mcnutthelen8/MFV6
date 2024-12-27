@@ -2784,9 +2784,10 @@ def solve_icon_captcha_gui():
         x = int(x_match.group(1)) if x_match else None
         ip_match = re.search(r"ip is (\d+\.\d+\.\d+\.\d+)", clip)
         ip = ip_match.group(1) if ip_match else None
+        x = x+4
         if x > 1:
-            for i in range(1,11):
-                z = 15 * i
+            for i in range(1,7):
+                z = 20 * i
                 y = 400 + z
                 pyautogui.moveTo(x,y)
                 pyautogui.click(x,y)
@@ -3118,9 +3119,10 @@ while True:
                         print(title)
                         if 'Faucet | Earn-pepe' in title:
                             debug_messages(f'Solving Icon Captcha on EarnPP')
-                            earnpp_coins, ip_address = solve_icon_captcha_gui()
+                            earnpp_coins, ip_address2 = solve_icon_captcha_gui()
                             
-                            if ip_address:
+                            if ip_address2:
+                                ip_address =ip_address2
                                 earnpp_limit_reached = None
 
                             try:
@@ -3174,11 +3176,12 @@ while True:
                         debug_messages(f'Getting Pages Titile:fey')
                         title = get_current_window_title()
                         print(title)
-                        if 'Faucet | Earn-pepe' in title:
+                        if 'Faucet | Feyorra' in title:
                             debug_messages(f'Solving Icon Captcha on fey')
-                            feyorra_coins, ip_address = solve_icon_captcha_gui()
+                            feyorra_coins, ip_address2 = solve_icon_captcha_gui()
                             
-                            if ip_address:
+                            if ip_address2:
+                                ip_address = ip_address2
                                 feyorra_limit_reached = None
 
                             try:

@@ -2771,7 +2771,7 @@ def get_current_window_title():
     except Exception as e:
         return f"An error occurred: {e}"
 
-def solve_icon_captcha_gui():
+def solve_icon_captcha_gui(limit):
     pyautogui.click(550,148)
     clipboard.copy('gg')
     pyautogui.scroll(-2000)
@@ -2786,8 +2786,8 @@ def solve_icon_captcha_gui():
         ip = ip_match.group(1) if ip_match else None
         x = x+4
         if x > 1:
-            for i in range(1,7):
-                z = 20 * i
+            for i in range(1,limit):
+                z = 30 * i
                 y = 400 + z
                 pyautogui.moveTo(x,y)
                 pyautogui.click(x,y)
@@ -3119,7 +3119,7 @@ while True:
                         print(title)
                         if 'Faucet | Earn-pepe' in title:
                             debug_messages(f'Solving Icon Captcha on EarnPP')
-                            earnpp_coins, ip_address2 = solve_icon_captcha_gui()
+                            earnpp_coins, ip_address2 = solve_icon_captcha_gui(5)
                             
                             if ip_address2:
                                 ip_address =ip_address2
@@ -3178,7 +3178,7 @@ while True:
                         print(title)
                         if 'Faucet | Feyorra' in title:
                             debug_messages(f'Solving Icon Captcha on fey')
-                            feyorra_coins, ip_address2 = solve_icon_captcha_gui()
+                            feyorra_coins, ip_address2 = solve_icon_captcha_gui(7)
                             
                             if ip_address2:
                                 ip_address = ip_address2

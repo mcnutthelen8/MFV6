@@ -2776,17 +2776,20 @@ def solve_icon_captcha_gui():
     pyautogui.scroll(2000)
     time.sleep(1)
     clip = clipboard.paste()
+    print(clip)
     if 'x is' in clip:
         coin = clip.split()[0]
         x_match = re.search(r"x is (\d+)", clip)
         x = int(x_match.group(1)) if x_match else None
         ip_match = re.search(r"ip is (\d+\.\d+\.\d+\.\d+)", clip)
         ip = ip_match.group(1) if ip_match else None
-        for i in range(1,11):
-            z = 5 * i
-            y = 400 + z
-            pyautogui.moveTo(x,y)
-            pyautogui.click(x,y)
+        if x > 1:
+            for i in range(1,11):
+                z = 5 * i
+                y = 400 + z
+                pyautogui.moveTo(x,y)
+                pyautogui.click(x,y)
+        
         return coin, ip
 
     else:

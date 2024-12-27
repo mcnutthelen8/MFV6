@@ -2772,8 +2772,9 @@ def get_current_window_title():
         return f"An error occurred: {e}"
 
 def solve_icon_captcha_gui():
+    pyautogui.click(550,148)
     clipboard.copy('gg')
-    pyautogui.scroll(2000)
+    pyautogui.scroll(-2000)
     time.sleep(1)
     clip = clipboard.paste()
     print(clip)
@@ -2785,7 +2786,7 @@ def solve_icon_captcha_gui():
         ip = ip_match.group(1) if ip_match else None
         if x > 1:
             for i in range(1,11):
-                z = 5 * i
+                z = 15 * i
                 y = 400 + z
                 pyautogui.moveTo(x,y)
                 pyautogui.click(x,y)
@@ -2893,7 +2894,7 @@ def open_browsers():
 
 def update_target_ip(new_ip):
     try:
-        file_path = "mfhelperv7/config.json"
+        file_path = "mfhelper/config.json"
         # Open the JSON file and load its contents
         with open(file_path, "r") as file:
             data = json.load(file)
@@ -3094,12 +3095,6 @@ start_time4 = 0
 time.sleep(2)
 print('Starting Loop')
 
-def switching_tabs(tab_name):
-    if tab_name ==1:
-        pyautogui.click(55,102)
-        pyautogui.mouseDown('ctrl')
-        pyautogui.press('1')
-        pyautogui.mouseUp('ctrl')
 
 while True:
     try:
@@ -3114,9 +3109,9 @@ while True:
                     try:
                         debug_messages(f'Switching Pages to EarnPP')
                         pyautogui.click(55,102)
-                        pyautogui.mouseDown('ctrl')
+                        pyautogui.keyDown('ctrl')
                         pyautogui.press('1')
-                        pyautogui.mouseUp('ctrl')
+                        pyautogui.keyUp('ctrl')
                         debug_messages(f'Getting Pages Titile:EarnPP')
                         title = get_current_window_title()
                         print(title)
@@ -3126,15 +3121,18 @@ while True:
                             
                             if ip_address:
                                 earnpp_limit_reached = None
-                            else:
-                                
+
+                            try:
+                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
                                 cloudflare_withoutSB()
                                 try:
-                                    x,y = pyautogui.locateCenterOnScreen(image='/root/Desktop/MFV6/images/claim_pp.png',confidence=0.94)
+                                    x,y = pyautogui.locateCenterOnScreen(image='/root/Desktop/MFV6/images/claim_pp.png',confidence=0.9)
                                     pyautogui.click(x,y)
                                 except Exception as e:
                                     print('not found claim on pp')
-                                refresh_count +=3
+                            except Exception as e:
+                                print('not found claim on pp')
+                                #refresh_count +=3
                             debug_messages(f'Solved Icon Captcha on EarnPP')
 
 

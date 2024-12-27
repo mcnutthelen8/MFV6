@@ -3104,6 +3104,8 @@ while True:
         print('control_panel', mainscript)
         if mainscript == 1:
             sb1.disconnect()
+            if ip_address == ip_required:
+                
                 if earnpp:
                     try:
                         debug_messages(f'Switching Pages to EarnPP')
@@ -3220,8 +3222,7 @@ while True:
                     except Exception as e:
                             debug_messages(f'fey on EarnPP:{e}')
                             reset_count +=1
-            if ip_address == ip_required:
-                print('Ip okay',ip_address)
+
             else:
                 print('Ip fucked')
                 reset_count +=4

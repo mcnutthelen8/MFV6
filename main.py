@@ -3104,7 +3104,6 @@ while True:
         print('control_panel', mainscript)
         if mainscript == 1:
             sb1.disconnect()
-            if earnpp:
                 if earnpp:
                     try:
                         debug_messages(f'Switching Pages to EarnPP')
@@ -3163,7 +3162,66 @@ while True:
                     except Exception as e:
                             debug_messages(f'ERR on EarnPP:{e}')
                             reset_count +=1
-                
+                if feyorra:
+                    try:
+                        debug_messages(f'Switching Pages to fey')
+                        pyautogui.click(55,102)
+                        pyautogui.keyDown('ctrl')
+                        pyautogui.press('2')
+                        pyautogui.keyUp('ctrl')
+                        debug_messages(f'Getting Pages Titile:fey')
+                        title = get_current_window_title()
+                        print(title)
+                        if 'Faucet | Earn-pepe' in title:
+                            debug_messages(f'Solving Icon Captcha on fey')
+                            feyorra_coins, ip_address = solve_icon_captcha_gui()
+                            
+                            if ip_address:
+                                feyorra_limit_reached = None
+
+                            try:
+                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
+                                cloudflare_withoutSB()
+                                try:
+                                    x,y = pyautogui.locateCenterOnScreen(image='/root/Desktop/MFV6/images/claim_fey.png',confidence=0.9)
+                                    pyautogui.click(x,y)
+                                except Exception as e:
+                                    print('not found claim on fey')
+                            except Exception as e:
+                                print('not found claim on fey')
+                                #refresh_count +=3
+                            debug_messages(f'Solved Icon Captcha on Fey')
+
+
+                        elif 'Lock' in title:
+                            debug_messages(f'Lock.. Found on fey')
+                            response_messege('Lock.. Found on fey')
+                            feyorra_coins = 0
+                        elif 'Just' in title:
+                            debug_messages(f'Just.. Found on fey')
+                            sb1.connect()
+                            cloudflare(sb1, login = False)
+                            debug_messages(f'Just Fixed fey')
+                        elif 'aintenance' in title:
+                            debug_messages(f'maintenance.. Found on fey')
+                            response_messege('maintenance.. Found on fey')
+                            feyorra_coins = 0
+                        elif 'Home' in title or 'Login' in title:
+                            debug_messages(f'LOGIN.. Found on fey')
+                            response_messege('LOGIN.. Found on fey')
+                            feyorra_coins = 0
+                            reset_count +=5
+                        elif 'Google' in title:
+                            print('Its google g')
+                        else:
+                            debug_messages(f'fey not Found:{title} | reset:{reset_count}')
+                            reset_count +=1
+
+                    except Exception as e:
+                            debug_messages(f'fey on EarnPP:{e}')
+                            reset_count +=1
+            if ip_address == ip_required:
+                print('Ip okay',ip_address)
             else:
                 print('Ip fucked')
                 reset_count +=4

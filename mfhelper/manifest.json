@@ -1,21 +1,22 @@
 {
-    "manifest_version": 3,
-    "name": "YouTube Play Button Auto-Clicker",
-    "version": "1.0",
-    "description": "Automatically clicks the play button on embedded YouTube videos every 2 seconds.",
-    "permissions": ["activeTab", "scripting"],
-    "background": {
-      "service_worker": "background.js"
-    },
-    
-    "content_scripts": [
+  "manifest_version": 3,
+  "name": "mfhelper",
+  "version": "1.0",
+  "description": "Automatically handles alerts and claims on feyorra.site and earn-pepe.com.",
+  "permissions": ["activeTab", "scripting", "clipboardWrite"],
+  "web_accessible_resources": [
       {
-        "matches": ["*://*/*"],
-        "js": ["content.js"]
+          "resources": ["config.json"],
+          "matches": ["<all_urls>"]
       }
-    ],
-    "action": {
-      "default_popup": "popup.html"
-    }
-  }
-  
+  ],
+  "content_scripts": [
+      {
+          "matches": [
+              "https://earn-pepe.com/member/faucet", 
+              "https://feyorra.site/member/faucet"
+          ],
+          "js": ["content.js"]
+      }
+  ]
+}

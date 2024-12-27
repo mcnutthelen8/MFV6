@@ -3139,6 +3139,8 @@ while True:
                             response_messege('LOGIN.. Found on EarnPP')
                             earnpp_coins = 0
                             reset_count +=5
+                        elif 'Google' in title:
+                            print('Its google g')
                         else:
                             debug_messages(f'EarnPP not Found:{title} | reset:{reset_count}')
                             reset_count +=1

@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Ymfhelper",
+  "name": "mfhelper",
   "version": "1.0",
   "description": "Automatically handles alerts and claims on feyorra.site and earn-pepe.com.",
   "permissions": ["activeTab", "scripting", "clipboardWrite"],
@@ -14,7 +14,8 @@
       {
           "matches": [
               "https://earn-pepe.com/member/faucet", 
-              "https://feyorra.site/member/faucet"
+              "https://feyorra.site/member/faucet",
+              "https://claimcoin.in/faucet"
           ],
           "js": ["content.js"]
       }

@@ -1,6 +1,6 @@
 
 async function validate_ipaddress() {
-  const validURLs = ["https://feyorra.site/", "https://earn-pepe.com/"];
+  const validURLs = ["https://feyorra.site/", "https://earn-pepe.com/", "https://claimcoin.in/faucet"];
   const currentURL = window.location.href;
 
   // Check if the current URL matches the target pattern
@@ -290,23 +290,62 @@ async function getCoins() {
 
   return false;
 }
-
 async function solveIconCaptcha() {
   try {
-      const captchaIcons = document.querySelectorAll('[class*="fas fa-"]');
+      // Check if the current URL matches the given URLs
+      const url = window.location.href;
+      let sitekey = null;
+      const ipAddress = await validate_ipaddress();
+      console.log("Extracted IP Address:", ipAddress);
 
-      if (captchaIcons.length === 0) {
-          console.log("No captcha icons found on this page.");
-          return false; // Exit early if no icons are present
+      if (url.includes("earn-pepe.com")) {
+          sitekey = 1;
+      } else if (url.includes("feyorra.site")) {
+          sitekey = 2;
+      } else if (url.includes("claimcoin.in")) {
+          sitekey = 3;
+      } else {
+          console.log("Unsupported site.");
+          return false;
       }
 
+      // Get coin value regardless of captcha presence
+      let coins = await getCoins(); // Wait for the result from getCoins
+      console.log("Extracted Coins:", coins);
+
+      // Example IP address retrieval (replace with actual IP logic if needed)
+
+
+      // Check for captcha icons
+      const captchaIcons = document.querySelectorAll('[class*="fas fa-"]');
+
+      if (sitekey === 3) {
+          console.log("No captcha icons found on this page.");
+          // No captcha, still return coin and IP values
+          const clipboardText = `${coins} and is is ${ipAddress}`;
+          console.log("Clipboard Text:", clipboardText);
+
+          // Copy to clipboard
+          await navigator.clipboard.writeText(clipboardText)
+              .then(() => {
+                  console.log("Text copied to clipboard:", clipboardText);
+                  createNotification(`Text copied: ${clipboardText}`);
+              })
+              .catch((err) => {
+                  console.error("Failed to copy text to clipboard:", err);
+              });
+
+          return true;
+      }else{
+
+      // Process captcha if present
       for (const captchaIcon of captchaIcons) {
           if (captchaIcon.style.length > 0) continue;
 
           const captchaIconClasses = captchaIcon.className.split(' ').filter(cls => cls.startsWith("fa-"));
           if (!captchaIconClasses) continue;
-          const captchaIconClass = captchaIconClasses[0];
 
+          const captchaIconClass = captchaIconClasses[0];
           const iconOptions = document.querySelectorAll('i[class*="fas fa-"]');
 
           if (iconOptions.length === 0) {
@@ -335,18 +374,9 @@ async function solveIconCaptcha() {
                       console.log(`Matching icon found at index: ${index}`);
                       console.log(`Element coordinates: X=${coordinates.x}, Y=${coordinates.y}`);
 
-                      let coins = await getCoins(); // Use await to wait for the result
-                      console.log("Extracted Coins:", coins);
-
-                      // Example IP address (Replace with actual logic to get IP if needed)
-                      const ipAddress = await validate_ipaddress();
-
                       // Prepare the text to copy
                       const clipboardText = `${coins} and x is ${coordinates.x} and ip is ${ipAddress}`;
                       console.log("Clipboard Text:", clipboardText);
-
-                      // Refocus the document (ensure the document is focused)
-                      window.focus();
 
                       // Copy to clipboard
                       await navigator.clipboard.writeText(clipboardText)
@@ -358,13 +388,14 @@ async function solveIconCaptcha() {
                               console.error("Failed to copy text to clipboard:", err);
                           });
 
-                      return true; // Important: Return after finding a match
+                      return true; // Return after processing captcha
                   } catch (clickError) {
                       console.error("Error processing icon:", clickError);
                   }
               }
           }
-      }
+      }}
+
       console.log("No matching icon found.");
       return false;
   } catch (error) {
@@ -372,7 +403,6 @@ async function solveIconCaptcha() {
       return false;
   }
 }
-
 
 // Function to handle claims on Feyorra and Earn Pepe sites
 function checkAndClaim() {

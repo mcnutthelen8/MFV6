@@ -2771,7 +2771,7 @@ def get_current_window_title():
     except Exception as e:
         return f"An error occurred: {e}"
 
-def solve_icon_captcha_gui(limit):
+def solve_icon_captcha_gui(limit,fey=True):
     pyautogui.click(550,148)
     clipboard.copy('gg')
     pyautogui.scroll(-2000)
@@ -2788,8 +2788,10 @@ def solve_icon_captcha_gui(limit):
         if x > 1:
             for i in range(1,limit):
                 z = 30 * i
-                y = 400 + z
-                pyautogui.moveTo(x,y)
+                y = 550 - z
+                if fey:
+                    y = 600 - z
+                #pyautogui.moveTo(x,y)
                 pyautogui.click(x,y)
         
         return coin, ip
@@ -2797,6 +2799,32 @@ def solve_icon_captcha_gui(limit):
     else:
         print('There is no X is :',clip)
     return None, None
+
+
+def solve_claimc():
+    pyautogui.click(550,148)
+    clipboard.copy('gg')
+    pyautogui.scroll(-2000)
+    time.sleep(1)
+    clip = clipboard.paste()
+    print(clip)
+    ip = None
+    coin = None
+    try:
+        if 'and is is' in clip:
+            coin_match = re.search(r'^\d+', clip)
+            coin = coin_match.group(0) if coin_match else None
+            ip_match = re.search(r'\b(?:\d{1,3}\.){3}\d{1,3}\b', clip)
+            ip = ip_match.group(0) if ip_match else None
+    except Exception as e:
+        print("CC button no found")
+
+    try:
+        x,y = pyautogui.locateCenterOnScreen(image='/root/Desktop/MFV6/images/collect_your_reward.png', confidence=0.85)
+        pyautogui.click(x,y)
+    except Exception as e:
+        print("CC button no found")
+    return coin, ip
 
 
 
@@ -3119,7 +3147,7 @@ while True:
                         print(title)
                         if 'Faucet | Earn-pepe' in title:
                             debug_messages(f'Solving Icon Captcha on EarnPP')
-                            earnpp_coins, ip_address2 = solve_icon_captcha_gui(5)
+                            earnpp_coins, ip_address2 = solve_icon_captcha_gui(6)
                             
                             if ip_address2:
                                 ip_address =ip_address2
@@ -3225,6 +3253,55 @@ while True:
                     except Exception as e:
                             debug_messages(f'fey on EarnPP:{e}')
                             reset_count +=1
+
+
+                if claimcoin:
+
+                    try:
+                        debug_messages(f'Time capture in ClaimCoins')
+                        if claimcoin: #seconds_only > 14:
+                            debug_messages(f'Switching Pages to ClaimCoins:')
+                            pyautogui.click(55,102)
+                            pyautogui.keyDown('ctrl')
+                            pyautogui.press('3')
+                            pyautogui.keyUp('ctrl')
+                            #pyautogui.press('enter')
+                            debug_messages(f'Getting Pages Titile:ClaimCoins')
+                            title =get_current_window_title()
+                            if 'Faucet | ClaimCoin' in title:
+                                debug_messages(f'Solving Icon Captcha on ClaimCoins')
+                                claimc_coins, ip_address2 =  solve_claimc()
+                                if ip_address2:
+                                    ip_address = ip_address2
+                                    debug_messages(f'Solved Icon Captcha on Claimcoins')
+
+                            elif 'Just' in title:
+                                sb1.connect()
+                                debug_messages(f'Just.. Found on Claimcoins')
+                                cloudflare(sb1, login = False)
+                                debug_messages(f'Just Fixed Claimcoins')
+                                sb1.disconnect()
+
+                            elif 'Lock' in title:
+                                debug_messages(f'Lock.. Found on Claimcoins')
+                                response_messege('Lock.. Found on Claimcoins')
+                                claimc_coins = 0
+                            elif 'ClaimCoin - MultiCurrency Crypto Earning Platform' in title or 'Login' in title:
+                                debug_messages(f'LOGIN.. Found on ClaimCoin')
+                                response_messege('LOGIN.. Found on ClaimCoin')
+                                claimc_coins = 0
+                                reset_count +=5
+                            elif 'aintenance' in title:
+                                debug_messages(f'aintenance.. Found on Claimcoins')
+                                response_messege('aintenance.. Found on Claimcoins')
+                                claimc_coins = 0
+                            else:
+                                debug_messages(f'ClamCoim not Found:{title} | reset:{reset_count}')
+                                reset_count +=1
+                        
+                    except Exception as e:
+                        debug_messages(f'ERR on ClamCoim:{e}')
+                        reset_count +=1
 
             else:
                 print('Ip fucked')

@@ -1104,6 +1104,7 @@ def ipfixer():
                         query = {"type": "main"}
                         update = {"$set": {"response": f'Ready IP🟢: {ip} | {now}'}}
                         result = collection.update_one(query, update)
+                        time.sleep(4)
                         print('Result:',result)
                         print(f"repo {respo}")
                         res_farms = []
@@ -1316,17 +1317,36 @@ icon_path_list = {
 
     }
 #V2
-def remove_duplicates_by_last_word(elements):
-    # Extract the last word of each element
-    last_words = [element.split()[-1] for element in elements]
 
-    # Find duplicates by counting occurrences of each last word
-    duplicates = {word for word in last_words if last_words.count(word) > 1}
+def remove_preflix_of_elemts(elements):
+    item = []
+    prelix_list = ['ti ti', 'bi bi']
+    for element in elements:
+        element = element.replace('-', ' ')
+        for prelix in prelix_list:
+            if prelix in element:
+                element = element.replace(prelix, '')
+        item.append(element)
+    return item
 
-    # Create a new list excluding elements with duplicate last words
-    filtered_elements = [element for element in elements if element.split()[-1] not in duplicates]
+
+def remove_items_with_matching_words(elements):
+    elements = remove_preflix_of_elemts(elements)
+
+    # Create a list to store all words from all elements
+    all_words = [word for element in elements for word in element.split()]
+
+    # Find duplicate words (words appearing more than once)
+    duplicate_words = {word for word in all_words if all_words.count(word) > 1}
+    
+    # Filter elements, keeping only those with no duplicate words
+    filtered_elements = [
+        element for element in elements 
+        if not any(word in duplicate_words for word in element.split())
+    ]
 
     return filtered_elements
+
 
 def solve_icon_captcha(sb):
 
@@ -1349,10 +1369,8 @@ def solve_icon_captcha(sb):
                 valid_captcha_icons2.append(class_name)
 
         print('Valid Classes:',valid_captcha_icons2)
-        valid_captcha_icons =remove_duplicates_by_last_word(valid_captcha_icons2)
+        valid_captcha_icons =remove_items_with_matching_words(valid_captcha_icons2)
         print('AFter Valid Classes:',valid_captcha_icons)
-        print("Valid captcha icons after removing decoys:", [icon.get_attribute("outerHTML") for icon in valid_captcha_icons])
-
 
         # Find all SVG elements
         svg_elements = sb.find_elements("svg")

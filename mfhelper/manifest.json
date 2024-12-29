@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "mfhelper",
+  "name": "Ymfhelper",
   "version": "1.0",
   "description": "Automatically handles alerts and claims on feyorra.site and earn-pepe.com.",
   "permissions": ["activeTab", "scripting", "clipboardWrite"],

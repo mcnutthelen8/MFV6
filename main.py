@@ -3138,11 +3138,11 @@ while True:
                         print(title)
                         if 'Faucet | Earn-pepe' in title:
                             debug_messages(f'Solving Icon Captcha on EarnPP')
-                            earnpp_coins, ip_address2 = solve_icon_captcha_gui(6)
+                            #earnpp_coins, ip_address2 = solve_icon_captcha_gui(6)
                             
-                            if ip_address2:
-                                ip_address =ip_address2
-                                earnpp_limit_reached = None
+                            #if ip_address2:
+                            #    ip_address =ip_address2
+                            #    earnpp_limit_reached = None
 
                             try:
                                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
@@ -3197,11 +3197,11 @@ while True:
                         print(title)
                         if 'Faucet | Feyorra' in title:
                             debug_messages(f'Solving Icon Captcha on fey')
-                            feyorra_coins, ip_address2 = solve_icon_captcha_gui(7)
+                            #feyorra_coins, ip_address2 = solve_icon_captcha_gui(7)
                             
-                            if ip_address2:
-                                ip_address = ip_address2
-                                feyorra_limit_reached = None
+                            #if ip_address2:
+                            #    ip_address = ip_address2
+                            #    feyorra_limit_reached = None
 
                             try:
                                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)

@@ -502,7 +502,7 @@ chrome_user_data_dir = '/root/.config/google-chrome/'
 
 bitmoon = False
 earnpp = True
-claimcoin = True
+claimcoin = False
 feyorra = True
 feyorratop = False
 baymack = False
@@ -1280,38 +1280,77 @@ def solve_icon_captcha_v1(sb1):
         print(f"Error solving captcha: {e}")
         return False
 
-
 icon_path_list = {
-  "heart": "M473.7 73.8l-2.4-2.5c-46-47-118-51.7-169.6-14.8L336 159.9l-96 64 48 128-144-144 96-64-28.6-86.5C159.7 19.6 87 24 40.7 71.4l-2.4 2.4C-10.4 123.6-12.5 202.9 31 256l212.1 218.6c7.1 7.3 18.6 7.3 25.7 0L481 255.9c43.5-53 41.4-132.3-7.3-182.1z",
-  "coin": "M12.0049 4.00281C18.08 4.00281 23.0049 6.6891 23.0049 10.0028V14.0028C23.0049 17.3165 18.08 20.0028 12.0049 20.0028C6.03824 20.0028 1.18114 17.4116 1.00957 14.1797L1.00488 14.0028V10.0028C1.00488 6.6891 5.92975 4.00281 12.0049 4.00281ZM12.0049 16.0028C8.28443 16.0028 4.99537 14.9953 3.00466 13.4533L3.00488 14.0028C3.00488 15.885 6.88751 18.0028 12.0049 18.0028C17.0156 18.0028 20.8426 15.9723 20.9999 14.1207L21.0049 14.0028L21.0061 13.4525C19.0155 14.995 15.726 16.0028 12.0049 16.0028ZM12.0049 6.00281C6.88751 6.00281 3.00488 8.12061 3.00488 10.0028C3.00488 11.885 6.88751 14.0028 12.0049 14.0028C17.1223 14.0028 21.0049 11.885 21.0049 10.0028C21.0049 8.12061 17.1223 6.00281 12.0049 6.00281Z",
-  "volume": "M215 71.1L126.1 160H24c-13.3 0-24 10.7-24 24v144c0 13.3 10.7 24 24 24h102.1l89 89c15 15 41 4.5 41-17V88c0-21.5-26-32-41-17zm233.3-51.1c-11.2-7.3-26.2-4.2-33.5 7-7.3 11.2-4.2 26.2 7 33.5 66.3 43.5 105.8 116.6 105.8 195.6 0 79-39.6 152.1-105.8 195.6-11.2 7.3-14.3 22.3-7 33.5 7 10.7 21.9 14.6 33.5 7C528.3 439.6 576 351.3 576 256S528.3 72.4 448.4 20zM480 256c0-63.5-32.1-121.9-85.8-156.2-11.2-7.1-26-3.8-33.1 7.5s-3.8 26.2 7.4 33.4C408.3 166 432 209.1 432 256s-23.7 90-63.5 115.4c-11.2 7.1-14.5 22.1-7.4 33.4 6.5 10.4 21.1 15.1 33.1 7.5C447.9 377.9 480 319.5 480 256zm-141.8-76.9c-11.6-6.3-26.2-2.2-32.6 9.5-6.4 11.6-2.2 26.2 9.5 32.6C328 228.3 336 241.6 336 256c0 14.4-8 27.7-20.9 34.8-11.6 6.4-15.8 21-9.5 32.6 6.4 11.7 21.1 15.8 32.6 9.5 28.2-15.6 45.8-45 45.8-76.9s-17.5-61.3-45.8-76.9z"
-}
+    "heart": "M473.7 73.8l-2.4-2.5c-46-47-118-51.7-169.6-14.8L336 159.9l-96 64 48 128-144-144 96-64-28.6-86.5C159.7 19.6 87 24 40.7 71.4l-2.4 2.4C-10.4 123.6-12.5 202.9 31 256l212.1 218.6c7.1 7.3 18.6 7.3 25.7 0L481 255.9c43.5-53 41.4-132.3-7.3-182.1z",
+    "coin": "M12.0049 4.00281C18.08 4.00281 23.0049 6.6891 23.0049 10.0028V14.0028C23.0049 17.3165 18.08 20.0028 12.0049 20.0028C6.03824 20.0028 1.18114 17.4116 1.00957 14.1797L1.00488 14.0028V10.0028C1.00488 6.6891 5.92975 4.00281 12.0049 4.00281ZM12.0049 16.0028C8.28443 16.0028 4.99537 14.9953 3.00466 13.4533L3.00488 14.0028C3.00488 15.885 6.88751 18.0028 12.0049 18.0028C17.0156 18.0028 20.8426 15.9723 20.9999 14.1207L21.0049 14.0028L21.0061 13.4525C19.0155 14.995 15.726 16.0028 12.0049 16.0028ZM12.0049 6.00281C6.88751 6.00281 3.00488 8.12061 3.00488 10.0028C3.00488 11.885 6.88751 14.0028 12.0049 14.0028C17.1223 14.0028 21.0049 11.885 21.0049 10.0028C21.0049 8.12061 17.1223 6.00281 12.0049 6.00281Z",
+    "volume": "M215 71.1L126.1 160H24c-13.3 0-24 10.7-24 24v144c0 13.3 10.7 24 24 24h102.1l89 89c15 15 41 4.5 41-17V88c0-21.5-26-32-41-17zm233.3-51.1c-11.2-7.3-26.2-4.2-33.5 7-7.3 11.2-4.2 26.2 7 33.5 66.3 43.5 105.8 116.6 105.8 195.6 0 79-39.6 152.1-105.8 195.6-11.2 7.3-14.3 22.3-7 33.5 7 10.7 21.9 14.6 33.5 7C528.3 439.6 576 351.3 576 256S528.3 72.4 448.4 20zM480 256c0-63.5-32.1-121.9-85.8-156.2-11.2-7.1-26-3.8-33.1 7.5s-3.8 26.2 7.4 33.4C408.3 166 432 209.1 432 256s-23.7 90-63.5 115.4c-11.2 7.1-14.5 22.1-7.4 33.4 6.5 10.4 21.1 15.1 33.1 7.5C447.9 377.9 480 319.5 480 256zm-141.8-76.9c-11.6-6.3-26.2-2.2-32.6 9.5-6.4 11.6-2.2 26.2 9.5 32.6C328 228.3 336 241.6 336 256c0 14.4-8 27.7-20.9 34.8-11.6 6.4-15.8 21-9.5 32.6 6.4 11.7 21.1 15.8 32.6 9.5 28.2-15.6 45.8-45 45.8-76.9s-17.5-61.3-45.8-76.9z",
+    "android": "M420.6 301.9a24 24 0 1 1 24-24 24 24 0 0 1 -24 24m-265.1 0a24 24 0 1 1 24-24 24 24 0 0 1 -24 24m273.7-144.5 47.9-83a10 10 0 1 0 -17.3-10h0l-48.5 84.1a301.3 301.3 0 0 0 -246.6 0L116.2 64.5a10 10 0 1 0 -17.3 10h0l47.9 83C64.5 202.2 8.2 285.6 0 384H576c-8.2-98.5-64.5-181.8-146.9-226.6",
+    "chrome":"M16 8a8 8 0 0 1-7.022 7.94l1.902-7.098a3 3 0 0 0 .05-1.492A3 3 0 0 0 10.237 6h5.511A8 8 0 0 1 16 8M0 8a8 8 0 0 0 7.927 8l1.426-5.321a3 3 0 0 1-.723.255 3 3 0 0 1-1.743-.147 3 3 0 0 1-1.043-.7L.633 4.876A8 8 0 0 0 0 8m5.004-.167L1.108 3.936A8.003 8.003 0 0 1 15.418 5H8.066a3 3 0 0 0-1.252.243 2.99 2.99 0 0 0-1.81 2.59M8 10a2 2 0 1 0 0-4 2 2 0 0 0 0 4",
+    "mouse":"M15.3873 13.4975L17.9403 20.5117L13.2418 22.2218L10.6889 15.2076L6.79004 17.6529L8.4086 1.63318L19.9457 12.8646L15.3873 13.4975ZM15.3768 19.3163L12.6618 11.8568L15.6212 11.4459L9.98201 5.9561L9.19088 13.7863L11.7221 12.1988L14.4371 19.6583L15.3768 19.3163Z",
+    "cursor":"M15.3873 13.4975L17.9403 20.5117L13.2418 22.2218L10.6889 15.2076L6.79004 17.6529L8.4086 1.63318L19.9457 12.8646L15.3873 13.4975ZM15.3768 19.3163L12.6618 11.8568L15.6212 11.4459L9.98201 5.9561L9.19088 13.7863L11.7221 12.1988L14.4371 19.6583L15.3768 19.3163Z",
+    "truck":"M624 224h-16v-64c0-17.7-14.3-32-32-32h-73.6L419.2 24A64 64 0 0 0 369.2 0H256c-17.7 0-32 14.3-32 32v96H48c-8.8 0-16 7.2-16 16v80H16c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h16.7c29.2-38.7 75.1-64 127.3-64s98.1 25.4 127.3 64h65.5c29.2-38.7 75.1-64 127.3-64s98.1 25.4 127.3 64H624c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zm-336-96V64h81.2l51.2 64H288zm304 224h-5.2c-2.2-7.3-5.1-14.3-8.7-20.9l3.7-3.7c6.3-6.3 6.3-16.4 0-22.6l-22.6-22.6c-6.3-6.3-16.4-6.3-22.6 0l-3.7 3.7A110.9 110.9 0 0 0 512 277.2V272c0-8.8-7.2-16-16-16h-32c-8.8 0-16 7.2-16 16v5.2c-7.3 2.2-14.3 5.1-20.9 8.7l-3.7-3.7c-6.3-6.3-16.4-6.3-22.6 0l-22.6 22.6c-6.3 6.3-6.3 16.4 0 22.6l3.7 3.7A110.9 110.9 0 0 0 373.2 352H368c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h5.2c2.2 7.3 5.1 14.3 8.7 20.9l-3.7 3.7c-6.3 6.3-6.3 16.4 0 22.6l22.6 22.6c6.3 6.3 16.4 6.3 22.6 0l3.7-3.7c6.6 3.6 13.6 6.5 20.9 8.7v5.2c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16v-5.2c7.3-2.2 14.3-5.1 20.9-8.7l3.7 3.7c6.3 6.3 16.4 6.3 22.6 0l22.6-22.6c6.3-6.3 6.3-16.4 0-22.6l-3.7-3.7a110.9 110.9 0 0 0 8.7-20.9h5.2c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zm-112 80c-26.5 0-48-21.5-48-48s21.5-48 48-48 48 21.5 48 48-21.5 48-48 48zm-208-80h-5.2c-2.2-7.3-5.1-14.3-8.7-20.9l3.7-3.7c6.3-6.3 6.3-16.4 0-22.6l-22.6-22.6c-6.3-6.3-16.4-6.3-22.6 0l-3.7 3.7A110.9 110.9 0 0 0 192 277.2V272c0-8.8-7.2-16-16-16h-32c-8.8 0-16 7.2-16 16v5.2c-7.3 2.2-14.3 5.1-20.9 8.7l-3.7-3.7c-6.3-6.3-16.4-6.3-22.6 0L58.2 304.8c-6.3 6.3-6.3 16.4 0 22.6l3.7 3.7a110.9 110.9 0 0 0 -8.7 20.9H48c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h5.2c2.2 7.3 5.1 14.3 8.7 20.9l-3.7 3.7c-6.3 6.3-6.3 16.4 0 22.6l22.6 22.6c6.3 6.3 16.4 6.3 22.6 0l3.7-3.7c6.6 3.6 13.6 6.5 20.9 8.7v5.2c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16v-5.2c7.3-2.2 14.3-5.1 20.9-8.7l3.7 3.7c6.3 6.3 16.4 6.3 22.6 0l22.6-22.6c6.3-6.3 6.3-16.4 0-22.6l-3.7-3.7a110.9 110.9 0 0 0 8.7-20.9h5.2c8.8 0 16-7.2 16-16v-32C288 359.2 280.8 352 272 352zm-112 80c-26.5 0-48-21.5-48-48s21.5-48 48-48 48 21.5 48 48-21.5 48-48 48z",
+    "rocket":"M4 13a8 8 0 0 1 7 7a6 6 0 0 0 3 -5a9 9 0 0 0 6 -8a3 3 0 0 0 -3 -3a9 9 0 0 0 -8 6a6 6 0 0 0 -5 3",
+    "apple":"M15.778 8.20793C15.3053 8.1711 14.7974 8.28434 14.0197 8.58067C14.085 8.55577 13.2775 8.87173 13.0511 8.95077C12.5494 9.12593 12.1364 9.22198 11.6734 9.22198C11.2151 9.22198 10.7925 9.13042 10.3078 8.96683C10.1524 8.91441 9.99616 8.8564 9.80283 8.7809C9.71993 8.74852 9.41997 8.62947 9.3544 8.60379C8.70626 8.34996 8.34154 8.25434 8.03885 8.26181C6.88626 8.2765 5.79557 8.9421 5.16246 10.0442C3.87037 12.2875 4.58583 16.3428 6.47459 19.075C7.4802 20.5189 8.03062 21.035 8.25199 21.0279C8.4743 21.0183 8.63777 20.9713 9.03567 20.8026C9.11485 20.7689 9.11485 20.7689 9.202 20.7317C10.2077 20.3032 10.9118 20.114 11.9734 20.114C12.9944 20.114 13.6763 20.2997 14.6416 20.7159C14.7302 20.7542 14.7302 20.7542 14.8097 20.7884C15.2074 20.9588 15.3509 20.9962 15.6016 20.9902C15.9591 20.9846 16.4003 20.5726 17.3791 19.1362C17.6471 18.7447 17.884 18.3333 18.0895 17.9168C17.9573 17.8077 17.826 17.6917 17.6975 17.5693C16.4086 16.3408 15.6114 14.6845 15.5895 12.6391C15.5756 11.0186 16.1057 9.61487 16.999 8.45797C16.6293 8.3142 16.2216 8.23805 15.778 8.20793ZM15.9334 6.21398C16.6414 6.26198 18.6694 6.47798 19.9894 8.40998C19.8814 8.46998 17.5654 9.81397 17.5894 12.622C17.6254 15.982 20.5294 17.098 20.5654 17.11C20.5414 17.194 20.0974 18.706 19.0294 20.266C18.1054 21.622 17.1454 22.966 15.6334 22.99C14.1454 23.026 13.6654 22.114 11.9734 22.114C10.2694 22.114 9.74138 22.966 8.33738 23.026C6.87338 23.074 5.76938 21.562 4.83338 20.218C2.92538 17.458 1.47338 12.442 3.42938 9.04597C4.40138 7.35397 6.12938 6.28598 8.01338 6.26198C9.44138 6.22598 10.7974 7.22198 11.6734 7.22198C12.5374 7.22198 14.0854 6.06998 15.9334 6.21398ZM14.7934 4.38998C14.0134 5.32598 12.7414 6.05798 11.5054 5.96198C11.3374 4.68998 11.9614 3.35798 12.6814 2.52998C13.4854 1.59398 14.8294 0.897976 15.9454 0.849976C16.0894 2.14598 15.5734 3.45398 14.7934 4.38998Z",
+    "thumb":"M7 11v8a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1v-7a1 1 0 0 1 1 -1h3a4 4 0 0 0 4 -4v-1a2 2 0 0 1 4 0v5h3a2 2 0 0 1 2 2l-1 5a2 3 0 0 1 -2 2h-7a3 3 0 0 1 -3 -3",
+    "bank":"M2 20H22V22H2V20ZM4 12H6V19H4V12ZM9 12H11V19H9V12ZM13 12H15V19H13V12ZM18 12H20V19H18V12ZM2 7L12 2L22 7V11H2V7ZM12 8C12.5523 8 13 7.55228 13 7C13 6.44772 12.5523 6 12 6C11.4477 6 11 6.44772 11 7C11 7.55228 11.4477 8 12 8Z",
+    "database": "M12.0049 4.00281C18.08 4.00281 23.0049 6.6891 23.0049 10.0028V14.0028C23.0049 17.3165 18.08 20.0028 12.0049 20.0028C6.03824 20.0028 1.18114 17.4116 1.00957 14.1797L1.00488 14.0028V10.0028C1.00488 6.6891 5.92975 4.00281 12.0049 4.00281ZM12.0049 16.0028C8.28443 16.0028 4.99537 14.9953 3.00466 13.4533L3.00488 14.0028C3.00488 15.885 6.88751 18.0028 12.0049 18.0028C17.0156 18.0028 20.8426 15.9723 20.9999 14.1207L21.0049 14.0028L21.0061 13.4525C19.0155 14.995 15.726 16.0028 12.0049 16.0028ZM12.0049 6.00281C6.88751 6.00281 3.00488 8.12061 3.00488 10.0028C3.00488 11.885 6.88751 14.0028 12.0049 14.0028C17.1223 14.0028 21.0049 11.885 21.0049 10.0028C21.0049 8.12061 17.1223 6.00281 12.0049 6.00281Z",
+    "music":"M470.4 1.5L150.4 96A32 32 0 0 0 128 126.5v261.4A139 139 0 0 0 96 384c-53 0-96 28.7-96 64s43 64 96 64 96-28.7 96-64V214.3l256-75v184.6a138.4 138.4 0 0 0 -32-3.9c-53 0-96 28.7-96 64s43 64 96 64 96-28.7 96-64V32a32 32 0 0 0 -41.6-30.5z",
+    "award":"M97.1 362.6c-8.7-8.7-4.2-6.2-25.1-11.9-9.5-2.6-17.9-7.5-25.4-13.3L1.2 448.7c-4.4 10.8 3.8 22.5 15.4 22l52.7-2L105.6 507c8 8.4 22 5.8 26.4-5l52.1-127.6c-10.8 6-22.9 9.6-35.3 9.6-19.5 0-37.8-7.6-51.6-21.4zM382.8 448.7l-45.4-111.2c-7.6 5.9-15.9 10.8-25.4 13.3-21.1 5.6-16.5 3.2-25.1 11.9-13.8 13.8-32.1 21.4-51.6 21.4-12.4 0-24.5-3.6-35.3-9.6L252 502c4.4 10.8 18.4 13.4 26.4 5l36.3-38.3 52.7 2c11.6 .4 19.8-11.3 15.4-22zM263 340c15.3-15.6 17-14.2 38.8-20.1 13.9-3.8 24.8-14.8 28.5-29 7.5-28.4 5.5-25 26-45.8 10.2-10.4 14.1-25.4 10.4-39.6-7.5-28.4-7.5-24.4 0-52.8 3.7-14.1-.3-29.2-10.4-39.6-20.4-20.8-18.5-17.4-26-45.8-3.7-14.1-14.6-25.2-28.5-29-27.9-7.6-24.5-5.6-45-26.4-10.2-10.4-25-14.4-38.9-10.6-27.9 7.6-24 7.6-51.9 0-13.9-3.8-28.7 .3-38.9 10.6-20.4 20.8-17.1 18.8-44.9 26.4-13.9 3.8-24.8 14.8-28.5 29-7.5 28.4-5.5 25-26 45.8-10.2 10.4-14.2 25.4-10.4 39.6 7.5 28.4 7.5 24.4 0 52.8-3.7 14.1 .3 29.2 10.4 39.6 20.4 20.8 18.5 17.4 26 45.8 3.7 14.1 14.6 25.2 28.5 29C104.6 326 106.3 325 121 340c13.2 13.5 33.8 15.9 49.7 5.8a39.7 39.7 0 0 1 42.5 0c15.9 10.1 36.5 7.7 49.7-5.8zM97.7 176c0-53 42.2-96 94.3-96s94.3 43 94.3 96-42.2 96-94.3 96-94.3-43-94.3-96z",
+    "house":"M5.793 1a1 1 0 0 1 1.414 0l.647.646a.5.5 0 1 1-.708.708L6.5 1.707 2 6.207V12.5a.5.5 0 0 0 .5.5.5.5 0 0 1 0 1A1.5 1.5 0 0 1 1 12.5V7.207l-.146.147a.5.5 0 0 1-.708-.708zm3 1a1 1 0 0 1 1.414 0L12 3.793V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v3.293l1.854 1.853a.5.5 0 0 1-.708.708L15 8.207V13.5a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 4 13.5V8.207l-.146.147a.5.5 0 1 1-.708-.708zm.707.707L5 7.207V13.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5V7.207z",
+    "emo":"M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm33.8 161.7l80-48c11.6-6.9 24 7.7 15.4 18L343.6 180l33.6 40.3c8.7 10.4-3.9 24.8-15.4 18l-80-48c-7.7-4.7-7.7-15.9 0-20.6zm-163-30c-8.6-10.3 3.8-24.9 15.4-18l80 48c7.8 4.7 7.8 15.9 0 20.6l-80 48c-11.5 6.8-24-7.6-15.4-18l33.6-40.3-33.6-40.3zM398.9 306C390 377 329.4 432 256 432h-16c-73.4 0-134-55-142.9-126-1.2-9.5 6.3-18 15.9-18h270c9.6 0 17.1 8.4 15.9 18z",
+    "blue":"m8.543 3.948 1.316 1.316L8.543 6.58zm0 8.104 1.316-1.316L8.543 9.42zm-1.41-4.043L4.275 5.133l.827-.827L7.377 6.58V1.128l4.137 4.136L8.787 8.01l2.745 2.745-4.136 4.137V9.42l-2.294 2.274-.827-.827zM7.903 16c3.498 0 5.904-1.655 5.904-8.01 0-6.335-2.406-7.99-5.903-7.99S2 1.655 2 8.01C2 14.344 4.407 16 7.904 16Z",
+    "file":"M6 7V4C6 3.44772 6.44772 3 7 3H13.4142L15.4142 5H21C21.5523 5 22 5.44772 22 6V16C22 16.5523 21.5523 17 21 17H18V20C18 20.5523 17.5523 21 17 21H3C2.44772 21 2 20.5523 2 20V8C2 7.44772 2.44772 7 3 7H6ZM6 9H4V19H16V17H6V9ZM8 5V15H20V7H14.5858L12.5858 5H8Z",
+    "build":"M5.793 1a1 1 0 0 1 1.414 0l.647.646a.5.5 0 1 1-.708.708L6.5 1.707 2 6.207V12.5a.5.5 0 0 0 .5.5.5.5 0 0 1 0 1A1.5 1.5 0 0 1 1 12.5V7.207l-.146.147a.5.5 0 0 1-.708-.708zm3 1a1 1 0 0 1 1.414 0L12 3.793V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v3.293l1.854 1.853a.5.5 0 0 1-.708.708L15 8.207V13.5a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 4 13.5V8.207l-.146.147a.5.5 0 1 1-.708-.708zm.707.707L5 7.207V13.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5V7.207z",
+    "gift":"M3 8m0 1a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1z",
+    "bluetooth":"m8.543 3.948 1.316 1.316L8.543 6.58zm0 8.104 1.316-1.316L8.543 9.42zm-1.41-4.043L4.275 5.133l.827-.827L7.377 6.58V1.128l4.137 4.136L8.787 8.01l2.745 2.745-4.136 4.137V9.42l-2.294 2.274-.827-.827zM7.903 16c3.498 0 5.904-1.655 5.904-8.01 0-6.335-2.406-7.99-5.903-7.99S2 1.655 2 8.01C2 14.344 4.407 16 7.904 16Z",
+    "display":"M8 1a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1zm1 13.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0m2 0a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0M9.5 1a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zM9 3.5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 0-1h-5a.5.5 0 0 0-.5.5M1.5 2A1.5 1.5 0 0 0 0 3.5v7A1.5 1.5 0 0 0 1.5 12H6v2h-.5a.5.5 0 0 0 0 1H7v-4H1.5a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5H7V2z",
+    "pc":"M8 1a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1zm1 13.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0m2 0a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0M9.5 1a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zM9 3.5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 0-1h-5a.5.5 0 0 0-.5.5M1.5 2A1.5 1.5 0 0 0 0 3.5v7A1.5 1.5 0 0 0 1.5 12H6v2h-.5a.5.5 0 0 0 0 1H7v-4H1.5a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5H7V2z",
+    "university":"M2 20H22V22H2V20ZM4 12H6V19H4V12ZM9 12H11V19H9V12ZM13 12H15V19H13V12ZM18 12H20V19H18V12ZM2 7L12 2L22 7V11H2V7ZM12 8C12.5523 8 13 7.55228 13 7C13 6.44772 12.5523 6 12 6C11.4477 6 11 6.44772 11 7C11 7.55228 11.4477 8 12 8Z",
+    "laptop":"M8 1a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1zm1 13.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0m2 0a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0M9.5 1a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zM9 3.5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 0-1h-5a.5.5 0 0 0-.5.5M1.5 2A1.5 1.5 0 0 0 0 3.5v7A1.5 1.5 0 0 0 1.5 12H6v2h-.5a.5.5 0 0 0 0 1H7v-4H1.5a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5H7V2z",
+    "folder":"M6 7V4C6 3.44772 6.44772 3 7 3H13.4142L15.4142 5H21C21.5523 5 22 5.44772 22 6V16C22 16.5523 21.5523 17 21 17H18V20C18 20.5523 17.5523 21 17 21H3C2.44772 21 2 20.5523 2 20V8C2 7.44772 2.44772 7 3 7H6ZM6 9H4V19H16V17H6V9ZM8 5V15H20V7H14.5858L12.5858 5H8Z",
+    "space":"M4 13a8 8 0 0 1 7 7a6 6 0 0 0 3 -5a9 9 0 0 0 6 -8a3 3 0 0 0 -3 -3a9 9 0 0 0 -8 6a6 6 0 0 0 -5 3",
+    "device":"M8 1a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1zm1 13.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0m2 0a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0M9.5 1a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zM9 3.5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 0-1h-5a.5.5 0 0 0-.5.5M1.5 2A1.5 1.5 0 0 0 0 3.5v7A1.5 1.5 0 0 0 1.5 12H6v2h-.5a.5.5 0 0 0 0 1H7v-4H1.5a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5H7V2z",
+    "mood":"M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm33.8 161.7l80-48c11.6-6.9 24 7.7 15.4 18L343.6 180l33.6 40.3c8.7 10.4-3.9 24.8-15.4 18l-80-48c-7.7-4.7-7.7-15.9 0-20.6zm-163-30c-8.6-10.3 3.8-24.9 15.4-18l80 48c7.8 4.7 7.8 15.9 0 20.6l-80 48c-11.5 6.8-24-7.6-15.4-18l33.6-40.3-33.6-40.3zM398.9 306C390 377 329.4 432 256 432h-16c-73.4 0-134-55-142.9-126-1.2-9.5 6.3-18 15.9-18h270c9.6 0 17.1 8.4 15.9 18z",
+    "point":"M15.3873 13.4975L17.9403 20.5117L13.2418 22.2218L10.6889 15.2076L6.79004 17.6529L8.4086 1.63318L19.9457 12.8646L15.3873 13.4975ZM15.3768 19.3163L12.6618 11.8568L15.6212 11.4459L9.98201 5.9561L9.19088 13.7863L11.7221 12.1988L14.4371 19.6583L15.3768 19.3163Z",
+    "home":"M5.793 1a1 1 0 0 1 1.414 0l.647.646a.5.5 0 1 1-.708.708L6.5 1.707 2 6.207V12.5a.5.5 0 0 0 .5.5.5.5 0 0 1 0 1A1.5 1.5 0 0 1 1 12.5V7.207l-.146.147a.5.5 0 0 1-.708-.708zm3 1a1 1 0 0 1 1.414 0L12 3.793V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v3.293l1.854 1.853a.5.5 0 0 1-.708.708L15 8.207V13.5a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 4 13.5V8.207l-.146.147a.5.5 0 1 1-.708-.708zm.707.707L5 7.207V13.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5V7.207z",
 
+    }
 #V2
-def solve_icon_captcha(sb1):
+def solve_icon_captcha(sb):
+
     try:
-        captcha_icons = sb1.find_elements(By.CSS_SELECTOR, '[class*="fas fa-"], [class*=" ri-"], [class*="ti ti-"]')
+        # Extract all captcha icon
+        captcha_icons = sb.find_elements('[class*="fa-"], [class*="fas fa-"], [class*="far fa-"], [class*="ri-"], [class*="ti ti-"], [class*="bi bi-"]')
+        print(f"Found {len(captcha_icons)} potential captcha icons.")
 
-        icon_names = []
-        for icon in sb1.find_elements(By.XPATH, "//svg[@width='28' and @height='28']"):
-            path = icon.get_attribute('d')
-            if not path:
-                continue
-            for item, string_item in icon_path_list.items():
-                if string_item[:15] in path[:15]:
-                    icon_names.append(item)
+        # Filter valid captcha icons
+        valid_captcha_icons = [icon for icon in captcha_icons if not icon.get_attribute("style") and not icon.get_attribute("id") and icon.tag_name.lower() != "i"]
+        print("Valid captcha icons:", [icon.get_attribute("outerHTML") for icon in valid_captcha_icons])
 
-        for captcha_icon in captcha_icons:
-            if captcha_icon.get_attribute('style'):
-                continue
-            captcha_icon_classe = captcha_icon.get_attribute('class').split()
-            for icon in icon_names:
-                if icon in captcha_icon_classe:
-                    print('Answer is', icon)
-                    return True
+        # Find all SVG elements
+        svg_elements = sb.find_elements("svg")
+        print(f"Found {len(svg_elements)} SVG elements to check.")
 
+        # Process each SVG element
+        for svg in svg_elements:
+            try:
+                path_element = svg.find_element("path", by="css selector")
+                if path_element and path_element.get_attribute("d"):
+                    path_data = path_element.get_attribute("d")
 
-        return False  # Return False if no matching icon was clicked
+                    # Compare pathData with the iconPathList dictionary
+                    for icon_name, icon_path in icon_path_list.items():
+                        if path_data == icon_path:
+                            # Match icon class name
+                            for valid_icon in valid_captcha_icons:
+                                if icon_name in valid_icon.get_attribute("class"):
+                                    svg.uc_click()
+                                    print(f"Answer found for icon: {icon_name}")
+                                    return True  # Exit function after finding an answer
+
+            except Exception as e:
+                print(f"Skipping SVG (error: {e}).")
+
     except Exception as e:
         print(f"Error solving captcha: {e}")
         return False
@@ -1368,42 +1407,6 @@ def cloudflare(sb, login = True):
                         gg = True
                     else:
                         gg = False
-            except Exception as e:
-                print(e)
-                gg = True
-            
-    except Exception as e:
-        print(e)
-
-
-def cloudflare_withoutSB():
-    try:
-        gg = False
-        while gg == False:
-            try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
-                print("verify_cloudflare git Found")
-                if x and y:
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
-                        print("verify_cloudflare git Found")
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.7)
-                            pyautogui.click(x, y)
-                            time.sleep(5)
-
-                        except Exception as e:
-                            print(e)
-                    except Exception as e:
-                        print(e)             
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_success.png", confidence=0.7)
-                        pyautogui.click(x, y)
-                        time.sleep(1)
-                        return True
-
-                    except Exception as e:
-                        print(e)
             except Exception as e:
                 print(e)
                 gg = True
@@ -2744,79 +2747,6 @@ def mysterium_reinstaller():
                 fix_wrong_pins()
                 return mysterium
             
-def get_current_window_title():
-    try:
-        # Use xdotool to get the active window's title
-        result = subprocess.run(
-            ["xdotool", "getwindowfocus", "getwindowname"],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-            text=True
-        )
-        if result.returncode == 0:
-            return result.stdout.strip()
-        else:
-            raise Exception(result.stderr.strip())
-    except FileNotFoundError:
-        return "xdotool is not installed. Please install it using: sudo apt install xdotool"
-    except Exception as e:
-        return f"An error occurred: {e}"
-
-def solve_icon_captcha_gui(limit,fey=True):
-    pyautogui.click(550,148)
-    clipboard.copy('gg')
-    pyautogui.scroll(-2000)
-    time.sleep(1)
-    clip = clipboard.paste()
-    print(clip)
-    if 'x is' in clip:
-        coin = clip.split()[0]
-        x_match = re.search(r"x is (\d+)", clip)
-        x = int(x_match.group(1)) if x_match else None
-        ip_match = re.search(r"ip is (\d+\.\d+\.\d+\.\d+)", clip)
-        ip = ip_match.group(1) if ip_match else None
-        x = x+4
-        if x > 1:
-            for i in range(1,limit):
-                z = 30 * i
-                y = 550 - z
-                if fey:
-                    y = 600 - z
-                #pyautogui.moveTo(x,y)
-                pyautogui.click(x,y)
-        
-        return coin, ip
-
-    else:
-        print('There is no X is :',clip)
-    return None, None
-
-
-def solve_claimc():
-    pyautogui.click(550,148)
-    clipboard.copy('gg')
-    pyautogui.scroll(-2000)
-    time.sleep(1)
-    clip = clipboard.paste()
-    print(clip)
-    ip = None
-    coin = None
-    try:
-        if 'and is is' in clip:
-            coin_match = re.search(r'^\d+', clip)
-            coin = coin_match.group(0) if coin_match else None
-            ip_match = re.search(r'\b(?:\d{1,3}\.){3}\d{1,3}\b', clip)
-            ip = ip_match.group(0) if ip_match else None
-    except Exception as e:
-        print("CC button no found")
-
-    try:
-        x,y = pyautogui.locateCenterOnScreen(image='/root/Desktop/MFV6/images/collect_your_reward.png', confidence=0.75)
-        pyautogui.click(x,y)
-    except Exception as e:
-        print("CC button no found")
-    return coin, ip
-
 
 
 def fix_wrong_pins():
@@ -2912,23 +2842,6 @@ def open_browsers():
     time.sleep(10)
     return sb1
 
-def update_target_ip(new_ip):
-    try:
-        file_path = "mfhelper/config.json"
-        # Open the JSON file and load its contents
-        with open(file_path, "r") as file:
-            data = json.load(file)
-        
-        # Update the targetIP field
-        data["targetIP"] = new_ip
-        
-        # Write the updated data back to the JSON file
-        with open(file_path, "w") as file:
-            json.dump(data, file, indent=4)
-        
-        print(f"targetIP updated to {new_ip}")
-    except Exception as e:
-        print(f"An error occurred: {e}")
 
 def open_faucets():
     global sb1
@@ -3008,7 +2921,7 @@ def open_faucets():
                 ip_address = get_ip(sb1)
 
             ip_address = get_ip(sb1)
-            update_target_ip(ip_address)
+            
             if ip_address:
                 current_window = sb1.current_window_handle
                 all_windows = sb1.window_handles
@@ -3123,40 +3036,63 @@ while True:
         mainscript = control_panel()
         print('control_panel', mainscript)
         if mainscript == 1:
-            sb1.disconnect()
-            if ip_address == ip_required:
+            
+            debug_messages(f'Ip address Found:{ip_address}')
+            cc_faucet = None
+            if reset_count_isacc >= 7:
+                response_messege('oops.. reset_count_isacc triggers')
+                blacklistedIP.append(ip_address)
+                mysterium_vpn_connect(server_name1, sb1)
+                time.sleep(7)
+                mysterium_vpn_connect(server_name1, sb1)
+                time.sleep(5)
                 
+                reset_count = 16
+                reset_count_isacc = 0
+
+            ip_address = get_ip(sb1) 
+            if reset_count >= 15:
+                print('reset count higher')
+                
+                earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
+                reset_count = 0
+                reset_count_isacc = 0
+
+            if previous_reset_count == reset_count:
+                reset_count = 0
+            else:
+                previous_reset_count = reset_count
+
+            if ip_address == ip_required:
+                debug_messages(f'Ip address Match:{ip_address}')
+
+                all_window_handles = [earnpp_window, feyorra_window, claimcoin_window]
+                close_extra_windows(sb1, all_window_handles)
+
+                print(f'Reset_count:{reset_count}')
+
                 if earnpp:
                     try:
                         debug_messages(f'Switching Pages to EarnPP')
-                        pyautogui.click(55,102)
-                        pyautogui.keyDown('ctrl')
-                        pyautogui.press('1')
-                        pyautogui.keyUp('ctrl')
+                        sb1.switch_to.window(earnpp_window)
                         debug_messages(f'Getting Pages Titile:EarnPP')
-                        title = get_current_window_title()
-                        print(title)
+                        title =sb1.get_title()
                         if 'Faucet | Earn-pepe' in title:
                             debug_messages(f'Solving Icon Captcha on EarnPP')
-                            #earnpp_coins, ip_address2 = solve_icon_captcha_gui(6)
-                            
-                            #if ip_address2:
-                            #    ip_address =ip_address2
-                            #    earnpp_limit_reached = None
-
-                            try:
-                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
-                                cloudflare_withoutSB()
-                                try:
-                                    x,y = pyautogui.locateCenterOnScreen(image='/root/Desktop/MFV6/images/claim_pp.png',confidence=0.9)
-                                    pyautogui.click(x,y)
-                                except Exception as e:
-                                    print('not found claim on pp')
-                            except Exception as e:
-                                print('not found claim on pp')
-                                #refresh_count +=3
+                            gg = solve_icon_captcha(sb1)
+                            if gg:
+                                earnpp_limit_reached = None
+                            else:
+                                if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!') or sb1.is_text_visible('Limit Reached, Please claim shortlinks to increase your claim limit!'):
+                                    debug_messages(f'EarnPP Limit Reached')
+                                    response_messege('EarnPP Limit Reached')
+                                    earnpp_limit_reached = True
+                                else:
+                                    refresh_count +=5
                             debug_messages(f'Solved Icon Captcha on EarnPP')
-
+                            val = get_coins(sb1, 1)
+                            if val:
+                                earnpp_coins = val
 
                         elif 'Lock' in title:
                             debug_messages(f'Lock.. Found on EarnPP')
@@ -3164,7 +3100,7 @@ while True:
                             earnpp_coins = 0
                         elif 'Just' in title:
                             debug_messages(f'Just.. Found on EarnPP')
-                            sb1.connect()
+
                             cloudflare(sb1, login = False)
                             debug_messages(f'Just Fixed EarnPP')
                         elif 'aintenance' in title:
@@ -3176,102 +3112,120 @@ while True:
                             response_messege('LOGIN.. Found on EarnPP')
                             earnpp_coins = 0
                             reset_count +=5
-                        elif 'Google' in title:
-                            print('Its google g')
                         else:
                             debug_messages(f'EarnPP not Found:{title} | reset:{reset_count}')
                             reset_count +=1
 
                     except Exception as e:
+                        if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!') or sb1.is_text_visible('Limit Reached, Please claim shortlinks to increase your claim limit!'):
+                            debug_messages(f'EarnPP Limit Reached')
+                            response_messege('EarnPP Limit Reached')
+                            earnpp_limit_reached = True
+                        else:
                             debug_messages(f'ERR on EarnPP:{e}')
                             reset_count +=1
+                
                 if feyorra:
                     try:
-                        debug_messages(f'Switching Pages to fey')
-                        pyautogui.click(55,102)
-                        pyautogui.keyDown('ctrl')
-                        pyautogui.press('2')
-                        pyautogui.keyUp('ctrl')
-                        debug_messages(f'Getting Pages Titile:fey')
-                        title = get_current_window_title()
-                        print(title)
+                        debug_messages(f'Switching Pages to Feyorra')
+                        sb1.switch_to.window(feyorra_window)
+                        debug_messages(f'Getting Pages Titile:Feyorra')
+                        pyautogui.press('enter')
+                        title =sb1.get_title()
+
                         if 'Faucet | Feyorra' in title:
-                            debug_messages(f'Solving Icon Captcha on fey')
-                            #feyorra_coins, ip_address2 = solve_icon_captcha_gui(7)
-                            
-                            #if ip_address2:
-                            #    ip_address = ip_address2
-                            #    feyorra_limit_reached = None
-
-                            try:
-                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
-                                cloudflare_withoutSB()
+                            debug_messages(f'Solving Icon Captcha on Feyorra')
+                            gg = solve_icon_captcha(sb1)
+                            if gg:
+                                feyorra_limit_reached =None
+                            else:
                                 try:
-                                    x,y = pyautogui.locateCenterOnScreen(image='/root/Desktop/MFV6/images/claim_fey.png',confidence=0.9)
-                                    pyautogui.click(x,y)
+                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
+                                    print("verify_cloudflare git Found")
+                                    debug_messages(f'cloudflare Found')
+                                    cloudflare(sb1, login=True)
+                                    time.sleep(1)
+                                    sb1.uc_click('#loginBtnText')
                                 except Exception as e:
-                                    print('not found claim on fey')
-                            except Exception as e:
-                                print('not found claim on fey')
-                                #refresh_count +=3
-                            debug_messages(f'Solved Icon Captcha on Fey')
-
+                                    print('No clousflare on feyorra')
+                                if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
+                                    debug_messages(f'Feyorra Limit Reached')
+                                    response_messege('Feyorra Limit Reached')
+                                    feyorra_limit_reached =True
+                                else:
+                                    refresh_count +=5
+                            val = get_coins(sb1, 2)
+                            if val:
+                                feyorra_coins = val
+                                
+                        elif 'Just' in title:
+                            debug_messages(f'Just.. Found on Feyorra')
+                            cloudflare(sb1, login = False)
+                            debug_messages(f'Just Fixed Feyorra')
+                        elif 'aintenance' in title:
+                            debug_messages(f'maintenance.. Found on Feyorra')
+                            response_messege('maintenance.. Found on Feyorra')
+                            feyorra_coins = 0
 
                         elif 'Lock' in title:
-                            debug_messages(f'Lock.. Found on fey')
-                            response_messege('Lock.. Found on fey')
-                            feyorra_coins = 0
-                        elif 'Just' in title:
-                            debug_messages(f'Just.. Found on fey')
-                            sb1.connect()
-                            cloudflare(sb1, login = False)
-                            debug_messages(f'Just Fixed fey')
-                        elif 'aintenance' in title:
-                            debug_messages(f'maintenance.. Found on fey')
-                            response_messege('maintenance.. Found on fey')
-                            feyorra_coins = 0
-                        elif 'Home' in title or 'Login' in title:
-                            debug_messages(f'LOGIN.. Found on fey')
-                            response_messege('LOGIN.. Found on fey')
+                            debug_messages(f'Lock.. Found on Feyorra')
+                            response_messege('Lock.. Found on Feyorra')
+                            feyorra_coins =0
+                        elif 'Home | Feyorra' in title or 'Login' in title:
+                            debug_messages(f'LOGIN.. Found on Feyorra')
+                            response_messege('LOGIN.. Found on Feyorra')
                             feyorra_coins = 0
                             reset_count +=5
-                        elif 'Google' in title:
-                            print('Its google g')
                         else:
-                            debug_messages(f'fey not Found:{title} | reset:{reset_count}')
+                            debug_messages(f'Feyorra not Found:{title} | reset:{reset_count}')
                             reset_count +=1
-
                     except Exception as e:
-                            debug_messages(f'fey on EarnPP:{e}')
+                        pyautogui.press('enter')
+                        if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
+                            debug_messages(f'Feyorra Limit Reached')
+                            response_messege('Feyorra Limit Reached')
+                            feyorra_limit_reached =True
+                        else:
+                            debug_messages(f'ERR on Feyorra:{e}')
                             reset_count +=1
-
 
                 if claimcoin:
 
                     try:
                         debug_messages(f'Time capture in ClaimCoins')
                         if claimcoin: #seconds_only > 14:
-                            debug_messages(f'Switching Pages to ClaimCoins:')
-                            pyautogui.click(55,102)
-                            pyautogui.keyDown('ctrl')
-                            pyautogui.press('3')
-                            pyautogui.keyUp('ctrl')
+                            debug_messages(f'Switching Pages to ClaimCoins:{seconds_only}')
+                            sb1.switch_to.window(claimcoin_window)
                             #pyautogui.press('enter')
                             debug_messages(f'Getting Pages Titile:ClaimCoins')
-                            title =get_current_window_title()
+                            title =sb1.get_title()
                             if 'Faucet | ClaimCoin' in title:
+                                if claimcoin_count == 0:
+                                    if sb1.is_text_visible(' Invalid Captcha') or sb1.is_text_visible('Invalid Captcha'):
+                                        debug_messages(f' Invalid Captcha | reset:{reset_count_isacc}')
+                                        if reset_count_isacc > 1:
+                                            response_messege(f'Invalid Captcha | reset:{reset_count_isacc}')
+                                        pyautogui.press('f5')
+                                        claimcoin_count = 1 
+                                    else:
+                                        if sb1.is_text_visible('Ready'):
+                                            claimcoin_count = 1 
+                                        else:
+                                            reset_count_isacc = 0
                                 debug_messages(f'Solving Icon Captcha on ClaimCoins')
-                                claimc_coins, ip_address2 =  solve_claimc()
-                                if ip_address2:
-                                    ip_address = ip_address2
+                                val = get_coins(sb1, 3)
+                                if val:
+                                    claimc_coins = val
+                                cc_faucet =  find_and_click_collect_button(sb1)
+                                if cc_faucet:
+                                    claimcoin_count = 0
                                     debug_messages(f'Solved Icon Captcha on Claimcoins')
-
+                                sb1.switch_to.window(claimcoin_window)
                             elif 'Just' in title:
-                                sb1.connect()
                                 debug_messages(f'Just.. Found on Claimcoins')
+
                                 cloudflare(sb1, login = False)
                                 debug_messages(f'Just Fixed Claimcoins')
-                                sb1.disconnect()
 
                             elif 'Lock' in title:
                                 debug_messages(f'Lock.. Found on Claimcoins')
@@ -3294,6 +3248,77 @@ while True:
                         debug_messages(f'ERR on ClamCoim:{e}')
                         reset_count +=1
 
+
+
+                elapsed_time = time.time() - start_time
+                seconds_only = int(elapsed_time)
+                debug_messages(f'ClaimCoins Seconds:{seconds_only}')
+                if seconds_only > 20:
+                    start_time = time.time()
+                    if earnpp_coins == earnpp_coins_pre:
+                        start_time = time.time()
+
+                        if refresh_count >= 30:
+                            response_messege(f'earnpp_coins same {earnpp_coins}| count:{refresh_count} | {seconds_only}')
+                            sb1.switch_to.window(earnpp_window)
+                            sb1.uc_open('https://earn-pepe.com/member/faucet')
+                            refresh_count = 0
+
+                        if earnpp_limit_reached:
+                            pass
+                        else:
+                            if refresh_count >= 50:
+                                reset_count +=5
+                            refresh_count +=1
+                    elif feyorra_coins == feyorra_coins_pre:
+                        start_time = time.time()
+
+                        if refresh_count >= 30:
+                            pyautogui.press('enter')
+                            response_messege(f'feyorra_coins same {feyorra_coins}| count:{refresh_count} | {seconds_only}')
+                            refresh_count = 0
+                            sb1.switch_to.window(feyorra_window)
+                            sb1.uc_open('https://feyorra.site/member/faucet')
+                        if feyorra_limit_reached:
+                            pass
+                        else:
+                            if refresh_count >= 50:
+                                reset_count +=5
+                            refresh_count +=1
+                    elif claimc_coins == claimc_coins_pre and cc_faucet and claimcoin:
+                        start_time = time.time()
+                        if refresh_count >= 30:
+                            response_messege(f'claimc_coins same {claimc_coins}| count:{refresh_count} | {seconds_only}')
+                            sb1.switch_to.window(claimcoin_window)
+                            sb1.uc_open("https://claimcoin.in/faucet")
+                            refresh_count = 0
+                        
+                        refresh_count +=1
+                    else:
+                        earnpp_coins_pre = earnpp_coins
+                        feyorra_coins_pre = feyorra_coins
+                        claimc_coins_pre = claimc_coins
+                        refresh_count = 0
+
+                elapsed_time3 = time.time() - start_time3
+                seconds_only3 = int(elapsed_time3)
+                debug_messages(f'MangoDB Seconds:{seconds_only3}')
+                if seconds_only3 > 130:
+                    print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}| ')
+                    if earnpp_coins and feyorra_coins: #and claimc_coins: #and bitmoon_coins:
+                        start_time3 = time.time()
+                        emailgg = f'{earnpp_email} <br>country: {server_name1} <br>Current Layout:{layout} <br>Farm:{farm_id}'
+                        insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins, emailgg)
+                    else:
+                        response_messege(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | ClaimC:{claimc_coins}')
+                    #elif earnpp_coins and feyorra_coins and claimc_coins:
+                    #    start_time3 = time.time()
+                    #    insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins, 0)
+                    
+                    
+
+                else:
+                    print(f'MngoDB:{seconds_only3}')
             else:
                 print('Ip fucked')
                 reset_count +=4
@@ -3303,12 +3328,10 @@ while True:
     
 
         if mainscript == 2:
-            sb1.connect()
             earnpp_window, feyorra_window, claimcoin_window,  ip_address, ip_required = open_faucets()
             reset_count = 0
 
         if mainscript == 3:
-            sb1.connect()
             response_messege('Ip Resettinggg...')
             reset_count_isacc = 10
             query = {"type": "main"}
@@ -3318,30 +3341,24 @@ while True:
 
 
         if mainscript == 4:
-            sb1.connect()
             withdraw_faucet(sb1, 1) 
 
         if mainscript == 6:
-            sb1.connect()
             withdraw_faucet(sb1, 2) 
         if mainscript == 7:
-            sb1.connect()
             withdraw_faucet(sb1, 3) 
 
         if mainscript == 8:
-            sb1.connect()
             sb1.quit()
             break
 
         if mainscript == 5:
-            
             for i in range(1,6):
                 time.sleep(1)
                 print('Pause...')
 
 
     except Exception as e:
-        sb1.connect()
         print(f'Oh Hell No{e}')
         response_messege(f'Oh Hell No{e}')
         if 'no such window' in str(e) or 'invalid session' in str(e) or 'NoHTTPConnectionPool' in str(e):

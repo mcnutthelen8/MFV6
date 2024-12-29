@@ -1,23 +1,20 @@
 {
   "manifest_version": 3,
-  "name": "Ymfhelper",
+  "name": "YouTube Play Button Auto-Clicker",
   "version": "1.0",
-  "description": "Automatically handles alerts and claims on feyorra.site and earn-pepe.com.",
-  "permissions": ["activeTab", "scripting", "clipboardWrite"],
-  "web_accessible_resources": [
-      {
-          "resources": ["config.json"],
-          "matches": ["<all_urls>"]
-      }
-  ],
+  "description": "Automatically clicks the play button on embedded YouTube videos every 2 seconds.",
+  "permissions": ["activeTab", "scripting"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  
   "content_scripts": [
-      {
-          "matches": [
-              "https://earn-pepe.com/member/faucet", 
-              "https://feyorra.site/member/faucet",
-              "https://claimcoin.in/faucet"
-          ],
-          "js": ["content.js"]
-      }
-  ]
+    {
+      "matches": ["*://*/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  }
 }

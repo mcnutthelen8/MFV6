@@ -124,7 +124,7 @@ function startCheckingForNextVideo() {
 
 // Function to handle Feyorra claims
 function claimFeyorra() {
-  const verifiedBadgeFeyorra = document.querySelector("div.mb-2.badge.bg-success");
+  const verifiedBadgeFeyorra = document.querySelector(".mb-2.badge.bg-success");
   const successcloudfl = document.querySelector("span#success-text");
   const claimButtonFeyorra = document.querySelector("button#ClaimBtn");
 
@@ -145,7 +145,7 @@ function claimFeyorra() {
 
 // Function to handle Earn Pepe claims
 function claimEarnPepe() {
-  const verifiedBadgeEarnPepe = document.querySelector("div.mb-16.badge.hp-text-color-black-100.hp-bg-success-3");
+  const verifiedBadgeEarnPepe = document.querySelector(".mb-16.badge.hp-text-color-black-100.hp-bg-success-3");
   const claimButtonEarnPepe = document.querySelector("button#ClaimBtn");
 
   if (verifiedBadgeEarnPepe && claimButtonEarnPepe) {

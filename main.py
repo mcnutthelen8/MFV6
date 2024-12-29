@@ -1281,45 +1281,36 @@ def solve_icon_captcha_v1(sb1):
         return False
 
 
+icon_path_list = {
+  "heart": "M473.7 73.8l-2.4-2.5c-46-47-118-51.7-169.6-14.8L336 159.9l-96 64 48 128-144-144 96-64-28.6-86.5C159.7 19.6 87 24 40.7 71.4l-2.4 2.4C-10.4 123.6-12.5 202.9 31 256l212.1 218.6c7.1 7.3 18.6 7.3 25.7 0L481 255.9c43.5-53 41.4-132.3-7.3-182.1z",
+  "coin": "M12.0049 4.00281C18.08 4.00281 23.0049 6.6891 23.0049 10.0028V14.0028C23.0049 17.3165 18.08 20.0028 12.0049 20.0028C6.03824 20.0028 1.18114 17.4116 1.00957 14.1797L1.00488 14.0028V10.0028C1.00488 6.6891 5.92975 4.00281 12.0049 4.00281ZM12.0049 16.0028C8.28443 16.0028 4.99537 14.9953 3.00466 13.4533L3.00488 14.0028C3.00488 15.885 6.88751 18.0028 12.0049 18.0028C17.0156 18.0028 20.8426 15.9723 20.9999 14.1207L21.0049 14.0028L21.0061 13.4525C19.0155 14.995 15.726 16.0028 12.0049 16.0028ZM12.0049 6.00281C6.88751 6.00281 3.00488 8.12061 3.00488 10.0028C3.00488 11.885 6.88751 14.0028 12.0049 14.0028C17.1223 14.0028 21.0049 11.885 21.0049 10.0028C21.0049 8.12061 17.1223 6.00281 12.0049 6.00281Z",
+  "volume": "M215 71.1L126.1 160H24c-13.3 0-24 10.7-24 24v144c0 13.3 10.7 24 24 24h102.1l89 89c15 15 41 4.5 41-17V88c0-21.5-26-32-41-17zm233.3-51.1c-11.2-7.3-26.2-4.2-33.5 7-7.3 11.2-4.2 26.2 7 33.5 66.3 43.5 105.8 116.6 105.8 195.6 0 79-39.6 152.1-105.8 195.6-11.2 7.3-14.3 22.3-7 33.5 7 10.7 21.9 14.6 33.5 7C528.3 439.6 576 351.3 576 256S528.3 72.4 448.4 20zM480 256c0-63.5-32.1-121.9-85.8-156.2-11.2-7.1-26-3.8-33.1 7.5s-3.8 26.2 7.4 33.4C408.3 166 432 209.1 432 256s-23.7 90-63.5 115.4c-11.2 7.1-14.5 22.1-7.4 33.4 6.5 10.4 21.1 15.1 33.1 7.5C447.9 377.9 480 319.5 480 256zm-141.8-76.9c-11.6-6.3-26.2-2.2-32.6 9.5-6.4 11.6-2.2 26.2 9.5 32.6C328 228.3 336 241.6 336 256c0 14.4-8 27.7-20.9 34.8-11.6 6.4-15.8 21-9.5 32.6 6.4 11.7 21.1 15.8 32.6 9.5 28.2-15.6 45.8-45 45.8-76.9s-17.5-61.3-45.8-76.9z"
+}
+
 #V2
 def solve_icon_captcha(sb1):
     try:
-        # Extract all captcha icons
-        captcha_icons = sb1.find_elements('[class*="fas fa-"]')
+        captcha_icons = sb1.find_elements(By.CSS_SELECTOR, '[class*="fas fa-"], [class*=" ri-"], [class*="ti ti-"]')
+
+        icon_names = []
+        for icon in sb1.find_elements(By.XPATH, "//svg[@width='28' and @height='28']"):
+            path = icon.get_attribute('d')
+            if not path:
+                continue
+            for item, string_item in icon_path_list.items():
+                if string_item[:15] in path[:15]:
+                    icon_names.append(item)
 
         for captcha_icon in captcha_icons:
-            # Skip icons with inline styles
             if captcha_icon.get_attribute('style'):
                 continue
+            captcha_icon_classe = captcha_icon.get_attribute('class').split()
+            for icon in icon_names:
+                if icon in captcha_icon_classe:
+                    print('Answer is', icon)
+                    return True
 
-            # Get the class names of the captcha icon
-            captcha_icon_classes = captcha_icon.get_attribute('class').split()
-            captcha_icon_classes = [cls for cls in captcha_icon_classes if cls.startswith("fa-")]
 
-            if not captcha_icon_classes:
-                continue  # Skip if no valid 'fa-' class found
-
-            captcha_icon_class = captcha_icon_classes[0]  # Use the first valid 'fa-' class
-
-            # Get the available icon options (filter out decoys)
-            icon_options = sb1.find_elements('i[class*="fas fa-"]')
-
-            for option in icon_options:
-                # Skip options with inline styles
-                if option.get_attribute('style'):
-                    continue
-
-                option_classes = option.get_attribute('class').split()
-                if captcha_icon_class in option_classes:
-                    try:
-                        option.uc_click()  # Custom click method to handle undetected Selenium
-                        print(f"Clicked on the matching icon: {captcha_icon_class}")
-                        return True  # Return immediately after a successful click
-                    except Exception as e:
-                        print(f"Error clicking on icon: {e}")
-                        continue  # Continue to the next option if clicking fails
-
-        print("No matching icon found.")
         return False  # Return False if no matching icon was clicked
     except Exception as e:
         print(f"Error solving captcha: {e}")
@@ -2820,7 +2811,7 @@ def solve_claimc():
         print("CC button no found")
 
     try:
-        x,y = pyautogui.locateCenterOnScreen(image='/root/Desktop/MFV6/images/collect_your_reward.png', confidence=0.85)
+        x,y = pyautogui.locateCenterOnScreen(image='/root/Desktop/MFV6/images/collect_your_reward.png', confidence=0.75)
         pyautogui.click(x,y)
     except Exception as e:
         print("CC button no found")

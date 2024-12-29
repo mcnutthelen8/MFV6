@@ -1316,16 +1316,40 @@ icon_path_list = {
 
     }
 #V2
+
 def solve_icon_captcha(sb):
 
     try:
         # Extract all captcha icon
+
+
+        # Find potential captcha icons based on class names
         captcha_icons = sb.find_elements('[class*="fa-"], [class*="fas fa-"], [class*="far fa-"], [class*="ri-"], [class*="ti ti-"], [class*="bi bi-"]')
         print(f"Found {len(captcha_icons)} potential captcha icons.")
 
         # Filter valid captcha icons
         valid_captcha_icons = [icon for icon in captcha_icons if not icon.get_attribute("style") and not icon.get_attribute("id") and icon.tag_name.lower() != "i"]
-        print("Valid captcha icons:", [icon.get_attribute("outerHTML") for icon in valid_captcha_icons])
+        print("Valid captcha icons before removing decoys:", [icon.get_attribute("outerHTML") for icon in valid_captcha_icons])
+
+        valid_captcha_icons2 = valid_captcha_icons
+        for icon in valid_captcha_icons:
+            class_name = icon.get_attribute("class")
+            if class_name:
+                last_5_chars = class_name[-5:]
+
+                for icon2 in valid_captcha_icons:
+                    class_name2 = icon2.get_attribute("class")
+                    if class_name2:
+                        if class_name2 == class_name:
+                            pass
+                        else:
+                            last_5_chars2 = class_name2[-5:]
+                            if last_5_chars == last_5_chars2:
+                                valid_captcha_icons2 = [item for item in valid_captcha_icons2 if item != icon]
+
+        valid_captcha_icons  = valid_captcha_icons2
+        print("Valid captcha icons after removing decoys:", [icon.get_attribute("outerHTML") for icon in valid_captcha_icons])
+
 
         # Find all SVG elements
         svg_elements = sb.find_elements("svg")
@@ -1334,7 +1358,8 @@ def solve_icon_captcha(sb):
         # Process each SVG element
         for svg in svg_elements:
             try:
-                path_element = svg.find_element("path", by="css selector")
+                  # Use uc_click to interact with the SVG element if needed
+                path_element = svg.find_element(by="css selector", value="path")
                 if path_element and path_element.get_attribute("d"):
                     path_data = path_element.get_attribute("d")
 
@@ -1344,8 +1369,8 @@ def solve_icon_captcha(sb):
                             # Match icon class name
                             for valid_icon in valid_captcha_icons:
                                 if icon_name in valid_icon.get_attribute("class"):
-                                    svg.uc_click()
                                     print(f"Answer found for icon: {icon_name}")
+                                    svg.uc_click()
                                     return True  # Exit function after finding an answer
 
             except Exception as e:

@@ -1316,6 +1316,17 @@ icon_path_list = {
 
     }
 #V2
+def remove_duplicates_by_last_word(elements):
+    # Extract the last word of each element
+    last_words = [element.split()[-1] for element in elements]
+
+    # Find duplicates by counting occurrences of each last word
+    duplicates = {word for word in last_words if last_words.count(word) > 1}
+
+    # Create a new list excluding elements with duplicate last words
+    filtered_elements = [element for element in elements if element.split()[-1] not in duplicates]
+
+    return filtered_elements
 
 def solve_icon_captcha(sb):
 
@@ -1331,23 +1342,15 @@ def solve_icon_captcha(sb):
         valid_captcha_icons = [icon for icon in captcha_icons if not icon.get_attribute("style") and not icon.get_attribute("id") and icon.tag_name.lower() != "i"]
         print("Valid captcha icons before removing decoys:", [icon.get_attribute("outerHTML") for icon in valid_captcha_icons])
 
-        valid_captcha_icons2 = valid_captcha_icons
+        valid_captcha_icons2 = []
         for icon in valid_captcha_icons:
             class_name = icon.get_attribute("class")
             if class_name:
-                last_5_chars = class_name[-5:]
+                valid_captcha_icons2.append(class_name)
 
-                for icon2 in valid_captcha_icons:
-                    class_name2 = icon2.get_attribute("class")
-                    if class_name2:
-                        if class_name2 == class_name:
-                            pass
-                        else:
-                            last_5_chars2 = class_name2[-5:]
-                            if last_5_chars == last_5_chars2:
-                                valid_captcha_icons2 = [item for item in valid_captcha_icons2 if item != icon]
-
-        valid_captcha_icons  = valid_captcha_icons2
+        print('Valid Classes:',valid_captcha_icons2)
+        valid_captcha_icons =remove_duplicates_by_last_word(valid_captcha_icons2)
+        print('AFter Valid Classes:',valid_captcha_icons)
         print("Valid captcha icons after removing decoys:", [icon.get_attribute("outerHTML") for icon in valid_captcha_icons])
 
 
@@ -1368,7 +1371,7 @@ def solve_icon_captcha(sb):
                         if path_data == icon_path:
                             # Match icon class name
                             for valid_icon in valid_captcha_icons:
-                                if icon_name in valid_icon.get_attribute("class"):
+                                if icon_name in valid_icon:
                                     print(f"Answer found for icon: {icon_name}")
                                     svg.uc_click()
                                     return True  # Exit function after finding an answer

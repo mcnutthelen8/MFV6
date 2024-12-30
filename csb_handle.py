@@ -278,52 +278,82 @@ def are_codesand_logged(driver):
         except Exception as e:
             print(f' are_codesand_logged ERROR:{e}')
 
-def create_devbox(driver):
-    
-    driver.open('https://codesandbox.io/dashboard')
-    time.sleep(2)
+def get_current_window_title():
     try:
-        title = driver.get_title()
-        print(f'Titile: {title},create_devbox wait for Recent')
-        time.sleep(5)
-        if title in title:
-            print(f'Vm Has Loaded:{title}')
+        # Use xdotool to get the active window's title
+        result = subprocess.run(
+            ["xdotool", "getwindowfocus", "getwindowname"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        if result.returncode == 0:
+            return result.stdout.strip()
+        else:
+            raise Exception(result.stderr.strip())
+    except FileNotFoundError:
+        return "xdotool is not installed. Please install it using: sudo apt install xdotool"
+    except Exception as e:
+        return f"An error occurred: {e}"
 
-            for i in range(1, 20):
-                time.sleep(2)
-                continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'button.sc-bdnylx')
-                for button in continue_buttons:
-                    if 'Create' in button.text:
-                        print(f"found: {button.text}, clicking...")
-                        button.click()
-                        time.sleep(3)
-                        python_buttons = driver.find_elements(By.CSS_SELECTOR, 'button[title="Python"]')
-                        for button in python_buttons:
-                            print(f"Found button with title: {button.get_attribute('title')}, clicking...")
-                            button.click()
-                            time.sleep(5)
-                            python_buttons = driver.find_elements(By.CSS_SELECTOR, 'button[type="submit"]')
-                            for button in python_buttons:
-                                print(f"Found button with title: {button.get_attribute('submit')}, clicking...")
-                                button.click() 
-                                while True:
-                                    time.sleep(2)
-                
-                                    title = driver.get_title()
-                                    print(f'Titile: {title}, create_devbox D')
-                                    if 'README.md - workspace - CodeSandbox' in title:
-                                        print(f'Vm Has Loaded:{title}')
-                                        return True               
-                                    if 'New Devtool - workspace - CodeSandbox' in title:
-                                        print(f'Vm Has Loaded:{title}')
-                                        return True  
-                                    if 'workspace - CodeSandbox' in title:
-                                        print(f'Vm Has Loaded:{title}')
-                                        return True  
-            print('Failed bruh...')
+def create_devbox(driver):
+    pyautogui.keyDown('ctrl')
+    pyautogui.press('l')
+    pyautogui.keyUp('ctrl')
+    time.sleep(2)
+    pyautogui.typewrite('https://codesandbox.io/dashboard')
+    time.sleep(1)
+    pyautogui.press('enter')
+    try:
+        for i in range(5):
+            time.sleep(5)
+            title = get_current_window_title()
+
+            print(f'Titile: {title},create_devbox wait for Recent')
+            time.sleep(5)
+            if 'Recent' in title:
+                print(f'Vm Has Loaded:{title}')
+
+                for i in range(1, 20):
+                    time.sleep(2)
+                    try:
+                        x,y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/create_devbgf.png", region=(1151,780, 800, 800), confidence=0.85)
+                        pyautogui.click(x,y)
+                        time.sleep(2)
+                    except Exception as e:
+                        print('create_devbgf not found')
+                    try:
+                        x,y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/pythondevb.png", region=(403,330, 800, 800), confidence=0.85)
+                        pyautogui.click(x,y)
+                        time.sleep(2)
+                    except Exception as e:
+                        print('pythondevb not found')
+                    try:
+                        x,y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/createplus.png", region=(1548,105, 500, 600), confidence=0.85)
+                        pyautogui.click(x,y)
+                        time.sleep(5)
+                    except Exception as e:
+                        print('createplus not found')
+
+                    title = get_current_window_title()
+                    print(f'Titile: {title}, create_devbox D')
+                    if 'README.md - workspace - CodeSandbox' in title:
+                        print(f'Vm Has Loaded:{title}')
+                        return True               
+                    if 'New Devtool - workspace - CodeSandbox' in title:
+                        print(f'Vm Has Loaded:{title}')
+                        return True  
+                    if 'workspace - CodeSandbox' in title:
+                        print(f'Vm Has Loaded:{title}')
+                        return True  
+                print('Failed bruh...')
+            else:
+                print('gg fail')
     except Exception as e:
         print(f'Create DevBox:{e}')
         return False
+
+
 
 def sweet_enable():
     for x in range(2):
@@ -350,7 +380,7 @@ def deploy_docker(farmurl, driver):
         currecto = False
         time.sleep(2)
         
-        title = driver.get_title()
+        title = get_current_window_title()
         print(f'Titile: {title}')
         if 'README.md - workspace - CodeSandbox' in title:
             print(f'Vm Has Loaded:{title}')
@@ -364,10 +394,10 @@ def deploy_docker(farmurl, driver):
         if 'Recent - CodeSandbox' in title:
             print(f'going again create:{title} ')
             create_devbox(driver)
-
+        if 'New Tab' in title:
+            print(f'going again create:{title} ')
+            create_devbox(driver)
         if currecto:
-            
-
             try:
                 pyautogui.click(21, 303)
                 time.sleep(3)
@@ -392,10 +422,7 @@ def deploy_docker(farmurl, driver):
                                 pyautogui.click(x, y)
                                 print("docker_deployed git Found")
                                 while True:
-                                    try:
-                                        driver.disconnect()
-                                    except Exception as e:
-                                        print('dr',e)
+
                                     pyautogui.click(23, 303)
                                     time.sleep(3)
                                     pyautogui.click(104, 345)
@@ -403,10 +430,6 @@ def deploy_docker(farmurl, driver):
                                     try:
                                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/director_lister.png", region=(1120, 223, 1000, 1000), confidence=0.9)
                                         if x and y:
-                                            try:
-                                                driver.connect()
-                                            except Exception as e:
-                                                print('dr',e)
                                             pyautogui.click(x, y)
                                             print("director_lister git Found")
                                             pyautogui.click(1228,462)
@@ -742,7 +765,31 @@ def mysterium_login(driver):
                             #return True
         mysterium_web_login(driver)
 
+def get_ip(driver):
+    for i in range(1,5):
+        try:
+            original_window = driver.current_window_handle
+            driver.open_new_window()
+            try:
+                #driver.switch_to.newest_window()
+                driver.get('https://api.ipify.org/')
+                ip_address = driver.get_text('body')
+                print('IP =', ip_address)
+                driver.close()
+                driver.connect()
+                driver.switch_to.window(original_window)
+                
+                return ip_address
+            
+            except Exception as e:
+                print(e)
+            driver.close() 
+            driver.connect()
+            driver.switch_to.window(original_window)
+        except Exception as e:
+            print(e)
 
+    return None
 
 sb1 = Driver(uc=True, undetectable=True,undetected=True, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
 sb1.maximize_window()
@@ -778,38 +825,38 @@ if fresh_vms:
         elif i == 4: command = command_4
         elif i == 5: command = command_5
 
-
-        create_devbox(sb1)
-        deploy_docker(command,sb1)
-
-        
-        time.sleep(5)
-        pyautogui.click(942, 65)
-        time.sleep(1)
-        pyautogui.click(942, 65)
-        time.sleep(1)
-        pyautogui.hotkey('ctrl', 'l')
-        pyautogui.keyUp('ctrl')
-        time.sleep(2)
-        pyautogui.hotkey('ctrl', 'a')
-        pyautogui.keyUp('ctrl')
-        time.sleep(1)
-        pyautogui.hotkey('ctrl', 'c')
-        time.sleep(2)
         pyautogui.keyDown('ctrl')
         pyautogui.press('t')
         pyautogui.keyUp('ctrl')
         time.sleep(5)
-        pyautogui.hotkey('ctrl', 'l')
+
+        create_devbox(sb1)
+        deploy_docker(command,sb1)
+        
+        time.sleep(5)
+        pyautogui.click(659,312)
         time.sleep(1)
-        pyautogui.hotkey('ctrl', 'v')
+        pyautogui.click(659,312)
         time.sleep(1)
-        pyautogui.press('enter')
+        pyautogui.keyDown('ctrl')
+        pyautogui.press('l')
+        pyautogui.keyUp('ctrl')
+        time.sleep(2)
+        pyautogui.keyDown('ctrl')
+        pyautogui.press('a')
+        pyautogui.keyUp('ctrl')
+        time.sleep(1)
+        pyautogui.keyDown('ctrl')
+        pyautogui.press('c')
+        pyautogui.keyUp('ctrl')
+        time.sleep(2)
         page_url = clipboard.paste()
         page_window = sb1.current_window_handle
         urls_dev.append(page_url)
         page_windows.append(page_window)
-        time.sleep(25)
+        time.sleep(2)
+
+        time.sleep(1)
 else:
     collection = db[CSB_Script]
     data = collection.find_one({"csb_script_id": CSB_Script})
@@ -824,6 +871,7 @@ else:
         page_windows.append(window)
 
 
+page_windows = sb1.window_handles
 while True:
     #Wating
     gg = True
@@ -963,7 +1011,7 @@ while True:
                 print(f'ERR{e}')
             time.sleep(35)
 
-        if len(urls) == 5:
+        if len(urls) >= 5:
             devbox_string = "<br>\n".join([url.replace('https://codesandbox.io/p/', '') for url in urls])
             query = {"type": "main"}
             sample_document = {
@@ -1022,7 +1070,7 @@ while True:
         urls.append(page_url)
             
     #after each Refresh
-    if len(urls) == 5:
+    if len(urls) >= 5:
         collection = db[CSB_Script]
         result = collection.delete_many({})
         print(f"Deleted {result.deleted_count} documents.")

@@ -324,6 +324,24 @@ def create_devbox(driver):
         print(f'Create DevBox:{e}')
         return False
 
+def sweet_enable():
+    for x in range(2):
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_dis_icon.png",  region=(1625, 43, 400, 300), confidence=0.9)
+            pyautogui.click(x, y)
+            for i in range(5):
+                time.sleep(3)
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_connect.png", confidence=0.8)
+                    pyautogui.click(x, y)
+                    time.sleep(5)
+                    pyautogui.click(300, 300)
+                    time.sleep(3)
+                    return
+                except pyautogui.ImageNotFoundException:
+                    print("Waiting for Sweet to pop")
+        except pyautogui.ImageNotFoundException:
+            print("No icon_image_loaded Human.")
 
 def deploy_docker(farmurl, driver):
     while True:
@@ -371,6 +389,10 @@ def deploy_docker(farmurl, driver):
                                 pyautogui.click(x, y)
                                 print("docker_deployed git Found")
                                 while True:
+                                    try:
+                                        driver.disconnect()
+                                    except Exception as e:
+                                        print('dr',e)
                                     pyautogui.click(23, 303)
                                     time.sleep(3)
                                     pyautogui.click(104, 345)
@@ -378,6 +400,10 @@ def deploy_docker(farmurl, driver):
                                     try:
                                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/director_lister.png", region=(1120, 223, 1000, 1000), confidence=0.9)
                                         if x and y:
+                                            try:
+                                                driver.connect()
+                                            except Exception as e:
+                                                print('dr',e)
                                             pyautogui.click(x, y)
                                             print("director_lister git Found")
                                             pyautogui.click(1228,462)
@@ -410,7 +436,13 @@ def deploy_docker(farmurl, driver):
                                             
                                     except Exception as e:
                                         print('director_lister not found')
-
+                                    try:
+                                        x,y =  pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.8)
+                                        print('cloudflare')
+                                        pyautogui.click(x,y)
+                                    except Exception as e:
+                                        print('cloudflrea not found')
+                                
                         except Exception as e:
                             print('docker_deployed not found')
                         try:
@@ -715,10 +747,10 @@ url = "chrome://extensions/"
 sb1.open(url)
 print(sb1.get_title())
 fresh = are_extensions_exist()
-
+sweet_enable()
 if fresh:
         mysterium = install_extensions('mysterium')
-        nopecha = install_extensions('nopecha')
+        nopecha = install_extensions('sweet')
         cookie = install_extensions('cookie')
         fingerprint = install_extensions('fingerprint')
         mfhelper = install_extensions('mfhelper')

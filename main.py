@@ -3161,6 +3161,8 @@ while True:
                             response_messege('LOGIN.. Found on EarnPP')
                             earnpp_coins = 0
                             reset_count +=5
+                        elif 'Google' in title:
+                            reset_count +=5
                         else:
                             debug_messages(f'EarnPP not Found:{title} | reset:{reset_count}')
                             reset_count +=1
@@ -3216,7 +3218,8 @@ while True:
                             debug_messages(f'maintenance.. Found on Feyorra')
                             response_messege('maintenance.. Found on Feyorra')
                             feyorra_coins = 0
-
+                        elif 'Google' in title:
+                            reset_count +=5
                         elif 'Lock' in title:
                             debug_messages(f'Lock.. Found on Feyorra')
                             response_messege('Lock.. Found on Feyorra')

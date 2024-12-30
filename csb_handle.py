@@ -193,7 +193,7 @@ def are_extensions_exist():
         return True
 
 def codesandbox_login(driver, codesandbox_id):
-    driver.open('https://codesandbox.io/dashboard')
+    driver.uc_open('https://codesandbox.io/dashboard')
     time.sleep(5)
     for i in range(1,100):
         time.sleep(1)
@@ -259,7 +259,7 @@ def codesandbox_login(driver, codesandbox_id):
         #driver.close()
 
 def are_codesand_logged(driver):
-    driver.open('https://codesandbox.io/dashboard/recent')
+    driver.uc_open('https://codesandbox.io/dashboard/recent')
     time.sleep(2)
     for i in range(1,9999):
         try:
@@ -270,7 +270,7 @@ def are_codesand_logged(driver):
                 if 'Sign in to CodeSandbox' in button.text:
                     print(f"H1 found: {button.text}, clicking...")
                     codesandbox_login(driver,CSB_id)
-                    sb1.open('https://codesandbox.io/dashboard/recent')
+                    sb1.uc_open('https://codesandbox.io/dashboard/recent')
             
             if 'Recent - CodeSandbox' in titile:
                 return True
@@ -286,7 +286,7 @@ def create_devbox(driver,num):
     current_window = all_windows[num]
     sb1.switch_to.window(current_window)
     
-    driver.open('https://codesandbox.io/dashboard')
+    driver.uc_open('https://codesandbox.io/dashboard')
     sb1.switch_to.window(current_window)
     time.sleep(2)
     try:
@@ -493,7 +493,7 @@ def deploy_docker(farmurl, driver, num):
 def CSB_credit_usage(driver):
     original_window = driver.current_window_handle
     driver.open_new_window()
-    driver.open('https://codesandbox.io/dashboard/')
+    driver.uc_open('https://codesandbox.io/dashboard/')
     time.sleep(3)
     usage_list = []
     ucredit = None
@@ -525,7 +525,7 @@ def CSB_credit_usage(driver):
 def CSB_Usages(driver):
     original_window = driver.current_window_handle
     driver.open_new_window()
-    driver.open('https://codesandbox.io/dashboard/')
+    driver.uc_open('https://codesandbox.io/dashboard/')
     time.sleep(3)
     usage_list = []
     ucredit = 0
@@ -591,7 +591,7 @@ def CSB_Usages(driver):
     return ucredit, usage_list
 
 def delete_csb(driver):
-    driver.open('https://codesandbox.io/dashboard')
+    driver.uc_open('https://codesandbox.io/dashboard')
     time.sleep(2)
     for i in range(1,999):
         try:
@@ -613,7 +613,7 @@ def delete_csb(driver):
             print(f'Delete:{i}|{e}')
 
 def mysterium_web_login(driver):
-    driver.open('https://app.mysteriumvpn.com/')
+    driver.uc_open('https://app.mysteriumvpn.com/')
     time.sleep(5)
     for i in range(1,100):
         time.sleep(1)
@@ -762,7 +762,7 @@ def mysterium_login(driver):
 sb1 = Driver(uc=True, undetectable=True,undetected=True, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
 sb1.maximize_window()
 url = "chrome://extensions/"
-sb1.open(url)
+sb1.uc_open(url)
 print(sb1.get_title())
 fresh = are_extensions_exist()
 #sweet_enable()
@@ -829,7 +829,7 @@ else:
         print('after',all_windows,'Num:',va)
         current_window = all_windows[va]
         va = va +1
-        sb1.open(url)
+        sb1.uc_open(url)
         window = sb1.current_window_handle
         page_windows.append(window)
 

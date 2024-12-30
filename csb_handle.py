@@ -278,17 +278,27 @@ def are_codesand_logged(driver):
         except Exception as e:
             print(f' are_codesand_logged ERROR:{e}')
 
-def create_devbox(driver):
+def create_devbox(driver,num):
+    all_windows = sb1.window_handles
+    print('Before',all_windows)
+    all_windows = all_windows[::-1]
+    print('after',all_windows,'Num:',num)
+    current_window = all_windows[num]
+    sb1.switch_to.window(current_window)
+    
     driver.open('https://codesandbox.io/dashboard')
+    sb1.switch_to.window(current_window)
     time.sleep(2)
     try:
         title = driver.get_title()
+        sb1.switch_to.window(current_window)
         print(f'Titile: {title},create_devbox wait for Recent')
         time.sleep(5)
         if title in title:
             print(f'Vm Has Loaded:{title}')
 
             for i in range(1, 20):
+                sb1.switch_to.window(current_window)
                 time.sleep(2)
                 continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'button.sc-bdnylx')
                 for button in continue_buttons:
@@ -343,12 +353,20 @@ def sweet_enable():
         except pyautogui.ImageNotFoundException:
             print("No icon_image_loaded Human.")
 
-def deploy_docker(farmurl, driver):
+def deploy_docker(farmurl, driver, num):
     while True:
+
+        all_windows = sb1.window_handles
+        print('Before',all_windows)
+        all_windows = all_windows[::-1]
+        print('after',all_windows,'Num:',num)
+        current_window = all_windows[num]
         currecto = False
         time.sleep(2)
+        
         title = driver.get_title()
         print(f'Titile: {title}')
+        sb1.switch_to.window(current_window)
         if 'README.md - workspace - CodeSandbox' in title:
             print(f'Vm Has Loaded:{title}')
             currecto = True               
@@ -360,7 +378,7 @@ def deploy_docker(farmurl, driver):
             currecto = True  
         if 'Recent - CodeSandbox' in title:
             print(f'going again create:{title} ')
-            create_devbox(driver)
+            create_devbox(driver,num)
 
         if currecto:
             
@@ -459,7 +477,7 @@ def deploy_docker(farmurl, driver):
                             if x and y:
                                 pyautogui.click(x, y)
                                 print("Docker Failed Found")
-                                create_devbox(driver)
+                                create_devbox(driver,num)
                                 ggg2 = False
                         except Exception as e:
                             print('docker_failed2 not found')
@@ -776,8 +794,8 @@ if fresh_vms:
         elif i == 5: command = command_5
 
         sb1.open_new_window()
-        create_devbox(sb1)
-        deploy_docker(command,sb1)
+        create_devbox(sb1,i)
+        deploy_docker(command,sb1,i)
         
         time.sleep(5)
         pyautogui.click(942, 65)
@@ -801,9 +819,16 @@ else:
     devboxes = data['devboxes']
     devboxes_id = [item.strip() for item in devboxes.split('<br>') if item.strip()]
     urls_dev = [f'https://codesandbox.io/p/{item}' for item in devboxes_id]
+    va = 1
     for url in urls_dev:
         sb1.maximize_window()
         sb1.open_new_window()
+        all_windows = sb1.window_handles
+        print('Before',all_windows)
+        all_windows = all_windows[::-1]
+        print('after',all_windows,'Num:',va)
+        current_window = all_windows[va]
+        va = va +1
         sb1.open(url)
         window = sb1.current_window_handle
         page_windows.append(window)
@@ -861,8 +886,8 @@ while True:
                 elif i == 4: command = command_4
                 elif i == 5: command = command_5
 
-                create_devbox(sb1)
-                deploy_docker(command, sb1)
+                create_devbox(sb1,i)
+                deploy_docker(command, sb1,i)
                 pyautogui.click(942, 65)
                 collection = db[CSB_Script]
                 query = {"type": "main"}
@@ -895,8 +920,8 @@ while True:
                 doc = collection.find_one(query)
                 update = {"$set": {"request": f'Resetting DEV{i}'}}
                 result = collection.update_one(query, update) 
-                create_devbox(sb1)
-                deploy_docker(command , sb1)
+                create_devbox(sb1,i)
+                deploy_docker(command , sb1,i)
                 pyautogui.click(942, 65)
                 query = {"type": "main"}
                 doc = collection.find_one(query)
@@ -915,8 +940,8 @@ while True:
                     doc = collection.find_one(query)
                     update = {"$set": {"request": f'Resetting DEV{i}'}}
                     result = collection.update_one(query, update) 
-                    create_devbox(sb1)
-                    deploy_docker(command , sb1)
+                    create_devbox(sb1,i)
+                    deploy_docker(command , sb1,i)
                     pyautogui.click(942, 65)
                     query = {"type": "main"}
                     doc = collection.find_one(query)
@@ -937,8 +962,8 @@ while True:
                     doc = collection.find_one(query)
                     update = {"$set": {"request": f'Resetting DEV{i}'}}
                     result = collection.update_one(query, update) 
-                    create_devbox(sb1)
-                    deploy_docker(command , sb1)
+                    create_devbox(sb1,i)
+                    deploy_docker(command , sb1,i)
                     pyautogui.click(942, 65)
                     query = {"type": "main"}
                     doc = collection.find_one(query)

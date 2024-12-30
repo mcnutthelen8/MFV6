@@ -1314,46 +1314,18 @@ icon_path_list = {
     "mood":"M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm33.8 161.7l80-48c11.6-6.9 24 7.7 15.4 18L343.6 180l33.6 40.3c8.7 10.4-3.9 24.8-15.4 18l-80-48c-7.7-4.7-7.7-15.9 0-20.6zm-163-30c-8.6-10.3 3.8-24.9 15.4-18l80 48c7.8 4.7 7.8 15.9 0 20.6l-80 48c-11.5 6.8-24-7.6-15.4-18l33.6-40.3-33.6-40.3zM398.9 306C390 377 329.4 432 256 432h-16c-73.4 0-134-55-142.9-126-1.2-9.5 6.3-18 15.9-18h270c9.6 0 17.1 8.4 15.9 18z",
     "point":"M15.3873 13.4975L17.9403 20.5117L13.2418 22.2218L10.6889 15.2076L6.79004 17.6529L8.4086 1.63318L19.9457 12.8646L15.3873 13.4975ZM15.3768 19.3163L12.6618 11.8568L15.6212 11.4459L9.98201 5.9561L9.19088 13.7863L11.7221 12.1988L14.4371 19.6583L15.3768 19.3163Z",
     "home":"M5.793 1a1 1 0 0 1 1.414 0l.647.646a.5.5 0 1 1-.708.708L6.5 1.707 2 6.207V12.5a.5.5 0 0 0 .5.5.5.5 0 0 1 0 1A1.5 1.5 0 0 1 1 12.5V7.207l-.146.147a.5.5 0 0 1-.708-.708zm3 1a1 1 0 0 1 1.414 0L12 3.793V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v3.293l1.854 1.853a.5.5 0 0 1-.708.708L15 8.207V13.5a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 4 13.5V8.207l-.146.147a.5.5 0 1 1-.708-.708zm.707.707L5 7.207V13.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5V7.207z",
+    "computer":"M8 1a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1zm1 13.5a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0m2 0a.5.5 0 1 0 1 0 .5.5 0 0 0-1 0M9.5 1a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1zM9 3.5a.5.5 0 0 0 .5.5h5a.5.5 0 0 0 0-1h-5a.5.5 0 0 0-.5.5M1.5 2A1.5 1.5 0 0 0 0 3.5v7A1.5 1.5 0 0 0 1.5 12H6v2h-.5a.5.5 0 0 0 0 1H7v-4H1.5a.5.5 0 0 1-.5-.5v-7a.5.5 0 0 1 .5-.5H7V2z",
 
     }
 #V2
 
-def remove_preflix_of_elemts(elements):
-    item = []
-    prelix_list = ['ti ti', 'bi bi']
-    for element in elements:
-        element = element.replace('-', ' ')
-        for prelix in prelix_list:
-            if prelix in element:
-                element = element.replace(prelix, '')
-        item.append(element)
-    return item
 
-
-def remove_items_with_matching_words(elements):
-    elements = remove_preflix_of_elemts(elements)
-
-    # Create a list to store all words from all elements
-    all_words = [word for element in elements for word in element.split()]
-
-    # Find duplicate words (words appearing more than once)
-    duplicate_words = {word for word in all_words if all_words.count(word) > 1}
-    
-    # Filter elements, keeping only those with no duplicate words
-    filtered_elements = [
-        element for element in elements 
-        if not any(word in duplicate_words for word in element.split())
-    ]
-
-    return filtered_elements
-
-
-def solve_icon_captcha(sb):
+def solve_icon_captcha(sb, fey = True):
 
     try:
         # Extract all captcha icon
 
-
+        sb1.execute_script("window.scrollTo(0, 1000);")
         # Find potential captcha icons based on class names
         captcha_icons = sb.find_elements('[class*="fa-"], [class*="fas fa-"], [class*="far fa-"], [class*="ri-"], [class*="ti ti-"], [class*="bi bi-"]')
         print(f"Found {len(captcha_icons)} potential captcha icons.")
@@ -1363,13 +1335,22 @@ def solve_icon_captcha(sb):
         print("Valid captcha icons before removing decoys:", [icon.get_attribute("outerHTML") for icon in valid_captcha_icons])
 
         valid_captcha_icons2 = []
+        class_name = 'b'
         for icon in valid_captcha_icons:
             class_name = icon.get_attribute("class")
             if class_name:
                 valid_captcha_icons2.append(class_name)
 
         print('Valid Classes:',valid_captcha_icons2)
-        valid_captcha_icons =remove_items_with_matching_words(valid_captcha_icons2)
+
+
+        if fey:
+            valid_captcha_icons = valid_captcha_icons2[1]
+        else:
+            valid_captcha_icons = valid_captcha_icons2[-1]
+
+        if valid_captcha_icons2 and not valid_captcha_icons:
+            valid_captcha_icons = class_name
         print('AFter Valid Classes:',valid_captcha_icons)
 
         # Find all SVG elements
@@ -1384,16 +1365,19 @@ def solve_icon_captcha(sb):
                 if path_element and path_element.get_attribute("d"):
                     path_data = path_element.get_attribute("d")
 
+                    fail_safe = svg
                     # Compare pathData with the iconPathList dictionary
                     for icon_name, icon_path in icon_path_list.items():
                         if path_data == icon_path:
                             # Match icon class name
+                            fail_safe = svg
+                            print('Found',icon_name)
                             for valid_icon in valid_captcha_icons:
                                 if icon_name in valid_icon:
                                     print(f"Answer found for icon: {icon_name}")
                                     svg.uc_click()
                                     return True  # Exit function after finding an answer
-
+                    fail_safe.uc_click()
             except Exception as e:
                 print(f"Skipping SVG (error: {e}).")
 
@@ -3125,7 +3109,7 @@ while True:
                         title =sb1.get_title()
                         if 'Faucet | Earn-pepe' in title:
                             debug_messages(f'Solving Icon Captcha on EarnPP')
-                            gg = solve_icon_captcha(sb1)
+                            gg = solve_icon_captcha(sb1 , False)
                             if gg:
                                 earnpp_limit_reached = None
                             else:
@@ -3181,7 +3165,7 @@ while True:
 
                         if 'Faucet | Feyorra' in title:
                             debug_messages(f'Solving Icon Captcha on Feyorra')
-                            gg = solve_icon_captcha(sb1)
+                            gg = solve_icon_captcha(sb1, True)
                             if gg:
                                 feyorra_limit_reached =None
                             else:

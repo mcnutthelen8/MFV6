@@ -741,13 +741,13 @@ def mysterium_login(driver):
 
 
 
-sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
+sb1 = Driver(uc=True, undetectable=True,undetected=True, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
 sb1.maximize_window()
 url = "chrome://extensions/"
 sb1.open(url)
 print(sb1.get_title())
 fresh = are_extensions_exist()
-sweet_enable()
+#sweet_enable()
 if fresh:
         mysterium = install_extensions('mysterium')
         nopecha = install_extensions('sweet')

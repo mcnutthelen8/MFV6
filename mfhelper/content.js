@@ -1,4 +1,54 @@
 
+
+async function validate_ipaddress() {
+  const validURLs = ["https://feyorra.site/", "https://earn-pepe.com/", "https://claimcoin.in/faucet"];
+  const currentURL = window.location.href;
+
+  // Check if the current URL matches the target pattern
+  const isTargetSite = validURLs.some((url) => currentURL.startsWith(url));
+
+  if (!isTargetSite) {
+      console.log("This script only runs on the target sites.");
+      return;
+  }
+
+  try {
+      // Fetch the target IP from the JSON file
+      const configResponse = await fetch(chrome.runtime.getURL("config.json"));
+      const config = await configResponse.json();
+      const targetIP = config.targetIP;
+
+      // Stop the page from loading temporarily
+      console.log(targetIP);
+
+      // Fetch the current IP address before the page fully loads
+      const response = await fetch("https://api.ipify.org?format=json");
+      const data = await response.json();
+      const currentIP = data.ip;
+
+      // Log the current IP to the console
+      console.log(`Current IP: ${currentIP}`);
+
+      // Store IP check result in sessionStorage
+      sessionStorage.setItem(currentIP, true);
+
+      // Redirect to Google if IP does not match
+      if (currentIP !== targetIP) {
+          console.log("IP mismatch detected. Redirecting to Google.");
+          window.location.href = "https://www.google.com";
+      } else {
+          console.log("IP matches the target");
+          return currentIP;
+          // Allow the page to reload after IP validation
+          //window.location.reload();
+      }
+  } catch (error) {
+      console.error("Failed to fetch IP address or validate:", error);
+      // If there's an error, handle it gracefully and redirect to Google
+      //window.location.href = "https://www.google.com";
+  }
+}
+
 // Function to get the current URL
 function getCurrentURL() {
   return window.location.href;
@@ -124,6 +174,7 @@ function handle404Errors() {
 function checkAndClaim() {
   handleAlerts(); // Check and handle alerts
   handle404Errors(); // Check and handle 404 errors
+  validate_ipaddress();
 
   if (window.location.href.includes("feyorra.site")) {
     if (claimFeyorra()) {

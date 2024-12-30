@@ -2873,7 +2873,23 @@ def open_browsers():
     time.sleep(10)
     return sb1
 
-
+def update_target_ip(new_ip):
+    try:
+        file_path = "mfhelper/config.json"
+        # Open the JSON file and load its contents
+        with open(file_path, "r") as file:
+            data = json.load(file)
+        
+        # Update the targetIP field
+        data["targetIP"] = new_ip
+        
+        # Write the updated data back to the JSON file
+        with open(file_path, "w") as file:
+            json.dump(data, file, indent=4)
+        
+        print(f"targetIP updated to {new_ip}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 def open_faucets():
     global sb1
     while True:
@@ -2967,7 +2983,7 @@ def open_faucets():
                 ip_required = ip_address
                 add_blacklistedip2(f'F{farm_id}L{lay}', ip_address)
                 get_mails_passowrds(farm_id)
-                
+                update_target_ip(ip_address)
                 ip_address = get_ip(sb1)
                 if ip_required == ip_address:
                     response_messege('EarnPP Loging')

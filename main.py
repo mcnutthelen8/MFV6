@@ -1349,9 +1349,8 @@ def solve_icon_captcha(sb, fey = True):
         else:
             valid_captcha_icons = valid_captcha_icons2[-1]
 
-        if valid_captcha_icons2 and not valid_captcha_icons:
-            valid_captcha_icons = class_name
         print('AFter Valid Classes:',valid_captcha_icons)
+
 
         # Find all SVG elements
         svg_elements = sb.find_elements("svg")
@@ -1360,27 +1359,29 @@ def solve_icon_captcha(sb, fey = True):
         # Process each SVG element
         for svg in svg_elements:
             try:
-                  # Use uc_click to interact with the SVG element if needed
-                path_element = svg.find_element(by="css selector", value="path")
-                if path_element and path_element.get_attribute("d"):
-                    path_data = path_element.get_attribute("d")
+                # Look for 'path' element inside the SVG
+                path_elements = svg.find_elements(By.CSS_SELECTOR, "path")
+                
+                # Check if any path elements were found
+                if path_elements:
+                    for path_element in path_elements:
+                        path_data = path_element.get_attribute("d")
+                        if path_data:
+                            print(f"Found path data: {path_data}")
 
-                    fail_safe = svg
-                    # Compare pathData with the iconPathList dictionary
-                    for icon_name, icon_path in icon_path_list.items():
-                        if path_data == icon_path:
-                            # Match icon class name
-                            fail_safe = svg
-                            print('Found',icon_name)
-                            for valid_icon in valid_captcha_icons:
-                                if icon_name in valid_icon:
-                                    print(f"Answer found for icon: {icon_name}")
-                                    svg.uc_click()
-                                    return True  # Exit function after finding an answer
-                    fail_safe.uc_click()
-            except Exception as e:
-                print(f"Skipping SVG (error: {e}).")
+                            # Compare pathData with the iconPathList dictionary
+                            for icon_name, icon_path in icon_path_list.items():
+                                if path_data == icon_path:
+                                    print(f"Match found: {icon_name}")
+                                    if icon_name in valid_captcha_icons:
+                                        print(f"Answer found for icon: {icon_name}")
+                                        svg.uc_click()
+                                        return True  # Exit after successful click
+                else:
+                    print(f"No 'path' elements found in this SVG: {svg}.")
 
+            except Exception as svg_error:
+                print(f"Skipping SVG (error: {svg_error}).")
     except Exception as e:
         print(f"Error solving captcha: {e}")
         return False
@@ -2993,10 +2994,11 @@ def open_faucets():
                         feyorra_window = None
                 else:
                     raise Exception("Ip changed")
-                ip_address = get_ip(sb1)
+                
                 if ip_required == ip_address:
                     response_messege('ClaimC Loging')
                     if claimcoin:
+                        ip_address = get_ip(sb1)
                         sb1.open_new_window()
                         claimcoin_window = handle_site(sb1, "https://claimcoin.in/faucet", "Faucet | ClaimCoin - ClaimCoin Faucet", "ClaimCoin - MultiCurrency Crypto Earning Platform", 3, [earnpp_window, feyorra_window], ip_required)
                         if claimcoin_window == 404:
@@ -3066,6 +3068,7 @@ while True:
         mainscript = control_panel()
         print('control_panel', mainscript)
         if mainscript == 1:
+            pyautogui.press('enter')
             
             debug_messages(f'Ip address Found:{ip_address}')
             cc_faucet = None
@@ -3158,6 +3161,7 @@ while True:
                 if feyorra:
                     try:
                         debug_messages(f'Switching Pages to Feyorra')
+                        pyautogui.press('enter')
                         sb1.switch_to.window(feyorra_window)
                         debug_messages(f'Getting Pages Titile:Feyorra')
                         pyautogui.press('enter')

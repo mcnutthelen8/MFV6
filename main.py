@@ -1005,12 +1005,12 @@ def mysterium_login(driver):
                         for i in range(1, 10):
                             time.sleep(2)
                             try:
-                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_allow.png", region=(842, 750, 400, 300), confidence=0.9)
+                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_allow.png", region=(842, 750, 400, 300), confidence=0.99)
                                 pyautogui.click(x, y)
                                 print("mysterium_allow Found")
                                 time.sleep(3)
                                 try:
-                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.9)
+                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
                                     pyautogui.click(x, y)
                                     print("mysterium_icon_empty 2 Found")
                                     time.sleep(3)

@@ -880,6 +880,7 @@ urls_dev = []
 page_windows = []
 
 if fresh_vms:
+    activate_window_by_id(main_window)
     delete_csb(sb1)
     for i in range(1, vm_count):
         sb1.maximize_window()

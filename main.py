@@ -670,43 +670,46 @@ def get_proxycheck(driver, ip, server_name):
         print(f"Error retrieving IP address and proxy status: {e}")
         return False
 
+
 def get_ipscore(ip):
     url = f'https://ipqualityscore.com/api/json/ip/Bfg1dzryVqbpSwtbxgWb1uVkXLrr1Nzr/{ip}?strictness=3&allow_public_access_points=true&lighter_penalties=true&mobile=true'
     try:
         response = requests.get(url)
         response.raise_for_status()  # Raise an HTTPError for bad responses
         result = response.json()
-        # print(result)  # Print the raw response for debugging
 
-        # Assign specific data fields to variables
-        fraud_score = result.get('fraud_score', None)
-        if fraud_score is None or not isinstance(fraud_score, int):
-            fraud_score = 89  # Assign a default integer value if fraud_score is not valid
+        # Debug: Print the full API response
+        print("Raw API Response:", result)
 
+        # Assign specific data fields to variables with default values
+        fraud_score = result.get('fraud_score', 89)  # Default to 89 if missing
         proxy = result.get('proxy', False)
         vpn = result.get('vpn', False)
         tor = result.get('tor', False)
         active_vpn = result.get('active_vpn', False)
         active_tor = result.get('active_tor', False)
-        recent_abuse = result.get('recent_abuse', False)
-        bot_status = result.get('bot_status', False)
 
-        # Print the assigned variables
+        # Debug: Print all extracted variables
         print(f"Fraud Score: {fraud_score}")
         print(f"Proxy: {proxy}")
         print(f"VPN: {vpn}")
         print(f"TOR: {tor}")
         print(f"Active VPN: {active_vpn}")
         print(f"Active TOR: {active_tor}")
-        print(f"Recent Abuse: {recent_abuse}")
-        print(f"Bot Status: {bot_status}")
 
-        # Ensure fraud_score is an integer for comparison
-        if fraud_score:
-            if vpn == False and tor == False and fraud_score <= 90: #and active_vpn == False and active_tor == False and fraud_score < 90:
-                return True
-            else:
-                return None
+        # Adjusted condition to match expected behavior
+        if (
+
+            not vpn
+            and not tor
+            and fraud_score <= 95
+        ):
+            print("Conditions met: Returning True")
+            return True
+        else:
+            print("Conditions not met: Returning None")
+            return None
+
     except requests.RequestException as e:
         print(f"Error retrieving IP data: {e}")
         return None
@@ -749,7 +752,7 @@ def mysterium_vpn_Recon_ip(server_name, driver):
             print("No myserium_disconnect .")
 
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.99)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.9)
                 #pyautogui.click(x, y)
                 print("mysterium_login Found")
                 mysterium_login(driver)
@@ -798,7 +801,7 @@ def mysterium_vpn_connect(server_name, driver):
         except pyautogui.ImageNotFoundException:
             print("No myserium_disconnect .")
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.99)
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.9)
             #pyautogui.click(x, y)
             print("mysterium_login Found")
             mysterium_login(driver)
@@ -855,7 +858,7 @@ def fix_ip(drive, name):
         if other_blacklists:
                 blacklistedIP = blacklistedIP + other_blacklists
         if ip_address in blacklistedIP:
-            print(f'Bad IP detected: {ip_address}. Changing IP...')
+            print(f'Bad IP detected: {ip_address}. Changing IP...1')
             query = {"type": "main"}
             update = {"$set": {"response": f'Blacklisted IP🔴: {ip_address}'}}
             result = collection.update_one(query, update)
@@ -882,7 +885,7 @@ def fix_ip(drive, name):
                 print(f'Good IP found: {ip_address}')
                 return ip_address
             else:
-                print(f'Bad IP detected: {ip_address}. Changing IP...')
+                print(f'Bad IP detected: {ip_address}. Changing IP...2')
                 query = {"type": "main"}
                 update = {"$set": {"response": f'Changed IP🔴: {ip_address}'}}
                 result = collection.update_one(query, update)
@@ -976,6 +979,7 @@ def mysterium_web_login(driver):
 def mysterium_login(driver):
     while True:
         mysterium_reinstaller()
+        response_messege('Changed IP🔴 :Mys installed')
         fix_wrong_pins()
         time.sleep(1)
         sweet_enable()
@@ -995,7 +999,7 @@ def mysterium_login(driver):
                 for i in range(1, 10):
                     time.sleep(1)
                     try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.99)
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.9)
                         pyautogui.click(x, y)
                         print("mysterium_login Found")
                         for i in range(1, 10):
@@ -1104,7 +1108,7 @@ def ipfixer():
                         query = {"type": "main"}
                         update = {"$set": {"response": f'Ready IP🟢: {ip} | {now}'}}
                         result = collection.update_one(query, update)
-                        time.sleep(4)
+                        time.sleep(6)
                         print('Result:',result)
                         print(f"repo {respo}")
                         res_farms = []
@@ -3128,6 +3132,9 @@ while True:
                         title =sb1.get_title()
                         if 'Faucet | Earn-pepe' in title:
                             debug_messages(f'Solving Icon Captcha on EarnPP')
+                            val = get_coins(sb1, 1)
+                            if val:
+                                earnpp_coins = val
                             gg = solve_icon_captcha(sb1 , False)
                             if gg:
                                 earnpp_limit_reached = None
@@ -3139,9 +3146,7 @@ while True:
                                 else:
                                     refresh_count +=5
                             debug_messages(f'Solved Icon Captcha on EarnPP')
-                            val = get_coins(sb1, 1)
-                            if val:
-                                earnpp_coins = val
+                            
 
                         elif 'Lock' in title:
                             debug_messages(f'Lock.. Found on EarnPP')
@@ -3187,6 +3192,9 @@ while True:
 
                         if 'Faucet | Feyorra' in title:
                             debug_messages(f'Solving Icon Captcha on Feyorra')
+                            val = get_coins(sb1, 2)
+                            if val:
+                                feyorra_coins = val
                             gg = solve_icon_captcha(sb1, True)
                             if gg:
                                 feyorra_limit_reached =None
@@ -3206,9 +3214,7 @@ while True:
                                     feyorra_limit_reached =True
                                 else:
                                     refresh_count +=5
-                            val = get_coins(sb1, 2)
-                            if val:
-                                feyorra_coins = val
+
                                 
                         elif 'Just' in title:
                             debug_messages(f'Just.. Found on Feyorra')

@@ -296,7 +296,9 @@ def get_current_window_title():
     except Exception as e:
         return f"An error occurred: {e}"
 
-def create_devbox(driver):
+def create_devbox():
+
+    time.sleep(2)
     pyautogui.keyDown('ctrl')
     pyautogui.press('l')
     pyautogui.keyUp('ctrl')
@@ -316,15 +318,12 @@ def create_devbox(driver):
 
                 for i in range(1, 20):
                     time.sleep(2)
-                    try:
-                        x,y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/create_devbgf.png", region=(1151,780, 800, 800), confidence=0.85)
-                        pyautogui.click(x,y)
-                        time.sleep(2)
-                    except Exception as e:
-                        print('create_devbgf not found')
+
                     try:
                         x,y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/pythondevb.png", region=(403,330, 800, 800), confidence=0.85)
                         pyautogui.click(x,y)
+                        time.sleep(4)
+                        pyautogui.click(1351,871)
                         time.sleep(2)
                     except Exception as e:
                         print('pythondevb not found')
@@ -374,7 +373,7 @@ def sweet_enable():
         except pyautogui.ImageNotFoundException:
             print("No icon_image_loaded Human.")
 
-def deploy_docker(farmurl, driver):
+def deploy_docker(farmurl):
     while True:
         
         currecto = False
@@ -393,10 +392,10 @@ def deploy_docker(farmurl, driver):
             currecto = True  
         if 'Recent - CodeSandbox' in title:
             print(f'going again create:{title} ')
-            create_devbox(driver)
+            create_devbox()
         if 'New Tab' in title:
             print(f'going again create:{title} ')
-            create_devbox(driver)
+            create_devbox()
         if currecto:
             try:
                 pyautogui.click(21, 303)
@@ -485,7 +484,7 @@ def deploy_docker(farmurl, driver):
                             if x and y:
                                 pyautogui.click(x, y)
                                 print("Docker Failed Found")
-                                create_devbox(driver)
+                                create_devbox()
                                 ggg2 = False
                         except Exception as e:
                             print('docker_failed2 not found')
@@ -497,7 +496,36 @@ def deploy_docker(farmurl, driver):
             print("No correcto")
 
 
+def create_devbox_n_deploy(farmurl):
 
+    try:
+        sb2.maximize_window()
+        sb2.uc_open('https://api.ipify.org/')
+        create_devbox()
+        deploy_docker(farmurl)
+        time.sleep(5)
+        pyautogui.click(659,312)
+        time.sleep(1)
+        pyautogui.click(659,312)
+        time.sleep(1)
+        pyautogui.keyDown('ctrl')
+        pyautogui.press('l')
+        pyautogui.keyUp('ctrl')
+        time.sleep(2)
+        pyautogui.keyDown('ctrl')
+        pyautogui.press('a')
+        pyautogui.keyUp('ctrl')
+        time.sleep(1)
+        pyautogui.keyDown('ctrl')
+        pyautogui.press('c')
+        pyautogui.keyUp('ctrl')
+        time.sleep(2)
+        page_url = clipboard.paste()
+
+        return page_url
+    except Exception as e:
+        print("ERR:",e)
+        
 def CSB_credit_usage(driver):
     original_window = driver.current_window_handle
     driver.open_new_window()
@@ -791,7 +819,21 @@ def get_ip(driver):
 
     return None
 
-sb1 = Driver(uc=True, undetectable=True,undetected=True, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
+
+def get_current_window_id():
+    # Run the command to get the current window ID
+    result = subprocess.run(['xdotool', 'getactivewindow'], stdout=subprocess.PIPE)
+    window_id = result.stdout.decode('utf-8').strip()
+    print(f"Current Window ID: {window_id}")
+    return window_id
+
+def activate_window_by_id(window_id):
+    # Run the command to activate the window by its ID
+    print(f"Activate Window ID: {window_id}")
+    subprocess.run(['xdotool', 'windowactivate', window_id])
+
+
+sb1 = Driver(uc=False, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
 sb1.maximize_window()
 url = "chrome://extensions/"
 sb1.open(url)
@@ -811,6 +853,29 @@ if fresh:
                 #mysterium_login(sb1)
 
 codesandlogged = are_codesand_logged(sb1)
+main_window = get_current_window_id()
+sb2 = Driver(uc=True, undetectable=True,undetected=True, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
+
+
+sb2.maximize_window()
+url = "chrome://extensions/"
+sb2.open(url)
+print(sb2.get_title())
+fresh = are_extensions_exist()
+#sweet_enable()
+if fresh:
+        mysterium = install_extensions('mysterium')
+        nopecha = install_extensions('sweet')
+        cookie = install_extensions('cookie')
+        fingerprint = install_extensions('fingerprint')
+        mfhelper = install_extensions('mfhelper')
+        if fingerprint and mysterium and nopecha and cookie and mfhelper:
+            print('All Extensions are installed..')
+            if pin_extensions():
+                print('All Extensions are pinned')
+                #mysterium_login(sb1)
+codesandlogged = are_codesand_logged(sb2)
+uc_window = get_current_window_id()
 urls_dev = []
 page_windows = []
 
@@ -825,38 +890,17 @@ if fresh_vms:
         elif i == 4: command = command_4
         elif i == 5: command = command_5
 
-        pyautogui.keyDown('ctrl')
-        pyautogui.press('t')
-        pyautogui.keyUp('ctrl')
-        time.sleep(5)
-
-        create_devbox(sb1)
-        deploy_docker(command,sb1)
-        
-        time.sleep(5)
-        pyautogui.click(659,312)
-        time.sleep(1)
-        pyautogui.click(659,312)
-        time.sleep(1)
-        pyautogui.keyDown('ctrl')
-        pyautogui.press('l')
-        pyautogui.keyUp('ctrl')
-        time.sleep(2)
-        pyautogui.keyDown('ctrl')
-        pyautogui.press('a')
-        pyautogui.keyUp('ctrl')
-        time.sleep(1)
-        pyautogui.keyDown('ctrl')
-        pyautogui.press('c')
-        pyautogui.keyUp('ctrl')
-        time.sleep(2)
-        page_url = clipboard.paste()
+        activate_window_by_id(uc_window)
+        page_url =create_devbox_n_deploy(command)
+        activate_window_by_id(main_window)
+        sb1.open_new_window()
+        sb1.open(page_url)
+        time.sleep(3)
         page_window = sb1.current_window_handle
         urls_dev.append(page_url)
         page_windows.append(page_window)
-        time.sleep(2)
+        time.sleep(10)
 
-        time.sleep(1)
 else:
     collection = db[CSB_Script]
     data = collection.find_one({"csb_script_id": CSB_Script})
@@ -871,7 +915,6 @@ else:
         page_windows.append(window)
 
 
-page_windows = sb1.window_handles
 while True:
     #Wating
     gg = True
@@ -924,8 +967,11 @@ while True:
                 elif i == 4: command = command_4
                 elif i == 5: command = command_5
 
-                create_devbox(sb1)
-                deploy_docker(command, sb1)
+                activate_window_by_id(uc_window)
+                page_url =create_devbox_n_deploy(command)
+                activate_window_by_id(main_window)
+                sb1.open(page_url)
+                time.sleep(3)
                 pyautogui.click(942, 65)
                 collection = db[CSB_Script]
                 query = {"type": "main"}
@@ -958,8 +1004,11 @@ while True:
                 doc = collection.find_one(query)
                 update = {"$set": {"request": f'Resetting DEV{i}'}}
                 result = collection.update_one(query, update) 
-                create_devbox(sb1)
-                deploy_docker(command , sb1)
+                activate_window_by_id(uc_window)
+                page_url =create_devbox_n_deploy(command)
+                activate_window_by_id(main_window)
+                sb1.open(page_url)
+                time.sleep(3)
                 pyautogui.click(942, 65)
                 query = {"type": "main"}
                 doc = collection.find_one(query)
@@ -978,8 +1027,11 @@ while True:
                     doc = collection.find_one(query)
                     update = {"$set": {"request": f'Resetting DEV{i}'}}
                     result = collection.update_one(query, update) 
-                    create_devbox(sb1)
-                    deploy_docker(command , sb1)
+                    activate_window_by_id(uc_window)
+                    page_url =create_devbox_n_deploy(command)
+                    activate_window_by_id(main_window)
+                    sb1.open(page_url)
+                    time.sleep(3)
                     pyautogui.click(942, 65)
                     query = {"type": "main"}
                     doc = collection.find_one(query)
@@ -1000,8 +1052,11 @@ while True:
                     doc = collection.find_one(query)
                     update = {"$set": {"request": f'Resetting DEV{i}'}}
                     result = collection.update_one(query, update) 
-                    create_devbox(sb1)
-                    deploy_docker(command , sb1)
+                    activate_window_by_id(uc_window)
+                    page_url =create_devbox_n_deploy(command)
+                    activate_window_by_id(main_window)
+                    sb1.open(page_url)
+                    time.sleep(3)
                     pyautogui.click(942, 65)
                     query = {"type": "main"}
                     doc = collection.find_one(query)

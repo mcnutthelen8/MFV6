@@ -1363,7 +1363,7 @@ icon_path_list = {
 #V2
 
 
-def solve_icon_captcha(sb, fey = True):
+def solve_icon_captcha_v2(sb, fey = True):
     try:
         # Extract all captcha icon
 
@@ -1413,6 +1413,51 @@ def solve_icon_captcha(sb, fey = True):
         print(f"Error solving captcha: {e}")
         return False
 
+def solve_icon_captcha(sb, fey=True):
+    try:
+        # Scroll to make captcha visible
+        sb.execute_script("window.scrollTo(0, 1000);")
+
+        # Find and filter captcha icons in a single loop
+        captcha_icons = sb.find_elements('[class*="bxs-"], [class*="bx-"], [class*="la-"], '
+                                         '[class*="fa-"], [class*="fas fa-"], [class*="far fa-"], '
+                                         '[class*="ri-"], [class*="ti ti-"], [class*="bi bi-"]')
+        valid_captcha_classes = [
+            icon.get_attribute("class") for icon in captcha_icons
+            if not icon.get_attribute("style") and not icon.get_attribute("id") and icon.tag_name.lower() != "i"
+        ]
+
+        if fey:
+            target_class = valid_captcha_classes[1] if len(valid_captcha_classes) > 1 else None
+        else:
+            target_class = valid_captcha_classes[-1] if valid_captcha_classes else None
+
+        if not target_class:
+            print("No valid captcha icon found.")
+            return False
+
+        # Locate and process SVG elements
+        svg_elements = sb.find_elements("svg")
+        for svg in svg_elements:
+            try:
+                path_elements = svg.find_elements(By.CSS_SELECTOR, "path")
+                for path_element in path_elements:
+                    path_data = path_element.get_attribute("d")
+                    if path_data:
+                        # Directly check against icon_path_list
+                        icon_match = next(
+                            (icon_name for icon_name, icon_path in icon_path_list.items()
+                             if path_data == icon_path and icon_name == target_class), None
+                        )
+                        if icon_match:
+                            print(f"Answer found for icon: {icon_match}")
+                            svg.uc_click()  # Assuming `uc_click` is a utility function
+                            return True
+            except Exception as svg_error:
+                print(f"Error processing SVG: {svg_error}")
+    except Exception as e:
+        print(f"Error solving captcha: {e}")
+    return False
 
 def cloudflare(sb, login = True):
     try:

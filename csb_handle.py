@@ -854,7 +854,10 @@ if fresh:
 
 codesandlogged = are_codesand_logged(sb1)
 main_window = get_current_window_id()
-sb2 = Driver(uc=True, undetectable=True,undetected=True, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
+
+
+chrome_user_data_dir2 = '/root/.config/google-chrome/v632fffv2'
+sb2 = Driver(uc=True, undetectable=True,undetected=True, headed= True,  user_data_dir=chrome_user_data_dir2, binary_location=chrome_binary_path)
 
 
 sb2.maximize_window()

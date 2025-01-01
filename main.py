@@ -1389,7 +1389,7 @@ def solve_icon_captcha(sb, fey = True):
             valid_captcha_icons = valid_captcha_icons2[-1]
 
         for option in icon_options:
-            option_classes = option.get_attribute('class').split()
+            option_classes = option.get_attribute('class')
             item = option_classes.replace('-', ' ')
             item = re.sub(r'\b(bxs|bx|la|fa|fas|fab|far|ti|bi|ri)\b', '', item)
             words = item.split()  # Split the string into words
@@ -1422,11 +1422,10 @@ def solve_icon_captcha(sb, fey = True):
                             for icon_name, icon_path in icon_path_list.items():
                                 if path_data == icon_path:
                                     print(f"Match found: {icon_name}")
-                                    for val in valid_captcha_icons:
-                                        if val in icon_name or icon_name in val:
-                                            print(f"Answer found for icon: {icon_name}")
-                                            svg.uc_click()
-                                            return True  # Exit after successful click
+                                    if icon_name in valid_captcha_icons:
+                                        print(f"Answer found for icon: {icon_name}")
+                                        svg.uc_click()
+                                        return True  # Exit after successful click
                 else:
                     print(f"No 'path' elements found in this SVG: {svg}.")
 

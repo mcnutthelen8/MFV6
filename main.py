@@ -1324,7 +1324,6 @@ icon_path_list = {
     "comment":"M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z",
     "message":"M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z",
 
-
     "cake":"M12 8.25v-1.5m0 1.5c-1.355 0-2.697.056-4.024.166C6.845 8.51 6 9.473 6 10.608v2.513m6-4.871c1.355 0 2.697.056 4.024.166C17.155 8.51 18 9.473 18 10.608v2.513M15 8.25v-1.5m-6 1.5v-1.5m12 9.75-1.5.75a3.354 3.354 0 0 1-3 0 3.354 3.354 0 0 0-3 0 3.354 3.354 0 0 1-3 0 3.354 3.354 0 0 0-3 0 3.354 3.354 0 0 1-3 0L3 16.5m15-3.379a48.474 48.474 0 0 0-6-.371c-2.032 0-4.034.126-6 .371m12 0c.39.049.777.102 1.163.16 1.07.16 1.837 1.094 1.837 2.175v5.169c0 .621-.504 1.125-1.125 1.125H4.125A1.125 1.125 0 0 1 3 20.625v-5.17c0-1.08.768-2.014 1.837-2.174A47.78 47.78 0 0 1 6 13.12M12.265 3.11a.375.375 0 1 1-.53 0L12 2.845l.265.265Zm-3 0a.375.375 0 1 1-.53 0L9 2.845l.265.265Zm6 0a.375.375 0 1 1-.53 0L15 2.845l.265.265Z",
     "notifi":"M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5",
     "leaf":"M20.998 3V5C20.998 14.6274 15.6255 19 8.99805 19L5.24077 18.9999C5.0786 19.912 4.99805 20.907 4.99805 22H2.99805C2.99805 20.6373 3.11376 19.3997 3.34381 18.2682C3.1133 16.9741 2.99805 15.2176 2.99805 13C2.99805 7.47715 7.4752 3 12.998 3C14.998 3 16.998 4 20.998 3ZM12.998 5C8.57977 5 4.99805 8.58172 4.99805 13C4.99805 13.3624 5.00125 13.7111 5.00759 14.0459C6.26198 12.0684 8.09902 10.5048 10.5019 9.13176L11.4942 10.8682C8.6393 12.4996 6.74554 14.3535 5.77329 16.9998L8.99805 17C15.0132 17 18.8692 13.0269 18.9949 5.38766C17.6229 5.52113 16.3481 5.436 14.7754 5.20009C13.6243 5.02742 13.3988 5 12.998 5Z",
@@ -1357,20 +1356,25 @@ icon_path_list = {
     "build":"m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25",
     "house":"m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25",
     "home":"m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25",
+    
+    "selfie":"M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z",
+
+    "chat":"M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z",
 
 
     }
 #V2
 
 
-def solve_icon_captcha_v2(sb, fey = True):
+def solve_icon_captcha(sb, fey = True):
     try:
         # Extract all captcha icon
-
         sb1.execute_script("window.scrollTo(0, 1000);")
         # Find potential captcha icons based on class names
         captcha_icons = sb.find_elements('[class*="bxs-"], [class*="bx-"], [class*="la-"], [class*="fa-"], [class*="fas fa-"], [class*="far fa-"], [class*="ri-"], [class*="ti ti-"], [class*="bi bi-"]')
         # Filter valid captcha icons
+        icon_options = [icon for icon in captcha_icons if not icon.get_attribute("style") and not icon.get_attribute("id") and icon.tag_name.lower() == "i"]
+
         valid_captcha_icons = [icon for icon in captcha_icons if not icon.get_attribute("style") and not icon.get_attribute("id") and icon.tag_name.lower() != "i"]
         valid_captcha_icons2 = []
         class_name = 'b'
@@ -1383,6 +1387,24 @@ def solve_icon_captcha_v2(sb, fey = True):
             valid_captcha_icons = valid_captcha_icons2[1]
         else:
             valid_captcha_icons = valid_captcha_icons2[-1]
+
+        for option in icon_options:
+            option_classes = option.get_attribute('class').split()
+            item = option_classes.replace('-', ' ')
+            item = re.sub(r'\b(bxs|bx|la|fa|fas|fab|far|ti|bi|ri)\b', '', item)
+            words = item.split()  # Split the string into words
+            op2 = "".join(words[-2])
+            op1 = "".join(words[-1])  # Join the last two words
+            print(op1,op2)
+            for val in valid_captcha_icons:
+                if op1 in val or op2 in val:
+                    try:
+                        option.uc_click()  # Custom click method to handle undetected Selenium
+                        print(f"Clicked on the matching icon: {val}")
+                        return True  # Return immediately after a successful click
+                    except Exception as e:
+                        print(f"Error clicking on icon: {e}")
+                        continue  # Continue to the next option if clicking fails
         # Find all SVG elements
         svg_elements = sb.find_elements("svg")
         for svg in svg_elements:
@@ -1400,10 +1422,11 @@ def solve_icon_captcha_v2(sb, fey = True):
                             for icon_name, icon_path in icon_path_list.items():
                                 if path_data == icon_path:
                                     print(f"Match found: {icon_name}")
-                                    if icon_name in valid_captcha_icons:
-                                        print(f"Answer found for icon: {icon_name}")
-                                        svg.uc_click()
-                                        return True  # Exit after successful click
+                                    for val in valid_captcha_icons:
+                                        if val in icon_name or icon_name in val:
+                                            print(f"Answer found for icon: {icon_name}")
+                                            svg.uc_click()
+                                            return True  # Exit after successful click
                 else:
                     print(f"No 'path' elements found in this SVG: {svg}.")
 
@@ -1413,51 +1436,6 @@ def solve_icon_captcha_v2(sb, fey = True):
         print(f"Error solving captcha: {e}")
         return False
 
-def solve_icon_captcha(sb, fey=True):
-    try:
-        # Scroll to make captcha visible
-        sb.execute_script("window.scrollTo(0, 1000);")
-
-        # Find and filter captcha icons in a single loop
-        captcha_icons = sb.find_elements('[class*="bxs-"], [class*="bx-"], [class*="la-"], '
-                                         '[class*="fa-"], [class*="fas fa-"], [class*="far fa-"], '
-                                         '[class*="ri-"], [class*="ti ti-"], [class*="bi bi-"]')
-        valid_captcha_classes = [
-            icon.get_attribute("class") for icon in captcha_icons
-            if not icon.get_attribute("style") and not icon.get_attribute("id") and icon.tag_name.lower() != "i"
-        ]
-
-        if fey:
-            target_class = valid_captcha_classes[1] if len(valid_captcha_classes) > 1 else None
-        else:
-            target_class = valid_captcha_classes[-1] if valid_captcha_classes else None
-
-        if not target_class:
-            print("No valid captcha icon found.")
-            return False
-
-        # Locate and process SVG elements
-        svg_elements = sb.find_elements("svg")
-        for svg in svg_elements:
-            try:
-                path_elements = svg.find_elements(By.CSS_SELECTOR, "path")
-                for path_element in path_elements:
-                    path_data = path_element.get_attribute("d")
-                    if path_data:
-                        # Directly check against icon_path_list
-                        icon_match = next(
-                            (icon_name for icon_name, icon_path in icon_path_list.items()
-                             if path_data == icon_path and icon_name == target_class), None
-                        )
-                        if icon_match:
-                            print(f"Answer found for icon: {icon_match}")
-                            svg.uc_click()  # Assuming `uc_click` is a utility function
-                            return True
-            except Exception as svg_error:
-                print(f"Error processing SVG: {svg_error}")
-    except Exception as e:
-        print(f"Error solving captcha: {e}")
-    return False
 
 def cloudflare(sb, login = True):
     try:

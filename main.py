@@ -1344,8 +1344,8 @@ def filter_and_replace(text):
         "chart": ['signal'],
         "cloud": ['weather'],
         "energy": ['lightning', 'zap', 'bolt',"flash"],
-        "camera": ["selfie","phone", "cam", "polaroid", "video","image","pic"],
-        "spider": ['bug','ant','insect'],
+        "camera": ["selfie","phone", "polaroid", "video","image","pic"],
+        "spider": ['bug','insect'],
         "setting": ['cog', 'gear'],
         "fire": ["burn","hot", "flame", "torch"],
         "trash": ["bin", "garbage "],
@@ -1361,7 +1361,7 @@ def filter_and_replace(text):
 
 def solve_icon_captcha(sb, fey = True):
     solve_icon_captchagg = time.time()
-
+    test_mode = False
 
     try:
         # Extract all captcha icon
@@ -1391,12 +1391,13 @@ def solve_icon_captcha(sb, fey = True):
             else:
                 print("Not enough icons in valid_captcha_icons2 for index [-1].")
                 return False  # Exit or handle appropriately
-        print("Icon options:", [icon.get_attribute('class') for icon in icon_options])
-        print(valid_captcha_icons2)
-        
-
+            
         valid_captcha_icons = filter_and_replace(valid_captcha_icons)
-        print(valid_captcha_icons)
+        if test_mode:
+            print("Icon options:", [icon.get_attribute('class') for icon in icon_options])
+            print(valid_captcha_icons2)
+            print(valid_captcha_icons)
+
         unvalid_shit = ['fill','line','fa2']
         for option in icon_options:
             option_classes = option.get_attribute('class')
@@ -1405,13 +1406,15 @@ def solve_icon_captcha(sb, fey = True):
             option_classes = item.split()
             for val in option_classes:
                 val = filter_and_replace(val)
-                print('iconS:',val)
+                if test_mode:
+                    print('iconS:',val)
                 if len(val) < 2 or val in unvalid_shit:
                     print('its invalid icon',val)
                     continue
                 if val in valid_captcha_icons:
                     try:
                         option.uc_click()  # Custom click method to handle undetected Selenium
+
                         print(f"Clicked on the matching icon: {val}")
                         print(f"Original function execution time: {time.time() - solve_icon_captchagg:.2f} seconds")
 
@@ -1424,7 +1427,8 @@ def solve_icon_captcha(sb, fey = True):
         # Find all SVG elements
         svg_elements = sb.find_elements("svg")
         svg_valid = False
-        print(f"Total SVG elements found: {len(svg_elements)}")
+        if test_mode:
+            print(f"Total SVG elements found: {len(svg_elements)}")
         for svg in svg_elements:
             try:
                 # Look for 'path' element inside the SVG
@@ -1434,7 +1438,8 @@ def solve_icon_captcha(sb, fey = True):
                 if path_elements:
                     for path_element in path_elements:
                         path_data = path_element.get_attribute("d").strip()
-                        print('path_data:',path_data)
+                        if test_mode:
+                            print('path_data:',path_data)
                         if path_data:
 
                             # Compare pathData with the iconPathList dictionary
@@ -1457,11 +1462,15 @@ def solve_icon_captcha(sb, fey = True):
             except Exception as svg_error:
                 print(f"Skipping SVG (error: {svg_error}).")
         if svg_valid:
-            query = {"type": "main"}
-            update = {"$set": {"request": 'pause'}}
-            result = collection.update_one(query, update)
-            response_messege(f'New Element Found{valid_captcha_icons}')
-            print(f'New Element Found{valid_captcha_icons}')
+            if test_mode:
+                query = {"type": "main"}
+                update = {"$set": {"request": 'pause'}}
+                result = collection.update_one(query, update)
+                response_messege(f'New Element Found{valid_captcha_icons}')
+                print(f'New Element Found{valid_captcha_icons}')
+            else:
+                pyautogui.press('f5')
+                
     except Exception as e:
         print(f"Error solving captcha: {e}")
         return False

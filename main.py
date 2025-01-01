@@ -1360,7 +1360,7 @@ icon_path_list = {
     "selfie":"M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z",
 
     "chat":"M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z",
-
+    "polaroid":"M6.827 6.175A2.31 2.31 0 0 1 5.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 0 0-1.134-.175 2.31 2.31 0 0 1-1.64-1.055l-.822-1.316a2.192 2.192 0 0 0-1.736-1.039 48.774 48.774 0 0 0-5.232 0 2.192 2.192 0 0 0-1.736 1.039l-.821 1.316Z",
 
     }
 #V2
@@ -1382,12 +1382,20 @@ def solve_icon_captcha(sb, fey = True):
             class_name = icon.get_attribute("class")
             if class_name:
                 valid_captcha_icons2.append(class_name)
-
         if fey:
-            valid_captcha_icons = valid_captcha_icons2[1]
+            if len(valid_captcha_icons2) > 1:
+                valid_captcha_icons = valid_captcha_icons2[1]
+            else:
+                print("Not enough icons in valid_captcha_icons2 for index [1].")
+                return False  # Exit or handle appropriately
         else:
-            valid_captcha_icons = valid_captcha_icons2[-1]
-
+            if len(valid_captcha_icons2) > 0:
+                valid_captcha_icons = valid_captcha_icons2[-1]
+            else:
+                print("Not enough icons in valid_captcha_icons2 for index [-1].")
+                return False  # Exit or handle appropriately
+        print(valid_captcha_icons2)
+        print(valid_captcha_icons)
         for option in icon_options:
             option_classes = option.get_attribute('class')
             item = option_classes.replace('-', ' ')
@@ -2950,7 +2958,6 @@ def update_target_ip(new_ip):
         print(f"An error occurred: {e}")
 def open_faucets():
     global sb1
-    global icon_path_list
     while True:
         try:
             quer2y = {"type": "main"}
@@ -2958,7 +2965,6 @@ def open_faucets():
             layout2 = dochh2["withdraw_mail"]
             print(f'Farm ID:{farm_id} | Layout: {layout2}')
             browser_proxy2  =get_browser_proxy()
-            icon_path_list = get_icon_path_list()
             chrome_user_data_dir2 = f'/root/.config/google-chrome/{browser_proxy2}{layout2}'
             if chrome_user_data_dir == chrome_user_data_dir2 and layout == layout2 and browser_proxy2 == browser_proxy:
                 response_messege('Same Browser ...')

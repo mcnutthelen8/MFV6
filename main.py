@@ -190,7 +190,7 @@ def get_mails_passowrds(farm_id):
     elif farm_id == 3:
 
         if '1' in layout:
-            server_name1 = 'egypt'
+            server_name1 = 'france'
             CSB1_farms = [1, 2, 3, 4, 5]
             earnpp_email = 'yvonne12463@gmail.com'
             earnpp_pass = 'Uwuinsta@2005'
@@ -216,7 +216,7 @@ def get_mails_passowrds(farm_id):
             feyorra_email = 'berendkalpana2@gmail.com'
             feyorra_pass = 'berendkalpana2'
         elif '4' in layout:
-            server_name1 = 'egypt'
+            server_name1 = 'france'
             CSB1_farms = [1, 2, 3, 4, 5]
             earnpp_email = 'voyn3642ovene@gmail.com'
             earnpp_pass = 'voyn3642ovene'
@@ -1470,7 +1470,7 @@ def solve_icon_captcha(sb, fey = True):
                 print(f'New Element Found{valid_captcha_icons}')
             else:
                 pyautogui.press('f5')
-                
+
     except Exception as e:
         print(f"Error solving captcha: {e}")
         return False

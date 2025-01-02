@@ -1,7 +1,7 @@
 [
     {
         "domain": ".codesandbox.io",
-        "expirationDate": 1764987887,
+        "expirationDate": 1767357058,
         "hostOnly": false,
         "httpOnly": false,
         "name": "AMP_a205ed9b06",
@@ -10,7 +10,7 @@
         "secure": false,
         "session": false,
         "storeId": null,
-        "value": "JTdCJTIyZGV2aWNlSWQlMjIlM0ElMjJkODkzMGFjZC0yYTc1LTQ1NjMtYWJjOS05Y2FmNzE0OTIwMDQlMjIlMkMlMjJ1c2VySWQlMjIlM0ElMjIzOGU3OWJhODFmY2YwMmNmMDEyZjdkYmJlOGY5ODI5MmMwM2YwZWViJTIyJTJDJTIyc2Vzc2lvbklkJTIyJTNBMTczMzQ1MTg3ODA5MCUyQyUyMm9wdE91dCUyMiUzQWZhbHNlJTJDJTIybGFzdEV2ZW50VGltZSUyMiUzQTE3MzM0NTE4ODcyNjAlMkMlMjJsYXN0RXZlbnRJZCUyMiUzQTEzJTdE"
+        "value": "JTdCJTIyZGV2aWNlSWQlMjIlM0ElMjJkODkzMGFjZC0yYTc1LTQ1NjMtYWJjOS05Y2FmNzE0OTIwMDQlMjIlMkMlMjJ1c2VySWQlMjIlM0ElMjIzOGU3OWJhODFmY2YwMmNmMDEyZjdkYmJlOGY5ODI5MmMwM2YwZWViJTIyJTJDJTIyc2Vzc2lvbklkJTIyJTNBMTczNTgyMTA1NzI4MyUyQyUyMm9wdE91dCUyMiUzQWZhbHNlJTJDJTIybGFzdEV2ZW50VGltZSUyMiUzQTE3MzU4MjEwNTgxNjIlMkMlMjJsYXN0RXZlbnRJZCUyMiUzQTI0JTdE"
     },
     {
         "domain": ".codesandbox.io",
@@ -35,7 +35,7 @@
         "secure": true,
         "session": true,
         "storeId": null,
-        "value": "Abz7Ihb_pfyFDR3DPgdEY7vPDobLIw.5bhsBjCzmL70-1733451876567-0.0.1.1-604800000"
+        "value": "C8_8PPzWoDfWEjtfLVZI6QzJoLQKvRxse68ZktPWj7k-1735821056002-0.0.1.1-604800000"
     },
     {
         "domain": "codesandbox.io",
@@ -47,11 +47,11 @@
         "secure": true,
         "session": true,
         "storeId": null,
-        "value": "XCP.bfECBRa8JLnT7qDpoMlCjbDkk8brJnhq2iWznwIYAHeH3JW_S1GHSNM24yh5r_0kqk4J9y1Y6ousazX61V91XGjCM1BA7z0f_AUU74_jeCUpt7tnMrsby-avbAQL6w50ryh6t2HuP8lxuVHdd8flHJ5lBTDEejJRbNOyKqKcli6jCgnO-YzM5iqiah_0j9e1ZvVRvMFJcjTVjYB_EduqnZgp4rfz9UDHHKZEU3Lg9LinoOnB76OmeGU6uZA-byaI3dh44YOXyq2tafCtFLdUhxP_px8f-sT4l9DmDZrqvRYaAkipMNiBSBWtpOPiLdhJdecJKPT7bBBH2Vwsffou0cJkR-lrgoJghWdrKX6fYOkotYL6TiyvgNLMW7rGrhJaH4B9XezoCIGTYAjX4QgrQGJLseskQua60m139xg_Q-4nogXG9CuUjUG_ff_oIMvL0JQwFmTJjEbfPkozGBOAibfyY19llb0FHnxqi5XyoniqCHRYv3FrBWhwjtkMZ6uNE1UIKubKzFIK-u9ThJz7iRIinRsOcewXN5WNaDBGdHvbTsN5WZgs2yIbDDfSsnsGmavWWeJppPfuYD9SXBC5AZ8f8tsXsNWlGfK8nQ"
+        "value": "XCP.Q6M0lpQkNBElhvqwsDRYKQku0s_28_88iZQpGZfDnT8O2tWVJTM40VFEybBIXMknLL6BBvIV-8V8mIxZHegtmPE065gfCtw4-j2M42Dz_892yZRnpFdcWK1xaHmuEiTTGWGEf6ouIVEba_SORYBgb1MaHli1_AY6K2D0udvorhdcbnJ7p1mHfeCNrQdIcpu75nleeV0YPqoLgdPxKCiPiAQgsI0OrpnEkIi5RV4MdWaOuBpS3tdqJirHDs5ELe_x5xoN5NWWHNSznfR6NXeFRnG_GIwofT4qPkFT2fE-k33PkQQn6PmnhWKuBy0Xy4yN1d_DZ0W6SDSYt0V9sXMKniRyVQH0iMUYIMB0LaZORzDIp5whW3Gt2GkwhCw5apRpGUhUcfCuCSSVjK_A3jVK2PO82CPvsmFPTzq7wNNlE9-zlwLTBoWK-dHjr5VaNbnLXyS4H2QGzDKy-MnBK8x3twqgvNg8KOPhpgKWDj462LP4vhO6sTJ0OG5iZswuDPhymboqjYIlUY4CKKZsjgcdfSboNOH-Skr-NBi5Lg7iYHshL_gEmKa46I5HkI7sVFj2Er9PbCAg7IBSaDNLn5ap--b-FyvtaPHdpVa41A"
     },
     {
         "domain": "codesandbox.io",
-        "expirationDate": 1735871084.50603,
+        "expirationDate": 1738240255.766045,
         "hostOnly": true,
         "httpOnly": true,
         "name": "guardian_default_token",
@@ -60,11 +60,11 @@
         "secure": false,
         "session": false,
         "storeId": null,
-        "value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJDb2RlU2FuZGJveCIsImV4cCI6MTczNTg3MTA4NCwiaWF0IjoxNzMzNDUxODg0LCJpc3MiOiJDb2RlU2FuZGJveCIsImp0aSI6IjQ1Mjk1NTc5LTc1OWMtNDEzYy05MzlhLTAyNGM0MDIxYzM2MCIsIm5iZiI6MTczMzQ1MTg4Mywic3ViIjoiVXNlcjp1c2VyX01Nc2JycHRjbk1Eb01HOTR3R3lBcXEiLCJ0eXAiOiJyZWZyZXNoIn0.D21HBPxRi6Ho9SOeGoghyJbXI_0tFrAtjEpBD4bUu6X9w2p5YZWikgMyoK_DRw-_f4sU9M2SCtZ_vAilzeY9tw"
+        "value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJDb2RlU2FuZGJveCIsImV4cCI6MTczODI0MDI1NiwiaWF0IjoxNzM1ODIxMDU2LCJpc3MiOiJDb2RlU2FuZGJveCIsImp0aSI6Ijg3MDljOWUwLTEwNDItNDFiMC1hODc3LTljY2ZjNjJhYjZjNSIsIm5iZiI6MTczNTgyMTA1NSwic3ViIjoiVXNlcjp1c2VyX01Nc2JycHRjbk1Eb01HOTR3R3lBcXEiLCJ0eXAiOiJyZWZyZXNoIn0.SrH88DOlgKdtXRHIiTZs3e-0hwQXomxqzawaXMMiRkg3jpgMmR-cCNXpoa_68eS9fHJMaPDtBA_28z8l9_aMNA"
     },
     {
         "domain": "codesandbox.io",
-        "expirationDate": 1735871083.611699,
+        "expirationDate": 1738240256.255229,
         "hostOnly": true,
         "httpOnly": false,
         "name": "signedIn",

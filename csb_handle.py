@@ -131,6 +131,67 @@ def pin_extensions():
         print("No extension_icon Button.")
         return False
 
+
+
+def cloudflare(sb, login = True):
+    try:
+        page_title = sb.get_title()
+        gg = False
+        while gg == False:
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
+                print("verify_cloudflare git Found")
+                if x and y:
+                    sb.disconnect() 
+                    for i in range(1, 300):
+                        #pyautogui.moveTo(100, 200)
+
+                        if 'Login' in page_title or 'Just' in page_title or 'Faucet' in page_title or 'Earnbitmoon' in page_title:
+                            try:
+                                time.sleep(1)
+                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
+                                print("verify_cloudflare git Found")
+                                try:
+                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.7)
+                                    pyautogui.click(x, y)
+                                    time.sleep(5)
+                                    if login == False: 
+                                        sb.connect()
+                                        return True
+
+                                except Exception as e:
+                                    print(e)
+                                    
+                                try:
+                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_success.png", confidence=0.7)
+                                    pyautogui.click(x, y)
+                                    time.sleep(1)
+                                    if login == True: 
+                                        sb.connect()
+                                        return True
+
+                                except Exception as e:
+                                    print(e)
+                            except Exception as e:
+                                print('cloudflare not found keep trying')
+                        else:
+                            sb.connect()
+                            return
+
+                    sb.connect()
+                else:
+                    if login == False: 
+                        gg = True
+                    else:
+                        gg = False
+            except Exception as e:
+                print(e)
+                gg = True
+            
+    except Exception as e:
+        print(e)
+
+
 def install_extensions(extension_name):
     #on chrome://extensions/
 
@@ -265,6 +326,8 @@ def are_codesand_logged(driver):
         try:
             titile = driver.get_title()
             print(f'title is : {titile}')
+            if 'Just' in titile:
+                cloudflare(driver, login = False)
             continue_buttons = driver.find_elements(By.CSS_SELECTOR, 'h1.sc-bdnylx')
             for button in continue_buttons:
                 if 'Sign in to CodeSandbox' in button.text:
@@ -310,7 +373,6 @@ def create_devbox():
         for i in range(5):
             time.sleep(5)
             title = get_current_window_title()
-
             print(f'Titile: {title},create_devbox wait for Recent')
             time.sleep(5)
             if 'Recent' in title:
@@ -329,7 +391,12 @@ def create_devbox():
                         print('pythondevb not found')
                     try:
                         x,y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/createplus.png", region=(1548,105, 500, 600), confidence=0.85)
+                        pyautogui.click(1124,761)
+                        time.sleep(3)
+                        pyautogui.click(1124,788)
+                        time.sleep(3)
                         pyautogui.click(x,y)
+
                         time.sleep(5)
                     except Exception as e:
                         print('createplus not found')

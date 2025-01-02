@@ -903,7 +903,7 @@ def activate_window_by_id(window_id):
     subprocess.run(['xdotool', 'windowactivate', window_id])
 
 
-sb1 = Driver(uc=True, undetectable=True,undetected=True, headed= True,   user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
+sb1 = Driver(uc=True, undetectable=True,undetected=True, headed= True, headed= True,  user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path)
 sb1.maximize_window()
 url = "chrome://extensions/"
 sb1.open(url)
@@ -921,7 +921,7 @@ if fresh:
             if pin_extensions():
                 print('All Extensions are pinned')
                 #mysterium_login(sb1)
-
+sweet_enable()
 codesandlogged = are_codesand_logged(sb1)
 main_window = get_current_window_id()
 
@@ -948,6 +948,7 @@ if fresh:
                 print('All Extensions are pinned')
                 #mysterium_login(sb1)
 codesandlogged = are_codesand_logged(sb2)
+sweet_enable()
 uc_window = get_current_window_id()
 urls_dev = []
 page_windows = []
@@ -967,24 +968,9 @@ if fresh_vms:
         activate_window_by_id(uc_window)
         page_url =create_devbox_n_deploy(command)
         activate_window_by_id(main_window)
-        #sb1.open_new_window()
-        #sb1.open(page_url)
-        pyautogui.click(659,312)
-        time.sleep(1)
-        pyautogui.keyDown('ctrl')
-        pyautogui.press('t')
-        pyautogui.keyUp('ctrl')
-        time.sleep(4)
-        pyautogui.keyDown('ctrl')
-        pyautogui.press('l')
-        pyautogui.keyUp('ctrl')
-        time.sleep(1)
-        clipboard.copy(page_url)
-        pyautogui.keyDown('ctrl')
-        pyautogui.press('v')
-        pyautogui.keyUp('ctrl')
+        sb1.open_new_window()
+        sb1.open(page_url)
         time.sleep(3)
-        pyautogui.press('enter')
         page_window = sb1.current_window_handle
         urls_dev.append(page_url)
         page_windows.append(page_window)
@@ -1003,7 +989,7 @@ else:
         window = sb1.current_window_handle
         page_windows.append(window)
 
-page_window  = sb1.window_handles
+
 while True:
     #Wating
     gg = True
@@ -1059,19 +1045,7 @@ while True:
                 activate_window_by_id(uc_window)
                 page_url =create_devbox_n_deploy(command)
                 activate_window_by_id(main_window)
-                #sb1.open(page_url)
-                pyautogui.click(659,312)
-                time.sleep(1)
-                pyautogui.keyDown('ctrl')
-                pyautogui.press('l')
-                pyautogui.keyUp('ctrl')
-                clipboard.copy(page_url)
-                time.sleep(1)
-                pyautogui.keyDown('ctrl')
-                pyautogui.press('v')
-                pyautogui.keyUp('ctrl')
-                time.sleep(3)
-                pyautogui.press('enter')
+                sb1.open(page_url)
                 time.sleep(3)
                 pyautogui.click(942, 65)
                 collection = db[CSB_Script]
@@ -1108,19 +1082,7 @@ while True:
                 activate_window_by_id(uc_window)
                 page_url =create_devbox_n_deploy(command)
                 activate_window_by_id(main_window)
-                pyautogui.click(659,312)
-                time.sleep(1)
-                pyautogui.keyDown('ctrl')
-                pyautogui.press('l')
-                pyautogui.keyUp('ctrl')
-                clipboard.copy(page_url)
-                time.sleep(1)
-                pyautogui.keyDown('ctrl')
-                pyautogui.press('v')
-                pyautogui.keyUp('ctrl')
-                time.sleep(3)
-                pyautogui.press('enter')
-                time.sleep(3)
+                sb1.open(page_url)
                 time.sleep(3)
                 pyautogui.click(942, 65)
                 query = {"type": "main"}
@@ -1143,19 +1105,7 @@ while True:
                     activate_window_by_id(uc_window)
                     page_url =create_devbox_n_deploy(command)
                     activate_window_by_id(main_window)
-                    pyautogui.click(659,312)
-                    time.sleep(1)
-                    pyautogui.keyDown('ctrl')
-                    pyautogui.press('l')
-                    pyautogui.keyUp('ctrl')
-                    clipboard.copy(page_url)
-                    time.sleep(1)
-                    pyautogui.keyDown('ctrl')
-                    pyautogui.press('v')
-                    pyautogui.keyUp('ctrl')
-                    time.sleep(3)
-                    pyautogui.press('enter')
-                    time.sleep(3)
+                    sb1.open(page_url)
                     time.sleep(3)
                     pyautogui.click(942, 65)
                     query = {"type": "main"}
@@ -1180,19 +1130,7 @@ while True:
                     activate_window_by_id(uc_window)
                     page_url =create_devbox_n_deploy(command)
                     activate_window_by_id(main_window)
-                    pyautogui.click(659,312)
-                    time.sleep(1)
-                    pyautogui.keyDown('ctrl')
-                    pyautogui.press('l')
-                    pyautogui.keyUp('ctrl')
-                    clipboard.copy(page_url)
-                    time.sleep(1)
-                    pyautogui.keyDown('ctrl')
-                    pyautogui.press('v')
-                    pyautogui.keyUp('ctrl')
-                    time.sleep(3)
-                    pyautogui.press('enter')
-                    time.sleep(3)
+                    sb1.open(page_url)
                     time.sleep(3)
                     pyautogui.click(942, 65)
                     query = {"type": "main"}

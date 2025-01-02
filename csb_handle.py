@@ -360,7 +360,7 @@ def get_current_window_title():
         return f"An error occurred: {e}"
 
 def create_devbox():
-
+    pyautogui.click(659,312)
     time.sleep(2)
     pyautogui.keyDown('ctrl')
     pyautogui.press('l')
@@ -385,16 +385,17 @@ def create_devbox():
                         x,y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/pythondevb.png", region=(403,330, 800, 800), confidence=0.85)
                         pyautogui.click(x,y)
                         time.sleep(4)
+                        #pyautogui.click(1124,761)
+                        #time.sleep(3)
+                        #pyautogui.click(1124,788)
+                        #time.sleep(3)
                         pyautogui.click(1351,871)
                         time.sleep(2)
                     except Exception as e:
                         print('pythondevb not found')
                     try:
                         x,y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/createplus.png", region=(1548,105, 500, 600), confidence=0.85)
-                        pyautogui.click(1124,761)
-                        time.sleep(3)
-                        pyautogui.click(1124,788)
-                        time.sleep(3)
+
                         pyautogui.click(x,y)
 
                         time.sleep(5)
@@ -568,6 +569,8 @@ def create_devbox_n_deploy(farmurl):
     try:
         sb2.maximize_window()
         sb2.uc_open('https://api.ipify.org/')
+        pyautogui.click(659,312)
+        time.sleep(1)
         create_devbox()
         deploy_docker(farmurl)
         time.sleep(5)

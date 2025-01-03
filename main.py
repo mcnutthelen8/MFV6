@@ -1365,13 +1365,30 @@ def solve_icon_captcha(sb, fey = True):
 
     try:
         # Extract all captcha icon
-        sb1.execute_script("window.scrollTo(0, 1000);")
+        #captcha_icons = sb.find_elements('[class*="bxs-"]:not([class*="fa2"]), [class*="bx-"]:not([class*="fa2"]), [class*="la-"]:not([class*="fa2"]), [class*="fa-"]:not([class*="fa2"]), [class*="fas fa-"]:not([class*="fa2"]), [class*="far fa-"]:not([class*="fa2"]), [class*="ri-"]:not([class*="fa2"]), [class*="ti ti-"]:not([class*="fa2"]), [class*="bi bi-"]:not([class*="fa2"])')
         # Find potential captcha icons based on class names
-        captcha_icons = sb.find_elements('[class*="bxs-"], [class*="bx-"], [class*="la-"], [class*="fa-"], [class*="fas fa-"], [class*="far fa-"], [class*="ri-"], [class*="ti ti-"], [class*="bi bi-"]')
+        #captcha_icons = sb.find_elements('[class*="bxs-"][class*="bxs-"], [class*="bx-"], [class*="la-"], [class*="fa-"], [class*="fas fa-"], [class*="far fa-"], [class*="ri-"], [class*="ti ti-"], [class*="bi bi-"]')
+ 
+        sb1.execute_script("window.scrollTo(0, 1000);")
+        captcha_icons = sb.find_elements('[class*="bxs-"]:not([class*="fa2"]):not([style]), [class*="bx-"]:not([class*="fa2"]):not([style]), [class*="la-"]:not([class*="fa2"]):not([style]), [class*="fa-"]:not([class*="fa2"]):not([style]), [class*="fas fa-"]:not([class*="fa2"]):not([style]), [class*="far fa-"]:not([class*="fa2"]):not([style]), [class*="ri-"]:not([class*="fa2"]):not([style]), [class*="ti ti-"]:not([class*="fa2"]):not([style]), [class*="bi bi-"]:not([class*="fa2"]):not([style])')
+        if test_mode:
+            print(f"Total Captcha_icons elements found: {len(captcha_icons)} | {time.time() - solve_icon_captchagg:.2f} seconds")
         # Filter valid captcha icons
-        icon_options = [icon for icon in captcha_icons if not icon.get_attribute("style") and not icon.get_attribute("id") and icon.tag_name.lower() == "i" and "fa2" not in icon.get_attribute("class")]
+        #icon_options = [icon for icon in captcha_icons if not icon.get_attribute("style") and not icon.get_attribute("id") and icon.tag_name.lower() == "i" and "fa2" not in icon.get_attribute("class")]
+        #valid_captcha_icons = [icon for icon in captcha_icons if icon.tag_name.lower() != "i"]
+        #icon_options = [icon for icon in captcha_icons if icon.tag_name.lower() == "i"]
+        valid_captcha_icons = []
+        icon_options = []
 
-        valid_captcha_icons = [icon for icon in captcha_icons if not icon.get_attribute("style") and not icon.get_attribute("id") and icon.tag_name.lower() != "i"]
+        for icon in captcha_icons:
+            if icon.tag_name.lower() == "i":
+                icon_options.append(icon)
+            else:
+                valid_captcha_icons.append(icon)
+
+        
+        
+        #valid_captcha_icons = [icon for icon in captcha_icons if not icon.get_attribute("style") and not icon.get_attribute("id") and icon.tag_name.lower() != "i"]
         valid_captcha_icons2 = []
         class_name = 'b'
         for icon in valid_captcha_icons:
@@ -1425,7 +1442,8 @@ def solve_icon_captcha(sb, fey = True):
 
 
         # Find all SVG elements
-        svg_elements = sb.find_elements(By.TAG_NAME,"svg")
+        #svg_elements = sb.find_elements(By.TAG_NAME,"svg")
+        svg_elements = sb.find_elements("svg[width='26px'][height='26px'], svg[width='24px'][height='24px']")
         svg_valid = False
         if test_mode:
             print(f"Total SVG elements found: {len(svg_elements)}")

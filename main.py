@@ -716,7 +716,7 @@ def get_ipscore(ip):
 
 
 def mysterium_vpn_Recon_ip(server_name, driver):
-    mysterium_reinstaller()
+    #mysterium_reinstaller()
     fix_wrong_pins()
     print('Rcon')
     try:
@@ -787,7 +787,7 @@ def mysterium_vpn_Recon_ip(server_name, driver):
     return None
 
 def mysterium_vpn_connect(server_name, driver):
-    mysterium_reinstaller()
+    #mysterium_reinstaller()
     fix_wrong_pins()
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
@@ -978,11 +978,11 @@ def mysterium_web_login(driver):
 
 def mysterium_login(driver):
     while True:
-        mysterium_reinstaller()
-        response_messege('Changed IP🔴 :Mys installed')
-        fix_wrong_pins()
+        #mysterium_reinstaller()
+        #response_messege('Changed IP🔴 :Mys installed')
+        #fix_wrong_pins()
         time.sleep(1)
-        sweet_enable()
+        #sweet_enable()
         driver.uc_open('https://app.mysteriumvpn.com/')
         time.sleep(5)
         titile = sb1.get_title()
@@ -1365,30 +1365,13 @@ def solve_icon_captcha(sb, fey = True):
 
     try:
         # Extract all captcha icon
-        #captcha_icons = sb.find_elements('[class*="bxs-"]:not([class*="fa2"]), [class*="bx-"]:not([class*="fa2"]), [class*="la-"]:not([class*="fa2"]), [class*="fa-"]:not([class*="fa2"]), [class*="fas fa-"]:not([class*="fa2"]), [class*="far fa-"]:not([class*="fa2"]), [class*="ri-"]:not([class*="fa2"]), [class*="ti ti-"]:not([class*="fa2"]), [class*="bi bi-"]:not([class*="fa2"])')
-        # Find potential captcha icons based on class names
-        #captcha_icons = sb.find_elements('[class*="bxs-"][class*="bxs-"], [class*="bx-"], [class*="la-"], [class*="fa-"], [class*="fas fa-"], [class*="far fa-"], [class*="ri-"], [class*="ti ti-"], [class*="bi bi-"]')
- 
         sb1.execute_script("window.scrollTo(0, 1000);")
-        captcha_icons = sb.find_elements('[class*="bxs-"]:not([class*="fa2"]):not([style]), [class*="bx-"]:not([class*="fa2"]):not([style]), [class*="la-"]:not([class*="fa2"]):not([style]), [class*="fa-"]:not([class*="fa2"]):not([style]), [class*="fas fa-"]:not([class*="fa2"]):not([style]), [class*="far fa-"]:not([class*="fa2"]):not([style]), [class*="ri-"]:not([class*="fa2"]):not([style]), [class*="ti ti-"]:not([class*="fa2"]):not([style]), [class*="bi bi-"]:not([class*="fa2"]):not([style])')
-        if test_mode:
-            print(f"Total Captcha_icons elements found: {len(captcha_icons)} | {time.time() - solve_icon_captchagg:.2f} seconds")
+        # Find potential captcha icons based on class names
+        captcha_icons = sb.find_elements('[class*="bxs-"], [class*="bx-"], [class*="la-"], [class*="fa-"], [class*="fas fa-"], [class*="far fa-"], [class*="ri-"], [class*="ti ti-"], [class*="bi bi-"]')
         # Filter valid captcha icons
-        #icon_options = [icon for icon in captcha_icons if not icon.get_attribute("style") and not icon.get_attribute("id") and icon.tag_name.lower() == "i" and "fa2" not in icon.get_attribute("class")]
-        #valid_captcha_icons = [icon for icon in captcha_icons if icon.tag_name.lower() != "i"]
-        #icon_options = [icon for icon in captcha_icons if icon.tag_name.lower() == "i"]
-        valid_captcha_icons = []
-        icon_options = []
+        icon_options = [icon for icon in captcha_icons if not icon.get_attribute("style") and not icon.get_attribute("id") and icon.tag_name.lower() == "i" and "fa2" not in icon.get_attribute("class")]
 
-        for icon in captcha_icons:
-            if icon.tag_name.lower() == "i":
-                icon_options.append(icon)
-            else:
-                valid_captcha_icons.append(icon)
-
-        
-        
-        #valid_captcha_icons = [icon for icon in captcha_icons if not icon.get_attribute("style") and not icon.get_attribute("id") and icon.tag_name.lower() != "i"]
+        valid_captcha_icons = [icon for icon in captcha_icons if not icon.get_attribute("style") and not icon.get_attribute("id") and icon.tag_name.lower() != "i"]
         valid_captcha_icons2 = []
         class_name = 'b'
         for icon in valid_captcha_icons:
@@ -1442,8 +1425,7 @@ def solve_icon_captcha(sb, fey = True):
 
 
         # Find all SVG elements
-        #svg_elements = sb.find_elements(By.TAG_NAME,"svg")
-        svg_elements = sb.find_elements("svg[width='26px'][height='26px'], svg[width='24px'][height='24px']")
+        svg_elements = sb.find_elements(By.TAG_NAME,"svg")
         svg_valid = False
         if test_mode:
             print(f"Total SVG elements found: {len(svg_elements)}")
@@ -3293,7 +3275,7 @@ while True:
                             earnpp_limit_reached = True
                         else:
                             debug_messages(f'ERR on EarnPP:{e}')
-                            reset_count +=1
+                            reset_count +=3
                 
                 if feyorra:
                     try:
@@ -3360,7 +3342,7 @@ while True:
                             feyorra_limit_reached =True
                         else:
                             debug_messages(f'ERR on Feyorra:{e}')
-                            reset_count +=1
+                            reset_count +=3
 
                 if claimcoin:
 

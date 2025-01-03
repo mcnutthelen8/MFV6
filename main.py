@@ -716,7 +716,7 @@ def get_ipscore(ip):
 
 
 def mysterium_vpn_Recon_ip(server_name, driver):
-    mysterium_reinstaller()
+    #mysterium_reinstaller()
     fix_wrong_pins()
     print('Rcon')
     try:
@@ -787,7 +787,7 @@ def mysterium_vpn_Recon_ip(server_name, driver):
     return None
 
 def mysterium_vpn_connect(server_name, driver):
-    mysterium_reinstaller()
+    #mysterium_reinstaller()
     fix_wrong_pins()
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
@@ -978,11 +978,11 @@ def mysterium_web_login(driver):
 
 def mysterium_login(driver):
     while True:
-        mysterium_reinstaller()
-        response_messege('Changed IP🔴 :Mys installed')
-        fix_wrong_pins()
+        #mysterium_reinstaller()
+        #response_messege('Changed IP🔴 :Mys installed')
+        #fix_wrong_pins()
         time.sleep(1)
-        sweet_enable()
+        #sweet_enable()
         driver.uc_open('https://app.mysteriumvpn.com/')
         time.sleep(5)
         titile = sb1.get_title()
@@ -1425,7 +1425,7 @@ def solve_icon_captcha(sb, fey = True):
 
 
         # Find all SVG elements
-        svg_elements = sb.find_elements("svg")
+        svg_elements = sb.find_elements(By.TAG_NAME,"svg")
         svg_valid = False
         if test_mode:
             print(f"Total SVG elements found: {len(svg_elements)}")

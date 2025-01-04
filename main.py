@@ -1370,10 +1370,7 @@ def solve_icon_captcha(sb, fey = True):
         #captcha_icons = sb.find_elements('[class*="bxs-"][class*="bxs-"], [class*="bx-"], [class*="la-"], [class*="fa-"], [class*="fas fa-"], [class*="far fa-"], [class*="ri-"], [class*="ti ti-"], [class*="bi bi-"]')
  
         sb1.execute_script("window.scrollTo(0, 1000);")
-        captcha_icons = sb.find_elements('[class="mb-3 badge bg-warning font-xssss"],[class="mb-16 badge hp-text-color-black-100 hp-bg-warning-3"],[class*="bxs-"]:not([class*="fa2"]):not([style]), [class*="bx-"]:not([class*="fa2"]):not([style]), [class*="la-"]:not([class*="fa2"]):not([style]), [class*="fa-"]:not([class*="fa2"]):not([style]), [class*="fas fa-"]:not([class*="fa2"]):not([style]), [class*="far fa-"]:not([class*="fa2"]):not([style]), [class*="ri-"]:not([class*="fa2"]):not([style]), [class*="ti ti-"]:not([class*="fa2"]):not([style]), [class*="bi bi-"]:not([class*="fa2"]):not([style])')
-        if test_mode:
-            print(f"Total Captcha_icons elements found: {len(captcha_icons)} | {time.time() - solve_icon_captchagg:.2f} seconds")
-
+        captcha_icons = sb.find_elements('[class="mb-2 badge bg-danger"],[class="mb-16 badge hp-text-color-black-100 hp-bg-danger-3"], [class="mb-3 badge bg-warning font-xssss"],[class="mb-16 badge hp-text-color-black-100 hp-bg-warning-3"],[class*="bxs-"]:not([class*="fa2"]):not([style]), [class*="bx-"]:not([class*="fa2"]):not([style]), [class*="la-"]:not([class*="fa2"]):not([style]), [class*="fa-"]:not([class*="fa2"]):not([style]), [class*="fas fa-"]:not([class*="fa2"]):not([style]), [class*="far fa-"]:not([class*="fa2"]):not([style]), [class*="ri-"]:not([class*="fa2"]):not([style]), [class*="ti ti-"]:not([class*="fa2"]):not([style]), [class*="bi bi-"]:not([class*="fa2"]):not([style])')
         #valid_captcha_icons = []
         #icon_options = []
 
@@ -1388,6 +1385,7 @@ def solve_icon_captcha(sb, fey = True):
         icon_options = []
         split_point_class_1 = "mb-16 badge"
         split_point_class_2 = "mb-3 badge"
+        split_point_class_2 = "mb-2 badge"
         split_condition = False
         valid_captcha_icons2 = []
         for icon in captcha_icons:
@@ -1470,7 +1468,7 @@ def solve_icon_captcha(sb, fey = True):
         if test_mode:
             print(f"Total SVG elements found: {len(svg_elements)}")
         for svg in svg_elements:
-            try:
+            #try:
                 # Look for 'path' element inside the SVG
                 path_elements = svg.find_elements(By.TAG_NAME, "path")
                 
@@ -1499,8 +1497,8 @@ def solve_icon_captcha(sb, fey = True):
                 else:
                     print(f"No 'path' elements found in this SVG: {svg}.")
 
-            except Exception as svg_error:
-                print(f"Skipping SVG (error: {svg_error}).")
+            #except Exception as svg_error:
+            #    print(f"Skipping SVG (error: {svg_error}).")
         if svg_valid:
             if test_mode:
                 query = {"type": "main"}

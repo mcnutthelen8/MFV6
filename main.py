@@ -162,7 +162,7 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'metroboom910'
 
         elif '2' in layout:
-            server_name1 = 'colombia' #'portugal'
+            server_name1 = 'serbia' #'portugal'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
             earnpp_email = 'merlelcn@gmail.com'
             earnpp_pass = 'I2Ne7C329jJt'
@@ -170,7 +170,7 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'I2Ne7C329jJt'
 
         elif '3' in layout:
-            server_name1 = 'colombia' #'portugal'
+            server_name1 = 'serbia' #'portugal'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
             earnpp_email = 'anrogedyyr@gmail.com'
             earnpp_pass = 'anrogedyyr'

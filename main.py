@@ -1385,13 +1385,13 @@ def solve_icon_captcha(sb, fey = True):
         icon_options = []
         split_point_class_1 = "mb-16 badge"
         split_point_class_2 = "mb-3 badge"
-        split_point_class_2 = "mb-2 badge"
+        split_point_class_3 = "mb-2 badge"
         split_condition = False
         valid_captcha_icons2 = []
         for icon in captcha_icons:
             icon_class = icon.get_attribute("class")
             print('Class:',icon_class)
-            if split_point_class_1 in icon_class or split_point_class_2 in icon_class:
+            if split_point_class_1 in icon_class or split_point_class_2 in icon_class or split_point_class_3 in icon_class:
                 split_condition = True
                 continue
             # Check if the icon belongs to valid_captcha_icons

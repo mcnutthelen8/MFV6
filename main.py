@@ -1449,16 +1449,11 @@ def solve_icon_captcha(sb, fey = True):
                     print('its invalid icon',val)
                     continue
                 if val in valid_captcha_icons:
-                    try:
                         option.uc_click()  # Custom click method to handle undetected Selenium
 
                         print(f"Clicked on the matching icon: {val}")
                         print(f"Original function execution time: {time.time() - solve_icon_captchagg:.2f} seconds")
-
                         return True  # Return immediately after a successful click
-                    except Exception as e:
-                        print(f"Error clicking on icon: {e}")
-                        continue  # Continue to the next option if clicking fails
 
 
         # Find all SVG elements

@@ -162,7 +162,7 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'metroboom910'
 
         elif '2' in layout:
-            server_name1 = 'serbia' #'portugal'
+            server_name1 = 'finland' #'portugal'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
             earnpp_email = 'merlelcn@gmail.com'
             earnpp_pass = 'I2Ne7C329jJt'
@@ -170,7 +170,7 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'I2Ne7C329jJt'
 
         elif '3' in layout:
-            server_name1 = 'serbia' #'portugal'
+            server_name1 = 'finland' #'portugal'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
             earnpp_email = 'anrogedyyr@gmail.com'
             earnpp_pass = 'anrogedyyr'
@@ -192,10 +192,10 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'france'
             CSB1_farms = [1, 2, 3, 4, 5]
-            earnpp_email = 'yvonne12463@gmail.com'
-            earnpp_pass = 'Uwuinsta@2005'
-            feyorra_email = 'yvonne12463@gmail.com'
-            feyorra_pass = 'Uwuinsta@2005'
+            earnpp_email = 'neyov32511@gmail.com'
+            earnpp_pass = 'neyov32511'
+            feyorra_email = 'neyov32511@gmail.com'
+            feyorra_pass = 'neyov32511'
 
             claimc_email = 'yvonne12463@gmail.com'
             claimc_pass = 'Uwuinsta@2005'
@@ -232,10 +232,10 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'hungary'
             CSB1_farms = [1, 2, 3, 4, 5]
-            earnpp_email = 'ddilakshi232@gmail.com'
-            earnpp_pass = 'Uwuinsta@2005'
-            feyorra_email = 'ddilakshi232@gmail.com'
-            feyorra_pass = 'Uwuinsta@2005'
+            earnpp_email = 'ishdiklla333@gmail.com'
+            earnpp_pass = 'ishdiklla333'
+            feyorra_email = 'ishdiklla333@gmail.com'
+            feyorra_pass = 'ishdiklla333'
         elif '2' in layout:
             server_name1 = 'hong kong' #'georgia'# 
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]

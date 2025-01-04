@@ -1499,6 +1499,31 @@ def cloudflare(sb, login = True):
     try:
         page_title = sb.get_title()
         gg = False
+        if 'Just' in page_title and login == False:
+            while gg == False:
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
+                    print("verify_cloudflare git Found")
+                    if x and y:
+                        sb.disconnect() 
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.7)
+                            pyautogui.click(x, y)
+                            time.sleep(5)
+                        except Exception as e:
+                            print(e)
+                        sb.connect() 
+                except Exception as e:
+                    print(e)
+                page_title = sb.get_title()
+                if 'Just' in page_title:
+                    pass
+                else:
+                    gg = True
+            
+
+
+
         while gg == False:
             try:
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)

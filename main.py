@@ -1494,31 +1494,52 @@ def solve_icon_captcha(sb, fey = True):
         return False
 
 
+def get_current_window_title():
+    try:
+        # Use xdotool to get the active window's title
+        result = subprocess.run(
+            ["xdotool", "getwindowfocus", "getwindowname"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        if result.returncode == 0:
+            return result.stdout.strip()
+        else:
+            raise Exception(result.stderr.strip())
+    except FileNotFoundError:
+        return "xdotool is not installed. Please install it using: sudo apt install xdotool"
+    except Exception as e:
+        return f"An error occurred: {e}"
+
 
 def cloudflare(sb, login = True):
     try:
-        page_title = sb.get_title()
+        page_title = get_current_window_title()
         gg = False
         if 'Just' in page_title and login == False:
+            sb.disconnect() 
             while gg == False:
+
+
                 try:
                     x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
                     print("verify_cloudflare git Found")
-                    if x and y:
-                        sb.disconnect() 
+                    if x and y: 
                         try:
                             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.7)
                             pyautogui.click(x, y)
                             time.sleep(5)
                         except Exception as e:
                             print(e)
-                        sb.connect() 
+                        #
                 except Exception as e:
                     print(e)
-                page_title = sb.get_title()
+                page_title = get_current_window_title()
                 if 'Just' in page_title:
                     pass
                 else:
+                    sb.connect() 
                     gg = True
             
 

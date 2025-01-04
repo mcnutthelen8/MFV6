@@ -162,7 +162,7 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'metroboom910'
 
         elif '2' in layout:
-            server_name1 = 'finland' #'portugal'
+            server_name1 = 'colombia' #'portugal'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
             earnpp_email = 'merlelcn@gmail.com'
             earnpp_pass = 'I2Ne7C329jJt'
@@ -170,7 +170,7 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'I2Ne7C329jJt'
 
         elif '3' in layout:
-            server_name1 = 'finland' #'portugal'
+            server_name1 = 'colombia' #'portugal'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
             earnpp_email = 'anrogedyyr@gmail.com'
             earnpp_pass = 'anrogedyyr'
@@ -1361,7 +1361,7 @@ def filter_and_replace(text):
 
 def solve_icon_captcha(sb, fey = True):
     solve_icon_captchagg = time.time()
-    test_mode = False
+    test_mode = True
 
     try:
         # Extract all captcha icon
@@ -1370,31 +1370,51 @@ def solve_icon_captcha(sb, fey = True):
         #captcha_icons = sb.find_elements('[class*="bxs-"][class*="bxs-"], [class*="bx-"], [class*="la-"], [class*="fa-"], [class*="fas fa-"], [class*="far fa-"], [class*="ri-"], [class*="ti ti-"], [class*="bi bi-"]')
  
         sb1.execute_script("window.scrollTo(0, 1000);")
-        captcha_icons = sb.find_elements('[class*="bxs-"]:not([class*="fa2"]):not([style]), [class*="bx-"]:not([class*="fa2"]):not([style]), [class*="la-"]:not([class*="fa2"]):not([style]), [class*="fa-"]:not([class*="fa2"]):not([style]), [class*="fas fa-"]:not([class*="fa2"]):not([style]), [class*="far fa-"]:not([class*="fa2"]):not([style]), [class*="ri-"]:not([class*="fa2"]):not([style]), [class*="ti ti-"]:not([class*="fa2"]):not([style]), [class*="bi bi-"]:not([class*="fa2"]):not([style])')
+        captcha_icons = sb.find_elements('[class="mb-3 badge bg-warning font-xssss"],[class="mb-16 badge hp-text-color-black-100 hp-bg-warning-3"],[class*="bxs-"]:not([class*="fa2"]):not([style]), [class*="bx-"]:not([class*="fa2"]):not([style]), [class*="la-"]:not([class*="fa2"]):not([style]), [class*="fa-"]:not([class*="fa2"]):not([style]), [class*="fas fa-"]:not([class*="fa2"]):not([style]), [class*="far fa-"]:not([class*="fa2"]):not([style]), [class*="ri-"]:not([class*="fa2"]):not([style]), [class*="ti ti-"]:not([class*="fa2"]):not([style]), [class*="bi bi-"]:not([class*="fa2"]):not([style])')
         if test_mode:
             print(f"Total Captcha_icons elements found: {len(captcha_icons)} | {time.time() - solve_icon_captchagg:.2f} seconds")
-        # Filter valid captcha icons
+
+        #valid_captcha_icons = []
+        #icon_options = []
+
+        #for icon in captcha_icons:
+        #    if icon.tag_name.lower() == "i":
+        #        icon_options.append(icon)
+        #    else:
+        #        valid_captcha_icons.append(icon)
+
+
+        valid_captcha_icons = []
+        icon_options = []
+        split_point_class_1 = "mb-16 badge"
+        split_point_class_2 = "mb-3 badge"
+        split_condition = False
+        valid_captcha_icons2 = []
+        for icon in captcha_icons:
+            icon_class = icon.get_attribute("class")
+            print('Class:',icon_class)
+            if split_point_class_1 in icon_class or split_point_class_2 in icon_class:
+                split_condition = True
+                continue
+            # Check if the icon belongs to valid_captcha_icons
+            if split_condition:
+                icon_options.append(icon)
+            else:  
+                valid_captcha_icons2.append(icon_class)
+
+
+                # Filter valid captcha icons
         #icon_options = [icon for icon in captcha_icons if not icon.get_attribute("style") and not icon.get_attribute("id") and icon.tag_name.lower() == "i" and "fa2" not in icon.get_attribute("class")]
         #valid_captcha_icons = [icon for icon in captcha_icons if icon.tag_name.lower() != "i"]
         #icon_options = [icon for icon in captcha_icons if icon.tag_name.lower() == "i"]
-        valid_captcha_icons = []
-        icon_options = []
-
-        for icon in captcha_icons:
-            if icon.tag_name.lower() == "i":
-                icon_options.append(icon)
-            else:
-                valid_captcha_icons.append(icon)
-
-        
-        
         #valid_captcha_icons = [icon for icon in captcha_icons if not icon.get_attribute("style") and not icon.get_attribute("id") and icon.tag_name.lower() != "i"]
-        valid_captcha_icons2 = []
-        class_name = 'b'
-        for icon in valid_captcha_icons:
-            class_name = icon.get_attribute("class")
-            if class_name:
-                valid_captcha_icons2.append(class_name)
+        
+        #valid_captcha_icons2 = []
+        #class_name = 'b'
+        #for icon in valid_captcha_icons:
+        #    class_name = icon.get_attribute("class")
+        #    if class_name:
+        #        valid_captcha_icons2.append(class_name)
 
         if fey:
             if len(valid_captcha_icons2) > 1:

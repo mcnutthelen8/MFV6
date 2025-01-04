@@ -1397,7 +1397,7 @@ def solve_icon_captcha(sb, fey = True):
                 split_condition = True
                 continue
             # Check if the icon belongs to valid_captcha_icons
-            if 'fa-spin d-none' in icon_class:
+            if 'fa-spin d-none' in icon_class or icon.tag_name.lower() == "i":
                 continue
             if split_condition:
                 icon_options.append(icon)

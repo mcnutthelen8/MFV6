@@ -115,36 +115,76 @@ function clickNextVideo() {
   return false;
 }
 
-// Function to periodically check for the "Next Video" button every 1 second
-function startCheckingForNextVideo() {
-  setInterval(() => {
-    clickNextVideo();
-  }, 1000); // Check every 1 second
+function claimEarnPepe() {
+  // Find the element with the text "Verified!"
+  const verifiedBadgeFeyorra = document.evaluate(
+    "//*[contains(text(), 'Verified!')]",
+    document,
+    null,
+    XPathResult.FIRST_ORDERED_NODE_TYPE,
+    null
+  ).singleNodeValue;
+
+  // Find the element with the text "Oops, wrong selection! Please refresh the page."
+  const errorBadgeFeyorra = document.evaluate(
+    "//*[contains(text(), 'Oops, wrong selection! Please refresh the page.')]",
+    document,
+    null,
+    XPathResult.FIRST_ORDERED_NODE_TYPE,
+    null
+  ).singleNodeValue;
+
+  const claimButtonEarn = document.querySelector("button#ClaimBtn");
+
+  if (errorBadgeFeyorra) {
+    console.log(" Error: Oops, wrong selection! Please refresh the page.");
+    window.location.reload(); // Refresh the page when the error is found
+    return false; // Stop further execution
+  }
+
+  if (verifiedBadgeFeyorra && claimButtonEarn) {
+    console.log(" Verified on claimEarnPepe.site - Clicking the Claim button...");
+    claimButtonEarn.click();
+    return true; // Stop the interval if the claim button is clicked
+  }
+
+  return false;
 }
 
-// Function to handle Feyorra claims
+// Function to periodically check for the "Next Video" button every 1 second
 function claimFeyorra() {
-  const verifiedBadgeFeyorra = document.querySelector(".mb-2.badge.bg-success");
+  // Find the element with the text "Verified!"
+  const verifiedBadgeFeyorra = document.evaluate(
+    "//*[contains(text(), 'Verified!')]",
+    document,
+    null,
+    XPathResult.FIRST_ORDERED_NODE_TYPE,
+    null
+  ).singleNodeValue;
+
+  // Find the element with the text "Oops, wrong selection! Please refresh the page."
+  const errorBadgeFeyorra = document.evaluate(
+    "//*[contains(text(), 'Oops, wrong selection! Please refresh the page.')]",
+    document,
+    null,
+    XPathResult.FIRST_ORDERED_NODE_TYPE,
+    null
+  ).singleNodeValue;
+
   const claimButtonFeyorra = document.querySelector("button#ClaimBtn");
+
+  if (errorBadgeFeyorra) {
+    console.log(" Error: Oops, wrong selection! Please refresh the page.");
+    window.location.reload(); // Refresh the page when the error is found
+    return false; // Stop further execution
+  }
 
   if (verifiedBadgeFeyorra && claimButtonFeyorra) {
     console.log(" Verified on feyorra.site - Clicking the Claim button...");
     claimButtonFeyorra.click();
     return true; // Stop the interval if the claim button is clicked
   }
-  return false;
-}
 
-// Function to handle Earn Pepe claims
-function claimEarnPepe() {
-  const verifiedBadgeEarnPepe = document.querySelector(".mb-16.badge.hp-text-color-black-100.hp-bg-success-3");
-  const claimButtonEarnPepe = document.querySelector("button#ClaimBtn");
-
-  if (verifiedBadgeEarnPepe && claimButtonEarnPepe) {
-    console.log(" Verified on earn-pepe.com - Clicking the Claim button...");
-    claimButtonEarnPepe.click();
-    return true; // Stop the interval if the claim button is clicked
-  }
   return false;
 }
 
@@ -186,9 +226,6 @@ function checkAndClaim() {
     }
   }
 }
-
-// Start checking for "Next Video" button
-startCheckingForNextVideo();
 
 // Run the check every 1 second for Feyorra and Earn Pepe claims
 const claimInterval = setInterval(checkAndClaim, 1000);

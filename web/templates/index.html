@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoneyFarmV6.9</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+
+
+    <h1 class="title-main">Farm Information</h1>
+    <div id="data">Loading..</div><br>
+    <div id="CSB-panel">Loading..</div>
+    <br><br>
+    <h1 class="title-main" >Chart Information</h1>
+    <div class="container1"><h2>Sky RPM Chart</h2>
+
+    <canvas id="datachartsky"></canvas>
+    </div>
+    <br>
+    <div class="container2"><h2>Bay RPM Chart</h2><canvas id="datachartbay"></canvas></div>
+    <div id="toast"><div id="img">Done</div><div id="desc">Control Panel Button Active..</div></div>
+
+    <script>
+        let skyChart, bayChart; // Declare chart variables outside of fetchData
+        let expandedRows = new Set();
+        function fetchData() {
+            fetch('/get-data')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('data').innerHTML = `
+                            
+                            ${data.mainpanel}
+                            ${data.source}
+                    `;
+                    document.title = `${data.runningfarmstat} Farms | ${data.earnstat.toFixed(2)}$`;
+                    // Update the content in the 'data' div with the new data
+                    let expanded = false; // Variable to track if any details rows are expanded
+
+                    function checkExpandedRows() {
+                        const detailRows = document.querySelectorAll('tr.details');
+                        expanded = Array.from(detailRows).some(row => {
+                            return window.getComputedStyle(row).display === 'table-row';
+                        });
+                        console.log('Expanded:', expanded);
+                    }
+                    checkExpandedRows();
+                    if (expanded) {
+                    } else{
+                    document.getElementById('CSB-panel').innerHTML = `
+
+                    `;
+                    }
+                    // If skyChart exists, just update the data, otherwise create a new chart
+                    if (skyChart) {
+                        //skyChart.data.labels = data.charttime;
+                        //skyChart.data.datasets = data.chartamout;
+                        //skyChart.update(); // Update chart with new data
+                    } else {
+                        const ctx = document.getElementById('datachartsky').getContext('2d');
+                        skyChart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: data.charttime, // X-axis labels
+                                datasets: data.chartamout
+                            },
+                            options: {
+                                animation: false,
+                                scales: {
+                                    y: { beginAtZero: true }
+                                }
+                            }
+                        });
+                    }
+
+                    // If bayChart exists, just update the data, otherwise create a new chart
+                    if (bayChart) {
+                        //bayChart.data.labels = data.charttimebay;
+                        //bayChart.data.datasets = data.chartamoutbay;
+                        //bayChart.update(); // Update chart with new data
+                    } else {
+                        const ctx2 = document.getElementById('datachartbay').getContext('2d');
+                        bayChart = new Chart(ctx2, {
+                            type: 'line',
+                            data: {
+                                labels: data.charttimebay, // X-axis labels
+                                datasets: data.chartamoutbay
+                            },
+                            options: {
+                                animation: false,
+                                scales: {
+                                    y: { beginAtZero: true }
+                                }
+                            }
+                        });
+                    }
+
+                    // Attach click listeners to buttons
+                    $(".button-control-panel").off('click').on('click', function(event) {
+                        event.preventDefault();
+                        var buttonValue = $(this).val();
+                        $.post("/button-control-panel", { button: buttonValue }, function(response) {
+                            console.log(response);
+                            var x = document.getElementById("toast")
+                            x.className = "show";
+                            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 2000);
+                        });
+
+                    });
+
+
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        // Call fetchData every second to update the charts and farm data
+        fetchData();
+        setInterval(fetchData, 5000);
+        //setInterval(fetchData, 10000);
+
+        function toggleDetails(row) {
+        // Get the next row, which contains the details
+        var nextRow = row.nextElementSibling;
+
+        // Toggle visibility by switching the display
+        if (nextRow.style.display === "table-row") {
+            nextRow.style.display = "none";  // Collapse
+        } else {
+            nextRow.style.display = "table-row";  // Expand
+        }
+    }
+    
+    </script>
+</body>
+</html>

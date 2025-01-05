@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mouse Movement Detector</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .message-box {
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: white;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="message-box" id="messageBox">
+        Move your mouse around and see the messages here!
+    </div>
+
+    <script>
+        // Store the last mouse position
+        let lastX = 0;
+        let lastY = 0;
+
+        document.addEventListener("mousemove", (event) => {
+            const messageBox = document.getElementById("messageBox");
+
+            // Determine the direction
+            const deltaX = event.clientX - lastX;
+            const deltaY = event.clientY - lastY;
+
+            let message = "";
+
+            if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                // Horizontal movement
+                if (deltaX > 0) {
+                    message = "Mouse moved RIGHT!";
+                } else {
+                    message = "Mouse moved LEFT!";
+                }
+            } else {
+                // Vertical movement
+                if (deltaY > 0) {
+                    message = "Mouse moved DOWN!";
+                } else {
+                    message = "Mouse moved UP!";
+                }
+            }
+
+            // Display the message
+            messageBox.textContent = message;
+
+            // Update the last mouse position
+            lastX = event.clientX;
+            lastY = event.clientY;
+        });
+    </script>
+</body>
+</html>

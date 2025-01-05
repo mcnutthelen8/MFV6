@@ -1540,7 +1540,7 @@ def solve_icon_captcha(sb, fey = True):
             else:
                 print("Not enough icons in valid_captcha_icons2 for index [-1].")
                 return False  # Exit or handle appropriately
-            
+        valid_captcha_icons = valid_captcha_icons.get_attribute('class')    
         valid_captcha_icons = filter_and_replace(valid_captcha_icons)
         if test_mode:
             print("Icon options:", [icon.get_attribute('class') for icon in icon_options])

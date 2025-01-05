@@ -1359,7 +1359,7 @@ def filter_and_replace(text):
     return text
 
 
-def solve_icon_captcha(sb, fey = True):
+def solve_icon_captcha_v2(sb, fey = True):
     solve_icon_captchagg = time.time()
     test_mode = True
 
@@ -1369,8 +1369,10 @@ def solve_icon_captcha(sb, fey = True):
         # Find potential captcha icons based on class names
         #captcha_icons = sb.find_elements('[class*="bxs-"][class*="bxs-"], [class*="bx-"], [class*="la-"], [class*="fa-"], [class*="fas fa-"], [class*="far fa-"], [class*="ri-"], [class*="ti ti-"], [class*="bi bi-"]')
  
-        sb1.execute_script("window.scrollTo(0, 1000);")
-        captcha_icons = sb.find_elements('[class="mb-2 badge bg-danger"],[class="mb-16 badge hp-text-color-black-100 hp-bg-danger-3"], [class="mb-3 badge bg-warning font-xssss"],[class="mb-16 badge hp-text-color-black-100 hp-bg-warning-3"],[class*="bxs-"]:not([class*="fa2"]):not([style]), [class*="bx-"]:not([class*="fa2"]):not([style]), [class*="la-"]:not([class*="fa2"]):not([style]), [class*="fa-"]:not([class*="fa2"]):not([style]), [class*="fas fa-"]:not([class*="fa2"]):not([style]), [class*="far fa-"]:not([class*="fa2"]):not([style]), [class*="ri-"]:not([class*="fa2"]):not([style]), [class*="ti ti-"]:not([class*="fa2"]):not([style]), [class*="bi bi-"]:not([class*="fa2"]):not([style])')
+        sb.execute_script("window.scrollTo(0, 1000);")
+        #captcha_icons = sb.find_elements('[class="mb-2 badge bg-danger"],[class="mb-16 badge hp-text-color-black-100 hp-bg-danger-3"], [class="mb-3 badge bg-warning font-xssss"],[class="mb-16 badge hp-text-color-black-100 hp-bg-warning-3"],[class*="bxs-"]:not([class*="fa2"]):not([style]), [class*="bx-"]:not([class*="fa2"]):not([style]), [class*="la-"]:not([class*="fa2"]):not([style]), [class*="fa-"]:not([class*="fa2"]):not([style]), [class*="fas fa-"]:not([class*="fa2"]):not([style]), [class*="far fa-"]:not([class*="fa2"]):not([style]), [class*="ri-"]:not([class*="fa2"]):not([style]), [class*="ti ti-"]:not([class*="fa2"]):not([style]), [class*="bi bi-"]:not([class*="fa2"]):not([style])')
+        captcha_icons = sb.find_elements('//*[contains(text(), "Pick the one Big, clear icon from above.")], [class="mb-3 badge bg-warning font-xssss"],[class="mb-16 badge hp-text-color-black-100 hp-bg-warning-3"],[class*="bxs-"]:not([class*="fa2"]):not([style]), [class*="bx-"]:not([class*="fa2"]):not([style]), [class*="la-"]:not([class*="fa2"]):not([style]), [class*="fa-"]:not([class*="fa2"]):not([style]), [class*="fas fa-"]:not([class*="fa2"]):not([style]), [class*="far fa-"]:not([class*="fa2"]):not([style]), [class*="ri-"]:not([class*="fa2"]):not([style]), [class*="ti ti-"]:not([class*="fa2"]):not([style]), [class*="bi bi-"]:not([class*="fa2"]):not([style])')
+
         #valid_captcha_icons = []
         #icon_options = []
 
@@ -1438,6 +1440,118 @@ def solve_icon_captcha(sb, fey = True):
         unvalid_shit = ['fill','line','fa2']
         for option in icon_options:
             option_classes = option.get_attribute('class')
+            item = option_classes.replace('-', ' ')
+            item = re.sub(r'\b(bxs|bx|la|fa|fas|fab|far|ti|bi|ri)\b', '', item)
+            option_classes = item.split()
+            for val in option_classes:
+                val = filter_and_replace(val)
+                if test_mode:
+                    print('iconS:',val)
+                if len(val) < 2 or val in unvalid_shit:
+                    print('its invalid icon',val)
+                    continue
+                if val in valid_captcha_icons:
+                        option.uc_click()  # Custom click method to handle undetected Selenium
+
+                        print(f"Clicked on the matching icon: {val}")
+                        print(f"Original function execution time: {time.time() - solve_icon_captchagg:.2f} seconds")
+                        return True  # Return immediately after a successful click
+
+
+        # Find all SVG elements
+        #svg_elements = sb.find_elements(By.TAG_NAME,"svg")
+        svg_elements = sb.find_elements("svg[width='26px'][height='26px'], svg[width='24px'][height='24px']")
+        svg_valid = False
+        if test_mode:
+            print(f"Total SVG elements found: {len(svg_elements)}")
+        for svg in svg_elements:
+            #try:
+                # Look for 'path' element inside the SVG
+                path_elements = svg.find_elements(By.TAG_NAME, "path")
+                
+                # Check if any path elements were found
+                if path_elements:
+                    for path_element in path_elements:
+                        path_data = path_element.get_attribute("d").strip()
+                        if test_mode:
+                            print('path_data:',path_data)
+                        if path_data:
+
+                            # Compare pathData with the iconPathList dictionary
+                            for icon_name, icon_path in icon_path_list.items():
+                                if path_data.strip() in icon_path.strip():
+                                    icon_name = filter_and_replace(icon_name)
+                                    print(f"Match found: {icon_name}")
+                                    svg_valid = True
+                                    if icon_name in valid_captcha_icons:
+                                        print(f"Answer found for icon: {icon_name}")
+                                        print(f"Original function execution time: {time.time() - solve_icon_captchagg:.2f} seconds")
+                                        svg.uc_click()
+                                        
+                                        return True  # Exit after successful click
+
+                            
+                else:
+                    print(f"No 'path' elements found in this SVG: {svg}.")
+
+            #except Exception as svg_error:
+            #    print(f"Skipping SVG (error: {svg_error}).")
+        if svg_valid:
+            if test_mode:
+                query = {"type": "main"}
+                update = {"$set": {"request": 'pause'}}
+                result = collection.update_one(query, update)
+                response_messege(f'New Element Found{valid_captcha_icons}')
+                print(f'New Element Found{valid_captcha_icons}')
+            else:
+                pyautogui.press('f5')
+
+    except Exception as e:
+        print(f"Error solving captcha: {e}")
+        return False
+
+
+def solve_icon_captcha(sb, fey = True):
+    solve_icon_captchagg = time.time()
+    test_mode = True
+
+    try:
+
+        sb.execute_script("window.scrollTo(0, 1000);")
+        captcha_icons = sb.find_elements('[class*="bxs-"]:not([class*="fa2"]):not([style]), [class*="bx-"]:not([class*="fa2"]):not([style]), [class*="la-"]:not([class*="fa2"]):not([style]), [class*="fa-"]:not([class*="fa2"]):not([style]), [class*="fas fa-"]:not([class*="fa2"]):not([style]), [class*="far fa-"]:not([class*="fa2"]):not([style]), [class*="ri-"]:not([class*="fa2"]):not([style]), [class*="ti ti-"]:not([class*="fa2"]):not([style]), [class*="bi bi-"]:not([class*="fa2"]):not([style])')
+
+        valid_captcha_icons = []
+        icon_options = []
+        valid_captcha_icons2 = []
+        if len(captcha_icons) > 2:
+            valid_captcha_icons2 = captcha_icons[:3]
+            icon_options = captcha_icons[3:]
+
+
+        if fey:
+            if len(valid_captcha_icons2) > 1:
+                valid_captcha_icons = valid_captcha_icons2[1]
+            else:
+                print("Not enough icons in valid_captcha_icons2 for index [1].")
+                return False  # Exit or handle appropriately
+        else:
+            if len(valid_captcha_icons2) > 0:
+                valid_captcha_icons = valid_captcha_icons2[-1]
+            else:
+                print("Not enough icons in valid_captcha_icons2 for index [-1].")
+                return False  # Exit or handle appropriately
+            
+        valid_captcha_icons = filter_and_replace(valid_captcha_icons)
+        if test_mode:
+            print("Icon options:", [icon.get_attribute('class') for icon in icon_options])
+            print(valid_captcha_icons2)
+            print(valid_captcha_icons)
+
+        unvalid_shit = ['fill','line','fa2']
+        for option in icon_options:
+            option_classes = option.get_attribute('class')
+            if 'circle-notch' in option_classes:
+                continue
             item = option_classes.replace('-', ' ')
             item = re.sub(r'\b(bxs|bx|la|fa|fas|fab|far|ti|bi|ri)\b', '', item)
             option_classes = item.split()

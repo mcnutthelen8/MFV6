@@ -1519,6 +1519,8 @@ def solve_icon_captcha(sb, fey = True):
 
         sb.execute_script("window.scrollTo(0, 1000);")
         captcha_icons = sb.find_elements('[class*="bxs-"]:not([class*="fa2"]):not([style]), [class*="bx-"]:not([class*="fa2"]):not([style]), [class*="la-"]:not([class*="fa2"]):not([style]), [class*="fa-"]:not([class*="fa2"]):not([style]), [class*="fas fa-"]:not([class*="fa2"]):not([style]), [class*="far fa-"]:not([class*="fa2"]):not([style]), [class*="ri-"]:not([class*="fa2"]):not([style]), [class*="ti ti-"]:not([class*="fa2"]):not([style]), [class*="bi bi-"]:not([class*="fa2"]):not([style])')
+        if test_mode:
+            print(f"Total SVG elements found: {len(captcha_icons)}")
 
         valid_captcha_icons = []
         icon_options = []
@@ -2790,7 +2792,7 @@ def withdraw_faucet(driver, sitekey):
                     time.sleep(5)
                     driver.execute_script(f"window.scrollTo(0, 1000);")
                     time.sleep(2)
-                    solve_icon_captcha(driver)
+                    solve_icon_captcha(driver, fey=False)
                     time.sleep(2)
                     #driver.uc_click('button.claim-button')
                     driver.uc_open('https://earn-pepe.com/member/faucet')
@@ -2828,7 +2830,7 @@ def withdraw_faucet(driver, sitekey):
                     driver.execute_script(f"window.scrollTo(0, 700);")
                     time.sleep(2)
                     #cloudflare(driver, True)
-                    solve_icon_captcha(driver)
+                    solve_icon_captcha(driver, fey=True)
                     time.sleep(2)
                     #driver.uc_click('button.claim-button')
                     driver.uc_open('https://feyorra.site/member/faucet')

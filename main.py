@@ -1518,9 +1518,12 @@ def solve_icon_captcha(sb, fey = True):
     try:
 
         sb.execute_script("window.scrollTo(0, 1000);")
-        captcha_icons = sb.find_elements('[class*="bxs-"]:not([class*="fa2"]):not([style]), [class*="bx-"]:not([class*="fa2"]):not([style]), [class*="la-"]:not([class*="fa2"]):not([style]), [class*="fa-"]:not([class*="fa2"]):not([style]), [class*="fas fa-"]:not([class*="fa2"]):not([style]), [class*="far fa-"]:not([class*="fa2"]):not([style]), [class*="ri-"]:not([class*="fa2"]):not([style]), [class*="ti ti-"]:not([class*="fa2"]):not([style]), [class*="bi bi-"]:not([class*="fa2"]):not([style])')
+        #captcha_icons = sb.find_elements('[class*="bxs-"]:not([class*="fa2"]):not([style]), [class*="bx-"]:not([class*="fa2"]):not([style]), [class*="la-"]:not([class*="fa2"]):not([style]), [class*="fa-"]:not([class*="fa2"]):not([style]), [class*="fas fa-"]:not([class*="fa2"]):not([style]), [class*="far fa-"]:not([class*="fa2"]):not([style]), [class*="ri-"]:not([class*="fa2"]):not([style]), [class*="ti ti-"]:not([class*="fa2"]):not([style]), [class*="bi bi-"]:not([class*="fa2"]):not([style])')
+        captcha_icons = sb.find_elements('[class*="bxs-"]:not([class*="fa2"]):not([style]):not(i),[class*="bx-"]:not([class*="fa2"]):not([style]):not(i),[class*="la-"]:not([class*="fa2"]):not([style]):not(i),[class*="fa-"]:not([class*="fa2"]):not([style]):not(i),[class*="fas fa-"]:not([class*="fa2"]):not([style]):not(i),[class*="far fa-"]:not([class*="fa2"]):not([style]):not(i),[class*="ri-"]:not([class*="fa2"]):not([style]):not(i),[class*="ti ti-"]:not([class*="fa2"]):not([style]):not(i), [class*="bi bi-"]:not([class*="fa2"]):not([style]):not(i)')
+        
         if test_mode:
-            print(f"Total SVG elements found: {len(captcha_icons)}")
+            print(f"Total captcha_icons elements found: {len(captcha_icons)}")
+            print("captcha_icons options:", [icon.get_attribute('class') for icon in captcha_icons])
 
         valid_captcha_icons = []
         icon_options = []

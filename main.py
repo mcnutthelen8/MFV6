@@ -3569,7 +3569,7 @@ while True:
                             else:
                                 if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!') or sb1.is_text_visible('Limit Reached, Please claim shortlinks to increase your claim limit!'):
                                     debug_messages(f'EarnPP Limit Reached')
-                                    if earnpp_limit_reached == None
+                                    if earnpp_limit_reached == None:
                                         response_messege('EarnPP Limit Reached')
                                     earnpp_limit_reached = True
                                 else:

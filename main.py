@@ -984,10 +984,10 @@ def mysterium_login(driver):
         time.sleep(1)
         sweet_enable()
         driver.uc_open('https://app.mysteriumvpn.com/')
-        time.sleep(5)
+        time.sleep(7)
         titile = sb1.get_title()
         pyautogui.click(113, 100)
-        time.sleep(1)
+        
 
         if 'Home' in titile:
 
@@ -1638,19 +1638,32 @@ def solve_icon_captcha(sb, fey = True):
 
         sb.execute_script("window.scrollTo(0, 1000);")
         #captcha_icons = sb.find_elements('[class*="bxs-"]:not([class*="fa2"]):not([style]), [class*="bx-"]:not([class*="fa2"]):not([style]), [class*="la-"]:not([class*="fa2"]):not([style]), [class*="fa-"]:not([class*="fa2"]):not([style]), [class*="fas fa-"]:not([class*="fa2"]):not([style]), [class*="far fa-"]:not([class*="fa2"]):not([style]), [class*="ri-"]:not([class*="fa2"]):not([style]), [class*="ti ti-"]:not([class*="fa2"]):not([style]), [class*="bi bi-"]:not([class*="fa2"]):not([style])')
-        captcha_icons = sb.find_elements('[class*="bxs-"]:not([class*="fa2"]):not([style]):not(i),[class*="bx-"]:not([class*="fa2"]):not([style]):not(i),[class*="la-"]:not([class*="fa2"]):not([style]):not(i),[class*="fa-"]:not([class*="fa2"]):not([style]):not(i),[class*="fas fa-"]:not([class*="fa2"]):not([style]):not(i),[class*="far fa-"]:not([class*="fa2"]):not([style]):not(i),[class*="ri-"]:not([class*="fa2"]):not([style]):not(i),[class*="ti ti-"]:not([class*="fa2"]):not([style]):not(i), [class*="bi bi-"]:not([class*="fa2"]):not([style]):not(i)')
-        
+        #captcha_icons = sb.find_elements('[class*="bxs-"]:not([class*="fa2"]):not([style]):not(i),[class*="bx-"]:not([class*="fa2"]):not([style]):not(i),[class*="la-"]:not([class*="fa2"]):not([style]):not(i),[class*="fa-"]:not([class*="fa2"]):not([style]):not(i),[class*="fas fa-"]:not([class*="fa2"]):not([style]):not(i),[class*="far fa-"]:not([class*="fa2"]):not([style]):not(i),[class*="ri-"]:not([class*="fa2"]):not([style]):not(i),[class*="ti ti-"]:not([class*="fa2"]):not([style]):not(i), [class*="bi bi-"]:not([class*="fa2"]):not([style]):not(i)')
+        captcha_icons = sb.find_elements('//*[(' + 'contains(@class, "bxs-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)' + ') or (' + 'contains(@class, "bx-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)' + ') or (' + 'contains(@class, "la-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)' + ') or (' + 'contains(@class, "fa-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)' + ') or (' + 'contains(@class, "fas fa-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)' + ') or (' + 'contains(@class, "far fa-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)' + ') or (' + 'contains(@class, "ri-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)' + ') or (' + 'contains(@class, "ti ti-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)' + ') or (' + 'contains(@class, "bi bi-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)' + ') or (' + 'contains(text(), "Pick the one clear icon from above.")' + ')]')
+
         if test_mode:
             print(f"Total captcha_icons elements found: {len(captcha_icons)}")
-            print("captcha_icons options:", [icon.get_attribute('class') for icon in captcha_icons])
+            
 
         valid_captcha_icons = []
         icon_options = []
         valid_captcha_icons2 = []
         if len(captcha_icons) > 2:
-            valid_captcha_icons2 = captcha_icons[:3]
-            icon_options = captcha_icons[3:]
-            
+            split_condition = False
+            for icon in captcha_icons:
+                icon_text = icon.text.strip()
+                #print('Class:',icon)
+                if 'Pick' in icon_text:
+                    print('Found Pick')
+                    split_condition = True
+                    continue
+                if split_condition:
+                    icon_options.append(icon)
+                else:  
+                    valid_captcha_icons2.append(icon)
+            print(f"Total valid_captcha_icons2 elements found: {len(valid_captcha_icons2)}")
+            print(f"Total icon_options elements found: {len(icon_options)}")
+
             for icon in valid_captcha_icons2:
                 try:
                     opacity = sb.execute_script(
@@ -1667,7 +1680,7 @@ def solve_icon_captcha(sb, fey = True):
         valid_captcha_icons = valid_captcha_icons.get_attribute('class')    
         valid_captcha_icons = filter_and_replace(valid_captcha_icons)
         if test_mode:
-            print("Icon options:", [icon.get_attribute('class') for icon in icon_options])
+            #print("Icon options:", [icon.get_attribute('class') for icon in icon_options])
             print('valid_captcha_icons2:',valid_captcha_icons2)
             print('valid_captcha_icons:',valid_captcha_icons)
 
@@ -1709,8 +1722,8 @@ def solve_icon_captcha(sb, fey = True):
                 if path_elements:
                     for path_element in path_elements:
                         path_data = path_element.get_attribute("d").strip()
-                        if test_mode:
-                            print('path_data:',path_data)
+                        #if test_mode:
+                        #    print('path_data:',path_data)
                         if path_data:
 
                             # Compare pathData with the iconPathList dictionary
@@ -2919,7 +2932,7 @@ def withdraw_faucet(driver, sitekey):
                     solve_icon_captcha(driver, fey=False)
                     time.sleep(2)
                     #driver.uc_click('button.claim-button')
-                    driver.uc_open('https://earn-pepe.com/member/faucet')
+                    #driver.uc_open('https://earn-pepe.com/member/faucet')
                     response_messege(f'EarnPP FaucetPay Withdrawed{currency}')
                     #response_messege('Started')
                     query = {"type": "main"}
@@ -2957,7 +2970,7 @@ def withdraw_faucet(driver, sitekey):
                     solve_icon_captcha(driver, fey=True)
                     time.sleep(2)
                     #driver.uc_click('button.claim-button')
-                    driver.uc_open('https://feyorra.site/member/faucet')
+                    #driver.uc_open('https://feyorra.site/member/faucet')
                     response_messege(f'Feyorra FaucetPay Withdrawed{currency}')
                     #response_messege('Started')
                     query = {"type": "main"}
@@ -3556,7 +3569,8 @@ while True:
                             else:
                                 if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!') or sb1.is_text_visible('Limit Reached, Please claim shortlinks to increase your claim limit!'):
                                     debug_messages(f'EarnPP Limit Reached')
-                                    response_messege('EarnPP Limit Reached')
+                                    if earnpp_limit_reached == None
+                                        response_messege('EarnPP Limit Reached')
                                     earnpp_limit_reached = True
                                 else:
                                     refresh_count +=5
@@ -3625,7 +3639,8 @@ while True:
                                     print('No clousflare on feyorra')
                                 if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
                                     debug_messages(f'Feyorra Limit Reached')
-                                    response_messege('Feyorra Limit Reached')
+                                    if feyorra_limit_reached == None:   
+                                        response_messege('Lock.. Found on Feyorra')
                                     feyorra_limit_reached =True
                                 else:
                                     refresh_count +=5
@@ -3643,7 +3658,8 @@ while True:
                             reset_count +=5
                         elif 'Lock' in title:
                             debug_messages(f'Lock.. Found on Feyorra')
-                            response_messege('Lock.. Found on Feyorra')
+                            if feyorra_limit_reached == None:   
+                                response_messege('Lock.. Found on Feyorra')
                             feyorra_coins =0
                         elif 'Home | Feyorra' in title or 'Login' in title:
                             debug_messages(f'LOGIN.. Found on Feyorra')
@@ -3795,7 +3811,7 @@ while True:
                     print(f'MngoDB:{seconds_only3}')
             else:
                 print('Ip fucked')
-                reset_count +=4
+                reset_count +=5
                 response_messege(f'Ip fucked|{reset_count}|{ip_address}')
                 #ip_required = fix_ip(sb1, server_name1)
                 #ip_address = get_ip(sb1)
@@ -3827,10 +3843,8 @@ while True:
             break
 
         if mainscript == 5:
-            for i in range(1,6):
-                time.sleep(1)
-                print('Pause...')
-
+            time.sleep(15)
+            print('Pause...')
 
     except Exception as e:
         print(f'Oh Hell No{e}')

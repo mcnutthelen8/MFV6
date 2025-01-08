@@ -1639,7 +1639,42 @@ def solve_icon_captcha(sb, fey = True):
         sb.execute_script("window.scrollTo(0, 1000);")
         #captcha_icons = sb.find_elements('[class*="bxs-"]:not([class*="fa2"]):not([style]), [class*="bx-"]:not([class*="fa2"]):not([style]), [class*="la-"]:not([class*="fa2"]):not([style]), [class*="fa-"]:not([class*="fa2"]):not([style]), [class*="fas fa-"]:not([class*="fa2"]):not([style]), [class*="far fa-"]:not([class*="fa2"]):not([style]), [class*="ri-"]:not([class*="fa2"]):not([style]), [class*="ti ti-"]:not([class*="fa2"]):not([style]), [class*="bi bi-"]:not([class*="fa2"]):not([style])')
         #captcha_icons = sb.find_elements('[class*="bxs-"]:not([class*="fa2"]):not([style]):not(i),[class*="bx-"]:not([class*="fa2"]):not([style]):not(i),[class*="la-"]:not([class*="fa2"]):not([style]):not(i),[class*="fa-"]:not([class*="fa2"]):not([style]):not(i),[class*="fas fa-"]:not([class*="fa2"]):not([style]):not(i),[class*="far fa-"]:not([class*="fa2"]):not([style]):not(i),[class*="ri-"]:not([class*="fa2"]):not([style]):not(i),[class*="ti ti-"]:not([class*="fa2"]):not([style]):not(i), [class*="bi bi-"]:not([class*="fa2"]):not([style]):not(i)')
-        captcha_icons = sb.find_elements('//*[(' + 'contains(@class, "bxs-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)' + ') or (' + 'contains(@class, "bx-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)' + ') or (' + 'contains(@class, "la-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)' + ') or (' + 'contains(@class, "fa-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)' + ') or (' + 'contains(@class, "fas fa-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)' + ') or (' + 'contains(@class, "far fa-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)' + ') or (' + 'contains(@class, "ri-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)' + ') or (' + 'contains(@class, "ti ti-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)' + ') or (' + 'contains(@class, "bi bi-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)' + ') or (' + 'contains(text(), "Pick the one clear icon from above.")' + ')]')
+        captcha_icons = sb.execute_script("""
+            let captchaIcons = document.evaluate(
+                '//*[('
+                + 'contains(@class, "bxs-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)'
+                + ') or ('
+                + 'contains(@class, "bx-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)'
+                + ') or ('
+                + 'contains(@class, "la-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)'
+                + ') or ('
+                + 'contains(@class, "fa-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)'
+                + ') or ('
+                + 'contains(@class, "fas fa-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)'
+                + ') or ('
+                + 'contains(@class, "far fa-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)'
+                + ') or ('
+                + 'contains(@class, "ri-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)'
+                + ') or ('
+                + 'contains(@class, "ti ti-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)'
+                + ') or ('
+                + 'contains(@class, "bi bi-") and not(contains(@class, "fa2")) and not(@style) and not(self::i)'
+                + ') or ('
+                + 'contains(text(), "Pick the one clear icon from above.")'
+                + ')]',
+                document,
+                null,
+                XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
+                null
+            );
+
+            let captchaIconsArray = [];
+            for (let i = 0; i < captchaIcons.snapshotLength; i++) {
+                captchaIconsArray.push(captchaIcons.snapshotItem(i));
+            }
+
+            return captchaIconsArray;
+        """)
 
         if test_mode:
             print(f"Total captcha_icons elements found: {len(captcha_icons)}")

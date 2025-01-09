@@ -344,10 +344,10 @@ def get_mails_passowrds(farm_id):
         elif '2' in layout:
             server_name1 = 'belgium' 
             CSB1_farms = [6, 7, 8, 9, 10]
-            earnpp_email = 'grshevvvv@gmail.com'
-            earnpp_pass = 'grshevvvv'
-            feyorra_email = 'grshevvvv@gmail.com'
-            feyorra_pass = 'grshevvvv'
+            earnpp_email = 'g77kolsdaa@gmail.com'
+            earnpp_pass = 'g77kolsdaa'
+            feyorra_email = 'g77kolsdaa@gmail.com'
+            feyorra_pass = 'g77kolsdaa'
 
 
         elif '3' in layout:
@@ -3675,7 +3675,7 @@ while True:
                                 if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
                                     debug_messages(f'Feyorra Limit Reached')
                                     if feyorra_limit_reached == None:   
-                                        response_messege('Lock.. Found on Feyorra')
+                                        response_messege('Feyorra Limit Reached')
                                     feyorra_limit_reached =True
                                 else:
                                     refresh_count +=5
@@ -3783,30 +3783,32 @@ while True:
                     if earnpp_coins == earnpp_coins_pre:
                         start_time = time.time()
 
-                        if refresh_count >= 30:
-                            response_messege(f'earnpp_coins same {earnpp_coins}| count:{refresh_count} | {seconds_only}')
-                            sb1.switch_to.window(earnpp_window)
-                            sb1.uc_open('https://earn-pepe.com/member/faucet')
-                            refresh_count = 0
-
                         if earnpp_limit_reached:
+                            
                             pass
                         else:
+                            if refresh_count >= 30:
+                                response_messege(f'earnpp_coins same {earnpp_coins}| count:{refresh_count} | {seconds_only}')
+                                sb1.switch_to.window(earnpp_window)
+                                sb1.uc_open('https://earn-pepe.com/member/faucet')
+                                refresh_count = 0
+
                             if refresh_count >= 50:
                                 reset_count +=5
                             refresh_count +=1
                     elif feyorra_coins == feyorra_coins_pre:
                         start_time = time.time()
 
-                        if refresh_count >= 30:
-                            pyautogui.press('enter')
-                            response_messege(f'feyorra_coins same {feyorra_coins}| count:{refresh_count} | {seconds_only}')
-                            refresh_count = 0
-                            sb1.switch_to.window(feyorra_window)
-                            sb1.uc_open('https://feyorra.site/member/faucet')
                         if feyorra_limit_reached:
                             pass
                         else:
+
+                            if refresh_count >= 30:
+                                pyautogui.press('enter')
+                                response_messege(f'feyorra_coins same {feyorra_coins}| count:{refresh_count} | {seconds_only}')
+                                refresh_count = 0
+                                sb1.switch_to.window(feyorra_window)
+                                sb1.uc_open('https://feyorra.site/member/faucet')
                             if refresh_count >= 50:
                                 reset_count +=5
                             refresh_count +=1

@@ -560,6 +560,29 @@ def insert_data(ip, amount1, amount2, amount3,emailg):
     return
 
 
+def add_ip_history(farm,ip):
+    try:
+        sri_lanka_tz = pytz.timezone('Asia/Colombo')
+        utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
+        sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
+        now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
+
+        query = {"type": 'ip_history'}
+        collectionbip = db[f'LocalCSB']
+        existing_doc = collectionbip.find_one(query)
+        print("Existing document before update")
+        new_message =  {now: f"{farm} | {ip}"} # {'2024-09-06 03:47:14': 220}  # Use a new timestamp
+        messages = existing_doc['messages']
+        messages.update(new_message)
+        update = {"$set": {"messages": messages}}
+        result = collectionbip.update_one(query, update)
+        print("Updated document")
+        if result.matched_count > 0:
+            print(f"Added new messages to existing document. Updated {result.modified_count} document(s).")
+        else:
+            print("No document found with the specified type.")
+    except Exception as e:
+        print(e)
 
 
 
@@ -3450,6 +3473,7 @@ def open_faucets():
                 add_blacklistedip2(f'F{farm_id}L{lay}', ip_address)
                 get_mails_passowrds(farm_id)
                 update_target_ip(ip_address)
+                add_ip_history(f'F{farm_id}L{lay}', ip_address)
                 ip_address = get_ip(sb1)
                 if ip_required == ip_address:
                     response_messege('EarnPP Loging')

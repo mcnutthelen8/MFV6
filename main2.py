@@ -191,8 +191,8 @@ def get_proxycheck_inbrowser(sb1, ip, server_name):
     url = f'https://proxycheck.io/v2/{ip}?vpn=1&asn=1'
     val = False
     try:
-        original_window = sb1.current_window_handle
-        sb1.open_new_window()
+        #original_window = sb1.current_window_handle
+        #sb1.open_new_window()
         sb1.get(url)
         ip_address_raw = sb1.get_text('body')
         #print("Raw Response:", ip_address_raw)
@@ -206,8 +206,8 @@ def get_proxycheck_inbrowser(sb1, ip, server_name):
         else:
             return 301
         sb1.close()
-        sb1.connect()
-        sb1.switch_to.window(original_window)
+        #sb1.connect()
+        #sb1.switch_to.window(original_window)
         
         return val
     
@@ -2213,25 +2213,244 @@ def debug_messages(messages):
 earnpp_count = 0 
 feyorra_count = 0
 claimcoin_count = 0
+import subprocess
+
+def get_active_window():
+    try:
+        # Run the wmctrl command to get the active window
+        result = subprocess.run(['wmctrl', '-lpG'], stdout=subprocess.PIPE, text=True)
+        active_window_output = subprocess.run(['xdotool', 'getactivewindow', 'getwindowname'],
+                                              stdout=subprocess.PIPE,
+                                              text=True).stdout.strip()
+
+        if active_window_output:
+            print(f"Current active window: {active_window_output}")
+            return active_window_output
+        else:
+            print("Unable to determine the active window.")
+    except FileNotFoundError:
+        print("Please install 'wmctrl' and 'xdotool' to use this function.")
+
+def wait_fggg():
+    while True:
+        time.sleep(10)
+        active_window_output = get_active_window()
+        if 'MFV6' in active_window_output:
+            return
+
+def get_current_window_title():
+    try:
+        # Use xdotool to get the active window's title
+        result = subprocess.run(
+            ["xdotool", "getwindowfocus", "getwindowname"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True
+        )
+        if result.returncode == 0:
+            return result.stdout.strip()
+        else:
+            raise Exception(result.stderr.strip())
+    except FileNotFoundError:
+        return "xdotool is not installed. Please install it using: sudo apt install xdotool"
+    except Exception as e:
+        return f"An error occurred: {e}"
+def get_current_window_id():
+    # Run the command to get the current window ID
+    result = subprocess.run(['xdotool', 'getactivewindow'], stdout=subprocess.PIPE)
+    window_id = result.stdout.decode('utf-8').strip()
+    print(f"Current Window ID: {window_id}")
+    return window_id
+
+def activate_window_by_id(window_id):
+    # Run the command to activate the window by its ID
+    print(f"Activate Window ID: {window_id}")
+    subprocess.run(['xdotool', 'windowactivate', window_id])
+
+def maximize_active_window():
+    try:
+        # Get the window ID of the currently active window
+        result = subprocess.run(['xdotool', 'getactivewindow'], stdout=subprocess.PIPE, text=True)
+        window_id = result.stdout.strip()
+
+        if window_id:
+            # Maximize the active window using wmctrl
+            subprocess.run(['wmctrl', '-ir', window_id, '-b', 'add,maximized_vert,maximized_horz'])
+            print(f"Maximized window ID: {window_id}")
+        else:
+            print("No active window found.")
+    except FileNotFoundError:
+        print("Please install 'wmctrl' and 'xdotool' to use this function.")
+
+def shortlink():
+    pyautogui.keyDown('ctrl')
+    pyautogui.press('t')
+    pyautogui.keyUp('ctrl')
+    pyautogui.click(659,312)
+    time.sleep(2)
+    pyautogui.keyDown('ctrl')
+    pyautogui.press('l')
+    pyautogui.keyUp('ctrl')
+    time.sleep(2)
+    pyautogui.typewrite('https://tpi.li/mCaf07Jixqa')
+    time.sleep(1)
+    pyautogui.press('enter')
+    windowg = get_current_window_id()
+    captcha = False
+    while True:
+        activate_window_by_id(windowg)
+        maximize_active_window()
+        time.sleep(2)
+        try:
+            x,y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/notrobotdone.png",  confidence=0.85)
+            pyautogui.click(x,y)
+            print('found notrobotdone')
+            try:
+                x,y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/glh3.png",  confidence=0.9)
+                pyautogui.moveTo(x,y, duration= 1)
+                pyautogui.click(x+3,y+2)
+                print('found glh3')
+                captcha = True
+                pyautogui.click(727,44)
+                activate_window_by_id(windowg)
+                maximize_active_window()
+            except Exception as e:
+                print('glh3 not found')
+        except Exception as e:
+            print('notrobotdone not found')
+
+        try:
+            x,y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/zerosec.png",  confidence=0.9)
+            pyautogui.click(x,y)
+            print('found zerosec')
+
+            try:
+                x,y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/glh1.png",  confidence=0.9)
+                pyautogui.moveTo(x,y, duration= 1)
+                pyautogui.moveTo(x+3,y+2, duration= 1)
+                pyautogui.click(x+3,y+2)
+                print('found glh1')
+
+            except Exception as e:
+                print('glh1 not found')
+        except Exception as e:
+            print('zerosec not found')
+
+        try:
+            x,y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/lastzero.png",  confidence=0.9)
+            pyautogui.click(x,y)
+            print('found lastzero')
+            #time.sleep(1)
+            try:
+                x,y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/glh4.png",  confidence=0.9)
+                pyautogui.moveTo(x,y, duration= 1)
+                pyautogui.moveTo(x+3,y+2, duration= 1)
+                pyautogui.click(x+3,y+2)
+                print('found glh4')
+
+            except Exception as e:
+                print('glh4 not found')
+        except Exception as e:
+            print('lastzero not found')
+
+
+        try:
+            x,y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/glh2.png",  confidence=0.9)
+            pyautogui.moveTo(x,y)
+            time.sleep(2)
+            pyautogui.click(x,y)
+            print('found glh2')
+        except Exception as e:
+            print('glh2 not found')
+        try:
+            x,y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/closead.png",  confidence=0.9)
+            pyautogui.moveTo(x,y)
+            time.sleep(2)
+            pyautogui.click(x,y)
+            print('found closead')
+        except Exception as e:
+            print('closead not found')
+        if captcha:
+            #pyautogui.click(1890,126)
+            time.sleep(2)
+        try:
+            x,y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/new_3td.png", region=(703,20, 900,60) , confidence=0.9)
+            pyautogui.click(727,44)
+            print('found new_3td  found')
+        except Exception as e:
+            print('new_3td not found')
+        activate_window_by_id(windowg)
+        maximize_active_window()
+        try:
+            x,y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/notrobotdone.png",  confidence=0.9)
+            pyautogui.click(x,y)
+            print('found notrobotdone')
+            try:
+                x,y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/glh3.png",  confidence=0.9)
+                pyautogui.moveTo(x,y, duration= 1)
+
+                pyautogui.click(x+3,y+2)
+                print('found glh3')
+                captcha = True
+                pyautogui.click(727,44)
+                activate_window_by_id(windowg)
+                maximize_active_window()
+            except Exception as e:
+                print('glh3 not found')
+        except Exception as e:
+            print('notrobotdone not found')
+        time.sleep(1)
+        try:
+            x,y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/notrobotdone.png",  confidence=0.9)
+            pyautogui.click(x,y)
+            print('found notrobotdone')
+            try:
+                x,y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/glh3.png",  confidence=0.9)
+                pyautogui.moveTo(x,y, duration= 1)
+                pyautogui.click(x+3,y+2)
+                print('found glh3')
+                captcha = True
+                pyautogui.click(727,44)
+                activate_window_by_id(windowg)
+                maximize_active_window()
+            except Exception as e:
+                print('glh3 not found')
+        except Exception as e:
+            print('notrobotdone not found')
+        except Exception as e:
+            print('notrobotdone not found')
+        titile = get_current_window_title()
+        if 'astebin' in titile:
+            print('Paste bin found')
+            return
+            
 
 refresh_count = 0
 #earnpp_window, feyorra_window, claimcoin_window,feyorratop_window,  ip_address, ip_required= open_faucets()
 start_time4 = 0
 time.sleep(2)
 print('Starting Loop')
-import keyboard
+#wait_fggg()
 while True:
     try:
-        print("Press 2...")
-        keyboard.wait('g')
-        print("You pressed the space key!")
+        current_window = sb1.current_window_handle
+        all_windows = sb1.window_handles
+        for window in all_windows:
+            if window != current_window:
+                sb1.switch_to.window(window)
+                sb1.close()  # Close the tab
+                sb1.connect()
+        sb1.switch_to.window(current_window)
+        sb1.uc_open("chrome://extensions/")
+        time.sleep(1)
 
         ip_required = fix_ip(sb1)
         add_earnow_ips(ip_required)
+        shortlink()
 
 
-        print("Press 'space' to continue...")
-        keyboard.wait('g')
-        print("You pressed the space key!")
+        #print("Press 'space' to continue...")
+        #wait_fggg()
+        #print("You pressed the space key!")
     except Exception as e:
         print(e)

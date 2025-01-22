@@ -1,33 +1,7 @@
 [
     {
         "domain": ".mysteriumvpn.com",
-        "expirationDate": 1734766953,
-        "hostOnly": false,
-        "httpOnly": false,
-        "name": "_hjSession_3724140",
-        "path": "/",
-        "sameSite": "no_restriction",
-        "secure": true,
-        "session": false,
-        "storeId": null,
-        "value": "eyJpZCI6IjE3MmY4M2JkLWU2ZGEtNGRhNy04MjQ5LWQ3YWI4N2U4MDZiZiIsImMiOjE3MzQ3NjUxNTM4MDYsInMiOjEsInIiOjEsInNiIjowLCJzciI6MCwic2UiOjAsImZzIjowLCJzcCI6MH0="
-    },
-    {
-        "domain": "app.mysteriumvpn.com",
-        "expirationDate": 1737357192,
-        "hostOnly": true,
-        "httpOnly": false,
-        "name": "nmusr",
-        "path": "/",
-        "sameSite": null,
-        "secure": false,
-        "session": false,
-        "storeId": null,
-        "value": "45bb96b9-8940-4a2d-82b3-35e9021d035f"
-    },
-    {
-        "domain": ".mysteriumvpn.com",
-        "expirationDate": 1758095154,
+        "expirationDate": 1760868215,
         "hostOnly": false,
         "httpOnly": false,
         "name": "intercom-device-id-sjkeehf4",
@@ -36,45 +10,7 @@
         "secure": false,
         "session": false,
         "storeId": null,
-        "value": "896eed16-603e-42b3-9358-e1f76d276bbc"
-    },
-    {
-        "domain": ".mysteriumvpn.com",
-        "hostOnly": false,
-        "httpOnly": false,
-        "name": "IR_23845",
-        "path": "/",
-        "sameSite": null,
-        "secure": true,
-        "session": true,
-        "storeId": null,
-        "value": "1734765191904%7C0%7C1734765191904%7C%7C"
-    },
-    {
-        "domain": ".mysteriumvpn.com",
-        "expirationDate": 1766301192,
-        "hostOnly": false,
-        "httpOnly": false,
-        "name": "_hjSessionUser_3724140",
-        "path": "/",
-        "sameSite": "no_restriction",
-        "secure": true,
-        "session": false,
-        "storeId": null,
-        "value": "eyJpZCI6IjZiZjUxMmNiLTVhYTEtNWExYy1iN2I0LWY5ZjA5NDYwOTBmYSIsImNyZWF0ZWQiOjE3Mjc3MzM5OTcxOTEsImV4aXN0aW5nIjp0cnVlfQ=="
-    },
-    {
-        "domain": "app.mysteriumvpn.com",
-        "expirationDate": 1734851592,
-        "hostOnly": true,
-        "httpOnly": false,
-        "name": "ret_user_id_ct",
-        "path": "/",
-        "sameSite": null,
-        "secure": false,
-        "session": false,
-        "storeId": null,
-        "value": "2000"
+        "value": "14f78ef6-e558-4bc7-a595-e256dba6795e"
     },
     {
         "domain": "app.mysteriumvpn.com",
@@ -86,11 +22,11 @@
         "secure": true,
         "session": true,
         "storeId": null,
-        "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdHRyIjoiIiwiYXVkIjpbImR2cG4iXSwiZXhwIjoxNzM3MzU3MTcwLCJpYXQiOjE3MzQ3NjUxNzAsImlzcyI6Im15c3Qtc2VudGluZWwiLCJpc3N0IjoicGFzc3dvcmRsZXNzIiwianRpIjoiZTIwNDRkOGMtNzQ2Ni00MzM3LTk5NDMtOGUxMmJhM2FhYjgwIiwibmJmIjoxNzM0NzY1MTcwLCJzdWIiOiI5ZTVjNmQzZS1kZDFkLTQ2NmMtYmFlYS1hNDQ3NzQ3NmYyZmQifQ.oZTh8LLLGi_05tcCU1JuO7m6VWgwVBjN1WT07nQyh-uXxYOaLVcDc_NUmQ0g0VLygoT-oHDQh7RbIQvk6O8uin6RsUNNNqae62YZqvSz74RThAjGsw4U5PLb2P7NR-S1kJyRm-Ma02TwW5MU3x-nd7fRM51sWIhQheHoEE1Oc7hqBn_cDi1mFcpdJ-V0gp5NHlVX7Dmo-YsaCDJpRS7qmRPQE6RiNysPzsROZNnO0N_T1r4ygP8Am5RfQWwN4tgfmXRB6hvK5mspRSASU-VeiwRWhne2BprpVK1YJRbDdLJfhcSjnTfXAdcBHLnjij6uBSisqGBsJPygb8VHL3BpPIh5_pGLhGcfTfe2mEY3qpBMSJZZOpeiCWIQu4sWIxbssh9pWVtgCuAn6llh2N9KcsTdvJvFF84JxtImUdn_cYmLhK9mLZUnOt15pehrsD5Uei334UVPr-EA5yv9iEWTZsGW6iYto9aE3XuYQMaGb4Uwls-tyt2p8ylv6-bp9MEJ-DlVBbefoXC-u4u6Q-xmQe8w6gqYKqZ4KYTVx68P6LFLUd78IZlNGL_wSihIcW5da_JoAvwYkRUG5QA-guJZksGAUzgTcA_7ardUMC1go6VTxqe1GKPcBhvM12zrioZXCi5VKKSU9V4Mkbc41wq9BWNwGjHB1-xQlXtQwhxsFlo"
+        "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdHRyIjoie1wic3RyaXBlX2N1c3RvbWVyX2lkXCI6XCJjdXNfUmN2a3Jvc0VCNXZOT1RcIn0iLCJhdWQiOlsiZHZwbiJdLCJleHAiOjE3NDAxMzAxNTUsImlhdCI6MTczNzUzODE1NSwiaXNzIjoibXlzdC1zZW50aW5lbCIsImlzc3QiOiJwYXNzd29yZGxlc3MiLCJqdGkiOiIxNzQ2N2M4Yi1jOWMxLTQxYWItYTZkOC1kMGMzNTI0ZjE5NjEiLCJuYmYiOjE3Mzc1MzgxNTUsInN1YiI6IjU1NzYwMDgxLWZkYTQtNDkwMS05MmU2LTdiNjhmMWZjMmJmYiJ9.E5A54okghLIS-KzfmCP2TbznaK8Itf1u1jYcdXXu3onLOQrLMNI3IPuOb46ufEV6fHGTULpaWYX0feC30Mpx8_nVdwFo039r8C8WybWLj223Jt77JE2eHJx240mZRa_aBWXTFXSH3RAiPeShTUbqHrYkfz5UCrQXhdDTs4Tbku2YcBK-nImQknFE99DzjNJcgA2WAYr5sSS5QWsofTJ937OTwjtJ92iqRdWtbYvSCeti6P96ZsfZH4Oc11oBmiXgObxwmL5TK2RZtB-iLk5mQZTERuhnYDUM2j0e04celqnUXx5mjhQ_8MYmDgtTSRxoWaseNCN1HSfLRC8zNTgUX8RvEKGgG4UaX0o9_lsfcfjcgayCWNXjUwuybQf9V6BLjRqnvWDSaeDaEKicTYu1wpiEcn9igOGFRjnBT9P0VN_KsJHhieRk8dHzecmKfY8Foci3iEJsmTmpmW5GqRBvz-F4zAsoObs4MyzoJGpWbgUx_zSKc2mGUXPvymE7mu8uZ0Rz29Dv_8aLafWNMZGeSBtTvA-zd7Tdwirec_3m_limsWrZE2xSGEBVqf9afuMR_oeFSXityRqjArQJFrBjm_-5G-SCj0ceIjUUYSou4vb-GxEusAkeeHfJVN13pQZ7Bt9oYeV52k38A1N65r9beEyLcAhP6h1rEs3Bkx87Vy0"
     },
     {
         "domain": ".mysteriumvpn.com",
-        "expirationDate": 1735369954,
+        "expirationDate": 1738143015,
         "hostOnly": false,
         "httpOnly": false,
         "name": "intercom-session-sjkeehf4",
@@ -102,34 +38,8 @@
         "value": ""
     },
     {
-        "domain": ".mysteriumvpn.com",
-        "expirationDate": 1769325191.853778,
-        "hostOnly": false,
-        "httpOnly": false,
-        "name": "_ga",
-        "path": "/",
-        "sameSite": null,
-        "secure": false,
-        "session": false,
-        "storeId": null,
-        "value": "GA1.1.927118616.1727733997"
-    },
-    {
-        "domain": ".mysteriumvpn.com",
-        "expirationDate": 1759269997,
-        "hostOnly": false,
-        "httpOnly": false,
-        "name": "_clck",
-        "path": "/",
-        "sameSite": null,
-        "secure": false,
-        "session": false,
-        "storeId": null,
-        "value": "1orj3ak%7C2%7Cfpm%7C0%7C1734"
-    },
-    {
         "domain": ".app.mysteriumvpn.com",
-        "expirationDate": 1763189151,
+        "expirationDate": 1768996199,
         "hostOnly": false,
         "httpOnly": false,
         "name": "__stripe_mid",
@@ -138,89 +48,11 @@
         "secure": true,
         "session": false,
         "storeId": null,
-        "value": "e18a4bc9-b955-4dfa-9242-5bcc7bf062eae341aa"
-    },
-    {
-        "domain": "app.mysteriumvpn.com",
-        "expirationDate": 1737230574,
-        "hostOnly": true,
-        "httpOnly": false,
-        "name": "__guest_fingerprint",
-        "path": "/",
-        "sameSite": null,
-        "secure": false,
-        "session": false,
-        "storeId": null,
-        "value": "83465a03-bc86-494a-a0ff-dea2b12a990a"
+        "value": "54e62353-8e2d-408f-8e9f-ad5c210f710573a5b7"
     },
     {
         "domain": ".mysteriumvpn.com",
-        "expirationDate": 1742541192,
-        "hostOnly": false,
-        "httpOnly": false,
-        "name": "_fbp",
-        "path": "/",
-        "sameSite": "lax",
-        "secure": false,
-        "session": false,
-        "storeId": null,
-        "value": "fb.1.1730901306188.170353817680877852"
-    },
-    {
-        "domain": ".mysteriumvpn.com",
-        "expirationDate": 1769325193.387569,
-        "hostOnly": false,
-        "httpOnly": false,
-        "name": "_ga_TXG1VSP8PW",
-        "path": "/",
-        "sameSite": null,
-        "secure": false,
-        "session": false,
-        "storeId": null,
-        "value": "GS1.1.1734765153.4.1.1734765193.20.0.1069257479"
-    },
-    {
-        "domain": ".mysteriumvpn.com",
-        "expirationDate": 1735509997,
-        "hostOnly": false,
-        "httpOnly": false,
-        "name": "_gcl_au",
-        "path": "/",
-        "sameSite": null,
-        "secure": false,
-        "session": false,
-        "storeId": null,
-        "value": "1.1.394623354.1727733997.1248126592.1734765158.1734765158"
-    },
-    {
-        "domain": "app.mysteriumvpn.com",
-        "expirationDate": 1737357192,
-        "hostOnly": true,
-        "httpOnly": false,
-        "name": "_nosend_",
-        "path": "/",
-        "sameSite": null,
-        "secure": false,
-        "session": false,
-        "storeId": null,
-        "value": "1"
-    },
-    {
-        "domain": ".mysteriumvpn.com",
-        "expirationDate": 1735509997,
-        "hostOnly": false,
-        "httpOnly": false,
-        "name": "_rdt_uuid",
-        "path": "/",
-        "sameSite": "strict",
-        "secure": true,
-        "session": false,
-        "storeId": null,
-        "value": "1727733997000.87e0e0ac-a7fe-48cd-a9d3-9d9b277f5135"
-    },
-    {
-        "domain": ".mysteriumvpn.com",
-        "expirationDate": 1758095154,
+        "expirationDate": 1760868215,
         "hostOnly": false,
         "httpOnly": false,
         "name": "intercom-id-sjkeehf4",
@@ -229,31 +61,6 @@
         "secure": false,
         "session": false,
         "storeId": null,
-        "value": "feecab56-8cc2-4b98-be9f-b67c45a2c942"
-    },
-    {
-        "domain": ".mysteriumvpn.com",
-        "hostOnly": false,
-        "httpOnly": false,
-        "name": "IR_gbd",
-        "path": "/",
-        "sameSite": null,
-        "secure": false,
-        "session": true,
-        "storeId": null,
-        "value": "mysteriumvpn.com"
-    },
-    {
-        "domain": ".mysteriumvpn.com",
-        "expirationDate": 1762294006.837229,
-        "hostOnly": false,
-        "httpOnly": false,
-        "name": "IR_PI",
-        "path": "/",
-        "sameSite": null,
-        "secure": true,
-        "session": false,
-        "storeId": null,
-        "value": "4bacd8bc-e333-11ee-9e5a-7f6f1c970337%7C1727733996930"
+        "value": "17108d19-3f07-4d8e-acfa-8f38f1789986"
     }
 ]

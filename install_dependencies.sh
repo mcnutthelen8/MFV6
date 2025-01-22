@@ -75,9 +75,12 @@ xrandr --output VNC-0 --mode 1920x1080
 
 # Download and unzip Mysterium extension
 echo "Downloading and unzipping Mysterium extension..."
-wget "https://clients2.googleusercontent.com/crx/blobs/AVsOOGhXta8-UhRWEUcB2CckwYwwFI6WMiZ8b-CxyBlFaRSv-8wsJGQEG3lL_ILVoKOmDEowQmnAnB2cwNoa3h3lbPBUsTP376PSoi8nM_fjkQSkoiDkoTx0-5M5j9WIdrlaAMZSmuUvAQiNCBMqU-HcXaveN1nJlDMohw/DCLJFNHBJPILFPMIMIPCIJGAALCABFHD_0_0_1_0.crx" -O mysterium.crx
+wget "https://clients2.googleusercontent.com/crx/blobs/AcmIXboeI0jOhQJuWQiGcP26lEczd-mmGbtJ8tw7Xfh3ViDg97iKC7Uut3sTEBDxH4geJuNqb_QilrWMVh-KtsGU1hZ8yvV0viGrlLYoIAVpHmA0JkmrOe5EeSbc9A5YWLvjAMZSmuW0zhzofVu6OeZPMmU1prneYkDgOA/DCLJFNHBJPILFPMIMIPCIJGAALCABFHD_0_0_1_0.crx" -O mysterium.crx
 unzip mysterium.crx -d /root/Desktop/MFV6/mysterium
 
+echo "Downloading and unzipping Nopecha extension..."
+wget "https://clients2.googleusercontent.com/crx/blobs/AcmIXbrz5n5n20GheS_lg8yGIViuaI00kaUGYG1ZVDsBnlYmSGluVOL6eSBuNAQIykyXskweoJkFzIFatZ2QEXptjD0yYTrdd9D1OTaOuMoMbwx-YCXo82Xa2OvgBBtJWlYAxlKa5aVDHDIJjtACXFP2BUTteh5yUFO5/DKNLFMJAANFBLGFDFEBHIJALFMHMJJJO_0_4_13_0.crx" -O nopecha.crx
+unzip nopecha.crx -d /root/Desktop/MFV6/nopecha
 echo "Installation completed successfully!"
 
 

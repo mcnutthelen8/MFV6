@@ -73,7 +73,7 @@ def add_messages(farm,ip):
         print(e)
 
 
-time.sleep(5000000)
+
 # Initialize the argument parser
 parser = argparse.ArgumentParser(description="Process some arguments.")
 parser.add_argument('--farm', type=int, help="Farm")
@@ -1332,7 +1332,8 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                 for i in range(1, 50):
                     time.sleep(2)
                     try:
-                        x,y = pyautogui.locateCenterOnScreen(f"notrobotdone.png", confidence=0.75)
+                        #x,y = pyautogui.locateCenterOnScreen(f"notrobotdone.png", confidence=0.75)
+                        x,y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/notrobotdone.png", confidence=0.85)
                         if x and y:
                             pyautogui.click(x, y)
                             break
@@ -1422,7 +1423,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         current_title = driver.get_title()
         print(f"Current title: {current_title}")
 
-        ip_address = '203.189.189.113'
+        ip_address = get_ip(sb1)
         if ip_required != ip_address:
             return 404
         #get_mails_passowrds(farm_id)
@@ -1933,6 +1934,13 @@ def earnow_online(window_list):
                 actions.move_to_element(button).click().perform()      
                 sb1.disconnect()
                 for i in range(14):
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.8)
+                        pyautogui.click(x, y)
+                        time.sleep(4)
+                        return
+                    except Exception as e:  
+                        print(e)
                     time.sleep(1)
                     print(i)
                 sb1.connect()
@@ -2243,3 +2251,47 @@ start_time4 = 0
 time.sleep(10)
 print('Starting Loop')
 
+while True:
+    try:
+        mainscript = control_panel()
+        print('control_panel', mainscript)
+        if mainscript == 1:            
+            
+
+
+            ip_address = get_ip(sb1)
+            debug_messages(f'Ip address Found:{ip_address}')
+            if ip_required == ip_address:
+                if ourcoincash:
+                    try:
+                        debug_messages(f'Switching Pages to OurCoinCash')
+                        sb1.switch_to.window(ourcoincash_window)
+                        debug_messages(f'Getting Pages Titile:OurCoinCash')
+                        title =sb1.get_title()
+                        if 'Shortlinks' in title:
+                            process_link_blocks(sb1)
+                            earnow_online([ourcoincash_window])
+
+                        elif 'Just' in title:
+                            debug_messages(f'Just.. Found on OurCoinCash')
+                            cloudflare(sb1, login = False)
+                            debug_messages(f'Just Fixed OurCoinCash')
+                        elif 'Home' in title or 'Login' in title:
+                            debug_messages(f'LOGIN.. Found on OurCoinCash')
+                            response_messege('LOGIN.. Found on OurCoinCash')
+                            earnpp_coins = 0
+                            reset_count +=5
+                        else:
+                            debug_messages(f'OurCoinCash not Found:{title} | reset:{reset_count}')
+                            reset_count +=1
+
+                    except Exception as e:
+                        print(f'ERR:{e}')
+                        response_messege(f'ERR:{e}')
+                        continue
+            else:
+                print('IP Changed')
+    except Exception as e:
+        print(f'ERR:{e}')
+        response_messege(f'ERR:{e}')
+        continue

@@ -1841,6 +1841,7 @@ def process_and_match(q_image_path, icons_folder):
 def earnow_online(window_list):
     scrolled = False
     last_step = False
+    
     while True:
         try:
             title = sb1.get_title()
@@ -1918,6 +1919,9 @@ def earnow_online(window_list):
                     time.sleep(1)
                     print(i)
                 sb1.connect()
+                cloudflare(sb1, login = True)
+
+                    
 
             if "Shortlinks Wall | Ourcoincash" in title:
                 switch_extra_windows(sb1, window_list)
@@ -2090,6 +2094,8 @@ def update_target_ip(new_ip):
     except Exception as e:
         print(f"An error occurred: {e}")
 
+
+
 def open_faucets():
     global sb1
     while True:
@@ -2201,6 +2207,7 @@ def open_faucets():
 
                 
                 ip_address = get_ip(sb1)
+                ip_required = ip_address
                 if ip_required == ip_address:
                     response_messege('Started')
                     query = {"type": "main"}
@@ -2251,6 +2258,24 @@ start_time4 = 0
 time.sleep(10)
 print('Starting Loop')
 
+def switch_to_earnow():
+    current_window = sb1.current_window_handle
+    all_windows = sb1.window_handles
+    for window in all_windows:
+        if window != current_window:
+            sb1.switch_to.window(window)
+            time.sleep(1)
+            current_url = sb1.execute_script("return window.location.href;")
+            if 'cryptowidgets' in current_url:
+                print("We are in the correct page")
+                return sb1.current_window_handle
+
+    print("Waiting for button")
+    sb1.switch_to_window(ourcoincash_window)
+    close_extra_windows(sb1, ourcoincash_window)
+    sb1.uc_open("https://ourcoincash.xyz/links")
+    return None
+
 while True:
     try:
         mainscript = control_panel()
@@ -2261,7 +2286,7 @@ while True:
 
             ip_address = get_ip(sb1)
             debug_messages(f'Ip address Found:{ip_address}')
-            if ip_required == ip_address:
+            if ip_address == ip_required:
                 if ourcoincash:
                     try:
                         debug_messages(f'Switching Pages to OurCoinCash')
@@ -2270,7 +2295,9 @@ while True:
                         title =sb1.get_title()
                         if 'Shortlinks' in title:
                             process_link_blocks(sb1)
-                            earnow_online([ourcoincash_window])
+                            earnow_window = switch_to_earnow()
+                            if earnow_window:
+                                earnow_online([ourcoincash_window])
 
                         elif 'Just' in title:
                             debug_messages(f'Just.. Found on OurCoinCash')
@@ -2290,7 +2317,7 @@ while True:
                         response_messege(f'ERR:{e}')
                         continue
             else:
-                print('IP Changed')
+                print('IP Changed',ip_required)
     except Exception as e:
         print(f'ERR:{e}')
         response_messege(f'ERR:{e}')

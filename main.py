@@ -1835,6 +1835,27 @@ def process_and_match(q_image_path, icons_folder):
  
     return best_match, highest_similarity
 
+def rename_with_code(filepath):
+    if not os.path.exists(filepath):
+        print(f"File '{filepath}' does not exist.")
+        return
+    
+    # Get the directory and base filename
+    directory, filename = os.path.split(filepath)
+    base_name, ext = os.path.splitext(filename)
+
+    # Loop until we find a unique filename
+    while True:
+        # Generate a random 6-digit code
+        random_code = random.randint(100000, 999999)
+        new_filename = f"{base_name}{random_code}{ext}"
+        new_filepath = os.path.join(directory, new_filename)
+        
+        # Check if the new file exists
+        if not os.path.exists(new_filepath):
+            os.rename(filepath, new_filepath)
+            print(f"File renamed to '{new_filepath}'")
+            return
 
 def earnow_online(window_list):
     scrolled = False
@@ -1854,7 +1875,7 @@ def earnow_online(window_list):
                         .scrollIntoView({ behavior: 'smooth', block: 'center' });
                 """)
                 scrolled = True
-                time.sleep(2)
+                time.sleep(1)
                 print("Scrolled")
             else:
                 print("Waiting for scroll")
@@ -1864,8 +1885,10 @@ def earnow_online(window_list):
                     document.querySelector('#captcha-container')
                         .scrollIntoView({ behavior: 'smooth', block: 'center' });
                 """)
-                time.sleep(3)
+                time.sleep(2)
                 print("Captcha found")
+                rename_with_code("element_screenshot.png")
+
                 capture_element_screenshot(sb1, "div.captcha-icon img", screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
                 print("Image saved as 'captcha_image.svg'")
                 icon_options = sb1.find_elements(By.CSS_SELECTOR, '#icon-options i[class*="fas fa-"]')
@@ -1887,12 +1910,8 @@ def earnow_online(window_list):
                         print(f"Deleted: {file_path}")
                     except Exception as e:
                         print(f"Failed to delete {file_path}. Reason: {e}")
- 
- 
+
                 for icon in icon_options:
-                    #icon.click()
-                    #time.sleep(1)
- 
                     icon_class = icon.get_attribute('class').replace(' ', '.')      
                     icon_class = "." + icon_class
                     print(f"Icon: {icon_class}")
@@ -1913,6 +1932,9 @@ def earnow_online(window_list):
                 time.sleep(3)
                 #sb1.connect()
                 #return True
+
+
+
             if sb1.is_text_visible("Click any ad and open in new tab, and wait 10 seconds before you can return and continue."):
                 print("Click any ad and open in new tab, and wait 10 seconds before you can return and continue.")
                 pyautogui.rightClick(639, 568 )

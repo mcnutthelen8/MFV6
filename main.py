@@ -28,7 +28,6 @@ import cv2
 import numpy as np
 from PIL import Image
 from pymongo import MongoClient
-from paddleocr import PaddleOCR
 import Levenshtein
 import json
 import argparse

@@ -1834,12 +1834,14 @@ def process_and_match(q_image_path, icons_folder):
         print(f"{icon_name}: {score}")
  
     return best_match, highest_similarity
- 
- 
+
+
 def earnow_online(window_list):
     scrolled = False
     last_step = False
     timeout = 1
+    pre_element = None
+    wrong_captcha = 1
     while True:
         try:
             sb1.switch_to_window(window_list)
@@ -1858,6 +1860,10 @@ def earnow_online(window_list):
                 print("Waiting for scroll")
  
             if sb1.is_element_visible("div.captcha-icon img") and scrolled == True:
+                sb1.execute_script("""
+                    document.querySelector('#captcha-container')
+                        .scrollIntoView({ behavior: 'smooth', block: 'center' });
+                """)
                 time.sleep(3)
                 print("Captcha found")
                 capture_element_screenshot(sb1, "div.captcha-icon img", screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
@@ -1901,20 +1907,12 @@ def earnow_online(window_list):
                 best_match = best_match.replace('.png', '')
                 button = sb1.find_element(By.CSS_SELECTOR, f"i{best_match}")
                 actions = ActionChains(sb1)
+                #sb1.disconnect()
+                time.sleep(1)
                 actions.move_to_element(button).click().perform()  
+                time.sleep(3)
+                #sb1.connect()
                 #return True
-                time.sleep(2)
-            if sb1.is_element_visible("div.mb-2.badge.bg-success"):
-                print("verified found")
-                timeout = 1
-                # Use ActionChains to move to the button and click it
-                button = sb1.find_element(By.CSS_SELECTOR, 'button.btn.btn-lg.btn-primary.mb-2')
-                actions = ActionChains(sb1)
-                actions.move_to_element(button).click().perform() 
-                scrolled = False
-                time.sleep(2)   
-                if last_step:  
-                    return True
             if sb1.is_text_visible("Click any ad and open in new tab, and wait 10 seconds before you can return and continue."):
                 print("Click any ad and open in new tab, and wait 10 seconds before you can return and continue.")
                 pyautogui.rightClick(639, 568 )
@@ -1925,6 +1923,8 @@ def earnow_online(window_list):
             if "Wait" in title:
                 sb1.open_new_tab()
                 time.sleep(4)
+                pyautogui.click(529, 568)
+                time.sleep(2)
                 sb1.close()
                 sb1.switch_to_window(0)
             if "Just a moment" in title:
@@ -1949,6 +1949,7 @@ def earnow_online(window_list):
                 pyautogui.press('f5')
                 time.sleep(5)
                 timeout = 1
+                wrong_captcha += 1
 
             if sb1.is_element_visible("button.btn.btn-primary"):
                 print("Button found g")
@@ -1959,7 +1960,7 @@ def earnow_online(window_list):
                     actions = ActionChains(sb1)
                     actions.move_to_element(button).click().perform()      
                     sb1.disconnect()
-                    for i in range(14):
+                    for i in range(35):
                         try:
                             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.8)
                             pyautogui.click(x, y)
@@ -1967,8 +1968,20 @@ def earnow_online(window_list):
     
                         except Exception as e:  
                             print(e)
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/complete_captcha_earnow.png", confidence=0.95)
+                            print('complete_captcha_earnow Found')
+                            break
+                        except Exception as e:  
+                            print(e)
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/scroll_down_earnow.png", confidence=0.95)
+                            print('scroll_down_earnow Found')
+                            break
+                        except Exception as e:  
+                            print(e)
                         time.sleep(1)
-                        print(i)
+                        print("Waiting For Icon Image to Pop up:",i)
                     sb1.connect()
                     if sb1.is_text_visible("STEP 5/5"):
                         print("Steps 5/5 found")
@@ -1980,17 +1993,74 @@ def earnow_online(window_list):
             else:
                 time.sleep(1)
                 print("Waiting for button")
+            if sb1.is_element_visible("div.mb-2.badge.bg-success"):
+                print("verified found")
+                timeout = 1
+                wrong_captcha =1
+                # Use ActionChains to move to the button and click it
+                button = sb1.find_element(By.CSS_SELECTOR, 'button.btn.btn-lg.btn-primary.mb-2')
+                actions = ActionChains(sb1)
+                actions.move_to_element(button).click().perform() 
+                scrolled = False
+                time.sleep(2)   
+                if last_step:  
+                    return True
 
-            if sb1.is_text_visible("Please Scroll Down"):
-                timeout += 1
-                time.sleep(2)
-            elif sb1.is_text_visible("Complete The Captcha"):
-                timeout += 1
-                time.sleep(2)
-            if timeout >= 16:
+            # List of element IDs to check
+            element_ids = [
+                "loadingDiv",
+                "rewardMessage",
+                "clickMessage",
+                "captchaMessage",
+                "scrollMessage"
+            ]
+            
+            # Iterate through the element IDs
+            for element_id in element_ids:
+                if sb1.is_element_present(f"#{element_id}"):
+                    # Get the style attribute of the element
+                    style = sb1.get_attribute(f"#{element_id}", "style")
+                
+                    # Check if the element is visible
+                    if "display: block;" in style:
+                        print(f"Element with ID '{element_id}' is visible (style='display: block;'). timeout :{timeout}")
+                        if pre_element == element_id:
+                            timeout += 1
+                            break
+                        else:
+                            timeout = 1
+                            pre_element = element_id
+                            break
+                else:
+                    print(f"Element with ID '{element_id}' is not present on the page. timeout :{timeout}")
+
+            if sb1.is_text_visible("VPN or Proxy detected. Please disable it and reload the page."):
+                print("VPN or Proxy detected. Please disable it and reload the page.")
+                #return 301
+            if timeout >= 8:
                 pyautogui.press('f5')
                 timeout = 1
-
+            if wrong_captcha >= 5:
+                print('too many Wrong Captcha')
+                #return 404
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.8)
+                sb1.disconnect()
+                pyautogui.click(x, y)
+                for i in range(8):
+                    try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.8)
+                            pyautogui.click(x, y)
+                            time.sleep(4)
+    
+                    except Exception as e:  
+                        print(e)
+                    time.sleep(1)
+                    print(i)
+                sb1.connect()
+ 
+            except Exception as e:  
+                print('no cloudflare box')
 
         except Exception as e:
             print(e)
@@ -2297,7 +2367,7 @@ time.sleep(10)
 print('Starting Loop')
  
 def switch_to_earnow():
-    valid_links = ['cryptowidgets', 'earnow', 'ourcoincash']
+    valid_links = ['cryptowidgets', 'earnow', 'ourcoincash', 'freeoseocheck',"giftmagic", "coinsvalue"]
     current_window = ourcoincash_window
     all_windows = sb1.window_handles
     for window in all_windows:
@@ -2346,7 +2416,8 @@ while True:
                             earnow_window = switch_to_earnow()
                             if earnow_window:
                                 close_extra_windows(sb1, [earnow_window])
-                                earnow_online(earnow_window)
+                                result = earnow_online(earnow_window)
+
                                 time.sleep(2)
                                 ourcoincash_window = earnow_window
                                 sb1.uc_open("https://ourcoincash.xyz/links")

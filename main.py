@@ -1857,6 +1857,63 @@ def rename_with_code(filepath):
             print(f"File renamed to '{new_filepath}'")
             return
 
+
+
+def find_similar_image(input_image_path, folder_path, similarity_threshold=0.95):
+    # Load the input image
+    input_image = cv2.imread(input_image_path)
+    if input_image is None:
+        return "Input image could not be loaded. Check the path."
+
+    input_image = cv2.resize(input_image, (300, 300))  # Resize for consistent comparison
+    input_gray = cv2.cvtColor(input_image, cv2.COLOR_BGR2GRAY)  # Convert to grayscale
+
+    # Initialize variables for tracking the most similar image
+    most_similar_image = None
+    highest_similarity = 0
+
+    # Iterate over all files in the folder
+    for filename in os.listdir(folder_path):
+        file_path = os.path.join(folder_path, filename)
+
+        # Ensure it's an image
+        if not (filename.endswith('.png') or filename.endswith('.jpg') or filename.endswith('.jpeg')):
+            continue
+
+        # Load and process the folder image
+        folder_image = cv2.imread(file_path)
+        if folder_image is None:
+            continue
+
+        folder_image = cv2.resize(folder_image, (300, 300))  # Resize to match input image
+        folder_gray = cv2.cvtColor(folder_image, cv2.COLOR_BGR2GRAY)
+
+        # Compute histogram similarity
+        hist_input = cv2.calcHist([input_image], [0, 1, 2], None, [8, 8, 8],
+                                  [0, 256, 0, 256, 0, 256])
+        hist_folder = cv2.calcHist([folder_image], [0, 1, 2], None, [8, 8, 8],
+                                   [0, 256, 0, 256, 0, 256])
+        cv2.normalize(hist_input, hist_input)
+        cv2.normalize(hist_folder, hist_folder)
+        hist_similarity = cv2.compareHist(hist_input, hist_folder, cv2.HISTCMP_CORREL)
+
+        # Compute Structural Similarity Index (SSIM)
+        ssim_value = ssim(input_gray, folder_gray)
+
+        # Combine metrics (weighted average or simply choose one)
+        overall_similarity = (0.5 * hist_similarity) + (0.5 * ssim_value)
+
+        # Update the most similar image if needed
+        if overall_similarity > highest_similarity and overall_similarity >= similarity_threshold:
+            highest_similarity = overall_similarity
+            most_similar_image = file_path
+
+    if most_similar_image:
+        return os.path.splitext(os.path.basename(most_similar_image))[0]
+
+    else:
+        return None
+
 def earnow_online(window_list):
     scrolled = False
     last_step = False
@@ -1910,28 +1967,39 @@ def earnow_online(window_list):
                         print(f"Deleted: {file_path}")
                     except Exception as e:
                         print(f"Failed to delete {file_path}. Reason: {e}")
-
+                result_mem = None
+                result_mem = find_similar_image("element_screenshot.png", "element_icons")
+                
                 for icon in icon_options:
-                    icon_class = icon.get_attribute('class').replace(' ', '.')      
+                    icon_class = icon.get_attribute('class').replace(' ', '.')     
+                    if result_mem in icon_class:
+                        button = icon
+                        actions = ActionChains(sb1)
+                        time.sleep(1)
+                        actions.move_to_element(button).click().perform()  
+                        print(f"Icon: {icon_class}")
+                        break
                     icon_class = "." + icon_class
                     print(f"Icon: {icon_class}")
                     # Delete all items in the icons folder before starting
                     capture_element_screenshot(sb1, icon_class, screenshot_path="full_screenshot.png", cropped_path=f"icons/{icon_class}.png")      
-                q_image = 'element_screenshot.png'
-                icons_folder = 'icons'
-                invert_filter = True  # Change to True to invert black and white
-                timeout = 1
-                best_match, similarity = process_and_match(q_image, icons_folder)
-                print(f"Most similar image: {best_match}, Similarity score: {similarity}")
-                best_match = best_match.replace('.png', '')
-                button = sb1.find_element(By.CSS_SELECTOR, f"i{best_match}")
-                actions = ActionChains(sb1)
-                #sb1.disconnect()
-                time.sleep(1)
-                actions.move_to_element(button).click().perform()  
-                time.sleep(3)
-                #sb1.connect()
-                #return True
+                if result_mem == None:
+                    q_image = 'element_screenshot.png'
+                    icons_folder = 'icons'
+                    invert_filter = True  # Change to True to invert black and white
+                    timeout = 1
+
+                    best_match, similarity = process_and_match(q_image, icons_folder)
+                    print(f"Most similar image: {best_match}, Similarity score: {similarity}")
+                    best_match = best_match.replace('.png', '')
+                    button = sb1.find_element(By.CSS_SELECTOR, f"i{best_match}")
+                    actions = ActionChains(sb1)
+                    #sb1.disconnect()
+                    time.sleep(1)
+                    actions.move_to_element(button).click().perform()  
+                    time.sleep(3)
+                    #sb1.connect()
+                    #return True
 
 
 
@@ -1955,10 +2023,16 @@ def earnow_online(window_list):
                     try:
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.8)
                         pyautogui.click(x, y)
-                        time.sleep(4)
+                        time.sleep(2)
  
                     except Exception as e:  
                         print(e)
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.8)
+                        break
+                    except Exception as e:  
+                        print(e)
+
                     time.sleep(1)
                     print(i,'CloudFlare Just')
                 sb1.connect()
@@ -2023,11 +2097,28 @@ def earnow_online(window_list):
                 button = sb1.find_element(By.CSS_SELECTOR, 'button.btn.btn-lg.btn-primary.mb-2')
                 actions = ActionChains(sb1)
                 actions.move_to_element(button).click().perform() 
-                scrolled = False
-                time.sleep(2)   
+                scrolled = False 
                 if last_step:  
+                    time.sleep(2)  
                     return True
+                sb1.disconnect()
+                for i in range(14):
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.8)
+                        pyautogui.click(x, y)
+                        time.sleep(2)
+ 
+                    except Exception as e:  
+                        print(e)
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.8)
+                        break
+                    except Exception as e:  
+                        print(e)
 
+                    time.sleep(1)
+                    print(i,'CloudFlare Just')
+                sb1.connect()
             # List of element IDs to check
             element_ids = [
                 "loadingDiv",
@@ -2058,7 +2149,18 @@ def earnow_online(window_list):
 
             if sb1.is_text_visible("VPN or Proxy detected. Please disable it and reload the page."):
                 print("VPN or Proxy detected. Please disable it and reload the page.")
-                #return 301
+                sb1.disconnect()
+                pyautogui.press('f5')
+                for i in range(20):
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.8)
+                        break
+ 
+                    except Exception as e:  
+                        print(e)
+                sb1.connect()
+
+
             if timeout >= 8:
                 pyautogui.press('f5')
                 timeout = 1
@@ -2129,6 +2231,7 @@ def process_link_blocks(sb):
         except Exception as e:
             print(f"An error occurred in block {index + 1}: {e}")
             pyautogui.click(600,500 )
+
 browser_proxy = ''
 query = {"type": "main"}
 refresh_count = 0
@@ -2154,7 +2257,7 @@ def open_browsers():
     print(f'Farm ID:{farm_id} | Layout: {layout}')
     chrome_user_data_dir = f'/root/.config/google-chrome/{browser_proxy}{layout}'
  
-    sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path, page_load_strategy='eager')#, proxy=browser_proxy )
+    sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path, page_load_strategy='none')#, proxy=browser_proxy )
     sb1.maximize_window()
     sb1.uc_open("chrome://extensions/")
     current_window = sb1.current_window_handle
@@ -2381,7 +2484,7 @@ def debug_messages(messages):
 ourcoincash_count = 0 
 feyorra_count = 0
 claimcoin_count = 0
- 
+
  
 ourcoincash_window, ip_address, ip_required = open_faucets()
 start_time4 = 0
@@ -2421,9 +2524,6 @@ while True:
         mainscript = control_panel()
         print('control_panel', mainscript)
         if mainscript == 1:            
- 
- 
- 
             ip_address = get_ip(sb1)
             debug_messages(f'Ip address Found:{ip_address}')
             if ip_address == ip_required:

@@ -2003,11 +2003,16 @@ def earnow_online(window_list):
 
 
 
-            if sb1.is_text_visible("Click any ad and open in new tab, and wait 10 seconds before you can return and continue."):
-                print("Click any ad and open in new tab, and wait 10 seconds before you can return and continue.")
-                pyautogui.rightClick(639, 568 )
-                time.sleep(1) 
-                #pyautogui.rightClick(645, 900 )  
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.9)
+                if x and y:
+                    print("Click any ad and open in new tab, and wait 10 seconds before you can return and continue.")
+                    pyautogui.rightClick(639, 568 )
+                    time.sleep(1) 
+                    #pyautogui.rightClick(645, 900 )  
+            except Exception as e:  
+                print(e)
+
 
 
             if "Wait" in title:
@@ -2017,18 +2022,29 @@ def earnow_online(window_list):
                 time.sleep(2)
                 sb1.close()
                 sb1.switch_to_window(0)
+
             if "Just a moment" in title:
                 sb1.disconnect()
-                for i in range(14):
+                for i in range(20):
                     try:
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.8)
                         pyautogui.click(x, y)
-                        time.sleep(2)
+                        time.sleep(5)
  
                     except Exception as e:  
                         print(e)
                     try:
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.8)
+                        break
+                    except Exception as e:  
+                        print(e)
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.8)
+                        break
+                    except Exception as e:  
+                        print(e)
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.8)
                         break
                     except Exception as e:  
                         print(e)
@@ -2089,6 +2105,8 @@ def earnow_online(window_list):
             else:
                 time.sleep(1)
                 print("Waiting for button")
+
+
             if sb1.is_element_visible("div.mb-2.badge.bg-success"):
                 print("verified found")
                 timeout = 1
@@ -2102,7 +2120,7 @@ def earnow_online(window_list):
                     time.sleep(2)  
                     return True
                 sb1.disconnect()
-                for i in range(14):
+                for i in range(19):
                     try:
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.8)
                         pyautogui.click(x, y)
@@ -2115,7 +2133,16 @@ def earnow_online(window_list):
                         break
                     except Exception as e:  
                         print(e)
-
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.8)
+                        break
+                    except Exception as e:  
+                        print(e)
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.8)
+                        break
+                    except Exception as e:  
+                        print(e)
                     time.sleep(1)
                     print(i,'CloudFlare Just')
                 sb1.connect()
@@ -2147,18 +2174,43 @@ def earnow_online(window_list):
                 else:
                     print(f"Element with ID '{element_id}' is not present on the page. timeout :{timeout}")
 
-            if sb1.is_text_visible("VPN or Proxy detected. Please disable it and reload the page."):
-                print("VPN or Proxy detected. Please disable it and reload the page.")
-                sb1.disconnect()
-                pyautogui.press('f5')
-                for i in range(20):
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.8)
-                        break
- 
-                    except Exception as e:  
-                        print(e)
-                sb1.connect()
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.9)
+                if x and y:
+                    print("VPN or Proxy detected. Please disable it and reload the page.")
+                    sb1.disconnect()
+                    time.sleep(2)
+                    pyautogui.press('f5')
+                    for i in range(20):
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.8)
+                            pyautogui.click(x, y)
+                            time.sleep(5)
+    
+                        except Exception as e:  
+                            print(e)
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.8)
+                            break
+                        except Exception as e:  
+                            print(e)
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.8)
+                            break
+                        except Exception as e:  
+                            print(e)
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.8)
+                            break
+                        except Exception as e:  
+                            print(e)
+
+                        time.sleep(1)
+                        print(i,'CloudFlare Just')
+                    sb1.connect()
+            except Exception as e:  
+                print(e)
+
 
 
             if timeout >= 8:
@@ -2170,6 +2222,7 @@ def earnow_online(window_list):
             try:
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.8)
                 sb1.disconnect()
+                time.sleep(1)
                 pyautogui.click(x, y)
                 for i in range(8):
                     try:
@@ -2189,6 +2242,9 @@ def earnow_online(window_list):
         except Exception as e:
             print(e)
             sb1.switch_to.default_content()
+
+
+
 
 
 def switch_extra_windows(driver, keep_window_handles):

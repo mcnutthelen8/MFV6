@@ -1973,14 +1973,14 @@ def earnow_online(window_list):
                 for icon in icon_options:
                     icon_class = icon.get_attribute('class').replace(' ', '.')     
                     if result_mem and result_mem in icon_class:
-                        button = icon
+                        button = sb1.find_element(By.CSS_SELECTOR, f"i.{icon_class}")
                         actions = ActionChains(sb1)
-                        time.sleep(1)
+                        #time.sleep(1)
                         actions.move_to_element(button).click().perform()  
-                        print(f"Icon: {icon_class}")
+                        print(f"Icon Found match: {icon_class}")
                         break
                     icon_class = "." + icon_class
-                    print(f"Icon: {icon_class}")
+                    print(f"Icon 1: {icon_class}")
                     # Delete all items in the icons folder before starting
                     capture_element_screenshot(sb1, icon_class, screenshot_path="full_screenshot.png", cropped_path=f"icons/{icon_class}.png")      
                 if result_mem == None:
@@ -1992,6 +1992,7 @@ def earnow_online(window_list):
                     best_match, similarity = process_and_match(q_image, icons_folder)
                     print(f"Most similar image: {best_match}, Similarity score: {similarity}")
                     best_match = best_match.replace('.png', '')
+                    print(f"Icon 2: {best_match}")
                     button = sb1.find_element(By.CSS_SELECTOR, f"i{best_match}")
                     actions = ActionChains(sb1)
                     #sb1.disconnect()
@@ -2061,6 +2062,7 @@ def earnow_online(window_list):
                 
                 sb1.disconnect()
                 pyautogui.press('f5')
+                time.sleep(5)
                 for i in range(20):
                     try:
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.8)
@@ -2100,6 +2102,7 @@ def earnow_online(window_list):
                     actions = ActionChains(sb1)
                     actions.move_to_element(button).click().perform()      
                     sb1.disconnect()
+                    #time.sleep(5)
                     for i in range(35):
                         try:
                             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.8)
@@ -2148,6 +2151,7 @@ def earnow_online(window_list):
                     time.sleep(2)  
                     return True
                 sb1.disconnect()
+                time.sleep(5)
                 #pyautogui.press('f5')
                 for i in range(20):
                     try:
@@ -2205,11 +2209,12 @@ def earnow_online(window_list):
                     print(f"Element with ID '{element_id}' is not present on the page. timeout :{timeout}")
 
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.9)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.9)
                 if x and y:
                     print("VPN or Proxy detected. Please disable it and reload the page.")
                     sb1.disconnect()
                     pyautogui.press('f5')
+                    time.sleep(5)
                     for i in range(20):
                         try:
                             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.8)

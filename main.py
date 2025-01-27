@@ -2030,6 +2030,7 @@ def earnow_online(window_list):
                     try:
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.95)
                         pyautogui.click(x, y)
+                        print('CloudFlare Box Found 1')
                         time.sleep(5)
  
                     except Exception as e:  
@@ -2037,18 +2038,21 @@ def earnow_online(window_list):
                     try:
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.95)
                         if x and y:
+                            print('clickheretostart Found 2')
                             break
                     except Exception as e:  
                         print("Not found clickheretostart 2")
                     try:
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.95)
                         if x and y:
+                            print('clickad10sec Found 2')
                             break
                     except Exception as e:  
                         print("Not found clickad10sec 2")
                     try:
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.95)
                         if x and y:
+                            print("VPN Error 2")
                             break
                     except Exception as e:  
                         print("Not found vpnerror 2")
@@ -2070,6 +2074,7 @@ def earnow_online(window_list):
                     try:
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.95)
                         pyautogui.click(x, y)
+                        print('CloudFlare Box Found 3')
                         time.sleep(5)
  
                     except Exception as e:  
@@ -2077,12 +2082,14 @@ def earnow_online(window_list):
                     try:
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.95)
                         if x and y:
+                                print('clickheretostart Found 3')
                                 break
                     except Exception as e:  
                         print("Not found clickheretostart 3")
                     try:
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.95)
                         if x and y:
+                                print('clickad10sec Found 3')
                                 break
                     except Exception as e:  
                         print("Not found clickad10sec 3")
@@ -2119,14 +2126,14 @@ def earnow_online(window_list):
                             print("Not found cloudflare_box 4")
                         try:
                             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/complete_captcha_earnow.png", confidence=0.95)
-                            print('complete_captcha_earnow Found')
+                            print('complete_captcha_earnow Found 4')
                             if x and y:
                                 break
                         except Exception as e:  
                             print("Not found complete_captcha_earnow 4")
                         try:
                             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/scroll_down_earnow.png", confidence=0.95)
-                            print('scroll_down_earnow Found')
+                            print('scroll_down_earnow Found 4')
                             if x and y:
                                 break
                         except Exception as e:  
@@ -2165,6 +2172,7 @@ def earnow_online(window_list):
                     try:
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.95)
                         pyautogui.click(x, y)
+                        print('CloudFlare Box Found 6')
                         time.sleep(5)
  
                     except Exception as e:  
@@ -2172,18 +2180,21 @@ def earnow_online(window_list):
                     try:
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.95)
                         if x and y:
+                            print('clickheretostart Found 6')
                             break
                     except Exception as e:  
                         print("Not found clickheretostart 6")
                     try:
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.95)
                         if x and y:
+                            print('clickad10sec Found 6')
                             break
                     except Exception as e:  
                         print("Not found clickad10sec 6")
                     try:
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.95)
                         if x and y:
+                            print('vpnerror Found 6')
                             break
                     except Exception as e:  
                         print("Not found vpnerror 6")
@@ -2230,6 +2241,7 @@ def earnow_online(window_list):
                         try:
                             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.95)
                             pyautogui.click(x, y)
+                            print('CloudFlare Box Found 5')
                             time.sleep(5)
     
                         except Exception as e:  
@@ -2237,18 +2249,21 @@ def earnow_online(window_list):
                         try:
                             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.95)
                             if x and y:
+                                print('clickheretostart Found 5')
                                 break
                         except Exception as e:  
                             print("Not found clickheretostart 5")
                         try:
                             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.95)
                             if x and y:
+                                print('clickad10sec Found 5')
                                 break
                         except Exception as e:  
                             print("Not found clickad10sec 5")
                         try:
                             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.95)
                             if x and y:
+                                print('vpnerror Found 5')
                                 break
                         except Exception as e:  
                             print("Not found vpnerror 5")

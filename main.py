@@ -1216,6 +1216,375 @@ def control_panel():
  
  
  
+def split_image_by_width(image_path, num_pieces, output_dir="output_pieces"):
+    # Open the image
+    image = Image.open(image_path)
+    img_width, img_height = image.size
+    
+    # Calculate the width of each piece
+    piece_width = img_width // num_pieces
+    if os.path.exists(output_dir):
+        # Remove all files in the directory
+        for filename in os.listdir(output_dir):
+            file_path = os.path.join(output_dir, filename)
+            try:
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)  # Remove file or link
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)  # Remove directory
+            except Exception as e:
+                print(f"Failed to delete {file_path}. Reason: {e}")
+    else:
+        # Create the directory if it doesn't exist
+        os.makedirs(output_dir, exist_ok=True)
+
+    
+    # Loop through the number of pieces and save each slice
+    for i in range(num_pieces):
+        # Calculate the bounding box for each piece
+        left = i * piece_width
+        right = left + piece_width
+        piece = image.crop((left, 0, right, img_height))
+        
+        # Save the piece
+        piece_filename = os.path.join(output_dir, f"piece_{i+1}.png")
+        piece.save(piece_filename)
+        print(f"Saved {piece_filename}")
+
+from skimage.metrics import structural_similarity as ssim
+
+
+def preprocess_image(image_path):
+    """Loads an image, resizes it, and converts it to grayscale."""
+    image = cv2.imread(image_path)
+    if image is None:
+        return None, None
+    image = cv2.resize(image, (300, 300))  # Resize for consistency
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    return image, gray
+
+def generate_transformed_images(gray):
+    """Creates all possible transformations of an image: flips, rotations (including 15° steps)."""
+    transformations = {"original": gray}
+
+    # 🔹 Flip transformations
+    flips = {
+        "horizontal_flip": cv2.flip(gray, 1),
+        "vertical_flip": cv2.flip(gray, 0),
+        "both_axes_flip": cv2.flip(gray, -1),
+    }
+
+    # 🔹 Standard 90° rotations
+    rotations_90 = {
+        "90°": cv2.rotate(gray, cv2.ROTATE_90_CLOCKWISE),
+        "180°": cv2.rotate(gray, cv2.ROTATE_180),
+        "270°": cv2.rotate(gray, cv2.ROTATE_90_COUNTERCLOCKWISE),
+    }
+
+    # 🔹 Extra incremental 15° rotations
+    center = tuple(np.array(gray.shape[1::-1]) / 2)  # Image center for rotation
+    angle_list = list(range(15, 360, 15))  # Generate 15°, 30°, 45° ... 345°
+    rotated_extra = {f"{angle}°": cv2.warpAffine(gray, cv2.getRotationMatrix2D(center, angle, 1.0), gray.shape[1::-1], flags=cv2.INTER_LINEAR) for angle in angle_list}
+
+    # 🔹 Combine all transformations
+    transformations.update(flips)
+    transformations.update(rotations_90)
+    transformations.update(rotated_extra)
+
+    return transformations
+
+def compute_similarity(image1, transformations2):
+    """Compares an image with multiple rotated/flipped versions of another image and returns best match."""
+    best_similarity = 0
+    best_transformation = None
+
+    for transform_name, transformed in transformations2.items():
+        similarity = ssim(image1, transformed)
+        if similarity > best_similarity:
+            best_similarity = similarity
+            best_transformation = transform_name
+
+    return best_similarity, best_transformation
+
+
+def group_similar_images(folder_path, similarity_threshold=0.7):
+    """Finds groups of similar images in a folder, considering flips and rotations."""
+    images = [f for f in os.listdir(folder_path) if f.endswith(('.png', '.jpg', '.jpeg'))]
+    image_variants = {}
+    most_similar_image = None
+    most_similar_image_count = 0
+    images_len = len(images)
+    single_image = None
+
+    # Preprocess all images
+    for img_file in images:
+        img_path = os.path.join(folder_path, img_file)
+        image, gray = preprocess_image(img_path)
+        if image is None:
+            continue
+        image_variants[img_file] = generate_transformed_images(gray)
+
+    grouped_images = []
+    match_results = {}
+    used_images = set()
+
+    if len(grouped_images) <= 1:
+        #similarity_threshold = 0.6
+        while similarity_threshold <= 0.9:
+            grouped_images = []
+            match_results = {}
+            used_images = set()
+            while True:
+                found_match = False  # Track if any new match is found
+
+                for img1 in images:
+                    if img1 in used_images:
+                        continue
+
+                    for img2 in images:
+                        if img1 == img2 or img2 in used_images:
+                            continue
+
+                        similarity, matched_transformation = compute_similarity(image_variants[img1]["original"], image_variants[img2])
+                        similarity_threshold2 = 0.65
+                        
+                        if similarity >= similarity_threshold:
+                            # Check if these images are already in a group
+                            added_to_group = False
+                            for group in grouped_images:
+                                if img1 in group or img2 in group:
+                                    group.update([img1, img2])
+                                    added_to_group = True
+                                    break
+                            
+                            # If not, create a new group
+                            if not added_to_group:
+                                grouped_images.append(set([img1, img2]))
+
+                            # Save match details
+                            match_results[(img1, img2)] = (matched_transformation, similarity)
+                            used_images.add(img1)
+                            used_images.add(img2)
+                            found_match = True
+                            if most_similar_image_count < similarity:
+                                most_similar_image_count = similarity
+                                most_similar_image = img2
+
+                            print(f"{img1} -> {img2}: {matched_transformation} (Similarity: {similarity:.2f})")
+                            #plt.imshow(image_variants[img1][matched_transformation], cmap='gray')  # For grayscale images
+                            #plt.show()
+                if not found_match:
+                    break  # If no new matches found, exit loop and finalize groups
+            grouped_images_count = len(grouped_images) 
+            if grouped_images_count == 1:
+                if len(grouped_images[0]) == (images_len - 1):
+                    print('One image is match')
+                    unmatched_image = [img for img in images if img not in grouped_images[0]]
+                    print("\n🔹 **Unmatched Image:**", unmatched_image[0])
+                    single_image = unmatched_image[0]
+                    similarity_threshold = 1
+                    break
+            if grouped_images_count <= 1:
+                similarity_threshold += 0.1
+                print("Increasing threshold to", similarity_threshold)
+            if grouped_images_count > 1:
+                print("grouped_images", len(grouped_images))
+                similarity_threshold = 1
+                all_similar_images =0
+                for group in grouped_images:
+                    print(group)
+                    all_similar_images += len(group)
+                    print("all_similar_images", all_similar_images)
+                print("All_similar_images", all_similar_images)
+                if all_similar_images == (images_len - 1):
+                    print('One image is match')
+                    unmatched_image = [img for img in images if img not in grouped_images[0]]
+                    print("\n🔹 **Unmatched Image:**", unmatched_image[0])
+                    single_image = unmatched_image[0]
+
+                break
+
+
+    # Convert sets to lists for final output
+    grouped_images = [list(group) for group in grouped_images]
+
+    # Identify least similar images (ones that never got matched)
+    least_similar_group = None
+    least_similar_group_count = 10
+
+
+    # Print results
+    print("\n🔹 **Similar Image Groups:**")
+    for group in grouped_images:
+        print(group)
+        if len(group) < least_similar_group_count:
+            least_similar_group_count = len(group)
+            least_similar_group = group
+            print("least_similar_group", len(group) , least_similar_group_count)
+
+    least_similar_image = least_similar_group[0] if least_similar_group else "None"
+
+
+    if single_image:
+        least_similar_image =single_image
+
+    # Ensure we handle the case where least similar image group is found
+    if least_similar_group:
+        print("\n🔹 **Least Similar Image Group:**", least_similar_group)
+        print("\n🔹 **Least Similar Image:**", least_similar_image)
+    else:
+        print("\n🔹 **Least Similar Image Group:** None")
+        print("\n🔹 **Least Similar Image:** None")
+
+    return f"output_pieces/{least_similar_image}"
+
+
+
+
+def image_counter(image_path):
+    image = Image.open(image_path)
+
+    # Get the dimensions of the image
+    width, height = image.size
+
+    # Crop the image to a 1-pixel high horizontal line in the middle
+    middle_height = height // 2
+    cropped_image = image.crop((0, middle_height, width, middle_height + 1))
+
+    # Convert the image to RGBA mode (in case it is in a different mode)
+    cropped_image = cropped_image.convert("RGBA")
+
+
+    # Get the pixels of the cropped image
+    pixels = cropped_image.load()
+
+    # Define the target RGBA color to count
+    target_rgba = (70, 70, 70, 255)
+    background = (76,76,76, 255)
+
+    # Set the tolerance level for each channel (e.g., ±5 for each color component)
+    tolerance = 1
+
+    # Function to calculate the Euclidean distance between two colors
+    def color_distance(c1, c2):
+        return math.sqrt(sum((c1[i] - c2[i]) ** 2 for i in range(4)))
+
+    # Initialize a counter for the target color
+    color_count = 0
+
+    # Loop through the pixels and count how many match the target RGBA color within tolerance
+    for i in range(1, 20):
+        color_count = 0
+        for x in range(width):
+            pixel_color = pixels[x, 0]
+            if color_distance(pixel_color, target_rgba) <= i:
+                if pixel_color == background:
+                    pass
+                    #print('fuck')
+                else:
+                    color_count += 1
+        if color_count >= 4:
+            return color_count+1
+            #break
+
+    # Output the result
+    print(f"The number of lines with a color similar to rgba(70, 70, 70, 255) is: {color_count+1}")
+
+    return color_count+1
+
+
+def check_similar_images_exist(image_dir, similarity_threshold=0.8):
+    """
+    Checks if there are any similar images in the given directory based on SSIM.
+
+    :param image_dir: Directory containing the images.
+    :param similarity_threshold: Threshold above which images are considered similar (default: 0.9).
+    :return: True if similar images are found, False otherwise.
+    """
+    if not os.path.isdir(image_dir):
+        print("Directory does not exist.")
+        return False
+
+    image_files = [f for f in os.listdir(image_dir) if os.path.isfile(os.path.join(image_dir, f))]
+
+    if len(image_files) < 2:
+        print("Not enough images to compare.")
+        return False
+
+    # Iterate over all image pairs and calculate their structural similarity
+    for i, img_file in enumerate(image_files):
+        img_path = os.path.join(image_dir, img_file)
+        img1 = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
+
+        for j in range(i + 1, len(image_files)):
+            other_img_file = image_files[j]
+            other_img_path = os.path.join(image_dir, other_img_file)
+            img2 = cv2.imread(other_img_path, cv2.IMREAD_GRAYSCALE)
+
+            # Ensure images are valid and have the same dimensions
+            if img1 is None or img2 is None or img1.shape != img2.shape:
+                continue
+
+            similarity, _ = ssim(img1, img2, full=True)
+
+            # If similarity exceeds the threshold, similar images exist
+            if similarity >= similarity_threshold:
+                print(f"Similar images found: {img_file} and {other_img_file} with similarity {similarity:.2f}")
+                return True
+
+    print("No similar images found.")
+    return False
+
+
+def solve_least_captcha(image):
+    #count = image_counter(image)
+    #if count >= 8:
+    #    count//=2
+    val = None
+    split_image_by_width('element_screenshot.png', 5, output_dir="output_pieces")
+    if check_similar_images_exist("output_pieces", similarity_threshold=0.8):
+        val = group_similar_images("output_pieces")
+        if val:
+            return val
+    split_image_by_width('element_screenshot.png', 6, output_dir="output_pieces")
+    if check_similar_images_exist("output_pieces", similarity_threshold=0.8):
+        val = group_similar_images("output_pieces")
+        if val:
+            return val
+    split_image_by_width('element_screenshot.png', 7, output_dir="output_pieces")
+    if check_similar_images_exist("output_pieces", similarity_threshold=0.8):
+        val = group_similar_images("output_pieces")
+        if val:
+            return val
+    split_image_by_width('element_screenshot.png', 8, output_dir="output_pieces")
+    if check_similar_images_exist("output_pieces", similarity_threshold=0.8):
+        val = group_similar_images("output_pieces")
+        if val:
+            return val
+    return val
+
+def solve_rscaptcha(driver):
+    # Find the CAPTCHA image
+    if driver.is_element_visible("img#rscaptcha_img"):
+        driver.execute_script("""
+            document.querySelector('img#rscaptcha_img')
+            .scrollIntoView({ behavior: 'smooth', block: 'center' });
+        """)
+        time.sleep(2)
+        print("Captcha found")
+        capture_element_screenshot(driver, "img#rscaptcha_img", screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
+        print("Image saved as 'captcha_image.svg'")
+        image = solve_least_captcha("element_screenshot.png")
+        if image:
+            try:
+                x, y = pyautogui.locateCenterOnScreen(image, confidence=0.85)
+                pyautogui.click(x, y)
+                return True
+            except Exception as e:
+                print(f'ERR in click rscaptcha:{e}')
+        else:
+            print("No image found")
+
  
 def cloudflare(sb, login = True):
     try:
@@ -1291,7 +1660,7 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
     if 'Login' in current_title:
         # Wait for the email input by type attribute
         email_input = WebDriverWait(driver, 60).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, 'input#email[type="text"]'))
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'input#email'))
         )
         email_input.send_keys(email)
  
@@ -1304,7 +1673,7 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
         if captcha_image:
             if 'rscaptcha'in captcha_image:
                     try:
-                        #solve_least_img(sb1)
+                        solve_rscaptcha(sb1)
                         if 'Feyorra' in current_title:
                             pyautogui.click(932 ,728)
                             time.sleep(1)
@@ -1313,11 +1682,11 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                             time.sleep(5)
                             return
                         if 'ClaimCoin' in current_title:
-                            pyautogui.click(973, 833)
-                            time.sleep(5)
-                            return
-                        pyautogui.click(957 ,886)
-                        time.sleep(5)
+                            button = sb1.find_element(By.CSS_SELECTOR, submit_button)
+                            actions = ActionChains(sb1)
+                            actions.move_to_element(button).click().perform()  
+                        #pyautogui.click(957 ,886)
+                        #time.sleep(5)
                         if driver.is_element_visible(submit_button):
                             sb1.uc_click(submit_button)
                         time.sleep(5)
@@ -1427,9 +1796,12 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         #get_mails_passowrds(farm_id)
  
  
-        if not_expected_title in current_title:
-            if function == 1:
+        if 'Login' in current_title:
+            if function == 2:
                 login_to_faucet('https://ourcoincash.xyz/login', sb1, 'gra.ndk.olla@gmail.com', 'grand2005', 'recaptcha', window_list, 'button#ClaimBtn')
+            if function == 1:
+                login_to_faucet('https://claimtrx.com/login', sb1, 'shevongerald@gmail.com', 'Iamgrand1997', 'rscaptcha', window_list, "button[type='submit']")
+ 
  
  
         elif expected_title in current_title:
@@ -1914,6 +2286,20 @@ def find_similar_image(input_image_path, folder_path, similarity_threshold=0.95)
     else:
         return None
 
+
+def image_onscreeen(image_path, confidence=0.95, onlick = True):
+    x = None
+    y = None 
+    try:
+        x, y = pyautogui.locateCenterOnScreen(image_path, confidence=confidence)
+        if onlick:
+            pyautogui.click(x, y)
+            return True
+        else:
+            return None
+    except pyautogui.ImageNotFoundException:
+        return None
+
 def earnow_online(window_list):
     scrolled = False
     last_step = False
@@ -1925,19 +2311,8 @@ def earnow_online(window_list):
             sb1.switch_to_window(window_list)
             title = sb1.get_title()
             print(title)
-            #<button class="eaeeghjaabhb btn btn-primary">Click Here To Start</button>
-            if sb1.is_element_visible("div.captcha-icon img") and scrolled == False:
-                sb1.execute_script("""
-                    document.querySelector('#captcha-container')
-                        .scrollIntoView({ behavior: 'smooth', block: 'center' });
-                """)
-                scrolled = True
-                time.sleep(1)
-                print("Scrolled")
-            else:
-                print("Waiting for scroll")
  
-            if sb1.is_element_visible("div.captcha-icon img") and scrolled == True:
+            if sb1.is_element_visible("div.captcha-icon img"):
                 sb1.execute_script("""
                     document.querySelector('#captcha-container')
                         .scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1969,6 +2344,7 @@ def earnow_online(window_list):
                         print(f"Failed to delete {file_path}. Reason: {e}")
                 result_mem = None
                 result_mem = find_similar_image("element_screenshot.png", "element_icons")
+                print("result:g ",result_mem)
                 
                 for icon in icon_options:
                     icon_class = icon.get_attribute('class').replace(' ', '.')     
@@ -2005,7 +2381,7 @@ def earnow_online(window_list):
 
 
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.8)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.95)
                 if x and y:
                     print("Click any ad and open in new tab, and wait 10 seconds before you can return and continue.")
                     pyautogui.rightClick(639, 568 )
@@ -2013,9 +2389,10 @@ def earnow_online(window_list):
                     #pyautogui.rightClick(645, 900 )  
             except Exception as e:  
                 print("Not found clickad10sec")
+            
 
 
-
+            
             if "Wait" in title:
                 sb1.open_new_tab()
                 time.sleep(4)
@@ -2547,7 +2924,7 @@ def open_faucets():
                     response_messege('ourcoincash Loging')
                     if ourcoincash:
  
-                        ourcoincash_window = handle_site(sb1, "https://ourcoincash.xyz/links", "Shortlinks", "Home", 1, [], ip_required)
+                        ourcoincash_window = handle_site(sb1, "https://claimtrx.com/links", "Shortlinks", "Home", 1, [], ip_required)
                         if ourcoincash_window == 404:
                             raise Exception(" ourcoincash_window == 404")
                         print(f"ourcoincash window handle: {ourcoincash_window}")
@@ -2683,8 +3060,14 @@ while True:
                         print(f'ggg:{e}')
                         response_messege(f'ERR:{e}')
                         #time.sleep(999999)
+            
+            
+        
             else:
                 print('IP Changed',ip_required)
+
+
+
     except Exception as e:
         print(f'ERR:{e}')
         response_messege(f'ERR:{e}')

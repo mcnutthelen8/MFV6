@@ -3020,7 +3020,7 @@ claimcoin_count = 0
  
 ourcoincash_window, ip_address, ip_required = open_faucets()
 start_time4 = 0
-time.sleep(999)
+time.sleep(9999)
 print('Starting Loop')
  
 def switch_to_earnow():

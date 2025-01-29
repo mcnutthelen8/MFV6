@@ -1254,6 +1254,7 @@ def split_image_by_width(image_path, num_pieces, output_dir="output_pieces"):
 from skimage.metrics import structural_similarity as ssim
 
 
+
 def preprocess_image(image_path):
     """Loads an image, resizes it, and converts it to grayscale."""
     image = cv2.imread(image_path)
@@ -1306,8 +1307,7 @@ def compute_similarity(image1, transformations2):
 
     return best_similarity, best_transformation
 
-
-def group_similar_images(folder_path, similarity_threshold=0.7):
+def group_similar_images(folder_path, similarity_threshold=0.6):
     """Finds groups of similar images in a folder, considering flips and rotations."""
     images = [f for f in os.listdir(folder_path) if f.endswith(('.png', '.jpg', '.jpeg'))]
     image_variants = {}
@@ -1436,8 +1436,7 @@ def group_similar_images(folder_path, similarity_threshold=0.7):
         print("\n🔹 **Least Similar Image Group:** None")
         print("\n🔹 **Least Similar Image:** None")
 
-    return f"output_pieces/{least_similar_image}"
-
+    return least_similar_image
 
 
 
@@ -1796,7 +1795,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         #get_mails_passowrds(farm_id)
  
  
-        if 'Login' in current_title:
+        if 'ClaimTRX - Earn Free TRX' == current_title:
             if function == 2:
                 login_to_faucet('https://ourcoincash.xyz/login', sb1, 'gra.ndk.olla@gmail.com', 'grand2005', 'recaptcha', window_list, 'button#ClaimBtn')
             if function == 1:

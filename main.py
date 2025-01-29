@@ -1799,7 +1799,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
             if function == 2:
                 login_to_faucet('https://ourcoincash.xyz/login', sb1, 'gra.ndk.olla@gmail.com', 'grand2005', 'recaptcha', window_list, 'button#ClaimBtn')
             if function == 1:
-                login_to_faucet('https://claimtrx.com/login', sb1, 'shevongerald@gmail.com', 'Iamgrand1997', 'rscaptcha', window_list, "button[type='submit']")
+                login_to_faucet('https://claimtrx.com/login', sb1, 'redgta36@gmail.com', 'Uwuinsta2005', 'rscaptcha', window_list, "button[type='submit']")
  
  
  
@@ -2727,6 +2727,43 @@ def process_link_blocks(sb):
             print(f"An error occurred in block {index + 1}: {e}")
             pyautogui.click(600,500 )
 
+
+
+ 
+def process_link_blocks_claimtrx(sb):
+    # Find all "div.link-block" elements
+    link_blocks = sb.find_elements("div.col-md-6.col-lg-4.mb-3.mb-lg-0")
+    for index, block in enumerate(link_blocks):
+        print(f"Processing block {index + 1}:")
+ 
+        # Scroll the block into view
+        #sb.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", block)
+        try:
+            # Get the link-name
+            link_name_element = block.find_element(By.CSS_SELECTOR,"h5.card-title.text-center")
+            link_name = link_name_element.text
+            print(f"Link Name: {link_name}")
+ 
+            # Check if it's "Earnow"
+ 
+            # Get the link-rmn
+            link_rmn_element = block.find_element(By.CSS_SELECTOR,"div.card-badge mb-3.text-center")
+            link_rmn = link_rmn_element.text
+            print(f"Link Remaining: {link_rmn}")
+ 
+            if link_name == "Earnow":
+                # Click the claim-button
+                button = block.find_element(By.CSS_SELECTOR,"button[type='submit']")
+                button.uc_click()
+                #actions = ActionChains(sb1)
+                #actions.move_to_element(button).click().perform()      
+                print("Clicked the claim button.")
+                return True
+        except Exception as e:
+            print(f"An error occurred in block {index + 1}: {e}")
+            pyautogui.click(600,500 )
+
+
 browser_proxy = ''
 query = {"type": "main"}
 refresh_count = 0
@@ -2983,7 +3020,7 @@ claimcoin_count = 0
  
 ourcoincash_window, ip_address, ip_required = open_faucets()
 start_time4 = 0
-time.sleep(10)
+time.sleep(999)
 print('Starting Loop')
  
 def switch_to_earnow():
@@ -2993,7 +3030,7 @@ def switch_to_earnow():
     for window in all_windows:
         if window != current_window:
             sb1.switch_to.window(window)
-            if 'Ourcoincash' in sb1.get_title():
+            if 'Claim Trx' in sb1.get_title():
                 print("Ourcoincash is in the title")
                 continue
             else:
@@ -3006,13 +3043,65 @@ def switch_to_earnow():
     print("Waiting for button")
     sb1.switch_to_window(ourcoincash_window)
     close_extra_windows(sb1, ourcoincash_window)
-    if 'Ourcoincash' in sb1.get_title():
+    if 'Claim Trx' in sb1.get_title():
         print("Ourcoincash is in the title")
     else:
-        sb1.uc_open("https://ourcoincash.xyz/links")
+        sb1.uc_open("https://claimtrx.com/links")
  
     return None
+
+def process_link_blocks(sb):
+    # Find all "div.link-block" elements
+    try:
+        # Find the CAPTCHA image
+        if sb.is_element_visible("img#rscaptcha_img"):
+            solve_rscaptcha(sb)
+            sb.uc_click("button[type='submit']") 
+    except Exception as e:
+        print(f"No rscaptcha processing: {e}")
+        
+
+    link_blocks = sb.find_elements("div.col-md-6.col-lg-4")
+    for index, block in enumerate(link_blocks):
+        print(f"Processing block {index + 1}:")
  
+        # Scroll the block into view
+        #sb.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", block)
+        try:
+            # Get the link-name
+            link_name_element = block.find_element(By.CSS_SELECTOR,"h5.card-title.text-center")
+            link_name = link_name_element.text
+            print(f"Link Name: {link_name}")
+ 
+            # Check if it's "Earnow"
+ 
+            # Get the link-rmn
+            link_rmn_element = block.find_element(By.CSS_SELECTOR,"span.ms-auto.badge.badge-primary")
+            link_rmn = link_rmn_element.text
+            print(f"Link Remaining: {link_rmn}")
+ 
+            if link_name == "Earnow":
+                # Click the claim-button
+                button = block.find_element(By.CSS_SELECTOR,"button.btn.btn-success")
+                button.uc_click()
+                #actions = ActionChains(sb1)
+                #actions.move_to_element(button).click().perform()  
+                time.sleep(5) 
+                try:
+                    # Find the CAPTCHA image
+                    if sb.is_element_visible("img#rscaptcha_img"):
+                        solve_rscaptcha(sb)
+                        sb.uc_click("button[type='submit']") 
+                except Exception as e:
+                    print(f"No rscaptcha processing: {e}")
+                    
+                print("Clicked the claim button.")
+                return True
+        except Exception as e:
+            print(f"An error occurred in block {index + 1}: {e}")
+            pyautogui.click(600,500 )
+
+
  
 while True:
     try:

@@ -1254,7 +1254,6 @@ def split_image_by_width(image_path, num_pieces, output_dir="output_pieces"):
 from skimage.metrics import structural_similarity as ssim
 
 
-
 def preprocess_image(image_path):
     """Loads an image, resizes it, and converts it to grayscale."""
     image = cv2.imread(image_path)
@@ -1307,7 +1306,8 @@ def compute_similarity(image1, transformations2):
 
     return best_similarity, best_transformation
 
-def group_similar_images(folder_path, similarity_threshold=0.6):
+
+def group_similar_images(folder_path, similarity_threshold=0.7):
     """Finds groups of similar images in a folder, considering flips and rotations."""
     images = [f for f in os.listdir(folder_path) if f.endswith(('.png', '.jpg', '.jpeg'))]
     image_variants = {}
@@ -1561,6 +1561,8 @@ def solve_least_captcha(image):
         if val:
             return val
     return val
+
+
 
 def solve_rscaptcha(driver):
     # Find the CAPTCHA image
@@ -2838,7 +2840,7 @@ def open_browsers():
         update = {"$set": {"response": 'Setup Done...'}}
         result = collection.update_one(query, update)
  
-    time.sleep(999)
+    #time.sleep(999)
     return sb1
  
 def update_target_ip(new_ip):

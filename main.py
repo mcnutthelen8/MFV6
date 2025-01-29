@@ -2774,7 +2774,7 @@ def open_browsers():
             sweet = install_extensions('sweet')
             cookie = install_extensions('cookie')
             mysterium = install_extensions('mysterium')
-            fingerprint = install_extensions('fingerprint')
+            fingerprint = True #install_extensions('fingerprint')
             nopecha = install_extensions('nopecha')
             if fingerprint and mysterium and sweet and cookie and nopecha:
                 print('All Extensions are installed..')
@@ -2802,7 +2802,7 @@ def open_browsers():
         update = {"$set": {"response": 'Setup Done...'}}
         result = collection.update_one(query, update)
  
-    time.sleep(10)
+    time.sleep(999)
     return sb1
  
 def update_target_ip(new_ip):

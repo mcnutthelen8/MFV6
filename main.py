@@ -1253,7 +1253,6 @@ def split_image_by_width(image_path, num_pieces, output_dir="output_pieces"):
 
 from skimage.metrics import structural_similarity as ssim
 
-
 def preprocess_image(image_path):
     """Loads an image, resizes it, and converts it to grayscale."""
     image = cv2.imread(image_path)
@@ -1437,7 +1436,6 @@ def group_similar_images(folder_path, similarity_threshold=0.7):
         print("\n🔹 **Least Similar Image:** None")
 
     return f"output_pieces/{least_similar_image}"
-
 
 
 def image_counter(image_path):
@@ -3163,3 +3161,12 @@ while True:
         response_messege(f'ERR:{e}')
         continue
  
+
+
+#https://ibb.co/NgPWWKrY
+#https://ibb.co/YFxk9hQC
+#https://ibb.co/xSwKTHHM
+#https://ibb.co/YFxk9hQC
+#https://ibb.co/Qj11qjR9
+#https://ibb.co/YFxk9hQC
+#https://ibb.co/GfCCkctS

@@ -1436,7 +1436,7 @@ def group_similar_images(folder_path, similarity_threshold=0.7):
         print("\n🔹 **Least Similar Image Group:** None")
         print("\n🔹 **Least Similar Image:** None")
 
-    return least_similar_image
+    return f"output_pieces/{least_similar_image}"
 
 
 
@@ -2840,7 +2840,7 @@ def open_browsers():
         update = {"$set": {"response": 'Setup Done...'}}
         result = collection.update_one(query, update)
  
-    #time.sleep(999)
+    time.sleep(999)
     return sb1
  
 def update_target_ip(new_ip):

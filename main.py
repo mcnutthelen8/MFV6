@@ -1375,14 +1375,6 @@ def group_similar_images(folder_path, similarity_threshold=0.7):
                 if not found_match:
                     break  # If no new matches found, exit loop and finalize groups
             grouped_images_count = len(grouped_images) 
-            if grouped_images_count == 1:
-                if len(grouped_images[0]) == (images_len - 1):
-                    print('One image is match')
-                    unmatched_image = [img for img in images if img not in grouped_images[0]]
-                    print("\n🔹 **Unmatched Image:**", unmatched_image[0])
-                    single_image = unmatched_image[0]
-                    similarity_threshold = 1
-                    break
             if grouped_images_count <= 1:
                 similarity_threshold += 0.1
                 print("Increasing threshold to", similarity_threshold)
@@ -1397,9 +1389,17 @@ def group_similar_images(folder_path, similarity_threshold=0.7):
                 print("All_similar_images", all_similar_images)
                 if all_similar_images == (images_len - 1):
                     print('One image is match')
-                    unmatched_image = [img for img in images if img not in grouped_images[0]]
-                    print("\n🔹 **Unmatched Image:**", unmatched_image[0])
-                    single_image = unmatched_image[0]
+                    grouped_images = [list(group) for group in grouped_images]
+                    print("grouped_images", grouped_images)
+                    merged_list = sum(grouped_images, [])
+
+                    print("merged_list", merged_list)
+
+                    unmatched_items = list(set(images) - set(merged_list))
+
+                    #unmatched_image = [img for img in images if img not in grouped_images[0]]
+                    print("\n=9 **Unmatched Image 1:**", unmatched_items[0])
+                    single_image = unmatched_items[0] #unmatched_image[0]
 
                 break
 
@@ -2313,9 +2313,9 @@ def earnow_online(window_list):
  
             if sb1.is_element_visible("div.captcha-icon img"):
                 sb1.execute_script("""
-                    document.querySelector('#captcha-container')
-                        .scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    document.querySelector('button.btn.btn-lg.btn-primary.mb-2').scrollIntoView({ behavior: 'smooth', block: 'end' }); 
                 """)
+
                 time.sleep(2)
                 print("Captcha found")
                 rename_with_code("element_screenshot.png")
@@ -2380,7 +2380,7 @@ def earnow_online(window_list):
 
 
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.95)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.85)
                 if x and y:
                     print("Click any ad and open in new tab, and wait 10 seconds before you can return and continue.")
                     pyautogui.rightClick(639, 568 )
@@ -2404,7 +2404,7 @@ def earnow_online(window_list):
                 sb1.disconnect()
                 for i in range(20):
                     try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.95)
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.85)
                         pyautogui.click(x, y)
                         print('CloudFlare Box Found 1')
                         time.sleep(5)
@@ -2412,21 +2412,21 @@ def earnow_online(window_list):
                     except Exception as e:  
                         print("Not found cloudflare_box 2")
                     try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.95)
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.85)
                         if x and y:
                             print('clickheretostart Found 2')
                             break
                     except Exception as e:  
                         print("Not found clickheretostart 2")
                     try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.95)
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.85)
                         if x and y:
                             print('clickad10sec Found 2')
                             break
                     except Exception as e:  
                         print("Not found clickad10sec 2")
                     try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.95)
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.85)
                         if x and y:
                             print("VPN Error 2")
                             break
@@ -2448,7 +2448,7 @@ def earnow_online(window_list):
                 time.sleep(5)
                 for i in range(20):
                     try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.95)
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.85)
                         pyautogui.click(x, y)
                         print('CloudFlare Box Found 3')
                         time.sleep(5)
@@ -2456,21 +2456,21 @@ def earnow_online(window_list):
                     except Exception as e:  
                         print("Not found cloudflare_box 3")
                     try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.95)
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.85)
                         if x and y:
                                 print('clickheretostart Found 3')
                                 break
                     except Exception as e:  
                         print("Not found clickheretostart 3")
                     try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.95)
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.85)
                         if x and y:
                                 print('clickad10sec Found 3')
                                 break
                     except Exception as e:  
                         print("Not found clickad10sec 3")
                     try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.95)
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.85)
                         if x and y:
                                 break
                     except Exception as e:  
@@ -2494,21 +2494,21 @@ def earnow_online(window_list):
                     #time.sleep(5)
                     for i in range(35):
                         try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.95)
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.85)
                             pyautogui.click(x, y)
                             time.sleep(4)
     
                         except Exception as e:  
                             print("Not found cloudflare_box 4")
                         try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/complete_captcha_earnow.png", confidence=0.95)
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/complete_captcha_earnow.png", confidence=0.85)
                             print('complete_captcha_earnow Found 4')
                             if x and y:
                                 break
                         except Exception as e:  
                             print("Not found complete_captcha_earnow 4")
                         try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/scroll_down_earnow.png", confidence=0.95)
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/scroll_down_earnow.png", confidence=0.85)
                             print('scroll_down_earnow Found 4')
                             if x and y:
                                 break
@@ -2546,7 +2546,7 @@ def earnow_online(window_list):
                 #pyautogui.press('f5')
                 for i in range(20):
                     try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.95)
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.85)
                         pyautogui.click(x, y)
                         print('CloudFlare Box Found 6')
                         time.sleep(5)
@@ -2554,21 +2554,21 @@ def earnow_online(window_list):
                     except Exception as e:  
                         print("Not found cloudflare_box 6")
                     try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.95)
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.85)
                         if x and y:
                             print('clickheretostart Found 6')
                             break
                     except Exception as e:  
                         print("Not found clickheretostart 6")
                     try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.95)
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.85)
                         if x and y:
                             print('clickad10sec Found 6')
                             break
                     except Exception as e:  
                         print("Not found clickad10sec 6")
                     try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.95)
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.85)
                         if x and y:
                             print('vpnerror Found 6')
                             break
@@ -2607,7 +2607,7 @@ def earnow_online(window_list):
                     print(f"Element with ID '{element_id}' is not present on the page. timeout :{timeout}")
 
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.95)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.85)
                 if x and y:
                     print("VPN or Proxy detected. Please disable it and reload the page.")
                     sb1.disconnect()
@@ -2615,7 +2615,7 @@ def earnow_online(window_list):
                     time.sleep(5)
                     for i in range(20):
                         try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.95)
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.85)
                             pyautogui.click(x, y)
                             print('CloudFlare Box Found 5')
                             time.sleep(5)
@@ -2623,21 +2623,21 @@ def earnow_online(window_list):
                         except Exception as e:  
                             print("Not found cloudflare_box 5")
                         try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.95)
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.85)
                             if x and y:
                                 print('clickheretostart Found 5')
                                 break
                         except Exception as e:  
                             print("Not found clickheretostart 5")
                         try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.95)
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.85)
                             if x and y:
                                 print('clickad10sec Found 5')
                                 break
                         except Exception as e:  
                             print("Not found clickad10sec 5")
                         try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.95)
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.85)
                             if x and y:
                                 print('vpnerror Found 5')
                                 break
@@ -2659,13 +2659,13 @@ def earnow_online(window_list):
                 print('too many Wrong Captcha')
                 #return 404
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.95)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.85)
                 sb1.disconnect()
                 time.sleep(1)
                 pyautogui.click(x, y)
                 for i in range(8):
                     try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.95)
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.85)
                             pyautogui.click(x, y)
                             time.sleep(4)
     
@@ -2789,7 +2789,7 @@ def open_browsers():
     print(f'Farm ID:{farm_id} | Layout: {layout}')
     chrome_user_data_dir = f'/root/.config/google-chrome/{browser_proxy}{layout}'
  
-    sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path, page_load_strategy='none')#, proxy=browser_proxy )
+    sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path, page_load_strategy='eager')#, proxy=browser_proxy )
     sb1.maximize_window()
     sb1.uc_open("chrome://extensions/")
     current_window = sb1.current_window_handle
@@ -3020,7 +3020,7 @@ claimcoin_count = 0
  
 ourcoincash_window, ip_address, ip_required = open_faucets()
 start_time4 = 0
-time.sleep(9999)
+#time.sleep(9999)
 print('Starting Loop')
  
 def switch_to_earnow():
@@ -3056,7 +3056,10 @@ def process_link_blocks(sb):
         # Find the CAPTCHA image
         if sb.is_element_visible("img#rscaptcha_img"):
             solve_rscaptcha(sb)
-            sb.uc_click("button[type='submit']") 
+            time.sleep(3)
+            pyautogui.click(940,484)
+            time.sleep(5)
+            return
     except Exception as e:
         print(f"No rscaptcha processing: {e}")
         
@@ -3091,7 +3094,9 @@ def process_link_blocks(sb):
                     # Find the CAPTCHA image
                     if sb.is_element_visible("img#rscaptcha_img"):
                         solve_rscaptcha(sb)
-                        sb.uc_click("button[type='submit']") 
+                        time.sleep(3)
+                        pyautogui.click(940,484)
+                        time.sleep(5)
                 except Exception as e:
                     print(f"No rscaptcha processing: {e}")
                     
@@ -3126,7 +3131,7 @@ while True:
 
                                 time.sleep(2)
                                 ourcoincash_window = earnow_window
-                                sb1.uc_open("https://ourcoincash.xyz/links")
+                                sb1.uc_open("https://claimtrx.com/links")
                                 earnow_window = None
                                 print('Done.....')
                                 #time.sleep(99999)
@@ -3161,12 +3166,3 @@ while True:
         response_messege(f'ERR:{e}')
         continue
  
-
-
-#https://ibb.co/NgPWWKrY
-#https://ibb.co/YFxk9hQC
-#https://ibb.co/xSwKTHHM
-#https://ibb.co/YFxk9hQC
-#https://ibb.co/Qj11qjR9
-#https://ibb.co/YFxk9hQC
-#https://ibb.co/GfCCkctS

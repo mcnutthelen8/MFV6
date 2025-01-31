@@ -2653,7 +2653,7 @@ def earnow_online(window_list):
 
 
             if timeout >= 8:
-                pyautogui.press('f5')
+                #pyautogui.press('f5')
                 timeout = 1
             if wrong_captcha >= 5:
                 print('too many Wrong Captcha')

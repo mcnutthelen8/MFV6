@@ -2313,7 +2313,49 @@ def earnow_online(window_list):
  
             if sb1.is_element_visible("div.captcha-icon img"):
                 sb1.execute_script("""
-                    document.querySelector('button.btn.btn-lg.btn-primary.mb-2').scrollIntoView({ behavior: 'smooth', block: 'end' }); 
+                    (function() {
+                        function removeIframes(element) {
+                            element.querySelectorAll('iframe').forEach(el => el.remove());
+                        }
+
+                        function observeMutations() {
+                            const observer = new MutationObserver(mutationsList => {
+                                for (const mutation of mutationsList) {
+                                    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                                        mutation.addedNodes.forEach(addedNode => {
+                                            if (addedNode instanceof Element) {
+                                                removeIframes(addedNode);
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+
+                            observer.observe(document.documentElement, { childList: true, subtree: true });
+                        }
+
+                        console.log('Removing iframes and observing mutations...');
+                        observeMutations();
+
+                        setInterval(() => {
+                            document.querySelectorAll('iframe').forEach(el => el.remove());
+                        }, 100);
+                    })();
+
+
+                """)
+
+
+                
+                sb1.execute_script("""
+                    const button = document.querySelector('button.btn.btn-lg.btn-primary.mb-2');
+                    button.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+                    // Slightly adjust the scroll position after a short delay
+                    setTimeout(() => {
+                        window.scrollBy(0, -50); // Move up by 50 pixels (adjust as needed)
+                    }, 500);
+
                 """)
 
                 time.sleep(2)
@@ -2382,6 +2424,40 @@ def earnow_online(window_list):
             try:
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.85)
                 if x and y:
+                    sb1.execute_script("""
+                        (function() {
+                            function removeIframes(element) {
+                                element.querySelectorAll('iframe').forEach(el => el.remove());
+                            }
+
+                            function observeMutations() {
+                                const observer = new MutationObserver(mutationsList => {
+                                    for (const mutation of mutationsList) {
+                                        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                                            mutation.addedNodes.forEach(addedNode => {
+                                                if (addedNode instanceof Element) {
+                                                    removeIframes(addedNode);
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+
+                                observer.observe(document.documentElement, { childList: true, subtree: true });
+                            }
+
+                            console.log('Removing iframes and observing mutations...');
+                            observeMutations();
+
+                            setInterval(() => {
+                                document.querySelectorAll('iframe').forEach(el => el.remove());
+                            }, 100);
+                        })();
+
+
+                    """)
+
+
                     print("Click any ad and open in new tab, and wait 10 seconds before you can return and continue.")
                     pyautogui.rightClick(639, 568 )
                     time.sleep(1) 
@@ -2466,6 +2542,7 @@ def earnow_online(window_list):
                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.85)
                         if x and y:
                                 print('clickad10sec Found 3')
+
                                 break
                     except Exception as e:  
                         print("Not found clickad10sec 3")

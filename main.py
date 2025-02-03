@@ -1795,9 +1795,10 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         #get_mails_passowrds(farm_id)
  
  
-        if 'ClaimTRX - Earn Free TRX' == current_title:
+        if 'ClaimTRX - Earn Free TRX' == current_title or 'Home' in current_title:
             if function == 2:
-                login_to_faucet('https://ourcoincash.xyz/login', sb1, 'gra.ndk.olla@gmail.com', 'grand2005', 'recaptcha', window_list, 'button#ClaimBtn')
+                login_to_faucet('https://feyorra.top/login', sb1, 'redgta.36@gmail.com', 'Uwuinsta2005', 'rscaptcha', window_list, "button[type='submit']")
+            
             if function == 1:
                 login_to_faucet('https://claimtrx.com/login', sb1, 'redgta36@gmail.com', 'Uwuinsta2005', 'rscaptcha', window_list, "button[type='submit']")
  
@@ -2299,48 +2300,37 @@ def image_onscreeen(image_path, confidence=0.95, onlick = True):
     except pyautogui.ImageNotFoundException:
         return None
 
-def earnow_online(window_list):
+def earnow_online(window1 , window2):
     scrolled = False
     last_step = False
     timeout = 1
     pre_element = None
+    window = window1
     wrong_captcha = 1
+    win1 = True
+    win2 = True
     while True:
         try:
-            sb1.switch_to_window(window_list)
+            if window == window1 and win2:
+                window = window2
+            elif window == window2 and win1:
+                window = window1
+            if win1 == False and win2 == False:
+                return True
+            sb1.switch_to_window(window)
             title = sb1.get_title()
+            if "Shortlink" in title:
+                if window2 == window:
+                    win2 = False
+                if window1 == window:
+                    win1 = False
+                       
+                continue
             print(title)
  
             if sb1.is_element_visible("div.captcha-icon img"):
                 sb1.execute_script("""
-                    (function() {
-                        function removeIframes(element) {
-                            element.querySelectorAll('iframe').forEach(el => el.remove());
-                        }
-
-                        function observeMutations() {
-                            const observer = new MutationObserver(mutationsList => {
-                                for (const mutation of mutationsList) {
-                                    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                                        mutation.addedNodes.forEach(addedNode => {
-                                            if (addedNode instanceof Element) {
-                                                removeIframes(addedNode);
-                                            }
-                                        });
-                                    }
-                                }
-                            });
-
-                            observer.observe(document.documentElement, { childList: true, subtree: true });
-                        }
-
-                        console.log('Removing iframes and observing mutations...');
-                        observeMutations();
-
-                        setInterval(() => {
-                            document.querySelectorAll('iframe').forEach(el => el.remove());
-                        }, 100);
-                    })();
+                    document.querySelectorAll('iframe').forEach((e, i) => i % 2 === 0 && e.remove());
 
 
                 """)
@@ -2353,7 +2343,7 @@ def earnow_online(window_list):
 
                     // Slightly adjust the scroll position after a short delay
                     setTimeout(() => {
-                        window.scrollBy(0, -50); // Move up by 50 pixels (adjust as needed)
+                        window.scrollBy(0, -200); // Move up by 50 pixels (adjust as needed)
                     }, 500);
 
                 """)
@@ -2617,7 +2607,7 @@ def earnow_online(window_list):
                 scrolled = False 
                 if last_step:  
                     time.sleep(2)  
-                    return True
+                    #return True
                 sb1.disconnect()
                 time.sleep(5)
                 #pyautogui.press('f5')
@@ -2915,7 +2905,7 @@ def open_browsers():
         update = {"$set": {"response": 'Setup Done...'}}
         result = collection.update_one(query, update)
  
-    time.sleep(999)
+    #time.sleep(999)
     return sb1
  
 def update_target_ip(new_ip):
@@ -3041,8 +3031,13 @@ def open_faucets():
                         if ourcoincash_window == 404:
                             raise Exception(" ourcoincash_window == 404")
                         print(f"ourcoincash window handle: {ourcoincash_window}")
-                    else:
+                    if feyorra:
                         ourcoincash_window = None
+                        feyorra_window = handle_site(sb1, "https://feyorra.top/links", "Shortlinks", "Home", 1, [], ip_required)
+                        if feyorra_window == 404:
+                            raise Exception(" feyorra_window == 404")
+                        print(f"feyorra window handle: {feyorra_window}")
+
                 else:
                     raise Exception("Ip changed")
  
@@ -3074,7 +3069,7 @@ def open_faucets():
                     previous_reset_count = 0
  
  
-                    return ourcoincash_window,  ip_address, ip_required
+                    return ourcoincash_window,feyorra_window,  ip_address, ip_required
         except Exception as e:
                 response_messege(f'Resetting Browser{e}')
                 try:
@@ -3095,12 +3090,12 @@ feyorra_count = 0
 claimcoin_count = 0
 
  
-ourcoincash_window, ip_address, ip_required = open_faucets()
+ourcoincash_window,feyorra_window,  ip_address, ip_required = open_faucets()
 start_time4 = 0
 #time.sleep(9999)
 print('Starting Loop')
  
-def switch_to_earnow():
+def switch_to_earnow(now = 1):
     valid_links = ['cryptowidgets', 'earnow', 'ourcoincash', 'freeoseocheck',"giftmagic", "coinsvalue"]
     current_window = ourcoincash_window
     all_windows = sb1.window_handles
@@ -3123,8 +3118,10 @@ def switch_to_earnow():
     if 'Claim Trx' in sb1.get_title():
         print("Ourcoincash is in the title")
     else:
-        sb1.uc_open("https://claimtrx.com/links")
- 
+        if now == 1:
+            sb1.uc_open("https://claimtrx.com/links")
+        if now == 2:
+            sb1.uc_open("https://feyorra.top/links")
     return None
 
 def process_link_blocks(sb):
@@ -3179,11 +3176,70 @@ def process_link_blocks(sb):
                     
                 print("Clicked the claim button.")
                 return True
+            
         except Exception as e:
             print(f"An error occurred in block {index + 1}: {e}")
             pyautogui.click(600,500 )
 
 
+def process_link_blocks_fey(sb):
+    # Find all "div.link-block" elements
+    try:
+        # Find the CAPTCHA image
+        if sb.is_element_visible("img#rscaptcha_img"):
+            solve_rscaptcha(sb)
+            time.sleep(3)
+            pyautogui.click(940,484)
+            time.sleep(5)
+            return
+    except Exception as e:
+        print(f"No rscaptcha processing: {e}")
+        
+
+    link_blocks = sb.find_elements("div.col-lg-4.mb-3")
+    for index, block in enumerate(link_blocks):
+        print(f"Processing block {index + 1}:")
+ 
+        # Scroll the block into view
+        #sb.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", block)
+        try:
+            # Get the link-name
+            link_name_element = block.find_element(By.CSS_SELECTOR,"div.linkname.h5")
+            link_name = link_name_element.text
+            print(f"Link Name: {link_name}")
+ 
+            # Check if it's "Earnow"
+ 
+            # Get the link-rmn
+            link_rmn_element = block.find_element(By.CSS_SELECTOR,"div.pill.sec")
+            link_rmn = link_rmn_element.text
+            print(f"Link Remaining: {link_rmn}")
+ 
+            if link_name == "Earnow":
+                # Click the claim-button
+                button = block.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.waves-effect")
+                button.uc_click()
+                #actions = ActionChains(sb1)
+                #actions.move_to_element(button).click().perform()  
+                time.sleep(5) 
+                try:
+                    # Find the CAPTCHA image
+                    if sb.is_element_visible("img#rscaptcha_img"):
+                        solve_rscaptcha(sb)
+                        time.sleep(3)
+                        pyautogui.click(940,484)
+                        time.sleep(5)
+                except Exception as e:
+                    print(f"No rscaptcha processing: {e}")
+                    
+                print("Clicked the claim button.")
+                return True
+            
+        except Exception as e:
+            print(f"An error occurred in block {index + 1}: {e}")
+            pyautogui.click(600,500 )
+
+feyorra_window_shortlink = None
  
 while True:
     try:
@@ -3193,6 +3249,7 @@ while True:
             ip_address = get_ip(sb1)
             debug_messages(f'Ip address Found:{ip_address}')
             if ip_address == ip_required:
+
                 if ourcoincash:
                     try:
                         debug_messages(f'Switching Pages to OurCoinCash')
@@ -3202,16 +3259,7 @@ while True:
                         if 'Shortlinks' in title:
                             process_link_blocks(sb1)
                             earnow_window = switch_to_earnow()
-                            if earnow_window:
-                                close_extra_windows(sb1, [earnow_window])
-                                result = earnow_online(earnow_window)
 
-                                time.sleep(2)
-                                ourcoincash_window = earnow_window
-                                sb1.uc_open("https://claimtrx.com/links")
-                                earnow_window = None
-                                print('Done.....')
-                                #time.sleep(99999)
  
                         elif 'Just' in title:
                             debug_messages(f'Just.. Found on OurCoinCash')
@@ -3231,8 +3279,46 @@ while True:
                         response_messege(f'ERR:{e}')
                         #time.sleep(999999)
             
+                if feyorra:
+                    try:
+                        debug_messages(f'Switching Pages to feyorra')
+                        sb1.switch_to.window(feyorra_window)
+                        debug_messages(f'Getting Pages Titile:feyorra')
+                        title =sb1.get_title()
+                        if 'Shortlinks' in title:
+                            process_link_blocks_fey(sb1)
+                            feyorra_window_shortlink = switch_to_earnow(2)
+ 
+                        elif 'Just' in title:
+                            debug_messages(f'Just.. Found on OurCoinCash')
+                            cloudflare(sb1, login = False)
+                            debug_messages(f'Just Fixed OurCoinCash')
+                        elif 'Home' in title or 'Login' in title:
+                            debug_messages(f'LOGIN.. Found on OurCoinCash')
+                            response_messege('LOGIN.. Found on OurCoinCash')
+                            earnpp_coins = 0
+                            reset_count +=5
+                        else:
+                            debug_messages(f'OurCoinCash not Found:{title} | reset:{reset_count}')
+                            reset_count +=1
+ 
+                    except Exception as e:
+                        print(f'ggg:{e}')
+                        response_messege(f'ERR:{e}')
+                        #time.sleep(999999)
             
-        
+                if earnow_window:
+                    close_extra_windows(sb1, [earnow_window,feyorra_window_shortlink])
+                    result = earnow_online(earnow_window,feyorra_window_shortlink)
+
+                    time.sleep(2)
+                    ourcoincash_window = earnow_window
+                    feyorra_window = feyorra_window_shortlink
+                    #sb1.uc_open("https://claimtrx.com/links")
+                    earnow_window = None
+                    feyorra_window_shortlink = None
+                    print('Done.....')
+                    
             else:
                 print('IP Changed',ip_required)
 

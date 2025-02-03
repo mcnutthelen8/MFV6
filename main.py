@@ -2905,7 +2905,7 @@ def open_browsers():
         update = {"$set": {"response": 'Setup Done...'}}
         result = collection.update_one(query, update)
  
-    #time.sleep(999)
+    time.sleep(999)
     return sb1
  
 def update_target_ip(new_ip):
@@ -3052,7 +3052,7 @@ def open_faucets():
                     update = {"$set": {"request": 'mainscript'}}
                     result = collection.update_one(query, update)
  
-                    all_window_handles = [ourcoincash_window]
+                    all_window_handles = [ourcoincash_window,feyorra_window]
                     close_extra_windows(sb1, all_window_handles)
                     sb1.switch_to.window(ourcoincash_window)
                     print(f"Windows: ourcoincash: {ourcoincash_window},")
@@ -3114,14 +3114,16 @@ def switch_to_earnow(now = 1, window_lists=[]):
                         return sb1.current_window_handle
  
     print("Waiting for button")
-    sb1.switch_to_window(ourcoincash_window)
-    close_extra_windows(sb1, ourcoincash_window)
-    if 'Claim Trx' in sb1.get_title():
+    
+    close_extra_windows(sb1, window_lists)
+    if 'Shortlink' in sb1.get_title():
         print("Ourcoincash is in the title")
     else:
         if now == 1:
+            sb1.switch_to_window(ourcoincash_window)
             sb1.uc_open("https://claimtrx.com/links")
         if now == 2:
+            sb1.switch_to_window(feyorra_window)
             sb1.uc_open("https://feyorra.top/links")
     return None
 
@@ -3197,7 +3199,7 @@ def process_link_blocks_fey(sb):
         if sb.is_element_visible("img#rscaptcha_img"):
             solve_rscaptcha(sb)
             time.sleep(3)
-            pyautogui.click(940,484)
+            pyautogui.click(962,460)
             time.sleep(5)
             return
     except Exception as e:
@@ -3212,7 +3214,7 @@ def process_link_blocks_fey(sb):
         #sb.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", block)
         try:
             # Get the link-name
-            link_name_element = block.find_element(By.CSS_SELECTOR,"div.linkname.h5")
+            link_name_element = block.find_element(By.CSS_SELECTOR,"div.linkname")
             link_name = link_name_element.text
             print(f"Link Name: {link_name}")
  
@@ -3235,7 +3237,7 @@ def process_link_blocks_fey(sb):
                     if sb.is_element_visible("img#rscaptcha_img"):
                         solve_rscaptcha(sb)
                         time.sleep(3)
-                        pyautogui.click(940,484)
+                        pyautogui.click(962,460)
                         time.sleep(5)
                 except Exception as e:
                     print(f"No rscaptcha processing: {e}")
@@ -3247,8 +3249,9 @@ def process_link_blocks_fey(sb):
             print(f"An error occurred in block {index + 1}: {e}")
             pyautogui.click(600,500 )
 
+
 feyorra_window_shortlink = None
- 
+earnow_window = None
 while True:
     try:
         mainscript = control_panel()
@@ -3258,7 +3261,7 @@ while True:
             debug_messages(f'Ip address Found:{ip_address}')
             if ip_address == ip_required:
 
-                if ourcoincash:
+                if ourcoincash and earnow_window == None:
                     try:
                         debug_messages(f'Switching Pages to OurCoinCash')
                         sb1.switch_to.window(ourcoincash_window)
@@ -3266,8 +3269,8 @@ while True:
                         title =sb1.get_title()
                         if 'Shortlinks' in title:
                             process_link_blocks(sb1)
-                            earnow_window = switch_to_earnow(1,[ourcoincash_window,feyorra_window])
-
+                            earnow_window = switch_to_earnow(1,[ourcoincash_window,feyorra_window,feyorra_window_shortlink])
+                            print('CLAIMTRX is ',earnow_window)
  
                         elif 'Just' in title:
                             debug_messages(f'Just.. Found on OurCoinCash')
@@ -3281,13 +3284,13 @@ while True:
                         else:
                             debug_messages(f'OurCoinCash not Found:{title} | reset:{reset_count}')
                             reset_count +=1
- 
+                            sb1.uc_open('https://claimtrx.com/links')
                     except Exception as e:
                         print(f'ggg:{e}')
                         response_messege(f'ERR:{e}')
                         #time.sleep(999999)
             
-                if feyorra:
+                if feyorra and feyorra_window_shortlink == None:
                     try:
                         debug_messages(f'Switching Pages to feyorra')
                         sb1.switch_to.window(feyorra_window)
@@ -3295,7 +3298,7 @@ while True:
                         title =sb1.get_title()
                         if 'Shortlinks' in title:
                             process_link_blocks_fey(sb1)
-                            feyorra_window_shortlink = switch_to_earnow(2,[ourcoincash_window,feyorra_window])
+                            feyorra_window_shortlink = switch_to_earnow(2,[ourcoincash_window,feyorra_window, earnow_window])
  
                         elif 'Just' in title:
                             debug_messages(f'Just.. Found on OurCoinCash')
@@ -3309,13 +3312,13 @@ while True:
                         else:
                             debug_messages(f'OurCoinCash not Found:{title} | reset:{reset_count}')
                             reset_count +=1
- 
+                            sb1.uc_open('https://feyorra.top/links')
                     except Exception as e:
                         print(f'ggg:{e}')
                         response_messege(f'ERR:{e}')
                         #time.sleep(999999)
             
-                if earnow_window:
+                if feyorra_window_shortlink and earnow_window:
                     close_extra_windows(sb1, [earnow_window,feyorra_window_shortlink])
                     result = earnow_online(earnow_window,feyorra_window_shortlink)
 
@@ -3326,6 +3329,8 @@ while True:
                     earnow_window = None
                     feyorra_window_shortlink = None
                     print('Done.....')
+                    
+
                     
             else:
                 print('IP Changed',ip_required)

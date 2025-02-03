@@ -3032,8 +3032,9 @@ def open_faucets():
                             raise Exception(" ourcoincash_window == 404")
                         print(f"ourcoincash window handle: {ourcoincash_window}")
                     if feyorra:
-                        ourcoincash_window = None
-                        feyorra_window = handle_site(sb1, "https://feyorra.top/links", "Shortlinks", "Home", 1, [], ip_required)
+                        #ourcoincash_window = None
+                        sb1.open_new_tab()
+                        feyorra_window = handle_site(sb1, "https://feyorra.top/links", "Shortlinks", "Home", 2, [ourcoincash_window], ip_required)
                         if feyorra_window == 404:
                             raise Exception(" feyorra_window == 404")
                         print(f"feyorra window handle: {feyorra_window}")
@@ -3095,14 +3096,14 @@ start_time4 = 0
 #time.sleep(9999)
 print('Starting Loop')
  
-def switch_to_earnow(now = 1):
+def switch_to_earnow(now = 1, window_lists=[]):
     valid_links = ['cryptowidgets', 'earnow', 'ourcoincash', 'freeoseocheck',"giftmagic", "coinsvalue"]
     current_window = ourcoincash_window
     all_windows = sb1.window_handles
     for window in all_windows:
-        if window != current_window:
+        if window not in window_lists:
             sb1.switch_to.window(window)
-            if 'Claim Trx' in sb1.get_title():
+            if 'Shortlink' in sb1.get_title():
                 print("Ourcoincash is in the title")
                 continue
             else:
@@ -3129,10 +3130,13 @@ def process_link_blocks(sb):
     try:
         # Find the CAPTCHA image
         if sb.is_element_visible("img#rscaptcha_img"):
-            solve_rscaptcha(sb)
-            time.sleep(3)
-            pyautogui.click(940,484)
-            time.sleep(5)
+            gg =solve_rscaptcha(sb)
+            if gg:
+                time.sleep(3)
+                pyautogui.click(940,484)
+                time.sleep(5)
+            else:
+                pyautogui.press('f5')
             return
     except Exception as e:
         print(f"No rscaptcha processing: {e}")
@@ -3167,10 +3171,14 @@ def process_link_blocks(sb):
                 try:
                     # Find the CAPTCHA image
                     if sb.is_element_visible("img#rscaptcha_img"):
-                        solve_rscaptcha(sb)
-                        time.sleep(3)
-                        pyautogui.click(940,484)
-                        time.sleep(5)
+                        #solve_rscaptcha(sb)
+                        gg =solve_rscaptcha(sb)
+                        if gg:
+                            time.sleep(3)
+                            pyautogui.click(940,484)
+                            time.sleep(5)
+                        else:
+                            pyautogui.press('f5')
                 except Exception as e:
                     print(f"No rscaptcha processing: {e}")
                     
@@ -3258,7 +3266,7 @@ while True:
                         title =sb1.get_title()
                         if 'Shortlinks' in title:
                             process_link_blocks(sb1)
-                            earnow_window = switch_to_earnow()
+                            earnow_window = switch_to_earnow(1,[ourcoincash_window,feyorra_window])
 
  
                         elif 'Just' in title:
@@ -3287,7 +3295,7 @@ while True:
                         title =sb1.get_title()
                         if 'Shortlinks' in title:
                             process_link_blocks_fey(sb1)
-                            feyorra_window_shortlink = switch_to_earnow(2)
+                            feyorra_window_shortlink = switch_to_earnow(2,[ourcoincash_window,feyorra_window])
  
                         elif 'Just' in title:
                             debug_messages(f'Just.. Found on OurCoinCash')

@@ -528,7 +528,7 @@ chrome_user_data_dir = '/root/.config/google-chrome/'
 bitmoon = False
 ourcoincash = True
 claimcoin = False
-feyorra = True
+feyorra = False
 feyorratop = False
 baymack = False
  
@@ -2300,7 +2300,10 @@ def image_onscreeen(image_path, confidence=0.95, onlick = True):
     except pyautogui.ImageNotFoundException:
         return None
 
-def earnow_online(window1 , window2):
+
+
+
+def earnow_online(window1):
     scrolled = False
     last_step = False
     timeout = 1
@@ -2309,23 +2312,20 @@ def earnow_online(window1 , window2):
     wrong_captcha = 1
     win1 = True
     win2 = True
+
     while True:
         try:
-            if window == window1 and win2:
-                window = window2
-            elif window == window2 and win1:
-                window = window1
-            if win1 == False and win2 == False:
-                return True
+
             sb1.switch_to_window(window)
-            title = sb1.get_title()
+            title = sb1.get_title() #get_active_window_title()
             if "Shortlink" in title:
-                if window2 == window:
-                    win2 = False
-                if window1 == window:
-                    win1 = False
+                return True
+            #    if window2 == window:
+            #        win2 = False
+            #    if window1 == window:
+            #        win1 = False
                        
-                continue
+            #    continue
             print(title)
  
             if sb1.is_element_visible("div.captcha-icon img"):
@@ -2607,7 +2607,7 @@ def earnow_online(window1 , window2):
                 scrolled = False 
                 if last_step:  
                     time.sleep(2)  
-                    #return True
+                    return True
                 sb1.disconnect()
                 time.sleep(5)
                 #pyautogui.press('f5')
@@ -2748,7 +2748,6 @@ def earnow_online(window1 , window2):
         except Exception as e:
             print(e)
             sb1.switch_to.default_content()
-
 
 
 
@@ -2905,7 +2904,7 @@ def open_browsers():
         update = {"$set": {"response": 'Setup Done...'}}
         result = collection.update_one(query, update)
  
-    time.sleep(999)
+    #time.sleep(999)
     return sb1
  
 def update_target_ip(new_ip):
@@ -3249,7 +3248,7 @@ def process_link_blocks_fey(sb):
             print(f"An error occurred in block {index + 1}: {e}")
             pyautogui.click(600,500 )
 
-
+#time.sleep(9990)
 feyorra_window_shortlink = None
 earnow_window = None
 while True:
@@ -3269,8 +3268,19 @@ while True:
                         title =sb1.get_title()
                         if 'Shortlinks' in title:
                             process_link_blocks(sb1)
-                            earnow_window = switch_to_earnow(1,[ourcoincash_window,feyorra_window,feyorra_window_shortlink])
-                            print('CLAIMTRX is ',earnow_window)
+                            earnow_window = switch_to_earnow(1,[ourcoincash_window])
+                            close_extra_windows(sb1, [earnow_window])
+                            sb1.disconnect()
+                            time.sleep(99999)
+                            result = earnow_online(earnow_window)
+
+                            time.sleep(2)
+                            ourcoincash_window = earnow_window
+                            #sb1.uc_open("https://claimtrx.com/links")
+                            earnow_window = None
+                            feyorra_window_shortlink = None
+                            print('Done.....')
+                            
  
                         elif 'Just' in title:
                             debug_messages(f'Just.. Found on OurCoinCash')
@@ -3317,19 +3327,6 @@ while True:
                         print(f'ggg:{e}')
                         response_messege(f'ERR:{e}')
                         #time.sleep(999999)
-            
-                if feyorra_window_shortlink and earnow_window:
-                    close_extra_windows(sb1, [earnow_window,feyorra_window_shortlink])
-                    result = earnow_online(earnow_window,feyorra_window_shortlink)
-
-                    time.sleep(2)
-                    ourcoincash_window = earnow_window
-                    feyorra_window = feyorra_window_shortlink
-                    #sb1.uc_open("https://claimtrx.com/links")
-                    earnow_window = None
-                    feyorra_window_shortlink = None
-                    print('Done.....')
-                    
 
                     
             else:

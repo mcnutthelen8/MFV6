@@ -1584,61 +1584,97 @@ def solve_rscaptcha(driver):
         else:
             print("No image found")
 
- 
+def get_active_window_title():
+    try:
+        # Get the window ID of the active window
+        window_id = subprocess.check_output(["xdotool", "getactivewindow"], text=True).strip()
+        
+        # Get the window title using the window ID
+        window_title = subprocess.check_output(["xdotool", "getwindowname", window_id], text=True).strip()
+        
+        return window_title
+    except subprocess.CalledProcessError:
+        return None  # Return None if there's an error (e.g., no active window)
+
 def cloudflare(sb, login = True):
     try:
         page_title = sb.get_title()
         gg = False
         while gg == False:
-            try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
-                print("verify_cloudflare git Found")
-                if x and y:
-                    sb.disconnect() 
-                    for i in range(1, 300):
-                        #pyautogui.moveTo(100, 200)
- 
-                        if 'Login' in page_title or 'Just' in page_title or 'Faucet' in page_title or 'Earnbitmoon' in page_title:
-                            try:
-                                time.sleep(1)
-                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
-                                print("verify_cloudflare git Found")
+            if 'Just' in page_title:
+                sb.disconnect() 
+                for i in range(50):
+                    time.sleep(1)
+                    gtitle = get_active_window_title()
+                    if 'Just' in gtitle:
                                 try:
-                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.7)
-                                    pyautogui.click(x, y)
-                                    time.sleep(5)
-                                    if login == False: 
-                                        sb.connect()
-                                        return True
- 
-                                except Exception as e:
-                                    print(e)
- 
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_success.png", confidence=0.7)
-                                    pyautogui.click(x, y)
                                     time.sleep(1)
-                                    if login == True: 
-                                        sb.connect()
-                                        return True
- 
+                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
+                                    print("verify_cloudflare git Found")
+                                    try:
+                                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.7)
+                                        pyautogui.click(x, y)
+                                        time.sleep(5)
+    
+                                    except Exception as e:
+                                        print(e)
                                 except Exception as e:
                                     print(e)
-                            except Exception as e:
-                                print('cloudflare not found keep trying')
-                        else:
-                            sb.connect()
-                            return
- 
-                    sb.connect()
-                else:
-                    if login == False: 
-                        gg = True
                     else:
-                        gg = False
-            except Exception as e:
-                print(e)
-                gg = True
+                        sb.connect()
+                        gg = True
+                        return
+                sb.connect()
+                return
+
+            else:
+
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
+                    print("verify_cloudflare git Found")
+                    if x and y:
+                        sb.disconnect() 
+                        for i in range(1, 300):
+                            #pyautogui.moveTo(100, 200)
+    
+                            if 'Login' in page_title or 'Faucet' in page_title or 'Earnbitmoon' in page_title:
+                                try:
+                                    time.sleep(1)
+                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
+                                    print("verify_cloudflare git Found")
+                                    try:
+                                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.7)
+                                        pyautogui.click(x, y)
+                                        time.sleep(5)
+    
+                                    except Exception as e:
+                                        print(e)
+    
+                                    try:
+                                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_success.png", confidence=0.7)
+                                        pyautogui.click(x, y)
+                                        time.sleep(1)
+                                        if login == True: 
+                                            sb.connect()
+                                            return True
+    
+                                    except Exception as e:
+                                        print(e)
+                                except Exception as e:
+                                    print('cloudflare not found keep trying')
+                            else:
+                                sb.connect()
+                                return
+    
+                        sb.connect()
+                    else:
+                        if login == False: 
+                            gg = True
+                        else:
+                            gg = False
+                except Exception as e:
+                    print(e)
+                    gg = True
  
     except Exception as e:
         print(e)
@@ -1768,7 +1804,7 @@ def satoshifaucet_login(driver,url,email,restrict_pages):
     if current_title in current_title:
         # Wait for the email input by type attribute
         email_input = WebDriverWait(driver, 5).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, 'input#email'))
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'input[type="email"]'))
         )
         email_input.send_keys(email)
 
@@ -1822,7 +1858,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         #get_mails_passowrds(farm_id)
  
  
-        if expected_title not in current_title:
+        if "SatoshiFaucet | Satoshi faucet" in current_title:
 
             if function == 1:
                 satoshifaucet_login(sb1,'https://satoshifaucet.io/','grandkolla@gmail.com',window_list)
@@ -1838,7 +1874,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
             if driver.current_window_handle not in window_list:
                 ready = True
         elif 'Just' in current_title:
-            handle_captcha_and_cloudflare(driver)
+            cloudflare(driver, login = False)
  
         else:
             print(f"{current_title} is not the expected title. Reconnecting...")

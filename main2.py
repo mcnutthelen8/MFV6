@@ -1838,14 +1838,8 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
  
                     sb1.execute_script("window.scrollTo(0, 1000);")
                     cloudflare_dark(driver, True)
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
-                        if x and y: 
-                            sb1.uc_click('button[type="submit"]')
-                            time.sleep(5)
-                            return
-                    except Exception as e:
-                        print(f'ERR:{e}') 
+                    sb1.uc_click('button[type="submit"]')
+
  
  
         print("✅ CAPTCHA validated")
@@ -1922,8 +1916,10 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
             return 404
         #get_mails_passowrds(farm_id)
  
- 
-        if "mainfaucet | Satoshi faucet" in current_title or 'CoinPayz - Multicurrency Crypto Earning Platform' in current_title:
+        if expected_title in current_title:
+            if driver.current_window_handle not in window_list:
+                ready = True
+        elif "mainfaucet | Satoshi faucet" in current_title or 'CoinPayz - Multicurrency Crypto Earning Platform' in current_title:
 
             if function == 1:
                 mainfaucet_login(sb1,'https://mainfaucet.io/','grandkolla@gmail.com',window_list)
@@ -1932,9 +1928,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
  
  
  
-        elif expected_title in current_title:
-            if driver.current_window_handle not in window_list:
-                ready = True
+
         elif 'Lock' in current_title:
             if driver.current_window_handle not in window_list:
                 ready = True
@@ -2958,6 +2952,8 @@ def process_link_blocks_claimtrx(sb):
             pyautogui.click(600,500 )
 
 
+
+
 browser_proxy = ''
 query = {"type": "main"}
 refresh_count = 0
@@ -3293,62 +3289,44 @@ def process_link_blocks(sb):
             pyautogui.click(600,500 )
 
 
-def process_link_blocks_fey(sb):
+def process_link_blocks_coinpayz(sb):
     # Find all "div.link-block" elements
-    try:
-        # Find the CAPTCHA image
-        if sb.is_element_visible("img#rscaptcha_img"):
-            solve_rscaptcha(sb)
-            time.sleep(3)
-            pyautogui.click(962,460)
-            time.sleep(5)
-            return
-    except Exception as e:
-        print(f"No rscaptcha processing: {e}")
-        
-
-    link_blocks = sb.find_elements("div.col-lg-4.mb-3")
+    link_blocks = sb.find_elements("div.flex.flex-col.shadow-lg.bg-paper-dark.rounded-lg.col-span-1")
     for index, block in enumerate(link_blocks):
         print(f"Processing block {index + 1}:")
  
         # Scroll the block into view
-        #sb.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", block)
+        sb.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", block)
+        time.sleep(2)
         try:
             # Get the link-name
-            link_name_element = block.find_element(By.CSS_SELECTOR,"div.linkname")
+            link_name_element = block.find_element(By.CSS_SELECTOR,"span.text-2xl.text-blue-300.font-semibold.pl-1")
             link_name = link_name_element.text
             print(f"Link Name: {link_name}")
  
             # Check if it's "Earnow"
  
             # Get the link-rmn
-            link_rmn_element = block.find_element(By.CSS_SELECTOR,"div.pill.sec")
+            link_rmn_element = block.find_element(By.CSS_SELECTOR,"span.flex.text-sm.items-center.justify-center.font-medium")
             link_rmn = link_rmn_element.text
             print(f"Link Remaining: {link_rmn}")
  
             if link_name == "Earnow":
                 # Click the claim-button
-                button = block.find_element(By.CSS_SELECTOR,"button.btn.sl_claim")
-                button.uc_click()
-                #actions = ActionChains(sb1)
-                #actions.move_to_element(button).click().perform()  
+                button = block.find_element(By.CSS_SELECTOR,"span.px-1.text-info-lighter")
+                #button.uc_click()
+                actions = ActionChains(sb1)
+                actions.move_to_element(button).click().perform()  
                 time.sleep(5) 
-                try:
-                    # Find the CAPTCHA image
-                    if sb.is_element_visible("img#rscaptcha_img"):
-                        solve_rscaptcha(sb)
-                        time.sleep(3)
-                        pyautogui.click(962,460)
-                        time.sleep(5)
-                except Exception as e:
-                    print(f"No rscaptcha processing: {e}")
-                    
                 print("Clicked the claim button.")
+                time.sleep(3) 
                 return True
             
         except Exception as e:
             print(f"An error occurred in block {index + 1}: {e}")
             pyautogui.click(600,500 )
+
+
 
 #time.sleep(9990)
 feyorra_window_shortlink = None
@@ -3369,8 +3347,9 @@ while True:
                         debug_messages(f'Getting Pages Titile:mainfaucet')
                         title =sb1.get_title()
                         if 'Shortlinks' in title:
-                            process_link_blocks(sb1)
-                            earnow_window = switch_to_earnow(1,[mainfaucet_window])
+                            #process_link_blocks(sb1)
+                            process_link_blocks_coinpayz(sb1)
+                            earnow_window = switch_to_earnow(2,[mainfaucet_window])
                             if earnow_window:
                                 close_extra_windows(sb1, [earnow_window])
                                 result = earnow_online(earnow_window)

@@ -1678,6 +1678,92 @@ def cloudflare(sb, login = True):
     except Exception as e:
         print(e)
  
+
+
+def cloudflare_dark(sb, login = True):
+    try:
+        page_title = sb.get_title()
+        gg = False
+        while gg == False:
+            if 'Just' in page_title:
+                sb.disconnect() 
+                for i in range(50):
+                    time.sleep(1)
+                    gtitle = get_active_window_title()
+                    if 'Just' in gtitle:
+                                try:
+                                    time.sleep(1)
+                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_dark.png", confidence=0.7)
+                                    print("verify_cloudflare git Found Just")
+                                    try:
+                                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box_dark.png", confidence=0.7)
+                                        pyautogui.click(x, y)
+                                        time.sleep(5)
+    
+                                    except Exception as e:
+                                        print(e)
+                                except Exception as e:
+                                    print(e)
+                    else:
+                        sb.connect()
+                        gg = True
+                        return
+                sb.connect()
+                return
+
+            else:
+
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_dark.png", confidence=0.7)
+                    print("verify_cloudflare git Found")
+                    if x and y:
+                        sb.disconnect() 
+                        for i in range(1, 300):
+                            #pyautogui.moveTo(100, 200)
+    
+                            if 'Login' in page_title or 'Faucet' in page_title or 'Earnbitmoon' in page_title:
+                                try:
+                                    time.sleep(1)
+                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_dark.png", confidence=0.7)
+                                    print("verify_cloudflare git Found")
+                                    try:
+                                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box_dark.png", confidence=0.7)
+                                        pyautogui.click(x, y)
+                                        time.sleep(5)
+    
+                                    except Exception as e:
+                                        print(e)
+    
+                                    try:
+                                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_success_dark.png", confidence=0.7)
+                                        pyautogui.click(x, y)
+                                        time.sleep(1)
+                                        sb.connect()
+                                        return True
+    
+                                    except Exception as e:
+                                        print(e)
+                                except Exception as e:
+                                    print('cloudflare not found keep trying')
+                            else:
+                                sb.connect()
+                                return
+    
+                        sb.connect()
+                    else:
+                        if login == False: 
+                            gg = True
+                        else:
+                            gg = False
+                except Exception as e:
+                    print(e)
+                    gg = True
+ 
+    except Exception as e:
+        print(e)
+
+
+
 def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages, submit_button):
  
     driver.uc_open(url)
@@ -1751,7 +1837,7 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                     pyautogui.moveTo(100, 200)
  
                     sb1.execute_script("window.scrollTo(0, 1000);")
-                    cloudflare(driver, True)
+                    cloudflare_dark(driver, True)
                     try:
                         x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
                         if x and y: 
@@ -3069,7 +3155,7 @@ def open_faucets():
                     if mainfaucet:
  
                         #mainfaucet_window = handle_site(sb1, "https://mainfaucet.io/links/currency/sol", "Shortlinks", "Home", 1, [], ip_required)
-                        mainfaucet_window = handle_site(sb1, "https://coinpayz.xyz/links", "Shortlinks", "Home", 1, [], ip_required)
+                        mainfaucet_window = handle_site(sb1, "https://coinpayz.xyz/links", "Shortlinks", "Home", 2, [], ip_required)
                         if mainfaucet_window == 404:
                             raise Exception(" mainfaucet_window == 404")
                         print(f"mainfaucet window handle: {mainfaucet_window}")

@@ -1875,7 +1875,48 @@ def mainfaucet_login(driver,url,email,restrict_pages):
         time.sleep(3)
         print("🚀 Login attempt made!")
  
- 
+def hafaucet_login(driver,url,email,restrict_pages):
+    try:
+        driver.uc_open(url)
+        time.sleep(3)
+    
+        all_windows = driver.window_handles
+        for window in all_windows:
+            if window not in restrict_pages:
+                driver.switch_to.window(window)
+        driver.uc_click('button.login_bt')
+        print("WebDriver Check")
+        current_title = driver.get_title()
+        print(f"Current g title: {current_title}")
+        if current_title in current_title:
+            # Wait for the email input by type attribute
+            email_input = WebDriverWait(driver, 5).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, 'input[type="email"]'))
+            )
+            email_input.send_keys(email)
+
+
+            for i in range(1, 50):
+                time.sleep(2)
+                try:
+                    #x,y = pyautogui.locateCenterOnScreen(f"notrobotdone.png", confidence=0.75)
+                    x,y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/notrobotdone.png", confidence=0.8)
+                    if x and y:
+                        pyautogui.click(x, y)
+                        break
+                except Exception as e:
+                    print(f'Element Not Found Recaptcha :{e}')
+    
+            button = sb1.find_element(By.CSS_SELECTOR, 'input[type="submit"]')
+            actions = ActionChains(sb1)
+            actions.move_to_element(button).click().perform()  
+            print("✅ CAPTCHA validated")
+            time.sleep(3)
+            print("🚀 Login attempt made!")
+    except Exception as e:
+        pass
+
+
 bitmoon_window = None
 mainfaucet_window = None
 claimcoin_window = None
@@ -1925,6 +1966,8 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
                 mainfaucet_login(sb1,'https://mainfaucet.io/','grandkolla@gmail.com',window_list)
             if function == 2:
                 login_to_faucet('https://coinpayz.xyz/login', sb1, 'grandkolla@gmail.com', 'Uwuinsta2005', 'cloudflare', window_list, 'submit_button')
+            if function == 3:
+                hafaucet_login(sb1,'https://mainfaucet.io/','grandkolla@gmail.com',window_list)
  
  
  
@@ -3151,7 +3194,8 @@ def open_faucets():
                     if mainfaucet:
  
                         #mainfaucet_window = handle_site(sb1, "https://mainfaucet.io/links/currency/sol", "Shortlinks", "Home", 1, [], ip_required)
-                        mainfaucet_window = handle_site(sb1, "https://coinpayz.xyz/links", "Shortlinks", "Home", 2, [], ip_required)
+                        #mainfaucet_window = handle_site(sb1, "https://coinpayz.xyz/links", "Shortlinks", "Home", 2, [], ip_required)
+                        mainfaucet_window = handle_site(sb1, "https://helpfpcoin.site/link/sol", "Shortlinks", "Home", 3, [], ip_required)
                         if mainfaucet_window == 404:
                             raise Exception(" mainfaucet_window == 404")
                         print(f"mainfaucet window handle: {mainfaucet_window}")
@@ -3212,7 +3256,7 @@ claimcoin_count = 0
  
 mainfaucet_window,  ip_address, ip_required = open_faucets()
 start_time4 = 0
-time.sleep(9999)
+#time.sleep(9999)
 print('Starting Loop')
  
 def switch_to_earnow(now = 1, window_lists=[]):
@@ -3328,7 +3372,7 @@ def process_link_blocks_coinpayz(sb):
 
 
 
-#time.sleep(9990)
+time.sleep(9990)
 feyorra_window_shortlink = None
 earnow_window = None
 while True:

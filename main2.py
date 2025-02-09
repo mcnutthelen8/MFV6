@@ -1779,10 +1779,16 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
     print(f"Current g title: {current_title}")
     if 'Login' in current_title:
         # Wait for the email input by type attribute
-        email_input = WebDriverWait(driver, 60).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, 'input#email'))
-        )
-        email_input.send_keys(email)
+        if 'bitBitz' in current_title:
+            email_input = WebDriverWait(driver, 60).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, 'input#username'))
+            )
+            email_input.send_keys(email)
+        else:
+            email_input = WebDriverWait(driver, 60).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, 'input#email'))
+            )
+            email_input.send_keys(email)
  
         # Locate the password input by type attribute
         password_input = driver.find_element(By.CSS_SELECTOR, 'input[type="password"]')
@@ -1837,10 +1843,11 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                     pyautogui.moveTo(100, 200)
  
                     sb1.execute_script("window.scrollTo(0, 1000);")
-                    cloudflare_dark(driver, True)
-                    sb1.uc_click('button[type="submit"]')
-
- 
+                    cloudflare(driver, True)
+                    button = sb1.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
+                    actions = ActionChains(sb1)
+                    actions.move_to_element(button).click().perform()      
+    
  
         print("✅ CAPTCHA validated")
         time.sleep(3)
@@ -1927,6 +1934,9 @@ feyorratop_window = None
 def close_extra_windows(driver, keep_window_handles):
     current_window = driver.current_window_handle
     all_windows = driver.window_handles
+    if len(all_windows) == 1:
+        driver.switch_to.window(current_window)
+        return
     for window in all_windows:
         if window not in keep_window_handles:
             driver.switch_to.window(window)
@@ -1960,7 +1970,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         if expected_title in current_title:
             if driver.current_window_handle not in window_list:
                 ready = True
-        elif "mainfaucet | Satoshi faucet" in current_title or 'CoinPayz - Multicurrency Crypto Earning Platform' in current_title or 'Home' in current_title:
+        elif "mainfaucet | Satoshi faucet" in current_title or 'CoinPayz - Multicurrency Crypto Earning Platform' in current_title or 'Home' in current_title or 'Earn Free Bitcoin & Crypto - Faucet, PTC, Surveys / bitBitz' in current_title:
 
             if function == 1:
                 mainfaucet_login(sb1,'https://mainfaucet.io/','grandkolla@gmail.com',window_list)
@@ -1969,7 +1979,8 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
             if function == 3:
                 hafaucet_login(sb1,'https://helpfpcoin.site/','grandkolla@gmail.com',window_list)
  
- 
+            if function == 4:
+                login_to_faucet('https://bitbitz.cc/login', sb1, 'grandkolla9196', 'qzWZSX@mdT*472S', 'cloudflare', window_list, 'submit_button')
  
 
         elif 'Lock' in current_title:
@@ -2508,7 +2519,7 @@ def earnow_online(window1):
 
                     // Slightly adjust the scroll position after a short delay
                     setTimeout(() => {
-                        window.scrollBy(0, -200); // Move up by 50 pixels (adjust as needed)
+                        window.scrollBy(0, -340); // Move up by 50 pixels (adjust as needed)
                     }, 500);
 
                 """)
@@ -3195,7 +3206,8 @@ def open_faucets():
  
                         #mainfaucet_window = handle_site(sb1, "https://mainfaucet.io/links/currency/sol", "Shortlinks", "Home", 1, [], ip_required)
                         #mainfaucet_window = handle_site(sb1, "https://coinpayz.xyz/links", "Shortlinks", "Home", 2, [], ip_required)
-                        mainfaucet_window = handle_site(sb1, "https://helpfpcoin.site/link/sol", "Help FP Coin - Link", "Home", 3, [], ip_required)
+                        #mainfaucet_window = handle_site(sb1, "https://helpfpcoin.site/link/sol", "Help FP Coin - Link", "Home", 3, [], ip_required)
+                        mainfaucet_window = handle_site(sb1, "https://bitbitz.cc/shortlinks", "Shortlink", "Home", 4, [], ip_required)
                         if mainfaucet_window == 404:
                             raise Exception(" mainfaucet_window == 404")
                         print(f"mainfaucet window handle: {mainfaucet_window}")
@@ -3260,38 +3272,48 @@ start_time4 = 0
 print('Starting Loop')
  
 def switch_to_earnow(now = 1, window_lists=[]):
-    valid_links = ['cryptowidgets', 'earnow', 'mainfaucet', 'freeoseocheck',"shortano", "shortino"]
-    current_window = mainfaucet_window
-    all_windows = sb1.window_handles
-    for window in all_windows:
-        if window not in window_lists:
-            sb1.switch_to.window(window)
-            if 'Shortlink' in sb1.get_title():
-                print("mainfaucet is in the title")
-                continue
-            else:
-                time.sleep(1)
-                current_url = sb1.execute_script("return window.location.href;")
-                for link in valid_links:
-                    if link in current_url:
-                        return sb1.current_window_handle
- 
-    print("Waiting for button")
+    try:
+        valid_links = ['cryptowidgets', 'earnow', 'mainfaucet', 'freeoseocheck',"shortano", "shortino","petsguide.net" "wiki-topia"]
+        current_window = mainfaucet_window
+        all_windows = sb1.window_handles
+        for window in all_windows:
+            if window not in window_lists:
+                try:
+                    sb1.switch_to.window(window)
+                except Exception as e:
+                    print('ggge',e)
+                if 'Shortlink' in sb1.get_title():
+                    print("mainfaucet is in the title")
+                    continue
+                else:
+                    time.sleep(1)
+                    current_url = sb1.execute_script("return window.location.href;")
+                    for link in valid_links:
+                        if link in current_url:
+                            return sb1.current_window_handle
     
-    close_extra_windows(sb1, window_lists)
-    if 'Shortlink' in sb1.get_title():
-        print("mainfaucet is in the title")
-    else:
-        if now == 1:
-            sb1.switch_to_window(mainfaucet_window)
-            sb1.uc_open("https://mainfaucet.io/links/currency/sol")
-        if now == 2:
-            sb1.switch_to_window(feyorra_window)
-            sb1.uc_open("https://coinpayz.xyz/links")
-        if now == 3:
-            sb1.switch_to_window(feyorra_window)
-            sb1.uc_open("https://helpfpcoin.site/link/sol")
-    return None
+        print("Waiting for button")
+        
+        close_extra_windows(sb1, window_lists)
+        if 'Shortlink' in sb1.get_title():
+            print("mainfaucet is in the title")
+        else:
+            if now == 1:
+                sb1.switch_to_window(mainfaucet_window)
+                sb1.uc_open("https://mainfaucet.io/links/currency/sol")
+            if now == 2:
+                sb1.switch_to_window(mainfaucet_window)
+                sb1.uc_open("https://coinpayz.xyz/links")
+            if now == 3:
+                sb1.switch_to_window(mainfaucet_window)
+                sb1.uc_open("https://helpfpcoin.site/link/sol")
+            if now == 4:
+                sb1.switch_to_window(mainfaucet_window)
+                sb1.uc_open("https://bitbitz.cc/shortlinks")
+        return None
+    except Exception as e:
+        print('sitch.',e)
+
 
 def process_link_blocks(sb):
     # Find all "div.link-block" elements
@@ -3373,42 +3395,90 @@ def process_link_blocks_coinpayz(sb):
             print(f"An error occurred in block {index + 1}: {e}")
             pyautogui.click(600,500 )
 
+
 def process_link_blocks_helpfpcoin(sb):
     # Find all "div.link-block" elements
-    link_blocks = sb.find_elements("div.link-div")
-    for index, block in enumerate(link_blocks):
-        print(f"Processing block {index + 1}:")
- 
-        # Scroll the block into view
-        sb.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", block)
-        time.sleep(2)
-        try:
-            # Get the link-name
-            link_name_element = block.find_element(By.CSS_SELECTOR,"span")
-            link_name = link_name_element.text
-            print(f"Link Name: {link_name}")
- 
-            # Check if it's "Earnow"
- 
-            # Get the link-rmn
-            link_rmn_element = block.find_element(By.CSS_SELECTOR,"a.link-go i")
-            link_rmn = link_rmn_element.text
-            print(f"Link Remaining: {link_rmn}")
- 
-            if link_name == "Earnow":
-                # Click the claim-button
-                button = block.find_element(By.CSS_SELECTOR,"a.link-go")
-                #button.uc_click()
-                actions = ActionChains(sb1)
-                actions.move_to_element(button).click().perform()  
-                time.sleep(5) 
-                print("Clicked the claim button.")
-                time.sleep(3) 
-                return True
-            
-        except Exception as e:
-            print(f"An error occurred in block {index + 1}: {e}")
-            pyautogui.click(600,500 )
+    try:
+        link_blocks = sb.find_elements("div.link-div")
+        for index, block in enumerate(link_blocks):
+            print(f"Processing block {index + 1}:")
+    
+            # Scroll the block into view
+            sb.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", block)
+            time.sleep(2)
+            try:
+                # Get the link-name
+                link_name_element = block.find_element(By.CSS_SELECTOR,"span")
+                link_name = link_name_element.text
+                print(f"Link Name: {link_name}")
+    
+                # Check if it's "Earnow"
+    
+                # Get the link-rmn
+                link_rmn_element = block.find_element(By.CSS_SELECTOR,"a.link-go i")
+                link_rmn = link_rmn_element.text
+                print(f"Link Remaining: {link_rmn}")
+    
+                if link_name == "Earnow":
+                    # Click the claim-button
+                    button = block.find_element(By.CSS_SELECTOR,"a.link-go")
+                    #button.uc_click()
+                    actions = ActionChains(sb1)
+                    actions.move_to_element(button).click().perform()  
+                    time.sleep(5) 
+                    pyautogui.click(946 ,345)
+                    
+                    return True
+                
+            except Exception as e:
+                print(f"An error occurred in block {index + 1}: {e}")
+                pyautogui.click(600,500 )
+    except Exception as e:
+        print('process link hafaucet',e)
+
+
+def process_link_blocks_bitbitzz(sb):
+    # Find all "div.link-block" elements
+    try:
+        link_blocks = sb.find_elements("div.col-lg-6.mt-4")
+        for index, block in enumerate(link_blocks):
+            print(f"Processing block {index + 1}:")
+    
+            # Scroll the block into view
+            sb.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", block)
+            time.sleep(2)
+            try:
+                # Get the link-name
+                link_name_element = block.find_element(By.CSS_SELECTOR,"span.fw-bold")
+                link_name = link_name_element.text
+                print(f"Link Name: {link_name}")
+    
+                # Check if it's "Earnow"
+    
+                # Get the link-rmn
+                link_rmn_element = block.find_element(By.CSS_SELECTOR,"span.float-end")
+                link_rmn = link_rmn_element.text
+                print(f"Link Remaining: {link_rmn}")
+    
+                if link_name == "Earnow":
+                    # Click the claim-button
+                    button = block.find_element(By.CSS_SELECTOR,"a.text-decoration-none.shortlink")
+                    #button.uc_click()
+                    actions = ActionChains(sb1)
+                    actions.move_to_element(button).click().perform()  
+                    time.sleep(5) 
+                    pyautogui.click(946 ,345)
+                    
+                    return True
+                
+            except Exception as e:
+                print(f"An error occurred in block {index + 1}: {e}")
+                pyautogui.click(600,500 )
+    except Exception as e:
+        print('process link hafaucet',e)
+
+
+
 
 time.sleep(9990)
 feyorra_window_shortlink = None
@@ -3428,17 +3498,18 @@ while True:
                         sb1.switch_to.window(mainfaucet_window)
                         debug_messages(f'Getting Pages Titile:mainfaucet')
                         title =sb1.get_title()
-                        if 'Shortlinks' in title:
+                        if 'Shortlinks' in title or title in title:
                             #process_link_blocks(sb1)
-                            process_link_blocks_helpfpcoin(sb1)
-                            earnow_window = switch_to_earnow(3,[mainfaucet_window])
+                            process_link_blocks_bitbitzz(sb1)
+                            earnow_window = switch_to_earnow(4,[mainfaucet_window])
                             if earnow_window:
                                 close_extra_windows(sb1, [earnow_window])
                                 result = earnow_online(earnow_window)
 
                                 time.sleep(2)
                                 mainfaucet_window = earnow_window
-                                #sb1.uc_open("https://claimtrx.com/links")
+                                pyautogui.press('f5')
+                                time.sleep(2)
                                 earnow_window = None
                                 feyorra_window_shortlink = None
                                 print('Done.....')
@@ -3456,11 +3527,11 @@ while True:
                         else:
                             debug_messages(f'mainfaucet not Found:{title} | reset:{reset_count}')
                             reset_count +=1
-                            sb1.uc_open('https://claimtrx.com/links')
+                            time.sleep(9999)
                     except Exception as e:
                         print(f'ggg:{e}')
                         response_messege(f'ERR:{e}')
-                        #time.sleep(999999)
+                        time.sleep(999999)
             
 
                     

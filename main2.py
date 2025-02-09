@@ -91,8 +91,8 @@ fb_pass = 'ashen1997'
 yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
 mysterium_raw = ""
  
-satoshifaucet_email = 'Nooo'
-satoshifaucet_pass = 'Nooo'
+mainfaucet_email = 'Nooo'
+mainfaucet_pass = 'Nooo'
 feyorra_email = 'Nooo'
 feyorra_pass = 'Nooo'
 claimc_email = 'yvonne12463@gmail.com'
@@ -109,8 +109,8 @@ print(blacklistedIP)
  
 server_name1 = ''
 CSB1_farms  = ''
-satoshifaucet_email = ''
-satoshifaucet_pass = ''
+mainfaucet_email = ''
+mainfaucet_pass = ''
 feyorra_email = ''
 feyorra_pass = ''
 layout = ''
@@ -119,8 +119,8 @@ layout = ''
 def get_mails_passowrds(farm_id):
     global server_name1
     global CSB1_farms
-    global satoshifaucet_email
-    global satoshifaucet_pass
+    global mainfaucet_email
+    global mainfaucet_pass
     global feyorra_email
     global feyorra_pass
     global layout
@@ -146,31 +146,31 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'thailand'
             CSB1_farms = [1, 2, 3, 4, 5]
-            satoshifaucet_email = 'khabibmakanzie2@gmail.com'
-            satoshifaucet_pass = 'khabibmakanzie2'
+            mainfaucet_email = 'khabibmakanzie2@gmail.com'
+            mainfaucet_pass = 'khabibmakanzie2'
             feyorra_email = 'khabibmakanzie2@gmail.com'
             feyorra_pass = 'khabibmakanzie2'
  
         elif '2' in layout:
             server_name1 = 'thailand' # 'morocco' #'bulgaria'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            satoshifaucet_email = 'amytanisha250@gmail.com'
-            satoshifaucet_pass = 'amytanisha250'
+            mainfaucet_email = 'amytanisha250@gmail.com'
+            mainfaucet_pass = 'amytanisha250'
             feyorra_email = 'amytanisha250@gmail.com'
             feyorra_pass = 'amytanisha250'
         elif '3' in layout:
             server_name1 = 'bulgaria' # 'morocco' #'bulgaria'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            satoshifaucet_email = 'grandkolla999br@gmail.com'
-            satoshifaucet_pass = 'grandkolla999br'
+            mainfaucet_email = 'grandkolla999br@gmail.com'
+            mainfaucet_pass = 'grandkolla999br'
             feyorra_email = 'grandkolla999br@gmail.com'
             feyorra_pass = 'grandkolla999br'
  
         elif '4' in layout:
             server_name1 = 'thailand' # 'morocco' #'bulgaria'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            satoshifaucet_email = 'makanziekb@gmail.com'
-            satoshifaucet_pass = 'makanziekb'
+            mainfaucet_email = 'makanziekb@gmail.com'
+            mainfaucet_pass = 'makanziekb'
             feyorra_email = 'makanziekb@gmail.com'
             feyorra_pass = 'makanziekb'
         else:
@@ -181,31 +181,31 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'estonia'
             CSB1_farms = [1, 2, 3, 4, 5]
-            satoshifaucet_email = 'metroboom910@gmail.com'
-            satoshifaucet_pass = 'metroboom910'
+            mainfaucet_email = 'metroboom910@gmail.com'
+            mainfaucet_pass = 'metroboom910'
             feyorra_email = 'metroboom910@gmail.com'
             feyorra_pass = 'metroboom910'
  
         elif '2' in layout:
             server_name1 = 'finland' #'portugal'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            satoshifaucet_email = 'merlelcn@gmail.com'
-            satoshifaucet_pass = 'I2Ne7C329jJt'
+            mainfaucet_email = 'merlelcn@gmail.com'
+            mainfaucet_pass = 'I2Ne7C329jJt'
             feyorra_email = 'merlelcn@gmail.com'
             feyorra_pass = 'I2Ne7C329jJt'
  
         elif '3' in layout:
             server_name1 = 'finland' #'portugal'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            satoshifaucet_email = 'anrogedyyr@gmail.com'
-            satoshifaucet_pass = 'anrogedyyr'
+            mainfaucet_email = 'anrogedyyr@gmail.com'
+            mainfaucet_pass = 'anrogedyyr'
             feyorra_email = 'anrogedyyr@gmail.com'
             feyorra_pass = 'anrogedyyr'
         elif '4' in layout:
             server_name1 = 'estonia'
             CSB1_farms = [1, 2, 3, 4, 5]
-            satoshifaucet_email = 'bmetoomro190@gmail.com'
-            satoshifaucet_pass = 'bmetoomro190'
+            mainfaucet_email = 'bmetoomro190@gmail.com'
+            mainfaucet_pass = 'bmetoomro190'
             feyorra_email = 'bmetoomro190@gmail.com'
             feyorra_pass = 'bmetoomro190'
         else:
@@ -217,8 +217,8 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'france'
             CSB1_farms = [1, 2, 3, 4, 5]
-            satoshifaucet_email = 'yvonne12463@gmail.com'
-            satoshifaucet_pass = 'Uwuinsta@2005'
+            mainfaucet_email = 'yvonne12463@gmail.com'
+            mainfaucet_pass = 'Uwuinsta@2005'
             feyorra_email = 'yvonne12463@gmail.com'
             feyorra_pass = 'Uwuinsta@2005'
  
@@ -228,23 +228,23 @@ def get_mails_passowrds(farm_id):
         elif '2' in layout:
             server_name1 = 'spain' #'belgium'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            satoshifaucet_email = 'pennyscrambble@gmail.com'
-            satoshifaucet_pass = 'pennyscrambble'
+            mainfaucet_email = 'pennyscrambble@gmail.com'
+            mainfaucet_pass = 'pennyscrambble'
             feyorra_email = 'pennyscrambble@gmail.com'
             feyorra_pass = 'pennyscrambble'
  
         elif '3' in layout:
             server_name1 = 'spain' #'belgium'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            satoshifaucet_email = 'berendkalpana2@gmail.com'
-            satoshifaucet_pass = 'berendkalpana2'
+            mainfaucet_email = 'berendkalpana2@gmail.com'
+            mainfaucet_pass = 'berendkalpana2'
             feyorra_email = 'berendkalpana2@gmail.com'
             feyorra_pass = 'berendkalpana2'
         elif '4' in layout:
             server_name1 = 'france'
             CSB1_farms = [1, 2, 3, 4, 5]
-            satoshifaucet_email = 'voyn3642ovene@gmail.com'
-            satoshifaucet_pass = 'voyn3642ovene'
+            mainfaucet_email = 'voyn3642ovene@gmail.com'
+            mainfaucet_pass = 'voyn3642ovene'
             feyorra_email = 'voyn3642ovene@gmail.com'
             feyorra_pass = 'voyn3642ovene'
  
@@ -257,29 +257,29 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'hungary'
             CSB1_farms = [1, 2, 3, 4, 5]
-            satoshifaucet_email = 'ddilakshi232@gmail.com'
-            satoshifaucet_pass = 'Uwuinsta@2005'
+            mainfaucet_email = 'ddilakshi232@gmail.com'
+            mainfaucet_pass = 'Uwuinsta@2005'
             feyorra_email = 'ddilakshi232@gmail.com'
             feyorra_pass = 'Uwuinsta@2005'
         elif '2' in layout:
             server_name1 = 'hong kong' #'georgia'# 
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            satoshifaucet_email = 'kumarsheln@gmail.com'
-            satoshifaucet_pass = 'kumarsheln'
+            mainfaucet_email = 'kumarsheln@gmail.com'
+            mainfaucet_pass = 'kumarsheln'
             feyorra_email = 'kumarsheln@gmail.com'
             feyorra_pass = 'kumarsheln'
         elif '3' in layout:
             server_name1 = 'hong kong' #'georgia'# 
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            satoshifaucet_email = 'andrpewrea@gmail.com'
-            satoshifaucet_pass = 'andrpewrea'
+            mainfaucet_email = 'andrpewrea@gmail.com'
+            mainfaucet_pass = 'andrpewrea'
             feyorra_email = 'andrpewrea@gmail.com'
             feyorra_pass = 'andrpewrea'
         elif '4' in layout:
             server_name1 = 'hungary'
             CSB1_farms = [1, 2, 3, 4, 5]
-            satoshifaucet_email = 'shiladid323@gmail.com'
-            satoshifaucet_pass = 'shiladid323'
+            mainfaucet_email = 'shiladid323@gmail.com'
+            mainfaucet_pass = 'shiladid323'
             feyorra_email = 'shiladid323@gmail.com'
             feyorra_pass = 'shiladid323'
         else:
@@ -291,30 +291,30 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'italy'
             CSB1_farms = [1, 2, 3, 4, 5]
-            satoshifaucet_email = 'gihanfer907@gmail.com' #gihanfer907@gmail.com
-            satoshifaucet_pass = 'gihanfer907'
+            mainfaucet_email = 'gihanfer907@gmail.com' #gihanfer907@gmail.com
+            mainfaucet_pass = 'gihanfer907'
             feyorra_email = 'gihanfer907@gmail.com'
             feyorra_pass = 'gihanfer907'
  
         elif '2' in layout:
             server_name1 = 'malaysia' #'chile'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            satoshifaucet_email = 'howardrahul838@gmail.com'
-            satoshifaucet_pass = 'howardrahul838'
+            mainfaucet_email = 'howardrahul838@gmail.com'
+            mainfaucet_pass = 'howardrahul838'
             feyorra_email = 'howardrahul838@gmail.com'
             feyorra_pass = 'howardrahul838'
         elif '3' in layout:
             server_name1 = 'malaysia' #'chile'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            satoshifaucet_email = 'redgta362@gmail.com'
-            satoshifaucet_pass = 'redgta362'
+            mainfaucet_email = 'redgta362@gmail.com'
+            mainfaucet_pass = 'redgta362'
             feyorra_email = 'redgta362@gmail.com'
             feyorra_pass = 'redgta362'
         elif '4' in layout:
             server_name1 = 'italy'
             CSB1_farms = [1, 2, 3, 4, 5]
-            satoshifaucet_email = 'ferhng790@gmail.com'
-            satoshifaucet_pass = 'ferhng790'
+            mainfaucet_email = 'ferhng790@gmail.com'
+            mainfaucet_pass = 'ferhng790'
             feyorra_email = 'ferhng790@gmail.com'
             feyorra_pass = 'ferhng790'
         else:
@@ -326,8 +326,8 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'indonesia'
             CSB1_farms = [6,7,8,9,10]
-            satoshifaucet_email = 'sevensevengk@gmail.com'
-            satoshifaucet_pass = 'sevensevengk'
+            mainfaucet_email = 'sevensevengk@gmail.com'
+            mainfaucet_pass = 'sevensevengk'
             feyorra_email = 'sevensevengk@gmail.com'
             feyorra_pass = 'sevensevengk'
  
@@ -335,23 +335,23 @@ def get_mails_passowrds(farm_id):
         elif '2' in layout:
             server_name1 = 'indonesia' 
             CSB1_farms = [6, 7, 8, 9, 10]
-            satoshifaucet_email = 'gksevn77@gmail.com'
-            satoshifaucet_pass = 'gksevn77'
+            mainfaucet_email = 'gksevn77@gmail.com'
+            mainfaucet_pass = 'gksevn77'
             feyorra_email = 'gksevn77@gmail.com'
             feyorra_pass = 'gksevn77'
  
         elif '3' in layout:
             server_name1 = 'south korea' 
             CSB1_farms = [6, 7, 8, 9, 10]
-            satoshifaucet_email = 'kg7seven@gmail.com'
-            satoshifaucet_pass = 'kg7seven'
+            mainfaucet_email = 'kg7seven@gmail.com'
+            mainfaucet_pass = 'kg7seven'
             feyorra_email = 'kg7seven@gmail.com'
             feyorra_pass = 'kg7seven'
         elif '4' in layout:
             server_name1 = 'south korea'
             CSB1_farms = [6, 7, 8, 9, 10]
-            satoshifaucet_email = 'fosengklla@gmail.com'
-            satoshifaucet_pass = 'fosengklla'
+            mainfaucet_email = 'fosengklla@gmail.com'
+            mainfaucet_pass = 'fosengklla'
             feyorra_email = 'fosengklla@gmail.com'
             feyorra_pass = 'fosengklla'
  
@@ -361,16 +361,16 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'belgium'
             CSB1_farms = [6,7,8,9,10]
-            satoshifaucet_email = 'shevgraaa@gmail.com'
-            satoshifaucet_pass = 'shevgraaa'
+            mainfaucet_email = 'shevgraaa@gmail.com'
+            mainfaucet_pass = 'shevgraaa'
             feyorra_email = 'shevgraaa@gmail.com'
             feyorra_pass = 'shevgraaa'
  
         elif '2' in layout:
             server_name1 = 'belgium' 
             CSB1_farms = [6, 7, 8, 9, 10]
-            satoshifaucet_email = 'grshevvvv@gmail.com'
-            satoshifaucet_pass = 'grshevvvv'
+            mainfaucet_email = 'grshevvvv@gmail.com'
+            mainfaucet_pass = 'grshevvvv'
             feyorra_email = 'grshevvvv@gmail.com'
             feyorra_pass = 'grshevvvv'
  
@@ -378,15 +378,15 @@ def get_mails_passowrds(farm_id):
         elif '3' in layout:
             server_name1 = 'denmark' 
             CSB1_farms = [6, 7, 8, 9, 10]
-            satoshifaucet_email = 'grevonshld@gmail.com'
-            satoshifaucet_pass = 'grevonshld'
+            mainfaucet_email = 'grevonshld@gmail.com'
+            mainfaucet_pass = 'grevonshld'
             feyorra_email = 'grevonshld@gmail.com'
             feyorra_pass = 'grevonshld'
         elif '4' in layout:
             server_name1 = 'denmark'
             CSB1_farms = [6, 7, 8, 9, 10]
-            satoshifaucet_email = 'sheforldnmk@gmail.com'
-            satoshifaucet_pass = 'sheforldnmk'
+            mainfaucet_email = 'sheforldnmk@gmail.com'
+            mainfaucet_pass = 'sheforldnmk'
             feyorra_email = 'sheforldnmk@gmail.com'
             feyorra_pass = 'sheforldnmk'
  
@@ -396,16 +396,16 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'croatia'
             CSB1_farms = [6,7,8,9,10]
-            satoshifaucet_email = 'ahenrxaaa@gmail.com'
-            satoshifaucet_pass = 'ahenrxaaa'
+            mainfaucet_email = 'ahenrxaaa@gmail.com'
+            mainfaucet_pass = 'ahenrxaaa'
             feyorra_email = 'ahenrxaaa@gmail.com'
             feyorra_pass = 'ahenrxaaa'
  
         elif '2' in layout:
             server_name1 = 'croatia' 
             CSB1_farms = [6, 7, 8, 9, 10]
-            satoshifaucet_email = 'rxshenaxa@gmail.com'
-            satoshifaucet_pass = 'rxshenaxa'
+            mainfaucet_email = 'rxshenaxa@gmail.com'
+            mainfaucet_pass = 'rxshenaxa'
             feyorra_email = 'rxshenaxa@gmail.com'
             feyorra_pass = 'rxshenaxa'
  
@@ -413,16 +413,16 @@ def get_mails_passowrds(farm_id):
         elif '3' in layout:
             server_name1 = 'saudi arabia' 
             CSB1_farms = [6, 7, 8, 9, 10]
-            satoshifaucet_email = 'rhexnargg@gmail.com'
-            satoshifaucet_pass = 'rhexnargg'
+            mainfaucet_email = 'rhexnargg@gmail.com'
+            mainfaucet_pass = 'rhexnargg'
             feyorra_email = 'rhexnargg@gmail.com'
             feyorra_pass = 'rhexnargg'
  
         elif '4' in layout:
             server_name1 = 'saudi arabia'
             CSB1_farms = [6, 7, 8, 9, 10]
-            satoshifaucet_email = 'senarxbiag@gmail.com'
-            satoshifaucet_pass = 'senarxbiag'
+            mainfaucet_email = 'senarxbiag@gmail.com'
+            mainfaucet_pass = 'senarxbiag'
             feyorra_email = 'senarxbiag@gmail.com'
             feyorra_pass = 'senarxbiag'
  
@@ -431,16 +431,16 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'canada'
             CSB1_farms = [6,7,8,9,10]
-            satoshifaucet_email = 'semiprraaa@gmail.com'
-            satoshifaucet_pass = 'semiprraaa'
+            mainfaucet_email = 'semiprraaa@gmail.com'
+            mainfaucet_pass = 'semiprraaa'
             feyorra_email = 'semiprraaa@gmail.com'
             feyorra_pass = 'semiprraaa'
  
         elif '2' in layout:
             server_name1 = 'canada' 
             CSB1_farms = [6, 7, 8, 9, 10]
-            satoshifaucet_email = 'pereramishee@gmail.com'
-            satoshifaucet_pass = 'pereramishee'
+            mainfaucet_email = 'pereramishee@gmail.com'
+            mainfaucet_pass = 'pereramishee'
             feyorra_email = 'pereramishee@gmail.com'
             feyorra_pass = 'pereramishee'
  
@@ -449,15 +449,15 @@ def get_mails_passowrds(farm_id):
         elif '3' in layout:
             server_name1 = 'sweden' 
             CSB1_farms = [6, 7, 8, 9, 10]
-            satoshifaucet_email = 'ramishepera@gmail.com'
-            satoshifaucet_pass = 'ramishepera'
+            mainfaucet_email = 'ramishepera@gmail.com'
+            mainfaucet_pass = 'ramishepera'
             feyorra_email = 'ramishepera@gmail.com'
             feyorra_pass = 'ramishepera'
         elif '4' in layout:
             server_name1 = 'sweden'
             CSB1_farms = [6, 7, 8, 9, 10]
-            satoshifaucet_email = 'pesheswendemi@gmail.com'
-            satoshifaucet_pass = 'pesheswendemi'
+            mainfaucet_email = 'pesheswendemi@gmail.com'
+            mainfaucet_pass = 'pesheswendemi'
             feyorra_email = 'pesheswendemi@gmail.com'
             feyorra_pass = 'pesheswendemi'
  
@@ -467,16 +467,16 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'austria'
             CSB1_farms = [6,7,8,9,10]
-            satoshifaucet_email = 'melosandsong@gmail.com'
-            satoshifaucet_pass = 'melosandsong'
+            mainfaucet_email = 'melosandsong@gmail.com'
+            mainfaucet_pass = 'melosandsong'
             feyorra_email = 'melosandsong@gmail.com'
             feyorra_pass = 'melosandsong'
  
         elif '2' in layout:
             server_name1 = 'austria' 
             CSB1_farms = [6, 7, 8, 9, 10]
-            satoshifaucet_email = 'sadrameloonsan@gmail.com'
-            satoshifaucet_pass = 'sadrameloonsan'
+            mainfaucet_email = 'sadrameloonsan@gmail.com'
+            mainfaucet_pass = 'sadrameloonsan'
             feyorra_email = 'sadrameloonsan@gmail.com'
             feyorra_pass = 'sadrameloonsan'
  
@@ -484,15 +484,15 @@ def get_mails_passowrds(farm_id):
         elif '3' in layout:
             server_name1 = 'lithuania' 
             CSB1_farms = [6, 7, 8, 9, 10]
-            satoshifaucet_email = 'mlsansonone@gmail.com'
-            satoshifaucet_pass = 'mlsansonone'
+            mainfaucet_email = 'mlsansonone@gmail.com'
+            mainfaucet_pass = 'mlsansonone'
             feyorra_email = 'mlsansonone@gmail.com'
             feyorra_pass = 'mlsansonone'
         elif '4' in layout:
             server_name1 = 'lithuania'
             CSB1_farms = [6, 7, 8, 9, 10]
-            satoshifaucet_email = 'saradmsnire@gmail.com'
-            satoshifaucet_pass = 'saradmsnire'
+            mainfaucet_email = 'saradmsnire@gmail.com'
+            mainfaucet_pass = 'saradmsnire'
             feyorra_email = 'saradmsnire@gmail.com'
             feyorra_pass = 'saradmsnire'
  
@@ -504,8 +504,8 @@ def get_mails_passowrds(farm_id):
             print('SOmething Wrong Did u use --farm')
     print(server_name1)
     print(CSB1_farms)
-    print(satoshifaucet_email)
-    print(satoshifaucet_pass)
+    print(mainfaucet_email)
+    print(mainfaucet_pass)
     print(feyorra_email)
     print(feyorra_pass)
     print(layout)
@@ -526,7 +526,7 @@ chrome_user_data_dir = '/root/.config/google-chrome/'
  
  
 bitmoon = False
-satoshifaucet = True
+mainfaucet = True
 claimcoin = False
 feyorra = False
 feyorratop = False
@@ -1610,7 +1610,7 @@ def cloudflare(sb, login = True):
                                 try:
                                     time.sleep(1)
                                     x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
-                                    print("verify_cloudflare git Found")
+                                    print("verify_cloudflare git Found Just")
                                     try:
                                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.7)
                                         pyautogui.click(x, y)
@@ -1654,9 +1654,8 @@ def cloudflare(sb, login = True):
                                         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_success.png", confidence=0.7)
                                         pyautogui.click(x, y)
                                         time.sleep(1)
-                                        if login == True: 
-                                            sb.connect()
-                                            return True
+                                        sb.connect()
+                                        return True
     
                                     except Exception as e:
                                         print(e)
@@ -1749,34 +1748,14 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
             else:
                 for i in range(1, 10):
                     time.sleep(1)
-                    #pyautogui.moveTo(100, 200)
+                    pyautogui.moveTo(100, 200)
  
                     sb1.execute_script("window.scrollTo(0, 1000);")
-                    #cloudflare(driver, True)
+                    cloudflare(driver, True)
                     try:
                         x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
                         if x and y: 
- 
-                            #login_button = driver.find_element(By.CSS_SELECTOR, submit_button)
-                            #click_element_with_pyautogui(driver, login_button)
-                            #click_element_with_pyautogui(sb1, 'button[type="submit"]')
-                            if 'Feyorra' in current_title:
-                                pyautogui.click(932 ,728)
-                                time.sleep(1)
-                                pyautogui.click(943 ,788)
-                                #x:943 y:788
-                                time.sleep(5)
-                                return
-                            if 'ClaimCoin' in current_title:
-                                pyautogui.click(973, 833)
-                                time.sleep(5)
-                                return
-                            if driver.is_element_visible(submit_button):
-                                sb1.uc_click(submit_button)
-                            #sb1.uc_click('button[type="submit"]')
- 
-                            #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
-                            #login_button.click(submit_button)
+                            sb1.uc_click('button[type="submit"]')
                             time.sleep(5)
                             return
                     except Exception as e:
@@ -1788,7 +1767,7 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
         print("🚀 Login attempt made!")
  
  
-def satoshifaucet_login(driver,url,email,restrict_pages):
+def mainfaucet_login(driver,url,email,restrict_pages):
  
     driver.uc_open(url)
     time.sleep(2)
@@ -1818,7 +1797,7 @@ def satoshifaucet_login(driver,url,email,restrict_pages):
  
  
 bitmoon_window = None
-satoshifaucet_window = None
+mainfaucet_window = None
 claimcoin_window = None
 feyorra_window = None
 baymack_window = None
@@ -1858,10 +1837,13 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         #get_mails_passowrds(farm_id)
  
  
-        if "SatoshiFaucet | Satoshi faucet" in current_title:
+        if "mainfaucet | Satoshi faucet" in current_title or 'CoinPayz - Multicurrency Crypto Earning Platform' in current_title:
 
             if function == 1:
-                satoshifaucet_login(sb1,'https://satoshifaucet.io/','grandkolla@gmail.com',window_list)
+                mainfaucet_login(sb1,'https://mainfaucet.io/','grandkolla@gmail.com',window_list)
+            if function == 2:
+                login_to_faucet('https://coinpayz.xyz/login', sb1, 'grandkolla@gmail.com', 'Uwuinsta2005', 'cloudflare', window_list, 'submit_button')
+ 
  
  
         elif expected_title in current_title:
@@ -1999,14 +1981,14 @@ reset_count_isacc = 0
 previous_reset_count = 0
 start_time = 0
 start_time3 = 0
-satoshifaucet_coins = None
+mainfaucet_coins = None
 feyorra_coins = None
 claimc_coins = None
 bitmoon_coins = None
-satoshifaucet_coins_pre = None
+mainfaucet_coins_pre = None
 feyorra_coins_pre = None
 claimc_coins_pre = None
-satoshifaucet_limit_reached = None
+mainfaucet_limit_reached = None
 feyorra_limit_reached = None
 #if run_sb1:
 sb1 = None
@@ -3083,13 +3065,14 @@ def open_faucets():
                 update_target_ip(ip_address)
                 ip_address = get_ip(sb1)
                 if ip_required == ip_address:
-                    response_messege('satoshifaucet Loging')
-                    if satoshifaucet:
+                    response_messege('mainfaucet Loging')
+                    if mainfaucet:
  
-                        satoshifaucet_window = handle_site(sb1, "https://satoshifaucet.io/links/currency/ltc", "Shortlinks", "Home", 1, [], ip_required)
-                        if satoshifaucet_window == 404:
-                            raise Exception(" satoshifaucet_window == 404")
-                        print(f"satoshifaucet window handle: {satoshifaucet_window}")
+                        #mainfaucet_window = handle_site(sb1, "https://mainfaucet.io/links/currency/sol", "Shortlinks", "Home", 1, [], ip_required)
+                        mainfaucet_window = handle_site(sb1, "https://coinpayz.xyz/links", "Shortlinks", "Home", 1, [], ip_required)
+                        if mainfaucet_window == 404:
+                            raise Exception(" mainfaucet_window == 404")
+                        print(f"mainfaucet window handle: {mainfaucet_window}")
 
                     
 
@@ -3106,17 +3089,17 @@ def open_faucets():
                     update = {"$set": {"request": 'mainscript'}}
                     result = collection.update_one(query, update)
  
-                    all_window_handles = [satoshifaucet_window]
+                    all_window_handles = [mainfaucet_window]
                     close_extra_windows(sb1, all_window_handles)
-                    sb1.switch_to.window(satoshifaucet_window)
-                    print(f"Windows: satoshifaucet: {satoshifaucet_window},")
+                    sb1.switch_to.window(mainfaucet_window)
+                    print(f"Windows: mainfaucet: {mainfaucet_window},")
                     global reset_count 
                     global reset_count_isacc 
                     global previous_reset_count
-                    global satoshifaucet_limit_reached 
+                    global mainfaucet_limit_reached 
                     global feyorra_limit_reached 
  
-                    satoshifaucet_limit_reached = None
+                    mainfaucet_limit_reached = None
                     feyorra_limit_reached = None
  
                     reset_count = 0
@@ -3124,7 +3107,7 @@ def open_faucets():
                     previous_reset_count = 0
  
  
-                    return satoshifaucet_window,  ip_address, ip_required
+                    return mainfaucet_window,  ip_address, ip_required
         except Exception as e:
                 response_messege(f'Resetting Browser{e}')
                 try:
@@ -3140,25 +3123,25 @@ def debug_messages(messages):
     if debug_mode:
         print(messages)
  
-satoshifaucet_count = 0 
+mainfaucet_count = 0 
 feyorra_count = 0
 claimcoin_count = 0
 
  
-satoshifaucet_window,  ip_address, ip_required = open_faucets()
+mainfaucet_window,  ip_address, ip_required = open_faucets()
 start_time4 = 0
-#time.sleep(9999)
+time.sleep(9999)
 print('Starting Loop')
  
 def switch_to_earnow(now = 1, window_lists=[]):
-    valid_links = ['cryptowidgets', 'earnow', 'satoshifaucet', 'freeoseocheck',"giftmagic", "coinsvalue"]
-    current_window = satoshifaucet_window
+    valid_links = ['cryptowidgets', 'earnow', 'mainfaucet', 'freeoseocheck',"shortano", "shortino"]
+    current_window = mainfaucet_window
     all_windows = sb1.window_handles
     for window in all_windows:
         if window not in window_lists:
             sb1.switch_to.window(window)
             if 'Shortlink' in sb1.get_title():
-                print("satoshifaucet is in the title")
+                print("mainfaucet is in the title")
                 continue
             else:
                 time.sleep(1)
@@ -3171,14 +3154,14 @@ def switch_to_earnow(now = 1, window_lists=[]):
     
     close_extra_windows(sb1, window_lists)
     if 'Shortlink' in sb1.get_title():
-        print("satoshifaucet is in the title")
+        print("mainfaucet is in the title")
     else:
         if now == 1:
-            sb1.switch_to_window(satoshifaucet_window)
-            sb1.uc_open("https://satoshifaucet.io/links/currency/ltc")
+            sb1.switch_to_window(mainfaucet_window)
+            sb1.uc_open("https://mainfaucet.io/links/currency/sol")
         if now == 2:
             sb1.switch_to_window(feyorra_window)
-            sb1.uc_open("https://satoshifaucet.io/links/currency/ltc")
+            sb1.uc_open("https://coinpayz.xyz/links")
     return None
 
 def process_link_blocks(sb):
@@ -3188,7 +3171,8 @@ def process_link_blocks(sb):
         print(f"Processing block {index + 1}:")
  
         # Scroll the block into view
-        #sb.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", block)
+        sb.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", block)
+        time.sleep(2)
         try:
             # Get the link-name
             link_name_element = block.find_element(By.CSS_SELECTOR,"h5")
@@ -3210,6 +3194,12 @@ def process_link_blocks(sb):
                 actions.move_to_element(button).click().perform()  
                 time.sleep(5) 
                 print("Clicked the claim button.")
+                cloudflare(sb1, login = True)
+                button = sb.find_element(By.CSS_SELECTOR,"button.btn.btn_sl.link_form_bt.mt-2")
+                #button.uc_click()
+                actions = ActionChains(sb1)
+                actions.move_to_element(button).click().perform()  
+                time.sleep(3) 
                 return True
             
         except Exception as e:
@@ -3252,7 +3242,7 @@ def process_link_blocks_fey(sb):
  
             if link_name == "Earnow":
                 # Click the claim-button
-                button = block.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.waves-effect")
+                button = block.find_element(By.CSS_SELECTOR,"button.btn.sl_claim")
                 button.uc_click()
                 #actions = ActionChains(sb1)
                 #actions.move_to_element(button).click().perform()  
@@ -3274,7 +3264,7 @@ def process_link_blocks_fey(sb):
             print(f"An error occurred in block {index + 1}: {e}")
             pyautogui.click(600,500 )
 
-time.sleep(9990)
+#time.sleep(9990)
 feyorra_window_shortlink = None
 earnow_window = None
 while True:
@@ -3286,21 +3276,21 @@ while True:
             debug_messages(f'Ip address Found:{ip_address}')
             if ip_address == ip_required:
 
-                if satoshifaucet and earnow_window == None:
+                if mainfaucet and earnow_window == None:
                     try:
-                        debug_messages(f'Switching Pages to satoshifaucet')
-                        sb1.switch_to.window(satoshifaucet_window)
-                        debug_messages(f'Getting Pages Titile:satoshifaucet')
+                        debug_messages(f'Switching Pages to mainfaucet')
+                        sb1.switch_to.window(mainfaucet_window)
+                        debug_messages(f'Getting Pages Titile:mainfaucet')
                         title =sb1.get_title()
                         if 'Shortlinks' in title:
                             process_link_blocks(sb1)
-                            earnow_window = switch_to_earnow(1,[satoshifaucet_window])
+                            earnow_window = switch_to_earnow(1,[mainfaucet_window])
                             if earnow_window:
                                 close_extra_windows(sb1, [earnow_window])
                                 result = earnow_online(earnow_window)
 
                                 time.sleep(2)
-                                satoshifaucet_window = earnow_window
+                                mainfaucet_window = earnow_window
                                 #sb1.uc_open("https://claimtrx.com/links")
                                 earnow_window = None
                                 feyorra_window_shortlink = None
@@ -3308,16 +3298,16 @@ while True:
                             
  
                         elif 'Just' in title:
-                            debug_messages(f'Just.. Found on satoshifaucet')
+                            debug_messages(f'Just.. Found on mainfaucet')
                             cloudflare(sb1, login = False)
-                            debug_messages(f'Just Fixed satoshifaucet')
+                            debug_messages(f'Just Fixed mainfaucet')
                         elif 'Home' in title or 'Login' in title:
-                            debug_messages(f'LOGIN.. Found on satoshifaucet')
-                            response_messege('LOGIN.. Found on satoshifaucet')
+                            debug_messages(f'LOGIN.. Found on mainfaucet')
+                            response_messege('LOGIN.. Found on mainfaucet')
                             earnpp_coins = 0
                             reset_count +=5
                         else:
-                            debug_messages(f'satoshifaucet not Found:{title} | reset:{reset_count}')
+                            debug_messages(f'mainfaucet not Found:{title} | reset:{reset_count}')
                             reset_count +=1
                             sb1.uc_open('https://claimtrx.com/links')
                     except Exception as e:

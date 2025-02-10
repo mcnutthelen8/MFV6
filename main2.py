@@ -2487,10 +2487,6 @@ def image_onscreeen(image_path, confidence=0.95, onlick = True):
 
 
 def earnow_loading(driver):
-    try:
-        driver.disconnect()
-    except Exception as e:
-        pass
 
     #images_list = ['cloudflare_box', 'clickheretostart', 'clickad10sec', 'vpnerror', 'complete_captcha_earnow', 'scroll_down_earnow', 'adsoff', 'loading_linkwait']
     refresh_list = ['vpnerror','adsoff']
@@ -2501,8 +2497,9 @@ def earnow_loading(driver):
     ggg = 1
     bug = 1
     try:
-        while ggg > 20:
+        while ggg > 30:
             print(f'Trying Loading Attempt:',ggg)
+            pyautogui.moveTo(200,100)
             time.sleep(1)
             #cloudflare
             for item in clicking_list:
@@ -2532,7 +2529,8 @@ def earnow_loading(driver):
                     x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{item}.png", confidence=tolerance)
                     pyautogui.click(x, y)
                     print(f'{item} Box return_list 1')
-                    driver.connect()
+                    #driver.connect()
+
                     return True
                 except Exception as e:  
                     print(f"Not return_list {item} 2")
@@ -2552,12 +2550,11 @@ def earnow_loading(driver):
                 except Exception as e:  
                     print(f"Not bugs_list {item} 2")
                     bug = 1
-        driver.connect()
-        return False
+
 
     except Exception as e:
         print('earnow_loading',e)
-    driver.connect()
+    #driver.connect()
     return False
 
 def earnow_online(window1):
@@ -2580,10 +2577,31 @@ def earnow_online(window1):
             if sb1.is_element_present("h1.title.ttu.text-center"):
                 step_text = sb1.get_text("h1.title.ttu.text-center")
                 if 'STEP' not in step_text:
-                    wrong_captcha +=2
+                    print('Stes not found')
+                    wrong_captcha +=1
 
             print(title)
+            if sb1.is_element_visible("button.btn.btn-primary"):
+                print("Button found g")
  
+                # Use ActionChains to move to the button and click it
+                button = sb1.find_element(By.CSS_SELECTOR, 'button.btn.btn-primary')
+                if button.text == "Click Here To Start":
+                    actions = ActionChains(sb1)
+                    actions.move_to_element(button).click().perform()      
+                    sb1.disconnect()
+                    earnow_loading(sb1)
+                    sb1.connect()
+                    if sb1.is_text_visible("STEP 5/5"):
+                        print("Steps 5/5 found")
+                        last_step =True
+                else:
+                    print(f"Button Not found | {button.text}")
+
+                #return True
+            else:
+                time.sleep(1)
+                print("Waiting for button")
 
             for item in ['complete_captcha_earnow', 'scroll_down_earnow']:
                 try:
@@ -2732,18 +2750,22 @@ def earnow_online(window1):
                 sb1.close()
                 sb1.switch_to_window(0)
 
-            if "Just a moment" in title:
+            if "Just" in title:
+                sb1.disconnect()
                 earnow_loading(sb1)
-
+                sb1.connect()
  
  
  
             if sb1.is_text_visible("Failed! Please reload the page."):
                 print("Failed! Please reload the page.")
                 scrolled = False
+
+                
                 sb1.disconnect()
                 pyautogui.press('f5')
                 earnow_loading(sb1)
+                sb1.connect()
                 wrong_captcha += 1
 
 
@@ -2761,8 +2783,11 @@ def earnow_online(window1):
                 if last_step:  
                     time.sleep(2)  
                     return True
+                sb1.disconnect()
+                #pyautogui.press('f5')
                 earnow_loading(sb1)
-                time.sleep(5)
+                sb1.connect()
+                #time.sleep(5)
 
             # List of element IDs to check
             images_list = ['cloudflare_box', 'clickheretostart', 'clickad10sec', 'vpnerror', 'complete_captcha_earnow', 'scroll_down_earnow', 'adsoff', 'loading_linkwait']
@@ -2794,7 +2819,10 @@ def earnow_online(window1):
                 return 404
             try:
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.85)
+                sb1.disconnect()
+                
                 earnow_loading(sb1)
+                sb1.connect()
             except Exception as e:  
                 print('no cloudflare box')
 
@@ -2802,6 +2830,500 @@ def earnow_online(window1):
             print(e)
             sb1.switch_to.default_content()
 
+
+
+
+def earnow_online_2(window1):
+    scrolled = False
+    last_step = False
+    timeout = 1
+    pre_element = None
+    window = window1
+    wrong_captcha = 1
+    win1 = True
+    win2 = True
+
+    while True:
+        try:
+
+            sb1.switch_to_window(window)
+            title = sb1.get_title() #get_active_window_title()
+            if "Shortlink" in title:
+                return True
+            #    if window2 == window:
+            #        win2 = False
+            #    if window1 == window:
+            #        win1 = False
+                       
+            #    continue
+            print(title)
+ 
+            if sb1.is_element_visible("div.captcha-icon img"):
+                sb1.execute_script("""
+                    document.querySelectorAll('iframe').forEach((e, i) => i % 2 === 0 && e.remove());
+
+
+                """)
+
+
+                if scrolled:
+                    #pyautogui.moveTo(1021,475)
+                    pyautogui.scroll(-3,1021,475)
+                else:
+                    sb1.execute_script("""
+                    const button = document.querySelector('button.btn.btn-lg.btn-primary.mb-2');
+                    button.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+                    // Slightly adjust the scroll position after a short delay
+                    setTimeout(() => {
+                        window.scrollBy(0, -150); // Move up by 50 pixels (adjust as needed)
+                    }, 500);
+
+                    """)
+                    scrolled = True
+                time.sleep(2)
+                print("Captcha found")
+                rename_with_code("element_screenshot.png")
+
+                capture_element_screenshot(sb1, "div.captcha-icon img", screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
+                print("Image saved as 'captcha_image.svg'")
+                icon_options = sb1.find_elements(By.CSS_SELECTOR, '#icon-options i[class*="fas fa-"]')
+                icons_folder = 'icons'
+                if not os.path.exists(icons_folder):
+                    os.makedirs(icons_folder)
+                    print(f"Created folder: {icons_folder}")
+                else:
+                    print(f"Folder already exists: {icons_folder}")
+ 
+                # Delete the contents of the icons folder
+                for filename in os.listdir(icons_folder):
+                    file_path = os.path.join(icons_folder, filename)
+                    try:
+                        if os.path.isfile(file_path) or os.path.islink(file_path):
+                            os.unlink(file_path)  # Remove file or symbolic link
+                        elif os.path.isdir(file_path):
+                            shutil.rmtree(file_path)  # Remove directory
+                        print(f"Deleted: {file_path}")
+                    except Exception as e:
+                        print(f"Failed to delete {file_path}. Reason: {e}")
+                result_mem = None
+                result_mem = find_similar_image("element_screenshot.png", "element_icons")
+                print("result:g ",result_mem)
+                
+                for icon in icon_options:
+                    icon_class = icon.get_attribute('class').replace(' ', '.')     
+                    if result_mem and result_mem in icon_class:
+                        button = sb1.find_element(By.CSS_SELECTOR, f"i.{icon_class}")
+                        actions = ActionChains(sb1)
+                        #time.sleep(1)
+                        actions.move_to_element(button).click().perform()  
+                        print(f"Icon Found match: {icon_class}")
+                        break
+                    icon_class = "." + icon_class
+                    print(f"Icon 1: {icon_class}")
+                    # Delete all items in the icons folder before starting
+                    capture_element_screenshot(sb1, icon_class, screenshot_path="full_screenshot.png", cropped_path=f"icons/{icon_class}.png")      
+                if result_mem == None:
+                    q_image = 'element_screenshot.png'
+                    icons_folder = 'icons'
+                    invert_filter = True  # Change to True to invert black and white
+                    timeout = 1
+
+                    best_match, similarity = process_and_match(q_image, icons_folder)
+                    print(f"Most similar image: {best_match}, Similarity score: {similarity}")
+                    best_match = best_match.replace('.png', '')
+                    print(f"Icon 2: {best_match}")
+                    button = sb1.find_element(By.CSS_SELECTOR, f"i{best_match}")
+                    actions = ActionChains(sb1)
+                    #sb1.disconnect()
+                    time.sleep(1)
+                    actions.move_to_element(button).click().perform()  
+                time.sleep(2)
+
+
+
+
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.85)
+                if x and y:
+                    pyautogui.scroll(2000,1021,475)
+                    sb1.execute_script("""
+                        (function() {
+                            function removeIframes(element) {
+                                element.querySelectorAll('iframe').forEach(el => el.remove());
+                            }
+
+                            function observeMutations() {
+                                const observer = new MutationObserver(mutationsList => {
+                                    for (const mutation of mutationsList) {
+                                        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                                            mutation.addedNodes.forEach(addedNode => {
+                                                if (addedNode instanceof Element) {
+                                                    removeIframes(addedNode);
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+
+                                observer.observe(document.documentElement, { childList: true, subtree: true });
+                            }
+
+                            console.log('Removing iframes and observing mutations...');
+                            observeMutations();
+
+                            setInterval(() => {
+                                document.querySelectorAll('iframe').forEach(el => el.remove());
+                            }, 100);
+                        })();
+
+
+                    """)
+
+
+                    print("Click any ad and open in new tab, and wait 10 seconds before you can return and continue.")
+                    pyautogui.rightClick(639, 568 )
+                    time.sleep(2) 
+                    pyautogui.rightClick(1303 ,548 )  
+                    time.sleep(2) 
+                    pyautogui.rightClick(1303 ,548 )  
+            except Exception as e:  
+                print("Not found clickad10sec")
+            
+
+
+            
+            if "Wait" in title:
+                sb1.open_new_tab()
+                time.sleep(4)
+                pyautogui.click(529, 568)
+                time.sleep(2)
+                sb1.close()
+                sb1.switch_to_window(0)
+
+            if "Just a moment" in title:
+                sb1.disconnect()
+                for i in range(20):
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.85)
+                        pyautogui.click(x, y)
+                        print('CloudFlare Box Found 1')
+                        time.sleep(5)
+ 
+                    except Exception as e:  
+                        print("Not found cloudflare_box 2")
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.85)
+                        if x and y:
+                            print('clickheretostart Found 2')
+                            break
+                    except Exception as e:  
+                        print("Not found clickheretostart 2")
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.85)
+                        if x and y:
+                            print('clickad10sec Found 2')
+                            break
+                    except Exception as e:  
+                        print("Not found clickad10sec 2")
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.85)
+                        if x and y:
+                            print("VPN Error 2")
+                            break
+                    except Exception as e:  
+                        print("Not found vpnerror 2")
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/adsoff.png", confidence=0.85)
+                        if x and y:
+                            print("adsoff Error 2")
+                            break
+                    except Exception as e:  
+                        print("Not found adsoff 2")
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/complete_captcha_earnow.png", confidence=0.85)
+                        print('complete_captcha_earnow Found 4')
+                        if x and y:
+                            break
+                    except Exception as e:  
+                        print("Not found complete_captcha_earnow 4")
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/scroll_down_earnow.png", confidence=0.85)
+                        print('scroll_down_earnow Found 4')
+                        if x and y:
+                            break
+                    except Exception as e:  
+                        print(" Not found scroll_down_earnow 4")
+
+
+                    time.sleep(1)
+                    print(i,'CloudFlare Just')
+                sb1.connect()
+                #cloudflare(sb1, login = True)
+ 
+ 
+ 
+            if sb1.is_text_visible("Failed! Please reload the page."):
+                print("Failed! Please reload the page.")
+                scrolled = False
+                sb1.disconnect()
+                pyautogui.press('f5')
+                time.sleep(5)
+                for i in range(20):
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.85)
+                        pyautogui.click(x, y)
+                        print('CloudFlare Box Found 3')
+                        time.sleep(5)
+ 
+                    except Exception as e:  
+                        print("Not found cloudflare_box 3")
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.85)
+                        if x and y:
+                                print('clickheretostart Found 3')
+                                break
+                    except Exception as e:  
+                        print("Not found clickheretostart 3")
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.85)
+                        if x and y:
+                                print('clickad10sec Found 3')
+
+                                break
+                    except Exception as e:  
+                        print("Not found clickad10sec 3")
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.85)
+                        if x and y:
+                                break
+                    except Exception as e:  
+                        print("Not found vpnerror 3")
+
+                    time.sleep(1)
+                    print(i,'CloudFlare Just')
+                sb1.connect()
+                timeout = 1
+                wrong_captcha += 1
+
+            if sb1.is_element_visible("button.btn.btn-primary"):
+                print("Button found g")
+ 
+                # Use ActionChains to move to the button and click it
+                button = sb1.find_element(By.CSS_SELECTOR, 'button.btn.btn-primary')
+                if button.text == "Click Here To Start":
+                    actions = ActionChains(sb1)
+                    actions.move_to_element(button).click().perform()      
+                    sb1.disconnect()
+                    #time.sleep(5)
+                    for i in range(35):
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.85)
+                            pyautogui.click(x, y)
+                            time.sleep(4)
+    
+                        except Exception as e:  
+                            print("Not found cloudflare_box 4")
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/complete_captcha_earnow.png", confidence=0.85)
+                            print('complete_captcha_earnow Found 4')
+                            if x and y:
+                                break
+                        except Exception as e:  
+                            print("Not found complete_captcha_earnow 4")
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/scroll_down_earnow.png", confidence=0.85)
+                            print('scroll_down_earnow Found 4')
+                            if x and y:
+                                break
+                        except Exception as e:  
+                            print(" Not found scroll_down_earnow 4")
+                        time.sleep(1)
+                        print("Waiting For Icon Image to Pop up:",i)
+                    sb1.connect()
+                    if sb1.is_text_visible("STEP 5/5"):
+                        print("Steps 5/5 found")
+                        last_step =True
+                else:
+                    print(f"Button Not found | {button.text}")
+
+                #return True
+            else:
+                time.sleep(1)
+                print("Waiting for button")
+
+
+            if sb1.is_element_visible("div.mb-2.badge.bg-success"):
+                print("verified found")
+                timeout = 1
+                wrong_captcha =1
+                # Use ActionChains to move to the button and click it
+                button = sb1.find_element(By.CSS_SELECTOR, 'button.btn.btn-lg.btn-primary.mb-2')
+                actions = ActionChains(sb1)
+                actions.move_to_element(button).click().perform() 
+                pyautogui.scroll(-3,1021,475)
+                scrolled = False 
+                if last_step:  
+                    time.sleep(2)  
+                    return True
+                sb1.disconnect()
+                time.sleep(5)
+                #pyautogui.press('f5')
+                for i in range(20):
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.85)
+                        pyautogui.click(x, y)
+                        print('CloudFlare Box Found 6')
+                        time.sleep(5)
+ 
+                    except Exception as e:  
+                        print("Not found cloudflare_box 6")
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/scroll_down_earnow.png", confidence=0.85)
+                        pyautogui.click(x, y)
+                        print('CloudFlare Box Found 6')
+                        time.sleep(5)
+ 
+                    except Exception as e:  
+                        print("Not found cloudflare_box 6")
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/complete_captcha_earnow.png", confidence=0.85)
+                        pyautogui.click(x, y)
+                        print('CloudFlare Box Found 6')
+                        time.sleep(5)
+ 
+                    except Exception as e:  
+                        print("Not found cloudflare_box 6")
+
+
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.85)
+                        if x and y:
+                            print('clickheretostart Found 6')
+                            break
+                    except Exception as e:  
+                        print("Not found clickheretostart 6")
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.85)
+                        if x and y:
+                            print('clickad10sec Found 6')
+                            break
+                    except Exception as e:  
+                        print("Not found clickad10sec 6")
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.85)
+                        if x and y:
+                            print('vpnerror Found 6')
+                            break
+                    except Exception as e:  
+                        print("Not found vpnerror 6")
+
+                    time.sleep(1)
+                    print(i,'CloudFlare Just')
+                sb1.connect()
+            # List of element IDs to check
+            element_ids = [
+                "loadingDiv",
+                "rewardMessage",
+                "clickMessage",
+                "captchaMessage",
+                "scrollMessage"
+            ]
+            
+            # Iterate through the element IDs
+            for element_id in element_ids:
+                if sb1.is_element_present(f"#{element_id}"):
+                    # Get the style attribute of the element
+                    style = sb1.get_attribute(f"#{element_id}", "style")
+                
+                    # Check if the element is visible
+                    if "display: block;" in style:
+                        print(f"Element with ID '{element_id}' is visible (style='display: block;'). timeout :{timeout}")
+                        if pre_element == element_id:
+                            timeout += 1
+                            break
+                        else:
+                            timeout = 1
+                            pre_element = element_id
+                            break
+                else:
+                    print(f"Element with ID '{element_id}' is not present on the page. timeout :{timeout}")
+
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.85)
+                if x and y:
+                    print("VPN or Proxy detected. Please disable it and reload the page.")
+                    sb1.disconnect()
+                    pyautogui.press('f5')
+                    time.sleep(5)
+                    for i in range(20):
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.85)
+                            pyautogui.click(x, y)
+                            print('CloudFlare Box Found 5')
+                            time.sleep(5)
+    
+                        except Exception as e:  
+                            print("Not found cloudflare_box 5")
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.85)
+                            if x and y:
+                                print('clickheretostart Found 5')
+                                break
+                        except Exception as e:  
+                            print("Not found clickheretostart 5")
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.85)
+                            if x and y:
+                                print('clickad10sec Found 5')
+                                break
+                        except Exception as e:  
+                            print("Not found clickad10sec 5")
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.85)
+                            if x and y:
+                                print('vpnerror Found 5')
+                                break
+                        except Exception as e:  
+                            print("Not found vpnerror 5")
+
+                        time.sleep(1)
+                        print(i,'CloudFlare Just')
+                    sb1.connect()
+            except Exception as e:  
+                print(e)
+
+
+
+            if timeout >= 8:
+                pyautogui.press('f5')
+                timeout = 1
+            if wrong_captcha >= 5:
+                print('too many Wrong Captcha')
+                return 404
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.85)
+                sb1.disconnect()
+                time.sleep(1)
+                pyautogui.click(x, y)
+                for i in range(8):
+                    try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.85)
+                            pyautogui.click(x, y)
+                            time.sleep(4)
+    
+                    except Exception as e:  
+                        print("Not found cloudflare_box 7")
+                    time.sleep(1)
+                    print(i)
+                sb1.connect()
+ 
+            except Exception as e:  
+                print('no cloudflare box')
+
+        except Exception as e:
+            print(e)
+            sb1.switch_to.default_content()
 
 
 

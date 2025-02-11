@@ -2487,7 +2487,7 @@ def image_onscreeen(image_path, confidence=0.95, onlick = True):
 
 
 def earnow_loading(driver):
-
+    print('start earnow_loading')
     #images_list = ['cloudflare_box', 'clickheretostart', 'clickad10sec', 'vpnerror', 'complete_captcha_earnow', 'scroll_down_earnow', 'adsoff', 'loading_linkwait']
     refresh_list = ['vpnerror','adsoff']
     clicking_list = ['cloudflare_box', 'clickheretostart']
@@ -2497,7 +2497,7 @@ def earnow_loading(driver):
     ggg = 1
     bug = 1
     try:
-        while ggg > 30:
+        while ggg < 30:
             print(f'Trying Loading Attempt:',ggg)
             pyautogui.moveTo(200,100)
             time.sleep(1)
@@ -2557,7 +2557,7 @@ def earnow_loading(driver):
     #driver.connect()
     return False
 
-def earnow_online(window1):
+def earnow_online(window1, ip_required):
     scrolled = False
     last_step = False
     timeout = 1
@@ -2571,6 +2571,16 @@ def earnow_online(window1):
         try:
 
             sb1.switch_to_window(window)
+            mainscript = control_panel()
+            if mainscript != 1:
+                print('mainscript is changed....')
+                return
+            ip_address = get_ip(sb1)
+            if ip_address != ip_required:
+                wrong_captcha +=2
+                print('wrong Ip address')
+                continue
+
             title = sb1.get_title() #get_active_window_title()
             if "Shortlink" in title:
                 return True
@@ -2609,15 +2619,46 @@ def earnow_online(window1):
                     if x and y:
                         if sb1.is_element_visible("div.captcha-icon img"):
                             sb1.execute_script("""
-                                document.querySelectorAll('iframe').forEach((e, i) => i % 2 === 0 && e.remove());
+                            (function() {
+                                function removeIframes(element) {
+                                    element.querySelectorAll('iframe').forEach(el => el.remove());
+                                }
+
+                                function observeMutations() {
+                                    const observer = new MutationObserver(mutationsList => {
+                                        for (const mutation of mutationsList) {
+                                            if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                                                mutation.addedNodes.forEach(addedNode => {
+                                                    if (addedNode instanceof Element) {
+                                                        removeIframes(addedNode);
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+
+                                    observer.observe(document.documentElement, { childList: true, subtree: true });
+                                }
+
+                                console.log('Removing iframes and observing mutations...');
+                                observeMutations();
+
+                                setInterval(() => {
+                                    document.querySelectorAll('iframe').forEach(el => el.remove());
+                                }, 100);
+                            })();
+
 
 
                             """)
 
 
                             if scrolled:
-                                #pyautogui.moveTo(1021,475)
-                                pyautogui.scroll(-3,1021,475)
+                                try:
+                                    x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/verify_earnow.png", confidence=0.85)
+                                except Exception as e:
+                                    print('No Page Image found')
+                                    pyautogui.scroll(-3,1021,475)
                             else:
                                 sb1.execute_script("""
                                 const button = document.querySelector('button.btn.btn-lg.btn-primary.mb-2');
@@ -2744,16 +2785,18 @@ def earnow_online(window1):
             
             if "Wait" in title:
                 sb1.open_new_tab()
-                time.sleep(5)
+                time.sleep(4)
                 pyautogui.click(529, 568)
                 time.sleep(2)
                 sb1.close()
                 sb1.switch_to_window(0)
+                continue
 
             if "Just" in title:
                 sb1.disconnect()
                 earnow_loading(sb1)
                 sb1.connect()
+                continue
  
  
  
@@ -2778,7 +2821,12 @@ def earnow_online(window1):
                 button = sb1.find_element(By.CSS_SELECTOR, 'button.btn.btn-lg.btn-primary.mb-2')
                 actions = ActionChains(sb1)
                 actions.move_to_element(button).click().perform() 
-                pyautogui.scroll(-3,1021,475)
+                
+                try:
+                    x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/verify_earnow.png", confidence=0.85)
+                except Exception as e:
+                    print('No Page Image found')
+                    pyautogui.scroll(-3,1021,475)
                 scrolled = False 
                 if last_step:  
                     time.sleep(2)  
@@ -3481,7 +3529,7 @@ def open_browsers():
         update = {"$set": {"response": 'Setup Done...'}}
         result = collection.update_one(query, update)
  
-    time.sleep(999)
+    #time.sleep(999)
     return sb1
  
 def update_target_ip(new_ip):
@@ -3886,13 +3934,27 @@ def process_link_blocks_bitbitzz(sb):
 #time.sleep(9990)
 feyorra_window_shortlink = None
 earnow_window = None
+sholinks_done = 1
 while True:
     try:
         mainscript = control_panel()
+        
         print('control_panel', mainscript)
-        if mainscript == 1:            
+        if mainscript == 1:       
+            if reset_count > 15:
+                reset_count = 1
+                try:
+                    subprocess.run(['pkill', '-f', 'chrome'], check=True)
+                    print(f"All chrome processes killed successfully.{e}")
+                except subprocess.CalledProcessError:
+                    print(f"Failed to kill chrome processes or no processes found.{e}")
+                time.sleep(3)
+                sb1 = open_browsers()
+
             ip_address = get_ip(sb1)
             debug_messages(f'Ip address Found:{ip_address}')
+
+
             if ip_address == ip_required:
 
                 if mainfaucet and earnow_window == None:
@@ -3911,7 +3973,10 @@ while True:
                             earnow_window = switch_to_earnow(4,[mainfaucet_window])
                             if earnow_window:
                                 close_extra_windows(sb1, [earnow_window])
-                                result = earnow_online(earnow_window)
+                                result = earnow_online(earnow_window, ip_required)
+                                sholinks_done += 1
+                                if sholinks_done > 3:
+                                    reset_count = 20
                                 time.sleep(2)
                                 mainfaucet_window = earnow_window
                                 pyautogui.hotkey('ctrl', 'f5')

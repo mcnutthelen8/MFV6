@@ -1800,17 +1800,6 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
             if 'rscaptcha'in captcha_image:
                     try:
                         solve_rscaptcha(sb1)
-                        if 'Feyorra' in current_title:
-                            pyautogui.click(932 ,728)
-                            time.sleep(1)
-                            pyautogui.click(943 ,788)
-                                    #x:943 y:788
-                            time.sleep(5)
-                            return
-                        if 'ClaimCoin' in current_title:
-                            button = sb1.find_element(By.CSS_SELECTOR, submit_button)
-                            actions = ActionChains(sb1)
-                            actions.move_to_element(button).click().perform()  
                         #pyautogui.click(957 ,886)
                         #time.sleep(5)
                         if driver.is_element_visible(submit_button):
@@ -1982,7 +1971,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         elif "mainfaucet | Satoshi faucet" in current_title or 'CoinPayz - Multicurrency Crypto Earning Platform' in current_title or 'Home' in current_title or 'Earn Free Bitcoin & Crypto - Faucet, PTC, Surveys / bitBitz' in current_title:
 
             if function == 1:
-                mainfaucet_login(sb1,'https://mainfaucet.io/','grandkolla@gmail.com',window_list)
+                mainfaucet_login(sb1,'https:/satoshifaucet.io/','grandkolla@gmail.com',window_list)
             if function == 2:
                 login_to_faucet('https://coinpayz.xyz/login', sb1, 'grandkolla@gmail.com', 'Uwuinsta2005', 'cloudflare', window_list, 'submit_button')
             if function == 3:
@@ -1990,7 +1979,10 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
  
             if function == 4:
                 login_to_faucet('https://bitbitz.cc/login', sb1, 'grandkolla9196', 'qzWZSX@mdT*472S', 'cloudflare', window_list, 'submit_button')
- 
+
+            if function == 5:
+                login_to_faucet('https://feyorra.top/login', sb1, 'redgta.36@gmail.com', 'Uwuinsta2005', 'rscaptcha', window_list, "button[type='submit']")
+            
 
         elif 'Lock' in current_title:
             if driver.current_window_handle not in window_list:
@@ -2497,8 +2489,11 @@ def earnow_loading(driver):
     ggg = 1
     bug = 1
     try:
-        while ggg < 30:
+        while ggg < 24:
             print(f'Trying Loading Attempt:',ggg)
+            title = get_active_window_title()
+            if "Shortlink" in title:
+                return
             pyautogui.moveTo(200,100)
             time.sleep(1)
             #cloudflare
@@ -2572,17 +2567,8 @@ def earnow_online(window1, ip_required):
 
             sb1.switch_to_window(window)
             mainscript = control_panel()
-            if mainscript != 1:
-                print('mainscript is changed....')
-                return
-            ip_address = get_ip(sb1)
-            if ip_address != ip_required:
-                wrong_captcha +=2
-                print('wrong Ip address')
-                continue
-
             title = sb1.get_title() #get_active_window_title()
-            if "Shortlink" in title:
+            if "Shortlink" in title or 'Link' in title:
                 return True
             if sb1.is_element_present("h1.title.ttu.text-center"):
                 step_text = sb1.get_text("h1.title.ttu.text-center")
@@ -2702,6 +2688,7 @@ def earnow_online(window1, ip_required):
                             
                             for icon in icon_options:
                                 icon_class = icon.get_attribute('class').replace(' ', '.')     
+
                                 if result_mem and result_mem in icon_class:
                                     button = sb1.find_element(By.CSS_SELECTOR, f"i.{icon_class}")
                                     actions = ActionChains(sb1)
@@ -2729,12 +2716,22 @@ def earnow_online(window1, ip_required):
                                 time.sleep(1)
                                 actions.move_to_element(button).click().perform()  
                             time.sleep(2)
+                            
                         else:
                             print('Captcha not loading...')
                             bug += 5
                             
                 except Exception as e:  
                     print(f"Not found {item}")
+
+            if "Wait" in title:
+                sb1.open_new_tab()
+                time.sleep(4)
+                pyautogui.click(529, 568)
+                time.sleep(2)
+                sb1.close()
+                sb1.switch_to_window(0)
+                continue
 
             try:
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.85)
@@ -2779,18 +2776,12 @@ def earnow_online(window1, ip_required):
                     time.sleep(2) 
                     pyautogui.rightClick(1303 ,548 )  
                     time.sleep(2) 
-                    pyautogui.rightClick(1303 ,548 )  
+                    pyautogui.rightClick(1303 ,548 ) 
+                    continue 
             except Exception as e:  
                 print("Not found clickad10sec")
             
-            if "Wait" in title:
-                sb1.open_new_tab()
-                time.sleep(4)
-                pyautogui.click(529, 568)
-                time.sleep(2)
-                sb1.close()
-                sb1.switch_to_window(0)
-                continue
+
 
             if "Just" in title:
                 sb1.disconnect()
@@ -2873,6 +2864,14 @@ def earnow_online(window1, ip_required):
                 sb1.connect()
             except Exception as e:  
                 print('no cloudflare box')
+            if mainscript != 1:
+                print('mainscript is changed....')
+                return
+            ip_address = get_ip(sb1)
+            if ip_address != ip_required:
+                wrong_captcha +=2
+                print('wrong Ip address')
+                continue
 
         except Exception as e:
             print(e)
@@ -3550,7 +3549,7 @@ def update_target_ip(new_ip):
     except Exception as e:
         print(f"An error occurred: {e}")
  
- 
+sitekey = 1
  
 def open_faucets():
     global sb1
@@ -3650,11 +3649,18 @@ def open_faucets():
                 if ip_required == ip_address:
                     response_messege('mainfaucet Loging')
                     if mainfaucet:
- 
-                        #mainfaucet_window = handle_site(sb1, "https://mainfaucet.io/links/currency/sol", "Shortlinks", "Home", 1, [], ip_required)
-                        #mainfaucet_window = handle_site(sb1, "https://coinpayz.xyz/links", "Shortlinks", "Home", 2, [], ip_required)
-                        #mainfaucet_window = handle_site(sb1, "https://helpfpcoin.site/link/sol", "Help FP Coin - Link", "Home", 3, [], ip_required)
-                        mainfaucet_window = handle_site(sb1, "https://bitbitz.cc/shortlinks", "Shortlink", "Home", 4, [], ip_required)
+                        if sitekey == 1:
+                            mainfaucet_window = handle_site(sb1, "https://satoshifaucet.io/links/currency/sol", "Shortlinks", "Home", 1, [], ip_required)
+                        if sitekey == 2:
+                            mainfaucet_window = handle_site(sb1, "https://coinpayz.xyz/links", "Shortlinks", "Home", 2, [], ip_required)
+                        if sitekey == 3:
+                            mainfaucet_window = handle_site(sb1, "https://helpfpcoin.site/link/sol", "Help FP Coin - Link", "Home", 3, [], ip_required)
+                        if sitekey == 4:
+                            mainfaucet_window = handle_site(sb1, "https://bitbitz.cc/shortlinks", "Shortlink", "Home", 4, [], ip_required)
+                        if sitekey == 5:
+                            mainfaucet_window = handle_site(sb1, "https://feyorra.top/links", "Shortlinks", "Home", 5, [], ip_required)
+                            
+
                         if mainfaucet_window == 404:
                             raise Exception(" mainfaucet_window == 404")
                         print(f"mainfaucet window handle: {mainfaucet_window}")
@@ -3683,6 +3689,7 @@ def open_faucets():
                     global previous_reset_count
                     global mainfaucet_limit_reached 
                     global feyorra_limit_reached 
+                    #global sitekey
  
                     mainfaucet_limit_reached = None
                     feyorra_limit_reached = None
@@ -3692,14 +3699,14 @@ def open_faucets():
                     previous_reset_count = 0
  
  
-                    return mainfaucet_window,  ip_address, ip_required
+                    return mainfaucet_window,sitekey,  ip_address, ip_required
         except Exception as e:
                 response_messege(f'Resetting Browser{e}')
                 try:
                     subprocess.run(['pkill', '-f', 'chrome'], check=True)
                     print(f"All chrome processes killed successfully.{e}")
                 except subprocess.CalledProcessError:
-                    print(f"Failed to kill chrome processes or no processes found.{e}")
+                    print(f"Failed to kill chrome processes or no processes found")
                 time.sleep(10)
                 sb1 = open_browsers()
                 reset_count +=15
@@ -3713,7 +3720,7 @@ feyorra_count = 0
 claimcoin_count = 0
 
  
-mainfaucet_window,  ip_address, ip_required = open_faucets()
+mainfaucet_window, sitekey,  ip_address, ip_required = open_faucets()
 start_time4 = 0
 #time.sleep(9999)
 print('Starting Loop')
@@ -3751,7 +3758,7 @@ def switch_to_earnow(now = 1, window_lists=[]):
         else:
             if now == 1:
                 sb1.switch_to_window(mainfaucet_window)
-                sb1.uc_open("https://mainfaucet.io/links/currency/sol")
+                sb1.uc_open("https://satoshifaucet.io/links/currency/sol")
             if now == 2:
                 sb1.switch_to_window(mainfaucet_window)
                 sb1.uc_open("https://coinpayz.xyz/links")
@@ -3761,6 +3768,10 @@ def switch_to_earnow(now = 1, window_lists=[]):
             if now == 4:
                 sb1.switch_to_window(mainfaucet_window)
                 sb1.uc_open("https://bitbitz.cc/shortlinks")
+            if now == 5:
+                sb1.switch_to_window(mainfaucet_window)
+                sb1.uc_open("https://feyorra.top/links")
+
         return None
     except Exception as e:
         print('sitch.',e)
@@ -3793,8 +3804,36 @@ def process_link_blocks(sb):
                 button = block.find_element(By.CSS_SELECTOR,"button.btn_sl.link_bt")
                 #button.uc_click()
                 actions = ActionChains(sb1)
-                actions.move_to_element(button).click().perform()  
+                actions.move_to_element(button).click().perform()
+                sb1.disconnect()  
                 time.sleep(5) 
+                for i in range(1, 15):
+                    try:
+                        time.sleep(1)
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
+                        print("verify_cloudflare git Found")
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.7)
+                            pyautogui.click(x, y)
+                            time.sleep(5)
+
+                        except Exception as e:
+                            print(e)
+
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_success.png", confidence=0.7)
+                            pyautogui.click(x, y)
+                            time.sleep(1)
+                            sb.connect()
+                            return True
+
+                        except Exception as e:
+                            print(e)
+                    except Exception as e:
+                        print('cloudflare not found keep trying')
+    
+                sb1.connect()
+
                 print("Clicked the claim button.")
                 cloudflare(sb1, login = True)
                 button = sb.find_element(By.CSS_SELECTOR,"button.btn.btn_sl.link_form_bt.mt-2")
@@ -3929,6 +3968,64 @@ def process_link_blocks_bitbitzz(sb):
         print('process link hafaucet',e)
 
 
+def process_link_blocks_fey(sb):
+    # Find all "div.link-block" elements
+    try:
+        # Find the CAPTCHA image
+        if sb.is_element_visible("img#rscaptcha_img"):
+            solve_rscaptcha(sb)
+            time.sleep(3)
+            pyautogui.click(940,484)
+            time.sleep(5)
+            return
+    except Exception as e:
+        print(f"No rscaptcha processing: {e}")
+        
+
+    link_blocks = sb.find_elements("div.col-lg-4.mb-3")
+    for index, block in enumerate(link_blocks):
+        print(f"Processing block {index + 1}:")
+ 
+        # Scroll the block into view
+        #sb.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", block)
+        try:
+            # Get the link-name
+            link_name_element = block.find_element(By.CSS_SELECTOR,"div.linkname")
+            link_name = link_name_element.text
+            print(f"Link Name: {link_name}")
+ 
+            # Check if it's "Earnow"
+ 
+            # Get the link-rmn
+            link_rmn_element = block.find_element(By.CSS_SELECTOR,"div.pill.sec")
+            link_rmn = link_rmn_element.text
+            print(f"Link Remaining: {link_rmn}")
+ 
+            if "Earnow" in link_name or "Shortano" in link_name or "Shortino" in link_name:
+                # Click the claim-button
+                button = block.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.waves-effect")
+                button.uc_click()
+                #actions = ActionChains(sb1)
+                #actions.move_to_element(button).click().perform()  
+                time.sleep(5) 
+                try:
+                    # Find the CAPTCHA image
+                    if sb.is_element_visible("img#rscaptcha_img"):
+                        solve_rscaptcha(sb)
+                        time.sleep(3)
+                        pyautogui.click(940,484)
+                        time.sleep(5)
+                except Exception as e:
+                    print(f"No rscaptcha processing: {e}")
+                    
+                print("Clicked the claim button.")
+                return True
+            
+        except Exception as e:
+            print(f"An error occurred in block {index + 1}: {e}")
+            pyautogui.click(600,500 )
+
+
 
 
 #time.sleep(9990)
@@ -3945,11 +4042,13 @@ while True:
                 reset_count = 1
                 try:
                     subprocess.run(['pkill', '-f', 'chrome'], check=True)
-                    print(f"All chrome processes killed successfully.{e}")
+                    print(f"All chrome processes killed successfully")
                 except subprocess.CalledProcessError:
-                    print(f"Failed to kill chrome processes or no processes found.{e}")
+                    print(f"Failed to kill chrome processes or no processes found.")
                 time.sleep(3)
                 sb1 = open_browsers()
+                mainfaucet_window = sb1.current_window_handle
+                earnow_window = None
 
             ip_address = get_ip(sb1)
             debug_messages(f'Ip address Found:{ip_address}')
@@ -3957,7 +4056,7 @@ while True:
 
             if ip_address == ip_required:
 
-                if mainfaucet and earnow_window == None:
+                if mainfaucet and mainfaucet_window:
                     try:
                         debug_messages(f'Switching Pages to mainfaucet')
                         sb1.switch_to.window(mainfaucet_window)
@@ -3967,10 +4066,27 @@ while True:
                             step_text = sb1.get_text("h1.title.ttu.text-center")
                             if 'STEP' in step_text:
                                 title = 'Shortlinks'
-                        if 'Shortlinks' in title:
+                        if 'Shortlinks' in title or 'Link' in title:
                             #process_link_blocks(sb1)
-                            process_link_blocks_bitbitzz(sb1)
-                            earnow_window = switch_to_earnow(4,[mainfaucet_window])
+                            if sitekey == 1:
+                                process_link_blocks(sb1)
+                                earnow_window = switch_to_earnow(2,[mainfaucet_window])
+
+                            elif sitekey == 2:
+                                process_link_blocks_coinpayz(sb1)
+                                earnow_window = switch_to_earnow(2,[mainfaucet_window])
+
+                            elif sitekey == 3:
+                                process_link_blocks_helpfpcoin(sb1)
+                                earnow_window = switch_to_earnow(3,[])
+
+                            elif sitekey == 4:
+                                process_link_blocks_bitbitzz(sb1)
+                                earnow_window = switch_to_earnow(4,[mainfaucet_window])
+                            elif sitekey == 5:
+                                process_link_blocks_fey(sb1)
+                                earnow_window = switch_to_earnow(5,[mainfaucet_window])
+
                             if earnow_window:
                                 close_extra_windows(sb1, [earnow_window])
                                 result = earnow_online(earnow_window, ip_required)
@@ -3998,7 +4114,17 @@ while True:
                         else:
                             debug_messages(f'mainfaucet not Found:{title} | reset:{reset_count}')
                             reset_count +=1
-                            time.sleep(9999)
+                            if sitekey == 1:
+                                sb1.uc_open("https://satoshifaucet.io/links/currency/sol")
+                            elif sitekey == 2:
+                                sb1.uc_open("https://coinpayz.xyz/links")
+                            elif sitekey == 3:
+                                sb1.uc_open("https://helpfpcoin.site/link/sol")
+                            elif sitekey == 4:
+                                sb1.uc_open("https://bitbitz.cc/shortlinks")
+                            elif sitekey == 5:
+                                sb1.switch_to_window(mainfaucet_window)
+                                sb1.uc_open("https://feyorra.top/links")
                     except Exception as e:
                         print(f'ggg:{e}')
                         response_messege(f'ERR:{e}')
@@ -4014,5 +4140,6 @@ while True:
     except Exception as e:
         print(f'ERR:{e}')
         response_messege(f'ERR:{e}')
+        time.sleep(999999)
         continue
  

@@ -154,7 +154,7 @@ def get_mails_passowrds(farm_id):
             mainfaucet_pass = 'khabibmakanzie2'
             bitbitzz_email = 'khabibmakanzie@gmail.com'
             bitbitzz_pass = 'khabibmakanzie'
-            feyorra_email = 'khabibmakanzie@gmail.com'
+            feyorra_email = 'khabibmakanz.ie@gmail.com'
             feyorra_pass = 'khabibmakanzie'
 
         elif '2' in layout:
@@ -3278,6 +3278,32 @@ def switch_to_earnow(now = 1, window_lists=[]):
 
 
 def switch_mainfaucets(name):
+    if name == 5:
+        quer2y = {"type": "main"}
+        dochh2 = collection.find_one(quer2y)
+        layout = dochh2["withdraw_mail"]
+        if "Layout1" in layout:
+            layout = "Layout2"
+
+        elif "Layout2" in layout:
+            layout = "Layout1"
+
+        print('switch themup')
+        query = {"type": "main"}
+        sample_document = {
+
+            "mainfaucet": 1,
+            "response": 'Changing Faucet...',
+            "request": "ipfixer",
+            "withdraw_mail": layout
+
+        }
+        update = {"$set": sample_document}
+        result = collection.update_one(query, update)      
+        if result.modified_count > 0:
+            print(f"Updated {result.modified_count} document(s).")
+        print("Clicked the claim button.")
+
     print('switch themup')
     query = {"type": "main"}
     sample_document = {
@@ -3807,7 +3833,7 @@ def process_link_blocks_fey(sb,ip_address):
     
     if other:
         print('END OF LINKS')
-        #switch_mainfaucets(1)
+        switch_mainfaucets(5)
 
 
 

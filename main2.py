@@ -111,6 +111,8 @@ server_name1 = ''
 CSB1_farms  = ''
 mainfaucet_email = ''
 mainfaucet_pass = ''
+bitbitzz_email = ''
+bitbitzz_pass = ''
 feyorra_email = ''
 feyorra_pass = ''
 layout = ''
@@ -123,6 +125,8 @@ def get_mails_passowrds(farm_id):
     global mainfaucet_pass
     global feyorra_email
     global feyorra_pass
+    global bitbitzz_email
+    global bitbitzz_pass
     global layout
     global mysterium_raw
  
@@ -146,18 +150,23 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'thailand'
             CSB1_farms = [1, 2, 3, 4, 5]
-            mainfaucet_email = 'khabibmakanzie2@gmail.com'
+            mainfaucet_email = 'khabibmakanzie@gmail.com'
             mainfaucet_pass = 'khabibmakanzie2'
-            feyorra_email = 'khabibmakanzie2@gmail.com'
-            feyorra_pass = 'khabibmakanzie2'
- 
+            bitbitzz_email = 'grandkolla9196@gmail.com'
+            bitbitzz_pass = 'qzWZSX@mdT*472S'
+            feyorra_email = 'redgta.36@gmail.com'
+            feyorra_pass = 'Uwuinsta2005'
+
         elif '2' in layout:
             server_name1 = 'thailand' # 'morocco' #'bulgaria'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            mainfaucet_email = 'amytanisha250@gmail.com'
-            mainfaucet_pass = 'amytanisha250'
-            feyorra_email = 'amytanisha250@gmail.com'
-            feyorra_pass = 'amytanisha250'
+            mainfaucet_email = 'grandkolla@gmail.com'
+            mainfaucet_pass = 'khabibmakanzie2'
+            bitbitzz_email = 'grandkolla9196@gmail.com'
+            bitbitzz_pass = 'qzWZSX@mdT*472S'
+            feyorra_email = 'redgta.36@gmail.com'
+            feyorra_pass = 'Uwuinsta2005'
+
         elif '3' in layout:
             server_name1 = 'bulgaria' # 'morocco' #'bulgaria'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
@@ -1982,16 +1991,16 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         elif "SatoshiFaucet | Satoshi faucet" in current_title or 'CoinPayz - Multicurrency Crypto Earning Platform' in current_title or 'Home' in current_title or 'Earn Free Bitcoin & Crypto - Faucet, PTC, Surveys / bitBitz' in current_title:
 
             if function == 1:
-                mainfaucet_login(sb1,'https:/satoshifaucet.io/','grandkolla@gmail.com',window_list)
+                mainfaucet_login(sb1,'https:/satoshifaucet.io/',mainfaucet_email,window_list)
             if function == 2:
                 login_to_faucet('https://coinpayz.xyz/login', sb1, 'grandkolla@gmail.com', 'Uwuinsta2005', 'cloudflare', window_list, 'submit_button')
             if function == 3:
                 hafaucet_login(sb1,'https://helpfpcoin.site/','grandkolla@gmail.com',window_list)
  
             if function == 4:
-                login_to_faucet('https://bitbitz.cc/login', sb1, 'grandkolla9196', 'qzWZSX@mdT*472S', 'cloudflare', window_list, 'submit_button')
+                login_to_faucet('https://bitbitz.cc/login', sb1, bitbitzz_email, bitbitzz_pass, 'cloudflare', window_list, 'submit_button')
             if function == 5:
-                login_to_faucet('https://feyorra.top/login', sb1, 'redgta.36@gmail.com', 'Uwuinsta2005', 'rscaptcha', window_list, "button[type='submit']")
+                login_to_faucet('https://feyorra.top/login', sb1, feyorra_email, feyorra_pass, 'rscaptcha', window_list, "button[type='submit']")
             
 
         elif 'Lock' in current_title:
@@ -2419,7 +2428,7 @@ def rename_with_code(filepath):
 
 
 
-def find_similar_image(input_image_path, folder_path, similarity_threshold=0.95):
+def find_similar_image(input_image_path, folder_path, similarity_threshold=0.9):
     # Load the input image
     input_image = cv2.imread(input_image_path)
     if input_image is None:
@@ -2587,6 +2596,14 @@ def earnow_online(window1, ip_required):
         try:
 
             sb1.switch_to_window(window)
+            if timeout >= 7:
+                pyautogui.press('f5')
+                timeout = 1
+                print("Timeout ", timeout)
+            if wrong_captcha >= 5:
+                print('too many Wrong Captcha')
+                return 404
+
             mainscript = control_panel()
             if mainscript != 1:
                 print('mainscript is changed....')
@@ -2599,20 +2616,13 @@ def earnow_online(window1, ip_required):
                 continue
 
 
-            if "Shortlink" in title or 'Link' in title:
+            if "Shortlink" in title or 'Link' in title or 'Dashboard of Coin' in title:
                 return True
             if sb1.is_element_present("h1.title.ttu.text-center"):
                 step_text = sb1.get_text("h1.title.ttu.text-center")
                 if 'STEP' not in step_text:
                     print('Stes not found')
                     wrong_captcha +=1
-            if timeout >= 7:
-                pyautogui.press('f5')
-                timeout = 1
-                print("Timeout ", timeout)
-            if wrong_captcha >= 5:
-                print('too many Wrong Captcha')
-                return 404
 
 
             print(title)
@@ -2635,15 +2645,42 @@ def earnow_online(window1, ip_required):
             else:
                 print("Waiting for button")
 
+            if sb1.is_element_present("div.mb-2.badge.bg-success"):
+                print("verified found")
+                timeout = 1
+                wrong_captcha =1
+                # Use ActionChains to move to the button and click it
+                button = sb1.find_element(By.CSS_SELECTOR, 'button.btn.btn-lg.btn-primary.mb-2')
+                actions = ActionChains(sb1)
+                actions.move_to_element(button).click().perform() 
+                
+                try:
+                    x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/verify_earnow.png", confidence=0.85)
+                except Exception as e:
+                    print('No Page Image found')
+                    pyautogui.scroll(-1,1021,475)
+                scrolled = False 
+                if last_step:  
+                    time.sleep(2)  
+                    return True
+                sb1.disconnect()
+                earnow_loading(sb1)
+                sb1.connect()
+                #time.sleep(5)
+
+            else:
+                print("Not found div.mb-2.badge.bg-success")
 
             try:
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/earnow_verifying_bug.png", confidence=0.85)
                 if x and y:
                     timeout += 1
                     time.sleep(1)
+                    print("found earnow_verifying_bug")
                     continue 
+
             except Exception as e:  
-                print("Not found clickad10sec")
+                print("Not found earnow_verifying_bug")
             
 
             for item in ['complete_captcha_earnow', 'scroll_down_earnow']:
@@ -2691,15 +2728,15 @@ def earnow_online(window1, ip_required):
                                     x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/verify_earnow.png", confidence=0.85)
                                 except Exception as e:
                                     print('No Page Image found')
-                                    pyautogui.scroll(-3,1021,475)
+                                    pyautogui.scroll(-1,1021,475)
                             else:
                                 sb1.execute_script("""
                                 const button = document.querySelector('button.btn.btn-lg.btn-primary.mb-2');
-                                button.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                button.scrollIntoView({ behavior: 'smooth', block: 'end' });
 
                                 // Slightly adjust the scroll position after a short delay
                                 setTimeout(() => {
-                                    window.scrollBy(0, 10); // Move up by 50 pixels (adjust as needed)
+                                    window.scrollBy(0, 150); // Move up by 50 pixels (adjust as needed)
                                 }, 500);
 
                                 """)
@@ -2735,9 +2772,10 @@ def earnow_online(window1, ip_required):
                                     result_mem = None
                                     result_mem = find_similar_image("element_screenshot.png", "element_icons")
                                     print("result:g ",result_mem)
-                                    result_mem = result_mem.replace("2", "")
+                                    if result_mem:
+                                        result_mem = result_mem.replace("2", "")
                                     print("result:g without2",result_mem)
-                                    
+                                    print('lngth of icons:',len(icon_options))
                                     for icon in icon_options:
                                         icon_class = icon.get_attribute('class').replace(' ', '.')     
                                         if result_mem and result_mem in icon_class:
@@ -2768,7 +2806,7 @@ def earnow_online(window1, ip_required):
                                         actions.move_to_element(button).click().perform()  
                                     time.sleep(2)
                             except Exception as e:
-                                print('No Page Image found')
+                                print('No Page Image found',e)
                             
                         else:
                             print('Captcha not loading...')
@@ -2784,6 +2822,7 @@ def earnow_online(window1, ip_required):
                 time.sleep(2)
                 sb1.close()
                 sb1.switch_to_window(0)
+                print('Wait found')
                 continue
 
             try:
@@ -2824,29 +2863,7 @@ def earnow_online(window1, ip_required):
 
 
 
-            if sb1.is_element_present("div.mb-2.badge.bg-success"):
-                print("verified found")
-                timeout = 1
-                wrong_captcha =1
-                # Use ActionChains to move to the button and click it
-                button = sb1.find_element(By.CSS_SELECTOR, 'button.btn.btn-lg.btn-primary.mb-2')
-                actions = ActionChains(sb1)
-                actions.move_to_element(button).click().perform() 
-                
-                try:
-                    x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/verify_earnow.png", confidence=0.85)
-                except Exception as e:
-                    print('No Page Image found')
-                    pyautogui.scroll(-3,1021,475)
-                scrolled = False 
-                if last_step:  
-                    time.sleep(2)  
-                    return True
-                sb1.disconnect()
-                #pyautogui.press('f5')
-                earnow_loading(sb1)
-                sb1.connect()
-                #time.sleep(5)
+
 
             # List of element IDs to check
             images_list = ['cloudflare_box', 'clickheretostart', 'clickad10sec', 'vpnerror', 'complete_captcha_earnow', 'scroll_down_earnow', 'adsoff', 'loading_linkwait']
@@ -2960,7 +2977,7 @@ def open_browsers():
     sb1.connect()
     sb1.switch_to.window(current_window2)
     sb1.uc_open("chrome://extensions/")
-    sb1.driver.set_page_load_timeout(18)
+    sb1.set_page_load_timeout(18)
 
 
     time.sleep(7)
@@ -2973,7 +2990,7 @@ def open_browsers():
             sweet = install_extensions('sweet')
             cookie = install_extensions('cookie')
             mysterium = install_extensions('mysterium')
-            fingerprint = True #install_extensions('fingerprint')
+            fingerprint = install_extensions('fingerprint')
             nopecha = install_extensions('nopecha')
             if fingerprint and mysterium and sweet and cookie and nopecha:
                 print('All Extensions are installed..')
@@ -3001,7 +3018,7 @@ def open_browsers():
         update = {"$set": {"response": 'Setup Done...'}}
         result = collection.update_one(query, update)
  
-    #@time.sleep(999)
+    time.sleep(99999)
     return sb1
  
 def update_target_ip(new_ip):
@@ -3512,8 +3529,8 @@ def process_link_blocks_bitbitzz(sb,ip_address):
                 # Check if it's "Earnow"
     
                 # Get the link-rmn
-                link_rmn_element = block.find_element(By.CSS_SELECTOR,"div.mt-4 span.float-end")
-                link_rmn = link_rmn_element.text
+                link_clicks_element = block.find_element(By.XPATH, ".//span[contains(@class, 'float-end') and not(contains(@class, 'text-muted'))]")
+                link_rmn = link_clicks_element.text
                 print(f"Link Remaining: {link_rmn}")
     
 
@@ -3617,7 +3634,7 @@ def process_link_blocks_bitbitzz(sb,ip_address):
 
 
 
-def process_link_blocks_fey(sb):
+def process_link_blocks_fey(sb,ip_address):
     # Find all "div.link-block" elements
     other = None
     try:
@@ -3787,6 +3804,7 @@ def process_link_blocks_fey(sb):
     if other:
         print('END OF LINKS')
         #switch_mainfaucets(1)
+
 
 
 #time.sleep(9990)

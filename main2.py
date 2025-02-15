@@ -1812,8 +1812,10 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                         if 'Feyorra' in current_title:
                             pyautogui.click(932 ,728)
                             time.sleep(1)
-                            pyautogui.click(943 ,788)
-                                    #x:943 y:788
+ 
+                            button = sb1.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
+                            actions = ActionChains(sb1)
+                            actions.move_to_element(button).click().perform()    
                             time.sleep(5)
                             return
                         if 'ClaimCoin' in current_title:
@@ -1842,9 +1844,9 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                     except Exception as e:
                         print(f'Element Not Found Recaptcha :{e}')
  
-                button = sb1.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
-                actions = ActionChains(sb1)
-                actions.move_to_element(button).click().perform()      
+               # button = sb1.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
+               # actions = ActionChains(sb1)
+               # actions.move_to_element(button).click().perform()      
  
             else:
                 for i in range(1, 10):
@@ -1857,7 +1859,9 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                     actions = ActionChains(sb1)
                     actions.move_to_element(button).click().perform()      
     
- 
+       #pyautogui.click(955, 916 )
+        #time.sleep(1)
+        #pyautogui.click(955, 900 )
         print("✅ CAPTCHA validated")
         time.sleep(3)
         print("🚀 Login attempt made!")
@@ -2810,7 +2814,7 @@ def earnow_online(window1, ip_required):
                             
                         else:
                             print('Captcha not loading...')
-                            bug += 5
+                            timeout += 3
                             
                 except Exception as e:  
                     print(f"Not found {item}")
@@ -2831,7 +2835,7 @@ def earnow_online(window1, ip_required):
                     pyautogui.scroll(2000,1021,475)
 
                     print("Click any ad and open in new tab, and wait 10 seconds before you can return and continue.")
-                    pyautogui.rightClick(639, 568 )
+                    pyautogui.rightClick(639, 555 )
                     time.sleep(2) 
                     pyautogui.rightClick(1303 ,548 )  
                     time.sleep(2) 

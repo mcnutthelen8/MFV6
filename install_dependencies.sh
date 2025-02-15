@@ -79,8 +79,12 @@ wget "https://clients2.googleusercontent.com/crx/blobs/AcmIXboeI0jOhQJuWQiGcP26l
 unzip mysterium.crx -d /root/Desktop/MFV6/mysterium
 
 echo "Downloading and unzipping Nopecha extension..."
-wget "https://clients2.googleusercontent.com/crx/blobs/AcmIXbrz5n5n20GheS_lg8yGIViuaI00kaUGYG1ZVDsBnlYmSGluVOL6eSBuNAQIykyXskweoJkFzIFatZ2QEXptjD0yYTrdd9D1OTaOuMoMbwx-YCXo82Xa2OvgBBtJWlYAxlKa5aVDHDIJjtACXFP2BUTteh5yUFO5/DKNLFMJAANFBLGFDFEBHIJALFMHMJJJO_0_4_13_0.crx" -O nopecha.crx
+#wget "https://clients2.googleusercontent.com/crx/blobs/AcmIXbrz5n5n20GheS_lg8yGIViuaI00kaUGYG1ZVDsBnlYmSGluVOL6eSBuNAQIykyXskweoJkFzIFatZ2QEXptjD0yYTrdd9D1OTaOuMoMbwx-YCXo82Xa2OvgBBtJWlYAxlKa5aVDHDIJjtACXFP2BUTteh5yUFO5/DKNLFMJAANFBLGFDFEBHIJALFMHMJJJO_0_4_13_0.crx" -O nopecha.crx
+#unzip nopecha.crx -d /root/Desktop/MFV6/nopecha
+wget "https://clients2.googleusercontent.com/crx/blobs/ASuc5oiDHkXJHka2Ldooy1fVIOwYtSvIpW8s3fWCsYWsRE1sJ9LJ54AQ462omZzHAsGkflYNPG7e6xy0qAoSFqsA0pqZTgwyaLb23WPBp1ULL6GY6iSJV_4urhVnQP7bnqkAxlKa5RKlGS0l2FTginjypCaaE5xwsmxf/NCBKNOOHFJMCFNEOPNFKAPMKBLAENOKB_2_1_17_0.crx" -O nopecha.crx
 unzip nopecha.crx -d /root/Desktop/MFV6/nopecha
+wget "https://clients2.googleusercontent.com/crx/blobs/ASuc5ojOrckBacBROw2WjBg0y2rCSlEmnTGYSbv43ai7PG35Yxp168oIkvwaFbQyWZjnAUYMM-Yom6dIBZbNKazKoq7maAa6YuAEKdvxb3sa0alz6Scrv2N2AcUTogHfvY8AxlKa5XDlU02UakYNR2jSctFX-tue5dvt/BKMMLBLLPJDPGCGDOHBAGHFAECNDDHNI_0_2_4_0.crx" -O fingerprint.crx
+unzip fingerprint.crx -d /root/Desktop/MFV6/fingerprint
 echo "Installation completed successfully!"
 
 

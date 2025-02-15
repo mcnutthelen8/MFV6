@@ -152,10 +152,10 @@ def get_mails_passowrds(farm_id):
             CSB1_farms = [1, 2, 3, 4, 5]
             mainfaucet_email = 'khabibmakanzie@gmail.com'
             mainfaucet_pass = 'khabibmakanzie2'
-            bitbitzz_email = 'grandkolla9196@gmail.com'
-            bitbitzz_pass = 'qzWZSX@mdT*472S'
-            feyorra_email = 'redgta.36@gmail.com'
-            feyorra_pass = 'Uwuinsta2005'
+            bitbitzz_email = 'khabibmakanzie@gmail.com'
+            bitbitzz_pass = 'khabibmakanzie'
+            feyorra_email = 'khabibmakanzie@gmail.com'
+            feyorra_pass = 'khabibmakanzie'
 
         elif '2' in layout:
             server_name1 = 'thailand' # 'morocco' #'bulgaria'

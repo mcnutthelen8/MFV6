@@ -104,13 +104,15 @@ collectionbip = db[f'LocalCSB']
 quer2y = {"type": "main"}
 dochh = collectionbip.find_one(quer2y)
 blacklistedIP = dochh["blacklistedIP"]
-print(blacklistedIP)
+#print(blacklistedIP)
  
  
 server_name1 = ''
 CSB1_farms  = ''
 mainfaucet_email = ''
 mainfaucet_pass = ''
+bitbitzz_email = ''
+bitbitzz_pass = ''
 feyorra_email = ''
 feyorra_pass = ''
 layout = ''
@@ -123,6 +125,8 @@ def get_mails_passowrds(farm_id):
     global mainfaucet_pass
     global feyorra_email
     global feyorra_pass
+    global bitbitzz_email
+    global bitbitzz_pass
     global layout
     global mysterium_raw
  
@@ -146,18 +150,23 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'thailand'
             CSB1_farms = [1, 2, 3, 4, 5]
-            mainfaucet_email = 'khabibmakanzie2@gmail.com'
+            mainfaucet_email = 'khabibmakanzie@gmail.com'
             mainfaucet_pass = 'khabibmakanzie2'
-            feyorra_email = 'khabibmakanzie2@gmail.com'
-            feyorra_pass = 'khabibmakanzie2'
- 
+            bitbitzz_email = 'khabibmakanzie@gmail.com'
+            bitbitzz_pass = 'khabibmakanzie'
+            feyorra_email = 'khabibmakanz.ie@gmail.com'
+            feyorra_pass = 'khabibmakanzie'
+
         elif '2' in layout:
             server_name1 = 'thailand' # 'morocco' #'bulgaria'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            mainfaucet_email = 'amytanisha250@gmail.com'
-            mainfaucet_pass = 'amytanisha250'
-            feyorra_email = 'amytanisha250@gmail.com'
-            feyorra_pass = 'amytanisha250'
+            mainfaucet_email = 'grandkolla@gmail.com'
+            mainfaucet_pass = 'khabibmakanzie2'
+            bitbitzz_email = 'grandkolla9196@gmail.com'
+            bitbitzz_pass = 'qzWZSX@mdT*472S'
+            feyorra_email = 'redgta.36@gmail.com'
+            feyorra_pass = 'Uwuinsta2005'
+
         elif '3' in layout:
             server_name1 = 'bulgaria' # 'morocco' #'bulgaria'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
@@ -870,7 +879,7 @@ def fix_ip(drive, name):
         blacklistedIP2 = dochh["blacklistedIP"]
         if len(blacklistedIP) <= len(blacklistedIP2):
             blacklistedIP += blacklistedIP2
-        print(blacklistedIP)
+        #print(blacklistedIP)
         lay = re.search(r'\d+', layout2).group()
         other_blacklists = get_blacklistedip2(f'F{farm_id}L{lay}')
         if other_blacklists:
@@ -1803,8 +1812,10 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                         if 'Feyorra' in current_title:
                             pyautogui.click(932 ,728)
                             time.sleep(1)
-                            pyautogui.click(943 ,788)
-                                    #x:943 y:788
+ 
+                            button = sb1.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
+                            actions = ActionChains(sb1)
+                            actions.move_to_element(button).click().perform()    
                             time.sleep(5)
                             return
                         if 'ClaimCoin' in current_title:
@@ -1833,9 +1844,9 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                     except Exception as e:
                         print(f'Element Not Found Recaptcha :{e}')
  
-                button = sb1.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
-                actions = ActionChains(sb1)
-                actions.move_to_element(button).click().perform()      
+               # button = sb1.find_element(By.CSS_SELECTOR, 'button[type="submit"]')
+               # actions = ActionChains(sb1)
+               # actions.move_to_element(button).click().perform()      
  
             else:
                 for i in range(1, 10):
@@ -1848,7 +1859,9 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                     actions = ActionChains(sb1)
                     actions.move_to_element(button).click().perform()      
     
- 
+       #pyautogui.click(955, 916 )
+        #time.sleep(1)
+        #pyautogui.click(955, 900 )
         print("✅ CAPTCHA validated")
         time.sleep(3)
         print("🚀 Login attempt made!")
@@ -1856,7 +1869,7 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
  
 def mainfaucet_login(driver,url,email,restrict_pages):
  
-    driver.uc_open(url)
+    #driver.uc_open(url)
     time.sleep(2)
  
     all_windows = driver.window_handles
@@ -1982,16 +1995,16 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         elif "SatoshiFaucet | Satoshi faucet" in current_title or 'CoinPayz - Multicurrency Crypto Earning Platform' in current_title or 'Home' in current_title or 'Earn Free Bitcoin & Crypto - Faucet, PTC, Surveys / bitBitz' in current_title:
 
             if function == 1:
-                mainfaucet_login(sb1,'https:/satoshifaucet.io/','grandkolla@gmail.com',window_list)
+                mainfaucet_login(sb1,'https:/satoshifaucet.io/',mainfaucet_email,window_list)
             if function == 2:
                 login_to_faucet('https://coinpayz.xyz/login', sb1, 'grandkolla@gmail.com', 'Uwuinsta2005', 'cloudflare', window_list, 'submit_button')
             if function == 3:
                 hafaucet_login(sb1,'https://helpfpcoin.site/','grandkolla@gmail.com',window_list)
  
             if function == 4:
-                login_to_faucet('https://bitbitz.cc/login', sb1, 'grandkolla9196', 'qzWZSX@mdT*472S', 'cloudflare', window_list, 'submit_button')
+                login_to_faucet('https://bitbitz.cc/login', sb1, bitbitzz_email, bitbitzz_pass, 'cloudflare', window_list, 'submit_button')
             if function == 5:
-                login_to_faucet('https://feyorra.top/login', sb1, 'redgta.36@gmail.com', 'Uwuinsta2005', 'rscaptcha', window_list, "button[type='submit']")
+                login_to_faucet('https://feyorra.top/login', sb1, feyorra_email, feyorra_pass, 'rscaptcha', window_list, "button[type='submit']")
             
 
         elif 'Lock' in current_title:
@@ -2002,6 +2015,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
                 ready = True
         elif 'Just' in current_title:
             cloudflare(driver, login = False)
+            time.sleep(8)
  
         else:
             print(f"{current_title} is not the expected title. Reconnecting...")
@@ -2418,7 +2432,7 @@ def rename_with_code(filepath):
 
 
 
-def find_similar_image(input_image_path, folder_path, similarity_threshold=0.95):
+def find_similar_image(input_image_path, folder_path, similarity_threshold=0.9):
     # Load the input image
     input_image = cv2.imread(input_image_path)
     if input_image is None:
@@ -2488,6 +2502,7 @@ def image_onscreeen(image_path, confidence=0.95, onlick = True):
         return None
 
 
+
 def earnow_loading(driver):
     print('start earnow_loading')
     #images_list = ['cloudflare_box', 'clickheretostart', 'clickad10sec', 'vpnerror', 'complete_captcha_earnow', 'scroll_down_earnow', 'adsoff', 'loading_linkwait']
@@ -2495,11 +2510,13 @@ def earnow_loading(driver):
     clicking_list = ['cloudflare_box', 'clickheretostart']
     return_list =['clickad10sec', 'complete_captcha_earnow', 'scroll_down_earnow']
     bugs_list = ['loading_linkwait']
-    tolerance = 0.85
+    tolerance = 0.8
     ggg = 1
     bug = 1
     try:
         while ggg < 24:
+            ggg += 1
+            print(f'Bug Loading Attempt:',bug)
             print(f'Trying Loading Attempt:',ggg)
             title = get_active_window_title()
             if "Shortlink" in title:
@@ -2511,10 +2528,12 @@ def earnow_loading(driver):
                 try:
                     x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{item}.png", confidence=tolerance)
                     pyautogui.click(x, y)
+                    bug = 1
                     print(f'{item} Box clicking_list 1')
                     time.sleep(4)
                 except Exception as e:  
                     print(f"Not clicking_list {item} 2")
+                    
             
             #refresh list
             for item in refresh_list:
@@ -2524,6 +2543,7 @@ def earnow_loading(driver):
                     print(f'{item} Box refresh_list 1')
                     pyautogui.press('f5')
                     ggg = 1
+                    bug = 1
                     time.sleep(4)
                 except Exception as e:  
                     print(f"Not refresh_list {item} 2")
@@ -2548,7 +2568,7 @@ def earnow_loading(driver):
                     print(f'{item} Box bugs_list 1')
                     bug += 3
                     time.sleep(2)
-                    if bug > 10:
+                    if bug > 6:
                         pyautogui.press('f5')
                         bug = 1
                     
@@ -2557,10 +2577,14 @@ def earnow_loading(driver):
                     bug = 1
 
 
+
     except Exception as e:
         print('earnow_loading',e)
     #driver.connect()
     return False
+
+
+
 
 def earnow_online(window1, ip_required):
     scrolled = False
@@ -2576,15 +2600,34 @@ def earnow_online(window1, ip_required):
         try:
 
             sb1.switch_to_window(window)
+            if timeout >= 7:
+                pyautogui.press('f5')
+                timeout = 1
+                print("Timeout ", timeout)
+            if wrong_captcha >= 5:
+                print('too many Wrong Captcha')
+                return 404
+
             mainscript = control_panel()
+            if mainscript != 1:
+                print('mainscript is changed....')
+                return
             title = sb1.get_title() #get_active_window_title()
-            if "Shortlink" in title or 'Link' in title:
+            ip_address = get_ip(sb1)
+            if ip_address != ip_required:
+                wrong_captcha +=2
+                print('wrong Ip address')
+                continue
+
+
+            if "Shortlink" in title or 'Link' in title or 'Dashboard of Coin' in title:
                 return True
             if sb1.is_element_present("h1.title.ttu.text-center"):
                 step_text = sb1.get_text("h1.title.ttu.text-center")
                 if 'STEP' not in step_text:
                     print('Stes not found')
                     wrong_captcha +=1
+
 
             print(title)
             if sb1.is_element_visible("button.btn.btn-primary"):
@@ -2603,11 +2646,46 @@ def earnow_online(window1, ip_required):
                         last_step =True
                 else:
                     print(f"Button Not found | {button.text}")
-
-                #return True
             else:
-                time.sleep(1)
                 print("Waiting for button")
+
+            if sb1.is_element_present("div.mb-2.badge.bg-success"):
+                print("verified found")
+                timeout = 1
+                wrong_captcha =1
+                # Use ActionChains to move to the button and click it
+                button = sb1.find_element(By.CSS_SELECTOR, 'button.btn.btn-lg.btn-primary.mb-2')
+                actions = ActionChains(sb1)
+                actions.move_to_element(button).click().perform() 
+                
+                try:
+                    x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/verify_earnow.png", confidence=0.85)
+                except Exception as e:
+                    print('No Page Image found')
+                    pyautogui.scroll(-1,1021,475)
+                scrolled = False 
+                if last_step:  
+                    time.sleep(2)  
+                    return True
+                sb1.disconnect()
+                earnow_loading(sb1)
+                sb1.connect()
+                #time.sleep(5)
+
+            else:
+                print("Not found div.mb-2.badge.bg-success")
+
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/earnow_verifying_bug.png", confidence=0.85)
+                if x and y:
+                    timeout += 1
+                    time.sleep(1)
+                    print("found earnow_verifying_bug")
+                    continue 
+
+            except Exception as e:  
+                print("Not found earnow_verifying_bug")
+            
 
             for item in ['complete_captcha_earnow', 'scroll_down_earnow']:
                 try:
@@ -2654,7 +2732,7 @@ def earnow_online(window1, ip_required):
                                     x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/verify_earnow.png", confidence=0.85)
                                 except Exception as e:
                                     print('No Page Image found')
-                                    pyautogui.scroll(-3,1021,475)
+                                    pyautogui.scroll(-1,1021,475)
                             else:
                                 sb1.execute_script("""
                                 const button = document.querySelector('button.btn.btn-lg.btn-primary.mb-2');
@@ -2662,73 +2740,81 @@ def earnow_online(window1, ip_required):
 
                                 // Slightly adjust the scroll position after a short delay
                                 setTimeout(() => {
-                                    window.scrollBy(0, -150); // Move up by 50 pixels (adjust as needed)
+                                    window.scrollBy(0, 150); // Move up by 50 pixels (adjust as needed)
                                 }, 500);
 
                                 """)
                                 scrolled = True
                             time.sleep(2)
-                            print("Captcha found")
-                            rename_with_code("element_screenshot.png")
+                            try:
+                                x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/verify_earnow.png", confidence=0.8)
+                                if x and y:
+                                    print("Captcha found")
+                                    #rename_with_code("element_screenshot.png")
 
-                            capture_element_screenshot(sb1, "div.captcha-icon img", screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
-                            print("Image saved as 'captcha_image.svg'")
-                            icon_options = sb1.find_elements(By.CSS_SELECTOR, '#icon-options i[class*="fas fa-"]')
-                            icons_folder = 'icons'
-                            if not os.path.exists(icons_folder):
-                                os.makedirs(icons_folder)
-                                print(f"Created folder: {icons_folder}")
-                            else:
-                                print(f"Folder already exists: {icons_folder}")
-            
-                            # Delete the contents of the icons folder
-                            for filename in os.listdir(icons_folder):
-                                file_path = os.path.join(icons_folder, filename)
-                                try:
-                                    if os.path.isfile(file_path) or os.path.islink(file_path):
-                                        os.unlink(file_path)  # Remove file or symbolic link
-                                    elif os.path.isdir(file_path):
-                                        shutil.rmtree(file_path)  # Remove directory
-                                    print(f"Deleted: {file_path}")
-                                except Exception as e:
-                                    print(f"Failed to delete {file_path}. Reason: {e}")
-                            result_mem = None
-                            result_mem = find_similar_image("element_screenshot.png", "element_icons")
-                            print("result:g ",result_mem)
-                            
-                            for icon in icon_options:
-                                icon_class = icon.get_attribute('class').replace(' ', '.')     
-                                if result_mem and result_mem in icon_class:
-                                    button = sb1.find_element(By.CSS_SELECTOR, f"i.{icon_class}")
-                                    actions = ActionChains(sb1)
-                                    #time.sleep(1)
-                                    actions.move_to_element(button).click().perform()  
-                                    print(f"Icon Found match: {icon_class}")
-                                    break
-                                icon_class = "." + icon_class
-                                print(f"Icon 1: {icon_class}")
-                                # Delete all items in the icons folder before starting
-                                capture_element_screenshot(sb1, icon_class, screenshot_path="full_screenshot.png", cropped_path=f"icons/{icon_class}.png")      
-                            if result_mem == None:
-                                q_image = 'element_screenshot.png'
-                                icons_folder = 'icons'
-                                invert_filter = True  # Change to True to invert black and white
-                                timeout = 1
+                                    capture_element_screenshot(sb1, "div.captcha-icon img", screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
+                                    print("Image saved as 'captcha_image.svg'")
+                                    icon_options = sb1.find_elements(By.CSS_SELECTOR, '#icon-options i[class*="fas fa-"]')
+                                    icons_folder = 'icons'
+                                    if not os.path.exists(icons_folder):
+                                        os.makedirs(icons_folder)
+                                        print(f"Created folder: {icons_folder}")
+                                    else:
+                                        print(f"Folder already exists: {icons_folder}")
+                    
+                                    # Delete the contents of the icons folder
+                                    for filename in os.listdir(icons_folder):
+                                        file_path = os.path.join(icons_folder, filename)
+                                        try:
+                                            if os.path.isfile(file_path) or os.path.islink(file_path):
+                                                os.unlink(file_path)  # Remove file or symbolic link
+                                            elif os.path.isdir(file_path):
+                                                shutil.rmtree(file_path)  # Remove directory
+                                            print(f"Deleted: {file_path}")
+                                        except Exception as e:
+                                            print(f"Failed to delete {file_path}. Reason: {e}")
+                                    result_mem = None
+                                    result_mem = find_similar_image("element_screenshot.png", "element_icons")
+                                    print("result:g ",result_mem)
+                                    if result_mem:
+                                        result_mem = result_mem.replace("2", "")
+                                    print("result:g without2",result_mem)
+                                    print('lngth of icons:',len(icon_options))
+                                    for icon in icon_options:
+                                        icon_class = icon.get_attribute('class').replace(' ', '.')     
+                                        if result_mem and result_mem in icon_class:
+                                            button = sb1.find_element(By.CSS_SELECTOR, f"i.{icon_class}")
+                                            actions = ActionChains(sb1)
+                                            #time.sleep(1)
+                                            actions.move_to_element(button).click().perform()  
+                                            print(f"Icon Found match: {icon_class}")
+                                            break
+                                        icon_class = "." + icon_class
+                                        print(f"Icon 1: {icon_class}")
+                                        # Delete all items in the icons folder before starting
+                                        capture_element_screenshot(sb1, icon_class, screenshot_path="full_screenshot.png", cropped_path=f"icons/{icon_class}.png")      
+                                    if result_mem == None:
+                                        q_image = 'element_screenshot.png'
+                                        icons_folder = 'icons'
+                                        invert_filter = True  # Change to True to invert black and white
+                                        timeout = 1
 
-                                best_match, similarity = process_and_match(q_image, icons_folder)
-                                print(f"Most similar image: {best_match}, Similarity score: {similarity}")
-                                best_match = best_match.replace('.png', '')
-                                print(f"Icon 2: {best_match}")
-                                button = sb1.find_element(By.CSS_SELECTOR, f"i{best_match}")
-                                actions = ActionChains(sb1)
-                                #sb1.disconnect()
-                                time.sleep(1)
-                                actions.move_to_element(button).click().perform()  
-                            time.sleep(2)
+                                        best_match, similarity = process_and_match(q_image, icons_folder)
+                                        print(f"Most similar image: {best_match}, Similarity score: {similarity}")
+                                        best_match = best_match.replace('.png', '')
+                                        print(f"Icon 2: {best_match}")
+                                        button = sb1.find_element(By.CSS_SELECTOR, f"i{best_match}")
+                                        actions = ActionChains(sb1)
+                                        #sb1.disconnect()
+                                        time.sleep(1)
+                                        actions.move_to_element(button).click().perform()  
+                                    time.sleep(2)
+                            except Exception as e:
+                                print('No Page Image found',e)
                             
                         else:
                             print('Captcha not loading...')
-                            bug += 5
+                            timeout += 3
                             
                 except Exception as e:  
                     print(f"Not found {item}")
@@ -2740,6 +2826,7 @@ def earnow_online(window1, ip_required):
                 time.sleep(2)
                 sb1.close()
                 sb1.switch_to_window(0)
+                print('Wait found')
                 continue
 
             try:
@@ -2748,7 +2835,7 @@ def earnow_online(window1, ip_required):
                     pyautogui.scroll(2000,1021,475)
 
                     print("Click any ad and open in new tab, and wait 10 seconds before you can return and continue.")
-                    pyautogui.rightClick(639, 568 )
+                    pyautogui.rightClick(639, 555 )
                     time.sleep(2) 
                     pyautogui.rightClick(1303 ,548 )  
                     time.sleep(2) 
@@ -2780,29 +2867,7 @@ def earnow_online(window1, ip_required):
 
 
 
-            if sb1.is_element_present("div.mb-2.badge.bg-success"):
-                print("verified found")
-                timeout = 1
-                wrong_captcha =1
-                # Use ActionChains to move to the button and click it
-                button = sb1.find_element(By.CSS_SELECTOR, 'button.btn.btn-lg.btn-primary.mb-2')
-                actions = ActionChains(sb1)
-                actions.move_to_element(button).click().perform() 
-                
-                try:
-                    x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/verify_earnow.png", confidence=0.85)
-                except Exception as e:
-                    print('No Page Image found')
-                    pyautogui.scroll(-3,1021,475)
-                scrolled = False 
-                if last_step:  
-                    time.sleep(2)  
-                    return True
-                sb1.disconnect()
-                #pyautogui.press('f5')
-                earnow_loading(sb1)
-                sb1.connect()
-                #time.sleep(5)
+
 
             # List of element IDs to check
             images_list = ['cloudflare_box', 'clickheretostart', 'clickad10sec', 'vpnerror', 'complete_captcha_earnow', 'scroll_down_earnow', 'adsoff', 'loading_linkwait']
@@ -2817,6 +2882,7 @@ def earnow_online(window1, ip_required):
                             break
                         else:
                             timeout = 1
+                            
                             pre_element = item
                             break
 
@@ -2825,13 +2891,7 @@ def earnow_online(window1, ip_required):
 
 
 
-            if timeout >= 8:
-                pyautogui.press('f5')
-                timeout = 1
-                print("Timeout ", timeout)
-            if wrong_captcha >= 5:
-                print('too many Wrong Captcha')
-                return 404
+
             try:
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.85)
                 sb1.disconnect()
@@ -2840,558 +2900,14 @@ def earnow_online(window1, ip_required):
                 sb1.connect()
             except Exception as e:  
                 print('no cloudflare box')
-            if mainscript != 1:
-                print('mainscript is changed....')
-                return
-            ip_address = get_ip(sb1)
-            if ip_address != ip_required:
-                wrong_captcha +=2
-                print('wrong Ip address')
-                continue
+
+            wrong_captcha += 0.5
 
         except Exception as e:
             print(e)
             sb1.switch_to.default_content()
 
-
-
-
-def earnow_online_2(window1):
-    scrolled = False
-    last_step = False
-    timeout = 1
-    pre_element = None
-    window = window1
-    wrong_captcha = 1
-    win1 = True
-    win2 = True
-
-    while True:
-        try:
-
-            sb1.switch_to_window(window)
-            title = sb1.get_title() #get_active_window_title()
-            if "Shortlink" in title:
-                return True
-            #    if window2 == window:
-            #        win2 = False
-            #    if window1 == window:
-            #        win1 = False
-                       
-            #    continue
-            print(title)
- 
-            if sb1.is_element_visible("div.captcha-icon img"):
-                sb1.execute_script("""
-                    document.querySelectorAll('iframe').forEach((e, i) => i % 2 === 0 && e.remove());
-
-
-                """)
-
-
-                if scrolled:
-                    #pyautogui.moveTo(1021,475)
-                    pyautogui.scroll(-3,1021,475)
-                else:
-                    sb1.execute_script("""
-                    const button = document.querySelector('button.btn.btn-lg.btn-primary.mb-2');
-                    button.scrollIntoView({ behavior: 'smooth', block: 'end' });
-
-                    // Slightly adjust the scroll position after a short delay
-                    setTimeout(() => {
-                        window.scrollBy(0, -150); // Move up by 50 pixels (adjust as needed)
-                    }, 500);
-
-                    """)
-                    scrolled = True
-                time.sleep(2)
-                print("Captcha found")
-                rename_with_code("element_screenshot.png")
-
-                capture_element_screenshot(sb1, "div.captcha-icon img", screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
-                print("Image saved as 'captcha_image.svg'")
-                icon_options = sb1.find_elements(By.CSS_SELECTOR, '#icon-options i[class*="fas fa-"]')
-                icons_folder = 'icons'
-                if not os.path.exists(icons_folder):
-                    os.makedirs(icons_folder)
-                    print(f"Created folder: {icons_folder}")
-                else:
-                    print(f"Folder already exists: {icons_folder}")
- 
-                # Delete the contents of the icons folder
-                for filename in os.listdir(icons_folder):
-                    file_path = os.path.join(icons_folder, filename)
-                    try:
-                        if os.path.isfile(file_path) or os.path.islink(file_path):
-                            os.unlink(file_path)  # Remove file or symbolic link
-                        elif os.path.isdir(file_path):
-                            shutil.rmtree(file_path)  # Remove directory
-                        print(f"Deleted: {file_path}")
-                    except Exception as e:
-                        print(f"Failed to delete {file_path}. Reason: {e}")
-                result_mem = None
-                result_mem = find_similar_image("element_screenshot.png", "element_icons")
-                print("result:g ",result_mem)
-                
-                for icon in icon_options:
-                    icon_class = icon.get_attribute('class').replace(' ', '.')     
-                    if result_mem and result_mem in icon_class:
-                        button = sb1.find_element(By.CSS_SELECTOR, f"i.{icon_class}")
-                        actions = ActionChains(sb1)
-                        #time.sleep(1)
-                        actions.move_to_element(button).click().perform()  
-                        print(f"Icon Found match: {icon_class}")
-                        break
-                    icon_class = "." + icon_class
-                    print(f"Icon 1: {icon_class}")
-                    # Delete all items in the icons folder before starting
-                    capture_element_screenshot(sb1, icon_class, screenshot_path="full_screenshot.png", cropped_path=f"icons/{icon_class}.png")      
-                if result_mem == None:
-                    q_image = 'element_screenshot.png'
-                    icons_folder = 'icons'
-                    invert_filter = True  # Change to True to invert black and white
-                    timeout = 1
-
-                    best_match, similarity = process_and_match(q_image, icons_folder)
-                    print(f"Most similar image: {best_match}, Similarity score: {similarity}")
-                    best_match = best_match.replace('.png', '')
-                    print(f"Icon 2: {best_match}")
-                    button = sb1.find_element(By.CSS_SELECTOR, f"i{best_match}")
-                    actions = ActionChains(sb1)
-                    #sb1.disconnect()
-                    time.sleep(1)
-                    actions.move_to_element(button).click().perform()  
-                time.sleep(2)
-
-
-
-
-            try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.85)
-                if x and y:
-                    pyautogui.scroll(2000,1021,475)
-                    sb1.execute_script("""
-                        (function() {
-                            function removeIframes(element) {
-                                element.querySelectorAll('iframe').forEach(el => el.remove());
-                            }
-
-                            function observeMutations() {
-                                const observer = new MutationObserver(mutationsList => {
-                                    for (const mutation of mutationsList) {
-                                        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                                            mutation.addedNodes.forEach(addedNode => {
-                                                if (addedNode instanceof Element) {
-                                                    removeIframes(addedNode);
-                                                }
-                                            });
-                                        }
-                                    }
-                                });
-
-                                observer.observe(document.documentElement, { childList: true, subtree: true });
-                            }
-
-                            console.log('Removing iframes and observing mutations...');
-                            observeMutations();
-
-                            setInterval(() => {
-                                document.querySelectorAll('iframe').forEach(el => el.remove());
-                            }, 100);
-                        })();
-
-
-                    """)
-
-
-                    print("Click any ad and open in new tab, and wait 10 seconds before you can return and continue.")
-                    pyautogui.rightClick(639, 568 )
-                    time.sleep(2) 
-                    pyautogui.rightClick(1303 ,548 )  
-                    time.sleep(2) 
-                    pyautogui.rightClick(1303 ,548 )  
-            except Exception as e:  
-                print("Not found clickad10sec")
-            
-
-
-            
-            if "Wait" in title:
-                sb1.open_new_tab()
-                time.sleep(4)
-                pyautogui.click(529, 568)
-                time.sleep(2)
-                sb1.close()
-                sb1.switch_to_window(0)
-
-            if "Just a moment" in title:
-                sb1.disconnect()
-                for i in range(20):
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.85)
-                        pyautogui.click(x, y)
-                        print('CloudFlare Box Found 1')
-                        time.sleep(5)
- 
-                    except Exception as e:  
-                        print("Not found cloudflare_box 2")
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.85)
-                        if x and y:
-                            print('clickheretostart Found 2')
-                            break
-                    except Exception as e:  
-                        print("Not found clickheretostart 2")
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.85)
-                        if x and y:
-                            print('clickad10sec Found 2')
-                            break
-                    except Exception as e:  
-                        print("Not found clickad10sec 2")
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.85)
-                        if x and y:
-                            print("VPN Error 2")
-                            break
-                    except Exception as e:  
-                        print("Not found vpnerror 2")
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/adsoff.png", confidence=0.85)
-                        if x and y:
-                            print("adsoff Error 2")
-                            break
-                    except Exception as e:  
-                        print("Not found adsoff 2")
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/complete_captcha_earnow.png", confidence=0.85)
-                        print('complete_captcha_earnow Found 4')
-                        if x and y:
-                            break
-                    except Exception as e:  
-                        print("Not found complete_captcha_earnow 4")
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/scroll_down_earnow.png", confidence=0.85)
-                        print('scroll_down_earnow Found 4')
-                        if x and y:
-                            break
-                    except Exception as e:  
-                        print(" Not found scroll_down_earnow 4")
-
-
-                    time.sleep(1)
-                    print(i,'CloudFlare Just')
-                sb1.connect()
-                #cloudflare(sb1, login = True)
- 
- 
- 
-            if sb1.is_text_visible("Failed! Please reload the page."):
-                print("Failed! Please reload the page.")
-                scrolled = False
-                sb1.disconnect()
-                pyautogui.press('f5')
-                time.sleep(5)
-                for i in range(20):
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.85)
-                        pyautogui.click(x, y)
-                        print('CloudFlare Box Found 3')
-                        time.sleep(5)
- 
-                    except Exception as e:  
-                        print("Not found cloudflare_box 3")
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.85)
-                        if x and y:
-                                print('clickheretostart Found 3')
-                                break
-                    except Exception as e:  
-                        print("Not found clickheretostart 3")
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.85)
-                        if x and y:
-                                print('clickad10sec Found 3')
-
-                                break
-                    except Exception as e:  
-                        print("Not found clickad10sec 3")
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.85)
-                        if x and y:
-                                break
-                    except Exception as e:  
-                        print("Not found vpnerror 3")
-
-                    time.sleep(1)
-                    print(i,'CloudFlare Just')
-                sb1.connect()
-                timeout = 1
-                wrong_captcha += 1
-
-            if sb1.is_element_visible("button.btn.btn-primary"):
-                print("Button found g")
- 
-                # Use ActionChains to move to the button and click it
-                button = sb1.find_element(By.CSS_SELECTOR, 'button.btn.btn-primary')
-                if button.text == "Click Here To Start":
-                    actions = ActionChains(sb1)
-                    actions.move_to_element(button).click().perform()      
-                    sb1.disconnect()
-                    #time.sleep(5)
-                    for i in range(35):
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.85)
-                            pyautogui.click(x, y)
-                            time.sleep(4)
-    
-                        except Exception as e:  
-                            print("Not found cloudflare_box 4")
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/complete_captcha_earnow.png", confidence=0.85)
-                            print('complete_captcha_earnow Found 4')
-                            if x and y:
-                                break
-                        except Exception as e:  
-                            print("Not found complete_captcha_earnow 4")
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/scroll_down_earnow.png", confidence=0.85)
-                            print('scroll_down_earnow Found 4')
-                            if x and y:
-                                break
-                        except Exception as e:  
-                            print(" Not found scroll_down_earnow 4")
-                        time.sleep(1)
-                        print("Waiting For Icon Image to Pop up:",i)
-                    sb1.connect()
-                    if sb1.is_text_visible("STEP 5/5"):
-                        print("Steps 5/5 found")
-                        last_step =True
-                else:
-                    print(f"Button Not found | {button.text}")
-
-                #return True
-            else:
-                time.sleep(1)
-                print("Waiting for button")
-
-
-            if sb1.is_element_visible("div.mb-2.badge.bg-success"):
-                print("verified found")
-                timeout = 1
-                wrong_captcha =1
-                # Use ActionChains to move to the button and click it
-                button = sb1.find_element(By.CSS_SELECTOR, 'button.btn.btn-lg.btn-primary.mb-2')
-                actions = ActionChains(sb1)
-                actions.move_to_element(button).click().perform() 
-                pyautogui.scroll(-3,1021,475)
-                scrolled = False 
-                if last_step:  
-                    time.sleep(2)  
-                    return True
-                sb1.disconnect()
-                time.sleep(5)
-                #pyautogui.press('f5')
-                for i in range(20):
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.85)
-                        pyautogui.click(x, y)
-                        print('CloudFlare Box Found 6')
-                        time.sleep(5)
- 
-                    except Exception as e:  
-                        print("Not found cloudflare_box 6")
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/scroll_down_earnow.png", confidence=0.85)
-                        pyautogui.click(x, y)
-                        print('CloudFlare Box Found 6')
-                        time.sleep(5)
- 
-                    except Exception as e:  
-                        print("Not found cloudflare_box 6")
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/complete_captcha_earnow.png", confidence=0.85)
-                        pyautogui.click(x, y)
-                        print('CloudFlare Box Found 6')
-                        time.sleep(5)
- 
-                    except Exception as e:  
-                        print("Not found cloudflare_box 6")
-
-
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.85)
-                        if x and y:
-                            print('clickheretostart Found 6')
-                            break
-                    except Exception as e:  
-                        print("Not found clickheretostart 6")
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.85)
-                        if x and y:
-                            print('clickad10sec Found 6')
-                            break
-                    except Exception as e:  
-                        print("Not found clickad10sec 6")
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.85)
-                        if x and y:
-                            print('vpnerror Found 6')
-                            break
-                    except Exception as e:  
-                        print("Not found vpnerror 6")
-
-                    time.sleep(1)
-                    print(i,'CloudFlare Just')
-                sb1.connect()
-            # List of element IDs to check
-            element_ids = [
-                "loadingDiv",
-                "rewardMessage",
-                "clickMessage",
-                "captchaMessage",
-                "scrollMessage"
-            ]
-            
-            # Iterate through the element IDs
-            for element_id in element_ids:
-                if sb1.is_element_present(f"#{element_id}"):
-                    # Get the style attribute of the element
-                    style = sb1.get_attribute(f"#{element_id}", "style")
-                
-                    # Check if the element is visible
-                    if "display: block;" in style:
-                        print(f"Element with ID '{element_id}' is visible (style='display: block;'). timeout :{timeout}")
-                        if pre_element == element_id:
-                            timeout += 1
-                            break
-                        else:
-                            timeout = 1
-                            pre_element = element_id
-                            break
-                else:
-                    print(f"Element with ID '{element_id}' is not present on the page. timeout :{timeout}")
-
-            try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.85)
-                if x and y:
-                    print("VPN or Proxy detected. Please disable it and reload the page.")
-                    sb1.disconnect()
-                    pyautogui.press('f5')
-                    time.sleep(5)
-                    for i in range(20):
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.85)
-                            pyautogui.click(x, y)
-                            print('CloudFlare Box Found 5')
-                            time.sleep(5)
-    
-                        except Exception as e:  
-                            print("Not found cloudflare_box 5")
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickheretostart.png", confidence=0.85)
-                            if x and y:
-                                print('clickheretostart Found 5')
-                                break
-                        except Exception as e:  
-                            print("Not found clickheretostart 5")
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/clickad10sec.png", confidence=0.85)
-                            if x and y:
-                                print('clickad10sec Found 5')
-                                break
-                        except Exception as e:  
-                            print("Not found clickad10sec 5")
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/vpnerror.png", confidence=0.85)
-                            if x and y:
-                                print('vpnerror Found 5')
-                                break
-                        except Exception as e:  
-                            print("Not found vpnerror 5")
-
-                        time.sleep(1)
-                        print(i,'CloudFlare Just')
-                    sb1.connect()
-            except Exception as e:  
-                print(e)
-
-
-
-            if timeout >= 8:
-                pyautogui.press('f5')
-                timeout = 1
-            if wrong_captcha >= 5:
-                print('too many Wrong Captcha')
-                return 404
-            try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.85)
-                sb1.disconnect()
-                time.sleep(1)
-                pyautogui.click(x, y)
-                for i in range(8):
-                    try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.85)
-                            pyautogui.click(x, y)
-                            time.sleep(4)
-    
-                    except Exception as e:  
-                        print("Not found cloudflare_box 7")
-                    time.sleep(1)
-                    print(i)
-                sb1.connect()
- 
-            except Exception as e:  
-                print('no cloudflare box')
-
-        except Exception as e:
-            print(e)
-            sb1.switch_to.default_content()
-
-
-
-def switch_extra_windows(driver, keep_window_handles):
-    all_windows = driver.window_handles
-    for window in all_windows:
-        if window not in keep_window_handles:
-            driver.switch_to.window(window)
-            return window
- 
-def process_link_blocks(sb):
-    # Find all "div.link-block" elements
-    link_blocks = sb.find_elements("div.link-block")
-    for index, block in enumerate(link_blocks):
-        print(f"Processing block {index + 1}:")
- 
-        # Scroll the block into view
-        sb.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", block)
-        try:
-            # Get the link-name
-            link_name_element = block.find_element(By.CSS_SELECTOR,"span.link-name")
-            link_name = link_name_element.text
-            print(f"Link Name: {link_name}")
- 
-            # Check if it's "Earnow"
- 
-            # Get the link-rmn
-            link_rmn_element = block.find_element(By.CSS_SELECTOR,"span.link-rmn")
-            link_rmn = link_rmn_element.text
-            print(f"Link Remaining: {link_rmn}")
- 
-            if link_name == "Earnow":
-                # Click the claim-button
-                button = block.find_element(By.CSS_SELECTOR,"button[type='submit']")
- 
-                button.uc_click()
-                #actions = ActionChains(sb1)
-                #actions.move_to_element(button).click().perform()      
-                print("Clicked the claim button.")
-                return True
-        except Exception as e:
-            print(f"An error occurred in block {index + 1}: {e}")
-            pyautogui.click(600,500 )
-
-
+            wrong_captcha += 0.5
 
  
 def process_link_blocks_claimtrx(sb):
@@ -3434,13 +2950,13 @@ browser_proxy = ''
 query = {"type": "main"}
 refresh_count = 0
 get_mails_passowrds(farm_id)
-for frm in CSB1_farms:
-    collection_csb = db[f'Farm{frm}']
-    update = {"$set": {"response": f'Changed IP🔴: Starting Farm:{farm_id}'}}
-    result = collection_csb.update_one(query, update)
-    update = {"$set": {"request": 'ipfixer'}}
-    result = collection_csb.update_one(query, update)
- 
+#for frm in CSB1_farms:
+#    collection_csb = db[f'Farm{frm}']
+#    update = {"$set": {"response": f'Changed IP🔴: Starting Farm:{farm_id}'}}
+#    result = collection_csb.update_one(query, update)
+#    update = {"$set": {"request": 'ipfixer'}}
+#    result = collection_csb.update_one(query, update)
+
 def open_browsers():
     global sb1
     global chrome_user_data_dir
@@ -3466,6 +2982,9 @@ def open_browsers():
     sb1.connect()
     sb1.switch_to.window(current_window2)
     sb1.uc_open("chrome://extensions/")
+    sb1.set_page_load_timeout(18)
+
+
     time.sleep(7)
     print(sb1.get_title())
     gggv = are_extensions_exist()
@@ -3476,7 +2995,7 @@ def open_browsers():
             sweet = install_extensions('sweet')
             cookie = install_extensions('cookie')
             mysterium = install_extensions('mysterium')
-            fingerprint = True #install_extensions('fingerprint')
+            fingerprint = install_extensions('fingerprint')
             nopecha = install_extensions('nopecha')
             if fingerprint and mysterium and sweet and cookie and nopecha:
                 print('All Extensions are installed..')
@@ -3504,7 +3023,7 @@ def open_browsers():
         update = {"$set": {"response": 'Setup Done...'}}
         result = collection.update_one(query, update)
  
-    #time.sleep(999)
+    #time.sleep(99999)
     return sb1
  
 def update_target_ip(new_ip):
@@ -3569,7 +3088,7 @@ def open_faucets():
             blacklistedIP2 = dochh["blacklistedIP"]
             if len(blacklistedIP) <= len(blacklistedIP2):
                 blacklistedIP += blacklistedIP2
-            print(blacklistedIP)
+            #print(blacklistedIP)
             lay = re.search(r'\d+', layout2).group()
             other_blacklists = get_blacklistedip2(f'F{farm_id}L{lay}')
             if other_blacklists:
@@ -3606,8 +3125,12 @@ def open_faucets():
  
             ip_address = get_ip(sb1)
 
+
+            dochh5 = collection.find_one(quer2y)
+            mainfaucet_key = dochh5["mainfaucet"]
             
-            sitekey = 1
+            sitekey = mainfaucet_key  #$4
+            print('MAINFAUCET IS ',sitekey)
 
 
             if ip_address:
@@ -3755,10 +3278,49 @@ def switch_to_earnow(now = 1, window_lists=[]):
         print('sitch.',e)
 
 
+def switch_mainfaucets(name):
+    if name == 5:
+        quer2y = {"type": "main"}
+        dochh2 = collection.find_one(quer2y)
+        layout = dochh2["withdraw_mail"]
+        if "Layout1" in layout:
+            layout = "Layout2"
+
+        elif "Layout2" in layout:
+            layout = "Layout1"
+
+        print('switch themup')
+        query = {"type": "main"}
+        sample_document = {
+
+            "mainfaucet": 1,
+            "response": 'Changing Faucet...',
+            "request": "ipfixer",
+            "withdraw_mail": layout
+
+        }
+        update = {"$set": sample_document}
+        result = collection.update_one(query, update)      
+        if result.modified_count > 0:
+            print(f"Updated {result.modified_count} document(s).")
+        print("Clicked the claim button.")
+
+    print('switch themup')
+    query = {"type": "main"}
+    sample_document = {
+
+        "mainfaucet": name,
+        "response": 'Changing Faucet...',
+        "request": "ipfixer"
+
+    }
+    update = {"$set": sample_document}
+    result = collection.update_one(query, update)      
+    if result.modified_count > 0:
+        print(f"Updated {result.modified_count} document(s).")
+    print("Clicked the claim button.")
+################################################################
 def process_link_blocks(sb,ip_address):
-    earnow = None
-    shortano = None
-    shortino = None
     other = None
     # Find all "div.link-block" elements
     link_blocks = sb.find_elements("div.common_card.sl_card")
@@ -3780,6 +3342,7 @@ def process_link_blocks(sb,ip_address):
             link_rmn_element = block.find_element(By.CSS_SELECTOR,"div.pill.sec")
             link_rmn = link_rmn_element.text
             print(f"Link Remaining: {link_rmn}")
+
             if len(link_name) >= 3:
                 other = True
 
@@ -3790,11 +3353,11 @@ def process_link_blocks(sb,ip_address):
             
  
             if "Earnow" in link_name:
-                # Click the claim-button
+                link_rmn = int(link_rmn.split('/')[0])
                 query = {"type": "main"}
                 sample_document = {
 
-                    "pepelom": link_name,
+                    "pepelom": link_rmn,
                     "Status": now,
                     "Ip": ip_address,
                     "response": 'Running'
@@ -3804,31 +3367,30 @@ def process_link_blocks(sb,ip_address):
                 result = collection.update_one(query, update)      
                 if result.modified_count > 0:
                     print(f"Updated {result.modified_count} document(s).")
+                if link_rmn >= 1:
+                    # Click the claim-button
+                    button = block.find_element(By.CSS_SELECTOR,"button.btn_sl.link_bt")
+                    actions = ActionChains(sb1)
+
+                    actions.move_to_element(button).click().perform()  
+                    time.sleep(5) 
+
+                    print("Clicked the claim button.")
+                    cloudflare(sb1, login = True)
+                    button = sb.find_element(By.CSS_SELECTOR,"button.btn.btn_sl.link_form_bt.mt-2")
+                    #button.uc_click()
+                    actions = ActionChains(sb1)
+                    actions.move_to_element(button).click().perform()  
+                    time.sleep(3) 
+                    return True
 
 
-                button = block.find_element(By.CSS_SELECTOR,"button.btn_sl.link_bt")
-                #button.uc_click()
-                actions = ActionChains(sb1)
-
-                actions.move_to_element(button).click().perform()  
-                #sb1.disconnect()  
-                time.sleep(5) 
-
-                print("Clicked the claim button.")
-                cloudflare(sb1, login = True)
-                button = sb.find_element(By.CSS_SELECTOR,"button.btn.btn_sl.link_form_bt.mt-2")
-                #button.uc_click()
-                actions = ActionChains(sb1)
-                actions.move_to_element(button).click().perform()  
-                time.sleep(3) 
-                return True
-            
             elif "Shortano" in link_name:
-                # Click the claim-button
+                link_rmn = int(link_rmn.split('/')[0])
                 query = {"type": "main"}
                 sample_document = {
 
-                    "feyorramack": link_name,
+                    "feyorramack": link_rmn,
                     "Status": now,
                     "Ip": ip_address,
                     "response": 'Running'
@@ -3839,29 +3401,29 @@ def process_link_blocks(sb,ip_address):
                 if result.modified_count > 0:
                     print(f"Updated {result.modified_count} document(s).")
 
-                    
-                button = block.find_element(By.CSS_SELECTOR,"button.btn_sl.link_bt")
-                #button.uc_click()
-                actions = ActionChains(sb1)
+                if link_rmn >= 1:
+                    # Click the claim-button
+                    button = block.find_element(By.CSS_SELECTOR,"button.btn_sl.link_bt")
+                    actions = ActionChains(sb1)
 
-                actions.move_to_element(button).click().perform()  
-                #sb1.disconnect()  
-                time.sleep(5) 
+                    actions.move_to_element(button).click().perform()  
+                    time.sleep(5) 
 
-                print("Clicked the claim button.")
-                cloudflare(sb1, login = True)
-                button = sb.find_element(By.CSS_SELECTOR,"button.btn.btn_sl.link_form_bt.mt-2")
-                #button.uc_click()
-                actions = ActionChains(sb1)
-                actions.move_to_element(button).click().perform()  
-                time.sleep(3) 
-                return True
+                    print("Clicked the claim button.")
+                    cloudflare(sb1, login = True)
+                    button = sb.find_element(By.CSS_SELECTOR,"button.btn.btn_sl.link_form_bt.mt-2")
+                    #button.uc_click()
+                    actions = ActionChains(sb1)
+                    actions.move_to_element(button).click().perform()  
+                    time.sleep(3) 
+                    return True
             
             elif "Shortino" in link_name:
+                link_rmn = int(link_rmn.split('/')[0])
                 query = {"type": "main"}
                 sample_document = {
 
-                    "claimcoins": link_name,
+                    "claimcoins": link_rmn,
                     "Status": now,
                     "Ip": ip_address,
                     "response": 'Running'
@@ -3871,34 +3433,35 @@ def process_link_blocks(sb,ip_address):
                 result = collection.update_one(query, update)      
                 if result.modified_count > 0:
                     print(f"Updated {result.modified_count} document(s).")
+                if link_rmn >= 1:
+                    # Click the claim-button
+                    button = block.find_element(By.CSS_SELECTOR,"button.btn_sl.link_bt")
+                    actions = ActionChains(sb1)
 
-                # Click the claim-button
-                button = block.find_element(By.CSS_SELECTOR,"button.btn_sl.link_bt")
-                actions = ActionChains(sb1)
+                    actions.move_to_element(button).click().perform()  
+                    time.sleep(5) 
 
-                actions.move_to_element(button).click().perform()  
-                time.sleep(5) 
-
-                print("Clicked the claim button.")
-                cloudflare(sb1, login = True)
-                button = sb.find_element(By.CSS_SELECTOR,"button.btn.btn_sl.link_form_bt.mt-2")
-                #button.uc_click()
-                actions = ActionChains(sb1)
-                actions.move_to_element(button).click().perform()  
-                time.sleep(3) 
-                return True
+                    print("Clicked the claim button.")
+                    cloudflare(sb1, login = True)
+                    button = sb.find_element(By.CSS_SELECTOR,"button.btn.btn_sl.link_form_bt.mt-2")
+                    #button.uc_click()
+                    actions = ActionChains(sb1)
+                    actions.move_to_element(button).click().perform()  
+                    time.sleep(3) 
+                    return True
             
-            if other:
-                print('END OF LINKS')
+
                 
             
             
         except Exception as e:
             print(f"An error occurred in block {index + 1}: {e}")
             pyautogui.click(600,500 )
+    if other:
+        print('END OF LINKS')
+        switch_mainfaucets(4)
 
-
-def process_link_blocks_coinpayz(sb):
+def process_link_blocks_coinpayz(sb,ip_address ):
     # Find all "div.link-block" elements
     link_blocks = sb.find_elements("div.flex.flex-col.shadow-lg.bg-paper-dark.rounded-lg.col-span-1")
     for index, block in enumerate(link_blocks):
@@ -3977,8 +3540,9 @@ def process_link_blocks_helpfpcoin(sb):
         print('process link hafaucet',e)
 
 
-def process_link_blocks_bitbitzz(sb):
+def process_link_blocks_bitbitzz(sb,ip_address):
     # Find all "div.link-block" elements
+    other = None
     try:
         link_blocks = sb.find_elements("div.col-lg-6.mt-4")
         for index, block in enumerate(link_blocks):
@@ -3996,31 +3560,114 @@ def process_link_blocks_bitbitzz(sb):
                 # Check if it's "Earnow"
     
                 # Get the link-rmn
-                link_rmn_element = block.find_element(By.CSS_SELECTOR,"span.float-end")
-                link_rmn = link_rmn_element.text
+                link_clicks_element = block.find_element(By.XPATH, ".//span[contains(@class, 'float-end') and not(contains(@class, 'text-muted'))]")
+                link_rmn = link_clicks_element.text
                 print(f"Link Remaining: {link_rmn}")
     
-                if "Earnow" in link_name or "Shortano" in link_name or "Shortino" in link_name:
-                    # Click the claim-button
-                    button = block.find_element(By.CSS_SELECTOR,"a.text-decoration-none.shortlink")
-                    #button.uc_click()
-                    actions = ActionChains(sb1)
-                    actions.move_to_element(button).click().perform()  
-                    time.sleep(5) 
-                    pyautogui.click(946 ,345)
+
+
+                sri_lanka_tz = pytz.timezone('Asia/Colombo')
+                utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
+                sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
+                now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
+
+
+                if "Earnow" in link_name:
+                    link_rmn = int(link_rmn.strip().split()[0])
+                    query = {"type": "main"}
+                    sample_document = {
+
+                        "pepelom": link_rmn,
+                        "Status": now,
+                        "Ip": ip_address,
+                        "response": 'Running'
+                
+                    }
+                    update = {"$set": sample_document}
+                    result = collection.update_one(query, update)      
+                    if result.modified_count > 0:
+                        print(f"Updated {result.modified_count} document(s).")
+                    print("Clicked the claim button.")
+                    if link_rmn >= 1:
+                        button = block.find_element(By.CSS_SELECTOR,"a.text-decoration-none.shortlink")
+                        #button.uc_click()
+                        actions = ActionChains(sb1)
+                        actions.move_to_element(button).click().perform()  
+                        time.sleep(3) 
+                        pyautogui.click(946 ,345)
+                        return True
+                
+                elif "Shortano" in link_name:
+                    link_rmn = int(link_rmn.strip().split()[0])
+                    query = {"type": "main"}
+                    sample_document = {
+
+                        "feyorramack": link_rmn,
+                        "Status": now,
+                        "Ip": ip_address,
+                        "response": 'Running'
+                
+                    }
+                    update = {"$set": sample_document}
+                    result = collection.update_one(query, update)      
+                    if result.modified_count > 0:
+                        print(f"Updated {result.modified_count} document(s).")
+
+                    if link_rmn >= 1:
+                        button = block.find_element(By.CSS_SELECTOR,"a.text-decoration-none.shortlink")
+                        #button.uc_click()
+                        actions = ActionChains(sb1)
+                        actions.move_to_element(button).click().perform()  
+                        time.sleep(3) 
+                        pyautogui.click(946 ,345)
+                        return True
                     
-                    return True
+
+                elif "Shortino" in link_name:
+                    link_rmn = int(link_rmn.strip().split()[0])
+                    query = {"type": "main"}
+                    sample_document = {
+
+                        "claimcoins": link_rmn,
+                        "Status": now,
+                        "Ip": ip_address,
+                        "response": 'Running'
+                
+                    }
+                    update = {"$set": sample_document}
+                    result = collection.update_one(query, update)      
+                    if result.modified_count > 0:
+                        print(f"Updated {result.modified_count} document(s).")
+
+                    if link_rmn >= 1:
+                        button = block.find_element(By.CSS_SELECTOR,"a.text-decoration-none.shortlink")
+                        #button.uc_click()
+                        actions = ActionChains(sb1)
+                        actions.move_to_element(button).click().perform()  
+                        time.sleep(3) 
+                        pyautogui.click(946 ,345)
+                        return True
+
+                if len(link_name) >= 3:
+                    other = True
+                
                 
             except Exception as e:
                 print(f"An error occurred in block {index + 1}: {e}")
                 pyautogui.click(600,500 )
+
+        if other:
+            print('END OF LINKS')
+            switch_mainfaucets(5)
+    
     except Exception as e:
         print('process link hafaucet',e)
 
 
 
-def process_link_blocks_fey(sb):
+def process_link_blocks_fey(sb,ip_address):
     # Find all "div.link-block" elements
+    other = None
     try:
         # Find the CAPTCHA image
         if sb.is_element_visible("img#rscaptcha_img"):
@@ -4051,36 +3698,143 @@ def process_link_blocks_fey(sb):
             link_rmn_element = block.find_element(By.CSS_SELECTOR,"div.pill.sec")
             link_rmn = link_rmn_element.text
             print(f"Link Remaining: {link_rmn}")
+            if len(link_name) >= 3:
+                other = True
+            sri_lanka_tz = pytz.timezone('Asia/Colombo')
+            utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
+            sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
+            now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
+            
  
-            if "Earnow" in link_name or "Shortano" in link_name or "Shortino" in link_name:
-                # Click the claim-button
-                button = block.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.waves-effect")
-                button.uc_click()
-                #actions = ActionChains(sb1)
-                #actions.move_to_element(button).click().perform()  
-                time.sleep(5) 
-                try:
-                    # Find the CAPTCHA image
-                    if sb.is_element_visible("img#rscaptcha_img"):
-                        ggg =solve_rscaptcha(sb)
-                        time.sleep(3)
-                        if ggg:
-                            button = sb1.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.w-100.link_form_bt")
-                            button.uc_click()
-                        else:
-                            pyautogui.press('f5')
-                        time.sleep(5)
-                        #pyautogui.click(400,700)
-                except Exception as e:
-                    print(f"No rscaptcha processing: {e}")
+            if "Earnow" in link_name:
+                link_rmn = int(link_rmn.split('/')[0])
+                query = {"type": "main"}
+                sample_document = {
+
+                    "pepelom": link_rmn,
+                    "Status": now,
+                    "Ip": ip_address,
+                    "response": 'Running'
+            
+                }
+                update = {"$set": sample_document}
+                result = collection.update_one(query, update)      
+                if result.modified_count > 0:
+                    print(f"Updated {result.modified_count} document(s).")
+                if link_rmn >= 1:
+                    # Click the claim-button
+                    button = block.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.waves-effect")
+                    button.uc_click()
+                    time.sleep(5) 
+                    try:
+                        # Find the CAPTCHA image
+                        if sb.is_element_visible("img#rscaptcha_img"):
+                            ggg =solve_rscaptcha(sb)
+                            time.sleep(3)
+                            if ggg:
+                                button = sb1.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.w-100.link_form_bt")
+                                button.uc_click()
+                            else:
+                                pyautogui.press('f5')
+                            time.sleep(5)
+                            #pyautogui.click(400,700)
+                    except Exception as e:
+                        print(f"No rscaptcha processing: {e}")
+                        
+                    print("Clicked the claim button.")
+                    return True
                     
-                print("Clicked the claim button.")
-                return True
+
+
+            elif "Shortano" in link_name:
+                link_rmn = int(link_rmn.split('/')[0])
+                query = {"type": "main"}
+                sample_document = {
+
+                    "feyorramack": link_rmn,
+                    "Status": now,
+                    "Ip": ip_address,
+                    "response": 'Running'
+            
+                }
+                update = {"$set": sample_document}
+                result = collection.update_one(query, update)      
+                if result.modified_count > 0:
+                    print(f"Updated {result.modified_count} document(s).")
+
+                if link_rmn >= 1:
+                    # Click the claim-button
+                    button = block.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.waves-effect")
+                    button.uc_click()
+                    time.sleep(5) 
+                    try:
+                        # Find the CAPTCHA image
+                        if sb.is_element_visible("img#rscaptcha_img"):
+                            ggg =solve_rscaptcha(sb)
+                            time.sleep(3)
+                            if ggg:
+                                button = sb1.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.w-100.link_form_bt")
+                                button.uc_click()
+                            else:
+                                pyautogui.press('f5')
+                            time.sleep(5)
+                            #pyautogui.click(400,700)
+                    except Exception as e:
+                        print(f"No rscaptcha processing: {e}")
+                        
+                    print("Clicked the claim button.")
+                    return True
+                    
+            
+            elif "Shortino" in link_name:
+                link_rmn = int(link_rmn.split('/')[0])
+                query = {"type": "main"}
+                sample_document = {
+
+                    "claimcoins": link_rmn,
+                    "Status": now,
+                    "Ip": ip_address,
+                    "response": 'Running'
+            
+                }
+                update = {"$set": sample_document}
+                result = collection.update_one(query, update)      
+                if result.modified_count > 0:
+                    print(f"Updated {result.modified_count} document(s).")
+                if link_rmn >= 1:
+                    # Click the claim-button
+                    button = block.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.waves-effect")
+                    button.uc_click()
+                    time.sleep(5) 
+                    try:
+                        # Find the CAPTCHA image
+                        if sb.is_element_visible("img#rscaptcha_img"):
+                            ggg =solve_rscaptcha(sb)
+                            time.sleep(3)
+                            if ggg:
+                                button = sb1.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.w-100.link_form_bt")
+                                button.uc_click()
+                            else:
+                                pyautogui.press('f5')
+                            time.sleep(5)
+                            #pyautogui.click(400,700)
+                    except Exception as e:
+                        print(f"No rscaptcha processing: {e}")
+                        
+                    print("Clicked the claim button.")
+                    return True
+                    
+            
+
             
         except Exception as e:
             print(f"An error occurred in block {index + 1}: {e}")
             pyautogui.click(600,500 )
 
+    
+    if other:
+        print('END OF LINKS')
+        switch_mainfaucets(5)
 
 
 
@@ -4110,6 +3864,7 @@ while True:
                 earnow_window = None
 
             if reset_count > 15:
+                sholinks_done = 1
                 reset_count = 1
                 title =sb1.get_title()
                 if 'Just' in title:
@@ -4172,7 +3927,7 @@ while True:
                                     continue 
 
                                 sholinks_done += 1
-                                if sholinks_done > 3:
+                                if sholinks_done > 4:
                                     sholinks_done = 1
                                     reset_count = 20
                                 time.sleep(2)
@@ -4230,7 +3985,14 @@ while True:
                 print('IP Changed',ip_required)
                 hard_reset_count +=5
 
+        if mainscript == 2:
+            mainfaucet_window, sitekey,  ip_address, ip_required = open_faucets()
+            reset_count = 0
 
+        if mainscript == 5:
+            for i in range(1,6):
+                time.sleep(1)
+                print('Pause...')
 
     except Exception as e:
         print(f'ERR:{e}')
@@ -4238,4 +4000,7 @@ while True:
         hard_reset_count +=5
 
         
+ 
+
+
  

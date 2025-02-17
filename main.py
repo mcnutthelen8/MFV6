@@ -188,15 +188,17 @@ def get_mails_passowrds(farm_id):
     elif farm_id == 2:
  
         if '1' in layout:
-            server_name1 = 'estonia'
+            server_name1 = 'bulgaria'
             CSB1_farms = [1, 2, 3, 4, 5]
-            mainfaucet_email = 'metroboom910@gmail.com'
-            mainfaucet_pass = 'metroboom910'
-            feyorra_email = 'metroboom910@gmail.com'
-            feyorra_pass = 'metroboom910'
+            mainfaucet_email = 'ashenrox1997@gmail.com'
+            mainfaucet_pass = 'ashenrox1997'
+            bitbitzz_email = 'ashenrox1997'
+            bitbitzz_pass = 'ashenrox1997'
+            feyorra_email = 'ashenrox1997@gmail.com'
+            feyorra_pass = 'ashenrox1997'
  
         elif '2' in layout:
-            server_name1 = 'finland' #'portugal'
+            server_name1 = 'bulgaria' #'portugal'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
             mainfaucet_email = 'merlelcn@gmail.com'
             mainfaucet_pass = 'I2Ne7C329jJt'
@@ -2507,7 +2509,7 @@ def earnow_loading(driver):
     print('start earnow_loading')
     #images_list = ['cloudflare_box', 'clickheretostart', 'clickad10sec', 'vpnerror', 'complete_captcha_earnow', 'scroll_down_earnow', 'adsoff', 'loading_linkwait2']
     refresh_list = ['vpnerror','adsoff']
-    clicking_list = ['cloudflare_box', 'clickheretostart']
+    clicking_list = ['cloudflare_box', 'clickheretostart','agree_cookie_earnow', 'countinue_cookie_earnow']
     return_list =['clickad10sec', 'complete_captcha_earnow', 'scroll_down_earnow']
     bugs_list = ['loading_linkwait2']
     tolerance = 0.8

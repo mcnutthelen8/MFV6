@@ -3320,146 +3320,182 @@ def switch_mainfaucets(name):
         print(f"Updated {result.modified_count} document(s).")
     print("Clicked the claim button.")
 ################################################################
+
 def process_link_blocks(sb,ip_address):
-    other = None
-    # Find all "div.link-block" elements
-    link_blocks = sb.find_elements("div.common_card.sl_card")
-    for index, block in enumerate(link_blocks):
-        print(f"Processing block {index + 1}:")
- 
-        # Scroll the block into view
-        sb.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", block)
-        time.sleep(2)
-        try:
-            # Get the link-name
-            link_name_element = block.find_element(By.CSS_SELECTOR,"h5")
-            link_name = link_name_element.text
-            print(f"Link Name: {link_name}")
- 
-            # Check if it's "Earnow"
- 
-            # Get the link-rmn
-            link_rmn_element = block.find_element(By.CSS_SELECTOR,"div.pill.sec")
-            link_rmn = link_rmn_element.text
-            print(f"Link Remaining: {link_rmn}")
-
-            if len(link_name) >= 3:
-                other = True
-
-            sri_lanka_tz = pytz.timezone('Asia/Colombo')
-            utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
-            sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
-            now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
-            
- 
-            if "Earnow" in link_name:
-                link_rmn = int(link_rmn.split('/')[0])
-                query = {"type": "main"}
-                sample_document = {
-
-                    "pepelom": link_rmn,
-                    "Status": now,
-                    "Ip": ip_address,
-                    "response": 'Running'
-            
+    try:
+        other = None
+        # Find all "div.link-block" elements
+        #link_blocks = sb.find_elements("div.common_card.sl_card")
+        js_script = """
+        return Array.from(document.querySelectorAll("div.common_card.sl_card"))
+            .filter(block => ["Earnow", "Shortano", "Shortino"].some(keyword => block.innerText.includes(keyword)))
+            .reduce((sum, block) => {
+                const linkRmnElement = block.querySelector("div.pill.sec");
+                if (linkRmnElement) {
+                    let linkRmn = linkRmnElement.innerText.trim();
+                    let count = parseInt(linkRmn.split('/')[0], 10);  // Extract first number
+                    if (!isNaN(count)) {
+                        sum += count;
+                    }
                 }
-                update = {"$set": sample_document}
-                result = collection.update_one(query, update)      
-                if result.modified_count > 0:
-                    print(f"Updated {result.modified_count} document(s).")
-                if link_rmn >= 1:
-                    # Click the claim-button
-                    button = block.find_element(By.CSS_SELECTOR,"button.btn_sl.link_bt")
-                    actions = ActionChains(sb1)
+                return sum;
+            }, 0);
+        """
+        full_values = sb.execute_script(js_script)
+        print(f"Total Sum: {full_values}")
 
-                    actions.move_to_element(button).click().perform()  
-                    time.sleep(5) 
-
-                    print("Clicked the claim button.")
-                    cloudflare(sb1, login = True)
-                    button = sb.find_element(By.CSS_SELECTOR,"button.btn.btn_sl.link_form_bt.mt-2")
-                    #button.uc_click()
-                    actions = ActionChains(sb1)
-                    actions.move_to_element(button).click().perform()  
-                    time.sleep(3) 
-                    return True
+        js_script = """
+        return Array.from(document.querySelectorAll("div.common_card.sl_card")).filter(block =>
+            ["Earnow", "Shortano", "Shortino"].some(keyword => block.innerText.includes(keyword))
+        );
+        """
+        link_blocks = sb.execute_script(js_script)
 
 
-            elif "Shortano" in link_name:
-                link_rmn = int(link_rmn.split('/')[0])
-                query = {"type": "main"}
-                sample_document = {
 
-                    "feyorramack": link_rmn,
-                    "Status": now,
-                    "Ip": ip_address,
-                    "response": 'Running'
-            
-                }
-                update = {"$set": sample_document}
-                result = collection.update_one(query, update)      
-                if result.modified_count > 0:
-                    print(f"Updated {result.modified_count} document(s).")
+        for index, block in enumerate(link_blocks):
+            print(f"Processing block {index + 1}:")
+    
+            # Scroll the block into view
+            sb.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", block)
+            time.sleep(2)
+            try:
+                # Get the link-name
+                link_name_element = block.find_element(By.CSS_SELECTOR,"h5")
+                link_name = link_name_element.text
+                print(f"Link Name: {link_name}")
+    
+                # Check if it's "Earnow"
+    
+                # Get the link-rmn
+                link_rmn_element = block.find_element(By.CSS_SELECTOR,"div.pill.sec")
+                link_rmn = link_rmn_element.text
+                print(f"Link Remaining: {link_rmn}")
 
-                if link_rmn >= 1:
-                    # Click the claim-button
-                    button = block.find_element(By.CSS_SELECTOR,"button.btn_sl.link_bt")
-                    actions = ActionChains(sb1)
+                if len(link_name) >= 3:
+                    other = True
 
-                    actions.move_to_element(button).click().perform()  
-                    time.sleep(5) 
+                sri_lanka_tz = pytz.timezone('Asia/Colombo')
+                utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
+                sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
+                now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
+                
+    
+                if "Earnow" in link_name:
+                    link_rmn = int(link_rmn.split('/')[0])
+                    query = {"type": "main"}
+                    add_messages('pepelom', {now: full_values})
+                    sample_document = {
 
-                    print("Clicked the claim button.")
-                    cloudflare(sb1, login = True)
-                    button = sb.find_element(By.CSS_SELECTOR,"button.btn.btn_sl.link_form_bt.mt-2")
-                    #button.uc_click()
-                    actions = ActionChains(sb1)
-                    actions.move_to_element(button).click().perform()  
-                    time.sleep(3) 
-                    return True
-            
-            elif "Shortino" in link_name:
-                link_rmn = int(link_rmn.split('/')[0])
-                query = {"type": "main"}
-                sample_document = {
+                        "pepelom": full_values,
+                        "Status": now,
+                        "Ip": ip_address,
+                        "response": 'Running'
+                
+                    }
+                    update = {"$set": sample_document}
+                    result = collection.update_one(query, update)      
+                    if result.modified_count > 0:
+                        print(f"Updated {result.modified_count} document(s).")
+                    if link_rmn >= 1:
+                        # Click the claim-button
+                        button = block.find_element(By.CSS_SELECTOR,"button.btn_sl.link_bt")
+                        actions = ActionChains(sb1)
 
-                    "claimcoins": link_rmn,
-                    "Status": now,
-                    "Ip": ip_address,
-                    "response": 'Running'
-            
-                }
-                update = {"$set": sample_document}
-                result = collection.update_one(query, update)      
-                if result.modified_count > 0:
-                    print(f"Updated {result.modified_count} document(s).")
-                if link_rmn >= 1:
-                    # Click the claim-button
-                    button = block.find_element(By.CSS_SELECTOR,"button.btn_sl.link_bt")
-                    actions = ActionChains(sb1)
+                        actions.move_to_element(button).click().perform()  
+                        time.sleep(5) 
 
-                    actions.move_to_element(button).click().perform()  
-                    time.sleep(5) 
+                        print("Clicked the claim button.")
+                        cloudflare(sb1, login = True)
+                        button = sb.find_element(By.CSS_SELECTOR,"button.btn.btn_sl.link_form_bt.mt-2")
+                        #button.uc_click()
+                        actions = ActionChains(sb1)
+                        actions.move_to_element(button).click().perform()  
+                        time.sleep(3) 
+                        return True
 
-                    print("Clicked the claim button.")
-                    cloudflare(sb1, login = True)
-                    button = sb.find_element(By.CSS_SELECTOR,"button.btn.btn_sl.link_form_bt.mt-2")
-                    #button.uc_click()
-                    actions = ActionChains(sb1)
-                    actions.move_to_element(button).click().perform()  
-                    time.sleep(3) 
-                    return True
-            
 
+                elif "Shortano" in link_name:
+                    link_rmn = int(link_rmn.split('/')[0])
+                    add_messages('pepelom', {now: full_values})
+                    query = {"type": "main"}
+                    sample_document = {
+
+                        "pepelom": full_values,
+                        "Status": now,
+                        "Ip": ip_address,
+                        "response": 'Running'
+                
+                    }
+                    update = {"$set": sample_document}
+                    result = collection.update_one(query, update)      
+                    if result.modified_count > 0:
+                        print(f"Updated {result.modified_count} document(s).")
+
+                    if link_rmn >= 1:
+                        # Click the claim-button
+                        button = block.find_element(By.CSS_SELECTOR,"button.btn_sl.link_bt")
+                        actions = ActionChains(sb1)
+
+                        actions.move_to_element(button).click().perform()  
+                        time.sleep(5) 
+
+                        print("Clicked the claim button.")
+                        cloudflare(sb1, login = True)
+                        button = sb.find_element(By.CSS_SELECTOR,"button.btn.btn_sl.link_form_bt.mt-2")
+                        #button.uc_click()
+                        actions = ActionChains(sb1)
+                        actions.move_to_element(button).click().perform()  
+                        time.sleep(3) 
+                        return True
+                
+                elif "Shortino" in link_name:
+                    link_rmn = int(link_rmn.split('/')[0])
+                    add_messages('pepelom', {now: full_values})
+                    query = {"type": "main"}
+                    sample_document = {
+
+                        "pepelom": full_values,
+                        "Status": now,
+                        "Ip": ip_address,
+                        "response": 'Running'
+                
+                    }
+                    update = {"$set": sample_document}
+                    result = collection.update_one(query, update)      
+                    if result.modified_count > 0:
+                        print(f"Updated {result.modified_count} document(s).")
+                    if link_rmn >= 1:
+                        # Click the claim-button
+                        button = block.find_element(By.CSS_SELECTOR,"button.btn_sl.link_bt")
+                        actions = ActionChains(sb1)
+
+                        actions.move_to_element(button).click().perform()  
+                        time.sleep(5) 
+
+                        print("Clicked the claim button.")
+                        cloudflare(sb1, login = True)
+                        button = sb.find_element(By.CSS_SELECTOR,"button.btn.btn_sl.link_form_bt.mt-2")
+                        #button.uc_click()
+                        actions = ActionChains(sb1)
+                        actions.move_to_element(button).click().perform()  
+                        time.sleep(3) 
+                        return True
+                
+
+            except Exception as e:
+                print(f"An error occurred in block {index + 1}: {e}")
+                pyautogui.click(600,500 ) 
                 
             
-            
-        except Exception as e:
-            print(f"An error occurred in block {index + 1}: {e}")
-            pyautogui.click(600,500 )
+    except Exception as e:
+        print(f"An error occurred in block {index + 1}: {e}")
+        pyautogui.click(600,500 )
     if other:
         print('END OF LINKS')
         switch_mainfaucets(4)
+
+
 
 def process_link_blocks_coinpayz(sb,ip_address ):
     # Find all "div.link-block" elements
@@ -3539,12 +3575,36 @@ def process_link_blocks_helpfpcoin(sb):
     except Exception as e:
         print('process link hafaucet',e)
 
-
 def process_link_blocks_bitbitzz(sb,ip_address):
     # Find all "div.link-block" elements
     other = None
     try:
-        link_blocks = sb.find_elements("div.col-lg-6.mt-4")
+        js_script = """
+        return Array.from(document.querySelectorAll("div.col-lg-6.mt-4"))
+            .filter(block => ["Earnow", "Shortano", "Shortino"].some(keyword => block.innerText.includes(keyword)))
+            .reduce((sum, block) => {
+                const linkRmnElement = block.querySelector("span.float-end:not(.text-muted)");
+                if (linkRmnElement) {
+                    let linkRmn = linkRmnElement.innerText.trim();
+                    let count = parseInt(linkRmn.split('/')[0], 10);  // Extract first number
+                    if (!isNaN(count)) {
+                        sum += count;
+                    }
+                }
+                return sum;
+            }, 0);
+        """
+        full_values = sb.execute_script(js_script)
+        print(f"Total Sum: {full_values}")
+
+        js_script = """
+        return Array.from(document.querySelectorAll("div.col-lg-6.mt-4")).filter(block =>
+            ["Earnow", "Shortano", "Shortino"].some(keyword => block.innerText.includes(keyword))
+        );
+        """
+        link_blocks = sb.execute_script(js_script)
+
+        #link_blocks = sb.find_elements("div.col-lg-6.mt-4")
         for index, block in enumerate(link_blocks):
             print(f"Processing block {index + 1}:")
     
@@ -3574,10 +3634,11 @@ def process_link_blocks_bitbitzz(sb,ip_address):
 
                 if "Earnow" in link_name:
                     link_rmn = int(link_rmn.strip().split()[0])
+                    add_messages('feyorramack', {now: full_values})
                     query = {"type": "main"}
                     sample_document = {
 
-                        "pepelom": link_rmn,
+                        "feyorramack": full_values,
                         "Status": now,
                         "Ip": ip_address,
                         "response": 'Running'
@@ -3599,10 +3660,11 @@ def process_link_blocks_bitbitzz(sb,ip_address):
                 
                 elif "Shortano" in link_name:
                     link_rmn = int(link_rmn.strip().split()[0])
+                    add_messages('feyorramack', {now: full_values})
                     query = {"type": "main"}
                     sample_document = {
 
-                        "feyorramack": link_rmn,
+                        "feyorramack": full_values,
                         "Status": now,
                         "Ip": ip_address,
                         "response": 'Running'
@@ -3625,10 +3687,11 @@ def process_link_blocks_bitbitzz(sb,ip_address):
 
                 elif "Shortino" in link_name:
                     link_rmn = int(link_rmn.strip().split()[0])
+                    add_messages('feyorramack', {now: full_values})
                     query = {"type": "main"}
                     sample_document = {
 
-                        "claimcoins": link_rmn,
+                        "feyorramack": full_values,
                         "Status": now,
                         "Ip": ip_address,
                         "response": 'Running'
@@ -3665,6 +3728,7 @@ def process_link_blocks_bitbitzz(sb,ip_address):
 
 
 
+
 def process_link_blocks_fey(sb,ip_address):
     # Find all "div.link-block" elements
     other = None
@@ -3678,163 +3742,194 @@ def process_link_blocks_fey(sb,ip_address):
             return
     except Exception as e:
         print(f"No rscaptcha processing: {e}")
-        
 
-    link_blocks = sb.find_elements("div.col-lg-4.mb-3")
-    for index, block in enumerate(link_blocks):
-        print(f"Processing block {index + 1}:")
- 
-        # Scroll the block into view
-        #sb.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", block)
-        try:
-            # Get the link-name
-            link_name_element = block.find_element(By.CSS_SELECTOR,"div.linkname")
-            link_name = link_name_element.text
-            print(f"Link Name: {link_name}")
- 
-            # Check if it's "Earnow"
- 
-            # Get the link-rmn
-            link_rmn_element = block.find_element(By.CSS_SELECTOR,"div.pill.sec")
-            link_rmn = link_rmn_element.text
-            print(f"Link Remaining: {link_rmn}")
-            if len(link_name) >= 3:
-                other = True
-            sri_lanka_tz = pytz.timezone('Asia/Colombo')
-            utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
-            sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
-            now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
-            
- 
-            if "Earnow" in link_name:
-                link_rmn = int(link_rmn.split('/')[0])
-                query = {"type": "main"}
-                sample_document = {
-
-                    "pepelom": link_rmn,
-                    "Status": now,
-                    "Ip": ip_address,
-                    "response": 'Running'
-            
+    try: 
+        js_script = """
+        return Array.from(document.querySelectorAll("div.col-lg-4.mb-3"))
+            .filter(block => ["Earnow", "Shortano", "Shortino"].some(keyword => block.innerText.includes(keyword)))
+            .reduce((sum, block) => {
+                const linkRmnElement = block.querySelector("div.pill.sec");
+                if (linkRmnElement) {
+                    let linkRmn = linkRmnElement.innerText.trim();
+                    let count = parseInt(linkRmn.split('/')[0], 10);  // Extract first number
+                    if (!isNaN(count)) {
+                        sum += count;
+                    }
                 }
-                update = {"$set": sample_document}
-                result = collection.update_one(query, update)      
-                if result.modified_count > 0:
-                    print(f"Updated {result.modified_count} document(s).")
-                if link_rmn >= 1:
-                    # Click the claim-button
-                    button = block.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.waves-effect")
-                    button.uc_click()
-                    time.sleep(5) 
-                    try:
-                        # Find the CAPTCHA image
-                        if sb.is_element_visible("img#rscaptcha_img"):
-                            ggg =solve_rscaptcha(sb)
-                            time.sleep(3)
-                            if ggg:
-                                button = sb1.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.w-100.link_form_bt")
-                                button.uc_click()
-                            else:
-                                pyautogui.press('f5')
-                            time.sleep(5)
-                            #pyautogui.click(400,700)
-                    except Exception as e:
-                        print(f"No rscaptcha processing: {e}")
+                return sum;
+            }, 0);
+        """
+        full_values = sb.execute_script(js_script)
+        print(f"Total Sum: {full_values}")
+
+        js_script = """
+        return Array.from(document.querySelectorAll("div.col-lg-4.mb-3")).filter(block =>
+            ["Earnow", "Shortano", "Shortino"].some(keyword => block.innerText.includes(keyword))
+        );
+        """
+        link_blocks = sb.execute_script(js_script)
+       
+        for index, block in enumerate(link_blocks):
+            try:
+                print(f"Processing block {index + 1}:")
+    
+            # Scroll the block into view
+            #sb.execute_script("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", block)
+                # Get the link-name
+                link_name_element = block.find_element(By.CSS_SELECTOR,"div.linkname")
+                link_name = link_name_element.text
+                print(f"Link Name: {link_name}")
+    
+                # Check if it's "Earnow"
+    
+                # Get the link-rmn
+                link_rmn_element = block.find_element(By.CSS_SELECTOR,"div.pill.sec")
+                link_rmn = link_rmn_element.text
+                print(f"Link Remaining: {link_rmn}")
+                if len(link_name) >= 3:
+                    other = True
+                sri_lanka_tz = pytz.timezone('Asia/Colombo')
+                utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
+                sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
+                now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
+                
+    
+                if "Earnow" in link_name:
+                    link_rmn = int(link_rmn.split('/')[0])
+                    add_messages('claimcoins', {now: full_values})
+                    query = {"type": "main"}
+                    sample_document = {
+
+                        "claimcoins": full_values,
+                        "Status": now,
+                        "Ip": ip_address,
+                        "response": 'Running'
+                
+                    }
+                    update = {"$set": sample_document}
+                    result = collection.update_one(query, update)      
+                    if result.modified_count > 0:
+                        print(f"Updated {result.modified_count} document(s).")
+                    if link_rmn >= 1:
+                        # Click the claim-button
+                        button = block.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.waves-effect")
+                        button.uc_click()
+                        time.sleep(5) 
+                        try:
+                            # Find the CAPTCHA image
+                            if sb.is_element_visible("img#rscaptcha_img"):
+                                ggg =solve_rscaptcha(sb)
+                                time.sleep(3)
+                                if ggg:
+                                    button = sb1.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.w-100.link_form_bt")
+                                    button.uc_click()
+                                else:
+                                    pyautogui.press('f5')
+                                time.sleep(5)
+                                #pyautogui.click(400,700)
+                        except Exception as e:
+                            print(f"No rscaptcha processing: {e}")
+                            
+                        print("Clicked the claim button.")
+                        return True
                         
-                    print("Clicked the claim button.")
-                    return True
-                    
 
 
-            elif "Shortano" in link_name:
-                link_rmn = int(link_rmn.split('/')[0])
-                query = {"type": "main"}
-                sample_document = {
+                elif "Shortano" in link_name:
+                    link_rmn = int(link_rmn.split('/')[0])
+                    add_messages('claimcoins', {now: full_values})
+                    query = {"type": "main"}
+                    sample_document = {
 
-                    "feyorramack": link_rmn,
-                    "Status": now,
-                    "Ip": ip_address,
-                    "response": 'Running'
-            
-                }
-                update = {"$set": sample_document}
-                result = collection.update_one(query, update)      
-                if result.modified_count > 0:
-                    print(f"Updated {result.modified_count} document(s).")
+                        "claimcoins": full_values,
+                        "Status": now,
+                        "Ip": ip_address,
+                        "response": 'Running'
+                
+                    }
+                    update = {"$set": sample_document}
+                    result = collection.update_one(query, update)      
+                    if result.modified_count > 0:
+                        print(f"Updated {result.modified_count} document(s).")
 
-                if link_rmn >= 1:
-                    # Click the claim-button
-                    button = block.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.waves-effect")
-                    button.uc_click()
-                    time.sleep(5) 
-                    try:
-                        # Find the CAPTCHA image
-                        if sb.is_element_visible("img#rscaptcha_img"):
-                            ggg =solve_rscaptcha(sb)
-                            time.sleep(3)
-                            if ggg:
-                                button = sb1.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.w-100.link_form_bt")
-                                button.uc_click()
-                            else:
-                                pyautogui.press('f5')
-                            time.sleep(5)
-                            #pyautogui.click(400,700)
-                    except Exception as e:
-                        print(f"No rscaptcha processing: {e}")
+                    if link_rmn >= 1:
+                        # Click the claim-button
+                        button = block.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.waves-effect")
+                        button.uc_click()
+                        time.sleep(5) 
+                        try:
+                            # Find the CAPTCHA image
+                            if sb.is_element_visible("img#rscaptcha_img"):
+                                ggg =solve_rscaptcha(sb)
+                                time.sleep(3)
+                                if ggg:
+                                    button = sb1.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.w-100.link_form_bt")
+                                    button.uc_click()
+                                else:
+                                    pyautogui.press('f5')
+                                time.sleep(5)
+                                #pyautogui.click(400,700)
+                        except Exception as e:
+                            print(f"No rscaptcha processing: {e}")
+                            
+                        print("Clicked the claim button.")
+                        return True
                         
-                    print("Clicked the claim button.")
-                    return True
-                    
-            
-            elif "Shortino" in link_name:
-                link_rmn = int(link_rmn.split('/')[0])
-                query = {"type": "main"}
-                sample_document = {
+                
+                elif "Shortino" in link_name:
+                    link_rmn = int(link_rmn.split('/')[0])
+                    add_messages('claimcoins', {now: full_values})
+                    query = {"type": "main"}
+                    sample_document = {
 
-                    "claimcoins": link_rmn,
-                    "Status": now,
-                    "Ip": ip_address,
-                    "response": 'Running'
-            
-                }
-                update = {"$set": sample_document}
-                result = collection.update_one(query, update)      
-                if result.modified_count > 0:
-                    print(f"Updated {result.modified_count} document(s).")
-                if link_rmn >= 1:
-                    # Click the claim-button
-                    button = block.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.waves-effect")
-                    button.uc_click()
-                    time.sleep(5) 
-                    try:
-                        # Find the CAPTCHA image
-                        if sb.is_element_visible("img#rscaptcha_img"):
-                            ggg =solve_rscaptcha(sb)
-                            time.sleep(3)
-                            if ggg:
-                                button = sb1.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.w-100.link_form_bt")
-                                button.uc_click()
-                            else:
-                                pyautogui.press('f5')
-                            time.sleep(5)
-                            #pyautogui.click(400,700)
-                    except Exception as e:
-                        print(f"No rscaptcha processing: {e}")
+                        "claimcoins": full_values,
+                        "Status": now,
+                        "Ip": ip_address,
+                        "response": 'Running'
+                
+                    }
+                    update = {"$set": sample_document}
+                    result = collection.update_one(query, update)      
+                    if result.modified_count > 0:
+                        print(f"Updated {result.modified_count} document(s).")
+                    if link_rmn >= 1:
+                        # Click the claim-button
+                        button = block.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.waves-effect")
+                        button.uc_click()
+                        time.sleep(5) 
+                        try:
+                            # Find the CAPTCHA image
+                            if sb.is_element_visible("img#rscaptcha_img"):
+                                ggg =solve_rscaptcha(sb)
+                                time.sleep(3)
+                                if ggg:
+                                    button = sb1.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.w-100.link_form_bt")
+                                    button.uc_click()
+                                else:
+                                    pyautogui.press('f5')
+                                time.sleep(5)
+                                #pyautogui.click(400,700)
+                        except Exception as e:
+                            print(f"No rscaptcha processing: {e}")
+                            
+                        print("Clicked the claim button.")
+                        return True
                         
-                    print("Clicked the claim button.")
-                    return True
-                    
-            
+                
+            except Exception as e:
+                print(f"An error occurred in block {index + 1}: {e}")
+                pyautogui.click(600,500 )
 
-            
-        except Exception as e:
-            print(f"An error occurred in block {index + 1}: {e}")
-            pyautogui.click(600,500 )
+                
+    except Exception as e:
+        print(f"An error occurred in block {index + 1}: {e}")
+        pyautogui.click(600,500 )
 
     
     if other:
         print('END OF LINKS')
         switch_mainfaucets(5)
+
 
 
 

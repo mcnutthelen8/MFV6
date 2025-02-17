@@ -2750,7 +2750,7 @@ def earnow_online(window1, ip_required):
                                 x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/verify_earnow.png", confidence=0.8)
                                 if x and y:
                                     print("Captcha found")
-                                    #rename_with_code("element_screenshot.png")
+                                    rename_with_code("element_screenshot.png")
 
                                     capture_element_screenshot(sb1, "div.captcha-icon img", screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
                                     print("Image saved as 'captcha_image.svg'")

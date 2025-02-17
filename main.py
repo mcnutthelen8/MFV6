@@ -152,7 +152,7 @@ def get_mails_passowrds(farm_id):
             CSB1_farms = [1, 2, 3, 4, 5]
             mainfaucet_email = 'khabibmakanzie@gmail.com'
             mainfaucet_pass = 'khabibmakanzie2'
-            bitbitzz_email = 'khabibmakanzie@gmail.com'
+            bitbitzz_email = 'khabibmakanzie2'
             bitbitzz_pass = 'khabibmakanzie'
             feyorra_email = 'khabibmakanz.ie@gmail.com'
             feyorra_pass = 'khabibmakanzie'
@@ -162,8 +162,8 @@ def get_mails_passowrds(farm_id):
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
             mainfaucet_email = 'grandkolla@gmail.com'
             mainfaucet_pass = 'khabibmakanzie2'
-            bitbitzz_email = 'grandkolla9196@gmail.com'
-            bitbitzz_pass = 'qzWZSX@mdT*472S'
+            bitbitzz_email = 'grandkolla2' #'grandkoll.a@gmail.com'
+            bitbitzz_pass = 'grandkolla'
             feyorra_email = 'redgta.36@gmail.com'
             feyorra_pass = 'Uwuinsta2005'
 
@@ -1983,7 +1983,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         if 'bitBitz' in current_title:
             if driver.is_element_visible('li.nav-item a.nav-link[href="/login"]'):
                 if function == 4:
-                    login_to_faucet('https://bitbitz.cc/login', sb1, 'grandkolla9196', 'qzWZSX@mdT*472S', 'cloudflare', window_list, 'submit_button')
+                    login_to_faucet('https://bitbitz.cc/login', sb1, bitbitzz_email, bitbitzz_pass, 'cloudflare', window_list, 'submit_button')
             if driver.is_element_visible('li.nav-item a.nav-link[href="/dashboard"]'):
                 if 'Shortlink' in current_title:
                     if driver.current_window_handle not in window_list:
@@ -2001,8 +2001,8 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
             if function == 3:
                 hafaucet_login(sb1,'https://helpfpcoin.site/','grandkolla@gmail.com',window_list)
  
-            if function == 4:
-                login_to_faucet('https://bitbitz.cc/login', sb1, bitbitzz_email, bitbitzz_pass, 'cloudflare', window_list, 'submit_button')
+            #if function == 4:
+            #    login_to_faucet('https://bitbitz.cc/login', sb1, bitbitzz_email, bitbitzz_pass, 'cloudflare', window_list, 'submit_button')
             if function == 5:
                 login_to_faucet('https://feyorra.top/login', sb1, feyorra_email, feyorra_pass, 'rscaptcha', window_list, "button[type='submit']")
             
@@ -2505,11 +2505,11 @@ def image_onscreeen(image_path, confidence=0.95, onlick = True):
 
 def earnow_loading(driver):
     print('start earnow_loading')
-    #images_list = ['cloudflare_box', 'clickheretostart', 'clickad10sec', 'vpnerror', 'complete_captcha_earnow', 'scroll_down_earnow', 'adsoff', 'loading_linkwait']
+    #images_list = ['cloudflare_box', 'clickheretostart', 'clickad10sec', 'vpnerror', 'complete_captcha_earnow', 'scroll_down_earnow', 'adsoff', 'loading_linkwait2']
     refresh_list = ['vpnerror','adsoff']
     clicking_list = ['cloudflare_box', 'clickheretostart']
     return_list =['clickad10sec', 'complete_captcha_earnow', 'scroll_down_earnow']
-    bugs_list = ['loading_linkwait']
+    bugs_list = ['loading_linkwait2']
     tolerance = 0.8
     ggg = 1
     bug = 1
@@ -2750,7 +2750,7 @@ def earnow_online(window1, ip_required):
                                 x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/verify_earnow.png", confidence=0.8)
                                 if x and y:
                                     print("Captcha found")
-                                    rename_with_code("element_screenshot.png")
+                                    #rename_with_code("element_screenshot.png")
 
                                     capture_element_screenshot(sb1, "div.captcha-icon img", screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
                                     print("Image saved as 'captcha_image.svg'")
@@ -2870,7 +2870,7 @@ def earnow_online(window1, ip_required):
 
 
             # List of element IDs to check
-            images_list = ['cloudflare_box', 'clickheretostart', 'clickad10sec', 'vpnerror', 'complete_captcha_earnow', 'scroll_down_earnow', 'adsoff', 'loading_linkwait']
+            images_list = ['cloudflare_box', 'clickheretostart', 'clickad10sec', 'vpnerror', 'complete_captcha_earnow', 'scroll_down_earnow', 'adsoff', 'loading_linkwait2']
             
             # Iterate through the element IDs
             for item in images_list:
@@ -2950,12 +2950,12 @@ browser_proxy = ''
 query = {"type": "main"}
 refresh_count = 0
 get_mails_passowrds(farm_id)
-#for frm in CSB1_farms:
-#    collection_csb = db[f'Farm{frm}']
-#    update = {"$set": {"response": f'Changed IP🔴: Starting Farm:{farm_id}'}}
-#    result = collection_csb.update_one(query, update)
-#    update = {"$set": {"request": 'ipfixer'}}
-#    result = collection_csb.update_one(query, update)
+for frm in CSB1_farms:
+    collection_csb = db[f'Farm{frm}']
+    update = {"$set": {"response": f'Changed IP🔴: Starting Farm:{farm_id}'}}
+    result = collection_csb.update_one(query, update)
+    update = {"$set": {"request": 'ipfixer'}}
+    result = collection_csb.update_one(query, update)
 
 def open_browsers():
     global sb1

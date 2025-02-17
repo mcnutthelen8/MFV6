@@ -3604,9 +3604,9 @@ def process_link_blocks_bitbitzz(sb,ip_address):
             ["Earnow", "Shortano", "Shortino"].some(keyword => block.innerText.includes(keyword))
         );
         """
-        link_blocks = sb.execute_script(js_script)
+        #link_blocks = sb.execute_script(js_script)
 
-        #link_blocks = sb.find_elements("div.col-lg-6.mt-4")
+        link_blocks = sb.find_elements("div.col-lg-6.mt-4")
         for index, block in enumerate(link_blocks):
             print(f"Processing block {index + 1}:")
     

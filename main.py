@@ -2512,7 +2512,7 @@ def earnow_loading(driver):
     print('start earnow_loading')
     #images_list = ['cloudflare_box', 'clickheretostart', 'clickad10sec', 'vpnerror', 'complete_captcha_earnow', 'scroll_down_earnow', 'adsoff', 'loading_linkwait2']
     refresh_list = ['vpnerror','adsoff']
-    clicking_list = ['cloudflare_box', 'clickheretostart','agree_cookie_earnow', 'countinue_cookie_earnow']
+    clicking_list = ['cloudflare_box', 'clickheretostart','agree-cookie-earnow', 'countinue-cookie-earnow']
     return_list =['clickad10sec', 'complete_captcha_earnow', 'scroll_down_earnow']
     bugs_list = ['loading_linkwait2']
     tolerance = 0.8
@@ -2704,7 +2704,7 @@ def earnow_online(window1, ip_required):
             except Exception as e:  
                 print("Not found earnow_verifying_bug")
             
-            for item in ['clickheretostart', 'agree_cookie_earnow', 'countinue_cookie_earnow']:
+            for item in ['clickheretostart', 'agree-cookie-earnow', 'countinue-cookie-earnow']:
                 try:
                     x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{item}.png", confidence=0.8)
                     if x and y:
@@ -2851,7 +2851,7 @@ def earnow_online(window1, ip_required):
                 pyautogui.click(529, 568)
                 time.sleep(2)
                 sb1.close()
-                sb1.switch_to_window(0)
+                sb1.switch_to_window(window1)
                 print('Wait found')
                 continue
 
@@ -2894,7 +2894,8 @@ def earnow_online(window1, ip_required):
                         sb1.close()  # Close the tab
                         break
                 all_windows = sb1.window_handles
-                sb1.switch_to.window(all_windows[0])
+                window1 = all_windows[0]
+                sb1.switch_to.window(window1)
                 sb1.uc_open(current_url)
                 geo_location_changer()
                 
@@ -2943,7 +2944,7 @@ def earnow_online(window1, ip_required):
             wrong_captcha += 0.5
 
         except Exception as e:
-            print(e)
+            print('issuegg',e)
             sb1.switch_to.default_content()
 
             wrong_captcha += 0.5

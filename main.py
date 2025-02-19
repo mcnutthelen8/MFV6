@@ -2437,7 +2437,7 @@ def rename_with_code(filepath):
 
 
 
-def find_similar_image(input_image_path, folder_path, similarity_threshold=0.9):
+def find_similar_image(input_image_path, folder_path, similarity_threshold=0.8):
     # Load the input image
     input_image = cv2.imread(input_image_path)
     if input_image is None:
@@ -2592,12 +2592,11 @@ def earnow_loading(driver):
 
 
 
-def earnow_online(window1, ip_required):
+def earnow_online(window, ip_required):
     scrolled = False
     last_step = False
     timeout = 1
     pre_element = None
-    window = window1
     wrong_captcha = 1
     bug = 1
 
@@ -2851,7 +2850,7 @@ def earnow_online(window1, ip_required):
                 pyautogui.click(529, 568)
                 time.sleep(2)
                 sb1.close()
-                sb1.switch_to_window(window1)
+                sb1.switch_to_window(window)
                 print('Wait found')
                 continue
 
@@ -2894,8 +2893,8 @@ def earnow_online(window1, ip_required):
                         sb1.close()  # Close the tab
                         break
                 all_windows = sb1.window_handles
-                window1 = all_windows[0]
-                sb1.switch_to.window(window1)
+                window = all_windows[0]
+                sb1.switch_to.window(window)
                 sb1.uc_open(current_url)
                 geo_location_changer()
                 
@@ -2946,7 +2945,9 @@ def earnow_online(window1, ip_required):
         except Exception as e:
             print('issuegg',e)
             sb1.switch_to.default_content()
-
+            all_windows = sb1.window_handles
+            window = all_windows[0]
+            sb1.switch_to.default_content()
             wrong_captcha += 0.5
 
  

@@ -2993,18 +2993,18 @@ def geo_location_changer():
                 #change the settings
             #return 
             try:
-                x,y = pyautogui.locateCenterOnScreen('/root/Desktop/MFV6/images/geo.png')
+                x,y = pyautogui.locateCenterOnScreen('/root/Desktop/MFV6/images/geo.png', confidence=0.95)
                 pyautogui.click(x,y)
                 time.sleep(3)
             except Exception as e:
                 print('Geo extension not found')
             try:
-                x,y = pyautogui.locateCenterOnScreen('/root/Desktop/MFV6/images/vroxy_logo.png')
+                x,y = pyautogui.locateCenterOnScreen('/root/Desktop/MFV6/images/vroxy_logo.png', confidence=0.95)
                 time.sleep(1)
                 try:
-                    x,y = pyautogui.locateCenterOnScreen('/root/Desktop/MFV6/images/matchip.png')
+                    x,y = pyautogui.locateCenterOnScreen('/root/Desktop/MFV6/images/matchip.png', confidence=0.95)
                     try:
-                        x,y = pyautogui.locateCenterOnScreen('/root/Desktop/MFV6/images/refresh_geo.png')
+                        x,y = pyautogui.locateCenterOnScreen('/root/Desktop/MFV6/images/refresh_geo.png', confidence=0.95)
                         pyautogui.click(x,y)
                         time.sleep(3)
                         return True

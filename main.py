@@ -200,11 +200,14 @@ def get_mails_passowrds(farm_id):
         elif '2' in layout:
             server_name1 = 'bulgaria' #'portugal'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            mainfaucet_email = 'merlelcn@gmail.com'
-            mainfaucet_pass = 'I2Ne7C329jJt'
-            feyorra_email = 'merlelcn@gmail.com'
-            feyorra_pass = 'I2Ne7C329jJt'
- 
+            mainfaucet_email = 'ashenrox19.97@gmail.com'
+            mainfaucet_pass = 'ashenrox1997'
+            bitbitzz_email = 'ashenrox19972'
+            bitbitzz_pass = 'ashenrox1997'
+            feyorra_email = 'ashenrox19.97@gmail.com'
+            feyorra_pass = 'ashenrox1997'
+
+
         elif '3' in layout:
             server_name1 = 'finland' #'portugal'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
@@ -2517,6 +2520,7 @@ def earnow_loading(driver):
     bug = 1
     try:
         while ggg < 24:
+            pyautogui.scroll(1000,1808 ,190 )
             ggg += 1
             print(f'Bug Loading Attempt:',bug)
             print(f'Trying Loading Attempt:',ggg)
@@ -2602,24 +2606,22 @@ def earnow_online(window1, ip_required):
         try:
 
             sb1.switch_to_window(window)
+
+            pyautogui.scroll(1000,1808 ,190 )
             if timeout >= 7:
                 pyautogui.press('f5')
                 timeout = 1
                 print("Timeout ", timeout)
             if wrong_captcha >= 5:
                 print('too many Wrong Captcha')
-                return 404
+                #return 404
 
             mainscript = control_panel()
             if mainscript != 1:
                 print('mainscript is changed....')
                 return
             title = sb1.get_title() #get_active_window_title()
-            ip_address = get_ip(sb1)
-            if ip_address != ip_required:
-                wrong_captcha +=2
-                print('wrong Ip address')
-                continue
+
 
 
             if "Shortlink" in title or 'Link' in title or 'Dashboard of Coin' in title:
@@ -2650,6 +2652,20 @@ def earnow_online(window1, ip_required):
                     print(f"Button Not found | {button.text}")
             else:
                 print("Waiting for button")
+
+            for item in ['cloudflare_box', 'clickheretostart','loading_linkwait2', 'vpnerror','adsoff']:
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/earnow_verifying_bug.png", confidence=0.85)
+                    if x and y:
+                        ip_address = get_ip(sb1)
+                        if ip_address != ip_required:
+                            wrong_captcha +=2
+                            print('wrong Ip address')
+                            continue
+                        break
+                except Exception as e:  
+                    print("Not found earnow_verifying_bug")
+
 
             if sb1.is_element_present("div.mb-2.badge.bg-success"):
                 print("verified found")
@@ -2688,6 +2704,13 @@ def earnow_online(window1, ip_required):
             except Exception as e:  
                 print("Not found earnow_verifying_bug")
             
+            for item in ['clickheretostart', 'agree_cookie_earnow', 'countinue_cookie_earnow']:
+                try:
+                    x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{item}.png", confidence=0.8)
+                    if x and y:
+                        pyautogui.click(x,y)
+                except Exception as e:  
+                    print("Not found earnow_verifying_bug")
 
             for item in ['complete_captcha_earnow', 'scroll_down_earnow']:
                 try:
@@ -2738,11 +2761,11 @@ def earnow_online(window1, ip_required):
                             else:
                                 sb1.execute_script("""
                                 const button = document.querySelector('button.btn.btn-lg.btn-primary.mb-2');
-                                button.scrollIntoView({ behavior: 'smooth', block: 'end' });
+                                button.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
                                 // Slightly adjust the scroll position after a short delay
                                 setTimeout(() => {
-                                    window.scrollBy(0, 150); // Move up by 50 pixels (adjust as needed)
+                                    window.scrollBy(0, -20); // Move up by 50 pixels (adjust as needed)
                                 }, 500);
 
                                 """)
@@ -2780,6 +2803,7 @@ def earnow_online(window1, ip_required):
                                     print("result:g ",result_mem)
                                     if result_mem:
                                         result_mem = result_mem.replace("2", "")
+                                        result_mem = result_mem.replace("3", "")
                                     print("result:g without2",result_mem)
                                     print('lngth of icons:',len(icon_options))
                                     for icon in icon_options:
@@ -2859,7 +2883,20 @@ def earnow_online(window1, ip_required):
             if sb1.is_text_visible("Failed! Please reload the page."):
                 print("Failed! Please reload the page.")
                 scrolled = False
+                current_url = sb1.execute_script("return window.location.href;")
+                current_window = sb1.current_window_handle
 
+                sb1.open_new_tab()
+                all_windows = sb1.window_handles
+                for window in all_windows:
+                    if window == current_window:
+                        sb1.switch_to.window(window)
+                        sb1.close()  # Close the tab
+                        break
+                all_windows = sb1.window_handles
+                sb1.switch_to.window(all_windows[0])
+                sb1.uc_open(current_url)
+                geo_location_changer()
                 
                 sb1.disconnect()
                 pyautogui.press('f5')
@@ -2946,6 +2983,44 @@ def process_link_blocks_claimtrx(sb):
             pyautogui.click(600,500 )
 
 
+
+def geo_location_changer():
+    for i in range(10):
+        try:
+            #open extension
+            #wait for pop
+            #check settings if mot match
+                #change the settings
+            #return 
+            try:
+                x,y = pyautogui.locateCenterOnScreen('/root/Desktop/MFV6/images/geo.png')
+                pyautogui.click(x,y)
+                time.sleep(3)
+            except Exception as e:
+                print('Geo extension not found')
+            try:
+                x,y = pyautogui.locateCenterOnScreen('/root/Desktop/MFV6/images/vroxy_logo.png')
+                time.sleep(1)
+                try:
+                    x,y = pyautogui.locateCenterOnScreen('/root/Desktop/MFV6/images/matchip.png')
+                    try:
+                        x,y = pyautogui.locateCenterOnScreen('/root/Desktop/MFV6/images/refresh_geo.png')
+                        pyautogui.click(x,y)
+                        time.sleep(3)
+                        return True
+                    except Exception as e:
+                        print('matchip extension not found')
+                except Exception as e:
+                    print('matchip extension not found')
+                    pyautogui.click(1589,227)
+                    time.sleep(3)
+                    pyautogui.click(1589,308)
+                    
+            except Exception as e:
+                print('vroxy_logo extension not found')
+
+        except Exception as e:
+            print('Issue on geo location', e)
 
 
 browser_proxy = ''
@@ -3126,6 +3201,7 @@ def open_faucets():
                 ip_address = get_ip(sb1)
  
             ip_address = get_ip(sb1)
+            geo_location_changer()
 
 
             dochh5 = collection.find_one(quer2y)
@@ -4092,8 +4168,8 @@ while True:
                 print('Pause...')
 
     except Exception as e:
-        print(f'ERR:{e}')
-        response_messege(f'ERR:{e}')
+        print(f'ERR1:{e}')
+        response_messege(f'ERR3:{e}')
         hard_reset_count +=5
 
         

@@ -2560,7 +2560,7 @@ def earnow_loading(driver):
                     x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{item}.png", confidence=tolerance)
                     pyautogui.click(x, y)
                     print(f'{item} Box return_list 1')
-                    #driver.connect()
+                    solving_icons_pyautogui()
 
                     return True
                 except Exception as e:  
@@ -2589,7 +2589,32 @@ def earnow_loading(driver):
     #driver.connect()
     return False
 
-
+def solving_icons_pyautogui():
+    for i in range(1, 7):
+        pyautogui.scroll(-3,1021,475)
+        try:
+            x,y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verify_earnow.png", confidence=0.85, region=(196, 315, 220, 34))
+            if x and y:
+                for filename in os.listdir('icons'):
+                    file_path = os.path.join('icons', filename)
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen(file_path, confidence=0.7,  region=(196, 315, 220, 34))
+                        if x and y:
+                            try:
+                                x, y = pyautogui.locateCenterOnScreen(f'/icons_selective/{filename}.png', confidence=0.8,  region=(196, 315, 220, 34))
+                                if x and y:
+                                    pyautogui.click(x, y)
+                                    return True
+                            except Exception as e:
+                                #print(f"Failed to open {file_path}. Reason: {e}")
+                                pass
+                    except Exception as e:
+                        #print(f"Failed to open {file_path}. Reason: {e}")
+                        pass
+                print('No Icon Found..........')
+                return False
+        except Exception as e:
+            print('solving_icons_pyautogui',e)
 
 
 def earnow_online(window, ip_required):
@@ -2715,131 +2740,10 @@ def earnow_online(window, ip_required):
                 try:
                     x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{item}.png", confidence=0.85)
                     if x and y:
-                        if sb1.is_element_visible("div.captcha-icon img"):
-                            sb1.execute_script("""
-                            (function() {
-                                function removeIframes(element) {
-                                    element.querySelectorAll('iframe').forEach(el => el.remove());
-                                }
-
-                                function observeMutations() {
-                                    const observer = new MutationObserver(mutationsList => {
-                                        for (const mutation of mutationsList) {
-                                            if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                                                mutation.addedNodes.forEach(addedNode => {
-                                                    if (addedNode instanceof Element) {
-                                                        removeIframes(addedNode);
-                                                    }
-                                                });
-                                            }
-                                        }
-                                    });
-
-                                    observer.observe(document.documentElement, { childList: true, subtree: true });
-                                }
-
-                                console.log('Removing iframes and observing mutations...');
-                                observeMutations();
-
-                                setInterval(() => {
-                                    document.querySelectorAll('iframe').forEach(el => el.remove());
-                                }, 100);
-                            })();
-
-
-
-                            """)
-
-
-                            if scrolled:
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/verify_earnow.png", confidence=0.85)
-                                except Exception as e:
-                                    print('No Page Image found')
-                                    pyautogui.scroll(-1,1021,475)
-                            else:
-                                sb1.execute_script("""
-                                const button = document.querySelector('button.btn.btn-lg.btn-primary.mb-2');
-                                button.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-                                // Slightly adjust the scroll position after a short delay
-                                setTimeout(() => {
-                                    window.scrollBy(0, -20); // Move up by 50 pixels (adjust as needed)
-                                }, 500);
-
-                                """)
-                                scrolled = True
-                            time.sleep(2)
-                            try:
-                                x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/verify_earnow.png", confidence=0.8)
-                                if x and y:
-                                    print("Captcha found")
-                                    #rename_with_code("element_screenshot.png")
-
-                                    capture_element_screenshot(sb1, "div.captcha-icon img", screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
-                                    print("Image saved as 'captcha_image.svg'")
-                                    icon_options = sb1.find_elements(By.CSS_SELECTOR, '#icon-options i[class*="fas fa-"]')
-                                    icons_folder = 'icons'
-                                    if not os.path.exists(icons_folder):
-                                        os.makedirs(icons_folder)
-                                        print(f"Created folder: {icons_folder}")
-                                    else:
-                                        print(f"Folder already exists: {icons_folder}")
-                    
-                                    # Delete the contents of the icons folder
-                                    for filename in os.listdir(icons_folder):
-                                        file_path = os.path.join(icons_folder, filename)
-                                        try:
-                                            if os.path.isfile(file_path) or os.path.islink(file_path):
-                                                os.unlink(file_path)  # Remove file or symbolic link
-                                            elif os.path.isdir(file_path):
-                                                shutil.rmtree(file_path)  # Remove directory
-                                            print(f"Deleted: {file_path}")
-                                        except Exception as e:
-                                            print(f"Failed to delete {file_path}. Reason: {e}")
-                                    result_mem = None
-                                    result_mem = find_similar_image("element_screenshot.png", "element_icons")
-                                    print("result:g ",result_mem)
-                                    if result_mem:
-                                        result_mem = result_mem.replace("2", "")
-                                        result_mem = result_mem.replace("3", "")
-                                    print("result:g without2",result_mem)
-                                    print('lngth of icons:',len(icon_options))
-                                    for icon in icon_options:
-                                        icon_class = icon.get_attribute('class').replace(' ', '.')     
-                                        if result_mem and result_mem in icon_class:
-                                            button = sb1.find_element(By.CSS_SELECTOR, f"i.{icon_class}")
-                                            actions = ActionChains(sb1)
-                                            #time.sleep(1)
-                                            actions.move_to_element(button).click().perform()  
-                                            print(f"Icon Found match: {icon_class}")
-                                            break
-                                        icon_class = "." + icon_class
-                                        print(f"Icon 1: {icon_class}")
-                                        # Delete all items in the icons folder before starting
-                                        capture_element_screenshot(sb1, icon_class, screenshot_path="full_screenshot.png", cropped_path=f"icons/{icon_class}.png")      
-                                    if result_mem == None:
-                                        q_image = 'element_screenshot.png'
-                                        icons_folder = 'icons'
-                                        invert_filter = True  # Change to True to invert black and white
-                                        timeout = 1
-
-                                        best_match, similarity = process_and_match(q_image, icons_folder)
-                                        print(f"Most similar image: {best_match}, Similarity score: {similarity}")
-                                        best_match = best_match.replace('.png', '')
-                                        print(f"Icon 2: {best_match}")
-                                        button = sb1.find_element(By.CSS_SELECTOR, f"i{best_match}")
-                                        actions = ActionChains(sb1)
-                                        #sb1.disconnect()
-                                        time.sleep(1)
-                                        actions.move_to_element(button).click().perform()  
-                                    time.sleep(2)
-                            except Exception as e:
-                                print('No Page Image found',e)
-                            
-                        else:
-                            print('Captcha not loading...')
-                            timeout += 3
+                        sb1.disconnect()
+                        #pyautogui.press('f5')
+                        earnow_loading(sb1)
+                        sb1.connect()
                             
                 except Exception as e:  
                     print(f"Not found {item}")

@@ -2435,9 +2435,36 @@ def rename_with_code(filepath):
             print(f"File renamed to '{new_filepath}'")
             return
 
+def copy_image_if_not_exists(input_path, output_path):
+    # Check if the input image exists
+    if not os.path.isfile(input_path):
+        print(f"Error: The input file '{input_path}' does not exist.")
+        return
+
+    # Check if the output image already exists
+    if os.path.isfile(output_path):
+        print(f"The image already exists at '{output_path}'. No action needed.")
+        return
+
+    # Ensure the output directory exists (create it if not)
+    output_dir = os.path.dirname(output_path)
+    if not os.path.exists(output_dir):
+        try:
+            os.makedirs(output_dir)
+            print(f"Created directory: '{output_dir}'")
+        except Exception as e:
+            print(f"Error creating directory: {e}")
+            return
+
+    # Copy the input file to the output path
+    try:
+        shutil.copy(input_path, output_path)
+        print(f"Image copied from '{input_path}' to '{output_path}'.")
+    except Exception as e:
+        print(f"Error occurred while copying the image: {e}")
 
 
-def find_similar_image(input_image_path, folder_path, similarity_threshold=0.8):
+def find_similar_image(input_image_path, folder_path, similarity_threshold=0.7):
     # Load the input image
     input_image = cv2.imread(input_image_path)
     if input_image is None:
@@ -2513,7 +2540,7 @@ def earnow_loading(driver):
     #images_list = ['cloudflare_box', 'clickheretostart', 'clickad10sec', 'vpnerror', 'complete_captcha_earnow', 'scroll_down_earnow', 'adsoff', 'loading_linkwait2']
     refresh_list = ['vpnerror','adsoff']
     clicking_list = ['cloudflare_box', 'clickheretostart','agree-cookie-earnow', 'countinue-cookie-earnow']
-    return_list =['clickad10sec', 'complete_captcha_earnow', 'scroll_down_earnow']
+    return_list =[ 'clickad10sec', 'complete_captcha_earnow', 'scroll_down_earnow']
     bugs_list = ['loading_linkwait2']
     tolerance = 0.8
     ggg = 1
@@ -2530,6 +2557,7 @@ def earnow_loading(driver):
             pyautogui.moveTo(200,100)
             time.sleep(1)
             #cloudflare
+
             for item in clicking_list:
                 try:
                     x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{item}.png", confidence=tolerance)
@@ -2560,7 +2588,7 @@ def earnow_loading(driver):
                     x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{item}.png", confidence=tolerance)
                     pyautogui.click(x, y)
                     print(f'{item} Box return_list 1')
-                    solving_icons_pyautogui()
+                    time.sleep(1)
 
                     return True
                 except Exception as e:  
@@ -2582,6 +2610,14 @@ def earnow_loading(driver):
                     print(f"Not bugs_list {item} 2")
                     bug = 1
 
+            try:
+                x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/site_permission.png", confidence=tolerance)
+                print(f'{item} Box refresh_list 1')
+                pyautogui.click(x, y)
+                time.sleep(1)
+                pyautogui.click(1064,829)
+            except Exception as e:  
+                print(f"Not refresh_list {item} 2")
 
 
     except Exception as e:
@@ -2589,32 +2625,34 @@ def earnow_loading(driver):
     #driver.connect()
     return False
 
-def solving_icons_pyautogui():
-    for i in range(1, 7):
-        pyautogui.scroll(-3,1021,475)
-        try:
-            x,y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/verify_earnow.png", confidence=0.85, region=(196, 315, 220, 34))
-            if x and y:
-                for filename in os.listdir('icons'):
-                    file_path = os.path.join('icons', filename)
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen(file_path, confidence=0.7,  region=(196, 315, 220, 34))
-                        if x and y:
-                            try:
-                                x, y = pyautogui.locateCenterOnScreen(f'/icons_selective/{filename}.png', confidence=0.8,  region=(196, 315, 220, 34))
-                                if x and y:
-                                    pyautogui.click(x, y)
-                                    return True
-                            except Exception as e:
-                                #print(f"Failed to open {file_path}. Reason: {e}")
-                                pass
-                    except Exception as e:
-                        #print(f"Failed to open {file_path}. Reason: {e}")
-                        pass
-                print('No Icon Found..........')
-                return False
-        except Exception as e:
-            print('solving_icons_pyautogui',e)
+
+def remove_noise_with_median_and_morphology(image_path, output_path):
+    # Load the image
+    img = cv2.imread(image_path)
+
+    # Check if the image was loaded correctly
+    if img is None:
+        print("Error loading image.")
+        return
+
+    # Convert the image to grayscale
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+    # Apply a median filter to reduce noise while preserving edges
+    denoised = cv2.medianBlur(gray, 1)  # Kernel size 3, adjust if necessary
+
+    # Create a kernel for morphological operations (increase size if needed)
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (4, 4))  # Increased kernel size
+
+    # Apply the closing morphological operation
+    morph = cv2.morphologyEx(denoised, cv2.MORPH_CLOSE, kernel)
+
+    # Optionally, apply a second round of median blur if the image still has noise
+    final_output = cv2.medianBlur(morph, 1)
+
+    # Save the result to the output path
+    cv2.imwrite(output_path, final_output)
+    print(f"Image saved to {output_path}")
 
 
 def earnow_online(window, ip_required):
@@ -2636,6 +2674,8 @@ def earnow_online(window, ip_required):
                 pyautogui.press('f5')
                 timeout = 1
                 print("Timeout ", timeout)
+                wrong_captcha +=1
+                
             if wrong_captcha >= 5:
                 print('too many Wrong Captcha')
                 #return 404
@@ -2740,10 +2780,145 @@ def earnow_online(window, ip_required):
                 try:
                     x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{item}.png", confidence=0.85)
                     if x and y:
-                        sb1.disconnect()
-                        #pyautogui.press('f5')
-                        earnow_loading(sb1)
-                        sb1.connect()
+                        if sb1.is_element_visible("div.captcha-icon img"):
+                            #remove ads
+                            sb1.execute_script("""
+                            (function() {
+                                function removeIframes(element) {
+                                    element.querySelectorAll('iframe').forEach(el => el.remove());
+                                }
+
+                                function observeMutations() {
+                                    const observer = new MutationObserver(mutationsList => {
+                                        for (const mutation of mutationsList) {
+                                            if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                                                mutation.addedNodes.forEach(addedNode => {
+                                                    if (addedNode instanceof Element) {
+                                                        removeIframes(addedNode);
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+
+                                    observer.observe(document.documentElement, { childList: true, subtree: true });
+                                }
+
+                                console.log('Removing iframes and observing mutations...');
+                                observeMutations();
+
+                                setInterval(() => {
+                                    document.querySelectorAll('iframe').forEach(el => el.remove());
+                                }, 100);
+                            })();
+
+
+
+                            """)
+
+
+                            try:
+                                x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/verify_earnow.png", confidence=0.85)
+                                print("Verify Button found")
+                            except Exception as e:
+                                print('No Page Image found')
+                                sb1.execute_script("""
+                                    const button = document.querySelector('button.btn.btn-lg.btn-primary.mb-2');
+                                    button.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+                                    // Slightly adjust the scroll position after a short delay
+                                    setTimeout(() => {
+                                    window.scrollBy(0, -20); // Move up by 50 pixels (adjust as needed)
+                                    }, 500);
+
+                            """)
+
+                            time.sleep(2)
+                            try:
+                                x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/verify_earnow.png", confidence=0.8)
+                                if x and y:
+                                    print("Captcha found")
+                                    
+
+                                    capture_element_screenshot(sb1, "div.captcha-icon img", screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
+                                    
+                                    print("Image saved as 'captcha_image.svg'")
+                                    icon_options = sb1.find_elements(By.CSS_SELECTOR, '#icon-options i[class*="fas fa-"]')
+                                    icons_folder = 'icons'
+                                    if not os.path.exists(icons_folder):
+                                        os.makedirs(icons_folder)
+                                        print(f"Created folder: {icons_folder}")
+                                    else:
+                                        print(f"Folder already exists: {icons_folder}")
+                    
+                                    # Delete the contents of the icons folder
+                                    for filename in os.listdir(icons_folder):
+                                        file_path = os.path.join(icons_folder, filename)
+                                        try:
+                                            if os.path.isfile(file_path) or os.path.islink(file_path):
+                                                os.unlink(file_path)  # Remove file or symbolic link
+                                            elif os.path.isdir(file_path):
+                                                shutil.rmtree(file_path)  # Remove directory
+                                            print(f"Deleted: {file_path}")
+                                        except Exception as e:
+                                            print(f"Failed to delete {file_path}. Reason: {e}")
+                                    result_mem = None
+                                    result_mem = find_similar_image("element_screenshot.png", "element_icons")
+                                    print("result:g ",result_mem)
+                                    if result_mem:
+                                        result_mem = result_mem.replace("2", "")
+                                        result_mem = result_mem.replace("3", "")
+                                        result_mem = result_mem.replace("4", "")
+                                        result_mem = result_mem.replace("5", "")
+                                    else:
+                                        remove_noise_with_median_and_morphology('element_screenshot.png', 'element_screenshot.png')
+                                        result_mem = find_similar_image("element_screenshot.png", "element_icons")
+                                        if result_mem:
+                                            result_mem = result_mem.replace("2", "")
+                                            result_mem = result_mem.replace("3", "")
+                                            result_mem = result_mem.replace("4", "")
+                                            result_mem = result_mem.replace("5", "")
+                                    print("result:g without2",result_mem)
+                                    print('lngth of icons:',len(icon_options))
+                                    for icon in icon_options:
+                                        icon_class = icon.get_attribute('class').replace(' ', '.')     
+                                        if result_mem and result_mem in icon_class:
+                                            button = sb1.find_element(By.CSS_SELECTOR, f"i.{icon_class}")
+                                            actions = ActionChains(sb1)
+                                            #time.sleep(1)
+                                            actions.move_to_element(button).click().perform()  
+                                            print(f"Icon Found match: {icon_class}")
+                                            break
+                                        icon_class = "." + icon_class
+                                        print(f"Icon 1: {icon_class}")
+                                        # Delete all items in the icons folder before starting
+                                        capture_element_screenshot(sb1, icon_class, screenshot_path="full_screenshot.png", cropped_path=f"icons/{icon_class}.png")     
+                                        #capture_element_screenshot(sb1, icon_class, screenshot_path="full_screenshot.png", cropped_path=f"{icon_class}.png")     
+                                        #copy_image_if_not_exists(f'icons/{icon_class}.png', f'iconsfulll/{icon_class}.png')
+                                        #time.sleep(144)
+                                    if result_mem == None:
+                                        #remove_noise_with_median_and_morphology('element_screenshot.png', 'element_screenshot.png')
+                                        q_image = 'element_screenshot.png'
+                                        icons_folder = 'icons'
+                                        invert_filter = True  # Change to True to invert black and white
+                                        timeout = 1
+
+                                        best_match, similarity = process_and_match(q_image, icons_folder)
+                                        print(f"Most similar image: {best_match}, Similarity score: {similarity}")
+                                        best_match = best_match.replace('.png', '')
+                                        print(f"Icon 2: {best_match}")
+                                        button = sb1.find_element(By.CSS_SELECTOR, f"i{best_match}")
+                                        actions = ActionChains(sb1)
+                                        #sb1.disconnect()
+                                        time.sleep(1)
+                                        actions.move_to_element(button).click().perform()  
+                                    time.sleep(2)
+                            except Exception as e:
+                                print('No Page Image found',e)
+                            
+                        else:
+                            print('Captcha not loading...')
+                            timeout += 3
                             
                 except Exception as e:  
                     print(f"Not found {item}")
@@ -2788,8 +2963,10 @@ def earnow_online(window, ip_required):
                 scrolled = False
                 current_url = sb1.execute_script("return window.location.href;")
                 current_window = sb1.current_window_handle
-
+                geo_location_changer()
                 sb1.open_new_tab()
+                sb1.uc_open(current_url)
+                time.sleep(3)
                 all_windows = sb1.window_handles
                 for window in all_windows:
                     if window == current_window:
@@ -2800,12 +2977,13 @@ def earnow_online(window, ip_required):
                 window = all_windows[0]
                 sb1.switch_to.window(window)
                 sb1.uc_open(current_url)
-                geo_location_changer()
+                
                 
                 sb1.disconnect()
-                pyautogui.press('f5')
+                #pyautogui.press('f5')
                 earnow_loading(sb1)
                 sb1.connect()
+                rename_with_code("element_screenshot.png")
                 wrong_captcha += 1
 
 

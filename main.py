@@ -942,7 +942,7 @@ def mysterium_web_login(driver):
     for i in range(1,100):
         time.sleep(1)
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cookie_icon.png", region=(1625, 43, 400, 300), confidence=0.99)
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cookie_icon.png", region=(1525, 43, 600, 300), confidence=0.99)
             pyautogui.click(x, y)
             print("cookie_icon Found")
             time.sleep(3)
@@ -1562,6 +1562,7 @@ def solve_least_captcha(image):
         val = group_similar_images("output_pieces")
         if val:
             return val
+    return val
     split_image_by_width('element_screenshot.png', 7, output_dir="output_pieces")
     if check_similar_images_exist("output_pieces", similarity_threshold=0.8):
         val = group_similar_images("output_pieces")
@@ -2158,7 +2159,7 @@ feyorra_limit_reached = None
 sb1 = None
 def are_extensions_exist():
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cookie_icon.png", region=(1625, 43, 400, 300), confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cookie_icon.png", region=(1525, 43, 700, 300), confidence=0.9)
             #pyautogui.click(x, y)
             print("extension_icon Button Found")
             return False
@@ -2538,7 +2539,7 @@ def image_onscreeen(image_path, confidence=0.95, onlick = True):
 def earnow_loading(driver):
     print('start earnow_loading')
     #images_list = ['cloudflare_box', 'clickheretostart', 'clickad10sec', 'vpnerror', 'complete_captcha_earnow', 'scroll_down_earnow', 'adsoff', 'loading_linkwait2']
-    refresh_list = ['vpnerror','adsoff']
+    refresh_list = ['vpnerror','adsoff','page_notload' ]
     clicking_list = ['cloudflare_box', 'clickheretostart','agree-cookie-earnow', 'countinue-cookie-earnow']
     return_list =[ 'clickad10sec', 'complete_captcha_earnow', 'scroll_down_earnow']
     bugs_list = ['loading_linkwait2']
@@ -2654,6 +2655,64 @@ def remove_noise_with_median_and_morphology(image_path, output_path):
     cv2.imwrite(output_path, final_output)
     print(f"Image saved to {output_path}")
 
+def process_and_match_bygiven(q_image_path,class_names,icons_folder):
+    invert= False
+    def convert_to_bw(image, invert):
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        _, bw = cv2.threshold(gray, 128, 255, cv2.THRESH_BINARY)
+        return cv2.bitwise_not(bw) if invert else bw
+ 
+    q_image = cv2.imread(q_image_path)
+    q_bw = convert_to_bw(q_image, False)
+    best_match = None
+    highest_similarity = -1
+    similarity_scores = {}
+ 
+    for icon_name in os.listdir(icons_folder):
+        icon_path = os.path.join(icons_folder, icon_name)
+        icon_image = cv2.imread(icon_path)
+        icon_name = icon_name.replace("2", "")
+        icon_name = icon_name.replace("3", "")
+        icon_name = icon_name.replace("4", "")
+        icon_name = icon_name.replace("5", "")
+        icon_name = icon_name.replace("6", "")
+        icon_name = icon_name.replace(".png", "")
+        if icon_image is None:
+            continue
+        
+        if f"fas.fa-{icon_name}.icon-option" not in class_names:
+            #print(f'icon_image{icon_name} | class_names{class_names}')
+            continue
+        print(f'icon_image{icon_name} | class_names{class_names}')
+        icon_bw = convert_to_bw(icon_image, invert)
+ 
+        # Ensure that both images are resized to the same dimensions
+        resize_dim = (100, 100)
+        q_resized = cv2.resize(q_bw, resize_dim)
+        icon_resized = cv2.resize(icon_bw, resize_dim)
+ 
+        # Calculate SSIM
+        similarity, _ = ssim(q_resized, icon_resized, full=True)
+ 
+        # Optionally, calculate Histogram Comparison
+        q_hist = cv2.calcHist([q_resized], [0], None, [256], [0, 256])
+        icon_hist = cv2.calcHist([icon_resized], [0], None, [256], [0, 256])
+        hist_similarity = cv2.compareHist(q_hist, icon_hist, cv2.HISTCMP_CORREL)
+ 
+        # Combine similarities
+        combined_similarity = (similarity + hist_similarity) / 2
+ 
+        similarity_scores[icon_name] = combined_similarity
+ 
+        if combined_similarity > highest_similarity:
+            highest_similarity = combined_similarity
+            best_match = icon_name
+
+    print("Similarity scores for all images:")
+    for icon_name, score in similarity_scores.items():
+        print(f"{icon_name}: {score}")
+ 
+    return best_match, highest_similarity
 
 def earnow_online(window, ip_required):
     scrolled = False
@@ -2863,25 +2922,28 @@ def earnow_online(window, ip_required):
                                         except Exception as e:
                                             print(f"Failed to delete {file_path}. Reason: {e}")
                                     result_mem = None
-                                    result_mem = find_similar_image("element_screenshot.png", "element_icons")
+                                    classes_list2 = []
+                                    for icon in icon_options:
+                                        icon_class = icon.get_attribute('class').replace(' ', '.')     
+                                        classes_list2.append(icon_class)
+
+                                    #result_mem = find_similar_image("element_screenshot.png", "element_icons")
+                                    best_match, highest_similarity = process_and_match_bygiven("element_screenshot.png",classes_list2,"element_icons")
+                                    result_mem = best_match
                                     print("result:g ",result_mem)
                                     if result_mem:
                                         result_mem = result_mem.replace("2", "")
                                         result_mem = result_mem.replace("3", "")
                                         result_mem = result_mem.replace("4", "")
                                         result_mem = result_mem.replace("5", "")
-                                    else:
-                                        remove_noise_with_median_and_morphology('element_screenshot.png', 'element_screenshot.png')
-                                        result_mem = find_similar_image("element_screenshot.png", "element_icons")
-                                        if result_mem:
-                                            result_mem = result_mem.replace("2", "")
-                                            result_mem = result_mem.replace("3", "")
-                                            result_mem = result_mem.replace("4", "")
-                                            result_mem = result_mem.replace("5", "")
+
                                     print("result:g without2",result_mem)
                                     print('lngth of icons:',len(icon_options))
+                                    
+
                                     for icon in icon_options:
                                         icon_class = icon.get_attribute('class').replace(' ', '.')     
+                                        #classes_list2.append(icon_class)
                                         if result_mem and result_mem in icon_class:
                                             button = sb1.find_element(By.CSS_SELECTOR, f"i.{icon_class}")
                                             actions = ActionChains(sb1)
@@ -2891,27 +2953,6 @@ def earnow_online(window, ip_required):
                                             break
                                         icon_class = "." + icon_class
                                         print(f"Icon 1: {icon_class}")
-                                        # Delete all items in the icons folder before starting
-                                        capture_element_screenshot(sb1, icon_class, screenshot_path="full_screenshot.png", cropped_path=f"icons/{icon_class}.png")     
-                                        #capture_element_screenshot(sb1, icon_class, screenshot_path="full_screenshot.png", cropped_path=f"{icon_class}.png")     
-                                        #copy_image_if_not_exists(f'icons/{icon_class}.png', f'iconsfulll/{icon_class}.png')
-                                        #time.sleep(144)
-                                    if result_mem == None:
-                                        #remove_noise_with_median_and_morphology('element_screenshot.png', 'element_screenshot.png')
-                                        q_image = 'element_screenshot.png'
-                                        icons_folder = 'icons'
-                                        invert_filter = True  # Change to True to invert black and white
-                                        timeout = 1
-
-                                        best_match, similarity = process_and_match(q_image, icons_folder)
-                                        print(f"Most similar image: {best_match}, Similarity score: {similarity}")
-                                        best_match = best_match.replace('.png', '')
-                                        print(f"Icon 2: {best_match}")
-                                        button = sb1.find_element(By.CSS_SELECTOR, f"i{best_match}")
-                                        actions = ActionChains(sb1)
-                                        #sb1.disconnect()
-                                        time.sleep(1)
-                                        actions.move_to_element(button).click().perform()  
                                     time.sleep(2)
                             except Exception as e:
                                 print('No Page Image found',e)
@@ -3565,7 +3606,7 @@ def process_link_blocks(sb,ip_address):
                         actions = ActionChains(sb1)
 
                         actions.move_to_element(button).click().perform()  
-                        time.sleep(5) 
+                        #time.sleep(5) 
 
                         print("Clicked the claim button.")
                         cloudflare(sb1, login = True)
@@ -3600,7 +3641,7 @@ def process_link_blocks(sb,ip_address):
                         actions = ActionChains(sb1)
 
                         actions.move_to_element(button).click().perform()  
-                        time.sleep(5) 
+                        #time.sleep(5) 
 
                         print("Clicked the claim button.")
                         cloudflare(sb1, login = True)
@@ -3633,7 +3674,7 @@ def process_link_blocks(sb,ip_address):
                         actions = ActionChains(sb1)
 
                         actions.move_to_element(button).click().perform()  
-                        time.sleep(5) 
+                        #time.sleep(5) 
 
                         print("Clicked the claim button.")
                         cloudflare(sb1, login = True)
@@ -4093,7 +4134,58 @@ def process_link_blocks_fey(sb,ip_address):
         switch_mainfaucets(5)
 
 
+#withdows
+def withdraw_bitbitzz(sb):
+    try:
+        sb.uc_open("https://bitbitz.cc/account")
+        time.sleep(3)
+        if sb.is_element_present("button.btn.btn-blue.btn-lg.w-100"):
+            sb.uc_click("button.btn.btn-blue.btn-lg.w-100")
+            time.sleep(3)
+            if sb.is_element_present("input#withdrawlAddress"):
+                address = sb.find_element(By.CSS_SELECTOR, "input#withdrawlAddress")
+                address.send_keys(mainfaucet_email)
+                time.sleep(2)
+                faucet_button = sb.find_elements(By.CSS_SELECTOR, "div.card.h-100.gateway-card")
+                for element in faucet_button:
+                    element_txt = element.text
+                    if 'FaucetPay' in element_txt:
+                        element.click()
+                        time.sleep(2)
+                        currency_element = sb.find_element(By.CSS_SELECTOR, 'div.col.currency-col[data-currency-id="8"]')
+                        currency_element.click()
+                        break
+                time.sleep(2)
+                sb.uc_click("button#makeWithdrawal[type='submit']")
+                time.sleep(3)
+                response_messege(f'withdraw_bitbitzz FaucetPay Withdrawed')
+                        #response_messege('Started')
+                query = {"type": "main"}
+                update = {"$set": {"request": 'ipfixer'}}
+                result = collection.update_one(query, update)
+        pass
 
+    except Exception as e:
+        print('withdraw_bitbitzz',e)
+#withdows
+def withdraw_feyorra(sb):
+    try:
+        sb.uc_open("https://feyorra.top/withdraw")
+        time.sleep(3)
+        if sb.is_element_present("input#wallet[type='submit']"):
+            address = sb.find_element(By.CSS_SELECTOR, "input#wallet[type='submit']")
+            address.send_keys(mainfaucet_email)
+            sb.uc_click("button[type='submit']")
+            time.sleep(3)
+            response_messege(f'withdraw_feyorra FaucetPay Withdrawed')
+                    #response_messege('Started')
+            query = {"type": "main"}
+            update = {"$set": {"request": 'ipfixer'}}
+            result = collection.update_one(query, update)
+        pass
+
+    except Exception as e:
+        print('withdraw_bitbitzz',e)
 
 #time.sleep(9990)
 hard_reset_count = 1
@@ -4107,18 +4199,6 @@ while True:
         print('control_panel', mainscript)
         if mainscript == 1:  
 
-            if hard_reset_count > 15:
-                try:
-                    subprocess.run(['pkill', '-f', 'chrome'], check=True)
-                    print(f"All chrome processes killed successfully")
-                except subprocess.CalledProcessError:
-                    print(f"Failed to kill chrome processes or no processes found.")
-                time.sleep(3)
-                sb1 = open_browsers()
-                mainfaucet_window, sitekey,  ip_address, ip_required = open_faucets()
-
-                mainfaucet_window = sb1.current_window_handle
-                earnow_window = None
 
             if reset_count > 15:
                 sholinks_done = 1
@@ -4136,9 +4216,39 @@ while True:
                 except subprocess.CalledProcessError:
                     print(f"Failed to kill chrome processes or no processes found.")
                 time.sleep(3)
+                sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path, page_load_strategy='eager')#, proxy=browser_proxy )
+                sb1.maximize_window()
+                sb1.uc_open("chrome://extensions/")
+                current_window = sb1.current_window_handle
+                mainfaucet_window = sb1.current_window_handle
+                if sitekey == 1:
+                    sb1.uc_open("https://satoshifaucet.io/links/currency/sol")
+                if sitekey == 2:
+                    sb1.uc_open("https://coinpayz.xyz/links")
+                if sitekey == 3:
+                    sb1.uc_open("https://helpfpcoin.site/link/ltc")
+                if sitekey == 4:
+                    sb1.uc_open("https://bitbitz.cc/shortlinks")
+                if sitekey == 5:
+                    sb1.uc_open("https://feyorra.top/links")
+                earnow_window = None
+
+            if hard_reset_count > 15:
+                try:
+                    subprocess.run(['pkill', '-f', 'chrome'], check=True)
+                    print(f"All chrome processes killed successfully")
+                except subprocess.CalledProcessError:
+                    print(f"Failed to kill chrome processes or no processes found.")
+                time.sleep(3)
                 sb1 = open_browsers()
+                
+                mainfaucet_window, sitekey,  ip_address, ip_required = open_faucets()
+
+
                 mainfaucet_window = sb1.current_window_handle
                 earnow_window = None
+
+
 
             ip_address = get_ip(sb1)
             debug_messages(f'Ip address Found:{ip_address}')
@@ -4246,10 +4356,22 @@ while True:
             mainfaucet_window, sitekey,  ip_address, ip_required = open_faucets()
             reset_count = 0
 
+
+
         if mainscript == 5:
             for i in range(1,6):
                 time.sleep(1)
                 print('Pause...')
+
+        if mainscript == 4:
+            withdraw_bitbitzz(sb1) 
+
+        if mainscript == 6:
+            withdraw_feyorra(sb1) 
+        if mainscript == 7:
+            #withdraw_faucet(sb1, 3) 
+            pass
+
 
     except Exception as e:
         print(f'ERR1:{e}')

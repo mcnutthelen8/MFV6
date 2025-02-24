@@ -3024,7 +3024,7 @@ def earnow_online(window, ip_required):
                 #pyautogui.press('f5')
                 earnow_loading(sb1)
                 sb1.connect()
-                rename_with_code("element_screenshot.png")
+                #rename_with_code("element_screenshot.png")
                 wrong_captcha += 1
 
 

@@ -4381,6 +4381,8 @@ while True:
                                     reset_count = 20
                                 time.sleep(2)
                                 mainfaucet_window = sb1.current_window_handle
+                                sb1.open_new_tab()
+                                mainfaucet_window2 = sb1.current_window_handle
                                 #mainfaucet_window = earnow_window
                                 sb1.switch_to.window(mainfaucet_window)
                                 title =sb1.get_title()

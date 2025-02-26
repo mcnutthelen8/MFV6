@@ -2634,6 +2634,7 @@ def earnow_loading(driver):
                 pyautogui.click(x, y)
                 time.sleep(1)
                 pyautogui.click(1064,829)
+                pyautogui.click(1063,802)
             except Exception as e:  
                 print(f"Not refresh_list {item} 2")
 
@@ -3013,11 +3014,7 @@ def earnow_online(window, ip_required):
 
             if "Wait" in title:
                 sb1.open_new_tab()
-                all_windows = sb1.window_handles
-                current_window = sb1.current_window_handle
-                for window in all_windows:
-                    if window != current_window:
-                        sb1.switch_to.window(window)
+                sb1.switch_to_newest_window()
 
                 time.sleep(9)
                 pyautogui.click(529, 568)

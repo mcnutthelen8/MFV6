@@ -3013,11 +3013,18 @@ def earnow_online(window, ip_required):
 
             if "Wait" in title:
                 sb1.open_new_tab()
+                all_windows = sb1.window_handles
+                current_window = sb1.current_window_handle
+                for window in all_windows:
+                    if window != current_window:
+                        sb1.switch_to.window(window)
+
                 time.sleep(9)
                 pyautogui.click(529, 568)
                 time.sleep(2)
                 sb1.close()
                 sb1.switch_to_window(window)
+                timeout += 1
                 print('Wait found')
                 continue
 

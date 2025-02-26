@@ -1562,12 +1562,13 @@ def solve_least_captcha(image):
         val = group_similar_images("output_pieces")
         if val:
             return val
-    return val
+
     split_image_by_width('element_screenshot.png', 7, output_dir="output_pieces")
     if check_similar_images_exist("output_pieces", similarity_threshold=0.8):
         val = group_similar_images("output_pieces")
         if val:
             return val
+    return val
     split_image_by_width('element_screenshot.png', 8, output_dir="output_pieces")
     if check_similar_images_exist("output_pieces", similarity_threshold=0.8):
         val = group_similar_images("output_pieces")
@@ -2403,15 +2404,31 @@ def process_and_match(q_image_path, icons_folder):
  
         similarity_scores[icon_name] = combined_similarity
  
-        if combined_similarity > highest_similarity:
-            highest_similarity = combined_similarity
-            best_match = icon_name
+        #if combined_similarity > highest_similarity:
+        #    highest_similarity = combined_similarity
+        #    best_match = icon_name
  
-    # Print all similarity scores
+    list1 = []
+    list2 = []
     print("Similarity scores for all images:")
     for icon_name, score in similarity_scores.items():
         print(f"{icon_name}: {score}")
- 
+        list1.append(score)
+        list2.append(icon_name)
+
+     # Get the maximum value
+    gg = max(list1)
+
+    # Get the index of the maximum value
+    print("List of scores:", list1)
+    print("List of icons:", list2)
+
+    best_match, highest_similarity = max(zip(list2, list1), key=lambda x: x[1])
+
+    print(f"Final Best Match: {best_match} with Score: {highest_similarity}")
+    print("Max value:", gg)
+    #best_match = index_gg2
+
     return best_match, highest_similarity
 
 def rename_with_code(filepath):
@@ -2668,22 +2685,29 @@ def process_and_match_bygiven(q_image_path,class_names,icons_folder):
     highest_similarity = -1
     similarity_scores = {}
  
+    list1 = []
+    list2 = []
+
+
+
     for icon_name in os.listdir(icons_folder):
         icon_path = os.path.join(icons_folder, icon_name)
         icon_image = cv2.imread(icon_path)
-        icon_name = icon_name.replace("2", "")
-        icon_name = icon_name.replace("3", "")
-        icon_name = icon_name.replace("4", "")
-        icon_name = icon_name.replace("5", "")
-        icon_name = icon_name.replace("6", "")
-        icon_name = icon_name.replace(".png", "")
+        icon_name2 = icon_name.replace("2", "")
+        icon_name2 = icon_name.replace("3", "")
+        icon_name2 = icon_name.replace("4", "")
+        icon_name2 = icon_name.replace("5", "")
+        icon_name2 = icon_name.replace("6", "")
+        icon_name2 = icon_name.replace(".png", "")
+
+
         if icon_image is None:
             continue
         
-        if f"fas.fa-{icon_name}.icon-option" not in class_names:
+        if f"fas.fa-{icon_name2}.icon-option" not in class_names:
             #print(f'icon_image{icon_name} | class_names{class_names}')
             continue
-        print(f'icon_image{icon_name} | class_names{class_names}')
+        print(f'icon_image{icon_name2} | class_names{class_names}')
         icon_bw = convert_to_bw(icon_image, invert)
  
         # Ensure that both images are resized to the same dimensions
@@ -2704,15 +2728,38 @@ def process_and_match_bygiven(q_image_path,class_names,icons_folder):
  
         similarity_scores[icon_name] = combined_similarity
  
-        if combined_similarity > highest_similarity:
-            highest_similarity = combined_similarity
-            best_match = icon_name
+        #if combined_similarity > highest_similarity:
+        #    highest_similarity = combined_similarity
+        #    best_match = icon_name
 
-    print("Similarity scores for all images:")
+
+    print("Similarity scores for all images:",similarity_scores)
     for icon_name, score in similarity_scores.items():
         print(f"{icon_name}: {score}")
- 
+        list1.append(score)
+        list2.append(icon_name)
+
+     # Get the maximum value
+    gg = max(list1)
+
+    # Get the index of the maximum value
+    index_gg = list1.index(gg)
+    index_gg2= list2[index_gg]
+
+    print("Max value:", gg)
+    print("Index of max value:", index_gg)
+    print("Index of max value2:", index_gg2)
+    index_gg2 = index_gg2.replace("2", "")
+    index_gg2 = index_gg2.replace("3", "")
+    index_gg2 = index_gg2.replace("4", "")
+    index_gg2 = index_gg2.replace("5", "")
+    index_gg2 = index_gg2.replace("6", "")
+    index_gg2 = index_gg2.replace(".png", "")
+    print("Best Match:", index_gg2)
+    best_match = index_gg2
+
     return best_match, highest_similarity
+
 
 def earnow_online(window, ip_required):
     scrolled = False
@@ -2733,12 +2780,12 @@ def earnow_online(window, ip_required):
                 pyautogui.press('f5')
                 timeout = 1
                 print("Timeout ", timeout)
-                wrong_captcha +=1
+                wrong_captcha +=2
                 
             if wrong_captcha >= 5:
                 print('too many Wrong Captcha')
-                #return 404
-
+                return 404
+                #time.sleep(99999)
             mainscript = control_panel()
             if mainscript != 1:
                 print('mainscript is changed....')
@@ -2966,7 +3013,7 @@ def earnow_online(window, ip_required):
 
             if "Wait" in title:
                 sb1.open_new_tab()
-                time.sleep(4)
+                time.sleep(9)
                 pyautogui.click(529, 568)
                 time.sleep(2)
                 sb1.close()
@@ -2984,7 +3031,8 @@ def earnow_online(window, ip_required):
                     time.sleep(2) 
                     pyautogui.rightClick(1303 ,548 )  
                     time.sleep(2) 
-                    pyautogui.rightClick(1303 ,548 ) 
+                    pyautogui.rightClick(1303 ,548 )
+                    timeout += 1
                     continue 
             except Exception as e:  
                 print("Not found clickad10sec")
@@ -3000,7 +3048,9 @@ def earnow_online(window, ip_required):
  
  
             if sb1.is_text_visible("Failed! Please reload the page."):
+
                 print("Failed! Please reload the page.")
+                #time.sleep(999999)
                 scrolled = False
                 current_url = sb1.execute_script("return window.location.href;")
                 current_window = sb1.current_window_handle
@@ -3025,6 +3075,7 @@ def earnow_online(window, ip_required):
                 earnow_loading(sb1)
                 sb1.connect()
                 #rename_with_code("element_screenshot.png")
+
                 wrong_captcha += 1
 
 
@@ -3063,7 +3114,7 @@ def earnow_online(window, ip_required):
             except Exception as e:  
                 print('no cloudflare box')
 
-            wrong_captcha += 0.5
+            timeout += 1
 
         except Exception as e:
             print('issuegg',e)
@@ -3507,7 +3558,7 @@ def switch_mainfaucets(name):
         if result.modified_count > 0:
             print(f"Updated {result.modified_count} document(s).")
         print("Clicked the claim button.")
-
+        return True
     print('switch themup')
     query = {"type": "main"}
     sample_document = {
@@ -4015,7 +4066,7 @@ def process_link_blocks_fey(sb,ip_address):
                         print(f"Updated {result.modified_count} document(s).")
                     if link_rmn >= 1:
                         # Click the claim-button
-                        button = block.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.waves-effect")
+                        button = block.find_element(By.CSS_SELECTOR,"a.btn.sl_claim.w-100")
                         button.uc_click()
                         time.sleep(5) 
                         try:
@@ -4057,7 +4108,7 @@ def process_link_blocks_fey(sb,ip_address):
 
                     if link_rmn >= 1:
                         # Click the claim-button
-                        button = block.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.waves-effect")
+                        button = block.find_element(By.CSS_SELECTOR,"a.btn.sl_claim.w-100")
                         button.uc_click()
                         time.sleep(5) 
                         try:
@@ -4097,7 +4148,7 @@ def process_link_blocks_fey(sb,ip_address):
                         print(f"Updated {result.modified_count} document(s).")
                     if link_rmn >= 1:
                         # Click the claim-button
-                        button = block.find_element(By.CSS_SELECTOR,"button.btn.sl_claim.waves-effect")
+                        button = block.find_element(By.CSS_SELECTOR,"a.btn.sl_claim.w-100")
                         button.uc_click()
                         time.sleep(5) 
                         try:
@@ -4247,7 +4298,7 @@ while True:
 
                 mainfaucet_window = sb1.current_window_handle
                 earnow_window = None
-
+                hard_reset_count = 1
 
 
             ip_address = get_ip(sb1)
@@ -4298,7 +4349,9 @@ while True:
                                     sholinks_done = 1
                                     reset_count = 20
                                 time.sleep(2)
-                                mainfaucet_window = earnow_window
+                                mainfaucet_window = sb1.current_window_handle
+                                #mainfaucet_window = earnow_window
+                                sb1.switch_to.window(mainfaucet_window)
                                 title =sb1.get_title()
                                 if 'Just' in title:
                                     #debug_messages(f'Just.. Found on mainfaucet')

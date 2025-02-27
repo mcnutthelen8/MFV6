@@ -145,6 +145,7 @@ def get_mails_passowrds(farm_id):
         CSB1_farms = [6,7,8,9,10]
  
  
+ 
     if farm_id == 1:
  
         if '1' in layout:
@@ -160,12 +161,12 @@ def get_mails_passowrds(farm_id):
         elif '2' in layout:
             server_name1 = 'thailand' # 'morocco' #'bulgaria'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            mainfaucet_email = 'grandkolla@gmail.com'
-            mainfaucet_pass = 'khabibmakanzie2'
-            bitbitzz_email = 'grandkolla2' #'grandkoll.a@gmail.com'
-            bitbitzz_pass = 'grandkolla'
-            feyorra_email = 'redgta.36@gmail.com'
-            feyorra_pass = 'Uwuinsta2005'
+            mainfaucet_email = 'amytanisha250@gmail.com'
+            mainfaucet_pass = 'amytanisha250'
+            bitbitzz_email = 'amytanisha250' #'grandkoll.a@gmail.com'
+            bitbitzz_pass = 'amytanisha250'
+            feyorra_email = 'amytanisha250@gmail.com'
+            feyorra_pass = 'amytanisha250'
 
         elif '3' in layout:
             server_name1 = 'bulgaria' # 'morocco' #'bulgaria'
@@ -228,6 +229,7 @@ def get_mails_passowrds(farm_id):
  
     elif farm_id == 3:
  
+ 
         if '1' in layout:
             server_name1 = 'france'
             CSB1_farms = [1, 2, 3, 4, 5]
@@ -248,7 +250,6 @@ def get_mails_passowrds(farm_id):
             bitbitzz_pass = 'grandkolla77'
             feyorra_email = 'grandkolla.7.7@gmail.com'
             feyorra_pass = 'grandkolla77'
- 
  
         elif '3' in layout:
             server_name1 = 'spain' #'belgium'
@@ -274,17 +275,24 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'hungary'
             CSB1_farms = [1, 2, 3, 4, 5]
-            mainfaucet_email = 'ddilakshi232@gmail.com'
-            mainfaucet_pass = 'Uwuinsta@2005'
-            feyorra_email = 'ddilakshi232@gmail.com'
-            feyorra_pass = 'Uwuinsta@2005'
+            mainfaucet_email = 'metroboom910@gmail.com'
+            mainfaucet_pass = 'metroboom910'
+            bitbitzz_email = 'metroboom910'
+            bitbitzz_pass = 'metroboom910'
+            feyorra_email = 'metroboom910@gmail.com'
+            feyorra_pass = 'metroboom910'
+
         elif '2' in layout:
-            server_name1 = 'hong kong' #'georgia'# 
+            server_name1 = 'hungary' #'georgia'# 
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            mainfaucet_email = 'kumarsheln@gmail.com'
-            mainfaucet_pass = 'kumarsheln'
-            feyorra_email = 'kumarsheln@gmail.com'
-            feyorra_pass = 'kumarsheln'
+            mainfaucet_email = 'metroboom.9.1.0@gmail.com'
+            mainfaucet_pass = 'metroboom.9102'
+            bitbitzz_email = 'metroboom.9102'
+            bitbitzz_pass = 'metroboom.9102'
+            feyorra_email = 'metroboom.9.1.0@gmail.com'
+            feyorra_pass = 'metroboom.9102'
+
+
         elif '3' in layout:
             server_name1 = 'hong kong' #'georgia'# 
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
@@ -308,18 +316,24 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'italy'
             CSB1_farms = [1, 2, 3, 4, 5]
-            mainfaucet_email = 'gihanfer907@gmail.com' #gihanfer907@gmail.com
+            mainfaucet_email = 'gihanfer907@gmail.com'
             mainfaucet_pass = 'gihanfer907'
+            bitbitzz_email = 'gihanfer907'
+            bitbitzz_pass = 'gihanfer907'
             feyorra_email = 'gihanfer907@gmail.com'
             feyorra_pass = 'gihanfer907'
- 
+
         elif '2' in layout:
-            server_name1 = 'malaysia' #'chile'
+            server_name1 = 'italy' #'belgium'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            mainfaucet_email = 'howardrahul838@gmail.com'
-            mainfaucet_pass = 'howardrahul838'
-            feyorra_email = 'howardrahul838@gmail.com'
-            feyorra_pass = 'howardrahul838'
+
+            mainfaucet_email = 'gihanfer.9.0.7@gmail.com'
+            mainfaucet_pass = 'gihanfer907'
+            bitbitzz_email = 'gihanfer9072'
+            bitbitzz_pass = 'gihanfer907'
+            feyorra_email = 'gihanfer.9.0.7@gmail.com'
+            feyorra_pass = 'gihanfer907'
+
         elif '3' in layout:
             server_name1 = 'malaysia' #'chile'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
@@ -1153,7 +1167,7 @@ def ipfixer():
                             doc = collection_csb.find_one(query)
                             res = doc["response"]
                             req = doc["request"]
-                            if req == 'ipfixer' and 'Ready IP' in res:
+                            if 'Ready IP' in res:
                                 res_farms.append(res)
                             elif req == 'ipfixer' and 'Loging' in res:
                                 res_farms.append(res)
@@ -1163,9 +1177,9 @@ def ipfixer():
                                 res_farms.append(res)
                             else:
                                 print('aiyo', req)
-                        if len(res_farms) == len(CSB1_farms):
+                        if len(res_farms) >= len(CSB1_farms):
                             time.sleep(8)
-                            if gg2344 > 6:
+                            if gg2344 > 4:
  
                                 query = {"type": "main"}
                                 update = {"$set": {"request": 'mainscript'}}

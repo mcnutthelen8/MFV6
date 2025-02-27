@@ -231,21 +231,24 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'france'
             CSB1_farms = [1, 2, 3, 4, 5]
-            mainfaucet_email = 'yvonne12463@gmail.com'
-            mainfaucet_pass = 'Uwuinsta@2005'
-            feyorra_email = 'yvonne12463@gmail.com'
-            feyorra_pass = 'Uwuinsta@2005'
- 
-            claimc_email = 'yvonne12463@gmail.com'
-            claimc_pass = 'Uwuinsta@2005'
- 
+            mainfaucet_email = 'grandkolla77@gmail.com'
+            mainfaucet_pass = 'grandkolla77'
+            bitbitzz_email = 'grandkolla77'
+            bitbitzz_pass = 'grandkolla77'
+            feyorra_email = 'grandkolla77@gmail.com'
+            feyorra_pass = 'grandkolla77'
+
         elif '2' in layout:
-            server_name1 = 'spain' #'belgium'
+            server_name1 = 'france' #'belgium'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            mainfaucet_email = 'pennyscrambble@gmail.com'
-            mainfaucet_pass = 'pennyscrambble'
-            feyorra_email = 'pennyscrambble@gmail.com'
-            feyorra_pass = 'pennyscrambble'
+
+            mainfaucet_email = 'grandkolla.7.7@gmail.com'
+            mainfaucet_pass = 'grandkolla77'
+            bitbitzz_email = 'grandkolla772'
+            bitbitzz_pass = 'grandkolla77'
+            feyorra_email = 'grandkolla.7.7@gmail.com'
+            feyorra_pass = 'grandkolla77'
+ 
  
         elif '3' in layout:
             server_name1 = 'spain' #'belgium'

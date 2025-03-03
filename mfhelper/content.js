@@ -1,120 +1,5 @@
 
 
-async function validate_ipaddress() {
-  const validURLs = ["https://feyorra.site/", "https://earn-pepe.com/", "https://claimcoin.in/faucet"];
-  const currentURL = window.location.href;
-
-  // Check if the current URL matches the target pattern
-  const isTargetSite = validURLs.some((url) => currentURL.startsWith(url));
-
-  if (!isTargetSite) {
-      console.log("This script only runs on the target sites.");
-      return;
-  }
-
-  try {
-      // Fetch the target IP from the JSON file
-      const configResponse = await fetch(chrome.runtime.getURL("config.json"));
-      const config = await configResponse.json();
-      const targetIP = config.targetIP;
-
-      // Stop the page from loading temporarily
-      console.log(targetIP);
-
-      // Fetch the current IP address before the page fully loads
-      const response = await fetch("https://api.ipify.org?format=json");
-      const data = await response.json();
-      const currentIP = data.ip;
-
-      // Log the current IP to the console
-      console.log(`Current IP: ${currentIP}`);
-
-      // Store IP check result in sessionStorage
-      sessionStorage.setItem(currentIP, true);
-
-      // Redirect to Google if IP does not match
-      if (currentIP !== targetIP) {
-          console.log("IP mismatch detected. Redirecting to Google.");
-          window.location.href = "https://www.google.com";
-      } else {
-          console.log("IP matches the target");
-          return currentIP;
-          // Allow the page to reload after IP validation
-          //window.location.reload();
-      }
-  } catch (error) {
-      console.error("Failed to fetch IP address or validate:", error);
-      // If there's an error, handle it gracefully and redirect to Google
-      //window.location.href = "https://www.google.com";
-  }
-}
-
-// Function to get the current URL
-function getCurrentURL() {
-  return window.location.href;
-}
-
-// Function to check if we are on a restricted page
-function isOnRestrictedPage() {
-  const restrictedUrls = [
-    'https://www.popmack.com/prizes',
-    'https://www.baymack.com/prizes',
-    'https://www.popmack.com/waitfornextday',
-    'https://www.baymack.com/waitfornextday'
-  ];
-  
-  const currentURL = getCurrentURL();
-  
-  // Check if the current URL is exactly in the restricted URLs
-  if (restrictedUrls.includes(currentURL)) {
-    return true;
-  }
-  
-  // Check if the current URL starts with the restricted path for checkinflow (baymack or popmack)
-  if (currentURL.startsWith('https://www.baymack.com/checkinflow/') || 
-      currentURL.startsWith('https://www.popmack.com/checkinflow/')) {
-    return true;
-  }
-
-  return false;
-}
-
-// Function to check and click the "Next Video" button
-function clickNextVideo() {
-  if (isOnRestrictedPage()) {
-    console.log("On a restricted page, skipping 'Next Video' click.");
-    return false; // Skip clicking if on a restricted page
-  }
-
-  const selectors = [
-    'a.retention-click.themeBtn.bluebtn#nextvideo',
-    '#next-video',
-    '#nextvideo',
-    'a.retention-click.themeBtn',
-    'a.themeBtn',
-    'a.try_again'
-  ];
-
-  // Check if the captcha textarea exists
-  if (document.querySelector('textarea.captcha-textarea')) {
-    console.log("Captcha textarea found, skipping the 'Next Video' click.");
-    return false; // Skip clicking if captcha textarea is present
-  }
-
-  // Loop through the selectors and try to find and click the button
-  for (let selector of selectors) {
-    const nextVideoButton = document.querySelector(selector);
-    if (nextVideoButton) {
-      nextVideoButton.click();
-      console.log("Next Video button clicked: " + selector);
-      return true; // Exit once a button is clicked
-    }
-  }
-
-  console.log("Next Video button not found");
-  return false;
-}
-
 function claimEarnPepe() {
   // Find the element with the text "Verified!"
   const verifiedBadgeFeyorra = document.evaluate(
@@ -138,7 +23,7 @@ function claimEarnPepe() {
 
   if (errorBadgeFeyorra) {
     console.log(" Error: Oops, wrong selection! Please refresh the page.");
-    window.location.reload(); // Refresh the page when the error is found
+    //window.location.reload(); // Refresh the page when the error is found
     return false; // Stop further execution
   }
 
@@ -175,7 +60,7 @@ function claimFeyorra() {
 
   if (errorBadgeFeyorra) {
     console.log(" Error: Oops, wrong selection! Please refresh the page.");
-    window.location.reload(); // Refresh the page when the error is found
+    //window.location.reload(); // Refresh the page when the error is found
     return false; // Stop further execution
   }
 
@@ -214,13 +99,20 @@ function handle404Errors() {
 function checkAndClaim() {
   handleAlerts(); // Check and handle alerts
   handle404Errors(); // Check and handle 404 errors
-  validate_ipaddress();
 
   if (window.location.href.includes("feyorra.site")) {
     if (claimFeyorra()) {
       clearInterval(claimInterval); // Stop the loop if claimed
     }
   } else if (window.location.href.includes("earn-pepe.com")) {
+    if (claimEarnPepe()) {
+      clearInterval(claimInterval); // Stop the loop if claimed
+    }
+  } else if (window.location.href.includes("earn-bonk.com")) {
+    if (claimFeyorra()) {
+      clearInterval(claimInterval); // Stop the loop if claimed
+    }
+  } else if (window.location.href.includes("earn-trump.com")) {
     if (claimEarnPepe()) {
       clearInterval(claimInterval); // Stop the loop if claimed
     }

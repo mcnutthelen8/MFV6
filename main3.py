@@ -127,12 +127,12 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'khabibmakanzie2'
 
         elif '2' in layout:
-            server_name1 = 'bulgaria' # 'morocco' #'bulgaria'
+            server_name1 = 'thailand' # 'morocco' #'bulgaria'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'amytanisha250@gmail.com'
-            earnpp_pass = 'amytanisha250'
-            feyorra_email = 'amytanisha250@gmail.com'
-            feyorra_pass = 'amytanisha250'
+            earnpp_email = 'makanziekb@gmail.com'
+            earnpp_pass = 'makanziekb'
+            feyorra_email = 'makanziekb@gmail.com'
+            feyorra_pass = 'makanziekb'
         elif '3' in layout:
             server_name1 = 'bulgaria' # 'morocco' #'bulgaria'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
@@ -156,18 +156,18 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'estonia'
             CSB1_farms = [1, 2, 3, 4, 5]
-            earnpp_email = 'metroboom910@gmail.com'
-            earnpp_pass = 'metroboom910'
-            feyorra_email = 'metroboom910@gmail.com'
-            feyorra_pass = 'metroboom910'
+            earnpp_email = 'ahenrxaaa@gmail.com'
+            earnpp_pass = 'ahenrxaaa'
+            feyorra_email = 'ahenrxaaa@gmail.com'
+            feyorra_pass = 'ahenrxaaa'
 
         elif '2' in layout:
-            server_name1 = 'finland' #'portugal'
+            server_name1 = 'estonia' #'portugal'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'merlelcn@gmail.com'
-            earnpp_pass = 'I2Ne7C329jJt'
-            feyorra_email = 'merlelcn@gmail.com'
-            feyorra_pass = 'I2Ne7C329jJt'
+            earnpp_email = 'rxshenaxa@gmail.com'
+            earnpp_pass = 'rxshenaxa'
+            feyorra_email = 'rxshenaxa@gmail.com'
+            feyorra_pass = 'rxshenaxa'
 
         elif '3' in layout:
             server_name1 = 'finland' #'portugal'
@@ -1012,7 +1012,8 @@ def mysterium_login(driver):
                                     pyautogui.click(x, y)
                                     print("mysterium_icon_empty 2 Found")
                                     time.sleep(3)
-                                    for i in range(1,100):
+                                    i = 1
+                                    for i in range(1,50):
                                         time.sleep(1)
                                         try:
                                             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/settings_mysterium.png", region=(1445, 630, 400, 300), confidence=0.9)
@@ -1021,7 +1022,7 @@ def mysterium_login(driver):
                                             time.sleep(1)
                                         except pyautogui.ImageNotFoundException:
                                             print("No settings_mysterium 2.")
- 
+
                                         try:
                                             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/connection_mysterium_option.png", region=(1325, 109, 800, 900), confidence=0.9)
                                             pyautogui.click(x, y)
@@ -1507,7 +1508,7 @@ def solve_icon_captcha(sb1):
             print(copy_answer)
             if '' == captcha_word:
                 print("ng it")
-                #captcha_word = captcha_word.replace('', '')
+                continue
             if captcha_word in copy_answer or copy_answer in captcha_word:
                 print(answer, "Found it")
                 answer = answer.replace(' ', '.')
@@ -2797,7 +2798,9 @@ while True:
                         title =sb1.get_title()
                         if 'Faucet | Earn-pepe' in title or 'Faucet | Earn-Trump' in title:
                             debug_messages(f'Solving Icon Captcha on EarnPP')
-
+                            val = get_coins(sb1, 1)
+                            if val:
+                                earnpp_coins = val
                             gg = solve_icon_captcha(sb1)
                             if gg:
                                 earnpp_limit_reached = None
@@ -2810,12 +2813,14 @@ while True:
                                     debug_messages(f'EarnPP Limit Reached')
                                     response_messege('EarnPP Limit Reached')
                                     earnpp_limit_reached = True
+                                elif sb1.is_text_visible('Limit Reached, Claim Shortlinks to increase the claim limit..'):
+                                    debug_messages(f'EarnPP Limit Reached')
+                                    response_messege('EarnPP Limit Reached')
+                                    earnpp_limit_reached = True
                                 else:
                                     refresh_count +=5
                             debug_messages(f'Solved Icon Captcha on EarnPP')
-                            val = get_coins(sb1, 1)
-                            if val:
-                                earnpp_coins = val
+
 
                         elif 'Lock' in title:
                             debug_messages(f'Lock.. Found on EarnPP')
@@ -2844,6 +2849,10 @@ while True:
                             debug_messages(f'EarnPP Limit Reached')
                             response_messege('EarnPP Limit Reached')
                             earnpp_limit_reached = True
+                        elif sb1.is_text_visible('Limit Reached, Claim Shortlinks to increase the claim limit..'):
+                            debug_messages(f'EarnPP Limit Reached')
+                            response_messege('EarnPP Limit Reached')
+                            earnpp_limit_reached = True
                         else:
                             debug_messages(f'ERR on EarnPP:{e}')
                             reset_count +=1
@@ -2859,7 +2868,9 @@ while True:
                         if 'Faucet | Feyorra' in title or 'Faucet | Earn-Bonk' in title:
                             debug_messages(f'Solving Icon Captcha on Feyorra')
 
-
+                            val = get_coins(sb1, 2)
+                            if val:
+                                feyorra_coins = val
                             gg = solve_icon_captcha(sb1)
                             if gg:
                                 feyorra_limit_reached =None
@@ -2872,11 +2883,13 @@ while True:
                                     debug_messages(f'Feyorra Limit Reached')
                                     response_messege('Feyorra Limit Reached')
                                     feyorra_limit_reached =True
+                                elif sb1.is_text_visible('Limit Reached, Claim Shortlinks to increase the claim limit..'):
+                                    debug_messages(f'Feyorra Limit Reached')
+                                    response_messege('Feyorra Limit Reached')
+                                    feyorra_limit_reached =True
                                 else:
                                     refresh_count +=5
-                            val = get_coins(sb1, 2)
-                            if val:
-                                feyorra_coins = val
+
                                 
                         elif 'Just' in title:
                             debug_messages(f'Just.. Found on Feyorra')
@@ -2902,6 +2915,10 @@ while True:
                     except Exception as e:
                         pyautogui.press('enter')
                         if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
+                            debug_messages(f'Feyorra Limit Reached')
+                            response_messege('Feyorra Limit Reached')
+                            feyorra_limit_reached =True
+                        elif sb1.is_text_visible('Limit Reached, Claim Shortlinks to increase the claim limit..'):
                             debug_messages(f'Feyorra Limit Reached')
                             response_messege('Feyorra Limit Reached')
                             feyorra_limit_reached =True

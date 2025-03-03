@@ -1580,9 +1580,9 @@ def cloudflare(sb, login = True):
                     if x and y:
                         sb.disconnect() 
                         for i in range(1, 300):
-                            #pyautogui.moveTo(100, 200)
+                            page_title = get_active_window_title()
     
-                            if 'Login' in page_title or 'Faucet' in page_title or 'Earnbitmoon' in page_title:
+                            if 'Login' in page_title or 'Faucetpay' in page_title:
                                 try:
                                     time.sleep(1)
                                     x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
@@ -1765,6 +1765,10 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
 
                     sb1.execute_script("window.scrollTo(0, 1000);")
                     cloudflare(driver, True)
+                    all_windows = driver.window_handles
+                    for window in all_windows:
+                        if window not in restrict_pages:
+                            driver.switch_to.window(window)
                     try:
                         x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
                         if x and y: 
@@ -1851,7 +1855,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         get_mails_passowrds(farm_id)
 
 
-        if not_expected_title == current_title:
+        if not_expected_title in current_title:
             if function == 1:
                 login_to_faucet('https://earn-pepe.com/login', sb1, earnpp_email, earnpp_pass, 'cloudflare_success', window_list, 'button#ClaimBtn')
                 #login_to_faucet('https://earn-pepe.com/login', sb1, earnpp_email, earnpp_pass, 'rscaptcha', window_list, 'button#loginBtn')
@@ -1996,12 +2000,20 @@ def response_messege(response):
 
 def get_coins(driver, sitekey):
     coins = None
-    
+    title =sb1.get_title()
     try:
         driver.execute_script("window.scrollTo(0, 0);")
-        if sitekey == 1:
+        if sitekey == 1 and 'Earn-pepe' in title:
             if driver.is_element_present('small span span'):
                 select_element = driver.find_element('css selector', 'small span span')
+                selected_text = select_element.text.strip()  # Extract and clean the text
+                coins = selected_text
+            else:
+                print(f'Sitekey:{sitekey} not found')
+
+        if sitekey == 1 and 'Earn-Trump' in title:
+            if driver.is_element_present('li a span span'):
+                select_element = driver.find_element('css selector', 'li a span span')
                 selected_text = select_element.text.strip()  # Extract and clean the text
                 coins = selected_text
             else:
@@ -2094,25 +2106,44 @@ def withdraw_faucet(driver, sitekey):
         fey_x =  679 
         fey_y =  414
 
-        #defualts are for TRX
-        if 'LTC' in currency:
-            pep_x = 966 
-            pep_y =  615
+        if faucetlayout == 1:
+            if 'LTC' in currency:
+                pep_x = 966 
+                pep_y =  615
 
-            fey_x =  982
-            fey_y =  602
-        elif 'SOL' in currency:
-            pep_x = 602
-            pep_y =  778
+                fey_x =  982
+                fey_y =  602
+            elif 'SOL' in currency:
+                pep_x = 602
+                pep_y =  778
 
-            fey_x =  679 
-            fey_y =  414
-        elif 'TRX' in currency:
-            pep_x = 1329 
-            pep_y =  452
+                fey_x =  679 
+                fey_y =  414
+            elif 'TRX' in currency:
+                pep_x = 1329 
+                pep_y =  452
 
-            fey_x =  679
-            fey_y =  602
+                fey_x =  679
+                fey_y =  602
+        else:
+            if 'LTC' in currency:
+                pep_x = 1388 
+                pep_y =  284
+
+                fey_x =  884
+                fey_y =  648
+            elif 'SOL' in currency:
+                pep_x = 1388
+                pep_y =  284
+
+                fey_x =  375 
+                fey_y =  647
+            elif 'TRX' in currency:
+                pep_x = 334 
+                pep_y =  457
+
+                fey_x =  375
+                fey_y =  466
 
         current_window = sb1.current_window_handle
         all_windows = sb1.window_handles
@@ -2127,7 +2158,10 @@ def withdraw_faucet(driver, sitekey):
 
         if sitekey == 1:
             print('Strting PePe withdraw')
-            driver.uc_open('https://earn-pepe.com/member/faucetpay')
+            if faucetlayout == 1:
+                driver.uc_open('https://earn-pepe.com/member/faucetpay')
+            else:
+                driver.uc_open('https://earn-trump.com/member/faucetpay')
             time.sleep(5)
             driver.execute_script("window.scrollTo(0, 300);")
             time.sleep(1)
@@ -2144,7 +2178,8 @@ def withdraw_faucet(driver, sitekey):
                     #pyautogui.click(605, 754) #trx
                     #pyautogui.click(967, 754)
                     time.sleep(5)
-                    driver.execute_script(f"window.scrollTo(0, 1000);")
+                    if faucetlayout == 1:
+                        driver.execute_script(f"window.scrollTo(0, 1000);")
                     time.sleep(2)
                     cloudflare(sb1, login = True)
                     time.sleep(2)
@@ -2153,7 +2188,7 @@ def withdraw_faucet(driver, sitekey):
                     response_messege(f'EarnPP FaucetPay Withdrawed{currency}')
                     #response_messege('Started')
                     query = {"type": "main"}
-                    update = {"$set": {"request": 'ipfixer'}}
+                    update = {"$set": {"request": 'withdrawfeyorra'}}
                     result = collection.update_one(query, update)
                     return
 
@@ -2166,7 +2201,11 @@ def withdraw_faucet(driver, sitekey):
         
         if sitekey == 2:
             print('Strting Feyorra withdraw')
-            driver.uc_open('https://feyorra.site/member/faucetpay')
+            
+            if faucetlayout == 1:
+                driver.uc_open('https://feyorra.site/member/faucetpay')
+            else:
+                driver.uc_open('https://earn-bonk.com/member/faucetpay')
             time.sleep(5)
             driver.execute_script("window.scrollTo(0, 300);")
             time.sleep(1)
@@ -2474,6 +2513,7 @@ def open_browsers():
     sb1.switch_to.window(current_window2)
     sb1.uc_open("chrome://extensions/")
     time.sleep(7)
+    #sb1.execute_script("window.scrollTo(0, 300);")
     print(sb1.get_title())
     gggv = are_extensions_exist()
     get_mails_passowrds(farm_id)
@@ -2625,7 +2665,7 @@ def open_faucets():
                                 raise Exception(" earnpp_window == 404")
                             print(f"EarnPP window handle: {earnpp_window}")
                         else:
-                            earnpp_window = handle_site(sb1, "https://earn-trump.com/member/faucet","Faucet | Earn-Trump" , "Home | Earn-Trump", 3, [], ip_required)
+                            earnpp_window = handle_site(sb1, "https://earn-trump.com/member/faucet","Faucet | Earn-Trump" , "Free $Trump Coin Faucet | Earn $Trump Crypto Instantly", 3, [], ip_required)
                             if earnpp_window == 404:
                                 raise Exception(" earnpp_window == 404")
                             print(f"EarnPP window handle: {earnpp_window}")
@@ -2645,7 +2685,7 @@ def open_faucets():
                             print(f"Feyorra window handle: {feyorra_window}")
 
                         else:
-                            feyorra_window = handle_site(sb1, "https://earn-bonk.com/member/faucet", "Faucet | Earn-Bonk" , "Home | Earn-Bonk", 4, [earnpp_window], ip_required)
+                            feyorra_window = handle_site(sb1, "https://earn-bonk.com/member/faucet", "Faucet | Earn-Bonk" , "Next-Gen BONK Crypto Faucet", 4, [earnpp_window], ip_required)
                             if feyorra_window == 404:
                                 raise Exception(" feyorra_window == 404")
                             print(f"Feyorra window handle: {feyorra_window}")

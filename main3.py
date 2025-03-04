@@ -133,21 +133,7 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'makanziekb'
             feyorra_email = 'makanziekb@gmail.com'
             feyorra_pass = 'makanziekb'
-        elif '3' in layout:
-            server_name1 = 'bulgaria' # 'morocco' #'bulgaria'
-            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'grandkolla999br@gmail.com'
-            earnpp_pass = 'grandkolla999br'
-            feyorra_email = 'grandkolla999br@gmail.com'
-            feyorra_pass = 'grandkolla999br'
 
-        elif '4' in layout:
-            server_name1 = 'thailand' # 'morocco' #'bulgaria'
-            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'makanziekb@gmail.com'
-            earnpp_pass = 'makanziekb'
-            feyorra_email = 'makanziekb@gmail.com'
-            feyorra_pass = 'makanziekb'
         else:
             print('Layout issue', layout)
 
@@ -169,20 +155,7 @@ def get_mails_passowrds(farm_id):
             feyorra_email = 'rxshenaxa@gmail.com'
             feyorra_pass = 'rxshenaxa'
 
-        elif '3' in layout:
-            server_name1 = 'finland' #'portugal'
-            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'anrogedyyr@gmail.com'
-            earnpp_pass = 'anrogedyyr'
-            feyorra_email = 'anrogedyyr@gmail.com'
-            feyorra_pass = 'anrogedyyr'
-        elif '4' in layout:
-            server_name1 = 'estonia'
-            CSB1_farms = [1, 2, 3, 4, 5]
-            earnpp_email = 'bmetoomro190@gmail.com'
-            earnpp_pass = 'bmetoomro190'
-            feyorra_email = 'bmetoomro190@gmail.com'
-            feyorra_pass = 'bmetoomro190'
+
         else:
             print('Layout issue', layout)
 
@@ -190,38 +163,21 @@ def get_mails_passowrds(farm_id):
     elif farm_id == 3:
 
         if '1' in layout:
-            server_name1 = 'egypt'
+            server_name1 = 'france'
             CSB1_farms = [1, 2, 3, 4, 5]
-            earnpp_email = 'yvonne12463@gmail.com'
-            earnpp_pass = 'Uwuinsta@2005'
-            feyorra_email = 'yvonne12463@gmail.com'
-            feyorra_pass = 'Uwuinsta@2005'
-
-            claimc_email = 'yvonne12463@gmail.com'
-            claimc_pass = 'Uwuinsta@2005'
+            earnpp_email = 'sevensevengk@gmail.com'
+            earnpp_pass = 'sevensevengk'
+            feyorra_email = 'sevensevengk@gmail.com'
+            feyorra_pass = 'sevensevengk'
 
         elif '2' in layout:
-            server_name1 = 'spain' #'belgium'
+            server_name1 = 'france' #'belgium'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'pennyscrambble@gmail.com'
-            earnpp_pass = 'pennyscrambble'
-            feyorra_email = 'pennyscrambble@gmail.com'
-            feyorra_pass = 'pennyscrambble'
+            earnpp_email = 'kg7seven@gmail.com'
+            earnpp_pass = 'kg7seven'
+            feyorra_email = 'kg7seven@gmail.com'
+            feyorra_pass = 'kg7seven'
 
-        elif '3' in layout:
-            server_name1 = 'spain' #'belgium'
-            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'berendkalpana2@gmail.com'
-            earnpp_pass = 'berendkalpana2'
-            feyorra_email = 'berendkalpana2@gmail.com'
-            feyorra_pass = 'berendkalpana2'
-        elif '4' in layout:
-            server_name1 = 'egypt'
-            CSB1_farms = [1, 2, 3, 4, 5]
-            earnpp_email = 'voyn3642ovene@gmail.com'
-            earnpp_pass = 'voyn3642ovene'
-            feyorra_email = 'voyn3642ovene@gmail.com'
-            feyorra_pass = 'voyn3642ovene'
 
         else:
             print('Layout issue', layout)
@@ -232,31 +188,18 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'hungary'
             CSB1_farms = [1, 2, 3, 4, 5]
-            earnpp_email = 'ddilakshi232@gmail.com'
-            earnpp_pass = 'Uwuinsta@2005'
-            feyorra_email = 'ddilakshi232@gmail.com'
-            feyorra_pass = 'Uwuinsta@2005'
+            earnpp_email = 'ishdiklla333@gmail.com'
+            earnpp_pass = 'ishdiklla333'
+            feyorra_email = 'ishdiklla333@gmail.com'
+            feyorra_pass = 'ishdiklla333'
         elif '2' in layout:
-            server_name1 = 'hong kong' #'georgia'# 
+            server_name1 = 'hungary' #'georgia'# 
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'kumarsheln@gmail.com'
-            earnpp_pass = 'kumarsheln'
-            feyorra_email = 'kumarsheln@gmail.com'
-            feyorra_pass = 'kumarsheln'
-        elif '3' in layout:
-            server_name1 = 'hong kong' #'georgia'# 
-            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'andrpewrea@gmail.com'
-            earnpp_pass = 'andrpewrea'
-            feyorra_email = 'andrpewrea@gmail.com'
-            feyorra_pass = 'andrpewrea'
-        elif '4' in layout:
-            server_name1 = 'hungary'
-            CSB1_farms = [1, 2, 3, 4, 5]
             earnpp_email = 'shiladid323@gmail.com'
             earnpp_pass = 'shiladid323'
             feyorra_email = 'shiladid323@gmail.com'
             feyorra_pass = 'shiladid323'
+
         else:
             print('Layout issue', layout)
 
@@ -272,26 +215,13 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'gihanfer907'
 
         elif '2' in layout:
-            server_name1 = 'malaysia' #'chile'
+            server_name1 = 'italy' #'chile'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'howardrahul838@gmail.com'
-            earnpp_pass = 'howardrahul838'
-            feyorra_email = 'howardrahul838@gmail.com'
-            feyorra_pass = 'howardrahul838'
-        elif '3' in layout:
-            server_name1 = 'malaysia' #'chile'
-            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'redgta362@gmail.com'
-            earnpp_pass = 'redgta362'
-            feyorra_email = 'redgta362@gmail.com'
-            feyorra_pass = 'redgta362'
-        elif '4' in layout:
-            server_name1 = 'italy'
-            CSB1_farms = [1, 2, 3, 4, 5]
             earnpp_email = 'ferhng790@gmail.com'
             earnpp_pass = 'ferhng790'
             feyorra_email = 'ferhng790@gmail.com'
             feyorra_pass = 'ferhng790'
+
         else:
             print('Layout issue', layout)
 

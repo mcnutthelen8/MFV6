@@ -140,6 +140,8 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'grandkolla999br'
             feyorra_email = 'grandkolla999br@gmail.com'
             feyorra_pass = 'grandkolla999br'
+
+
         else:
             print('Layout issue', layout)
 
@@ -148,26 +150,33 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'estonia'
             CSB1_farms = [1, 2, 3, 4, 5]
-            earnpp_email = 'ahenrxaaa@gmail.com'
-            earnpp_pass = 'ahenrxaaa'
-            feyorra_email = 'ahenrxaaa@gmail.com'
-            feyorra_pass = 'ahenrxaaa'
+            earnpp_email = 'metroboom910@gmail.com'
+            earnpp_pass = 'metroboom910'
+            feyorra_email = 'metroboom910@gmail.com'
+            feyorra_pass = 'metroboom910'
 
         elif '2' in layout:
-            server_name1 = 'estonia' #'portugal'
+            server_name1 = 'finland' #'portugal'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'rxshenaxa@gmail.com'
-            earnpp_pass = 'rxshenaxa'
-            feyorra_email = 'rxshenaxa@gmail.com'
-            feyorra_pass = 'rxshenaxa'
+            earnpp_email = 'merlelcn@gmail.com'
+            earnpp_pass = 'I2Ne7C329jJt'
+            feyorra_email = 'merlelcn@gmail.com'
+            feyorra_pass = 'I2Ne7C329jJt'
+
         elif '3' in layout:
-            server_name1 = 'estonia' #'portugal'
+            server_name1 = 'finland' #'portugal'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+            earnpp_email = 'anrogedyyr@gmail.com'
+            earnpp_pass = 'anrogedyyr'
+            feyorra_email = 'anrogedyyr@gmail.com'
+            feyorra_pass = 'anrogedyyr'
+        elif '4' in layout:
+            server_name1 = 'estonia'
+            CSB1_farms = [1, 2, 3, 4, 5]
             earnpp_email = 'bmetoomro190@gmail.com'
             earnpp_pass = 'bmetoomro190'
             feyorra_email = 'bmetoomro190@gmail.com'
             feyorra_pass = 'bmetoomro190'
-
         else:
             print('Layout issue', layout)
 
@@ -175,28 +184,38 @@ def get_mails_passowrds(farm_id):
     elif farm_id == 3:
 
         if '1' in layout:
-            server_name1 = 'france'
+            server_name1 = 'egypt'
             CSB1_farms = [1, 2, 3, 4, 5]
-            earnpp_email = 'sevensevengk@gmail.com'
-            earnpp_pass = 'sevensevengk'
-            feyorra_email = 'sevensevengk@gmail.com'
-            feyorra_pass = 'sevensevengk'
+            earnpp_email = 'yvonne12463@gmail.com'
+            earnpp_pass = 'Uwuinsta@2005'
+            feyorra_email = 'yvonne12463@gmail.com'
+            feyorra_pass = 'Uwuinsta@2005'
+
+            claimc_email = 'yvonne12463@gmail.com'
+            claimc_pass = 'Uwuinsta@2005'
 
         elif '2' in layout:
-            server_name1 = 'france' #'belgium'
+            server_name1 = 'spain' #'belgium'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'kg7seven@gmail.com'
-            earnpp_pass = 'kg7seven'
-            feyorra_email = 'kg7seven@gmail.com'
-            feyorra_pass = 'kg7seven'
+            earnpp_email = 'pennyscrambble@gmail.com'
+            earnpp_pass = 'pennyscrambble'
+            feyorra_email = 'pennyscrambble@gmail.com'
+            feyorra_pass = 'pennyscrambble'
 
         elif '3' in layout:
-            server_name1 = 'france' #'belgium'
+            server_name1 = 'spain' #'belgium'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'neyov32511@gmail.com'
-            earnpp_pass = 'neyov32511'
-            feyorra_email = 'neyov32511@gmail.com'
-            feyorra_pass = 'neyov32511'
+            earnpp_email = 'berendkalpana2@gmail.com'
+            earnpp_pass = 'berendkalpana2'
+            feyorra_email = 'berendkalpana2@gmail.com'
+            feyorra_pass = 'berendkalpana2'
+        elif '4' in layout:
+            server_name1 = 'egypt'
+            CSB1_farms = [1, 2, 3, 4, 5]
+            earnpp_email = 'voyn3642ovene@gmail.com'
+            earnpp_pass = 'voyn3642ovene'
+            feyorra_email = 'voyn3642ovene@gmail.com'
+            feyorra_pass = 'voyn3642ovene'
 
         else:
             print('Layout issue', layout)
@@ -207,26 +226,31 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'hungary'
             CSB1_farms = [1, 2, 3, 4, 5]
-            earnpp_email = 'ishdiklla333@gmail.com'
-            earnpp_pass = 'ishdiklla333'
-            feyorra_email = 'ishdiklla333@gmail.com'
-            feyorra_pass = 'ishdiklla333'
+            earnpp_email = 'ddilakshi232@gmail.com'
+            earnpp_pass = 'Uwuinsta@2005'
+            feyorra_email = 'ddilakshi232@gmail.com'
+            feyorra_pass = 'Uwuinsta@2005'
         elif '2' in layout:
-            server_name1 = 'hungary' #'georgia'# 
+            server_name1 = 'hong kong' #'georgia'# 
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'shiladid323@gmail.com'
-            earnpp_pass = 'shiladid323'
-            feyorra_email = 'shiladid323@gmail.com'
-            feyorra_pass = 'shiladid323'
-
+            earnpp_email = 'kumarsheln@gmail.com'
+            earnpp_pass = 'kumarsheln'
+            feyorra_email = 'kumarsheln@gmail.com'
+            feyorra_pass = 'kumarsheln'
         elif '3' in layout:
-            server_name1 = 'hungary' #'georgia'# 
+            server_name1 = 'hong kong' #'georgia'# 
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
             earnpp_email = 'andrpewrea@gmail.com'
             earnpp_pass = 'andrpewrea'
             feyorra_email = 'andrpewrea@gmail.com'
             feyorra_pass = 'andrpewrea'
-
+        elif '4' in layout:
+            server_name1 = 'hungary'
+            CSB1_farms = [1, 2, 3, 4, 5]
+            earnpp_email = 'shiladid323@gmail.com'
+            earnpp_pass = 'shiladid323'
+            feyorra_email = 'shiladid323@gmail.com'
+            feyorra_pass = 'shiladid323'
         else:
             print('Layout issue', layout)
 
@@ -242,19 +266,26 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'gihanfer907'
 
         elif '2' in layout:
-            server_name1 = 'italy' #'chile'
+            server_name1 = 'malaysia' #'chile'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'ferhng790@gmail.com'
-            earnpp_pass = 'ferhng790'
-            feyorra_email = 'ferhng790@gmail.com'
-            feyorra_pass = 'ferhng790'
+            earnpp_email = 'howardrahul838@gmail.com'
+            earnpp_pass = 'howardrahul838'
+            feyorra_email = 'howardrahul838@gmail.com'
+            feyorra_pass = 'howardrahul838'
         elif '3' in layout:
-            server_name1 = 'italy' #'chile'
+            server_name1 = 'malaysia' #'chile'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
             earnpp_email = 'redgta362@gmail.com'
             earnpp_pass = 'redgta362'
             feyorra_email = 'redgta362@gmail.com'
             feyorra_pass = 'redgta362'
+        elif '4' in layout:
+            server_name1 = 'italy'
+            CSB1_farms = [1, 2, 3, 4, 5]
+            earnpp_email = 'ferhng790@gmail.com'
+            earnpp_pass = 'ferhng790'
+            feyorra_email = 'ferhng790@gmail.com'
+            feyorra_pass = 'ferhng790'
         else:
             print('Layout issue', layout)
 
@@ -975,8 +1006,7 @@ def mysterium_login(driver):
                                     pyautogui.click(x, y)
                                     print("mysterium_icon_empty 2 Found")
                                     time.sleep(3)
-                                    i = 1
-                                    for i in range(1,50):
+                                    for i in range(1,100):
                                         time.sleep(1)
                                         try:
                                             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/settings_mysterium.png", region=(1445, 630, 400, 300), confidence=0.9)
@@ -985,7 +1015,7 @@ def mysterium_login(driver):
                                             time.sleep(1)
                                         except pyautogui.ImageNotFoundException:
                                             print("No settings_mysterium 2.")
-
+ 
                                         try:
                                             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/connection_mysterium_option.png", region=(1325, 109, 800, 900), confidence=0.9)
                                             pyautogui.click(x, y)
@@ -1377,11 +1407,11 @@ def solve_icon_captcha(sb1):
         script = """
         // Define XPath expression to find elements inside the form with the specified class patterns or text
         let xpathExpression = `//form[@method="POST"]//*[contains(@class, "bxs-") or 
-        contains(@class, "bx-") or contains(@class, "la-") or 
-        contains(@class, "fa-") or contains(@class, "fas fa-") or 
-        contains(@class, "far fa-") or contains(@class, "ri-") or 
-        contains(@class, "ti ti-") or contains(@class, "bi bi-") or 
-        contains(text(), "Pick the one clear, similar icon from above.")]`;
+            contains(@class, "bx-") or contains(@class, "la-") or 
+            contains(@class, "fa-") or contains(@class, "fas fa-") or 
+            contains(@class, "far fa-") or contains(@class, "ri-") or 
+            contains(@class, "ti ti-") or contains(@class, "bi bi-") or 
+            self::img]`;
 
         // Evaluate XPath expression
         let matchingElements = document.evaluate(xpathExpression, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
@@ -1394,23 +1424,24 @@ def solve_icon_captcha(sb1):
             let style = window.getComputedStyle(element);
 
             let opacity = parseFloat(style.opacity); // Convert opacity to a number
-            let filter = style.filter.trim(); // Trim to remove spaces
+            let filter = style.filter.trim(); // Trim spaces
 
             console.log(`Element ${i}:`, element);
             console.log(`  Opacity: ${opacity}`);
             console.log(`  Filter: ${filter}`);
 
             // Extract opacity from filter if it exists
-            let filterOpacityMatch = filter.match(/opacity\\(([\d.]+)\\)/);
+            let filterOpacityMatch = filter.match(/opacity\(([\d.]+)\)/);
             let filterOpacity = filterOpacityMatch ? parseFloat(filterOpacityMatch[1]) : null;
 
-            // Keep elements where opacity is > 0.5 OR no filter opacity is applied
-            if ((filterOpacity === null || filterOpacity > 0.5) && opacity > 0.5) {
+            // Keep elements where opacity is > 0.5 AND filter opacity (if present) is also > 0.5
+            if (opacity > 0.5 && (filterOpacity === null || filterOpacity > 0.5)) {
                 filteredElements.push(element);
             }
         }
 
         console.log("Filtered elements (opacity > 0.5):", filteredElements);
+
         return filteredElements.map(el => el.id ? `#${el.id}.${el.className}` : `.${el.className}`);
         """
 
@@ -2059,7 +2090,10 @@ def capture_element_screenshot(driver, selector, screenshot_path="full_screensho
 def withdraw_faucet(driver, sitekey):
 
     try:
-
+        #        quer2y = {"type": "main"}
+        #        dochh2 = collection.find_one(quer2y)
+        #        faucetlayout = dochh2["mainfaucet"]
+        #        print(f'Farm ID:{farm_id} | Faucet Layout: {faucetlayout}')
         collectionbip = db[f'LocalCSB']
         quer2y = {"type": "main"}
         dochh = collectionbip.find_one(quer2y)
@@ -2643,6 +2677,44 @@ def open_faucets():
                     if feyorra:
                         sb1.open_new_window()
                         if faucetlayout == 1:
+                            feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Home | Feyorra", 2, [], ip_required)
+                            if feyorra_window == 404:
+                                raise Exception(" feyorra_window == 404")
+                            print(f"Feyorra window handle: {feyorra_window}")
+
+                        else:
+                            feyorra_window = handle_site(sb1, "https://earn-bonk.com/member/faucet", "Faucet | Earn-Bonk" , "Next-Gen BONK Crypto Faucet", 4, [], ip_required)
+                            if feyorra_window == 404:
+                                raise Exception(" feyorra_window == 404")
+                            print(f"Feyorra window handle: {feyorra_window}")
+
+                    else:
+                        feyorra_window = None
+                else:
+                    raise Exception("Ip changed")
+                if ip_required == ip_address:
+                    response_messege('EarnPP Loging')
+                    if earnpp:
+                        if faucetlayout == 1:
+                            earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [], ip_required)
+                            if earnpp_window == 404:
+                                raise Exception(" earnpp_window == 404")
+                            print(f"EarnPP window handle: {earnpp_window}")
+                        else:
+                            earnpp_window = handle_site(sb1, "https://earn-trump.com/member/faucet","Faucet | Earn-Trump" , "Free $Trump Coin Faucet | Earn $Trump Crypto Instantly", 3, [], ip_required)
+                            if earnpp_window == 404:
+                                raise Exception(" earnpp_window == 404")
+                            print(f"EarnPP window handle: {earnpp_window}")
+                    else:
+                        earnpp_window = None
+                else:
+                    raise Exception("Ip changed")
+                ip_address = get_ip(sb1)
+                if ip_required == ip_address:
+                    response_messege('Feyorra Loging')
+                    if feyorra:
+                        sb1.open_new_window()
+                        if faucetlayout == 1:
                             feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Home | Feyorra", 2, [earnpp_window], ip_required)
                             if feyorra_window == 404:
                                 raise Exception(" feyorra_window == 404")
@@ -2658,7 +2730,6 @@ def open_faucets():
                         feyorra_window = None
                 else:
                     raise Exception("Ip changed")
-
                 
                 ip_address = get_ip(sb1)
                 if ip_required == ip_address:
@@ -2770,13 +2841,11 @@ while True:
                             else:
                                 if sb1.is_text_visible('Timeout, Please refresh the page!'):
                                     sb1.uc_click('button#ClaimBtn')
+                                if sb1.is_text_visible('Oops, wrong selection! Please refresh the page.'):
+                                    sb1.uc_click('button#ClaimBtn')
                                 #if sb1.is_text_visible('Verified!'):
                                 #    sb1.uc_click('button#ClaimBtn')
                                 if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
-                                    debug_messages(f'EarnPP Limit Reached')
-                                    response_messege('EarnPP Limit Reached')
-                                    earnpp_limit_reached = True
-                                elif sb1.is_text_visible('Limit Reached, Claim Shortlinks to increase the claim limit..'):
                                     debug_messages(f'EarnPP Limit Reached')
                                     response_messege('EarnPP Limit Reached')
                                     earnpp_limit_reached = True
@@ -2812,10 +2881,6 @@ while True:
                             debug_messages(f'EarnPP Limit Reached')
                             response_messege('EarnPP Limit Reached')
                             earnpp_limit_reached = True
-                        elif sb1.is_text_visible('Limit Reached, Claim Shortlinks to increase the claim limit..'):
-                            debug_messages(f'EarnPP Limit Reached')
-                            response_messege('EarnPP Limit Reached')
-                            earnpp_limit_reached = True
                         else:
                             debug_messages(f'ERR on EarnPP:{e}')
                             reset_count +=1
@@ -2840,13 +2905,11 @@ while True:
                             else:
                                 if sb1.is_text_visible('Timeout, Please refresh the page!'):
                                     sb1.uc_click('button#ClaimBtn')
+                                if sb1.is_text_visible('Oops, wrong selection! Please refresh the page.'):
+                                    sb1.uc_click('button#ClaimBtn')
                                 #if sb1.is_text_visible('Verified!'):
                                 #    sb1.uc_click('button#ClaimBtn')
                                 if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
-                                    debug_messages(f'Feyorra Limit Reached')
-                                    response_messege('Feyorra Limit Reached')
-                                    feyorra_limit_reached =True
-                                elif sb1.is_text_visible('Limit Reached, Claim Shortlinks to increase the claim limit..'):
                                     debug_messages(f'Feyorra Limit Reached')
                                     response_messege('Feyorra Limit Reached')
                                     feyorra_limit_reached =True
@@ -2878,10 +2941,6 @@ while True:
                     except Exception as e:
                         pyautogui.press('enter')
                         if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
-                            debug_messages(f'Feyorra Limit Reached')
-                            response_messege('Feyorra Limit Reached')
-                            feyorra_limit_reached =True
-                        elif sb1.is_text_visible('Limit Reached, Claim Shortlinks to increase the claim limit..'):
                             debug_messages(f'Feyorra Limit Reached')
                             response_messege('Feyorra Limit Reached')
                             feyorra_limit_reached =True

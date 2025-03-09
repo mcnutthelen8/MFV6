@@ -3,11 +3,18 @@
   "name": "YouTube Play Button Auto-Clicker",
   "version": "1.0",
   "description": "Automatically clicks the play button on embedded YouTube videos every 2 seconds.",
-  "permissions": ["activeTab", "scripting"],
+  "permissions": ["activeTab", "scripting", "clipboardWrite"],
+  "web_accessible_resources": [
+      {
+          "resources": ["config.json"],
+          "matches": ["<all_urls>"]
+      }
+  ],
   "content_scripts": [
     {
       "matches": ["*://*/*"],
-      "js": ["content.js"]
+      "js": ["content.js"],
+      "run_at": "document_start"
     }
   ]
 

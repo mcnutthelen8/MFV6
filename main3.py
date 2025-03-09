@@ -129,10 +129,10 @@ def get_mails_passowrds(farm_id):
         elif '2' in layout:
             server_name1 = 'thailand' # 'morocco' #'bulgaria'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'makanziekb@gmail.com'
-            earnpp_pass = 'makanziekb'
-            feyorra_email = 'makanziekb@gmail.com'
-            feyorra_pass = 'makanziekb'
+            earnpp_email = 'anrogedyyr@gmail.com'
+            earnpp_pass = ''
+            feyorra_email = 'anrogedyyr@gmail.com'
+            feyorra_pass = ''
         elif '3' in layout:
             server_name1 = 'thailand' # 'morocco' #'bulgaria'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
@@ -1189,40 +1189,6 @@ def control_panel():
 
 
 
-def capture_element_screenshot(driver, selector, screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png"):
-    # Step 1: Find the element using SeleniumBase
-    element = driver.find_element(selector)
-    
-    # Step 2: Get element's location and size
-    location = element.location
-    size = element.size
-    y_location = location['y'] + 100
-    driver.execute_script(f"window.scrollTo(0, {y_location});")
-    #time.sleep(1)
-
-    # Step 3: Capture the full-page screenshot
-    driver.save_screenshot(screenshot_path)
-    element = driver.find_element(selector)
-    
-    # Step 2: Get element's location and size
-    location = element.location
-    size = element.size
-    # Step 4: Load the full screenshot with Pillow
-    screenshot = Image.open(screenshot_path)
-    scroll_y = driver.execute_script("return window.scrollY;")
-    # Step 5: Define the crop area using the element's location and size
-    left = location['x']
-    top = location['y'] - scroll_y
-    right = left + size['width']
-    bottom = top + size['height'] 
-    print(left, top, right, bottom)
-    # Step 6: Crop the image to the element's size
-    cropped_image = screenshot.crop((left, top, right, bottom))
-    
-    # Step 7: Save the cropped image
-    cropped_image.save(cropped_path)
-    
-    print(f"Cropped screenshot saved at {cropped_path}")
 
 
 
@@ -1276,6 +1242,22 @@ def solve_icon_captcha_v1(sb1):
         print(f"Error solving captcha: {e}")
         return False
 
+def clean_string2(s):
+    # Replace '-' with whitespace
+    s = s.replace('-', ' ')
+    s = s.replace('.', ' ')
+    
+    # List of words/phrases to remove (ensure spaces are handled properly)
+    words_to_remove = {"bxs", "bx", "la", "fa", "fas fa", "ri", "far", "ti ti", "bi bi", "far fa", "fas", "fa", "bi", "la la", "la"}
+    
+    # Use regex to remove exact words or phrases (word boundaries ensure whole words match)
+    pattern = r'\b(?:' + '|'.join(re.escape(word) for word in words_to_remove) + r')\b'
+    
+    # Remove the words and extra spaces
+    cleaned_s = re.sub(pattern, '', s, flags=re.IGNORECASE)
+    
+    # Normalize spaces
+    return ' '.join(cleaned_s.split())
 
 #V2
 def filter_and_replace(text):
@@ -1284,12 +1266,12 @@ def filter_and_replace(text):
         "mouse": ['cursor', 'point'],
         "upload": [ "angle-up", "caret-square-up", "level-up", "transition-top","amount-up","chevron-double-up", "arrow-bar-up",  "arrow-up","arrow-alt-circle-up", "arrow-alt-up", "arrow-in-up","sort-up", "chevrons-up",  "chevron-up", "angle-double-up", "caret-up"],
         "download": [ "angle-down", "caret-square-down", "level-down", "transition-bottom","amount-down", "chevron-double-down", "arrow-bar-down","arrow-alt-circle-down", "arrow-down","arrow-alt-down", "arrow-in-down","sort-down" , "chevrons-down", "chevron-down","angle-double-down", "caret-down"],
-
+        "paint": ["paint","spray","palette", "paint-bucket", "brush","color", "colour"],
         "rocket": ["flight-takeoff","airplane", "plane","fight", "space-shuttle" ,"space", "helicopter", "flight", "rocket"],
         "gem": ["diamond", "jewel"],
         "bird": ["twitter", "crow", "dove","yuque", "earlybirds", "kiwi"],
         "volume": ["megaphone","volume-up", "volume-down", "volume", "bullhorn", "megaphone", "loudspeaker"],
-        "child": ["person","friends","female", "male","pray", "team", "group", "people", "running", "user", "restroom", "walking"],
+        "child": ["child","person","friends","female", "male","pray", "team", "group", "people", "running", "user", "restroom", "walking"],
         "tractor": ["bus-school","camper","truck", "ambulance", "roadster", "taxi","forklift"],
         "riding": ["motorcycle", "cycling","bicycle","motorbike", "bike","scooter", "moped", "biking"],
         "water": ["tint", "moisture", "rain", "droplet","contrast-drop", "blur-off","drop", "blur"],
@@ -1303,14 +1285,14 @@ def filter_and_replace(text):
         "emo": ['mood','smile'],
         "bluetooth": ['blue'],
         "file": ['folder'],
-        "display": ['laptop', 'device', 'computer',"mac", "laptop", "desktop", "device", "macbook", "imac", "pc"],
+        "display": ['laptop', 'computer',"mac", "laptop", "desktop", "macbook", "imac", "pc"],
         "comment": ["chat-left", "message-dots","message-square-detail",'message', 'chat','text','sms', "twitch", "comment", "chat" , "message", "text"],
         "bell": ['notifi'],
         "leaf": [ "cactus","canadian-maple-leaf", "growth", "pagelines" ,"flower", 'envira', 'pageline', 'seeding','grass', "leaf", "seedling","tree", "raspberry", "plant"],
         "chart": ['signal'],
         "cloud": ['weather'],
         "energy": ['lightning', 'zap', 'bolt',"flash"],
-        "camera": ["selfie","phone", "polaroid", "video","image","pic"],
+        #"camera": ["selfie","phone", "polaroid", "video","image","pic"],
         "spider": ['bug','insect'],
         "setting": ['cog', 'gear'],
         "fire": ["burn","hot", "flame", "torch"],
@@ -1318,8 +1300,13 @@ def filter_and_replace(text):
         "flag": ["pennant", "banner"],
         #new list
         "pen": ["ballpen", "edit", "pencil","highlight"],
-        #"hotel": ["city", "buildings"],
+    
+        "knife": ["slice", "utensils", "fork", "knife", "spoon" ,"kitchen"],
 
+        "guitar": ["headset","playlist", "guitar", "bandlab", "music", "disc" ,"airpods","headphone","radio", "tiktok"],
+        "close": ["times", "close", "xrp", "window-close", "x-lg"],
+        "browser": ["edge","chrome", "google", "firefox", "explora", "browser", "world","www"],
+        "hand": ["hand", "allergies", "finger", "thumb"],
     }
     # First, replace hyphens with spaces in the text
     text = text.replace('-', ' ')
@@ -1338,6 +1325,7 @@ def filter_and_replace(text):
         "upload": [  "top", "pull","-up"],
         "download": [ "-down", "bottom", "push"],
         "tractor": ["car", "bus","tir"],
+        "close": ["x"],
     }
     for category, words in second_dict.items():
         for word in words:
@@ -1397,12 +1385,19 @@ def append_to_notepad(filename, captcha, answers):
         f.write("--------------------------------\n")
 
 # Example usage
-
+def mouse_moveclick(cropped_path="element_screenshot.png"):
+    try:
+        x, y = pyautogui.locateCenterOnScreen(cropped_path, confidence=0.9)
+        pyautogui.moveTo(x, y , duration=0.1)
+        pyautogui.click()
+        return True
+    except Exception as e:
+        print(f"Error moving and clicking: {e}")
 
 #V2
 def solve_icon_captcha(sb1):
     try:
-        sb1.execute_script("window.scrollTo(0, 1000);")
+        #pyautogui.scroll(1000,1808 ,-1500 )
         # Extract all captcha icons
         script = """
         // Define XPath expression to find elements inside the form with the specified class patterns or text
@@ -1450,14 +1445,53 @@ def solve_icon_captcha(sb1):
 
         # Print each element
         print("Filtered elements:")
-        for i, element in enumerate(filtered_elements):
-            print(f"{i}: {element}")
-
         # Assign the first element to captchaElement
         if filtered_elements:
             captchaElement = filtered_elements[0]
             print("\nCaptcha Element:", captchaElement)
 
+        if len(filtered_elements) < 6:
+            # Define the base64 image lists
+            base64_images = [
+                "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAAAXCAIAAAAuvD5IAAAACXB",
+            ]
+            base64_images2 = [
+                "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUgAAAAXCAIAAADm2UHyAAAACXB",
+                "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV0AAAAXCAIAAAAnXgteAAAACXBI",
+            ]
+
+            # Check if any image on the page matches a base64 image from the list
+            image_exists = any(
+                img.get_attribute("src").startswith(base64_prefix) 
+                for img in sb1.find_elements("form img") 
+                for base64_prefix in base64_images
+            )
+
+            image_exists2 = any(
+                img.get_attribute("src").startswith(base64_prefix) 
+                for img in sb1.find_elements("form img") 
+                for base64_prefix in base64_images2
+            )
+
+            # Print the results
+            print("Verified: ", image_exists)
+            print("Opps Error: ", image_exists2)
+
+            if image_exists:
+                print("Verified found in the first list.")
+                button = sb1.find_element(By.CSS_SELECTOR, 'button#ClaimBtn')
+                #capture_element_screenshot(sb1, 'button#ClaimBtn', screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
+                #mouse_moveclick(cropped_path="element_screenshot.png")
+                #button.uc_click()
+                return
+            elif image_exists2:
+                print("Opps Error found in the first list.")
+                button = sb1.find_element(By.CSS_SELECTOR, 'button#ClaimBtn')
+                #capture_element_screenshot(sb1, 'button#ClaimBtn', screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
+                #mouse_moveclick(cropped_path="element_screenshot.png")
+                #button.uc_click()
+                pyautogui.press('f5')
+                return
         # Remove first two and specific element
         to_remove = [
             filtered_elements[0],  # First element
@@ -1491,15 +1525,17 @@ def solve_icon_captcha(sb1):
         print(captcha_word, "gfg")
         print(answers)
 
-
+        filterd_answrs = []
         for answer in answers:
             print(answer)
             copy_answer = answer
+            copy_answer = clean_string2(copy_answer)
             copy_answer = filter_and_replace(copy_answer)
             #copy_answer = filter_string(copy_answer)
             #copy_answer = filter_and_replace(copy_answer)
             copy_answer = clean_string(copy_answer)
             print(copy_answer)
+            filterd_answrs.append(copy_answer)
             if '' == captcha_word:
                 print("ng it")
                 continue
@@ -1507,15 +1543,15 @@ def solve_icon_captcha(sb1):
                 print(answer, "Found it")
                 answer = answer.replace(' ', '.')
                 print('uc click before')
-                #form_element = sb1.find_element(answer)
-                button = sb1.find_element(answer)
-                print('uc click before2')
-                button.uc_click()
-                print('uc click after3')
+                button = sb1.find_element(By.CSS_SELECTOR, answer)
+                #button.uc_click()
+                capture_element_screenshot(sb1, answer, screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
+                mouse_moveclick(cropped_path="element_screenshot.png")
+
                 return True
         print("No matching icon found.")
         append_to_notepad("notepad.txt", captchaElement, filtered_elements)
-        append_to_notepad("notepad.txt", captcha_word, answers)
+        append_to_notepad("notepad.txt", captcha_word, filterd_answrs)
 
         return False
     except Exception as e:
@@ -2051,40 +2087,38 @@ def get_coins(driver, sitekey):
 
 
 def capture_element_screenshot(driver, selector, screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png"):
-    # Step 1: Find the element using SeleniumBase
-    element = driver.find_element(selector)
+    try:
+        # Step 1: Find the element using SeleniumBase
+        element = driver.find_element(selector)
     
-    # Step 2: Get element's location and size
-    location = element.location
-    size = element.size
-    y_location = location['y'] + 100
-    driver.execute_script(f"window.scrollTo(0, {y_location});")
-    #time.sleep(1)
-
-    # Step 3: Capture the full-page screenshot
-    driver.save_screenshot(screenshot_path)
-    element = driver.find_element(selector)
+        # Step 3: Capture the full-page screenshot
+        driver.save_screenshot(screenshot_path)
     
-    # Step 2: Get element's location and size
-    location = element.location
-    size = element.size
-    # Step 4: Load the full screenshot with Pillow
-    screenshot = Image.open(screenshot_path)
-    scroll_y = driver.execute_script("return window.scrollY;")
-    # Step 5: Define the crop area using the element's location and size
-    left = location['x']
-    top = location['y'] - scroll_y
-    right = left + size['width']
-    bottom = top + size['height'] 
-    print(left, top, right, bottom)
-    # Step 6: Crop the image to the element's size
-    cropped_image = screenshot.crop((left, top, right, bottom))
+        # Step 4: Re-fetch the element after scrolling
+        element = driver.find_element(selector)
+        location = element.location
+        size = element.size
     
-    # Step 7: Save the cropped image
-    cropped_image.save(cropped_path)
+        # Step 5: Load the full screenshot with Pillow
+        screenshot = Image.open(screenshot_path)
+        scroll_y = driver.execute_script("return window.scrollY;")
     
-    print(f"Cropped screenshot saved at {cropped_path}")
-
+        # Step 6: Calculate the crop area
+        left = int(location['x'])
+        top = int(location['y'] - scroll_y)
+        right = int(left + size['width'])
+        bottom = int(top + size['height'])
+    
+        print(f"Crop area: left={left}, top={top}, right={right}, bottom={bottom}")
+    
+        # Step 7: Crop the image to the element's size
+        cropped_image = screenshot.crop((left, top, right, bottom))
+    
+        # Step 8: Save the cropped image
+        cropped_image.save(cropped_path)
+        print(f"Cropped screenshot saved at {cropped_path}")
+    except Exception as e:
+        print(f"Error capturing element screenshot: {e}")
 
  
 def withdraw_faucet(driver, sitekey):
@@ -2182,7 +2216,7 @@ def withdraw_faucet(driver, sitekey):
                     cloudflare(sb1, login = True)
                     time.sleep(2)
                     driver.uc_click('button#ClaimBtn')
-                    driver.uc_open('https://earn-pepe.com/member/faucet')
+                    time.sleep(5)
                     response_messege(f'EarnPP FaucetPay Withdrawed{currency}')
                     #response_messege('Started')
                     query = {"type": "main"}
@@ -2226,7 +2260,7 @@ def withdraw_faucet(driver, sitekey):
                     cloudflare(sb1, login = True)
                     time.sleep(2)
                     driver.uc_click('button#ClaimBtn')
-                    driver.uc_open('https://feyorra.site/member/faucet')
+                    time.sleep(5)
                     response_messege(f'Feyorra FaucetPay Withdrawed{currency}')
                     #response_messege('Started')
                     query = {"type": "main"}
@@ -2485,6 +2519,24 @@ for frm in CSB1_farms:
     update = {"$set": {"request": 'ipfixer'}}
     result = collection_csb.update_one(query, update)
 
+
+def update_ip(new_ip, config_path="mfhelper/config.json"):
+    try:
+        # Load existing config.json
+        with open(config_path, "r") as file:
+            config = json.load(file)
+        
+        # Update the targetIP
+        config["targetIP"] = new_ip
+
+        # Save the updated config.json
+        with open(config_path, "w") as file:
+            json.dump(config, file, indent=4)
+
+        print(f"Updated targetIP to: {new_ip}")
+    except Exception as e:
+        print(f"Error updating config.json: {e}")
+
 def open_browsers():
     global sb1
     global chrome_user_data_dir
@@ -2652,7 +2704,7 @@ def open_faucets():
                 dochh2 = collection.find_one(quer2y)
                 faucetlayout = dochh2["mainfaucet"]
                 print(f'Farm ID:{farm_id} | Faucet Layout: {faucetlayout}')
-
+                update_ip(ip_address, config_path="mfhelper/config.json")
                 ip_address = get_ip(sb1)
                 if ip_required == ip_address:
                     response_messege('EarnPP Loging')
@@ -2675,7 +2727,7 @@ def open_faucets():
                 if ip_required == ip_address:
                     response_messege('Feyorra Loging')
                     if feyorra:
-                        sb1.open_new_window()
+                        #sb1.open_new_window()
                         if faucetlayout == 1:
                             feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Home | Feyorra", 2, [], ip_required)
                             if feyorra_window == 404:
@@ -2803,7 +2855,7 @@ while True:
                 reset_count = 16
                 reset_count_isacc = 0
 
-            ip_address = get_ip(sb1) 
+            #ip_address = get_ip(sb1) 
             if reset_count >= 15:
                 print('reset count higher')
                 
@@ -2858,6 +2910,8 @@ while True:
                             debug_messages(f'Lock.. Found on EarnPP')
                             response_messege('Lock.. Found on EarnPP')
                             earnpp_coins = 0
+                        elif 'Google' in title:
+                            reset_count +=5
                         elif 'Just' in title:
                             debug_messages(f'Just.. Found on EarnPP')
 
@@ -2921,6 +2975,8 @@ while True:
                             debug_messages(f'Just.. Found on Feyorra')
                             cloudflare(sb1, login = False)
                             debug_messages(f'Just Fixed Feyorra')
+                        elif 'Google' in title:
+                            reset_count +=5
                         elif 'aintenance' in title:
                             debug_messages(f'maintenance.. Found on Feyorra')
                             response_messege('maintenance.. Found on Feyorra')

@@ -116,6 +116,7 @@ def get_mails_passowrds(farm_id):
         CSB1_farms = [6,7,8,9,10]
 
 
+
     if farm_id == 1:
 
         if '1' in layout:
@@ -264,7 +265,6 @@ def get_mails_passowrds(farm_id):
 
         else:
             print('Layout issue', layout)
-
 ##################################################
     elif farm_id == 6:
 
@@ -1323,7 +1323,7 @@ def clean_string(s):
     s = s.replace('.', ' ')
     
     # List of words/phrases to remove (ensure spaces are handled properly)
-    words_to_remove = {"front","bxs", "bx", "la", "fa", "fas fa", "split", "ri", "far", "ti ti", "bi bi", "far fa", "fas", "fa", "bi", "la la", "la", "line", "lines", "engines", "brand", "alt"}
+    words_to_remove = {"front","bxs", "bx bx", "la", "fa", "fas fa", "split", "ri", "far", "ti ti", "bi bi", "far fa", "fas", "fa", "bi", "la la", "la", "line", "lines", "engines", "brand", "alt"}
     
     # Use regex to remove exact words or phrases (word boundaries ensure whole words match)
     pattern = r'\b(?:' + '|'.join(re.escape(word) for word in words_to_remove) + r')\b'
@@ -1336,7 +1336,7 @@ def clean_string(s):
 
 def filter_string(s):
     # Define words that act as stop points
-    stop_words = {"bxs", "bx", "la", "fa", "fas", "split", "ri", "far", "ti", "bi", "far", "fas", "fa", "bi",  "la", "line", "lines", "engines", "brand", "alt"}
+    stop_words = {"bxs", "bx bx", "la", "fa", "fas", "split", "ri", "far", "ti", "bi", "far", "fas", "fa", "bi",  "la", "line", "lines", "engines", "brand", "alt"}
     
     # Replace '-' with whitespace
     s = s.replace('.', ' ')
@@ -1369,6 +1369,90 @@ def mouse_moveclick(cropped_path="element_screenshot.png"):
         return True
     except Exception as e:
         print(f"Error moving and clicking: {e}")
+
+
+import glob
+
+# Load and preprocess image
+def load_image(image_path):
+    img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+    img = cv2.GaussianBlur(img, (3, 3), 0)  # Denoise
+    return img
+
+# Feature detection using SIFT
+def detect_keypoints(img):
+    sift = cv2.SIFT_create()
+    keypoints, descriptors = sift.detectAndCompute(img, None)
+    return keypoints, descriptors
+
+# Match keypoints with stored templates
+def match_images(captcha, templates):
+    best_match = None
+    max_good_matches = 0
+
+    kp1, des1 = detect_keypoints(captcha)
+
+    if des1 is None:
+        print("No descriptors found in captcha.")
+        return None
+
+    index_params = dict(algorithm=1, trees=5)
+    search_params = dict(checks=50)
+    flann = cv2.FlannBasedMatcher(index_params, search_params)
+
+    for template_path in templates:
+        template = load_image(template_path)
+        kp2, des2 = detect_keypoints(template)
+
+        if des2 is None:
+            continue
+
+        matches = flann.knnMatch(des1, des2, k=2)
+
+        # Apply Lowe's Ratio Test to filter matches
+        good_matches = [m for m, n in matches if m.distance < 0.7 * n.distance]
+
+        if len(good_matches) > max_good_matches:
+            max_good_matches = len(good_matches)
+            best_match = template_path
+
+    return best_match
+
+# Main function
+def solve_captcha(captcha_path, template_folder):
+    captcha = load_image(captcha_path)
+    template_paths = glob.glob(f"{template_folder}/*.png")
+
+    best_template = match_images(captcha, template_paths)
+
+    if best_template:
+        print(f"Best match found: {best_template}")
+        return best_template
+    else:
+        print("No match found!")
+        return None
+
+def rename_with_code(filepath, category):
+    if not os.path.exists(filepath):
+        print(f"File '{filepath}' does not exist.")
+        return
+    
+    # Get the directory and base filename
+    directory, filename = os.path.split(filepath)
+    base_name, ext = os.path.splitext(filename)
+
+    # Loop until we find a unique filename
+    while True:
+        # Generate a random 6-digit code
+        random_code = random.randint(100000, 999999)
+        new_filename = f"{category}{random_code}{ext}"
+        new_filepath = os.path.join(directory, new_filename)
+        
+        # Check if the new file exists
+        if not os.path.exists(new_filepath):
+            os.rename(filepath, new_filepath)
+            print(f"File renamed to '{new_filepath}'")
+            return
 
 #V2
 def solve_icon_captcha(sb1):
@@ -1426,7 +1510,7 @@ def solve_icon_captcha(sb1):
             captchaElement = filtered_elements[0]
             print("\nCaptcha Element:", captchaElement)
 
-        if len(filtered_elements) < 6:
+        if len(filtered_elements) < 4:
             # Define the base64 image lists
             base64_images = [
                 "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAAAXCAIAAAAuvD5IAAAACXB",
@@ -1455,14 +1539,14 @@ def solve_icon_captcha(sb1):
 
             if image_exists:
                 print("Verified found in the first list.")
-                button = sb1.find_element(By.CSS_SELECTOR, 'button#ClaimBtn')
+                #button = sb1.find_element(By.CSS_SELECTOR, 'button#ClaimBtn')
                 #capture_element_screenshot(sb1, 'button#ClaimBtn', screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
                 #mouse_moveclick(cropped_path="element_screenshot.png")
                 #button.uc_click()
                 return
             elif image_exists2:
                 print("Opps Error found in the first list.")
-                button = sb1.find_element(By.CSS_SELECTOR, 'button#ClaimBtn')
+                #button = sb1.find_element(By.CSS_SELECTOR, 'button#ClaimBtn')
                 #capture_element_screenshot(sb1, 'button#ClaimBtn', screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
                 #mouse_moveclick(cropped_path="element_screenshot.png")
                 #button.uc_click()
@@ -1482,20 +1566,28 @@ def solve_icon_captcha(sb1):
         print("\nFiltered elements after removal:", filtered_elements)
         # Execute JavaScript in Selenium and get the results
                 
-        captcha_word = captchaElement #'nfvabpjo9wvn#xrikqozisnn.zCpvNsbks bi bi-arrow-down'
+        #captcha_word = captchaElement #'nfvabpjo9wvn#xrikqozisnn.zCpvNsbks bi bi-arrow-down'
         answers = filtered_elements
         #remove unnecessary 
+        captcha_image = "element_screenshot.png"  # Replace with your captcha
+        template_folder = "icons"  # Folder with stored icons
+        capture_element_screenshot(sb1, captchaElement, screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
+        captcha_word = solve_captcha(captcha_image, template_folder)
+        rename_with_code("element_screenshot.png", captcha_word)
+        cleaned_text = re.sub(r'\d', '', captcha_word)
 
         #filter everything
-        captcha_word = filter_string(captcha_word)
-        captcha_word = filter_and_replace(captcha_word)
         #captcha_word = filter_string(captcha_word)
-        #captcha_word = filter_and_replace(captcha_word)
+        #captcha_word = clean_string(captcha_word)
+        captcha_word = filter_and_replace(captcha_word)
+        #if '.' == captcha_word:
+        #    captcha_word = filtered_elements
+        #    captcha_word = filter_and_replace(captcha_word)
         #answers = [filter_and_replace(answer) for answer in answers]
         #answers = [filter_string(answer) for answer in answers]
         #answers = [filter_and_replace(answer) for answer in answers]
 
-        captcha_word = clean_string(captcha_word)
+        #captcha_word = clean_string(captcha_word)
         #answers = [clean_string(answer) for answer in answers]
         #check if the word is in the list
         print(captcha_word, "gfg")
@@ -1526,7 +1618,7 @@ def solve_icon_captcha(sb1):
 
                 return True
         print("No matching icon found.")
-        append_to_notepad("notepad.txt", captchaElement, filtered_elements)
+        #append_to_notepad("notepad.txt", captchaElement, filtered_elements)
         append_to_notepad("notepad.txt", captcha_word, filterd_answrs)
 
         return False
@@ -2907,13 +2999,22 @@ while True:
                             reset_count +=1
 
                     except Exception as e:
-                        if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
-                            debug_messages(f'EarnPP Limit Reached')
-                            response_messege('EarnPP Limit Reached')
-                            earnpp_limit_reached = True
+                        if mainscript == 1:
+                            if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
+                                debug_messages(f'EarnPP Limit Reached')
+                                response_messege('EarnPP Limit Reached')
+                                earnpp_limit_reached = True
+                            else:
+                                debug_messages(f'ERR on EarnPP:{e}')
+                                reset_count +=1
                         else:
-                            debug_messages(f'ERR on EarnPP:{e}')
-                            reset_count +=1
+                            if sb1.is_text_visible('Limit Reached, Claim Shortlinks to increase the claim limit..'):
+                                debug_messages(f'EarnPP Limit Reached')
+                                response_messege('EarnPP Limit Reached')
+                                earnpp_limit_reached = True
+                            else:
+                                debug_messages(f'ERR on EarnPP:{e}')
+                                reset_count +=1
                 
                 if feyorra:
                     try:
@@ -2972,13 +3073,26 @@ while True:
                             reset_count +=1
                     except Exception as e:
                         pyautogui.press('enter')
-                        if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
-                            debug_messages(f'Feyorra Limit Reached')
-                            response_messege('Feyorra Limit Reached')
-                            feyorra_limit_reached =True
+                        if mainscript == 1:
+                            if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
+                                debug_messages(f'Feyorra Limit Reached')
+                                response_messege('Feyorra Limit Reached')
+                                feyorra_limit_reached =True
+                            else:
+                                debug_messages(f'ERR on Feyorra:{e}')
+                                reset_count +=1
                         else:
-                            debug_messages(f'ERR on Feyorra:{e}')
-                            reset_count +=1
+
+                            if sb1.is_text_visible('Limit Reached, Claim Shortlinks to increase the claim limit..'):
+                                debug_messages(f'Feyorra Limit Reached')
+                                response_messege('Feyorra Limit Reached')
+                                feyorra_limit_reached =True
+                            else:
+                                debug_messages(f'ERR on Feyorra:{e}')
+                                reset_count +=1
+
+###################################################################################################################
+
 
 
                 elapsed_time = time.time() - start_time

@@ -116,10 +116,11 @@ def get_mails_passowrds(farm_id):
         CSB1_farms = [6,7,8,9,10]
 
 
+
     if farm_id == 1:
 
         if '1' in layout:
-            server_name1 = 'thailand'
+            server_name1 = 'sri lanka'
             CSB1_farms = [1, 2, 3, 4, 5]
             earnpp_email = 'khabibmakanzie2@gmail.com'
             earnpp_pass = 'khabibmakanzie2'
@@ -127,27 +128,21 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'khabibmakanzie2'
 
         elif '2' in layout:
-            server_name1 = 'bulgaria' # 'morocco' #'bulgaria'
+            server_name1 = 'sri lanka' # 'morocco' #'bulgaria'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'amytanisha250@gmail.com'
-            earnpp_pass = 'amytanisha250'
-            feyorra_email = 'amytanisha250@gmail.com'
-            feyorra_pass = 'amytanisha250'
+            earnpp_email = 'anrogedyyr@gmail.com'
+            earnpp_pass = ''
+            feyorra_email = 'anrogedyyr@gmail.com'
+            feyorra_pass = ''
         elif '3' in layout:
-            server_name1 = 'bulgaria' # 'morocco' #'bulgaria'
+            server_name1 = 'sri lanka' # 'morocco' #'bulgaria'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
             earnpp_email = 'grandkolla999br@gmail.com'
             earnpp_pass = 'grandkolla999br'
             feyorra_email = 'grandkolla999br@gmail.com'
             feyorra_pass = 'grandkolla999br'
 
-        elif '4' in layout:
-            server_name1 = 'thailand' # 'morocco' #'bulgaria'
-            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'makanziekb@gmail.com'
-            earnpp_pass = 'makanziekb'
-            feyorra_email = 'makanziekb@gmail.com'
-            feyorra_pass = 'makanziekb'
+
         else:
             print('Layout issue', layout)
 
@@ -186,80 +181,62 @@ def get_mails_passowrds(farm_id):
         else:
             print('Layout issue', layout)
 
-
     elif farm_id == 3:
 
         if '1' in layout:
-            server_name1 = 'egypt'
+            server_name1 = 'france'
             CSB1_farms = [1, 2, 3, 4, 5]
-            earnpp_email = 'yvonne12463@gmail.com'
-            earnpp_pass = 'Uwuinsta@2005'
-            feyorra_email = 'yvonne12463@gmail.com'
-            feyorra_pass = 'Uwuinsta@2005'
-
-            claimc_email = 'yvonne12463@gmail.com'
-            claimc_pass = 'Uwuinsta@2005'
+            earnpp_email = 'sevensevengk@gmail.com'
+            earnpp_pass = 'sevensevengk'
+            feyorra_email = 'sevensevengk@gmail.com'
+            feyorra_pass = 'sevensevengk'
 
         elif '2' in layout:
-            server_name1 = 'spain' #'belgium'
+            server_name1 = 'france' #'belgium'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'pennyscrambble@gmail.com'
-            earnpp_pass = 'pennyscrambble'
-            feyorra_email = 'pennyscrambble@gmail.com'
-            feyorra_pass = 'pennyscrambble'
+            earnpp_email = 'kg7seven@gmail.com'
+            earnpp_pass = 'kg7seven'
+            feyorra_email = 'kg7seven@gmail.com'
+            feyorra_pass = 'kg7seven'
 
         elif '3' in layout:
-            server_name1 = 'spain' #'belgium'
+            server_name1 = 'france' #'belgium'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'berendkalpana2@gmail.com'
-            earnpp_pass = 'berendkalpana2'
-            feyorra_email = 'berendkalpana2@gmail.com'
-            feyorra_pass = 'berendkalpana2'
-        elif '4' in layout:
-            server_name1 = 'egypt'
-            CSB1_farms = [1, 2, 3, 4, 5]
-            earnpp_email = 'voyn3642ovene@gmail.com'
-            earnpp_pass = 'voyn3642ovene'
-            feyorra_email = 'voyn3642ovene@gmail.com'
-            feyorra_pass = 'voyn3642ovene'
-
+            earnpp_email = 'neyov32511@gmail.com'
+            earnpp_pass = 'neyov32511'
+            feyorra_email = 'neyov32511@gmail.com'
+            feyorra_pass = 'neyov32511'
         else:
             print('Layout issue', layout)
-
 
     elif farm_id == 4:
 
         if '1' in layout:
             server_name1 = 'hungary'
             CSB1_farms = [1, 2, 3, 4, 5]
-            earnpp_email = 'ddilakshi232@gmail.com'
-            earnpp_pass = 'Uwuinsta@2005'
-            feyorra_email = 'ddilakshi232@gmail.com'
-            feyorra_pass = 'Uwuinsta@2005'
+            earnpp_email = 'ishdiklla333@gmail.com'
+            earnpp_pass = 'ishdiklla333'
+            feyorra_email = 'ishdiklla333@gmail.com'
+            feyorra_pass = 'ishdiklla333'
         elif '2' in layout:
-            server_name1 = 'hong kong' #'georgia'# 
+            server_name1 = 'hungary' #'georgia'# 
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'kumarsheln@gmail.com'
-            earnpp_pass = 'kumarsheln'
-            feyorra_email = 'kumarsheln@gmail.com'
-            feyorra_pass = 'kumarsheln'
+            earnpp_email = 'shiladid323@gmail.com'
+            earnpp_pass = 'shiladid323'
+            feyorra_email = 'shiladid323@gmail.com'
+            feyorra_pass = 'shiladid323'
+
+
         elif '3' in layout:
-            server_name1 = 'hong kong' #'georgia'# 
+            server_name1 = 'hungary' #'georgia'# 
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
             earnpp_email = 'andrpewrea@gmail.com'
             earnpp_pass = 'andrpewrea'
             feyorra_email = 'andrpewrea@gmail.com'
             feyorra_pass = 'andrpewrea'
-        elif '4' in layout:
-            server_name1 = 'hungary'
-            CSB1_farms = [1, 2, 3, 4, 5]
-            earnpp_email = 'shiladid323@gmail.com'
-            earnpp_pass = 'shiladid323'
-            feyorra_email = 'shiladid323@gmail.com'
-            feyorra_pass = 'shiladid323'
+
         else:
             print('Layout issue', layout)
-
 
     elif farm_id == 5:
 
@@ -272,29 +249,22 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'gihanfer907'
 
         elif '2' in layout:
-            server_name1 = 'malaysia' #'chile'
+            server_name1 = 'italy' #'chile'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'howardrahul838@gmail.com'
-            earnpp_pass = 'howardrahul838'
-            feyorra_email = 'howardrahul838@gmail.com'
-            feyorra_pass = 'howardrahul838'
-        elif '3' in layout:
-            server_name1 = 'malaysia' #'chile'
-            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'redgta362@gmail.com'
-            earnpp_pass = 'redgta362'
-            feyorra_email = 'redgta362@gmail.com'
-            feyorra_pass = 'redgta362'
-        elif '4' in layout:
-            server_name1 = 'italy'
-            CSB1_farms = [1, 2, 3, 4, 5]
             earnpp_email = 'ferhng790@gmail.com'
             earnpp_pass = 'ferhng790'
             feyorra_email = 'ferhng790@gmail.com'
             feyorra_pass = 'ferhng790'
+        elif '3' in layout:
+            server_name1 = 'italy' #'chile'
+            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+            earnpp_email = 'giferhan079@gmail.com'
+            earnpp_pass = 'giferhan079'
+            feyorra_email = 'giferhan079@gmail.com'
+            feyorra_pass = 'giferhan079'
+
         else:
             print('Layout issue', layout)
-
 ##################################################
     elif farm_id == 6:
 
@@ -503,7 +473,7 @@ chrome_user_data_dir = '/root/.config/google-chrome/'
 bitmoon = False
 earnpp = True
 claimcoin = False
-feyorra = True
+feyorra = False
 feyorratop = False
 baymack = False
 
@@ -1195,40 +1165,6 @@ def control_panel():
 
 
 
-def capture_element_screenshot(driver, selector, screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png"):
-    # Step 1: Find the element using SeleniumBase
-    element = driver.find_element(selector)
-    
-    # Step 2: Get element's location and size
-    location = element.location
-    size = element.size
-    y_location = location['y'] + 100
-    driver.execute_script(f"window.scrollTo(0, {y_location});")
-    #time.sleep(1)
-
-    # Step 3: Capture the full-page screenshot
-    driver.save_screenshot(screenshot_path)
-    element = driver.find_element(selector)
-    
-    # Step 2: Get element's location and size
-    location = element.location
-    size = element.size
-    # Step 4: Load the full screenshot with Pillow
-    screenshot = Image.open(screenshot_path)
-    scroll_y = driver.execute_script("return window.scrollY;")
-    # Step 5: Define the crop area using the element's location and size
-    left = location['x']
-    top = location['y'] - scroll_y
-    right = left + size['width']
-    bottom = top + size['height'] 
-    print(left, top, right, bottom)
-    # Step 6: Crop the image to the element's size
-    cropped_image = screenshot.crop((left, top, right, bottom))
-    
-    # Step 7: Save the cropped image
-    cropped_image.save(cropped_path)
-    
-    print(f"Cropped screenshot saved at {cropped_path}")
 
 
 
@@ -1282,6 +1218,22 @@ def solve_icon_captcha_v1(sb1):
         print(f"Error solving captcha: {e}")
         return False
 
+def clean_string2(s):
+    # Replace '-' with whitespace
+    s = s.replace('-', ' ')
+    s = s.replace('.', ' ')
+    
+    # List of words/phrases to remove (ensure spaces are handled properly)
+    words_to_remove = {"bxs", "bx", "la", "fa", "fas fa", "ri", "far", "ti ti", "bi bi", "far fa", "fas", "fa", "bi", "la la", "la"}
+    
+    # Use regex to remove exact words or phrases (word boundaries ensure whole words match)
+    pattern = r'\b(?:' + '|'.join(re.escape(word) for word in words_to_remove) + r')\b'
+    
+    # Remove the words and extra spaces
+    cleaned_s = re.sub(pattern, '', s, flags=re.IGNORECASE)
+    
+    # Normalize spaces
+    return ' '.join(cleaned_s.split())
 
 #V2
 def filter_and_replace(text):
@@ -1290,12 +1242,12 @@ def filter_and_replace(text):
         "mouse": ['cursor', 'point'],
         "upload": [ "angle-up", "caret-square-up", "level-up", "transition-top","amount-up","chevron-double-up", "arrow-bar-up",  "arrow-up","arrow-alt-circle-up", "arrow-alt-up", "arrow-in-up","sort-up", "chevrons-up",  "chevron-up", "angle-double-up", "caret-up"],
         "download": [ "angle-down", "caret-square-down", "level-down", "transition-bottom","amount-down", "chevron-double-down", "arrow-bar-down","arrow-alt-circle-down", "arrow-down","arrow-alt-down", "arrow-in-down","sort-down" , "chevrons-down", "chevron-down","angle-double-down", "caret-down"],
-
+        "paint": ["paint","spray","palette", "paint-bucket", "brush","color", "colour"],
         "rocket": ["flight-takeoff","airplane", "plane","fight", "space-shuttle" ,"space", "helicopter", "flight", "rocket"],
         "gem": ["diamond", "jewel"],
         "bird": ["twitter", "crow", "dove","yuque", "earlybirds", "kiwi"],
         "volume": ["megaphone","volume-up", "volume-down", "volume", "bullhorn", "megaphone", "loudspeaker"],
-        "child": ["person","friends","female", "male","pray", "team", "group", "people", "running", "user", "restroom", "walking"],
+        "child": ["child","person","friends","female", "male","pray", "team", "group", "people", "running", "user", "restroom", "walking"],
         "tractor": ["bus-school","camper","truck", "ambulance", "roadster", "taxi","forklift"],
         "riding": ["motorcycle", "cycling","bicycle","motorbike", "bike","scooter", "moped", "biking"],
         "water": ["tint", "moisture", "rain", "droplet","contrast-drop", "blur-off","drop", "blur"],
@@ -1309,14 +1261,14 @@ def filter_and_replace(text):
         "emo": ['mood','smile'],
         "bluetooth": ['blue'],
         "file": ['folder'],
-        "display": ['laptop', 'device', 'computer',"mac", "laptop", "desktop", "device", "macbook", "imac", "pc"],
+        "display": ['laptop', 'computer',"mac", "laptop", "desktop", "macbook", "imac", "pc"],
         "comment": ["chat-left", "message-dots","message-square-detail",'message', 'chat','text','sms', "twitch", "comment", "chat" , "message", "text"],
         "bell": ['notifi'],
         "leaf": [ "cactus","canadian-maple-leaf", "growth", "pagelines" ,"flower", 'envira', 'pageline', 'seeding','grass', "leaf", "seedling","tree", "raspberry", "plant"],
         "chart": ['signal'],
         "cloud": ['weather'],
         "energy": ['lightning', 'zap', 'bolt',"flash"],
-        "camera": ["selfie","phone", "polaroid", "video","image","pic"],
+        #"camera": ["selfie","phone", "polaroid", "video","image","pic"],
         "spider": ['bug','insect'],
         "setting": ['cog', 'gear'],
         "fire": ["burn","hot", "flame", "torch"],
@@ -1324,8 +1276,13 @@ def filter_and_replace(text):
         "flag": ["pennant", "banner"],
         #new list
         "pen": ["ballpen", "edit", "pencil","highlight"],
-        #"hotel": ["city", "buildings"],
+    
+        "knife": ["slice", "utensils", "fork", "knife", "spoon" ,"kitchen"],
 
+        "guitar": ["headset","playlist", "guitar", "bandlab", "music", "disc" ,"airpods","headphone","radio", "tiktok"],
+        "close": ["times", "close", "xrp", "window-close", "x-lg"],
+        "browser": ["edge","chrome", "google", "firefox", "explora", "browser", "world","www"],
+        "hand": ["hand", "allergies", "finger", "thumb"],
     }
     # First, replace hyphens with spaces in the text
     text = text.replace('-', ' ')
@@ -1344,6 +1301,7 @@ def filter_and_replace(text):
         "upload": [  "top", "pull","-up"],
         "download": [ "-down", "bottom", "push"],
         "tractor": ["car", "bus","tir"],
+        "close": ["x"],
     }
     for category, words in second_dict.items():
         for word in words:
@@ -1365,7 +1323,7 @@ def clean_string(s):
     s = s.replace('.', ' ')
     
     # List of words/phrases to remove (ensure spaces are handled properly)
-    words_to_remove = {"front","bxs", "bx", "la", "fa", "fas fa", "split", "ri", "far", "ti ti", "bi bi", "far fa", "fas", "fa", "bi", "la la", "la", "line", "lines", "engines", "brand", "alt"}
+    words_to_remove = {"front","bxs", "bx bx", "la", "fa", "fas fa", "split", "ri", "far", "ti ti", "bi bi", "far fa", "fas", "fa", "bi", "la la", "la", "line", "lines", "engines", "brand", "alt"}
     
     # Use regex to remove exact words or phrases (word boundaries ensure whole words match)
     pattern = r'\b(?:' + '|'.join(re.escape(word) for word in words_to_remove) + r')\b'
@@ -1378,7 +1336,7 @@ def clean_string(s):
 
 def filter_string(s):
     # Define words that act as stop points
-    stop_words = {"bxs", "bx", "la", "fa", "fas", "split", "ri", "far", "ti", "bi", "far", "fas", "fa", "bi",  "la", "line", "lines", "engines", "brand", "alt"}
+    stop_words = {"bxs", "bx bx", "la", "fa", "fas", "split", "ri", "far", "ti", "bi", "far", "fas", "fa", "bi",  "la", "line", "lines", "engines", "brand", "alt"}
     
     # Replace '-' with whitespace
     s = s.replace('.', ' ')
@@ -1403,21 +1361,112 @@ def append_to_notepad(filename, captcha, answers):
         f.write("--------------------------------\n")
 
 # Example usage
+def mouse_moveclick(cropped_path="element_screenshot.png"):
+    try:
+        x, y = pyautogui.locateCenterOnScreen(cropped_path, confidence=0.9)
+        pyautogui.moveTo(x, y , duration=0.1)
+        pyautogui.click()
+        return True
+    except Exception as e:
+        print(f"Error moving and clicking: {e}")
 
+
+import glob
+
+# Load and preprocess image
+def load_image(image_path):
+    img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
+    img = cv2.GaussianBlur(img, (3, 3), 0)  # Denoise
+    return img
+
+# Feature detection using SIFT
+def detect_keypoints(img):
+    sift = cv2.SIFT_create()
+    keypoints, descriptors = sift.detectAndCompute(img, None)
+    return keypoints, descriptors
+
+# Match keypoints with stored templates
+def match_images(captcha, templates):
+    best_match = None
+    max_good_matches = 0
+
+    kp1, des1 = detect_keypoints(captcha)
+
+    if des1 is None:
+        print("No descriptors found in captcha.")
+        return None
+
+    index_params = dict(algorithm=1, trees=5)
+    search_params = dict(checks=50)
+    flann = cv2.FlannBasedMatcher(index_params, search_params)
+
+    for template_path in templates:
+        template = load_image(template_path)
+        kp2, des2 = detect_keypoints(template)
+
+        if des2 is None:
+            continue
+
+        matches = flann.knnMatch(des1, des2, k=2)
+
+        # Apply Lowe's Ratio Test to filter matches
+        good_matches = [m for m, n in matches if m.distance < 0.7 * n.distance]
+
+        if len(good_matches) > max_good_matches:
+            max_good_matches = len(good_matches)
+            best_match = template_path
+
+    return best_match
+
+# Main function
+def solve_captcha(captcha_path, template_folder):
+    captcha = load_image(captcha_path)
+    template_paths = glob.glob(f"{template_folder}/*.png")
+
+    best_template = match_images(captcha, template_paths)
+
+    if best_template:
+        print(f"Best match found: {best_template}")
+        return best_template
+    else:
+        print("No match found!")
+        return None
+
+def rename_with_code(filepath, category):
+    if not os.path.exists(filepath):
+        print(f"File '{filepath}' does not exist.")
+        return
+    
+    # Get the directory and base filename
+    directory, filename = os.path.split(filepath)
+    base_name, ext = os.path.splitext(filename)
+
+    # Loop until we find a unique filename
+    while True:
+        # Generate a random 6-digit code
+        random_code = random.randint(100000, 999999)
+        new_filename = f"{category}{random_code}{ext}"
+        new_filepath = os.path.join(directory, new_filename)
+        
+        # Check if the new file exists
+        if not os.path.exists(new_filepath):
+            os.rename(filepath, new_filepath)
+            print(f"File renamed to '{new_filepath}'")
+            return
 
 #V2
-def solve_icon_captcha(sb1):
+def solve_icon_captcha_v2(sb1):
     try:
-        sb1.execute_script("window.scrollTo(0, 1000);")
+        #pyautogui.scroll(1000,1808 ,-1500 )
         # Extract all captcha icons
         script = """
         // Define XPath expression to find elements inside the form with the specified class patterns or text
         let xpathExpression = `//form[@method="POST"]//*[contains(@class, "bxs-") or 
-        contains(@class, "bx-") or contains(@class, "la-") or 
-        contains(@class, "fa-") or contains(@class, "fas fa-") or 
-        contains(@class, "far fa-") or contains(@class, "ri-") or 
-        contains(@class, "ti ti-") or contains(@class, "bi bi-") or 
-        contains(text(), "Pick the one clear, similar icon from above.")]`;
+            contains(@class, "bx-") or contains(@class, "la-") or 
+            contains(@class, "fa-") or contains(@class, "fas fa-") or 
+            contains(@class, "far fa-") or contains(@class, "ri-") or 
+            contains(@class, "ti ti-") or contains(@class, "bi bi-") or 
+            self::img]`;
 
         // Evaluate XPath expression
         let matchingElements = document.evaluate(xpathExpression, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
@@ -1430,23 +1479,24 @@ def solve_icon_captcha(sb1):
             let style = window.getComputedStyle(element);
 
             let opacity = parseFloat(style.opacity); // Convert opacity to a number
-            let filter = style.filter.trim(); // Trim to remove spaces
+            let filter = style.filter.trim(); // Trim spaces
 
             console.log(`Element ${i}:`, element);
             console.log(`  Opacity: ${opacity}`);
             console.log(`  Filter: ${filter}`);
 
             // Extract opacity from filter if it exists
-            let filterOpacityMatch = filter.match(/opacity\\(([\d.]+)\\)/);
+            let filterOpacityMatch = filter.match(/opacity\(([\d.]+)\)/);
             let filterOpacity = filterOpacityMatch ? parseFloat(filterOpacityMatch[1]) : null;
 
-            // Keep elements where opacity is > 0.5 OR no filter opacity is applied
-            if ((filterOpacity === null || filterOpacity > 0.5) && opacity > 0.5) {
+            // Keep elements where opacity is > 0.5 AND filter opacity (if present) is also > 0.5
+            if (opacity > 0.5 && (filterOpacity === null || filterOpacity > 0.5)) {
                 filteredElements.push(element);
             }
         }
 
         console.log("Filtered elements (opacity > 0.5):", filteredElements);
+
         return filteredElements.map(el => el.id ? `#${el.id}.${el.className}` : `.${el.className}`);
         """
 
@@ -1455,14 +1505,53 @@ def solve_icon_captcha(sb1):
 
         # Print each element
         print("Filtered elements:")
-        for i, element in enumerate(filtered_elements):
-            print(f"{i}: {element}")
-
         # Assign the first element to captchaElement
         if filtered_elements:
             captchaElement = filtered_elements[0]
             print("\nCaptcha Element:", captchaElement)
 
+        if len(filtered_elements) < 4:
+            # Define the base64 image lists
+            base64_images = [
+                "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAAAXCAIAAAAuvD5IAAAACXB",
+            ]
+            base64_images2 = [
+                "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUgAAAAXCAIAAADm2UHyAAAACXB",
+                "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV0AAAAXCAIAAAAnXgteAAAACXBI",
+            ]
+
+            # Check if any image on the page matches a base64 image from the list
+            image_exists = any(
+                img.get_attribute("src").startswith(base64_prefix) 
+                for img in sb1.find_elements("form img") 
+                for base64_prefix in base64_images
+            )
+
+            image_exists2 = any(
+                img.get_attribute("src").startswith(base64_prefix) 
+                for img in sb1.find_elements("form img") 
+                for base64_prefix in base64_images2
+            )
+
+            # Print the results
+            print("Verified: ", image_exists)
+            print("Opps Error: ", image_exists2)
+
+            if image_exists:
+                print("Verified found in the first list.")
+                #button = sb1.find_element(By.CSS_SELECTOR, 'button#ClaimBtn')
+                #capture_element_screenshot(sb1, 'button#ClaimBtn', screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
+                #mouse_moveclick(cropped_path="element_screenshot.png")
+                #button.uc_click()
+                return
+            elif image_exists2:
+                print("Opps Error found in the first list.")
+                #button = sb1.find_element(By.CSS_SELECTOR, 'button#ClaimBtn')
+                #capture_element_screenshot(sb1, 'button#ClaimBtn', screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
+                #mouse_moveclick(cropped_path="element_screenshot.png")
+                #button.uc_click()
+                pyautogui.press('f5')
+                return
         # Remove first two and specific element
         to_remove = [
             filtered_elements[0],  # First element
@@ -1477,50 +1566,60 @@ def solve_icon_captcha(sb1):
         print("\nFiltered elements after removal:", filtered_elements)
         # Execute JavaScript in Selenium and get the results
                 
-        captcha_word = captchaElement #'nfvabpjo9wvn#xrikqozisnn.zCpvNsbks bi bi-arrow-down'
+        #captcha_word = captchaElement #'nfvabpjo9wvn#xrikqozisnn.zCpvNsbks bi bi-arrow-down'
         answers = filtered_elements
         #remove unnecessary 
+        captcha_image = "element_screenshot.png"  # Replace with your captcha
+        template_folder = "icons"  # Folder with stored icons
+        capture_element_screenshot(sb1, captchaElement, screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
+        captcha_word = solve_captcha(captcha_image, template_folder)
+        rename_with_code("element_screenshot.png", captcha_word)
+        cleaned_text = re.sub(r'\d', '', captcha_word)
 
         #filter everything
-        captcha_word = filter_string(captcha_word)
-        captcha_word = filter_and_replace(captcha_word)
         #captcha_word = filter_string(captcha_word)
-        #captcha_word = filter_and_replace(captcha_word)
+        #captcha_word = clean_string(captcha_word)
+        captcha_word = filter_and_replace(captcha_word)
+        #if '.' == captcha_word:
+        #    captcha_word = filtered_elements
+        #    captcha_word = filter_and_replace(captcha_word)
         #answers = [filter_and_replace(answer) for answer in answers]
         #answers = [filter_string(answer) for answer in answers]
         #answers = [filter_and_replace(answer) for answer in answers]
 
-        captcha_word = clean_string(captcha_word)
+        #captcha_word = clean_string(captcha_word)
         #answers = [clean_string(answer) for answer in answers]
         #check if the word is in the list
         print(captcha_word, "gfg")
         print(answers)
 
-
+        filterd_answrs = []
         for answer in answers:
             print(answer)
             copy_answer = answer
+            copy_answer = clean_string2(copy_answer)
             copy_answer = filter_and_replace(copy_answer)
             #copy_answer = filter_string(copy_answer)
             #copy_answer = filter_and_replace(copy_answer)
             copy_answer = clean_string(copy_answer)
             print(copy_answer)
+            filterd_answrs.append(copy_answer)
             if '' == captcha_word:
                 print("ng it")
-                #captcha_word = captcha_word.replace('', '')
+                continue
             if captcha_word in copy_answer or copy_answer in captcha_word:
                 print(answer, "Found it")
                 answer = answer.replace(' ', '.')
                 print('uc click before')
-                #form_element = sb1.find_element(answer)
-                button = sb1.find_element(answer)
-                print('uc click before2')
-                button.uc_click()
-                print('uc click after3')
+                button = sb1.find_element(By.CSS_SELECTOR, answer)
+                #button.uc_click()
+                capture_element_screenshot(sb1, answer, screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
+                mouse_moveclick(cropped_path="element_screenshot.png")
+
                 return True
         print("No matching icon found.")
-        append_to_notepad("notepad.txt", captchaElement, filtered_elements)
-        append_to_notepad("notepad.txt", captcha_word, answers)
+        #append_to_notepad("notepad.txt", captchaElement, filtered_elements)
+        append_to_notepad("notepad.txt", captcha_word, filterd_answrs)
 
         return False
     except Exception as e:
@@ -1528,6 +1627,108 @@ def solve_icon_captcha(sb1):
         return False
         pyautogui.press('f5')
         time.sleep(7)
+
+import base64
+def save_base64_image(base64_string, filename='output.png'):
+    # If the base64 string contains the data URL prefix, strip it
+    if base64_string.startswith('data:image'):
+        base64_string = base64_string.split(',')[1]
+
+    # Decode and write to file
+    image_data = base64.b64decode(base64_string)
+    with open(filename, 'wb') as f:
+        f.write(image_data)
+    print(f"Image saved as {filename}")
+
+#V3
+#Steps to solve the captcha:
+#1. Get the captcha 
+def solve_icon_captcha(sb1):
+    try:
+        print("solve_icon_captcha_v3")
+        script = """
+        let xpathExpression = `//form[@method="POST"]//*[contains(@class, "bxs-") or 
+            contains(@class, "bx-") or contains(@class, "la-") or 
+            contains(@class, "fa-") or contains(@class, "fas fa-") or 
+            contains(@class, "far fa-") or contains(@class, "ri-") or 
+            contains(@class, "ti ti-") or contains(@class, "bi bi-") or 
+            self::img]`;
+
+        // Evaluate XPath expression
+        let matchingElements = document.evaluate(xpathExpression, document, null, XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+
+        let filteredElements = [];
+        console.log("All matching elements with computed styles:");
+
+        for (let i = 0; i < matchingElements.snapshotLength; i++) {
+            let element = matchingElements.snapshotItem(i);
+            let style = window.getComputedStyle(element);
+
+            let opacity = parseFloat(style.opacity); // Convert opacity to a number
+            let filter = style.filter.trim(); // Trim spaces
+
+            console.log(`Element ${i}:`, element);
+            console.log(`  Opacity: ${opacity}`);
+            console.log(`  Filter: ${filter}`);
+
+            // Extract opacity from filter if it exists
+            let filterOpacityMatch = filter.match(/opacity\(([\d.]+)\)/);
+            let filterOpacity = filterOpacityMatch ? parseFloat(filterOpacityMatch[1]) : null;
+
+            // Keep elements where opacity is > 0.5 AND filter opacity (if present) is also > 0.5
+            if (opacity > 0.5 && (filterOpacity === null || filterOpacity > 0.5)) {
+                filteredElements.push(element);
+            }
+        }
+
+        console.log("Filtered elements (opacity > 0.5):", filteredElements);
+
+        // Map elements to id/class or src if first element is an img with a src
+        let result = filteredElements.map((el, index) => {
+            if (index === 0 && el.tagName.toLowerCase() === 'img' && el.src) {
+                return el.src;
+            }
+            return el.id ? `#${el.id}.${el.className}` : `.${el.className}`;
+        });
+
+        console.log("Final Result:", result);
+        return result;
+        """
+
+        # Execute JavaScript and get the filtered elements
+        filtered_elements = sb1.execute_script(script)
+
+        # Print each element
+        print("Filtered elements:")
+        # Assign the first element to captchaElement
+        if filtered_elements:
+            captchaElement = filtered_elements[0]
+            print("\nCaptcha Element:", captchaElement)
+            save_base64_image(captchaElement, 'captchaElement.png')
+
+        if len(filtered_elements) < 4:
+            return False
+        to_remove = [
+            filtered_elements[0],  # First element
+            filtered_elements[1],  # Second element
+            "#loginBtnSpinner.fas fa-circle-notch fa-spin d-none"
+            "#loginBtnSpinner.fas fa-circle-notch fa-spin d-none me-6"  # Specific element
+        ]
+
+        filtered_elements = [el for el in filtered_elements if el not in to_remove]
+
+        # Print the final list after removal
+        print("\nFiltered elements after removal:", filtered_elements)
+        for item in filtered_elements:
+            capture_element_screenshot(sb1, item, screenshot_path="full_screenshot.png", cropped_path=f"cropped_icons/img{item}.png")
+        #fix the rotation
+        print("fix rotation")
+
+
+    except Exception as e:
+        print(f"Error solving captcha: {e}")
+        return False
+
 
 def get_active_window_title():
     try:
@@ -1580,9 +1781,9 @@ def cloudflare(sb, login = True):
                     if x and y:
                         sb.disconnect() 
                         for i in range(1, 300):
-                            #pyautogui.moveTo(100, 200)
+                            page_title = get_active_window_title()
     
-                            if 'Login' in page_title or 'Faucet' in page_title or 'Earnbitmoon' in page_title:
+                            if 'Login' in page_title or 'Faucetpay' in page_title:
                                 try:
                                     time.sleep(1)
                                     x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
@@ -1765,6 +1966,10 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
 
                     sb1.execute_script("window.scrollTo(0, 1000);")
                     cloudflare(driver, True)
+                    all_windows = driver.window_handles
+                    for window in all_windows:
+                        if window not in restrict_pages:
+                            driver.switch_to.window(window)
                     try:
                         x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
                         if x and y: 
@@ -1778,14 +1983,17 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                                 pyautogui.click(943 ,788)
                                 #x:943 y:788
                                 time.sleep(5)
-                                #return
+     
                             if 'ClaimCoin' in current_title:
                                 pyautogui.click(973, 833)
                                 time.sleep(5)
-                                return
+                                #return
                             if driver.is_element_visible(submit_button):
                                 sb1.uc_click(submit_button)
-                            #sb1.uc_click('button[type="submit"]')
+                            pyautogui.click(939 ,760)
+                            #pyautogui.click(939 ,760)
+
+                            
                             
                             #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
                             #login_button.click(submit_button)
@@ -1848,16 +2056,16 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         get_mails_passowrds(farm_id)
 
 
-        if not_expected_title == current_title:
+        if not_expected_title in current_title:
             if function == 1:
                 login_to_faucet('https://earn-pepe.com/login', sb1, earnpp_email, earnpp_pass, 'cloudflare_success', window_list, 'button#ClaimBtn')
                 #login_to_faucet('https://earn-pepe.com/login', sb1, earnpp_email, earnpp_pass, 'rscaptcha', window_list, 'button#loginBtn')
             elif function == 2:
-                login_to_faucet('https://feyorra.site/login', sb1, feyorra_email, feyorra_pass, 'cloudflare_success', window_list, 'button#loginBtn')
+                login_to_faucet('https://feyorra.site/login', sb1, feyorra_email, feyorra_pass, 'cloudflare_success', window_list, 'button#ClaimBtn')
             elif function == 3:
-                login_to_faucet('https://claimcoin.in/login', sb1, claimc_email, claimc_pass,  'cloudflare_success', window_list, 'button[type="submit"]') #'not_a_robot'
-            elif function == 6:
-                login_to_faucet('https://feyorra.top/login', sb1, 'khabibmakanzie@gmail.com', '%aYYcsSfcYjN%5x', 'rscaptcha', window_list, 'button[type="submit"]') #'not_a_robot'
+                login_to_faucet('https://earn-trump.com/login', sb1, earnpp_email, earnpp_pass,  'cloudflare_success', window_list, 'button#ClaimBtn') #'not_a_robot'
+            elif function == 4:
+                login_to_faucet('https://earn-bonk.com/login', sb1, feyorra_email, feyorra_pass,  'cloudflare_success', window_list, 'button#ClaimBtn')  #'not_a_robot'
 
 
         elif expected_title in current_title:
@@ -1993,12 +2201,20 @@ def response_messege(response):
 
 def get_coins(driver, sitekey):
     coins = None
-    
+    title =sb1.get_title()
     try:
         driver.execute_script("window.scrollTo(0, 0);")
-        if sitekey == 1:
+        if sitekey == 1 and 'Earn-pepe' in title:
             if driver.is_element_present('small span span'):
                 select_element = driver.find_element('css selector', 'small span span')
+                selected_text = select_element.text.strip()  # Extract and clean the text
+                coins = selected_text
+            else:
+                print(f'Sitekey:{sitekey} not found')
+
+        if sitekey == 1 and 'Earn-Trump' in title:
+            if driver.is_element_present('li a span span'):
+                select_element = driver.find_element('css selector', 'li a span span')
                 selected_text = select_element.text.strip()  # Extract and clean the text
                 coins = selected_text
             else:
@@ -2041,46 +2257,47 @@ def get_coins(driver, sitekey):
 
 
 def capture_element_screenshot(driver, selector, screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png"):
-    # Step 1: Find the element using SeleniumBase
-    element = driver.find_element(selector)
+    try:
+        # Step 1: Find the element using SeleniumBase
+        element = driver.find_element(selector)
     
-    # Step 2: Get element's location and size
-    location = element.location
-    size = element.size
-    y_location = location['y'] + 100
-    driver.execute_script(f"window.scrollTo(0, {y_location});")
-    #time.sleep(1)
-
-    # Step 3: Capture the full-page screenshot
-    driver.save_screenshot(screenshot_path)
-    element = driver.find_element(selector)
+        # Step 3: Capture the full-page screenshot
+        driver.save_screenshot(screenshot_path)
     
-    # Step 2: Get element's location and size
-    location = element.location
-    size = element.size
-    # Step 4: Load the full screenshot with Pillow
-    screenshot = Image.open(screenshot_path)
-    scroll_y = driver.execute_script("return window.scrollY;")
-    # Step 5: Define the crop area using the element's location and size
-    left = location['x']
-    top = location['y'] - scroll_y
-    right = left + size['width']
-    bottom = top + size['height'] 
-    print(left, top, right, bottom)
-    # Step 6: Crop the image to the element's size
-    cropped_image = screenshot.crop((left, top, right, bottom))
+        # Step 4: Re-fetch the element after scrolling
+        element = driver.find_element(selector)
+        location = element.location
+        size = element.size
     
-    # Step 7: Save the cropped image
-    cropped_image.save(cropped_path)
+        # Step 5: Load the full screenshot with Pillow
+        screenshot = Image.open(screenshot_path)
+        scroll_y = driver.execute_script("return window.scrollY;")
     
-    print(f"Cropped screenshot saved at {cropped_path}")
-
+        # Step 6: Calculate the crop area
+        left = int(location['x'])
+        top = int(location['y'] - scroll_y)
+        right = int(left + size['width'])
+        bottom = int(top + size['height'])
+    
+        print(f"Crop area: left={left}, top={top}, right={right}, bottom={bottom}")
+    
+        # Step 7: Crop the image to the element's size
+        cropped_image = screenshot.crop((left, top, right, bottom))
+    
+        # Step 8: Save the cropped image
+        cropped_image.save(cropped_path)
+        print(f"Cropped screenshot saved at {cropped_path}")
+    except Exception as e:
+        print(f"Error capturing element screenshot: {e}")
 
  
 def withdraw_faucet(driver, sitekey):
 
     try:
-
+        #        quer2y = {"type": "main"}
+        #        dochh2 = collection.find_one(quer2y)
+        #        faucetlayout = dochh2["mainfaucet"]
+        #        print(f'Farm ID:{farm_id} | Faucet Layout: {faucetlayout}')
         collectionbip = db[f'LocalCSB']
         quer2y = {"type": "main"}
         dochh = collectionbip.find_one(quer2y)
@@ -2091,25 +2308,44 @@ def withdraw_faucet(driver, sitekey):
         fey_x =  679 
         fey_y =  414
 
-        #defualts are for TRX
-        if 'LTC' in currency:
-            pep_x = 966 
-            pep_y =  615
+        if faucetlayout == 1:
+            if 'LTC' in currency:
+                pep_x = 966 
+                pep_y =  615
 
-            fey_x =  982
-            fey_y =  602
-        elif 'SOL' in currency:
-            pep_x = 602
-            pep_y =  778
+                fey_x =  982
+                fey_y =  602
+            elif 'SOL' in currency:
+                pep_x = 602
+                pep_y =  778
 
-            fey_x =  679 
-            fey_y =  414
-        elif 'TRX' in currency:
-            pep_x = 1329 
-            pep_y =  452
+                fey_x =  679 
+                fey_y =  414
+            elif 'TRX' in currency:
+                pep_x = 1329 
+                pep_y =  452
 
-            fey_x =  679
-            fey_y =  602
+                fey_x =  679
+                fey_y =  602
+        else:
+            if 'LTC' in currency:
+                pep_x = 1388 
+                pep_y =  284
+
+                fey_x =  884
+                fey_y =  648
+            elif 'SOL' in currency:
+                pep_x = 1388
+                pep_y =  284
+
+                fey_x =  375 
+                fey_y =  647
+            elif 'TRX' in currency:
+                pep_x = 334 
+                pep_y =  457
+
+                fey_x =  375
+                fey_y =  466
 
         current_window = sb1.current_window_handle
         all_windows = sb1.window_handles
@@ -2124,7 +2360,10 @@ def withdraw_faucet(driver, sitekey):
 
         if sitekey == 1:
             print('Strting PePe withdraw')
-            driver.uc_open('https://earn-pepe.com/member/faucetpay')
+            if faucetlayout == 1:
+                driver.uc_open('https://earn-pepe.com/member/faucetpay')
+            else:
+                driver.uc_open('https://earn-trump.com/member/faucetpay')
             time.sleep(5)
             driver.execute_script("window.scrollTo(0, 300);")
             time.sleep(1)
@@ -2141,16 +2380,17 @@ def withdraw_faucet(driver, sitekey):
                     #pyautogui.click(605, 754) #trx
                     #pyautogui.click(967, 754)
                     time.sleep(5)
-                    driver.execute_script(f"window.scrollTo(0, 1000);")
+                    if faucetlayout == 1:
+                        driver.execute_script(f"window.scrollTo(0, 1000);")
                     time.sleep(2)
                     cloudflare(sb1, login = True)
                     time.sleep(2)
                     driver.uc_click('button#ClaimBtn')
-                    driver.uc_open('https://earn-pepe.com/member/faucet')
+                    time.sleep(5)
                     response_messege(f'EarnPP FaucetPay Withdrawed{currency}')
                     #response_messege('Started')
                     query = {"type": "main"}
-                    update = {"$set": {"request": 'ipfixer'}}
+                    update = {"$set": {"request": 'withdrawfeyorra'}}
                     result = collection.update_one(query, update)
                     return
 
@@ -2163,7 +2403,11 @@ def withdraw_faucet(driver, sitekey):
         
         if sitekey == 2:
             print('Strting Feyorra withdraw')
-            driver.uc_open('https://feyorra.site/member/faucetpay')
+            
+            if faucetlayout == 1:
+                driver.uc_open('https://feyorra.site/member/faucetpay')
+            else:
+                driver.uc_open('https://earn-bonk.com/member/faucetpay')
             time.sleep(5)
             driver.execute_script("window.scrollTo(0, 300);")
             time.sleep(1)
@@ -2186,7 +2430,7 @@ def withdraw_faucet(driver, sitekey):
                     cloudflare(sb1, login = True)
                     time.sleep(2)
                     driver.uc_click('button#ClaimBtn')
-                    driver.uc_open('https://feyorra.site/member/faucet')
+                    time.sleep(5)
                     response_messege(f'Feyorra FaucetPay Withdrawed{currency}')
                     #response_messege('Started')
                     query = {"type": "main"}
@@ -2445,6 +2689,24 @@ for frm in CSB1_farms:
     update = {"$set": {"request": 'ipfixer'}}
     result = collection_csb.update_one(query, update)
 
+
+def update_ip(new_ip, config_path="mfhelper/config.json"):
+    try:
+        # Load existing config.json
+        with open(config_path, "r") as file:
+            config = json.load(file)
+        
+        # Update the targetIP
+        config["targetIP"] = new_ip
+
+        # Save the updated config.json
+        with open(config_path, "w") as file:
+            json.dump(config, file, indent=4)
+
+        print(f"Updated targetIP to: {new_ip}")
+    except Exception as e:
+        print(f"Error updating config.json: {e}")
+
 def open_browsers():
     global sb1
     global chrome_user_data_dir
@@ -2471,6 +2733,7 @@ def open_browsers():
     sb1.switch_to.window(current_window2)
     sb1.uc_open("chrome://extensions/")
     time.sleep(7)
+    #sb1.execute_script("window.scrollTo(0, 300);")
     print(sb1.get_title())
     gggv = are_extensions_exist()
     get_mails_passowrds(farm_id)
@@ -2508,14 +2771,15 @@ def open_browsers():
         update = {"$set": {"response": 'Setup Done...'}}
         result = collection.update_one(query, update)
     
-    time.sleep(99999)
+    #time.sleep(99999)
     return sb1
 
-
+faucetlayout = None
 def open_faucets():
     global sb1
     while True:
         try:
+            global faucetlayout
             quer2y = {"type": "main"}
             dochh2 = collection.find_one(quer2y)
             layout2 = dochh2["withdraw_mail"]
@@ -2605,16 +2869,64 @@ def open_faucets():
                 ip_required = ip_address
                 add_blacklistedip2(f'F{farm_id}L{lay}', ip_address)
                 get_mails_passowrds(farm_id)
-                
+
+                quer2y = {"type": "main"}
+                dochh2 = collection.find_one(quer2y)
+                faucetlayout = dochh2["mainfaucet"]
+                print(f'Farm ID:{farm_id} | Faucet Layout: {faucetlayout}')
+                update_ip(ip_address, config_path="mfhelper/config.json")
                 ip_address = get_ip(sb1)
                 if ip_required == ip_address:
                     response_messege('EarnPP Loging')
                     if earnpp:
+                        if faucetlayout == 1:
+                            earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [], ip_required)
+                            if earnpp_window == 404:
+                                raise Exception(" earnpp_window == 404")
+                            print(f"EarnPP window handle: {earnpp_window}")
+                        else:
+                            earnpp_window = handle_site(sb1, "https://earn-trump.com/member/faucet","Faucet | Earn-Trump" , "Free $Trump Coin Faucet | Earn $Trump Crypto Instantly", 3, [], ip_required)
+                            if earnpp_window == 404:
+                                raise Exception(" earnpp_window == 404")
+                            print(f"EarnPP window handle: {earnpp_window}")
+                    else:
+                        earnpp_window = None
+                else:
+                    raise Exception("Ip changed")
+                ip_address = get_ip(sb1)
+                if ip_required == ip_address:
+                    response_messege('Feyorra Loging')
+                    if feyorra:
+                        #sb1.open_new_window()
+                        if faucetlayout == 1:
+                            feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Home | Feyorra", 2, [], ip_required)
+                            if feyorra_window == 404:
+                                raise Exception(" feyorra_window == 404")
+                            print(f"Feyorra window handle: {feyorra_window}")
 
-                        earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [], ip_required)
-                        if earnpp_window == 404:
-                            raise Exception(" earnpp_window == 404")
-                        print(f"EarnPP window handle: {earnpp_window}")
+                        else:
+                            feyorra_window = handle_site(sb1, "https://earn-bonk.com/member/faucet", "Faucet | Earn-Bonk" , "Next-Gen BONK Crypto Faucet", 4, [], ip_required)
+                            if feyorra_window == 404:
+                                raise Exception(" feyorra_window == 404")
+                            print(f"Feyorra window handle: {feyorra_window}")
+
+                    else:
+                        feyorra_window = None
+                else:
+                    raise Exception("Ip changed")
+                if ip_required == ip_address:
+                    response_messege('EarnPP Loging')
+                    if earnpp:
+                        if faucetlayout == 1:
+                            earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [], ip_required)
+                            if earnpp_window == 404:
+                                raise Exception(" earnpp_window == 404")
+                            print(f"EarnPP window handle: {earnpp_window}")
+                        else:
+                            earnpp_window = handle_site(sb1, "https://earn-trump.com/member/faucet","Faucet | Earn-Trump" , "Free $Trump Coin Faucet | Earn $Trump Crypto Instantly", 3, [], ip_required)
+                            if earnpp_window == 404:
+                                raise Exception(" earnpp_window == 404")
+                            print(f"EarnPP window handle: {earnpp_window}")
                     else:
                         earnpp_window = None
                 else:
@@ -2624,28 +2936,22 @@ def open_faucets():
                     response_messege('Feyorra Loging')
                     if feyorra:
                         sb1.open_new_window()
-                        feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Home | Feyorra", 2, [earnpp_window], ip_required)
-                        if feyorra_window == 404:
-                            raise Exception(" feyorra_window == 404")
-                        print(f"Feyorra window handle: {feyorra_window}")
+                        if faucetlayout == 1:
+                            feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Home | Feyorra", 2, [earnpp_window], ip_required)
+                            if feyorra_window == 404:
+                                raise Exception(" feyorra_window == 404")
+                            print(f"Feyorra window handle: {feyorra_window}")
+
+                        else:
+                            feyorra_window = handle_site(sb1, "https://earn-bonk.com/member/faucet", "Faucet | Earn-Bonk" , "Next-Gen BONK Crypto Faucet", 4, [earnpp_window], ip_required)
+                            if feyorra_window == 404:
+                                raise Exception(" feyorra_window == 404")
+                            print(f"Feyorra window handle: {feyorra_window}")
+
                     else:
                         feyorra_window = None
                 else:
                     raise Exception("Ip changed")
-                ip_address = get_ip(sb1)
-                if ip_required == ip_address:
-                    response_messege('ClaimC Loging')
-                    if claimcoin:
-                        sb1.open_new_window()
-                        claimcoin_window = handle_site(sb1, "https://claimcoin.in/faucet", "Faucet | ClaimCoin - ClaimCoin Faucet", "ClaimCoin - MultiCurrency Crypto Earning Platform", 3, [earnpp_window, feyorra_window], ip_required)
-                        if claimcoin_window == 404:
-                            raise Exception(" claimcoin_window == 404")
-                        print(f"ClaimCoin window handle: {claimcoin_window}")
-                    else:
-                        claimcoin_window = None
-                else:
-                    raise Exception("Ip changed")
-
                 
                 ip_address = get_ip(sb1)
                 if ip_required == ip_address:
@@ -2719,7 +3025,7 @@ while True:
                 reset_count = 16
                 reset_count_isacc = 0
 
-            ip_address = get_ip(sb1) 
+            #ip_address = get_ip(sb1) 
             if reset_count >= 15:
                 print('reset count higher')
                 
@@ -2746,14 +3052,18 @@ while True:
                         sb1.switch_to.window(earnpp_window)
                         debug_messages(f'Getting Pages Titile:EarnPP')
                         title =sb1.get_title()
-                        if 'Faucet | Earn-pepe' in title:
+                        if 'Faucet | Earn-pepe' in title or 'Faucet | Earn-Trump' in title:
                             debug_messages(f'Solving Icon Captcha on EarnPP')
-
+                            val = get_coins(sb1, 1)
+                            if val:
+                                earnpp_coins = val
                             gg = solve_icon_captcha(sb1)
                             if gg:
                                 earnpp_limit_reached = None
                             else:
                                 if sb1.is_text_visible('Timeout, Please refresh the page!'):
+                                    sb1.uc_click('button#ClaimBtn')
+                                if sb1.is_text_visible('Oops, wrong selection! Please refresh the page.'):
                                     sb1.uc_click('button#ClaimBtn')
                                 #if sb1.is_text_visible('Verified!'):
                                 #    sb1.uc_click('button#ClaimBtn')
@@ -2764,14 +3074,14 @@ while True:
                                 else:
                                     refresh_count +=5
                             debug_messages(f'Solved Icon Captcha on EarnPP')
-                            val = get_coins(sb1, 1)
-                            if val:
-                                earnpp_coins = val
+
 
                         elif 'Lock' in title:
                             debug_messages(f'Lock.. Found on EarnPP')
                             response_messege('Lock.. Found on EarnPP')
                             earnpp_coins = 0
+                        elif 'Google' in title:
+                            reset_count +=5
                         elif 'Just' in title:
                             debug_messages(f'Just.. Found on EarnPP')
 
@@ -2791,13 +3101,22 @@ while True:
                             reset_count +=1
 
                     except Exception as e:
-                        if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
-                            debug_messages(f'EarnPP Limit Reached')
-                            response_messege('EarnPP Limit Reached')
-                            earnpp_limit_reached = True
+                        if mainscript == 1:
+                            if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
+                                debug_messages(f'EarnPP Limit Reached')
+                                response_messege('EarnPP Limit Reached')
+                                earnpp_limit_reached = True
+                            else:
+                                debug_messages(f'ERR on EarnPP:{e}')
+                                reset_count +=1
                         else:
-                            debug_messages(f'ERR on EarnPP:{e}')
-                            reset_count +=1
+                            if sb1.is_text_visible('Limit Reached, Claim Shortlinks to increase the claim limit..'):
+                                debug_messages(f'EarnPP Limit Reached')
+                                response_messege('EarnPP Limit Reached')
+                                earnpp_limit_reached = True
+                            else:
+                                debug_messages(f'ERR on EarnPP:{e}')
+                                reset_count +=1
                 
                 if feyorra:
                     try:
@@ -2807,15 +3126,19 @@ while True:
                         pyautogui.press('enter')
                         title =sb1.get_title()
 
-                        if 'Faucet | Feyorra' in title:
+                        if 'Faucet | Feyorra' in title or 'Faucet | Earn-Bonk' in title:
                             debug_messages(f'Solving Icon Captcha on Feyorra')
 
-
+                            val = get_coins(sb1, 2)
+                            if val:
+                                feyorra_coins = val
                             gg = solve_icon_captcha(sb1)
                             if gg:
                                 feyorra_limit_reached =None
                             else:
                                 if sb1.is_text_visible('Timeout, Please refresh the page!'):
+                                    sb1.uc_click('button#ClaimBtn')
+                                if sb1.is_text_visible('Oops, wrong selection! Please refresh the page.'):
                                     sb1.uc_click('button#ClaimBtn')
                                 #if sb1.is_text_visible('Verified!'):
                                 #    sb1.uc_click('button#ClaimBtn')
@@ -2825,14 +3148,14 @@ while True:
                                     feyorra_limit_reached =True
                                 else:
                                     refresh_count +=5
-                            val = get_coins(sb1, 2)
-                            if val:
-                                feyorra_coins = val
+
                                 
                         elif 'Just' in title:
                             debug_messages(f'Just.. Found on Feyorra')
                             cloudflare(sb1, login = False)
                             debug_messages(f'Just Fixed Feyorra')
+                        elif 'Google' in title:
+                            reset_count +=5
                         elif 'aintenance' in title:
                             debug_messages(f'maintenance.. Found on Feyorra')
                             response_messege('maintenance.. Found on Feyorra')
@@ -2852,13 +3175,26 @@ while True:
                             reset_count +=1
                     except Exception as e:
                         pyautogui.press('enter')
-                        if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
-                            debug_messages(f'Feyorra Limit Reached')
-                            response_messege('Feyorra Limit Reached')
-                            feyorra_limit_reached =True
+                        if mainscript == 1:
+                            if sb1.is_text_visible('Limit Reached, Comeback Again Tomorrow!'):
+                                debug_messages(f'Feyorra Limit Reached')
+                                response_messege('Feyorra Limit Reached')
+                                feyorra_limit_reached =True
+                            else:
+                                debug_messages(f'ERR on Feyorra:{e}')
+                                reset_count +=1
                         else:
-                            debug_messages(f'ERR on Feyorra:{e}')
-                            reset_count +=1
+
+                            if sb1.is_text_visible('Limit Reached, Claim Shortlinks to increase the claim limit..'):
+                                debug_messages(f'Feyorra Limit Reached')
+                                response_messege('Feyorra Limit Reached')
+                                feyorra_limit_reached =True
+                            else:
+                                debug_messages(f'ERR on Feyorra:{e}')
+                                reset_count +=1
+
+###################################################################################################################
+
 
 
                 elapsed_time = time.time() - start_time
@@ -2872,7 +3208,10 @@ while True:
                         if refresh_count >= 30:
                             response_messege(f'earnpp_coins same {earnpp_coins}| count:{refresh_count} | {seconds_only}')
                             sb1.switch_to.window(earnpp_window)
-                            sb1.uc_open('https://earn-pepe.com/member/faucet')
+                            if faucetlayout == 1:
+                                sb1.uc_open('https://earn-pepe.com/member/faucet')
+                            else:
+                                sb1.uc_open('https://earn-trump.com/member/faucet')
                             refresh_count = 0
 
                         if earnpp_limit_reached:
@@ -2889,22 +3228,18 @@ while True:
                             response_messege(f'feyorra_coins same {feyorra_coins}| count:{refresh_count} | {seconds_only}')
                             refresh_count = 0
                             sb1.switch_to.window(feyorra_window)
-                            sb1.uc_open('https://feyorra.site/member/faucet')
+                            #sb1.uc_open('https://feyorra.site/member/faucet')
+                            if faucetlayout == 1:
+                                sb1.uc_open('https://feyorra.site/member/faucet')
+                            else:
+                                sb1.uc_open('https://earn-bonk.com/member/faucet')
+                                
                         if feyorra_limit_reached:
                             pass
                         else:
                             if refresh_count >= 50:
                                 reset_count +=5
                             refresh_count +=1
-                    elif claimc_coins == claimc_coins_pre and cc_faucet and claimcoin:
-                        start_time = time.time()
-                        if refresh_count >= 30:
-                            response_messege(f'claimc_coins same {claimc_coins}| count:{refresh_count} | {seconds_only}')
-                            sb1.switch_to.window(claimcoin_window)
-                            sb1.uc_open("https://claimcoin.in/faucet")
-                            refresh_count = 0
-                        
-                        refresh_count +=1
                     else:
                         earnpp_coins_pre = earnpp_coins
                         feyorra_coins_pre = feyorra_coins

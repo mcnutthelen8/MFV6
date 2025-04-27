@@ -1640,6 +1640,255 @@ def save_base64_image(base64_string, filename='output.png'):
         f.write(image_data)
     print(f"Image saved as {filename}")
 
+
+import torch
+import torchvision.transforms as transforms
+from torchvision import models
+from PIL import Image
+import torch.nn.functional as F
+
+def load_image(image_path, image_size=(60, 60)):
+    transform = transforms.Compose([
+        transforms.Resize(image_size),
+        transforms.ToTensor(),
+    ])
+    image = Image.open(image_path).convert('RGB')
+    image = transform(image).unsqueeze(0)  # Add batch dimension
+    return image
+
+def extract_features(image_tensor, model):
+    with torch.no_grad():
+        features = model(image_tensor)
+    return features
+#import timm
+def compute_similarity(img_path1, img_path2):
+    # Load model
+    model = models.efficientnet_v2_s(pretrained=True)#timm.create_model('convnext_large', pretrained=True) #models.resnet101(pretrained=True) #models.efficientnet_b3(pretrained=True) #models.resnet101(pretrained=True)
+    model.fc = torch.nn.Identity()  # remove final classification layer
+    model.eval()
+
+    # Load images
+    img1 = load_image(img_path1)
+    img2 = load_image(img_path2)
+
+    # Extract features
+    feat1 = extract_features(img1, model)
+    feat2 = extract_features(img2, model)
+
+    # Cosine similarity
+    similarity = F.cosine_similarity(feat1, feat2).item()
+
+    return similarity
+
+
+def get_image_list(folder_path):
+    img_list = []
+    for filename in os.listdir(folder_path):
+        if filename.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif')):
+            img_list.append(os.path.join(folder_path, filename))
+    return img_list
+
+def fill_background_black(pil_img):
+    """Fill transparent background with black color."""
+    bg = Image.new("RGBA", pil_img.size, (0, 0, 0, 255))
+    bg.paste(pil_img, (0, 0), mask=pil_img)
+    return bg
+
+
+def remove_image_border(cv2_img, border_px):
+    """Remove a uniform border from all sides of the image."""
+    if cv2_img is None:
+        raise FileNotFoundError("Image is None")
+
+    h, w = cv2_img.shape[:2]
+
+    if border_px * 2 >= h or border_px * 2 >= w:
+        raise ValueError("Border size too large for image dimensions.")
+
+    return cv2_img[border_px:h-border_px, border_px:w-border_px]
+
+
+def fix_rotation(cv2_img):
+    """Fix slight rotation issues by detecting white edges."""
+    if cv2_img is None:
+        raise FileNotFoundError("Image is None")
+
+    if len(cv2_img.shape) == 2:
+        cv2_img = cv2.cvtColor(cv2_img, cv2.COLOR_GRAY2BGRA)
+    elif cv2_img.shape[2] == 3:
+        cv2_img = cv2.cvtColor(cv2_img, cv2.COLOR_BGR2BGRA)
+    elif cv2_img.shape[2] != 4:
+        raise ValueError(f"Unsupported image format: {cv2_img.shape}")
+
+    h, w, _ = cv2_img.shape
+
+    def is_white(px):
+        b, g, r, a = px
+        return (r > 0 or g > 0 or b > 0) and a > 0
+
+    points = []
+
+    # Check top, right, bottom, left edges
+    for x in range(w):
+        if is_white(cv2_img[0, x]):
+            points.append((x, 0))
+            break
+    for y in range(h):
+        if is_white(cv2_img[y, w-1]):
+            points.append((w-1, y))
+            break
+    for x in range(w):
+        if is_white(cv2_img[h-1, x]):
+            points.append((x, h-1))
+            break
+    for y in range(h):
+        if is_white(cv2_img[y, 0]):
+            points.append((0, y))
+            break
+
+    if len(points) != 4:
+        print("Warning: Not all 4 edges detected.")
+        return 4  # Special signal
+
+    pts = np.array(points, dtype="float32")
+    pts_sorted_y = pts[np.argsort(pts[:, 1])]
+    top_pts = pts_sorted_y[:2]
+    bottom_pts = pts_sorted_y[2:]
+    top_left, top_right = top_pts[np.argsort(top_pts[:, 0])]
+    bottom_left, bottom_right = bottom_pts[np.argsort(bottom_pts[:, 0])]
+
+    ordered_pts = np.array([top_left, top_right, bottom_right, bottom_left], dtype="float32")
+
+    dst_size = 50
+    dst_pts = np.array([
+        [0, 0],
+        [dst_size - 1, 0],
+        [dst_size - 1, dst_size - 1],
+        [0, dst_size - 1]
+    ], dtype="float32")
+
+    M = cv2.getPerspectiveTransform(ordered_pts, dst_pts)
+    warped = cv2.warpPerspective(cv2_img, M, (dst_size, dst_size), flags=cv2.INTER_LINEAR)
+
+    return warped
+
+
+def denoise_image(cv2_img):
+    """Denoise the image and convert to binary."""
+    gray = cv2.cvtColor(cv2_img, cv2.COLOR_BGR2GRAY)
+    _, binary = cv2.threshold(gray, 2, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+    return binary
+
+def denoise_image3(image):
+    try:
+        if isinstance(image, str):
+            filename = image
+            image = cv2.imread(image, cv2.IMREAD_UNCHANGED)
+        else:
+            filename = None
+        img = image
+        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        _, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+        cleaned = cv2.bitwise_not(thresh)
+        if filename:
+            cv2.imwrite(filename, cleaned)
+        return cleaned
+    except Exception as e:
+        print(f"Error in denoising image: {e}")
+        return None
+
+def add_black_border(image_path, output_path, border_size=5):
+    img = cv2.imread(image_path, cv2.IMREAD_UNCHANGED)
+    bordered = cv2.copyMakeBorder(
+        img,
+        top=border_size,
+        bottom=border_size,
+        left=border_size,
+        right=border_size,
+        borderType=cv2.BORDER_CONSTANT,
+        value=[0, 0, 0]  # black color
+    )
+    cv2.imwrite(output_path, bordered)
+
+def captcha_image_filter(captcha_image_path, answer_image_path):
+    """Process captcha image."""
+    try:
+        captcha_orig = cv2.imread(captcha_image_path, cv2.IMREAD_UNCHANGED)
+
+        if captcha_orig is None:
+            raise FileNotFoundError(f"Captcha image not found: {captcha_image_path}")
+
+        # Fill transparent areas with black
+        captcha_pil = Image.fromarray(cv2.cvtColor(captcha_orig, cv2.COLOR_BGRA2RGBA))
+        captcha_filled = fill_background_black(captcha_pil)
+
+        # Convert back to OpenCV
+        captcha_cv = cv2.cvtColor(np.array(captcha_filled), cv2.COLOR_RGBA2BGRA)
+
+        # Fix rotation
+        fixed = fix_rotation(captcha_cv)
+
+        border_size = 1
+        while isinstance(fixed, int) and fixed == 4 and border_size <= 3:
+            captcha_cv = remove_image_border(captcha_cv, border_size)
+            fixed = fix_rotation(captcha_cv)
+            border_size += 1
+
+        if isinstance(fixed, int) and fixed == 4:
+            print("Error: Unable to fix rotation of captcha image.")
+            return
+
+        # Denoise
+        denoised = denoise_image(fixed)
+
+        # Final cut (remove some extra edges)
+        final_captcha = remove_image_border(denoised, 2)
+
+        # Save final image
+        cv2.imwrite("processed_captcha.png", final_captcha)
+        print(f"Captcha image processed and saved to processed_captcha.png")
+
+        # Filtering Answer Images
+        # Get the list of images in the folder
+        img_list = get_image_list(answer_image_path)
+        print(f"Answer images found: {img_list}")
+
+        # Loop through each image and process it
+        for img in img_list:
+            denoise_image3(img)
+            add_black_border(img, img, border_size=5)
+            print(f"Filtering {img} with processed captcha")
+        
+        print("All answer images processed.")
+        best_match = None
+        highest_similarity = 0.0
+        similarity_list = []
+
+        for img in img_list:
+            similarity = compute_similarity("processed_captcha.png", img)
+            print(f"Similarity: {similarity:.4f} Comparing {img}")
+            similarity_list.append((img, similarity))  # Store img with its score
+
+            if similarity > highest_similarity:
+                highest_similarity = similarity
+                best_match = img
+
+        print(f"\nBest match: {best_match} with similarity {highest_similarity:.4f}")
+        return best_match
+
+
+    except Exception as e:
+        print(f"Error processing captcha image: {e}")
+        return
+
+def filename_to_css_property(filename):
+    # Remove the prefix and suffix
+    name = filename.replace("cropped_icons/captchaimg.", "").replace(".png", "")
+    # Remove any leading/trailing spaces just in case
+    name = name.strip()
+    # Replace spaces with dots
+    css_property = "." + name.replace(" ", ".")
+    return css_property
 #V3
 #Steps to solve the captcha:
 #1. Get the captcha 
@@ -1720,10 +1969,13 @@ def solve_icon_captcha(sb1):
         # Print the final list after removal
         print("\nFiltered elements after removal:", filtered_elements)
         for item in filtered_elements:
-            capture_element_screenshot(sb1, item, screenshot_path="full_screenshot.png", cropped_path=f"cropped_icons/img{item}.png")
-        #fix the rotation
-        print("fix rotation")
+            capture_element_screenshot(sb1, item, screenshot_path="full_screenshot.png", cropped_path=f"cropped_icons/captchaimg{item}.png")
 
+        best_match = captcha_image_filter("captchaElement.png", "cropped_icons")
+        best_match = filename_to_css_property(best_match)
+        print("Best match:", best_match)
+        sb1.uc_click(best_match)
+        return True
 
     except Exception as e:
         print(f"Error solving captcha: {e}")

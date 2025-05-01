@@ -29,8 +29,7 @@ import cv2
 import numpy as np
 from PIL import Image
 from pymongo import MongoClient
-from paddleocr import PaddleOCR
-import Levenshtein
+
 import json
 import argparse
 import clipboard
@@ -137,10 +136,10 @@ def get_mails_passowrds(farm_id):
         elif '3' in layout:
             server_name1 = 'thailand' # 'morocco' #'bulgaria'
             CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'grandkolla999br@gmail.com'
-            earnpp_pass = 'grandkolla999br'
-            feyorra_email = 'grandkolla999br@gmail.com'
-            feyorra_pass = 'grandkolla999br'
+            earnpp_email = 'grandkolla19972@gmail.com'
+            earnpp_pass = 'grandkolla19972'
+            feyorra_email = 'jjona323h123@gmail.com'
+            feyorra_pass = 'jjona323h123'
 
 
         else:
@@ -1168,198 +1167,9 @@ def control_panel():
 
 
 
-def verify_and_claim(sb1):
-    # Check if the "Verified!" message exists
-    if sb1.is_element_visible('div.hp-bg-success-3'):
-        print("Verified! message found.")
-        
-        # Click the "Claim" button
-        if sb1.is_element_visible('button#claimBtn'):
-            sb1.click('button#claimBtn')
-            print("Claim button clicked.")
-        else:
-            print("Claim button not found.")
-    else:
-        print("Verified! message not found.")
+#####################################Control Panel Shit##########################################################
 
-def solve_icon_captcha_v1(sb1):
-    try:
-        # Extract all captcha icons
-        #captcha_icons = sb1.find_elements('div[class*="fas fa-"]')  # Locate 'div' with 'fas fa-' in class
-        captcha_icons = sb1.find_elements('[class*="fas fa-"]')
-        
-        for captcha_icon in captcha_icons:
-            # Get the class names of the captcha icon
-            captcha_icon_classes = captcha_icon.get_attribute('class').split()
-            captcha_icon_classes = [cls for cls in captcha_icon_classes if cls.startswith("fa-")]
-
-            if not captcha_icon_classes:
-                continue  # Skip if no valid 'fa-' class found
-
-            captcha_icon_class = captcha_icon_classes[0]  # Use the first valid 'fa-' class
-
-            # Get the available icon options (filter out decoys)
-            icon_options = sb1.find_elements('i[class*="fas fa-"]')  # Find 'i' elements with 'fas fa-' in class
-
-            for option in icon_options:
-                option_classes = option.get_attribute('class').split()
-                if captcha_icon_class in option_classes:
-                    try:
-                        option.uc_click()  # Custom click method to handle undetected Selenium
-                        print(f"Clicked on the matching icon: {captcha_icon_class}")
-                        return True  # Return immediately after a successful click
-                    except Exception as e:
-                        print(f"Error clicking on icon: {e}")
-                        continue  # Continue to the next option if clicking fails
-
-        print("No matching icon found.")
-        return False  # Return False if no matching icon was clicked
-    except Exception as e:
-        print(f"Error solving captcha: {e}")
-        return False
-
-def clean_string2(s):
-    # Replace '-' with whitespace
-    s = s.replace('-', ' ')
-    s = s.replace('.', ' ')
-    
-    # List of words/phrases to remove (ensure spaces are handled properly)
-    words_to_remove = {"bxs", "bx", "la", "fa", "fas fa", "ri", "far", "ti ti", "bi bi", "far fa", "fas", "fa", "bi", "la la", "la"}
-    
-    # Use regex to remove exact words or phrases (word boundaries ensure whole words match)
-    pattern = r'\b(?:' + '|'.join(re.escape(word) for word in words_to_remove) + r')\b'
-    
-    # Remove the words and extra spaces
-    cleaned_s = re.sub(pattern, '', s, flags=re.IGNORECASE)
-    
-    # Normalize spaces
-    return ' '.join(cleaned_s.split())
-
-#V2
-def filter_and_replace(text):
-    word_dict = {
-        "coin": ["database", "penny"],
-        "mouse": ['cursor', 'point'],
-        "upload": [ "angle-up", "caret-square-up", "level-up", "transition-top","amount-up","chevron-double-up", "arrow-bar-up",  "arrow-up","arrow-alt-circle-up", "arrow-alt-up", "arrow-in-up","sort-up", "chevrons-up",  "chevron-up", "angle-double-up", "caret-up"],
-        "download": [ "angle-down", "caret-square-down", "level-down", "transition-bottom","amount-down", "chevron-double-down", "arrow-bar-down","arrow-alt-circle-down", "arrow-down","arrow-alt-down", "arrow-in-down","sort-down" , "chevrons-down", "chevron-down","angle-double-down", "caret-down"],
-        "paint": ["paint","spray","palette", "paint-bucket", "brush","color", "colour"],
-        "rocket": ["flight-takeoff","airplane", "plane","fight", "space-shuttle" ,"space", "helicopter", "flight", "rocket"],
-        "gem": ["diamond", "jewel"],
-        "bird": ["twitter", "crow", "dove","yuque", "earlybirds", "kiwi"],
-        "volume": ["megaphone","volume-up", "volume-down", "volume", "bullhorn", "megaphone", "loudspeaker"],
-        "child": ["child","person","friends","female", "male","pray", "team", "group", "people", "running", "user", "restroom", "walking"],
-        "tractor": ["bus-school","camper","truck", "ambulance", "roadster", "taxi","forklift"],
-        "riding": ["motorcycle", "cycling","bicycle","motorbike", "bike","scooter", "moped", "biking"],
-        "water": ["tint", "moisture", "rain", "droplet","contrast-drop", "blur-off","drop", "blur"],
-        #"computer": ["mac", "laptop", "desktop", "device", "macbook", "imac", "display"],
-        "heart": ["poker-hearts","suit-heart","heart-pulse","service-line", "gratipay", "service", "heart", "hearts"],
-        #"tree": ["leaf", "seedling"],
-        "glass": ["wine", "cup", "cocktail", "goblet","cup-straw","glass"],
-
-        "bank": ['university'],
-        "house": [ "community" ,"hospital", 'home', "city", "buildings","building", "hotel", "school", 'build',],
-        "emo": ['mood','smile'],
-        "bluetooth": ['blue'],
-        "file": ['folder'],
-        "display": ['laptop', 'computer',"mac", "laptop", "desktop", "macbook", "imac", "pc"],
-        "comment": ["chat-left", "message-dots","message-square-detail",'message', 'chat','text','sms', "twitch", "comment", "chat" , "message", "text"],
-        "bell": ['notifi'],
-        "leaf": [ "cactus","canadian-maple-leaf", "growth", "pagelines" ,"flower", 'envira', 'pageline', 'seeding','grass', "leaf", "seedling","tree", "raspberry", "plant"],
-        "chart": ['signal'],
-        "cloud": ['weather'],
-        "energy": ['lightning', 'zap', 'bolt',"flash"],
-        #"camera": ["selfie","phone", "polaroid", "video","image","pic"],
-        "spider": ['bug','insect'],
-        "setting": ['cog', 'gear'],
-        "fire": ["burn","hot", "flame", "torch"],
-        "trash": ["bin", "garbage "],
-        "flag": ["pennant", "banner"],
-        #new list
-        "pen": ["ballpen", "edit", "pencil","highlight"],
-    
-        "knife": ["slice", "utensils", "fork", "knife", "spoon" ,"kitchen"],
-
-        "guitar": ["headset","playlist", "guitar", "bandlab", "music", "disc" ,"airpods","headphone","radio", "tiktok"],
-        "close": ["times", "close", "xrp", "window-close", "x-lg"],
-        "browser": ["edge","chrome", "google", "firefox", "explora", "browser", "world","www"],
-        "hand": ["hand", "allergies", "finger", "thumb"],
-    }
-    # First, replace hyphens with spaces in the text
-    text = text.replace('-', ' ')
-
-
-    # Iterate over the word_dict and replace words in the text
-    for category, words in word_dict.items():
-        for word in words:
-            # Replace hyphens with spaces in the word
-            word = word.replace('-', ' ')
-            # Replace the word with the category if it exists in the text
-            if word in text:# or text in word:
-                text = category#text.replace(word, category) #category # .replace(word, category)
-                return text
-    second_dict = {
-        "upload": [  "top", "pull","-up"],
-        "download": [ "-down", "bottom", "push"],
-        "tractor": ["car", "bus","tir"],
-        "close": ["x"],
-    }
-    for category, words in second_dict.items():
-        for word in words:
-            # Replace hyphens with spaces in the word
-            word = word.replace('-', ' ')
-            # Replace the word with the category if it exists in the text
-            if word in text:# or text in word:
-                text = category#text.replace(word, category) #category # .replace(word, category)
-                return text
-
-    return text
-
-
-import re
-
-def clean_string(s):
-    # Replace '-' with whitespace
-    s = s.replace('-', ' ')
-    s = s.replace('.', ' ')
-    
-    # List of words/phrases to remove (ensure spaces are handled properly)
-    words_to_remove = {"front","bxs", "bx bx", "la", "fa", "fas fa", "split", "ri", "far", "ti ti", "bi bi", "far fa", "fas", "fa", "bi", "la la", "la", "line", "lines", "engines", "brand", "alt"}
-    
-    # Use regex to remove exact words or phrases (word boundaries ensure whole words match)
-    pattern = r'\b(?:' + '|'.join(re.escape(word) for word in words_to_remove) + r')\b'
-    
-    # Remove the words and extra spaces
-    cleaned_s = re.sub(pattern, '', s, flags=re.IGNORECASE)
-    
-    # Normalize spaces
-    return ' '.join(cleaned_s.split())
-
-def filter_string(s):
-    # Define words that act as stop points
-    stop_words = {"bxs", "bx bx", "la", "fa", "fas", "split", "ri", "far", "ti", "bi", "far", "fas", "fa", "bi",  "la", "line", "lines", "engines", "brand", "alt"}
-    
-    # Replace '-' with whitespace
-    s = s.replace('.', ' ')
-    s = s.replace('-', ' ')
-    
-    # Split the string into words
-    words = s.split()
-    
-    # Iterate and remove words until we find a stop word
-    while words and words[0] not in stop_words:
-        words.pop(0)
-    
-    # Return the remaining words as a string
-    return ' '.join(words)
-
-def append_to_notepad(filename, captcha, answers):
-    with open(filename, "a", encoding="utf-8") as f:
-        f.write(f"Captcha : {captcha}\n")
-        f.write("Answers :\n")
-        for answer in answers:
-            f.write(f"{answer}\n")
-        f.write("--------------------------------\n")
-
+# Main function
 # Example usage
 def mouse_moveclick(cropped_path="element_screenshot.png"):
     try:
@@ -1370,97 +1180,89 @@ def mouse_moveclick(cropped_path="element_screenshot.png"):
     except Exception as e:
         print(f"Error moving and clicking: {e}")
 
+import base64
+def save_base64_image(base64_string, filename='output.png'):
+    # If the base64 string contains the data URL prefix, strip it
+    if base64_string.startswith('data:image'):
+        base64_string = base64_string.split(',')[1]
 
-import glob
+    # Decode and write to file
+    image_data = base64.b64decode(base64_string)
+    with open(filename, 'wb') as f:
+        f.write(image_data)
+    print(f"Image saved as {filename}")
 
-# Load and preprocess image
-def load_image(image_path):
-    img = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
-    img = cv2.GaussianBlur(img, (3, 3), 0)  # Denoise
-    return img
 
-# Feature detection using SIFT
-def detect_keypoints(img):
-    sift = cv2.SIFT_create()
-    keypoints, descriptors = sift.detectAndCompute(img, None)
-    return keypoints, descriptors
 
-# Match keypoints with stored templates
-def match_images(captcha, templates):
-    best_match = None
-    max_good_matches = 0
+import tensorflow as tf
+import numpy as np
+from tensorflow.keras.preprocessing import image
 
-    kp1, des1 = detect_keypoints(captcha)
+# Load the trained model
+model = tf.keras.models.load_model('captcha_model_v12.keras')
 
-    if des1 is None:
-        print("No descriptors found in captcha.")
-        return None
-
-    index_params = dict(algorithm=1, trees=5)
-    search_params = dict(checks=50)
-    flann = cv2.FlannBasedMatcher(index_params, search_params)
-
-    for template_path in templates:
-        template = load_image(template_path)
-        kp2, des2 = detect_keypoints(template)
-
-        if des2 is None:
-            continue
-
-        matches = flann.knnMatch(des1, des2, k=2)
-
-        # Apply Lowe's Ratio Test to filter matches
-        good_matches = [m for m, n in matches if m.distance < 0.7 * n.distance]
-
-        if len(good_matches) > max_good_matches:
-            max_good_matches = len(good_matches)
-            best_match = template_path
-
-    return best_match
-
-# Main function
-def solve_captcha(captcha_path, template_folder):
-    captcha = load_image(captcha_path)
-    template_paths = glob.glob(f"{template_folder}/*.png")
-
-    best_template = match_images(captcha, template_paths)
-
-    if best_template:
-        print(f"Best match found: {best_template}")
-        return best_template
-    else:
-        print("No match found!")
-        return None
-
-def rename_with_code(filepath, category):
-    if not os.path.exists(filepath):
-        print(f"File '{filepath}' does not exist.")
-        return
+category_classes_list =  ['award', 'bell', 'broom', 'bug', 'bullhorn', 'camera', 'cannabis', 'capsules', 'car-crash', 'car', 'carrot', 'cat', 'certificate', 'charging-station', 'chart-line', 'check', 'chess-knight', 'times-circle', 'history', 'couch', 'crow', 'democrat', 'dice', 'dog', 'dove', 'dragon', 'tint', 'envelope', 'surprise', 'tired', 'feather-alt', 'cog', 'gem', 'gift', 'gopuram', 'graduation-cap', 'guitar', 'hammer', 'hat-wizard', 'heart', 'helicopter', 'home', 'image', 'key', 'kiwi-bird', 'laptop', 'leaf', 'lightbulb', 'link', 'lock', 'marker', 'microchip', 'microphone', 'money-bill-wave', 'moon', 'coffee', 'coffee', 'music', 'oil-can', 'paw', 'piggy-bank', 'pizza-slice', 'plug', 'puzzle-piece', 'republican', 'ribbon', 'robot', 'rocket', 'sync-alt', 'satellite', 'cut', 'tools', 'ship', 'space-shuttle', 'signal', 'sim-card', 'sitemap', 'skull-crossbones', 'smoking', 'snowman', 'spa', 'spider', 'star-of-david', 'star', 'sun', 'syringe', 'tablets', 'tag', 'thermometer-half', 'thermometer', 'thumbs-up', 'thumbtack', 'tooth', 'tractor', 'traffic-light', 'subway', 'tree', 'truck-monster', 'truck-pickup', 'umbrella', 'user', 'utensil-spoon', 'shuttle-van', 'vector-square', 'vial', 'vials', 'video', 'volleyball-ball', 'times', 'yin-yang']
+def predict_image(image_path, category_options):
+    #print(f"Predicting image: {image_path}")
+    img_size = (50, 45)
+    class_names = category_classes_list
     
-    # Get the directory and base filename
-    directory, filename = os.path.split(filepath)
-    base_name, ext = os.path.splitext(filename)
+            # Load and preprocess the image
+    # Load and preprocess the image
+    img = image.load_img(image_path, target_size=img_size)
+    img_array = image.img_to_array(img)
+    img_array = np.expand_dims(img_array, axis=0)
 
-    # Loop until we find a unique filename
+    # Run prediction
+    prediction = model.predict(img_array, verbose=0)[0]
+
+    # Map class names to probabilities
+    class_probs = {class_names[i]: prediction[i] for i in range(len(class_names))}
+
+    # Filter only the given category options
+    filtered = {cat: class_probs.get(cat, 0) for cat in category_options}
+
+    # Sort by confidence
+    best_match = max(filtered.items(), key=lambda x: x[1])
+
+    print(f"\n<¯ Predicted Best Match: {best_match[0]} with confidence {best_match[1]:.4f}\n")
+    return best_match[0] , best_match[1]
+
+
+def save_with_random_number(image_path):
+    # Split the filename and extension
+    base_name, ext = os.path.splitext(image_path)
+    
+    # Load the image
+    img = Image.open(image_path)
+    
     while True:
-        # Generate a random 6-digit code
-        random_code = random.randint(100000, 999999)
-        new_filename = f"{category}{random_code}{ext}"
-        new_filepath = os.path.join(directory, new_filename)
+        # Generate random 3-digit number
+        random_number = random.randint(100, 999)
+        new_filename = f"element_icons/{base_name}{random_number}{ext}"
         
-        # Check if the new file exists
-        if not os.path.exists(new_filepath):
-            os.rename(filepath, new_filepath)
-            print(f"File renamed to '{new_filepath}'")
-            return
-
-#V2
+        # Check if file exists
+        if not os.path.exists(new_filename):
+            img.save(new_filename)
+            print(f"Saved as {new_filename}")
+            break
+def is_image_width_greater_than_200(image_path):
+    try:
+        with Image.open(image_path) as img:
+            width, _ = img.size
+            return width > 200
+    except Exception as e:
+        print(f"Error checking image width: {e}")
+        return False
+captcha_basetring = ''
+#V3
+#Steps to solve the captcha:
+#1. Get the captcha 
 def solve_icon_captcha(sb1):
     try:
-        #pyautogui.scroll(1000,1808 ,-1500 )
-        # Extract all captcha icons
+        print("solve_icon_captcha_v3")
+        global captcha_basetring
         script = """
-        // Define XPath expression to find elements inside the form with the specified class patterns or text
         let xpathExpression = `//form[@method="POST"]//*[contains(@class, "bxs-") or 
             contains(@class, "bx-") or contains(@class, "la-") or 
             contains(@class, "fa-") or contains(@class, "fas fa-") or 
@@ -1497,7 +1299,16 @@ def solve_icon_captcha(sb1):
 
         console.log("Filtered elements (opacity > 0.5):", filteredElements);
 
-        return filteredElements.map(el => el.id ? `#${el.id}.${el.className}` : `.${el.className}`);
+        // Map elements to id/class or src if first element is an img with a src
+        let result = filteredElements.map((el, index) => {
+            if (index === 0 && el.tagName.toLowerCase() === 'img' && el.src) {
+                return el.src;
+            }
+            return el.id ? `#${el.id}.${el.className}` : `.${el.className}`;
+        });
+
+        console.log("Final Result:", result);
+        return result;
         """
 
         # Execute JavaScript and get the filtered elements
@@ -1506,26 +1317,17 @@ def solve_icon_captcha(sb1):
         # Print each element
         print("Filtered elements:")
         # Assign the first element to captchaElement
-        if filtered_elements:
-            captchaElement = filtered_elements[0]
-            print("\nCaptcha Element:", captchaElement)
-
-        if len(filtered_elements) < 4:
-            # Define the base64 image lists
+        if len(filtered_elements) < 5:
             base64_images = [
                 "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAAAXCAIAAAAuvD5IAAAACXB",
             ]
             base64_images2 = [
-                "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUgAAAAXCAIAAADm2UHyAAAACXB",
+                #"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUgAAAAXCAIAAADm2UHyAAAACXB",
                 "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV0AAAAXCAIAAAAnXgteAAAACXBI",
             ]
 
             # Check if any image on the page matches a base64 image from the list
-            image_exists = any(
-                img.get_attribute("src").startswith(base64_prefix) 
-                for img in sb1.find_elements("form img") 
-                for base64_prefix in base64_images
-            )
+
 
             image_exists2 = any(
                 img.get_attribute("src").startswith(base64_prefix) 
@@ -1534,17 +1336,10 @@ def solve_icon_captcha(sb1):
             )
 
             # Print the results
-            print("Verified: ", image_exists)
+            #print("Verified: ", image_exists)
             print("Opps Error: ", image_exists2)
 
-            if image_exists:
-                print("Verified found in the first list.")
-                #button = sb1.find_element(By.CSS_SELECTOR, 'button#ClaimBtn')
-                #capture_element_screenshot(sb1, 'button#ClaimBtn', screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
-                #mouse_moveclick(cropped_path="element_screenshot.png")
-                #button.uc_click()
-                return
-            elif image_exists2:
+            if image_exists2:
                 print("Opps Error found in the first list.")
                 #button = sb1.find_element(By.CSS_SELECTOR, 'button#ClaimBtn')
                 #capture_element_screenshot(sb1, 'button#ClaimBtn', screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
@@ -1552,81 +1347,77 @@ def solve_icon_captcha(sb1):
                 #button.uc_click()
                 pyautogui.press('f5')
                 return
-        # Remove first two and specific element
+            return False
+
+        if filtered_elements:
+            captchaElement = filtered_elements[0]
+            if captcha_basetring != captchaElement:
+                #print("\nCaptcha Element:", captchaElement)
+                save_base64_image(captchaElement, 'captchaElement.png')
+                captcha_basetring = captchaElement
+                #save_with_random_number('captchaElement.png')
+
+
         to_remove = [
             filtered_elements[0],  # First element
             filtered_elements[1],  # Second element
             "#loginBtnSpinner.fas fa-circle-notch fa-spin d-none"
-            "#loginBtnSpinner.fas fa-circle-notch fa-spin d-none me-6"  # Specific element
+            "#loginBtnSpinner.fas fa-circle-notch fa-spin d-none me-6"  # Specific element"
+            "#loginBtnSpinner.fas.fa-spinner.fa-spin.d-none.me-6"
+            "#loginBtnSpinner.fas.fa-spinner.fa-spin.d-none.me-1"
         ]
 
         filtered_elements = [el for el in filtered_elements if el not in to_remove]
-
+        filtered_elements = [el for el in filtered_elements if '#loginBtnSpinner' not in el]
         # Print the final list after removal
         print("\nFiltered elements after removal:", filtered_elements)
-        # Execute JavaScript in Selenium and get the results
-                
-        #captcha_word = captchaElement #'nfvabpjo9wvn#xrikqozisnn.zCpvNsbks bi bi-arrow-down'
-        answers = filtered_elements
-        #remove unnecessary 
-        captcha_image = "element_screenshot.png"  # Replace with your captcha
-        template_folder = "icons"  # Folder with stored icons
-        capture_element_screenshot(sb1, captchaElement, screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
-        captcha_word = solve_captcha(captcha_image, template_folder)
-        rename_with_code("element_screenshot.png", captcha_word)
-        cleaned_text = re.sub(r'\d', '', captcha_word)
-
-        #filter everything
-        #captcha_word = filter_string(captcha_word)
-        #captcha_word = clean_string(captcha_word)
-        captcha_word = filter_and_replace(captcha_word)
-        #if '.' == captcha_word:
-        #    captcha_word = filtered_elements
-        #    captcha_word = filter_and_replace(captcha_word)
-        #answers = [filter_and_replace(answer) for answer in answers]
-        #answers = [filter_string(answer) for answer in answers]
-        #answers = [filter_and_replace(answer) for answer in answers]
-
-        #captcha_word = clean_string(captcha_word)
-        #answers = [clean_string(answer) for answer in answers]
-        #check if the word is in the list
-        print(captcha_word, "gfg")
-        print(answers)
-
-        filterd_answrs = []
-        for answer in answers:
-            print(answer)
-            copy_answer = answer
-            copy_answer = clean_string2(copy_answer)
-            copy_answer = filter_and_replace(copy_answer)
-            #copy_answer = filter_string(copy_answer)
-            #copy_answer = filter_and_replace(copy_answer)
-            copy_answer = clean_string(copy_answer)
-            print(copy_answer)
-            filterd_answrs.append(copy_answer)
-            if '' == captcha_word:
-                print("ng it")
+        category_elementss = []
+        for item in filtered_elements:
+            item = item.replace(' ','.')
+            if 'fas.fa' not in item:
+                print('no fa fas in ',item)
                 continue
-            if captcha_word in copy_answer or copy_answer in captcha_word:
-                print(answer, "Found it")
-                answer = answer.replace(' ', '.')
-                print('uc click before')
-                button = sb1.find_element(By.CSS_SELECTOR, answer)
-                #button.uc_click()
-                capture_element_screenshot(sb1, answer, screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
-                mouse_moveclick(cropped_path="element_screenshot.png")
+            #capture_element_screenshot(sb1, item, screenshot_path="full_screenshot.png", cropped_path=f"cropped_icons/captchaimg{item}.png")
+            item_css = item.replace(' ', '.')
+            item_filtered = item_css.replace('.fas.fa-', '')
+            #item_filtered = item_filtered.replace('-alt', ' ')  
+            if item_filtered not in category_classes_list:
+                print('new category',item)
+                capture_element_screenshot(sb1, item, screenshot_path="full_screenshot.png", cropped_path=f"cropped_icons/captchaimg{item}.png")
+                save_with_random_number('captchaElement.png')
 
+            category_elementss.append(item_filtered)
+        if is_image_width_greater_than_200('captchaElement.png'):
+            print('image is more than 200 width lol')
+            #pyautogui.press('f5')
+            return False 
+        best_match, score = predict_image("captchaElement.png", category_elementss) #captcha_image_filter("captchaElement.png", "cropped_icons")
+        print("Best match:", best_match, "score:", score)
+        if score < 0.3:
+            print("Score is too low, retrying...")
+            #save_with_random_number('captchaElement.png')
+                #save_with_random_number('captchaElement.png')
+        #    return False
+        
+        for item in filtered_elements:
+            item_css = item.replace(' ', '.')
+            item_filtered = item_css.replace('.fas.fa-', '')
+            #item_filtered = item_filtered.replace('-alt', ' ')  
+   
+            item_filtered = item_filtered.replace('shuttle-space', 'rocket')   
+            best_match = best_match.replace('shuttle-space', 'rocket')
+            if item_filtered in best_match or best_match in item_filtered:
+                print(f'Match Valid: {item_css}')
+                capture_element_screenshot(sb1, item_css, screenshot_path="full_screenshot.png", cropped_path=f"cropped_icons/aaaacaptcha.png")
+                mouse_moveclick(cropped_path=f"cropped_icons/aaaacaptcha.png")
                 return True
-        print("No matching icon found.")
-        #append_to_notepad("notepad.txt", captchaElement, filtered_elements)
-        append_to_notepad("notepad.txt", captcha_word, filterd_answrs)
 
-        return False
+        return True
+
     except Exception as e:
         print(f"Error solving captcha: {e}")
         return False
-        pyautogui.press('f5')
-        time.sleep(7)
+
 
 def get_active_window_title():
     try:
@@ -1876,9 +1667,10 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                             #click_element_with_pyautogui(driver, login_button)
                             #click_element_with_pyautogui(sb1, 'button[type="submit"]')
                             if 'Feyorra' in current_title:
-                                pyautogui.click(939 ,760)
+
+                                mouse_moveclick(cropped_path="/root/Desktop/MFV6/images/feyorra_loginbt.png")
                                 time.sleep(1)
-                                pyautogui.click(943 ,788)
+                                #pyautogui.click(943 ,788)
                                 #x:943 y:788
                                 time.sleep(5)
      
@@ -1993,7 +1785,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
 
 def pin_extensions():
     try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/extension_icon.png", region=(1700, 30, 300, 300), confidence=0.9)
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/extension_icon.png", region=(1234, 30, 683, 522), confidence=0.9)
         pyautogui.click(x, y)
         print("extension_icon Button Found")
 
@@ -2001,7 +1793,7 @@ def pin_extensions():
             time.sleep(1)
             pyautogui.moveTo(1700, 30)
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/pin.png", region=(1588, 170, 400, 600), confidence=0.9)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/pin.png", region=(1234, 30, 683, 522), confidence=0.9)
                 pyautogui.click(x, y)
                 pyautogui.moveTo(1700, 30)
                 print("pin Button Found")
@@ -2009,7 +1801,7 @@ def pin_extensions():
             except pyautogui.ImageNotFoundException:
                 print("No pin Button.")
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/all_pinned.png", region=(1588, 170, 400, 600), confidence=0.99)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/all_pinned.png", region=(1234, 30, 683, 522), confidence=0.99)
                 pyautogui.moveTo(1700, 40)
                 print("all_pinned Button Found")
                 return True   
@@ -2212,38 +2004,42 @@ def withdraw_faucet(driver, sitekey):
                 pep_y =  615
 
                 fey_x =  982
-                fey_y =  602
+                fey_y =  326 
             elif 'SOL' in currency:
                 pep_x = 602
                 pep_y =  778
 
-                fey_x =  679 
-                fey_y =  414
+                fey_x =  1288
+                fey_y =  512
             elif 'TRX' in currency:
                 pep_x = 1329 
                 pep_y =  452
 
                 fey_x =  679
-                fey_y =  602
+                fey_y =  512
+				
+		#Trump and Bonk here
         else:
             if 'LTC' in currency:
                 pep_x = 1388 
-                pep_y =  284
+                pep_y =  576
 
-                fey_x =  884
-                fey_y =  648
+                fey_x =  376
+                fey_y =  765
             elif 'SOL' in currency:
-                pep_x = 1388
-                pep_y =  284
+                pep_x = 861
+                pep_y =  754
 
-                fey_x =  375 
-                fey_y =  647
+                fey_x =  376
+                fey_y =  765
+				#trump
             elif 'TRX' in currency:
-                pep_x = 334 
-                pep_y =  457
+                pep_x = 335 
+                pep_y =  576
 
-                fey_x =  375
-                fey_y =  466
+                fey_x =  883
+                fey_y =  583
+
 
         current_window = sb1.current_window_handle
         all_windows = sb1.window_handles
@@ -2580,12 +2376,12 @@ browser_proxy = ''
 query = {"type": "main"}
 refresh_count = 0
 get_mails_passowrds(farm_id)
-for frm in CSB1_farms:
-    collection_csb = db[f'Farm{frm}']
-    update = {"$set": {"response": f'Changed IP🔴: Starting Farm:{farm_id}'}}
-    result = collection_csb.update_one(query, update)
-    update = {"$set": {"request": 'ipfixer'}}
-    result = collection_csb.update_one(query, update)
+#for frm in CSB1_farms:
+#    collection_csb = db[f'Farm{frm}']
+#    update = {"$set": {"response": f'Changed IP🔴: Starting Farm:{farm_id}'}}
+#    result = collection_csb.update_one(query, update)
+#    update = {"$set": {"request": 'ipfixer'}}
+#    result = collection_csb.update_one(query, update)
 
 
 def update_ip(new_ip, config_path="mfhelper/config.json"):
@@ -2797,7 +2593,7 @@ def open_faucets():
                     if feyorra:
                         #sb1.open_new_window()
                         if faucetlayout == 1:
-                            feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Home | Feyorra", 2, [], ip_required)
+                            feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Best - Meme Coins Faucet", 2, [], ip_required)
                             if feyorra_window == 404:
                                 raise Exception(" feyorra_window == 404")
                             print(f"Feyorra window handle: {feyorra_window}")

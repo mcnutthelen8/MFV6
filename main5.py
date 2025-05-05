@@ -89,6 +89,7 @@ feyorra_email = ''
 feyorra_pass = ''
 layout = ''
 
+Farm_list = [1, 2, 3]
 
 def get_mails_passowrds(farm_id):
     global server_name1
@@ -99,6 +100,7 @@ def get_mails_passowrds(farm_id):
     global feyorra_pass
     global layout
     global mysterium_raw
+    global Farm_list
 
     collection = db[f'Farm{farm_id}']
     quer2y = {"type": "main"}
@@ -108,11 +110,11 @@ def get_mails_passowrds(farm_id):
 
     if farm_id <= 5:
         mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
-        CSB1_farms = [1, 2, 3, 4, 5]
+        CSB1_farms =Farm_list
     else:
 
         mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie.json"
-        CSB1_farms = [6,7,8,9,10]
+        CSB1_farms =Farm_list
 
 
 
@@ -120,7 +122,7 @@ def get_mails_passowrds(farm_id):
 
         if '1' in layout:
             server_name1 = 'thailand'
-            CSB1_farms = [1, 2, 3, 4, 5]
+            CSB1_farms = Farm_list
             earnpp_email = 'khabibmakanzie5@gmail.com'
             earnpp_pass = 'khabibmakanzie5'
             feyorra_email = 'khabibmakanzie5@gmail.com'
@@ -128,14 +130,14 @@ def get_mails_passowrds(farm_id):
 
         elif '2' in layout:
             server_name1 = 'thailand' # 'morocco' #'bulgaria'
-            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+            CSB1_farms = Farm_list #[6, 7, 8, 9, 10]
             earnpp_email = 'metroboom9106@gmail.com'
             earnpp_pass = 'metroboom9106'
             feyorra_email = 'metroboom9106@gmail.com'
             feyorra_pass = 'metroboom9106'
         elif '3' in layout:
             server_name1 = 'thailand' # 'morocco' #'bulgaria'
-            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+            CSB1_farms =Farm_list#[6, 7, 8, 9, 10]
             earnpp_email = 'grandkolla19972@gmail.com'
             earnpp_pass = 'grandkolla19972'
             feyorra_email = 'jjona323h123@gmail.com'
@@ -2280,12 +2282,12 @@ browser_proxy = ''
 query = {"type": "main"}
 refresh_count = 0
 get_mails_passowrds(farm_id)
-#for frm in CSB1_farms:
-#    collection_csb = db[f'Farm{frm}']
-#    update = {"$set": {"response": f'Changed IP🔴: Starting Farm:{farm_id}'}}
-#    result = collection_csb.update_one(query, update)
-#    update = {"$set": {"request": 'ipfixer'}}
-#    result = collection_csb.update_one(query, update)
+for frm in CSB1_farms:
+    collection_csb = db[f'Farm{frm}']
+    update = {"$set": {"response": f'Changed IP🔴: Starting Farm:{farm_id}'}}
+    result = collection_csb.update_one(query, update)
+    update = {"$set": {"request": 'ipfixer'}}
+    result = collection_csb.update_one(query, update)
 
 def Limit_Checked():
     title = sb1.get_title()

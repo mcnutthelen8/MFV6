@@ -40,7 +40,8 @@ import subprocess
 
 
 # Example usage
-
+pyautogui.moveTo(100, 100)
+pyautogui.click(100, 200, duration=0.5)
 # Initialize the argument parser
 parser = argparse.ArgumentParser(description="Process some arguments.")
 parser.add_argument('--farm', type=int, help="Farm")
@@ -145,7 +146,7 @@ def get_mails_passowrds(farm_id):
 
         elif '4' in layout:
             server_name1 = 'thailand'
-            CSB1_farms =Farm_list
+            CSB1_farms = [1, 2, 3, 4, 5]
             earnpp_email = 'gihanfer9076@gmail.com'
             earnpp_pass = 'gihanfer9076'
             feyorra_email = 'gihanfer9076@gmail.com'
@@ -153,7 +154,7 @@ def get_mails_passowrds(farm_id):
 
         elif '5' in layout:
             server_name1 = 'thailand'
-            CSB1_farms = Farm_list
+            CSB1_farms = [1, 2, 3, 4, 5]
             earnpp_email = 'ddilakshi2326@gmail.com'
             earnpp_pass = 'ddilakshi2326'
             feyorra_email = 'ddilakshi2326@gmail.com'
@@ -195,7 +196,7 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'roxashen97'
         elif '5' in layout:
             server_name1 = 'poland'
-            CSB1_farms = Farm_list
+            CSB1_farms =Farm_list
             earnpp_email = 'kollygnda77@gmail.com'
             earnpp_pass = 'kollygnda77'
             feyorra_email = 'kollygnda77@gmail.com'
@@ -207,7 +208,7 @@ def get_mails_passowrds(farm_id):
 
         if '1' in layout:
             server_name1 = 'turkey'
-            CSB1_farms =Farm_list
+            CSB1_farms = [1, 2, 3, 4, 5]
             earnpp_email = 'gkolnda999@gmail.com'
             earnpp_pass = 'gkolnda999'
             feyorra_email = 'gkolnda999@gmail.com'
@@ -215,7 +216,7 @@ def get_mails_passowrds(farm_id):
 
         elif '2' in layout:
             server_name1 = 'turkey' #'belgium'
-            CSB1_farms =Farm_list
+            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
             earnpp_email = 'merlelcn666@gmail.com'
             earnpp_pass = 'merlelcn666'
             feyorra_email = 'merlelcn666@gmail.com'
@@ -223,21 +224,21 @@ def get_mails_passowrds(farm_id):
 
         elif '3' in layout:
             server_name1 = 'turkey' #'belgium'
-            CSB1_farms = Farm_list
+            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
             earnpp_email = 'tanishaamy2500@gmail.com'
             earnpp_pass = 'tanishaamy2500'
             feyorra_email = 'tanishaamy2500@gmail.com'
             feyorra_pass = 'tanishaamy2500'
         elif '4' in layout:
             server_name1 = 'turkey' #'belgium'
-            CSB1_farms =Farm_list
+            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
             earnpp_email = 'andyroger9506@gmail.com'
             earnpp_pass = 'andyroger9506'
             feyorra_email = 'andyroger9506@gmail.com'
             feyorra_pass = 'andyroger9506'
         elif '5' in layout:
             server_name1 = 'turkey' #'belgium'
-            CSB1_farms =Farm_list
+            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
             earnpp_email = 'scramblepenny55@gmail.com'
             earnpp_pass = 'scramblepenny55'
             feyorra_email = 'scramblepenny55@gmail.com'
@@ -250,14 +251,14 @@ def get_mails_passowrds(farm_id):
 
         if '1' in layout:
             server_name1 = 'hungary'
-            CSB1_farms = Farm_list
+            CSB1_farms = [1, 2, 3, 4, 5]
             earnpp_email = 'ishdiklla333@gmail.com'
             earnpp_pass = 'ishdiklla333'
             feyorra_email = 'ishdiklla333@gmail.com'
             feyorra_pass = 'ishdiklla333'
         elif '2' in layout:
             server_name1 = 'hungary' #'georgia'# 
-            CSB1_farms = Farm_list
+            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
             earnpp_email = 'shiladid323@gmail.com'
             earnpp_pass = 'shiladid323'
             feyorra_email = 'shiladid323@gmail.com'
@@ -1636,6 +1637,8 @@ def close_extra_windows(driver, keep_window_handles):
 def handle_captcha_and_cloudflare(driver):
     cloudflare(driver, login = False)
 
+
+
 def handle_site(driver, url, expected_title, not_expected_title , function, window_list ,ip_required):
     driver.uc_open(url)
     ready = False
@@ -1649,7 +1652,8 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
                 driver.switch_to.window(window)
         current_title = driver.get_title()
         print(f"Current title: {current_title}")
-
+        if "Google" in current_title:
+            return 404
         #ip_address = get_ip(driver)
         #if ip_required != ip_address:
         #    return 404
@@ -2282,12 +2286,12 @@ browser_proxy = ''
 query = {"type": "main"}
 refresh_count = 0
 get_mails_passowrds(farm_id)
-for frm in CSB1_farms:
-    collection_csb = db[f'Farm{frm}']
-    update = {"$set": {"response": f'Changed IP🔴: Starting Farm:{farm_id}'}}
-    result = collection_csb.update_one(query, update)
-    update = {"$set": {"request": 'ipfixer'}}
-    result = collection_csb.update_one(query, update)
+#for frm in CSB1_farms:
+#    collection_csb = db[f'Farm{frm}']
+#    update = {"$set": {"response": f'Changed IP🔴: Starting Farm:{farm_id}'}}
+#    result = collection_csb.update_one(query, update)
+#    update = {"$set": {"request": 'ipfixer'}}
+#    result = collection_csb.update_one(query, update)
 
 def Limit_Checked():
     title = sb1.get_title()
@@ -2383,6 +2387,8 @@ def update_ip(new_ip, config_path="mfhelper/config.json"):
         print(f"Error updating config.json: {e}")
 
 def open_browsers():
+    pyautogui.moveTo(100, 100)
+    pyautogui.click(100, 200, duration=0.5)
     global sb1
     global chrome_user_data_dir
     global layout

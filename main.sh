@@ -3,7 +3,7 @@
 trap "echo '= Script interrupted by user. Exiting...'; exit" SIGINT
 
 IDLE_LIMIT=300000       # 5 minutes in ms
-SCRIPT_TIMEOUT=1800     # 1 hour max run time
+SCRIPT_TIMEOUT=3600     # 1 hour max run time
 GRACE_PERIOD=250         # 1 minute grace after script starts
 SCRIPT="python3 main5.py --farm 2 --fresh 3"
 

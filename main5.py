@@ -2515,10 +2515,14 @@ def open_faucets():
                         doc = collection_csb.find_one(query)
                         res = doc["response"]
                         req = doc["request"]
-                        if req == 'ipfixer' and 'Changed IP' in res:
-                            ipfixer()
-                            ip_required = fix_ip(sb1, server_name1)
-                            ip_address = get_ip(sb1)
+                        if req == 'ipfixer':
+                            if 'Ready' in res:
+                                print('IP is ready')
+
+                            else:
+                                ipfixer()
+                                ip_required = fix_ip(sb1, server_name1)
+                                ip_address = get_ip(sb1)
 
             else:
                 ipfixer()
@@ -2618,7 +2622,7 @@ def open_faucets():
                             if earnbonk_window == 404:
                                 raise Exception(" earnbonk == 404")
                             print(f"Feyorra window handle: {earnbonk_window}")
-                            time.sleep(8)
+                            time.sleep(6)
                             Click_Understand()
 
                     else:
@@ -2776,7 +2780,7 @@ while True:
                 reset_count_isacc = 0
 
             #ip_address = get_ip(sb1) 
-            if reset_count >= 15:
+            if reset_count >= 18:
                 print('reset count higher')
                 
                 earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required = open_faucets()
@@ -2821,7 +2825,7 @@ while True:
                                         response_messege('Pepe Limit Reached')
                                         earnpp_limit_reached =True
                                 else:
-                                    refresh_count +=5
+                                    refresh_count +=2
                             debug_messages(f'Solved Icon Captcha on EarnPP')
 
 
@@ -2830,7 +2834,7 @@ while True:
                             response_messege('Lock.. Found on EarnPP')
                             earnpp_coins = 0
                         elif 'Google' in title:
-                            reset_count +=5
+                            reset_count +=7
                         elif 'Just' in title:
                             debug_messages(f'Just.. Found on EarnPP')
 
@@ -2844,7 +2848,7 @@ while True:
                             debug_messages(f'LOGIN.. Found on EarnPP')
                             response_messege('LOGIN.. Found on EarnPP')
                             earnpp_coins = 0
-                            reset_count +=5
+                            reset_count +=7
                         else:
                             debug_messages(f'EarnPP not Found:{title} | reset:{reset_count}')
                             reset_count +=1
@@ -2894,7 +2898,7 @@ while True:
                                         response_messege('Feyorra Limit Reached')
                                         feyorra_limit_reached =True
                                 else:
-                                    refresh_count +=5
+                                    refresh_count +=2
 
                                 
                         elif 'Just' in title:
@@ -2902,7 +2906,7 @@ while True:
                             cloudflare(sb1, login = False)
                             debug_messages(f'Just Fixed Feyorra')
                         elif 'Google' in title:
-                            reset_count +=5
+                            reset_count +=7
                         elif 'aintenance' in title:
                             debug_messages(f'maintenance.. Found on Feyorra')
                             response_messege('maintenance.. Found on Feyorra')
@@ -2962,7 +2966,7 @@ while True:
                                         response_messege('Trump Limit Reached')
                                         earntrump_limit_reached =True
                                 else:
-                                    refresh_count +=5
+                                    refresh_count +=2
 
                                 
                         elif 'Just' in title:
@@ -3035,7 +3039,7 @@ while True:
                                         earnbonk_limit_reached =True
                                 else:
                                     #Click_Understand()
-                                    refresh_count +=5
+                                    refresh_count +=2
 
                                 
                         elif 'Just' in title:

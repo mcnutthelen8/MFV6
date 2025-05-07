@@ -9,7 +9,7 @@ trap "echo '[✋] Interrupted by user—exiting.'; exit 0" SIGINT
 
 # 2) Configuration
 IDLE_LIMIT=300000       # 5 min in ms
-SCRIPT_TIMEOUT=3600     # 1 hour in s
+SCRIPT_TIMEOUT=4000     # 1 hour in s
 GRACE_PERIOD=220         #  1 min in s
 SCRIPT_CMD="python3 /root/Desktop/MFV6/main5.py --farm 2 --fresh 3"
 

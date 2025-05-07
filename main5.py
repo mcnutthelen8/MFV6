@@ -1,24 +1,17 @@
 
 
-from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.chrome.options import Options
+
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains
-from selenium.common.exceptions import NoSuchElementException, TimeoutException, StaleElementReferenceException
 from urllib.parse import urlparse, parse_qs
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import Select
 import time
 import re
 import requests
-from bs4 import BeautifulSoup
 import time
 from selenium.webdriver.support import expected_conditions as EC
 import random
 import requests
-from requests.exceptions import RequestException
 from seleniumbase import Driver
 import subprocess
 import pyautogui
@@ -29,13 +22,10 @@ import cv2
 import numpy as np
 from PIL import Image
 from pymongo import MongoClient
-
 import json
 import argparse
 import clipboard
-import shutil
 import os
-import math
 import subprocess
 
 
@@ -49,8 +39,6 @@ parser.add_argument('--fresh', type=int, help="Fresh")
 args = parser.parse_args()
 farm_id = args.farm
 fresh = args.fresh
-facebook_cookies = '0'
-
 
 
 CSB1_farms = []
@@ -90,7 +78,7 @@ feyorra_email = ''
 feyorra_pass = ''
 layout = ''
 
-Farm_list = [1, 2, 3]
+Farm_list = [1, 2, 3, 4, 5]
 
 def get_mails_passowrds(farm_id):
     global server_name1
@@ -146,7 +134,7 @@ def get_mails_passowrds(farm_id):
 
         elif '4' in layout:
             server_name1 = 'thailand'
-            CSB1_farms = [1, 2, 3, 4, 5]
+            CSB1_farms =Farm_list
             earnpp_email = 'gihanfer9076@gmail.com'
             earnpp_pass = 'gihanfer9076'
             feyorra_email = 'gihanfer9076@gmail.com'
@@ -154,7 +142,7 @@ def get_mails_passowrds(farm_id):
 
         elif '5' in layout:
             server_name1 = 'thailand'
-            CSB1_farms = [1, 2, 3, 4, 5]
+            CSB1_farms = Farm_list
             earnpp_email = 'ddilakshi2326@gmail.com'
             earnpp_pass = 'ddilakshi2326'
             feyorra_email = 'ddilakshi2326@gmail.com'
@@ -196,7 +184,7 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'roxashen97'
         elif '5' in layout:
             server_name1 = 'poland'
-            CSB1_farms =Farm_list
+            CSB1_farms = Farm_list
             earnpp_email = 'kollygnda77@gmail.com'
             earnpp_pass = 'kollygnda77'
             feyorra_email = 'kollygnda77@gmail.com'
@@ -208,7 +196,7 @@ def get_mails_passowrds(farm_id):
 
         if '1' in layout:
             server_name1 = 'turkey'
-            CSB1_farms = [1, 2, 3, 4, 5]
+            CSB1_farms =Farm_list
             earnpp_email = 'gkolnda999@gmail.com'
             earnpp_pass = 'gkolnda999'
             feyorra_email = 'gkolnda999@gmail.com'
@@ -216,7 +204,7 @@ def get_mails_passowrds(farm_id):
 
         elif '2' in layout:
             server_name1 = 'turkey' #'belgium'
-            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+            CSB1_farms =Farm_list
             earnpp_email = 'merlelcn666@gmail.com'
             earnpp_pass = 'merlelcn666'
             feyorra_email = 'merlelcn666@gmail.com'
@@ -224,21 +212,21 @@ def get_mails_passowrds(farm_id):
 
         elif '3' in layout:
             server_name1 = 'turkey' #'belgium'
-            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+            CSB1_farms = Farm_list
             earnpp_email = 'tanishaamy2500@gmail.com'
             earnpp_pass = 'tanishaamy2500'
             feyorra_email = 'tanishaamy2500@gmail.com'
             feyorra_pass = 'tanishaamy2500'
         elif '4' in layout:
             server_name1 = 'turkey' #'belgium'
-            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+            CSB1_farms =Farm_list
             earnpp_email = 'andyroger9506@gmail.com'
             earnpp_pass = 'andyroger9506'
             feyorra_email = 'andyroger9506@gmail.com'
             feyorra_pass = 'andyroger9506'
         elif '5' in layout:
             server_name1 = 'turkey' #'belgium'
-            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
+            CSB1_farms =Farm_list
             earnpp_email = 'scramblepenny55@gmail.com'
             earnpp_pass = 'scramblepenny55'
             feyorra_email = 'scramblepenny55@gmail.com'
@@ -250,28 +238,44 @@ def get_mails_passowrds(farm_id):
     elif farm_id == 4:
 
         if '1' in layout:
-            server_name1 = 'hungary'
-            CSB1_farms = [1, 2, 3, 4, 5]
-            earnpp_email = 'ishdiklla333@gmail.com'
-            earnpp_pass = 'ishdiklla333'
-            feyorra_email = 'ishdiklla333@gmail.com'
-            feyorra_pass = 'ishdiklla333'
+            server_name1 = 'canada'
+            CSB1_farms = Farm_list
+            earnpp_email = 'berendkalpana55@gmail.com'
+            earnpp_pass = 'berendkalpana55'
+            feyorra_email = 'berendkalpana55@gmail.com'
+            feyorra_pass = 'berendkalpana55'
         elif '2' in layout:
-            server_name1 = 'hungary' #'georgia'# 
-            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'shiladid323@gmail.com'
-            earnpp_pass = 'shiladid323'
-            feyorra_email = 'shiladid323@gmail.com'
-            feyorra_pass = 'shiladid323'
+            server_name1 = 'canada' #'georgia'# 
+            CSB1_farms = Farm_list
+            earnpp_email = 'yvonne6363@gmail.com'
+            earnpp_pass = 'yvonne6363'
+            feyorra_email = 'yvonne6363@gmail.com'
+            feyorra_pass = 'yvonne6363'
 
 
         elif '3' in layout:
-            server_name1 = 'hungary' #'georgia'# 
-            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'andrpewrea@gmail.com'
-            earnpp_pass = 'andrpewrea'
-            feyorra_email = 'andrpewrea@gmail.com'
-            feyorra_pass = 'andrpewrea'
+            server_name1 = 'canada' #'georgia'# 
+            CSB1_farms = Farm_list
+            earnpp_email = 'sheldnkumr86@gmail.com'
+            earnpp_pass = 'sheldnkumr86'
+            feyorra_email = 'sheldnkumr86@gmail.com'
+            feyorra_pass = 'sheldnkumr86'
+
+        elif '4' in layout:
+            server_name1 = 'canada' #'georgia'# 
+            CSB1_farms = Farm_list
+            earnpp_email = 'andrewperera8@gmail.com'
+            earnpp_pass = 'andrewperera8'
+            feyorra_email = 'andrewperera8@gmail.com'
+            feyorra_pass = 'andrewperera8'
+        elif '5' in layout:
+            server_name1 = 'canada' #'georgia'# 
+            CSB1_farms = Farm_list
+            earnpp_email = 'howard998@gmail.com'
+            earnpp_pass = 'howard998'
+            feyorra_email = 'howard998@gmail.com'
+            feyorra_pass = 'howard998'
+
 
         else:
             print('Layout issue', layout)
@@ -279,27 +283,43 @@ def get_mails_passowrds(farm_id):
     elif farm_id == 5:
 
         if '1' in layout:
-            server_name1 = 'italy'
-            CSB1_farms = [1, 2, 3, 4, 5]
-            earnpp_email = 'gihanfer907@gmail.com' #gihanfer907@gmail.com
-            earnpp_pass = 'gihanfer907'
-            feyorra_email = 'gihanfer907@gmail.com'
-            feyorra_pass = 'gihanfer907'
+            server_name1 = 'belgium'
+            CSB1_farms =Farm_list
+            earnpp_email = 'ernestost5@gmail.com' 
+            earnpp_pass = 'ernestost5'
+            feyorra_email = 'ernestost5@gmail.com'
+            feyorra_pass = 'ernestost5'
 
         elif '2' in layout:
-            server_name1 = 'italy' #'chile'
-            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'ferhng790@gmail.com'
-            earnpp_pass = 'ferhng790'
-            feyorra_email = 'ferhng790@gmail.com'
-            feyorra_pass = 'ferhng790'
+            server_name1 = 'belgium' #'chile'
+            CSB1_farms =Farm_list
+            earnpp_email = 'rondolfapa9@gmail.com'
+            earnpp_pass = 'rondolfapa9'
+            feyorra_email = 'rondolfapa9@gmail.com'
+            feyorra_pass = 'rondolfapa9'
         elif '3' in layout:
-            server_name1 = 'italy' #'chile'
-            CSB1_farms = [1, 2, 3, 4, 5] #[6, 7, 8, 9, 10]
-            earnpp_email = 'giferhan079@gmail.com'
-            earnpp_pass = 'giferhan079'
-            feyorra_email = 'giferhan079@gmail.com'
-            feyorra_pass = 'giferhan079'
+            server_name1 = 'belgium' #'chile'
+            CSB1_farms = Farm_list
+            earnpp_email = 'kevincharl3@gmail.com'
+            earnpp_pass = 'kevincharl3'
+            feyorra_email = 'kevincharl3@gmail.com'
+            feyorra_pass = 'kevincharl3'
+
+        elif '4' in layout:
+            server_name1 = 'belgium' #'chile'
+            CSB1_farms = Farm_list
+            earnpp_email = 'leonardken7@gmail.com'
+            earnpp_pass = 'leonardken7'
+            feyorra_email = 'leonardken7@gmail.com'
+            feyorra_pass = 'leonardken7'
+
+        elif '5' in layout:
+            server_name1 = 'belgium' #'chile'
+            CSB1_farms =Farm_list
+            earnpp_email = 'willsmile31@gmail.com'
+            earnpp_pass = 'willsmile31'
+            feyorra_email = 'willsmile31@gmail.com'
+            feyorra_pass = 'willsmile31'
 
         else:
             print('Layout issue', layout)
@@ -325,14 +345,12 @@ ip_required = 0
 #farm_id = 1
 
 run_sb1 = True
-with_baymack = True
-
 
 chrome_binary_path = '/opt/google/chrome/google-chrome'
 chrome_user_data_dir = '/root/.config/google-chrome/'
 
 
-bitmoon = False
+
 earnpp = True
 claimcoin = False
 feyorra = True
@@ -390,11 +408,6 @@ def insert_data(ip, amount1, amount2, amount3, amount4,emailg):
 
     return
 
-
-
-
-
-
 def get_ip(driver):
     for i in range(1,5):
         try:
@@ -424,17 +437,7 @@ def get_ip(driver):
     return None
 
 
-def get_current_window_id():
-    # Run the command to get the current window ID
-    result = subprocess.run(['xdotool', 'getactivewindow'], stdout=subprocess.PIPE)
-    window_id = result.stdout.decode('utf-8').strip()
-    print(f"Current Window ID: {window_id}")
-    return window_id
 
-def activate_window_by_id(window_id):
-    # Run the command to activate the window by its ID
-    print(f"Activate Window ID: {window_id}")
-    subprocess.run(['xdotool', 'windowactivate', window_id])
 
  
 def get_proxycheck_inbrowser(sb1, ip, server_name):   
@@ -533,7 +536,6 @@ def get_ipscore(ip):
  
             not vpn
             and not tor
-            and fraud_score <= 95
         ):
             print("Conditions met: Returning True")
             return True
@@ -544,79 +546,7 @@ def get_ipscore(ip):
     except requests.RequestException as e:
         print(f"Error retrieving IP data: {e}")
         return None
- 
- 
-def mysterium_vpn_Recon_ip(server_name, driver):
-    mysterium_reinstaller()
-    fix_wrong_pins()
-    print('Rcon')
-    try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
-        pyautogui.click(x, y)
-        print("mysterium_icon_empty Found")
-        time.sleep(5)
-        try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/myserium_disconnect.png", region=(1325, 190, 800, 400), confidence=0.95)
-            #pyautogui.click(x, y)
-            print("myserium_disconnect Found")
-            unknown_con = True
-            while unknown_con == True:
-                try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/Unknown.png", region=(1345, 90, 800, 400), confidence=0.95)
-                    #pyautogui.click(x, y)
-                    print("Unkown Found")
-                    unknown_con = True
-                except pyautogui.ImageNotFoundException:
-                    print("No Unkown .")
-                    unknown_con = False
- 
-            try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/recon.png", region=(1345, 90, 800, 600), confidence=0.95)
-                pyautogui.click(x, y)
-                print("recon Found")
-                time.sleep(5)
-                return True
-            except pyautogui.ImageNotFoundException:
-                print("No recon .")
- 
-        except pyautogui.ImageNotFoundException:
-            print("No myserium_disconnect .")
- 
-            try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.9)
-                #pyautogui.click(x, y)
-                print("mysterium_login Found")
-                mysterium_login(driver)
-                #return 0
-            except Exception as e:
-                print("mysterium_logged")
-            try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/quick_connect.png", region=(1325, 190, 800, 400), confidence=0.95)
- 
-                print("quick_connect Found")
-                try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/search_mysterium.png", region=(1325, 494, 800, 400), confidence=0.95)
-                    pyautogui.click(x, y)
-                    print("search_mysterium Found")
-                    time.sleep(2)
-                    pyautogui.typewrite(server_name)
-                    pyautogui.press('enter')
-                    time.sleep(10)
-                    pyautogui.scroll(-500)
-                    time.sleep(2)
-                    pyautogui.click(1627, 568)
-                    return True
-                except pyautogui.ImageNotFoundException:
-                    print("No search_mysterium .")
-            except pyautogui.ImageNotFoundException:
-                print("No quick_connect .")
- 
- 
- 
-    except pyautogui.ImageNotFoundException:
-        print("No mysterium_icon_empty .")
-    return None
- 
+
 def mysterium_vpn_connect(server_name, driver):
 
     sweet_enable()
@@ -689,7 +619,7 @@ def fix_ip(drive, name):
         lay = re.search(r'\d+', layout2).group()
         other_blacklists = get_blacklistedip2(f'F{farm_id}L{lay}')
         if other_blacklists:
-                blacklistedIP = blacklistedIP + other_blacklists
+                blacklistedIP = other_blacklists + blacklistedIP 
         if ip_address in blacklistedIP:
             print(f'Bad IP detected: {ip_address}. Changing IP...1')
             query = {"type": "main"}
@@ -817,7 +747,7 @@ def mysterium_login(driver):
         time.sleep(1)
         sweet_enable()
         driver.uc_open('https://app.mysteriumvpn.com/')
-        time.sleep(5)
+        time.sleep(8)
         titile = sb1.get_title()
         pyautogui.click(113, 100)
         time.sleep(1)
@@ -913,14 +843,15 @@ def ipfixer():
     preip = 0
     respo = 0
     gg2344 = 0
+    ready_count = 0
     query = {"type": "main"}
     update = {"$set": {"response": 'Fixing...🟠'}}
     result = collection.update_one(query, update)
-    #for i in CSB1_farms:
-    #    collection_csb = db[f'Farm{i}']
-    #    update = {"$set": {"request": 'ipfixer'}}
-    #    result = collection_csb.update_one(query, update)
-    #    print('Update Farm', i)
+    for i in CSB1_farms:
+        collection_csb = db[f'Farm{i}']
+        update = {"$set": {"request": 'ipfixer'}}
+        result = collection_csb.update_one(query, update)
+        print('Update Farm', i)
 
     while True:
         
@@ -936,10 +867,9 @@ def ipfixer():
                         utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
                         sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
                         now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
-                        print(now)
                         print(f'Good IP found: {ip} |{now}')
                         query = {"type": "main"}
-                        update = {"$set": {"response": f'Ready IP🟢: {ip} | {now}'}}
+                        update = {"$set": {"response": f'Ready IP 🟢: {ip} | {now} | {ready_count} / {len(CSB1_farms)}'}}
                         result = collection.update_one(query, update)
                         print('Result:',result)
                         print(f"repo {respo}")
@@ -950,20 +880,19 @@ def ipfixer():
                             doc = collection_csb.find_one(query)
                             res = doc["response"]
                             req = doc["request"]
-                            if req == 'ipfixer' and 'Ready IP' in res:
+                            if req == 'ipfixer' and 'Ready' in res:
                                 res_farms.append(res)
                             elif req == 'ipfixer' and 'Loging' in res:
                                 res_farms.append(res)
                             elif req == 'mainscript': #and 'Running' in res:
                                 res_farms.append(res)
-                            elif req == 'mainscript': #and 'Ready IP' in res:
-                                res_farms.append(res)
                             else:
                                 print('aiyo', req)
+                        ready_count = len(res_farms)
+                        print('Ready Count:', ready_count)
                         if len(res_farms) == len(CSB1_farms):
-                            time.sleep(8)
+                            time.sleep(5)
                             if gg2344 > 6:
-
                                 query = {"type": "main"}
                                 update = {"$set": {"request": 'mainscript'}}
                                 result = collection.update_one(query, update)
@@ -971,13 +900,13 @@ def ipfixer():
                                 gg2344 += 1
                         else:
                             gg2344 = 1
-                        time.sleep(7)
+                        time.sleep(5)
                             
 
                     
                 else:
                     respo = 0
-                    
+                    gg2344 = 0
                     sri_lanka_tz = pytz.timezone('Asia/Colombo')
                     utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
                     sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
@@ -1462,7 +1391,7 @@ def cloudflare_dark(sb, login = True):
                         for i in range(1, 300):
                             #pyautogui.moveTo(100, 200)
     
-                            if 'Login' in page_title or 'Faucet' in page_title or 'Earnbitmoon' in page_title:
+                            if 'Login' in page_title or 'Faucet' in page_title:
                                 try:
                                     time.sleep(1)
                                     x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_dark.png", confidence=0.7)
@@ -1580,10 +1509,6 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                                 #x:943 y:788
                                 time.sleep(5)
      
-                            if 'ClaimCoin' in current_title:
-                                pyautogui.click(973, 833)
-                                time.sleep(5)
-                                #return
                             if driver.is_element_visible(submit_button):
                                 sb1.uc_click(submit_button)
                             #pyautogui.click(939 ,760)
@@ -1612,7 +1537,7 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
 
 
 
-bitmoon_window = None
+
 earnpp_window = None
 claimcoin_window = None
 feyorra_window = None
@@ -1636,8 +1561,6 @@ def close_extra_windows(driver, keep_window_handles):
 
 def handle_captcha_and_cloudflare(driver):
     cloudflare(driver, login = False)
-
-
 
 def handle_site(driver, url, expected_title, not_expected_title , function, window_list ,ip_required):
     driver.uc_open(url)
@@ -1894,181 +1817,250 @@ def capture_element_screenshot(driver, selector, screenshot_path="full_screensho
     except Exception as e:
         print(f"Error capturing element screenshot: {e}")
 
-
- 
+    
+#V2 Withdraw Function
 def withdraw_faucet(driver, sitekey):
-
     try:
-        #        quer2y = {"type": "main"}
-        #        dochh2 = collection.find_one(quer2y)
-        #        faucetlayout = dochh2["mainfaucet"]
-        #        print(f'Farm ID:{farm_id} | Faucet Layout: {faucetlayout}')
         global faucetlayout
         collectionbip = db[f'LocalCSB']
         quer2y = {"type": "main"}
         dochh = collectionbip.find_one(quer2y)
         currency = dochh["currency"]
-        pep_x = 602
-        pep_y =  778
-
-        fey_x =  679 
-        fey_y =  414
-
-        if faucetlayout == 1:
-            if 'LTC' in currency:
-                pep_x = 966 
-                pep_y =  615
-
-                fey_x =  982
-                fey_y =  326 
-            elif 'SOL' in currency:
-                pep_x = 602
-                pep_y =  778
-
-                fey_x =  982
-                fey_y =  327
-            elif 'TRX' in currency:
-                pep_x = 1329 
-                pep_y =  452
-
-                fey_x =  1287
-                fey_y =  324
-				
-		#Trump and Bonk here
-        else:
-            if 'LTC' in currency:
-                pep_x = 1387 
-                pep_y =  483
-
-                fey_x =  376
-                fey_y =  534
-            elif 'SOL' in currency:
-                pep_x = 859
-                pep_y =  646
-
-                fey_x =  376
-                fey_y =  534
-				#trump
-            elif 'TRX' in currency:
-                pep_x = 330 
-                pep_y =  486
-
-                fey_x =  1394
-                fey_y =  348
-
-
-        current_window = sb1.current_window_handle
-        all_windows = sb1.window_handles
+        driver.open_new_window()
+        current_window = driver.current_window_handle
+        all_windows = driver.window_handles
         for window in all_windows:
             if window != current_window:
-                sb1.switch_to.window(window)
-                sb1.close()  # Close the tab
-                sb1.connect()
-        sb1.switch_to.window(current_window)
+                driver.switch_to.window(window)
+                driver.close()  # Close the tab
+        driver.switch_to.window(current_window)
         pyautogui.moveTo(100, 200)
         pyautogui.moveTo(200, 400)
-
-        if sitekey == 1:
-            print('Strting PePe withdraw')
-            if faucetlayout == 1:
-                driver.uc_open('https://earn-pepe.com/member/faucetpay')
-            else:
-                driver.uc_open('https://earn-trump.com/member/faucetpay')
-            time.sleep(5)
-            driver.execute_script("window.scrollTo(0, 300);")
+        time.sleep(5)
+        #Earn PePe
+        driver.open('https://earn-pepe.com/member/faucetpay')
+        time.sleep(8)
+        title = driver.get_title()
+        print(title)
+        if 'Just' in title:
+            cloudflare(driver, login = False)
+        elif 'Faucetpay' in title:
+            driver.execute_script(f"window.scrollTo(0, 1000);")
             time.sleep(1)
-            for i in range(1,10):
-                time.sleep(1)
-                title =sb1.get_title()
-                print(title)
-                if 'Just' in title:
-                    cloudflare(sb1, login = False)
-                elif 'Faucetpay Transfer' in title:
-                    print(title, 'FaucetPay found')
-                    response_messege(f'EarnPP FaucetPay Loaded{currency}')
-                    pyautogui.click(pep_x, pep_y)
-                    #pyautogui.click(605, 754) #trx
-                    #pyautogui.click(967, 754)
-                    time.sleep(5)
-                    if faucetlayout == 1:
-                        driver.execute_script(f"window.scrollTo(0, 1000);")
-                    time.sleep(2)
-                    cloudflare(sb1, login = True)
-                    time.sleep(2)
-                    driver.uc_click('button#ClaimBtn')
-                    time.sleep(5)
-                    response_messege(f'EarnPP FaucetPay Withdrawed{currency}')
-                    #response_messege('Started')
-                    #query = {"type": "main"}
-                    #update = {"$set": {"request": 'withdrawfeyorra'}}
-                    #result = collection.update_one(query, update)
-                    #return
-                    sitekey = 2
-                    break
-                else:
-                    print(title, 'restarting')
-                    driver.uc_open('https://earn-pepe.com/member/faucetpay')
-                    time.sleep(10)
+            driver.execute_script("""(function() {
+                    const priorityCoins = ["SOL", "LTC", "DOGE", "TRX", "PEPE"];
+                    const cards = document.querySelectorAll("form#wdform .card");
+                    let selected = false;
 
-    
-        
-        if sitekey == 2:
-            print('Strting Feyorra withdraw')
-            
-            if faucetlayout == 1:
-                driver.uc_open('https://feyorra.site/member/faucetpay')
-            else:
-                driver.uc_open('https://earn-bonk.com/member/faucetpay')
-            time.sleep(5)
-            driver.execute_script("window.scrollTo(0, 300);")
+                    for (let coin of priorityCoins) {
+                        for (let card of cards) {
+                            try {
+                                const input = card.querySelector("input[type='radio']");
+                                const coinCode = input.getAttribute("data-coincode");
+                                if (coinCode !== coin) continue;
+
+                                const percentText = card.querySelector("small.fw-bold").textContent.trim().replace('%', '');
+                                const percent = parseFloat(percentText);
+
+                                console.log(`${coinCode}: ${percent}%`);
+
+                                if (percent > 9) {
+                                    input.click();
+                                    console.log(` Clicked ${coinCode} radio button`);
+                                    selected = true;
+                                    break;
+                                }
+                            } catch (e) {
+                                console.warn(`L Error processing ${coin}:`, e);
+                            }
+                        }
+                        if (selected) break;
+                    }
+
+                    if (!selected) {
+                        console.log("W None of the priority coins have availability above 9%");
+                    }
+                })();
+                """)
             time.sleep(1)
-            for i in range(1,10):
-                time.sleep(1)
-                title =sb1.get_title()
-                print(title)
-                if 'Just' in title:
-                    cloudflare(sb1, login = False)
-                elif 'Faucetpay Transfer' in title:
-                    print(title, 'FaucetPay found')
-                    response_messege(f'Feyorra FaucetPay Loaded{currency}')
-                    pyautogui.click(fey_x, fey_y)
-                    #pyautogui.click(1288, 517) #trx
-                    #pyautogui.click(679, 704) #doge
-                    time.sleep(5)
-                    driver.execute_script(f"window.scrollTo(0, 700);")
-                    time.sleep(2)
-                    #cloudflare(driver, True)
-                    cloudflare(sb1, login = True)
-                    time.sleep(2)
-                    driver.uc_click('button#ClaimBtn')
-                    time.sleep(5)
-                    response_messege(f'Feyorra FaucetPay Withdrawed{currency}')
-                    #response_messege('Started')
+            cloudflare(driver, login = True)
+            time.sleep(2)
+            driver.uc_click('button#ClaimBtn')
+            time.sleep(5)
+            response_messege(f'EarnPP FaucetPay Withdrawed')
+###########################################################################
+        #Feyorra
+        driver.open('https://feyorra.site/member/faucetpay')
+        time.sleep(8)
+        title = driver.get_title()
+        print(title)
+        if 'Just' in title:
+            cloudflare(driver, login = False)
+        elif 'Faucetpay' in title:
+            driver.execute_script(f"window.scrollTo(0, 1000);")
+            time.sleep(1)
+            driver.execute_script("""(function () {
+                    const priorityCoins = ["SOL", "LTC", "DOGE", "TRX", "PEPE"];
+                    const coinCards = document.querySelectorAll("form#FPwithdraw .card-body");
+                    let selected = false;
+
+                    for (let coin of priorityCoins) {
+                        for (let card of coinCards) {
+                            try {
+                                const input = card.querySelector("input[type='radio']");
+                                const coinCode = input.getAttribute("data-coincode");
+                                if (coinCode !== coin) continue;
+
+                                const percentSpan = card.querySelector("span.fw-bold");
+                                const percentText = percentSpan?.textContent.trim().replace('%', '') || "0";
+                                const percent = parseFloat(percentText);
+
+                                console.log(`${coinCode}: ${percent}%`);
+
+                                if (percent > 9) {
+                                    input.click();
+                                    console.log(` Clicked ${coinCode} radio button`);
+                                    selected = true;
+                                    break;
+                                }
+                            } catch (err) {
+                                console.warn(`L Error processing ${coin}:`, err);
+                            }
+                        }
+                        if (selected) break;
+                    }
+
+                    if (!selected) {
+                        console.log("W None of the priority coins have availability above 9%");
+                    }
+                })();
+
+                """)
+            time.sleep(1)
+            cloudflare(driver, login = True)
+            time.sleep(2)
+            driver.uc_click('button#ClaimBtn')
+            time.sleep(5)
+            response_messege(f'Fey FaucetPay Withdrawed')
+
+###########################################################################
+        #Earn Trump
+        driver.open('https://earn-trump.com/member/faucetpay')
+        time.sleep(8)
+        title = driver.get_title()
+        print(title)
+        if 'Just' in title:
+            cloudflare(driver, login = False)
+        elif 'Faucetpay' in title:
+            driver.execute_script(f"window.scrollTo(0, 1000);")
+            time.sleep(1)
+            driver.execute_script("""(function () {
+                const priorityCoins = ["SOL", "LTC", "DOGE", "TRX"];
+                const cards = document.querySelectorAll("#wdform .card");
+                let selected = false;
+
+                for (let coin of priorityCoins) {
+                    for (let card of cards) {
+                        try {
+                            const input = card.querySelector("input[type='radio']");
+                            const coinCode = input?.getAttribute("data-coincode");
+                            if (coinCode !== coin) continue;
+
+                            const progress = card.querySelector(".progress-bar");
+                            const percent = parseFloat(progress.getAttribute("aria-valuenow"));
+
+                            console.log(`${coinCode}: ${percent}%`);
+
+                            if (percent > 9) {
+                                input.click();
+                                console.log(` Clicked ${coinCode} radio button`);
+                                selected = true;
+                                break;
+                            }
+                        } catch (e) {
+                            console.warn(`L Error processing ${coin}:`, e);
+                        }
+                    }
+                    if (selected) break;
+                }
+
+                if (!selected) {
+                    console.log("W None of the priority coins have availability above 9%");
+                }
+            })();
 
 
-                    if faucetlayout == 2:
-                        query = {"type": "main"}
-                        update = {"$set": {"request": 'ipfixer'}}
-                        result = collection.update_one(query, update)
-                        faucetlayout = 1
-                    else:
-                        query = {"type": "main"}
-                        update = {"$set": {"request": 'withdrawpepe'}}
-                        result = collection.update_one(query, update)
-                        faucetlayout = 2
-                    
-                    return
+                """)
+            time.sleep(1)
+            cloudflare(driver, login = True)
+            time.sleep(2)
+            driver.uc_click('button#ClaimBtn')
+            time.sleep(5)
+            response_messege(f'Trump FaucetPay Withdrawed')
+###########################################################################
+        #Earn bonk
+        driver.open('https://earn-bonk.com/member/faucetpay')
+        time.sleep(8)
+        title = driver.get_title()
+        print(title)
+        if 'Just' in title:
+            cloudflare(driver, login = False)
+        elif 'Faucetpay' in title:
+            driver.execute_script(f"window.scrollTo(0, 1000);")
+            time.sleep(1)
+            driver.execute_script("""(function() {
+                const priorityCoins = ["SOL", "LTC", "DOGE", "TRX"];
+                const cards = document.querySelectorAll("form#wdform .card");
+                let selected = false;
 
-                else:
-                    print(title, 'restarting')
-                    driver.uc_open('https://feyorra.site/member/faucetpay')
-                    time.sleep(10)
+                for (let coin of priorityCoins) {
+                    for (let card of cards) {
+                        try {
+                            const input = card.querySelector("input[type='radio']");
+                            const coinCode = input.getAttribute("data-coincode");
+                            if (coinCode !== coin) continue;
 
-    
+                            const percentText = card.querySelector("span.fw-bold.ms-5").textContent.trim().replace('%', '');
+                            const percent = parseFloat(percentText);
+
+                            console.log(`${coinCode}: ${percent}%`);
+
+                            if (percent > 9) {
+                                input.click();
+                                console.log(` Clicked ${coinCode} radio button`);
+                                selected = true;
+                                break;
+                            }
+                        } catch (e) {
+                            console.warn(`L Error processing ${coin}:`, e);
+                        }
+                    }
+                    if (selected) break;
+                }
+
+                if (!selected) {
+                    console.log("W None of the priority coins have availability above 9%");
+                }
+            })();
+
+
+
+                """)
+            time.sleep(1)
+            cloudflare(driver, login = True)
+            time.sleep(2)
+            driver.uc_click('button#ClaimBtn')
+            time.sleep(5)
+            response_messege(f'BONK FaucetPay Withdrawed')
+        query = {"type": "main"}
+        update = {"$set": {"request": 'ipfixer'}}
+        result = collection.update_one(query, update)
     except Exception as e:
         print(f'ERR on withdraw{e}')
-        response_messege(f'EarnPP FaucetPay ERR on withdraw{e}')
-    
+        response_messege(f'FaucetPay ERR on withdraw{e}')
+
+
+ 
 
 
 def faucet_limit_check(driver, sitekey):
@@ -2170,7 +2162,7 @@ def get_browser_proxy():
 def sweet_enable():
     for x in range(5):
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_dis_icon.png",  region=(1625, 43, 700, 300), confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_dis_icon.png",  region=(1625, 43, 700, 300), confidence=0.98)
             pyautogui.click(x, y)
             for i in range(5):
                 time.sleep(3)
@@ -2195,7 +2187,7 @@ def sweet_enable():
         except pyautogui.ImageNotFoundException:
             print("No icon_image_loaded Human.")
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sg_sweet_icon.png",  region=(1625, 43, 700, 300), confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sg_sweet_icon.png",  region=(1625, 43, 700, 300), confidence=0.99)
             return
         except pyautogui.ImageNotFoundException:
             print("No icon_image_loaded Human.")
@@ -2387,13 +2379,12 @@ def update_ip(new_ip, config_path="mfhelper/config.json"):
         print(f"Error updating config.json: {e}")
 
 def open_browsers():
-    pyautogui.moveTo(100, 100)
-    pyautogui.click(100, 200, duration=0.5)
     global sb1
     global chrome_user_data_dir
     global layout
     global browser_proxy
-
+    pyautogui.moveTo(100, 100)
+    pyautogui.click(100, 200, duration=0.5)
     browser_proxy  =get_browser_proxy()
 
     quer2y = {"type": "main"}
@@ -2413,7 +2404,7 @@ def open_browsers():
     sb1.connect()
     sb1.switch_to.window(current_window2)
     sb1.uc_open("chrome://extensions/")
-    time.sleep(7)
+    time.sleep(8)
     #sb1.execute_script("window.scrollTo(0, 300);")
     print(sb1.get_title())
     gggv = are_extensions_exist()
@@ -2555,7 +2546,16 @@ def open_faucets():
                 dochh2 = collection.find_one(quer2y)
                 faucetlayout = dochh2["mainfaucet"]
                 print(f'Farm ID:{farm_id} | Faucet Layout: {faucetlayout}')
-                update_ip(ip_address, config_path="mfhelper/config.json")
+
+                ipscore = get_ipscore(ip_address)
+                proxycheck = get_proxycheck(sb1, ip_address, server_name= server_name1)
+                if ipscore and proxycheck == 200:
+                    print(f'Good IP found: {ip_address}')
+                    update_ip(ip_address, config_path="mfhelper/config.json")
+                else:
+                    raise Exception(" earnpp_window == 404")
+                
+                
                 ip_address = get_ip(sb1)
                 if ip_required == ip_address:
                     response_messege('EarnPP Loging')
@@ -2581,6 +2581,8 @@ def open_faucets():
                             if feyorra_window == 404:
                                 raise Exception(" feyorra_window == 404")
                             print(f"Feyorra window handle: {feyorra_window}")
+                            time.sleep(4)
+                            Click_Understand()
 
 
 
@@ -2616,7 +2618,8 @@ def open_faucets():
                             if earnbonk_window == 404:
                                 raise Exception(" earnbonk == 404")
                             print(f"Feyorra window handle: {earnbonk_window}")
-
+                            time.sleep(8)
+                            Click_Understand()
 
                     else:
                         earnbonk_window = None
@@ -2701,7 +2704,7 @@ def open_faucets():
                     all_window_handles = [earnpp_window,feyorra_window,earntrump_window,earnbonk_window]
                     close_extra_windows(sb1, all_window_handles)
                     sb1.switch_to.window(earnpp_window)
-                    print(f"Windows: EarnPP: {earnpp_window}, Feyorra: {feyorra_window}, ClaimCoin: {claimcoin_window}")
+                    print(f"Windows: EarnPP: {earnpp_window}, Feyorra: {feyorra_window}")
                     global reset_count 
                     global reset_count_isacc 
                     global previous_reset_count
@@ -3111,6 +3114,12 @@ while True:
                             sb1.switch_to.window(feyorra_window)
 
                             sb1.uc_open('https://feyorra.site/member/faucet')
+                        if feyorra_limit_reached or earnpp_limit_reached or earnbonk_limit_reached or earntrump_limit_reached:
+                            pass
+                        else:
+                            if refresh_count >= 50:
+                                reset_count +=5
+                            refresh_count +=1
                     elif earnbonk_coins == earnbonk_coins_pre:
                         start_time = time.time()
 
@@ -3120,7 +3129,12 @@ while True:
                             refresh_count = 0
                             sb1.switch_to.window(earnbonk_window)
                             sb1.uc_open('https://earn-bonk.com/member/faucet')
-
+                        if feyorra_limit_reached or earnpp_limit_reached or earnbonk_limit_reached or earntrump_limit_reached:
+                            pass
+                        else:
+                            if refresh_count >= 50:
+                                reset_count +=5
+                            refresh_count +=1
                     elif earntrump_coins == earntrump_coins_pre:
                         start_time = time.time()
 
@@ -3151,7 +3165,7 @@ while True:
                 debug_messages(f'MangoDB Seconds:{seconds_only3}')
                 if seconds_only3 > 130:
                     print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | Trump:{earntrump_coins}|BONK:{earnbonk_coins} ')
-                    if earnpp_coins and feyorra_coins and earnbonk_coins and earntrump_coins: #and claimc_coins: #and bitmoon_coins:
+                    if earnpp_coins and feyorra_coins and earnbonk_coins and earntrump_coins: 
                         start_time3 = time.time()
                         emailgg = f'{earnpp_email} <br>country: {server_name1} <br>Current Layout:{layout} <br>Farm:{farm_id}'
                         insert_data(ip_address, earnpp_coins, feyorra_coins, earntrump_coins, earnbonk_coins, emailgg)

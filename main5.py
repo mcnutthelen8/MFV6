@@ -869,7 +869,7 @@ def ipfixer():
                         now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
                         print(f'Good IP found: {ip} |{now}')
                         query = {"type": "main"}
-                        update = {"$set": {"response": f'Ready IP 🟢: {ip} | {now} | {ready_count} / {len(CSB1_farms)}'}}
+                        update = {"$set": {"response": f'Ready IP 🟢: {ip} | {now} | {ready_count} / {len(CSB1_farms)} | {gg2344}/6'}}
                         result = collection.update_one(query, update)
                         print('Result:',result)
                         print(f"repo {respo}")

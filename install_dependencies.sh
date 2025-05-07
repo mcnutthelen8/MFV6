@@ -14,8 +14,8 @@ sudo apt-get install -y fonts-liberation libgbm1 libnspr4 libnss3 libu2f-udev li
 sudo apt-get --fix-broken install -y
 # Install Google Chrome
 echo "Installing Google Chrome..."
-#wget --no-check-certificate 'https://drive.usercontent.google.com/download?id=1GbKsnazR8h3xTrUN5TrKWdXaBO3nudQ5&export=download&authuser=0&confirm=t&uuid=670b57f0-98b1-4df0-b37a-3715e9fc2a31&at=AENtkXZITd_FNy6jafHDjzeJ76lk%3A1731453427695' -O google-chrome-stable_current_amd64.deb
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+wget --no-check-certificate 'https://drive.usercontent.google.com/download?id=1GbKsnazR8h3xTrUN5TrKWdXaBO3nudQ5&export=download&authuser=0&confirm=t&uuid=670b57f0-98b1-4df0-b37a-3715e9fc2a31&at=AENtkXZITd_FNy6jafHDjzeJ76lk%3A1731453427695' -O google-chrome-stable_current_amd64.deb
+#wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 sudo dpkg -i google-chrome-stable_current_amd64.deb
 
 # Fix any dependency issues caused by Google Chrome installation
@@ -55,8 +55,8 @@ sudo apt-get install -y fonts-liberation libgbm1 libnspr4 libnss3 libu2f-udev li
 sudo apt-get --fix-broken install -y
 # Install Google Chrome
 echo "Installing Google Chrome..."
-#wget --no-check-certificate 'https://drive.usercontent.google.com/download?id=1GbKsnazR8h3xTrUN5TrKWdXaBO3nudQ5&export=download&authuser=0&confirm=t&uuid=670b57f0-98b1-4df0-b37a-3715e9fc2a31&at=AENtkXZITd_FNy6jafHDjzeJ76lk%3A1731453427695' -O google-chrome-stable_current_amd64.deb
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+wget --no-check-certificate 'https://drive.usercontent.google.com/download?id=1GbKsnazR8h3xTrUN5TrKWdXaBO3nudQ5&export=download&authuser=0&confirm=t&uuid=670b57f0-98b1-4df0-b37a-3715e9fc2a31&at=AENtkXZITd_FNy6jafHDjzeJ76lk%3A1731453427695' -O google-chrome-stable_current_amd64.deb
+#wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 sudo dpkg -i google-chrome-stable_current_amd64.deb
 
 # Fix any dependency issues caused by Google Chrome installation

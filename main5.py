@@ -2823,7 +2823,7 @@ while True:
                 reset_count_isacc = 0
 
             #ip_address = get_ip(sb1) 
-            if reset_count >= 15:
+            if reset_count >= 19:
                 print('reset count higher')
                 try:
                     sb1.quit()
@@ -2855,7 +2855,7 @@ while True:
                 all_window_handles = [earnpp_window,feyorra_window,earntrump_window,earnbonk_window]
                 gg23g= close_extra_windows(sb1, all_window_handles)
                 if gg23g:
-                    reset_count +=5
+                    reset_count +=3
 
                 print(f'Reset_count:{reset_count}')
 
@@ -2882,7 +2882,7 @@ while True:
                                         response_messege('Pepe Limit Reached')
                                         earnpp_limit_reached =True
                                 else:
-                                    refresh_count +=4
+                                    refresh_count +=2
                             debug_messages(f'Solved Icon Captcha on EarnPP')
 
 
@@ -2955,7 +2955,7 @@ while True:
                                         response_messege('Feyorra Limit Reached')
                                         feyorra_limit_reached =True
                                 else:
-                                    refresh_count +=4
+                                    refresh_count +=2
 
                                 
                         elif 'Just' in title:
@@ -3023,7 +3023,7 @@ while True:
                                         response_messege('Trump Limit Reached')
                                         earntrump_limit_reached =True
                                 else:
-                                    refresh_count +=4
+                                    refresh_count +=2
 
                                 
                         elif 'Just' in title:
@@ -3096,7 +3096,7 @@ while True:
                                         earnbonk_limit_reached =True
                                 else:
                                     #Click_Understand()
-                                    refresh_count +=4
+                                    refresh_count +=2
 
                                 
                         elif 'Just' in title:

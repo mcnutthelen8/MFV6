@@ -1,5 +1,5 @@
 
-
+#version -9.2
 
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs

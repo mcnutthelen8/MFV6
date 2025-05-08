@@ -2384,7 +2384,7 @@ def update_ip(new_ip, config_path="mfhelper/config.json"):
         print(f"Error updating config.json: {e}")
 
 fresh_start_faucet = True
-login_faucet_detect = False
+login_faucet_detect = True
 def open_browsers():
     global sb1
     global chrome_user_data_dir
@@ -2468,19 +2468,22 @@ def open_faucets():
             browser_proxy2  =get_browser_proxy()
             chrome_user_data_dir2 = f'/root/.config/google-chrome/{browser_proxy2}{layout2}'
             if chrome_user_data_dir == chrome_user_data_dir2 and layout == layout2 and browser_proxy2 == browser_proxy:
-                response_messege('Same Browser ...')
-                if login_faucet_detect:
-                    print('Login Faucet Detected')
-                else:
-                    fresh_start_faucet = False
+                response_messege(f'Same Browser | L {layout2}')
             else:
                 response_messege(f'Resetting Browser')
-                fresh_start_faucet = True
                 try:
-                    subprocess.run(['pkill', '-f', 'chrome'], check=True)
-                    print(f"All chrome processes killed successfully.")
-                except subprocess.CalledProcessError:
-                    print(f"Failed to kill chrome processes or no processes found.")
+                    sb1.quit()
+                    time.sleep(2)
+                except Exception as e:
+                    print(f"sb1.quit() failed: {e}")
+
+                # Fallback kill
+                for proc_name in ['chrome', 'chromium']:
+                    try:
+                        subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
+                        print(f"All {proc_name} processes killed (if any).")
+                    except Exception as e:
+                        print(f"Failed to kill {proc_name} processes: {e}")
                 time.sleep(6)
                 sb1 = open_browsers()
                 continue
@@ -2571,7 +2574,7 @@ def open_faucets():
                     update_ip(ip_address, config_path="mfhelper/config.json")
                 else:
                     raise Exception(" earnpp_window == 404")
-                
+                fresh_start_faucet = True
                 if fresh_start_faucet == True:
                     ip_address = get_ip(sb1)
                     if ip_required == ip_address:
@@ -2635,7 +2638,7 @@ def open_faucets():
                                 if earnbonk_window == 404:
                                     raise Exception(" earnbonk == 404")
                                 print(f"Feyorra window handle: {earnbonk_window}")
-                                time.sleep(6)
+                                time.sleep(4)
                                 Click_Understand()
 
                         else:
@@ -2754,11 +2757,19 @@ def open_faucets():
         except Exception as e:
                 response_messege(f'Resetting Browser{e}')
                 try:
-                    subprocess.run(['pkill', '-f', 'chrome'], check=True)
-                    print(f"All chrome processes killed successfully",e)
+                    sb1.quit()
+                    time.sleep(2)
                 except Exception as e:
-                    print(f"Failed to kill chrome processes or no processes found",e)
-                time.sleep(10)
+                    print(f"sb1.quit() failed: {e}")
+
+                # Fallback kill
+                for proc_name in ['chrome', 'chromium']:
+                    try:
+                        subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
+                        print(f"All {proc_name} processes killed (if any).")
+                    except Exception as e:
+                        print(f"Failed to kill {proc_name} processes: {e}")
+                time.sleep(4)
                 sb1 = open_browsers()
                 reset_count +=15
 
@@ -2778,7 +2789,7 @@ time.sleep(2)
 print('Starting Loop')
 
 Script_Started = time.time()
-
+script_seconds_only = 0
 while True:
     try:
         pyautogui.moveTo(100, 200)
@@ -2790,11 +2801,29 @@ while True:
             debug_messages(f'Ip address Found:{ip_address}')
             cc_faucet = None
             script_elapsed_time = time.time() - Script_Started
-            seconds_only = int(script_elapsed_time)
+            script_seconds_only = int(script_elapsed_time)
             debug_messages(f'script_elapsed_time Seconds:{seconds_only}')
             if seconds_only > 1200:
                 Script_Started = time.time()
+                try:
+                    sb1.quit()
+                    time.sleep(2)
+                except Exception as e:
+                    print(f"sb1.quit() failed: {e}")
+
+                # Fallback kill
+                for proc_name in ['chrome', 'chromium']:
+                    try:
+                        subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
+                        print(f"All {proc_name} processes killed (if any).")
+                    except Exception as e:
+                        print(f"Failed to kill {proc_name} processes: {e}")
+                        
+                time.sleep(2)
+                sb1 = open_browsers()
+
                 earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required = open_faucets()
+                Script_Started = time.time()
 
             if reset_count_isacc >= 7:
                 response_messege('oops.. reset_count_isacc triggers')
@@ -3199,7 +3228,7 @@ while True:
                     print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | Trump:{earntrump_coins}|BONK:{earnbonk_coins} ')
                     if earnpp_coins and feyorra_coins and earnbonk_coins and earntrump_coins: 
                         start_time3 = time.time()
-                        emailgg = f'{earnpp_email} <br>country: {server_name1} <br>Current Layout:{layout} <br>Farm:{farm_id}'
+                        emailgg = f'{earnpp_email} <br>country: {server_name1} <br>Current Layout:{layout} <br>Farm:{farm_id} <br>Session Reset:{script_seconds_only}'
                         insert_data(ip_address, earnpp_coins, feyorra_coins, earntrump_coins, earnbonk_coins, emailgg)
                     else:
                         response_messege(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | Trump:{earntrump_coins}|BONK:{earnbonk_coins} ')
@@ -3256,12 +3285,20 @@ while True:
         if 'no such window' in str(e) or 'invalid session' in str(e) or 'NoHTTPConnectionPool' in str(e):
             response_messege(f'Resetting Browser')
             try:
-                subprocess.run(['pkill', '-f', 'chrome'], check=True)
-                print("All chrome processes killed successfully.")
-            except subprocess.CalledProcessError:
-                print("Failed to kill chrome processes or no processes found.")
+                sb1.quit()
+                time.sleep(2)
+            except Exception as e:
+                print(f"sb1.quit() failed: {e}")
+
+            # Fallback kill
+            for proc_name in ['chrome', 'chromium']:
+                try:
+                    subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
+                    print(f"All {proc_name} processes killed (if any).")
+                except Exception as e:
+                    print(f"Failed to kill {proc_name} processes: {e}")
             time.sleep(10)
             sb1 = open_browsers()
             reset_count +=15
-        reset_count +=1
+        reset_count +=2
      

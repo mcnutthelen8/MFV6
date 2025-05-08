@@ -283,7 +283,7 @@ def get_mails_passowrds(farm_id):
     elif farm_id == 5:
 
         if '1' in layout:
-            server_name1 = 'belgium'
+            server_name1 = 'germany'
             CSB1_farms =Farm_list
             earnpp_email = 'ernestost5@gmail.com' 
             earnpp_pass = 'ernestost5'
@@ -291,14 +291,14 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'ernestost5'
 
         elif '2' in layout:
-            server_name1 = 'belgium' #'chile'
+            server_name1 = 'germany' #'chile'
             CSB1_farms =Farm_list
             earnpp_email = 'rondolfapa9@gmail.com'
             earnpp_pass = 'rondolfapa9'
             feyorra_email = 'rondolfapa9@gmail.com'
             feyorra_pass = 'rondolfapa9'
         elif '3' in layout:
-            server_name1 = 'belgium' #'chile'
+            server_name1 = 'germany' #'chile'
             CSB1_farms = Farm_list
             earnpp_email = 'kevincharl3@gmail.com'
             earnpp_pass = 'kevincharl3'
@@ -306,7 +306,7 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'kevincharl3'
 
         elif '4' in layout:
-            server_name1 = 'belgium' #'chile'
+            server_name1 = 'germany' #'chile'
             CSB1_farms = Farm_list
             earnpp_email = 'leonardken7@gmail.com'
             earnpp_pass = 'leonardken7'
@@ -314,7 +314,7 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'leonardken7'
 
         elif '5' in layout:
-            server_name1 = 'belgium' #'chile'
+            server_name1 = 'germany' #'chile'
             CSB1_farms =Farm_list
             earnpp_email = 'willsmile31@gmail.com'
             earnpp_pass = 'willsmile31'
@@ -1147,9 +1147,8 @@ def solve_icon_captcha(sb1):
         #print("Filtered elements:")
         # Assign the first element to captchaElement
         if len(filtered_elements) < 5:
-            base64_images = [
-                "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAAAXCAIAAAAuvD5IAAAACXB",
-            ]
+            captchaElement = filtered_elements[0]
+
             base64_images2 = [
                 "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAToAAAAXCAIAAAAUZRRXAAAACXBI",
                 "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV0AAAAXCAIAAAAnXgteAAAACXBI",
@@ -1158,24 +1157,11 @@ def solve_icon_captcha(sb1):
             # Check if any image on the page matches a base64 image from the list
 
 
-            image_exists2 = any(
-                img.get_attribute("src").startswith(base64_prefix) 
-                for img in sb1.find_elements("form img") 
-                for base64_prefix in base64_images2
-            )
-
-            # Print the results
-            #print("Verified: ", image_exists)
-            #print("Opps Error: ", image_exists2)
-
-            if image_exists2:
-                print("Opps Error found in the first list.")
-                #button = sb1.find_element(By.CSS_SELECTOR, 'button#ClaimBtn')
-                #capture_element_screenshot(sb1, 'button#ClaimBtn', screenshot_path="full_screenshot.png", cropped_path="element_screenshot.png")
-                #mouse_moveclick(cropped_path="element_screenshot.png")
-                #button.uc_click()
-                pyautogui.press('f5')
-                return
+            for base64_image in base64_images2:
+                if base64_image in captchaElement:
+                    print("Opps Error found in the first list.")
+                    pyautogui.press('f5')
+                    return False
             return False
 
         if filtered_elements:
@@ -1891,7 +1877,7 @@ def withdraw_faucet(driver, sitekey):
             cloudflare(driver, login = True)
             time.sleep(2)
             driver.uc_click('button#ClaimBtn')
-            time.sleep(5)
+            time.sleep(8)
             response_messege(f'EarnPP FaucetPay Withdrawed')
 ###########################################################################
         #Feyorra
@@ -1945,7 +1931,7 @@ def withdraw_faucet(driver, sitekey):
             cloudflare(driver, login = True)
             time.sleep(2)
             driver.uc_click('button#ClaimBtn')
-            time.sleep(5)
+            time.sleep(8)
             response_messege(f'Fey FaucetPay Withdrawed')
 
 ###########################################################################
@@ -2000,7 +1986,7 @@ def withdraw_faucet(driver, sitekey):
             cloudflare(driver, login = True)
             time.sleep(2)
             driver.uc_click('button#ClaimBtn')
-            time.sleep(5)
+            time.sleep(8)
             response_messege(f'Trump FaucetPay Withdrawed')
 ###########################################################################
         #Earn bonk
@@ -2055,7 +2041,7 @@ def withdraw_faucet(driver, sitekey):
             cloudflare(driver, login = True)
             time.sleep(2)
             driver.uc_click('button#ClaimBtn')
-            time.sleep(5)
+            time.sleep(8)
             response_messege(f'BONK FaucetPay Withdrawed')
         query = {"type": "main"}
         update = {"$set": {"request": 'ipfixer'}}
@@ -2601,7 +2587,7 @@ def open_faucets():
                                 if feyorra_window == 404:
                                     raise Exception(" feyorra_window == 404")
                                 print(f"Feyorra window handle: {feyorra_window}")
-                                time.sleep(4)
+                                time.sleep(2)
                                 Click_Understand()
 
 
@@ -2802,8 +2788,8 @@ while True:
             cc_faucet = None
             script_elapsed_time = time.time() - Script_Started
             script_seconds_only = int(script_elapsed_time)
-            debug_messages(f'script_elapsed_time Seconds:{seconds_only}')
-            if seconds_only > 1200:
+            debug_messages(f'script_elapsed_time Seconds:{script_seconds_only}')
+            if script_seconds_only > 1300:
                 Script_Started = time.time()
                 try:
                     sb1.quit()
@@ -2837,10 +2823,24 @@ while True:
                 reset_count_isacc = 0
 
             #ip_address = get_ip(sb1) 
-            if reset_count >= 18:
+            if reset_count >= 15:
                 print('reset count higher')
-                
+                try:
+                    sb1.quit()
+                    time.sleep(2)
+                except Exception as e:
+                    print(f"sb1.quit() failed: {e}")
+
+                # Fallback kill
+                for proc_name in ['chrome', 'chromium']:
+                    try:
+                        subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
+                        print(f"All {proc_name} processes killed (if any).")
+                    except Exception as e:
+                        print(f"Failed to kill {proc_name} processes: {e}")
+                time.sleep(2)
                 earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required = open_faucets()
+                Script_Started = time.time()
                 reset_count = 0
                 reset_count_isacc = 0
 
@@ -2855,7 +2855,7 @@ while True:
                 all_window_handles = [earnpp_window,feyorra_window,earntrump_window,earnbonk_window]
                 gg23g= close_extra_windows(sb1, all_window_handles)
                 if gg23g:
-                    reset_count +=3
+                    reset_count +=5
 
                 print(f'Reset_count:{reset_count}')
 
@@ -2882,7 +2882,7 @@ while True:
                                         response_messege('Pepe Limit Reached')
                                         earnpp_limit_reached =True
                                 else:
-                                    refresh_count +=2
+                                    reset_count +=1
                             debug_messages(f'Solved Icon Captcha on EarnPP')
 
 
@@ -2955,7 +2955,7 @@ while True:
                                         response_messege('Feyorra Limit Reached')
                                         feyorra_limit_reached =True
                                 else:
-                                    refresh_count +=2
+                                    reset_count +=1
 
                                 
                         elif 'Just' in title:
@@ -3023,7 +3023,7 @@ while True:
                                         response_messege('Trump Limit Reached')
                                         earntrump_limit_reached =True
                                 else:
-                                    refresh_count +=2
+                                    reset_count +=1
 
                                 
                         elif 'Just' in title:
@@ -3096,7 +3096,7 @@ while True:
                                         earnbonk_limit_reached =True
                                 else:
                                     #Click_Understand()
-                                    refresh_count +=2
+                                    reset_count +=1
 
                                 
                         elif 'Just' in title:

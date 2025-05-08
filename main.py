@@ -2778,8 +2778,8 @@ Script_Started = time.time()
 script_seconds_only = 0
 while True:
     try:
-        pyautogui.moveTo(100, 200)
-        pyautogui.moveTo(200, 400)
+        #pyautogui.moveTo(100, 200)
+        #pyautogui.moveTo(200, 400)
         mainscript = control_panel()
         print('control_panel', mainscript)
         if mainscript == 1:

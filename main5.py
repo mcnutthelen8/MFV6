@@ -220,10 +220,10 @@ def get_mails_passowrds(farm_id):
         elif '4' in layout:
             server_name1 = 'turkey' #'belgium'
             CSB1_farms =Farm_list
-            earnpp_email = 'andyroger9506@gmail.com'
-            earnpp_pass = 'andyroger9506'
-            feyorra_email = 'andyroger9506@gmail.com'
-            feyorra_pass = 'andyroger9506'
+            earnpp_email = 'hayzgonzle5@gmail.com'
+            earnpp_pass = 'hayzgonzle5'
+            feyorra_email = 'hayzgonzle5@gmail.com'
+            feyorra_pass = 'hayzgonzle5'
         elif '5' in layout:
             server_name1 = 'turkey' #'belgium'
             CSB1_farms =Farm_list
@@ -2778,8 +2778,8 @@ Script_Started = time.time()
 script_seconds_only = 0
 while True:
     try:
-        pyautogui.moveTo(100, 200)
-        pyautogui.moveTo(200, 400)
+        #pyautogui.moveTo(100, 200)
+        #pyautogui.moveTo(200, 400)
         mainscript = control_panel()
         print('control_panel', mainscript)
         if mainscript == 1:
@@ -2801,9 +2801,9 @@ while True:
                 for proc_name in ['chrome', 'chromium']:
                     try:
                         subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
-                        print(f"All {proc_name} processes killed (if any).")
+                        print(f"All {proc_name} script_seconds_only killed (if any).")
                     except Exception as e:
-                        print(f"Failed to kill {proc_name} processes: {e}")
+                        print(f"Failed to kill {proc_name} script_seconds_only: {e}")
                         
                 time.sleep(2)
                 sb1 = open_browsers()
@@ -2835,9 +2835,9 @@ while True:
                 for proc_name in ['chrome', 'chromium']:
                     try:
                         subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
-                        print(f"All {proc_name} processes killed (if any).")
+                        print(f"All {proc_name} reset_count killed (if any).")
                     except Exception as e:
-                        print(f"Failed to kill {proc_name} processes: {e}")
+                        print(f"Failed to kill {proc_name} reset_count: {e}")
                 time.sleep(2)
                 earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required = open_faucets()
                 Script_Started = time.time()
@@ -2882,7 +2882,7 @@ while True:
                                         response_messege('Pepe Limit Reached')
                                         earnpp_limit_reached =True
                                 else:
-                                    reset_count +=1
+                                    refresh_count +=4
                             debug_messages(f'Solved Icon Captcha on EarnPP')
 
 
@@ -2955,7 +2955,7 @@ while True:
                                         response_messege('Feyorra Limit Reached')
                                         feyorra_limit_reached =True
                                 else:
-                                    reset_count +=1
+                                    refresh_count +=4
 
                                 
                         elif 'Just' in title:
@@ -3023,7 +3023,7 @@ while True:
                                         response_messege('Trump Limit Reached')
                                         earntrump_limit_reached =True
                                 else:
-                                    reset_count +=1
+                                    refresh_count +=4
 
                                 
                         elif 'Just' in title:
@@ -3096,7 +3096,7 @@ while True:
                                         earnbonk_limit_reached =True
                                 else:
                                     #Click_Understand()
-                                    reset_count +=1
+                                    refresh_count +=4
 
                                 
                         elif 'Just' in title:
@@ -3294,9 +3294,9 @@ while True:
             for proc_name in ['chrome', 'chromium']:
                 try:
                     subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
-                    print(f"All {proc_name} processes killed (if any).")
+                    print(f"All {proc_name} Hell No killed (if any).")
                 except Exception as e:
-                    print(f"Failed to kill {proc_name} processes: {e}")
+                    print(f"Failed to kill {proc_name} Hell No: {e}")
             time.sleep(10)
             sb1 = open_browsers()
             reset_count +=15

@@ -227,10 +227,10 @@ def get_mails_passowrds(farm_id):
         elif '5' in layout:
             server_name1 = 'turkey' #'belgium'
             CSB1_farms =Farm_list
-            earnpp_email = 'scramblepenny55@gmail.com'
-            earnpp_pass = 'scramblepenny55'
-            feyorra_email = 'scramblepenny55@gmail.com'
-            feyorra_pass = 'scramblepenny55'
+            earnpp_email = 'danielhenesy3@gmail.com'
+            earnpp_pass = 'danielhenesy3'
+            feyorra_email = 'danielhenesy3@gmail.com'
+            feyorra_pass = 'danielhenesy3'
 
         else:
             print('Layout issue', layout)
@@ -283,7 +283,7 @@ def get_mails_passowrds(farm_id):
     elif farm_id == 5:
 
         if '1' in layout:
-            server_name1 = 'germany'
+            server_name1 = 'belgium'
             CSB1_farms =Farm_list
             earnpp_email = 'ernestost5@gmail.com' 
             earnpp_pass = 'ernestost5'
@@ -291,14 +291,14 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'ernestost5'
 
         elif '2' in layout:
-            server_name1 = 'germany' #'chile'
+            server_name1 = 'belgium' #'chile'
             CSB1_farms =Farm_list
             earnpp_email = 'rondolfapa9@gmail.com'
             earnpp_pass = 'rondolfapa9'
             feyorra_email = 'rondolfapa9@gmail.com'
             feyorra_pass = 'rondolfapa9'
         elif '3' in layout:
-            server_name1 = 'germany' #'chile'
+            server_name1 = 'belgium' #'chile'
             CSB1_farms = Farm_list
             earnpp_email = 'kevincharl3@gmail.com'
             earnpp_pass = 'kevincharl3'
@@ -306,7 +306,7 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'kevincharl3'
 
         elif '4' in layout:
-            server_name1 = 'germany' #'chile'
+            server_name1 = 'belgium' #'chile'
             CSB1_farms = Farm_list
             earnpp_email = 'leonardken7@gmail.com'
             earnpp_pass = 'leonardken7'
@@ -314,7 +314,7 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'leonardken7'
 
         elif '5' in layout:
-            server_name1 = 'germany' #'chile'
+            server_name1 = 'belgium' #'chile'
             CSB1_farms =Farm_list
             earnpp_email = 'willsmile31@gmail.com'
             earnpp_pass = 'willsmile31'
@@ -1148,13 +1148,10 @@ def solve_icon_captcha(sb1):
         # Assign the first element to captchaElement
         if len(filtered_elements) < 5:
             captchaElement = filtered_elements[0]
-
             base64_images2 = [
                 "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAToAAAAXCAIAAAAUZRRXAAAACXBI",
                 "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV0AAAAXCAIAAAAnXgteAAAACXBI",
             ]
-
-            # Check if any image on the page matches a base64 image from the list
 
 
             for base64_image in base64_images2:
@@ -1162,6 +1159,7 @@ def solve_icon_captcha(sb1):
                     print("Opps Error found in the first list.")
                     pyautogui.press('f5')
                     return False
+
             return False
 
         if filtered_elements:
@@ -2386,7 +2384,7 @@ def open_browsers():
     print(f'Farm ID:{farm_id} | Layout: {layout}')
     chrome_user_data_dir = f'/root/.config/google-chrome/{browser_proxy}{layout}'
 
-    sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path, page_load_strategy='none')#'none')#, proxy=browser_proxy )
+    sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path, page_load_strategy='none')#, proxy=browser_proxy )
     sb1.maximize_window()
     sb1.uc_open("chrome://extensions/")
     current_window = sb1.current_window_handle
@@ -2624,7 +2622,7 @@ def open_faucets():
                                 if earnbonk_window == 404:
                                     raise Exception(" earnbonk == 404")
                                 print(f"Feyorra window handle: {earnbonk_window}")
-                                time.sleep(4)
+                                time.sleep(3)
                                 Click_Understand()
 
                         else:
@@ -2778,8 +2776,8 @@ Script_Started = time.time()
 script_seconds_only = 0
 while True:
     try:
-        #pyautogui.moveTo(100, 200)
-        #pyautogui.moveTo(200, 400)
+        pyautogui.moveTo(100, 200)
+        pyautogui.moveTo(200, 400)
         mainscript = control_panel()
         print('control_panel', mainscript)
         if mainscript == 1:
@@ -2789,7 +2787,7 @@ while True:
             script_elapsed_time = time.time() - Script_Started
             script_seconds_only = int(script_elapsed_time)
             debug_messages(f'script_elapsed_time Seconds:{script_seconds_only}')
-            if script_seconds_only > 1300:
+            if script_seconds_only > 1200:
                 Script_Started = time.time()
                 try:
                     sb1.quit()
@@ -2823,7 +2821,7 @@ while True:
                 reset_count_isacc = 0
 
             #ip_address = get_ip(sb1) 
-            if reset_count >= 19:
+            if reset_count >= 15:
                 print('reset count higher')
                 try:
                     sb1.quit()
@@ -2839,8 +2837,8 @@ while True:
                     except Exception as e:
                         print(f"Failed to kill {proc_name} reset_count: {e}")
                 time.sleep(2)
+                sb1 = open_browsers()
                 earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required = open_faucets()
-                Script_Started = time.time()
                 reset_count = 0
                 reset_count_isacc = 0
 
@@ -3294,9 +3292,9 @@ while True:
             for proc_name in ['chrome', 'chromium']:
                 try:
                     subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
-                    print(f"All {proc_name} Hell No killed (if any).")
+                    print(f"All {proc_name} processes killed (if any).")
                 except Exception as e:
-                    print(f"Failed to kill {proc_name} Hell No: {e}")
+                    print(f"Failed to kill {proc_name} processes: {e}")
             time.sleep(10)
             sb1 = open_browsers()
             reset_count +=15

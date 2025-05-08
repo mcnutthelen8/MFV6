@@ -1584,6 +1584,11 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
 
 
         if not_expected_title in current_title:
+            print(f"{current_title} is not the expected title. Reconnecting...")
+            if window_list:
+                login_faucet_detect = True
+                return 405
+
             if function == 1:
                 login_to_faucet('https://earn-pepe.com/login', sb1, earnpp_email, earnpp_pass, 'cloudflare_success', window_list, 'button#ClaimBtn')
                 #login_to_faucet('https://earn-pepe.com/login', sb1, earnpp_email, earnpp_pass, 'rscaptcha', window_list, 'button#loginBtn')
@@ -2378,6 +2383,8 @@ def update_ip(new_ip, config_path="mfhelper/config.json"):
     except Exception as e:
         print(f"Error updating config.json: {e}")
 
+fresh_start_faucet = True
+login_faucet_detect = False
 def open_browsers():
     global sb1
     global chrome_user_data_dir
@@ -2452,6 +2459,8 @@ def open_faucets():
     while True:
         try:
             global faucetlayout
+            global fresh_start_faucet
+            global login_faucet_detect
             quer2y = {"type": "main"}
             dochh2 = collection.find_one(quer2y)
             layout2 = dochh2["withdraw_mail"]
@@ -2460,15 +2469,19 @@ def open_faucets():
             chrome_user_data_dir2 = f'/root/.config/google-chrome/{browser_proxy2}{layout2}'
             if chrome_user_data_dir == chrome_user_data_dir2 and layout == layout2 and browser_proxy2 == browser_proxy:
                 response_messege('Same Browser ...')
-                pass
+                if login_faucet_detect:
+                    print('Login Faucet Detected')
+                else:
+                    fresh_start_faucet = False
             else:
                 response_messege(f'Resetting Browser')
+                fresh_start_faucet = True
                 try:
                     subprocess.run(['pkill', '-f', 'chrome'], check=True)
                     print(f"All chrome processes killed successfully.")
                 except subprocess.CalledProcessError:
                     print(f"Failed to kill chrome processes or no processes found.")
-                time.sleep(10)
+                time.sleep(6)
                 sb1 = open_browsers()
                 continue
             pyautogui.moveTo(100, 200)
@@ -2559,76 +2572,76 @@ def open_faucets():
                 else:
                     raise Exception(" earnpp_window == 404")
                 
-                
-                ip_address = get_ip(sb1)
-                if ip_required == ip_address:
-                    response_messege('EarnPP Loging')
-                    if earnpp:
-                        if faucetlayout == 1:
-                            earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [], ip_required)
-                            if earnpp_window == 404:
-                                raise Exception(" earnpp_window == 404")
-                            print(f"EarnPP window handle: {earnpp_window}")
+                if fresh_start_faucet == True:
+                    ip_address = get_ip(sb1)
+                    if ip_required == ip_address:
+                        response_messege('EarnPP Loging Fresh')
+                        if earnpp:
+                            if faucetlayout == 1:
+                                earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [], ip_required)
+                                if earnpp_window == 404:
+                                    raise Exception(" earnpp_window == 404")
+                                print(f"EarnPP window handle: {earnpp_window}")
 
+                        else:
+                            earnpp_window = None
                     else:
-                        earnpp_window = None
-                else:
-                    raise Exception("Ip changed")
+                        raise Exception("Ip changed")
 
-                ip_address = get_ip(sb1)
-                if ip_required == ip_address:
-                    response_messege('Feyorra Loging')
-                    if feyorra:
-                        #sb1.open_new_window()
-                        if faucetlayout == 1:
-                            feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Best - Meme Coins Faucet", 2, [], ip_required)
-                            if feyorra_window == 404:
-                                raise Exception(" feyorra_window == 404")
-                            print(f"Feyorra window handle: {feyorra_window}")
-                            time.sleep(4)
-                            Click_Understand()
+                    ip_address = get_ip(sb1)
+                    if ip_required == ip_address:
+                        response_messege('Feyorra Loging Fresh')
+                        if feyorra:
+                            #sb1.open_new_window()
+                            if faucetlayout == 1:
+                                feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Best - Meme Coins Faucet", 2, [], ip_required)
+                                if feyorra_window == 404:
+                                    raise Exception(" feyorra_window == 404")
+                                print(f"Feyorra window handle: {feyorra_window}")
+                                time.sleep(4)
+                                Click_Understand()
 
 
 
+                        else:
+                            feyorra_window = None
                     else:
-                        feyorra_window = None
-                else:
-                    raise Exception("Ip changed")
-                
-                ip_address = get_ip(sb1)
-                if ip_required == ip_address:
-                    response_messege('trump Loging')
-                    if earntrump:
-                        #sb1.open_new_window()
-                        if faucetlayout == 1:
-                            earntrump_window = handle_site(sb1, "https://earn-trump.com/member/faucet","Faucet | Earn-Trump" , "Free $Trump Coin Faucet | Earn $Trump Crypto Instantly", 3, [], ip_required)
-                            if earntrump_window == 404:
-                                raise Exception(" earntrump_window == 404")
-                            print(f"earntrump window handle: {earntrump_window}")
+                        raise Exception("Ip changed")
+                    
+                    ip_address = get_ip(sb1)
+                    if ip_required == ip_address:
+                        response_messege('trump Loging Fresh')
+                        if earntrump:
+                            #sb1.open_new_window()
+                            if faucetlayout == 1:
+                                earntrump_window = handle_site(sb1, "https://earn-trump.com/member/faucet","Faucet | Earn-Trump" , "Free $Trump Coin Faucet | Earn $Trump Crypto Instantly", 3, [], ip_required)
+                                if earntrump_window == 404:
+                                    raise Exception(" earntrump_window == 404")
+                                print(f"earntrump window handle: {earntrump_window}")
 
 
+                        else:
+                            earntrump_window = None
                     else:
-                        trump_window = None
-                else:
-                    raise Exception("Ip changed")
-                
-                ip_address = get_ip(sb1)
-                if ip_required == ip_address:
-                    response_messege('earnbonk Loging')
-                    if earnbonk:
-                        #sb1.open_new_window()
-                        if faucetlayout == 1:
-                            earnbonk_window = handle_site(sb1, "https://earn-bonk.com/member/faucet", "Faucet | Earn-Bonk" , "Earn Bonk", 4, [], ip_required)
-                            if earnbonk_window == 404:
-                                raise Exception(" earnbonk == 404")
-                            print(f"Feyorra window handle: {earnbonk_window}")
-                            time.sleep(6)
-                            Click_Understand()
+                        raise Exception("Ip changed")
+                    
+                    ip_address = get_ip(sb1)
+                    if ip_required == ip_address:
+                        response_messege('earnbonk Loging Fresh')
+                        if earnbonk:
+                            #sb1.open_new_window()
+                            if faucetlayout == 1:
+                                earnbonk_window = handle_site(sb1, "https://earn-bonk.com/member/faucet", "Faucet | Earn-Bonk" , "Earn Bonk", 4, [], ip_required)
+                                if earnbonk_window == 404:
+                                    raise Exception(" earnbonk == 404")
+                                print(f"Feyorra window handle: {earnbonk_window}")
+                                time.sleep(6)
+                                Click_Understand()
 
+                        else:
+                            earnbonk_window = None
                     else:
-                        earnbonk_window = None
-                else:
-                    raise Exception("Ip changed")
+                        raise Exception("Ip changed")
 
 
 
@@ -2655,6 +2668,9 @@ def open_faucets():
                             feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Best - Meme Coins Faucet", 2, [earnpp_window], ip_required)
                             if feyorra_window == 404:
                                 raise Exception(" feyorra_window == 404")
+                            elif feyorra_window == 405:
+                                login_faucet_detect = True
+                                raise Exception(" login_faucet_detect == 404")
                             print(f"Feyorra window handle: {feyorra_window}")
 
 
@@ -2673,11 +2689,14 @@ def open_faucets():
                             earntrump_window = handle_site(sb1, "https://earn-trump.com/member/faucet","Faucet | Earn-Trump" , "Free $Trump Coin Faucet | Earn $Trump Crypto Instantly", 3, [earnpp_window,feyorra_window], ip_required)
                             if earntrump_window == 404:
                                 raise Exception(" earntrump_window == 404")
+                            elif feyorra_window == 405:
+                                login_faucet_detect = True
+                                raise Exception(" login_faucet_detect == 404")
                             print(f"earntrump window handle: {earntrump_window}")
 
 
                     else:
-                        trump_window = None
+                        earntrump_window = None
                 else:
                     raise Exception("Ip changed")
                 
@@ -2689,6 +2708,9 @@ def open_faucets():
                             earnbonk_window = handle_site(sb1, "https://earn-bonk.com/member/faucet", "Faucet | Earn-Bonk" , "Earn Bonk", 4, [earnpp_window,feyorra_window,earntrump_window], ip_required)
                             if earnbonk_window == 404:
                                 raise Exception(" earnbonk == 404")
+                            elif feyorra_window == 405:
+                                login_faucet_detect = True
+                                raise Exception(" login_faucet_detect == 404")
                             print(f"Feyorra window handle: {earnbonk_window}")
 
 
@@ -2727,7 +2749,7 @@ def open_faucets():
                     reset_count_isacc = 0
                     previous_reset_count = 0
 
-
+                    login_faucet_detect = False
                     return earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required
         except Exception as e:
                 response_messege(f'Resetting Browser{e}')
@@ -2755,7 +2777,7 @@ start_time4 = 0
 time.sleep(2)
 print('Starting Loop')
 
-
+Script_Started = time.time()
 
 while True:
     try:
@@ -2767,6 +2789,12 @@ while True:
             
             debug_messages(f'Ip address Found:{ip_address}')
             cc_faucet = None
+            script_elapsed_time = time.time() - Script_Started
+            seconds_only = int(script_elapsed_time)
+            debug_messages(f'script_elapsed_time Seconds:{seconds_only}')
+            if seconds_only > 1200:
+                Script_Started = time.time()
+                earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required = open_faucets()
 
             if reset_count_isacc >= 7:
                 response_messege('oops.. reset_count_isacc triggers')

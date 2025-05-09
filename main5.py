@@ -1,5 +1,5 @@
 
-#version -9.2.6
+#version -9.2.7
 
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -499,7 +499,7 @@ def get_proxycheck(driver, ip, server_name):
                         return 50
                 else:
                     return 301
-            elif 'error' in status or :
+            elif 'error' in status:
                 continue
             else:
                 print("Error: Status not OK : Trying Inbrowser Way")

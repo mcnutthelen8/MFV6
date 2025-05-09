@@ -1,5 +1,5 @@
 
-print('Version 9.3.2')
+print('Version 9.3.5')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -28,7 +28,7 @@ import clipboard
 import os
 import subprocess
 
-
+query = {"type": "main"}
 # Example usage
 pyautogui.moveTo(100, 100)
 pyautogui.click(100, 200, duration=0.5)
@@ -629,6 +629,7 @@ def fix_ip(drive, name):
         ip_address = get_ip(drive)
         ip_address = extract_valid_ipv4(ip_address)
         if ip_address:
+            query = {"type": "main"}
             for i in CSB1_farms:
                 collection_csb = db[f'Farm{i}']
                 sample_document = {

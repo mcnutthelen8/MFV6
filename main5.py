@@ -1,5 +1,5 @@
 
-#version -9.2.1
+#version -9.2.2
 
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -2774,6 +2774,7 @@ print('Starting Loop')
 
 Script_Started = time.time()
 script_seconds_only = 0
+previous_script_seconds_only = 0
 while True:
     try:
         pyautogui.moveTo(100, 200)
@@ -2807,6 +2808,7 @@ while True:
                 sb1 = open_browsers()
 
                 earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required = open_faucets()
+                previous_script_seconds_only = script_seconds_only
                 Script_Started = time.time()
 
             if reset_count_isacc >= 7:
@@ -2841,6 +2843,8 @@ while True:
                 earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required = open_faucets()
                 reset_count = 0
                 reset_count_isacc = 0
+                Script_Started = time.time()
+                previous_script_seconds_only = script_seconds_only
 
             if previous_reset_count == reset_count:
                 reset_count = 0
@@ -3226,7 +3230,7 @@ while True:
                     print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | Trump:{earntrump_coins}|BONK:{earnbonk_coins} ')
                     if earnpp_coins and feyorra_coins and earnbonk_coins and earntrump_coins: 
                         start_time3 = time.time()
-                        emailgg = f'{earnpp_email} <br>country: {server_name1} <br>Current Layout:{layout} <br>Farm:{farm_id} <br>Session Reset:{script_seconds_only}'
+                        emailgg = f'{earnpp_email} <br>country: {server_name1} <br>Current Layout:{layout} <br>Farm:{farm_id} <br>Pre-Session Reset:{previous_script_seconds_only} <br>Session Reset:{script_seconds_only}'
                         insert_data(ip_address, earnpp_coins, feyorra_coins, earntrump_coins, earnbonk_coins, emailgg)
                     else:
                         response_messege(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | Trump:{earntrump_coins}|BONK:{earnbonk_coins} ')
@@ -3292,11 +3296,15 @@ while True:
             for proc_name in ['chrome', 'chromium']:
                 try:
                     subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
-                    print(f"All {proc_name} processes killed (if any).")
+                    print(f"All {proc_name} Hell killed (if any).")
                 except Exception as e:
-                    print(f"Failed to kill {proc_name} processes: {e}")
+                    print(f"Failed to kill {proc_name} Hell: {e}")
             time.sleep(10)
             sb1 = open_browsers()
-            reset_count +=15
+            earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required = open_faucets()
+            reset_count = 0
+            reset_count_isacc = 0
+            Script_Started = time.time()
+            previous_script_seconds_only = script_seconds_only
         reset_count +=2
      

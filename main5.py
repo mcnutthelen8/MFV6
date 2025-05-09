@@ -1,5 +1,5 @@
 
-print('Version 9.3.5')
+print('Version 9.3.8')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -637,7 +637,8 @@ def fix_ip(drive, name):
                     "request": 'ipfixer'
                     
                 }
-                result = collection_csb.update_one(query, sample_document)
+                update = {"$set": sample_document}
+                result = collection_csb.update_one(query, update)
                 print('Update Farm fix_ip', i)
 
             quer2y = {"type": "main"}

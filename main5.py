@@ -1,5 +1,5 @@
 
-#version -9.2.7
+#version -9.2.9
 
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -408,6 +408,21 @@ def insert_data(ip, amount1, amount2, amount3, amount4,emailg):
 
     return
 
+def extract_valid_ipv4(text):
+    # Remove leading/trailing spaces
+    text = text.strip()
+
+    # Regex match for an IPv4 address
+    match = re.search(r'\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b', text)
+    if match:
+        ip_candidate = match.group()
+        try:
+            # Validate IP format (ensures each octet is 0–255)
+            ipaddress.IPv4Address(ip_candidate)
+            return ip_candidate
+        except ipaddress.AddressValueError:
+            return None
+    return None
 def get_ip(driver):
     for i in range(1,5):
         try:
@@ -423,8 +438,10 @@ def get_ip(driver):
                 driver.close()
                 driver.connect()
                 driver.switch_to.window(original_window)
+                ip_address = extract_valid_ipv4(ip_address)
+                if ip_address:
                 
-                return ip_address
+                    return ip_address
             
             except Exception as e:
                 print(e)
@@ -611,66 +628,70 @@ def fix_ip(drive, name):
     while not (ipscore and proxycheck):
         get_mails_passowrds(farm_id)
         ip_address = get_ip(drive)
-        quer2y = {"type": "main"}
-        dochh2 = collection.find_one(quer2y)
-        layout2 = dochh2["withdraw_mail"]
-        global blacklistedIP
-        collectionbip = db[f'LocalCSB']
-        quer2y = {"type": "main"}
-        dochh = collectionbip.find_one(quer2y)
-        blacklistedIP2 = dochh["blacklistedIP"]
-        if len(blacklistedIP) <= len(blacklistedIP2):
-            blacklistedIP += blacklistedIP2
-        #print(blacklistedIP)
-        lay = re.search(r'\d+', layout2).group()
-        other_blacklists = get_blacklistedip2(f'F{farm_id}L{lay}')
-        if other_blacklists:
-                blacklistedIP = other_blacklists + blacklistedIP 
-        if ip_address in blacklistedIP:
-            print(f'Bad IP detected: {ip_address}. Changing IP...1')
-            query = {"type": "main"}
-            update = {"$set": {"response": f'Blacklisted IP🔴: {ip_address}'}}
-            result = collection.update_one(query, update)
-            for i in CSB1_farms:
-                collection_csb = db[f'Farm{i}']
-                update = {"$set": {"request": 'ipfixer'}}
-                result = collection_csb.update_one(query, update)
-                print('Update Farm', i)
- 
-            # Ensure this block is properly indented
-            proxycheck = get_proxycheck(drive, ip_address, server_name=name)
-            if proxycheck == 50 or proxycheck == 200 or proxycheck != 301:
-                #mysterium_vpn_Recon_ip(name, drive)
-                mysterium_vpn_connect(name, drive)
-            else:
-                mysterium_vpn_connect(name, drive)
- 
-            print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
-            time.sleep(5)
-        else:
-            ipscore = get_ipscore(ip_address)
-            proxycheck = get_proxycheck(drive, ip_address, server_name= name)
-            if ipscore and proxycheck == 200:
-                print(f'Good IP found: {ip_address}')
-                return ip_address
-            else:
-                print(f'Bad IP detected: {ip_address}. Changing IP...2')
+        ip_address = extract_valid_ipv4(ip_address)
+        if ip_address:
+            quer2y = {"type": "main"}
+            dochh2 = collection.find_one(quer2y)
+            layout2 = dochh2["withdraw_mail"]
+            global blacklistedIP
+            collectionbip = db[f'LocalCSB']
+            quer2y = {"type": "main"}
+            dochh = collectionbip.find_one(quer2y)
+            blacklistedIP2 = dochh["blacklistedIP"]
+            if len(blacklistedIP) <= len(blacklistedIP2):
+                blacklistedIP += blacklistedIP2
+            #print(blacklistedIP)
+            lay = re.search(r'\d+', layout2).group()
+            other_blacklists = get_blacklistedip2(f'F{farm_id}L{lay}')
+            if other_blacklists:
+                    blacklistedIP = other_blacklists + blacklistedIP 
+            if ip_address in blacklistedIP:
+                print(f'Bad IP detected: {ip_address}. Changing IP...1')
                 query = {"type": "main"}
-                update = {"$set": {"response": f'Changed IP🔴: {ip_address}'}}
+                update = {"$set": {"response": f'Blacklisted IP🔴: {ip_address}'}}
                 result = collection.update_one(query, update)
                 for i in CSB1_farms:
                     collection_csb = db[f'Farm{i}']
                     update = {"$set": {"request": 'ipfixer'}}
                     result = collection_csb.update_one(query, update)
                     print('Update Farm', i)
+    
+                # Ensure this block is properly indented
+                proxycheck = get_proxycheck(drive, ip_address, server_name=name)
                 if proxycheck == 50 or proxycheck == 200 or proxycheck != 301:
                     #mysterium_vpn_Recon_ip(name, drive)
                     mysterium_vpn_connect(name, drive)
                 else:
                     mysterium_vpn_connect(name, drive)
+    
                 print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
                 time.sleep(5)
- 
+            else:
+                ip_address = extract_valid_ipv4(ip_address)
+                if ip_address:
+                    ipscore = get_ipscore(ip_address)
+                    proxycheck = get_proxycheck(drive, ip_address, server_name= name)
+                    if ipscore and proxycheck == 200:
+                        print(f'Good IP found: {ip_address}')
+                        return ip_address
+                    else:
+                        print(f'Bad IP detected: {ip_address}. Changing IP...2')
+                        query = {"type": "main"}
+                        update = {"$set": {"response": f'Changed IP🔴: {ip_address}'}}
+                        result = collection.update_one(query, update)
+                        for i in CSB1_farms:
+                            collection_csb = db[f'Farm{i}']
+                            update = {"$set": {"request": 'ipfixer'}}
+                            result = collection_csb.update_one(query, update)
+                            print('Update Farm', i)
+                        if proxycheck == 50 or proxycheck == 200 or proxycheck != 301:
+                            #mysterium_vpn_Recon_ip(name, drive)
+                            mysterium_vpn_connect(name, drive)
+                        else:
+                            mysterium_vpn_connect(name, drive)
+                        print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
+                        time.sleep(5)
+    
  
 ####################################Control Panel Shit##########################################################
 def mysterium_web_login(driver):

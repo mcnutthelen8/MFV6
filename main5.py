@@ -283,7 +283,7 @@ def get_mails_passowrds(farm_id):
     elif farm_id == 5:
 
         if '1' in layout:
-            server_name1 = 'belgium'
+            server_name1 = 'german'
             CSB1_farms =Farm_list
             earnpp_email = 'ernestost5@gmail.com' 
             earnpp_pass = 'ernestost5'
@@ -291,14 +291,14 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'ernestost5'
 
         elif '2' in layout:
-            server_name1 = 'belgium' #'chile'
+            server_name1 = 'german' #'chile'
             CSB1_farms =Farm_list
             earnpp_email = 'rondolfapa9@gmail.com'
             earnpp_pass = 'rondolfapa9'
             feyorra_email = 'rondolfapa9@gmail.com'
             feyorra_pass = 'rondolfapa9'
         elif '3' in layout:
-            server_name1 = 'belgium' #'chile'
+            server_name1 = 'german' #'chile'
             CSB1_farms = Farm_list
             earnpp_email = 'kevincharl3@gmail.com'
             earnpp_pass = 'kevincharl3'
@@ -306,7 +306,7 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'kevincharl3'
 
         elif '4' in layout:
-            server_name1 = 'belgium' #'chile'
+            server_name1 = 'german' #'chile'
             CSB1_farms = Farm_list
             earnpp_email = 'leonardken7@gmail.com'
             earnpp_pass = 'leonardken7'
@@ -314,7 +314,7 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'leonardken7'
 
         elif '5' in layout:
-            server_name1 = 'belgium' #'chile'
+            server_name1 = 'german' #'chile'
             CSB1_farms =Farm_list
             earnpp_email = 'willsmile31@gmail.com'
             earnpp_pass = 'willsmile31'

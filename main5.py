@@ -1,5 +1,5 @@
 
-#version -9.2
+#version -9.2.1
 
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -195,15 +195,15 @@ def get_mails_passowrds(farm_id):
     elif farm_id == 3:
 
         if '1' in layout:
-            server_name1 = 'turkey'
+            server_name1 = 'france'
             CSB1_farms =Farm_list
-            earnpp_email = 'gkolnda999@gmail.com'
-            earnpp_pass = 'gkolnda999'
-            feyorra_email = 'gkolnda999@gmail.com'
-            feyorra_pass = 'gkolnda999'
+            earnpp_email = 'markshlld51@gmail.com'
+            earnpp_pass = 'markshlld51'
+            feyorra_email = 'markshlld51@gmail.com'
+            feyorra_pass = 'markshlld51'
 
         elif '2' in layout:
-            server_name1 = 'turkey' #'belgium'
+            server_name1 = 'france' #'belgium'
             CSB1_farms =Farm_list
             earnpp_email = 'merlelcn666@gmail.com'
             earnpp_pass = 'merlelcn666'
@@ -211,21 +211,21 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'merlelcn666'
 
         elif '3' in layout:
-            server_name1 = 'turkey' #'belgium'
+            server_name1 = 'france' #'belgium'
             CSB1_farms = Farm_list
             earnpp_email = 'tanishaamy2500@gmail.com'
             earnpp_pass = 'tanishaamy2500'
             feyorra_email = 'tanishaamy2500@gmail.com'
             feyorra_pass = 'tanishaamy2500'
         elif '4' in layout:
-            server_name1 = 'turkey' #'belgium'
+            server_name1 = 'france' #'belgium'
             CSB1_farms =Farm_list
             earnpp_email = 'hayzgonzle5@gmail.com'
             earnpp_pass = 'hayzgonzle5'
             feyorra_email = 'hayzgonzle5@gmail.com'
             feyorra_pass = 'hayzgonzle5'
         elif '5' in layout:
-            server_name1 = 'turkey' #'belgium'
+            server_name1 = 'france' #'belgium'
             CSB1_farms =Farm_list
             earnpp_email = 'danielhenesy3@gmail.com'
             earnpp_pass = 'danielhenesy3'

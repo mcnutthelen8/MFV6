@@ -1,5 +1,5 @@
 
-#version -9.2.5
+#version -9.2.6
 
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -437,73 +437,79 @@ def get_ip(driver):
     return None
 
 
-
-
  
 def get_proxycheck_inbrowser(sb1, ip, server_name):   
-    url = f'https://proxycheck.io/v2/{ip}?vpn=1&asn=1'
-    val = False
-    try:
-        original_window = sb1.current_window_handle
-        sb1.open_new_window()
-        sb1.get(url)
-        ip_address_raw = sb1.get_text('body')
-        #print("Raw Response:", ip_address_raw)
-        ip_address = json.loads(ip_address_raw)
-        proxy_status = ip_address[str(ip)]["proxy"]
-        country = ip_address[str(ip)]["country"]
- 
-        print(f"IP Address: {ip} \nProxy Status: {proxy_status} \nCountry: {country}")
-        if country.lower() in server_name.lower():
-            if proxy_status == 'no':
-                val = 200
+    for i in range(9):
+        url = f'https://proxycheck.io/v2/{ip}?vpn=1&asn=1'
+        val = False
+        try:
+            original_window = sb1.current_window_handle
+            sb1.open_new_window()
+            sb1.get(url)
+            ip_address_raw = sb1.get_text('body')
+            #print("Raw Response:", ip_address_raw)
+            ip_address = json.loads(ip_address_raw)
+            proxy_status = ip_address[str(ip)]["proxy"]
+            country = ip_address[str(ip)]["country"]
+    
+            print(f"IP Address: {ip} \nProxy Status: {proxy_status} \nCountry: {country}")
+            if country.lower() in server_name.lower():
+                if proxy_status in 'no' or 'no' in proxy_status:
+                    print(f'{country} is valid with proxy status.')
+                    val = 200
+                else:
+                    print(f'{country} is valid with not proxy status.')
+                    val = 50
             else:
-                print(f'{country} is valid with not proxy status.')
-                val = 50
-        else:
-            return 301
-        sb1.close()
-        sb1.connect()
-        sb1.switch_to.window(original_window)
- 
-        return val
- 
-    except Exception as e:
-        print(f'ibbrowser ProxyCheck Error: {e}')
-        return val
+                print(f'{country} is not {server_name}')
+                return 301
+
+            sb1.close()
+            sb1.connect()
+            sb1.switch_to.window(original_window)
+    
+            return val
+    
+        except Exception as e:
+            print(f'ibbrowser ProxyCheck Error: {e}')
+        time.sleep(2)  # Wait before retrying
  
  
 def get_proxycheck(driver, ip, server_name):
-    url = f'https://proxycheck.io/v2/{ip}?vpn=1&asn=1'
-    try:
-        response = requests.get(url)
-        response.raise_for_status()  # Raise an HTTPError for bad responses
-        result = response.json()
-        #print(result)
-        # Extract IP address and proxy status
-        status = result.get('status')
-        if status == 'ok':
-            ip_address = ip
-            ip_info = result.get(f'{ip_address}', {})
-            proxy_status = ip_info.get('proxy', 'Unknown')
-            country = ip_info.get('country', 'Unknown')
-            print(f"IP Address: {ip_address} \nProxy Status: {proxy_status} \country Status: {country}")
-            if country.lower() in server_name.lower():
-                if proxy_status =='no':
-                    return 200
+    for i in range(9):
+        url = f'https://proxycheck.io/v2/{ip}?vpn=1&asn=1'
+        try:
+            response = requests.get(url)
+            response.raise_for_status()  # Raise an HTTPError for bad responses
+            result = response.json()
+            #print(result)
+            # Extract IP address and proxy status
+            status = result.get('status')
+            if status == 'ok':
+                ip_address = ip
+                ip_info = result.get(f'{ip_address}', {})
+                proxy_status = ip_info.get('proxy', 'Unknown')
+                country = ip_info.get('country', 'Unknown')
+                print(f"IP Address: {ip_address} \nProxy Status: {proxy_status} \country Status: {country}")
+                if country.lower() in server_name.lower():
+                    if proxy_status =='no':
+                        return 200
+                    else:
+                        print(f'{country} is not {200}')
+                        return 50
                 else:
-                    print(f'{country} is not {200}')
-                    return 50
+                    return 301
+            elif 'error' in status or :
+                continue
             else:
-                return 301
-        else:
-            print("Error: Status not OK : Trying Inbrowser Way")
-            val = get_proxycheck_inbrowser(driver, ip, server_name)
-            return val
-    except requests.RequestException as e:
-        print(f"Error retrieving IP address and proxy status: {e}")
-        return False
- 
+                print("Error: Status not OK : Trying Inbrowser Way")
+                val = get_proxycheck_inbrowser(driver, ip, server_name)
+                if val:
+                    return val
+        except requests.RequestException as e:
+            print(f"Error retrieving IP address and proxy status: {e}")
+        time.sleep(2)  # Wait before retrying
+
  
 def get_ipscore(ip):
     url = f'https://ipqualityscore.com/api/json/ip/Bfg1dzryVqbpSwtbxgWb1uVkXLrr1Nzr/{ip}?strictness=3&allow_public_access_points=true&lighter_penalties=true&mobile=true'

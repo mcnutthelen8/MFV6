@@ -1,5 +1,5 @@
 
-#version -9.2.2
+#version -9.2.3
 
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -896,6 +896,8 @@ def ipfixer():
                                 query = {"type": "main"}
                                 update = {"$set": {"request": 'mainscript'}}
                                 result = collection.update_one(query, update)
+                                clear_browser_cache_history(sb1)
+                                sb1.uc_open("chrome://extensions/")
                             else:
                                 gg2344 += 1
                         else:
@@ -2366,6 +2368,18 @@ def update_ip(new_ip, config_path="mfhelper/config.json"):
         print(f"Updated targetIP to: {new_ip}")
     except Exception as e:
         print(f"Error updating config.json: {e}")
+def clear_browser_cache_history(driver):
+    try:
+        driver.open("chrome://settings/clearBrowserData")
+        time.sleep(8)
+        pyautogui.click(869, 468)
+        time.sleep(2)
+        pyautogui.click(869, 585)
+        time.sleep(2)
+        pyautogui.click(1161, 797)
+        time.sleep(2)
+    except Exception as e:
+        print(f"Error clearing browser cache: {e}")
 
 fresh_start_faucet = True
 login_faucet_detect = True
@@ -2433,8 +2447,8 @@ def open_browsers():
         query = {"type": "main"}
         update = {"$set": {"response": 'Setup Done...'}}
         result = collection.update_one(query, update)
-    
-    #time.sleep(99999)
+
+    time.sleep(99999)
     return sb1
 
 faucetlayout = None

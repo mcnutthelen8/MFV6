@@ -1,5 +1,5 @@
 
-#version -9.3.0
+print('Version 9.3.2')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -424,7 +424,7 @@ def extract_valid_ipv4(text):
             return None
     return None
 def get_ip(driver):
-    for i in range(1,5):
+    for i in range(8):
         try:
             original_window = driver.current_window_handle
             driver.open_new_window()
@@ -440,7 +440,6 @@ def get_ip(driver):
                 driver.switch_to.window(original_window)
                 ip_address = extract_valid_ipv4(ip_address)
                 if ip_address:
-                
                     return ip_address
             
             except Exception as e:
@@ -571,9 +570,8 @@ def get_ipscore(ip):
         return None
 
 def mysterium_vpn_connect(server_name, driver):
-
-    sweet_enable()
     mysterium_reinstaller()
+    sweet_enable()
     fix_wrong_pins()
     try:
         x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
@@ -626,10 +624,21 @@ def fix_ip(drive, name):
     proxycheck = None
     ip_address = 0
     while not (ipscore and proxycheck):
+
         get_mails_passowrds(farm_id)
         ip_address = get_ip(drive)
         ip_address = extract_valid_ipv4(ip_address)
         if ip_address:
+            for i in CSB1_farms:
+                collection_csb = db[f'Farm{i}']
+                sample_document = {
+                    "response": f'Changed IP🔴: {ip_address} |fix_ip',
+                    "request": 'ipfixer'
+                    
+                }
+                result = collection_csb.update_one(query, sample_document)
+                print('Update Farm fix_ip', i)
+
             quer2y = {"type": "main"}
             dochh2 = collection.find_one(quer2y)
             layout2 = dochh2["withdraw_mail"]
@@ -774,7 +783,7 @@ def mysterium_login(driver):
         time.sleep(1)
         sweet_enable()
         driver.uc_open('https://app.mysteriumvpn.com/')
-        time.sleep(8)
+        time.sleep(10)
         titile = sb1.get_title()
         pyautogui.click(113, 100)
         time.sleep(1)
@@ -876,6 +885,7 @@ def ipfixer():
     result = collection.update_one(query, update)
     for i in CSB1_farms:
         collection_csb = db[f'Farm{i}']
+        
         update = {"$set": {"request": 'ipfixer'}}
         result = collection_csb.update_one(query, update)
         print('Update Farm', i)
@@ -2209,7 +2219,8 @@ def sweet_enable():
             return
         except pyautogui.ImageNotFoundException:
             print("No icon_image_loaded Human.")
- 
+
+
  
  
 def mysterium_reinstaller():
@@ -2425,7 +2436,7 @@ def open_browsers():
     print(f'Farm ID:{farm_id} | Layout: {layout}')
     chrome_user_data_dir = f'/root/.config/google-chrome/{browser_proxy}{layout}'
 
-    sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path, page_load_strategy='none')#, proxy=browser_proxy )
+    sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True,disable_gpu=True,no_sandbox=True,chromium_arg=[ "--disable-dev-shm-usage","--disable-background-timer-throttling", "--disable-renderer-backgrounding", "--disable-backgrounding-occluded-windows","--no-first-run"] user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path, page_load_strategy='eager')#, proxy=browser_proxy )
     sb1.maximize_window()
     sb1.uc_open("chrome://extensions/")
     current_window = sb1.current_window_handle

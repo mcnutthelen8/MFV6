@@ -1,5 +1,5 @@
 
-print('Version 9.3.9')
+print('Version 9.4.1')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -570,6 +570,21 @@ def get_ipscore(ip):
         return None
 
 def mysterium_vpn_connect(server_name, driver):
+    try:
+        query = {"type": "main"}
+        for i in CSB1_farms:
+            collection_csb = db[f'Farm{i}']
+            sample_document = {
+                "response": f'Changed IP🔴: {ip_address}| {farm_id} |fix_ip',
+                "request": 'ipfixer'
+                
+            }
+            update = {"$set": sample_document}
+            result = collection_csb.update_one(query, update)
+            print('Update Farm fix_ip', i)
+    except Exception as e:
+        print(e)
+
     mysterium_reinstaller()
     sweet_enable()
     fix_wrong_pins()
@@ -629,17 +644,6 @@ def fix_ip(drive, name):
         ip_address = get_ip(drive)
         ip_address = extract_valid_ipv4(ip_address)
         if ip_address:
-            query = {"type": "main"}
-            for i in CSB1_farms:
-                collection_csb = db[f'Farm{i}']
-                sample_document = {
-                    "response": f'Changed IP🔴: {ip_address}| {farm_id} |fix_ip',
-                    "request": 'ipfixer'
-                    
-                }
-                update = {"$set": sample_document}
-                result = collection_csb.update_one(query, update)
-                print('Update Farm fix_ip', i)
 
             quer2y = {"type": "main"}
             dochh2 = collection.find_one(quer2y)

@@ -1,5 +1,5 @@
 
-#version -9.2.3
+#version -9.2.4
 
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -2448,7 +2448,7 @@ def open_browsers():
         update = {"$set": {"response": 'Setup Done...'}}
         result = collection.update_one(query, update)
 
-    time.sleep(99999)
+    #time.sleep(99999)
     return sb1
 
 faucetlayout = None

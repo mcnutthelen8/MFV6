@@ -1,5 +1,5 @@
 
-print('Version 9.4.1')
+print('Version 9.4.3')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -1920,7 +1920,7 @@ def withdraw_faucet(driver, sitekey):
             cloudflare(driver, login = True)
             time.sleep(2)
             driver.uc_click('button#ClaimBtn')
-            time.sleep(8)
+            time.sleep(10)
             response_messege(f'EarnPP FaucetPay Withdrawed')
 ###########################################################################
         #Feyorra
@@ -1974,7 +1974,7 @@ def withdraw_faucet(driver, sitekey):
             cloudflare(driver, login = True)
             time.sleep(2)
             driver.uc_click('button#ClaimBtn')
-            time.sleep(8)
+            time.sleep(10)
             response_messege(f'Fey FaucetPay Withdrawed')
 
 ###########################################################################
@@ -2029,7 +2029,7 @@ def withdraw_faucet(driver, sitekey):
             cloudflare(driver, login = True)
             time.sleep(2)
             driver.uc_click('button#ClaimBtn')
-            time.sleep(8)
+            time.sleep(10)
             response_messege(f'Trump FaucetPay Withdrawed')
 ###########################################################################
         #Earn bonk
@@ -2084,10 +2084,10 @@ def withdraw_faucet(driver, sitekey):
             cloudflare(driver, login = True)
             time.sleep(2)
             driver.uc_click('button#ClaimBtn')
-            time.sleep(8)
+            time.sleep(10)
             response_messege(f'BONK FaucetPay Withdrawed')
         query = {"type": "main"}
-        update = {"$set": {"request": 'ipfixer'}}
+        update = {"$set": {"request": 'mainscript'}}
         result = collection.update_one(query, update)
     except Exception as e:
         print(f'ERR on withdraw{e}')
@@ -2516,6 +2516,8 @@ def open_faucets():
     global sb1
     while True:
         try:
+            pyautogui.moveTo(100, 200)
+            pyautogui.moveTo(200, 400)
             global faucetlayout
             global fresh_start_faucet
             global login_faucet_detect
@@ -2604,7 +2606,8 @@ def open_faucets():
                 ip_address = get_ip(sb1)
 
             ip_address = get_ip(sb1)
-            
+            pyautogui.moveTo(100, 200)
+            pyautogui.moveTo(200, 400)
             if ip_address:
                 current_window = sb1.current_window_handle
                 all_windows = sb1.window_handles
@@ -2633,6 +2636,8 @@ def open_faucets():
                 else:
                     raise Exception(" earnpp_window == 404")
                 fresh_start_faucet = True
+                pyautogui.moveTo(100, 200)
+                pyautogui.moveTo(200, 400)
                 if fresh_start_faucet == True:
                     ip_address = get_ip(sb1)
                     if ip_required == ip_address:
@@ -2704,7 +2709,8 @@ def open_faucets():
                     else:
                         raise Exception("Ip changed")
 
-
+                pyautogui.moveTo(100, 200)
+                pyautogui.moveTo(200, 400)
 
                 ################################################################
                 if ip_required == ip_address:
@@ -2811,6 +2817,8 @@ def open_faucets():
                     previous_reset_count = 0
 
                     login_faucet_detect = False
+                    pyautogui.moveTo(100, 200)
+                    pyautogui.moveTo(200, 400)
                     return earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required
         except Exception as e:
                 response_messege(f'Resetting Browser{e}')
@@ -2851,8 +2859,6 @@ script_seconds_only = 0
 previous_script_seconds_only = 0
 while True:
     try:
-        pyautogui.moveTo(100, 200)
-        pyautogui.moveTo(200, 400)
         mainscript = control_panel()
         print('control_panel', mainscript)
         if mainscript == 1:
@@ -3339,11 +3345,10 @@ while True:
 
         if mainscript == 4:
             withdraw_faucet(sb1, 1) 
+            reset_count +=30
 
         if mainscript == 6:
-            withdraw_faucet(sb1, 2) 
-        if mainscript == 7:
-            withdraw_faucet(sb1, 3) 
+            pass
 
         if mainscript == 8:
             sb1.quit()

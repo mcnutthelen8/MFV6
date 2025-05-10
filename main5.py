@@ -308,10 +308,10 @@ def get_mails_passowrds(farm_id):
         elif '4' in layout:
             server_name1 = 'germany' #'chile'
             CSB1_farms = Farm_list
-            earnpp_email = 'leonardken7@gmail.com'
-            earnpp_pass = 'leonardken7'
-            feyorra_email = 'leonardken7@gmail.com'
-            feyorra_pass = 'leonardken7'
+            earnpp_email = 'kendleo4@gmail.com'
+            earnpp_pass = 'kendleo4'
+            feyorra_email = 'kendleo4@gmail.com'
+            feyorra_pass = 'kendleo4'
 
         elif '5' in layout:
             server_name1 = 'germany' #'chile'

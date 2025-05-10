@@ -575,7 +575,7 @@ def mysterium_vpn_connect(server_name, driver):
         for i in CSB1_farms:
             collection_csb = db[f'Farm{i}']
             sample_document = {
-                "response": f'Changed IP🔴: {ip_address}| {farm_id} |fix_ip',
+                "response": f'Changed IP🔴: Farm {farm_id} |fix_ip',
                 "request": 'ipfixer'
                 
             }
@@ -2446,15 +2446,6 @@ def open_browsers():
         headed=True,
         undetectable=True,
         undetected=True,
-        disable_gpu=True,
-        no_sandbox=True,
-        chromium_arg=[
-            "--disable-dev-shm-usage", 
-            "--disable-background-timer-throttling", 
-            "--disable-renderer-backgrounding", 
-            "--disable-backgrounding-occluded-windows",
-            "--no-first-run"
-        ],
         user_data_dir=chrome_user_data_dir,
         binary_location=chrome_binary_path,
         page_load_strategy='eager'  # You can also try 'none' or 'normal' based on your needs

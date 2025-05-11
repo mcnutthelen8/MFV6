@@ -1,5 +1,5 @@
 
-print('Version 9.5.9')
+print('Version 9.6.0')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -203,10 +203,10 @@ def get_mails_passowrds(farm_id):
         elif '6' in layout:
             server_name1 = 'poland'
             CSB1_farms = Farm_list
-            earnpp_email = 'smelorason@gmail.com'
-            earnpp_pass = 'smelorason'
-            feyorra_email = 'smelorason@gmail.com'
-            feyorra_pass = 'smelorason'
+            earnpp_email = 'drameson3@gmail.com'
+            earnpp_pass = 'drameson3'
+            feyorra_email = 'drameson3@gmail.com'
+            feyorra_pass = 'drameson3'
         else:
             print('Layout issue', layout)
 

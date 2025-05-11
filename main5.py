@@ -1,5 +1,5 @@
 
-print('Version 9.6.0')
+print('Version 9.6.1')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs

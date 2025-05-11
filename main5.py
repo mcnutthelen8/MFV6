@@ -1,5 +1,5 @@
 
-print('Version 9.6.1')
+print('Version 9.6.2')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -2516,7 +2516,7 @@ def open_browsers():
         headed=True,
         undetectable=True,
         #undetected=True,  # <- NOTE: This is not necessary if `undetectable=True` is already used
-        chrome_args=[
+        chromium_arg=[
             "--disable-gpu",
             "--disable-dev-shm-usage",
             "--no-sandbox",

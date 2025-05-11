@@ -1,5 +1,5 @@
 
-print('Version 9.4.5')
+print('Version 9.4.8')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -1463,7 +1463,7 @@ def cloudflare_dark(sb, login = True):
 
 
 
-def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages, submit_button):
+def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages, submit_button, ip_required):
 
     driver.uc_open(url)
     time.sleep(2)
@@ -1490,35 +1490,16 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
         # Step 3: Wait for the CAPTCHA checkbox to be validated
         print("CAPTCHA Check")
         if captcha_image:
-            if 'rscaptcha'in captcha_image:
-                    try:
-                        #solve_least_img(sb1)
-                        if 'Feyorra' in current_title:
-                            pyautogui.click(932 ,728)
-                            time.sleep(1)
-                            pyautogui.click(943 ,788)
-                                    #x:943 y:788
-                            time.sleep(5)
-                            return
-                        if 'ClaimCoin' in current_title:
-                            pyautogui.click(973, 833)
-                            time.sleep(5)
-                            return
-                        pyautogui.click(957 ,886)
-                        time.sleep(5)
-                        if driver.is_element_visible(submit_button):
-                            sb1.uc_click(submit_button)
-                        time.sleep(5)
-                        return
-                    except Exception as e:
-                        print(f'ERR:{e}') 
-            else:
                 for i in range(1, 10):
                     time.sleep(1)
                     #pyautogui.moveTo(100, 200)
 
                     sb1.execute_script("window.scrollTo(0, 1000);")
                     cloudflare(driver, True)
+                    ip_address = get_ip(driver)
+                    if ip_required != ip_address:
+                        print("IP address mismatch, login")
+                        return False
                     all_windows = driver.window_handles
                     for window in all_windows:
                         if window not in restrict_pages:
@@ -1598,6 +1579,20 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         time.sleep(1)
         pyautogui.moveTo(100, 200)
         pyautogui.moveTo(200, 400)
+        ip_address = get_ip(driver)
+        if ip_required != ip_address:
+            return 404
+        for frm in CSB1_farms:
+            collection_csb = db[f'Farm{frm}']
+            query = {"type": "main"}
+            doc = collection_csb.find_one(query)
+            res = doc["response"]
+            req = doc["request"]
+            if req == 'ipfixer':
+                if 'Changed' in res:
+                    print('IP is BAD HANLDE SITE')
+                    return 404
+
         all_windows = driver.window_handles
         for window in all_windows:
             if window not in window_list:
@@ -1606,9 +1601,8 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         print(f"Current title: {current_title}")
         if "Google" in current_title:
             return 404
-        #ip_address = get_ip(driver)
-        #if ip_required != ip_address:
-        #    return 404
+        
+
         get_mails_passowrds(farm_id)
 
 
@@ -1879,7 +1873,15 @@ def withdraw_faucet(driver, sitekey):
         if 'Just' in title:
             cloudflare(driver, login = False)
         elif 'Faucetpay' in title:
-            driver.execute_script(f"window.scrollTo(0, 1000);")
+            driver.execute_script("""const element = document.querySelector('button#ClaimBtn'); 
+                const rect = element.getBoundingClientRect();
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const offset = rect.bottom + scrollTop + 20 - window.innerHeight;
+                window.scrollTo({
+                top: offset > 0 ? offset : 0,
+                behavior: 'smooth'
+                });
+                """)
             time.sleep(1)
             driver.execute_script("""(function() {
                     const priorityCoins = ["SOL", "LTC", "DOGE", "TRX", "PEPE"];
@@ -1898,7 +1900,7 @@ def withdraw_faucet(driver, sitekey):
 
                                 console.log(`${coinCode}: ${percent}%`);
 
-                                if (percent > 9) {
+                                if (percent > 15) {
                                     input.click();
                                     console.log(` Clicked ${coinCode} radio button`);
                                     selected = true;
@@ -1931,7 +1933,15 @@ def withdraw_faucet(driver, sitekey):
         if 'Just' in title:
             cloudflare(driver, login = False)
         elif 'Faucetpay' in title:
-            driver.execute_script(f"window.scrollTo(0, 1000);")
+            driver.execute_script("""const element = document.querySelector('button#ClaimBtn'); 
+                const rect = element.getBoundingClientRect();
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const offset = rect.bottom + scrollTop + 20 - window.innerHeight;
+                window.scrollTo({
+                top: offset > 0 ? offset : 0,
+                behavior: 'smooth'
+                });
+                """)
             time.sleep(1)
             driver.execute_script("""(function () {
                     const priorityCoins = ["SOL", "LTC", "DOGE", "TRX", "PEPE"];
@@ -1951,7 +1961,7 @@ def withdraw_faucet(driver, sitekey):
 
                                 console.log(`${coinCode}: ${percent}%`);
 
-                                if (percent > 9) {
+                                if (percent > 15) {
                                     input.click();
                                     console.log(` Clicked ${coinCode} radio button`);
                                     selected = true;
@@ -1986,7 +1996,15 @@ def withdraw_faucet(driver, sitekey):
         if 'Just' in title:
             cloudflare(driver, login = False)
         elif 'Faucetpay' in title:
-            driver.execute_script(f"window.scrollTo(0, 1000);")
+            driver.execute_script("""const element = document.querySelector('button#ClaimBtn'); 
+                const rect = element.getBoundingClientRect();
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const offset = rect.bottom + scrollTop + 20 - window.innerHeight;
+                window.scrollTo({
+                top: offset > 0 ? offset : 0,
+                behavior: 'smooth'
+                });
+                """)
             time.sleep(1)
             driver.execute_script("""(function () {
                 const priorityCoins = ["SOL", "LTC", "DOGE", "TRX"];
@@ -2005,7 +2023,7 @@ def withdraw_faucet(driver, sitekey):
 
                             console.log(`${coinCode}: ${percent}%`);
 
-                            if (percent > 9) {
+                            if (percent > 15) {
                                 input.click();
                                 console.log(` Clicked ${coinCode} radio button`);
                                 selected = true;
@@ -2040,7 +2058,15 @@ def withdraw_faucet(driver, sitekey):
         if 'Just' in title:
             cloudflare(driver, login = False)
         elif 'Faucetpay' in title:
-            driver.execute_script(f"window.scrollTo(0, 1000);")
+            driver.execute_script("""const element = document.querySelector('button#ClaimBtn'); 
+                const rect = element.getBoundingClientRect();
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const offset = rect.bottom + scrollTop + 20 - window.innerHeight;
+                window.scrollTo({
+                top: offset > 0 ? offset : 0,
+                behavior: 'smooth'
+                });
+                """)
             time.sleep(1)
             driver.execute_script("""(function() {
                 const priorityCoins = ["SOL", "LTC", "DOGE", "TRX"];
@@ -2059,7 +2085,7 @@ def withdraw_faucet(driver, sitekey):
 
                             console.log(`${coinCode}: ${percent}%`);
 
-                            if (percent > 9) {
+                            if (percent > 15) {
                                 input.click();
                                 console.log(` Clicked ${coinCode} radio button`);
                                 selected = true;

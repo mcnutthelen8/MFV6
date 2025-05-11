@@ -1,5 +1,5 @@
 
-print('Version 9.4.8')
+print('Version 9.4.9')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -1572,7 +1572,7 @@ def close_extra_windows(driver, keep_window_handles):
 def handle_captcha_and_cloudflare(driver):
     cloudflare(driver, login = False)
 
-def handle_site(driver, url, expected_title, not_expected_title , function, window_list ,ip_required):
+def handle_site(driver, url, expected_title, not_expected_title , function, window_list ,ip_required, ip_check = False):
     driver.uc_open(url)
     ready = False
     while not ready:
@@ -1580,8 +1580,9 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         pyautogui.moveTo(100, 200)
         pyautogui.moveTo(200, 400)
         ip_address = get_ip(driver)
-        if ip_required != ip_address:
-            return 404
+        if ip_check:
+            if ip_required != ip_address:
+                return 404
         for frm in CSB1_farms:
             collection_csb = db[f'Farm{frm}']
             query = {"type": "main"}
@@ -2661,7 +2662,7 @@ def open_faucets():
                         response_messege('EarnPP Loging Fresh')
                         if earnpp:
                             if faucetlayout == 1:
-                                earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [], ip_required)
+                                earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [], ip_required, True)
                                 if earnpp_window == 404:
                                     raise Exception(" earnpp_window == 404")
                                 print(f"EarnPP window handle: {earnpp_window}")
@@ -2677,7 +2678,7 @@ def open_faucets():
                         if feyorra:
                             #sb1.open_new_window()
                             if faucetlayout == 1:
-                                feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Best - Meme Coins Faucet", 2, [], ip_required)
+                                feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Best - Meme Coins Faucet", 2, [], ip_required, True)
                                 if feyorra_window == 404:
                                     raise Exception(" feyorra_window == 404")
                                 print(f"Feyorra window handle: {feyorra_window}")
@@ -2697,7 +2698,7 @@ def open_faucets():
                         if earntrump:
                             #sb1.open_new_window()
                             if faucetlayout == 1:
-                                earntrump_window = handle_site(sb1, "https://earn-trump.com/member/faucet","Faucet | Earn-Trump" , "Free $Trump Coin Faucet | Earn $Trump Crypto Instantly", 3, [], ip_required)
+                                earntrump_window = handle_site(sb1, "https://earn-trump.com/member/faucet","Faucet | Earn-Trump" , "Free $Trump Coin Faucet | Earn $Trump Crypto Instantly", 3, [], ip_required, True)
                                 if earntrump_window == 404:
                                     raise Exception(" earntrump_window == 404")
                                 print(f"earntrump window handle: {earntrump_window}")
@@ -2714,7 +2715,7 @@ def open_faucets():
                         if earnbonk:
                             #sb1.open_new_window()
                             if faucetlayout == 1:
-                                earnbonk_window = handle_site(sb1, "https://earn-bonk.com/member/faucet", "Faucet | Earn-Bonk" , "Earn Bonk", 4, [], ip_required)
+                                earnbonk_window = handle_site(sb1, "https://earn-bonk.com/member/faucet", "Faucet | Earn-Bonk" , "Earn Bonk", 4, [], ip_required, True)
                                 if earnbonk_window == 404:
                                     raise Exception(" earnbonk == 404")
                                 print(f"Feyorra window handle: {earnbonk_window}")

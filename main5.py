@@ -2515,8 +2515,8 @@ def open_browsers():
         uc=True,
         headed=True,
         undetectable=True,
-        undetected=True,
-        chrome_args = [
+        #undetected=True,  # <- NOTE: This is not necessary if `undetectable=True` is already used
+        chrome_args=[
             "--disable-gpu",
             "--disable-dev-shm-usage",
             "--no-sandbox",
@@ -2527,11 +2527,12 @@ def open_browsers():
             "--enable-automation",
             "--disable-blink-features=AutomationControlled",
             "--disable-infobars",
-        ]
+        ],
         user_data_dir=chrome_user_data_dir,
         binary_location=chrome_binary_path,
-        page_load_strategy='eager'  # You can also try 'none' or 'normal' based on your needs
+        page_load_strategy='eager'
     )
+
     sb1.maximize_window()
     sb1.uc_open("chrome://extensions/")
     current_window = sb1.current_window_handle

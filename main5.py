@@ -1,5 +1,5 @@
 
-print('Version 9.5.7')
+print('Version 9.5.9')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -146,7 +146,17 @@ def get_mails_passowrds(farm_id):
             earnpp_email = 'ddilakshi2326@gmail.com'
             earnpp_pass = 'ddilakshi2326'
             feyorra_email = 'ddilakshi2326@gmail.com'
-            feyorra_pass = 'ddilakshi2326'
+            feyorra_pass = 'ddilakshi2326' 
+            
+        elif '6' in layout:
+            server_name1 = 'thailand'
+            CSB1_farms = Farm_list
+            earnpp_email = 'shemprer@gmail.com'
+            earnpp_pass = 'shemprer'
+            feyorra_email = 'shemprer@gmail.com'
+            feyorra_pass = 'shemprer'
+
+        
         else:
             print('Layout issue', layout)
 
@@ -188,7 +198,15 @@ def get_mails_passowrds(farm_id):
             earnpp_email = 'kollygnda77@gmail.com'
             earnpp_pass = 'kollygnda77'
             feyorra_email = 'kollygnda77@gmail.com'
-            feyorra_pass = 'kollygnda77'
+            feyorra_pass = 'kollygnda77' 
+            
+        elif '6' in layout:
+            server_name1 = 'poland'
+            CSB1_farms = Farm_list
+            earnpp_email = 'smelorason@gmail.com'
+            earnpp_pass = 'smelorason'
+            feyorra_email = 'smelorason@gmail.com'
+            feyorra_pass = 'smelorason'
         else:
             print('Layout issue', layout)
 
@@ -230,7 +248,15 @@ def get_mails_passowrds(farm_id):
             earnpp_email = 'danielhenesy3@gmail.com'
             earnpp_pass = 'danielhenesy3'
             feyorra_email = 'danielhenesy3@gmail.com'
-            feyorra_pass = 'danielhenesy3'
+            feyorra_pass = 'danielhenesy3' 
+            
+        elif '6' in layout:
+            server_name1 = 'france'
+            CSB1_farms = Farm_list
+            earnpp_email = 'sumithrohan2@gmail.com'
+            earnpp_pass = 'sumithrohan2'
+            feyorra_email = 'sumithrohan2@gmail.com'
+            feyorra_pass = 'sumithrohan2'
 
         else:
             print('Layout issue', layout)
@@ -274,7 +300,15 @@ def get_mails_passowrds(farm_id):
             earnpp_email = 'howard998@gmail.com'
             earnpp_pass = 'howard998'
             feyorra_email = 'howard998@gmail.com'
-            feyorra_pass = 'howard998'
+            feyorra_pass = 'howard998' 
+            
+        elif '6' in layout:
+            server_name1 = 'canada'
+            CSB1_farms = Farm_list
+            earnpp_email = 'amberodum7@gmail.com'
+            earnpp_pass = 'amberodum7'
+            feyorra_email = 'amberodum7@gmail.com'
+            feyorra_pass = 'amberodum7'
 
 
         else:
@@ -319,7 +353,15 @@ def get_mails_passowrds(farm_id):
             earnpp_email = 'willsmile31@gmail.com'
             earnpp_pass = 'willsmile31'
             feyorra_email = 'willsmile31@gmail.com'
-            feyorra_pass = 'willsmile31'
+            feyorra_pass = 'willsmile31' 
+            
+        elif '6' in layout:
+            server_name1 = 'germany'
+            CSB1_farms = Farm_list
+            earnpp_email = 'adaavery5@gmail.com'
+            earnpp_pass = 'adaavery5'
+            feyorra_email = 'adaavery5@gmail.com'
+            feyorra_pass = 'adaavery5'
 
         else:
             print('Layout issue', layout)

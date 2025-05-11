@@ -1,5 +1,5 @@
 
-print('Version 9.5.5')
+print('Version 9.5.6')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -2838,6 +2838,18 @@ def open_faucets():
                     login_faucet_detect = False
                     pyautogui.moveTo(100, 200)
                     pyautogui.moveTo(200, 400)
+                    for frm in CSB1_farms:
+                        collection_csb = db[f'Farm{frm}']
+                        query = {"type": "main"}
+                        doc = collection_csb.find_one(query)
+                        res = doc["response"]
+                        req = doc["request"]
+                        if req == 'ipfixer':
+                            if 'Ready' in res:
+                                print('IP is ready')
+
+                            else:
+                                raise Exception(" earnbonk == 404")
                     return earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required
         except Exception as e:
                 response_messege(f'Resetting Browser{e}')

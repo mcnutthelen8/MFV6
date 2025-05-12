@@ -1,5 +1,5 @@
 
-print('Version 9.6.8')
+print('Version 9.6.9')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -980,12 +980,10 @@ def ipfixer():
                             if gg2344 > 6:
                                 reff_farm = farm_id
                                 if farm_id == 1:
-                                    query = {"type": "main"}
-                                    update = {"$set": {"request": 'mainscript'}}
-                                    result = collection.update_one(query, update)
+                                    
                                     clear_browser_cache_history(sb1)
                                     sb1.uc_open("chrome://extensions/")
-                                    continue
+                                    return
                                 elif farm_id == 2:
                                     reff_farm = 1
                                 elif farm_id == 3:
@@ -1001,11 +999,9 @@ def ipfixer():
                                 #res = doc["response"]
                                 req = doc["request"]
                                 if req == 'mainscript': #and 'Loging' not in res:
-                                    query = {"type": "main"}
-                                    update = {"$set": {"request": 'mainscript'}}
-                                    result = collection.update_one(query, update)
                                     clear_browser_cache_history(sb1)
                                     sb1.uc_open("chrome://extensions/")
+                                    return
                             else:
                                 gg2344 += 1
                         else:

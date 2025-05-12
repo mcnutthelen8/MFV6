@@ -1,5 +1,5 @@
 
-print('Version 9.7.2')
+print('Version 9.7.3')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -978,11 +978,12 @@ def ipfixer():
                         if len(res_farms) == len(CSB1_farms):
                             time.sleep(5)
                             if gg2344 > 6:
+                                return
                                 reff_farm = farm_id
                                 if farm_id == 1:
                                     
-                                    clear_browser_cache_history(sb1)
-                                    sb1.uc_open("chrome://extensions/")
+                                    #clear_browser_cache_history(sb1)
+                                    #sb1.uc_open("chrome://extensions/")
                                     return
                                 elif farm_id == 2:
                                     reff_farm = 1
@@ -999,8 +1000,8 @@ def ipfixer():
                                 #res = doc["response"]
                                 req = doc["request"]
                                 if req == 'mainscript': #and 'Loging' not in res:
-                                    clear_browser_cache_history(sb1)
-                                    sb1.uc_open("chrome://extensions/")
+                                    #clear_browser_cache_history(sb1)
+                                    #sb1.uc_open("chrome://extensions/")
                                     return
                             else:
                                 gg2344 += 1
@@ -2307,11 +2308,62 @@ def sweet_enable():
             return
         except pyautogui.ImageNotFoundException:
             print("No icon_image_loaded Human.")
+import shutil
+def delete_folder(folder_path):
+    if os.path.exists(folder_path) and os.path.isdir(folder_path):
+        try:
+            shutil.rmtree(folder_path)
+            print(f"Deleted: {folder_path}")
+        except Exception as e:
+            print(f"Error deleting {folder_path}: {e}")
+    else:
+        print(f"Folder not found or not a directory: {folder_path}")
 
-
- 
- 
 def mysterium_reinstaller():
+    response_messege('Changed IP🔴 :Mys Reinstaller')
+    global sb1
+    global chrome_user_data_dir
+    global layout
+    global browser_proxy
+    for i in range(4):
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_connected.png", region=(1625, 43, 400, 300), confidence=0.99)
+            if x and y:
+
+                pyautogui.moveTo(100, 100)
+                pyautogui.click(100, 200, duration=0.5)
+                browser_proxy  =get_browser_proxy()
+
+                quer2y = {"type": "main"}
+                dochh2 = collection.find_one(quer2y)
+                layout = dochh2["withdraw_mail"]
+                print(f'Farm ID:{farm_id} | Layout: {layout}')
+                chrome_user_data_dir = f'/root/.config/google-chrome/{browser_proxy}{layout}'
+                try:
+                    sb1.quit()
+                    time.sleep(2)
+                except Exception as e:
+                    print(f"sb1.quit() failed: {e}")
+
+                # Fallback kill
+                for proc_name in ['chrome', 'chromium']:
+                    try:
+                        subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
+                        print(f"All {proc_name} processes killed (if any).")
+                    except Exception as e:
+                        print(f"Failed to kill {proc_name} processes: {e}")
+                time.sleep(3)
+                delete_folder(chrome_user_data_dir)
+                sb1 = open_browsers()
+                return
+ 
+        except pyautogui.ImageNotFoundException:
+            print("No icon_image_loaded Human.")
+
+
+
+
+def mysterium_reinstaller_old():
     #find externsion
     #delete
     #install 
@@ -2550,6 +2602,7 @@ def open_browsers():
         user_data_dir=chrome_user_data_dir,
         binary_location=chrome_binary_path,
         page_load_strategy="eager",
+        extension_dir="/root/Desktop/MFV6/mysterium,/root/Desktop/MFV6/fingerprint,/root/Desktop/MFV6/cookie,/root/Desktop/MFV6/mfhelper,/root/Desktop/MFV6/sweet",
         chromium_arg=[
             "--disable-dev-shm-usage",
             "--disable-background-timer-throttling",
@@ -2574,8 +2627,8 @@ def open_browsers():
     gggv = are_extensions_exist()
     get_mails_passowrds(farm_id)
     if gggv:
-        if fresh >= 3:
-            
+        if fresh >= 4:
+            pass
             sweet = install_extensions('sweet')
             cookie = install_extensions('cookie')
             mysterium = install_extensions('mysterium')

@@ -1578,8 +1578,10 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
      
                             #if driver.is_element_visible(submit_button):
                             #    sb1.uc_click(submit_button)
-                            element = sb1.find_element(By.CSS_SELECTOR, submit_button)
-                            click_element_with_mouse(sb1, element, duration=0.2)
+                            #element = sb1.find_element(By.CSS_SELECTOR, submit_button)
+                            #click_element_with_mouse(sb1, element, duration=0.2)
+                            capture_element_screenshot(sb1, submit_button, screenshot_path="full_screenshot.png", cropped_path=f"login_buttong.png")
+                            mouse_moveclick(cropped_path=f"login_buttong.png")
                             time.sleep(5)
                             return
                     except Exception as e:

@@ -1,5 +1,5 @@
 
-print('Version 9.6.4')
+print('Version 9.6.8')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -112,10 +112,10 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'thailand'
             CSB1_farms = Farm_list
-            earnpp_email = 'khabibmakanzie5@gmail.com'
-            earnpp_pass = 'khabibmakanzie5'
-            feyorra_email = 'khabibmakanzie5@gmail.com'
-            feyorra_pass = 'khabibmakanzie5'
+            earnpp_email = 'mackbinb23@gmail.com'
+            earnpp_pass = 'mackbinb23'
+            feyorra_email = 'mackbinb23@gmail.com'
+            feyorra_pass = 'mackbinb23'
 
         elif '2' in layout:
             server_name1 = 'thailand' # 'morocco' #'bulgaria'
@@ -195,10 +195,10 @@ def get_mails_passowrds(farm_id):
         elif '5' in layout:
             server_name1 = 'poland'
             CSB1_farms = Farm_list
-            earnpp_email = 'kollygnda77@gmail.com'
-            earnpp_pass = 'kollygnda77'
-            feyorra_email = 'kollygnda77@gmail.com'
-            feyorra_pass = 'kollygnda77' 
+            earnpp_email = 'cenatuwu5@gmail.com'
+            earnpp_pass = 'cenatuwu5'
+            feyorra_email = 'cenatuwu5@gmail.com'
+            feyorra_pass = 'cenatuwu5' 
             
         elif '6' in layout:
             server_name1 = 'poland'
@@ -978,11 +978,34 @@ def ipfixer():
                         if len(res_farms) == len(CSB1_farms):
                             time.sleep(5)
                             if gg2344 > 6:
+                                reff_farm = farm_id
+                                if farm_id == 1:
+                                    query = {"type": "main"}
+                                    update = {"$set": {"request": 'mainscript'}}
+                                    result = collection.update_one(query, update)
+                                    clear_browser_cache_history(sb1)
+                                    sb1.uc_open("chrome://extensions/")
+                                    continue
+                                elif farm_id == 2:
+                                    reff_farm = 1
+                                elif farm_id == 3:
+                                    reff_farm = 2
+                                elif farm_id == 4:
+                                    reff_farm = 3
+                                elif farm_id == 5:
+                                    reff_farm = 4
+
+                                collection_csb = db[f'Farm{reff_farm}']
                                 query = {"type": "main"}
-                                update = {"$set": {"request": 'mainscript'}}
-                                result = collection.update_one(query, update)
-                                clear_browser_cache_history(sb1)
-                                sb1.uc_open("chrome://extensions/")
+                                doc = collection_csb.find_one(query)
+                                #res = doc["response"]
+                                req = doc["request"]
+                                if req == 'mainscript': #and 'Loging' not in res:
+                                    query = {"type": "main"}
+                                    update = {"$set": {"request": 'mainscript'}}
+                                    result = collection.update_one(query, update)
+                                    clear_browser_cache_history(sb1)
+                                    sb1.uc_open("chrome://extensions/")
                             else:
                                 gg2344 += 1
                         else:
@@ -1549,10 +1572,6 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                     try:
                         x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
                         if x and y: 
-
-                            #login_button = driver.find_element(By.CSS_SELECTOR, submit_button)
-                            #click_element_with_pyautogui(driver, login_button)
-                            #click_element_with_pyautogui(sb1, 'button[type="submit"]')
                             if 'Feyorra' in current_title:
 
                                 mouse_moveclick(cropped_path="/root/Desktop/MFV6/images/feyorra_loginbt.png")
@@ -1561,15 +1580,10 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                                 #x:943 y:788
                                 time.sleep(5)
      
-                            if driver.is_element_visible(submit_button):
-                                sb1.uc_click(submit_button)
-                            #pyautogui.click(939 ,760)
-                            #pyautogui.click(939 ,760)
-
-                            
-                            
-                            #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
-                            #login_button.click(submit_button)
+                            #if driver.is_element_visible(submit_button):
+                            #    sb1.uc_click(submit_button)
+                            element = sb1.find_element(By.CSS_SELECTOR, submit_button)
+                            click_element_with_mouse(sb1, element, duration=0.2)
                             time.sleep(5)
                             return
                     except Exception as e:
@@ -2484,6 +2498,8 @@ def update_ip(new_ip, config_path="mfhelper/config.json"):
         print(f"Error updating config.json: {e}")
 def clear_browser_cache_history(driver):
     try:
+        global sb1
+        response_messege(f'Clearing Cahe')
         driver.open("chrome://settings/clearBrowserData")
         time.sleep(8)
         pyautogui.click(869, 468)
@@ -2491,7 +2507,22 @@ def clear_browser_cache_history(driver):
         pyautogui.click(869, 585)
         time.sleep(2)
         pyautogui.click(1161, 797)
+        time.sleep(5)
+        try:
+            sb1.quit()
+            time.sleep(1)
+        except Exception as e:
+            print(f"sb1.quit() failed: {e}")
+
+        # Fallback kill
+        for proc_name in ['chrome', 'chromium']:
+            try:
+                subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
+                print(f"All {proc_name} processes killed (if any).")
+            except Exception as e:
+                print(f"Failed to kill {proc_name} processes: {e}")
         time.sleep(2)
+        sb1 = open_browsers()
     except Exception as e:
         print(f"Error clearing browser cache: {e}")
 
@@ -2515,6 +2546,7 @@ def open_browsers():
         uc=True,
         headed=True,
         undetectable=True,
+        undetected= True,
         no_sandbox=True,  # --no-sandbox
         disable_gpu=True,  # --disable-gpu
         user_data_dir=chrome_user_data_dir,

@@ -1,5 +1,5 @@
 
-print('Version 9.7.6')
+print('Version 9.7.7')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -660,9 +660,33 @@ def mysterium_vpn_connect(server_name, driver):
                 time.sleep(2)
                 pyautogui.typewrite(server_name)
                 pyautogui.press('enter')
-                time.sleep(10)
+                time.sleep(8)
                 pyautogui.scroll(-500)
                 time.sleep(2)
+                for frm in CSB1_farms:
+                    collection_csb = db[f'Farm{frm}']
+                    query = {"type": "main"}
+                    doc = collection_csb.find_one(query)
+                    res = doc["response"]
+                    req = doc["request"]
+                    if 'Loging' in res or 'mainscript' in req:
+                        response_messege(f'Farm{frm} is not at ipfixing')
+                        time.sleep(4)
+                        try:
+                            query = {"type": "main"}
+                            for i in CSB1_farms:
+                                collection_csb = db[f'Farm{i}']
+                                sample_document = {
+                                    "response": f'Changed IP🔴: Farm {farm_id} |fix_ip',
+                                    "request": 'ipfixer'
+                                    
+                                }
+                                update = {"$set": sample_document}
+                                result = collection_csb.update_one(query, update)
+                                print('Update Farm fix_ip', i)
+                        except Exception as e:
+                            print(e)
+                        return False
                 pyautogui.click(1627, 568)
                 return True
             except pyautogui.ImageNotFoundException:

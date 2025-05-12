@@ -1,5 +1,5 @@
 
-print('Version 9.7.4')
+print('Version 9.7.5')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -2602,7 +2602,7 @@ def open_browsers():
         user_data_dir=chrome_user_data_dir,
         binary_location=chrome_binary_path,
         page_load_strategy="eager",
-        extension_dir="/root/Desktop/MFV6/mysterium,/root/Desktop/MFV6/fingerprint,/root/Desktop/MFV6/cookie,/root/Desktop/MFV6/mfhelper,/root/Desktop/MFV6/sweet",
+        #extension_dir="/root/Desktop/MFV6/mysterium,/root/Desktop/MFV6/fingerprint,/root/Desktop/MFV6/cookie,/root/Desktop/MFV6/mfhelper,/root/Desktop/MFV6/sweet",
         chromium_arg=[
             "--disable-dev-shm-usage",
             "--disable-background-timer-throttling",
@@ -2627,8 +2627,7 @@ def open_browsers():
     gggv = are_extensions_exist()
     get_mails_passowrds(farm_id)
     if gggv:
-        if fresh >= 4:
-            pass
+        if fresh >= 3:
             sweet = install_extensions('sweet')
             cookie = install_extensions('cookie')
             mysterium = install_extensions('mysterium')

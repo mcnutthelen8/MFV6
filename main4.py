@@ -1,5 +1,5 @@
 
-print('Version 9.7.7')
+print('Version 9.8.2')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -38,6 +38,7 @@ parser.add_argument('--farm', type=int, help="Farm")
 parser.add_argument('--fresh', type=int, help="Fresh")
 args = parser.parse_args()
 farm_id = args.farm
+print('Farm',farm_id)
 fresh = args.fresh
 
 
@@ -1384,40 +1385,50 @@ def solve_icon_captcha_v3(sb1):
 
 #V4
 #1. Get the captcha 
+
+#V4
+#1. Get the captcha 
 def solve_icon_captcha(sb1):
     try:
         print("solve_icon_captcha_v4")
-
+        #time.sleep(1)
         global captcha_basetring
-        script = """
-            const form = document.querySelector('form[method="POST"]');
+        title = sb1.get_title()
+        form_selector = 'form[method="POST"]'
+        if 'Earn-pepe' in title:
+            form_selector = 'form#Claimformx'
+        elif 'Feyorra' in title:
+            form_selector = 'form#Claimform'
+        elif 'Earn-Trump' in title:
+            form_selector = 'form#ClaimForm'
+        elif 'Earn-Bonk' in title:
+            form_selector = 'form#dataform'
+
+        script = f'''
+            const form = document.querySelector('{form_selector}');
             if (!form) return [];
 
             const imgs = form.querySelectorAll('img');
             const base64s = [];
 
-            imgs.forEach(img => {
+            imgs.forEach(img => {{
                 const src = img.src;
-                if (src.startsWith("data:image/") && src.includes("base64,")) {
+                if (src.startsWith("data:image/") && src.includes("base64,")) {{
                     base64s.push(src.split("base64,")[1]);
-                }
-            });
-
+                }}
+            }});
 
             return base64s;
-        """
+        '''
 
-        # Execute JavaScript and get the filtered elements
         filtered_elements = sb1.execute_script(script)
+        print("Script result:", filtered_elements)
 
         # Print each element
         #print("Filtered elements:")
         # Assign the first element to captchaElement
-        if len(filtered_elements) < 5:
-            if len(filtered_elements) == 0:
-                print('No img on page..')
-                return False
-            
+        if len(filtered_elements) < 3:
+            print('Less Item on list :', len(filtered_elements))
             captchaElement = filtered_elements[0]
             base64_images2 = [
                 "iVBORw0KGgoAAAANSUhEUgAAAToAAAAXCAIAAAAUZRRXAAAACXBI",
@@ -1430,7 +1441,6 @@ def solve_icon_captcha(sb1):
                     print("Opps Error found in the first list.")
                     pyautogui.press('f5')
                     return False
-
             return False
 
         if filtered_elements:
@@ -1457,11 +1467,11 @@ def solve_icon_captcha(sb1):
 
         category_dic = {}
         category_elementss =[]
-        for index, item in enumerate(filtered_elements):
+        for index, base64_paths in enumerate(filtered_elements):
             #print(f"Index: {index}, Item: {item}")
-            save_base64_image(item, f'Answer_{index}.png')
+            save_base64_image(base64_paths, f'Answer_{index}.png')
             best_match = predict_image(f'Answer_{index}.png')
-            category_dic[best_match] = f'Answer_{index}.png'
+            category_dic[best_match] = base64_paths
             category_elementss.append(best_match)
 
 
@@ -1480,10 +1490,15 @@ def solve_icon_captcha(sb1):
             #return False
             #using it later...for debugging
         
-        for item, img_path in category_dic.items():
-            print(f"{item} is {img_path}")
+        for item, base64_path in category_dic.items():
+            print(f"{item} Checking")
             if best_match in item or item in best_match:
-                mouse_moveclick(cropped_path=img_path)
+                #preview = base64_path[:100]
+                element = sb1.find_element(By.CSS_SELECTOR, f'img[src*="{base64_path}"]')
+                click_element_with_mouse(sb1, element, duration=0.1)
+                #capture_element_screenshot(sb1, f'img[src*="{base64_path}"]', screenshot_path="full_screenshot.png", cropped_path=f"aaaacaptcha.png")
+                #mouse_moveclick(cropped_path=f"aaaacaptcha.png")
+                print('Solved',item )
                 return True
             
         print('Something went wrong')
@@ -1679,8 +1694,8 @@ def cloudflare_dark(sb, login = True):
         print(e)
 
 
-
-def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages, submit_button, ip_required):
+#Driver Method
+def login_to_faucet_old(url, driver, email, password, captcha_image, restrict_pages, submit_button, ip_required):
 
     driver.uc_open(url)
     time.sleep(2)
@@ -1754,6 +1769,140 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
         print("🚀 Login attempt made!")
     
 
+def cloudflare_without_driver():
+    for i in range(100):
+        gtitle = get_active_window_title()
+        if 'Login' in gtitle:
+            try:
+                time.sleep(1)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
+                print("verify_cloudflare git Found")
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.7)
+                    pyautogui.click(x, y)
+                    time.sleep(5)
+
+                except Exception as e:
+                    print(e)
+
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_success.png", confidence=0.7)
+                    pyautogui.click(x, y)
+                    time.sleep(1)
+                    return True
+
+                except Exception as e:
+                    print(e)
+            except Exception as e:
+                print('cloudflare not found keep trying')
+        else:
+            return
+
+#OS Level Method
+def Fill_mailpass_faucets(sitekey, email, password):
+    if 'Earn-pepe' in sitekey:
+        pyautogui.click(852, 451)
+        time.sleep(1)
+        pyautogui.typewrite(email)
+        time.sleep(1)
+        pyautogui.click(822, 537)
+        time.sleep(1)
+        pyautogui.typewrite(password)
+        time.sleep(2)
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/pepe_login.png",confidence=0.75)
+            pyautogui.moveTo(x, y)
+            pyautogui.click()
+            return True
+        except Exception as e:
+            print(f"Error moving and clicking: {e}")
+
+    if 'Feyorra' in sitekey:
+        pyautogui.click(883, 338)
+        time.sleep(1)
+        pyautogui.typewrite(email)
+        time.sleep(1)
+        pyautogui.click(815, 419)
+        time.sleep(1)
+        pyautogui.typewrite(password)
+        time.sleep(2)
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/feyorra_loginbt.png",confidence=0.75)
+            pyautogui.moveTo(x, y)
+            pyautogui.click()
+            return True
+        except Exception as e:
+            print(f"Error moving and clicking: {e}")
+
+    if 'Earn-Trump' in sitekey:
+        pyautogui.click(883, 403)
+        time.sleep(1)
+        pyautogui.typewrite(email)
+        time.sleep(1)
+        pyautogui.click(815, 499)
+        time.sleep(1)
+        pyautogui.typewrite(password)
+        time.sleep(2)
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/trump_login.png",confidence=0.75)
+            pyautogui.moveTo(x, y)
+            pyautogui.click()
+            return True
+        except Exception as e:
+            print(f"Error moving and clicking: {e}")
+            
+    if 'Earn-Bonk' in sitekey:
+        pyautogui.click(883, 453)
+        time.sleep(1)
+        pyautogui.typewrite(email)
+        time.sleep(1)
+        pyautogui.click(815, 566)
+        time.sleep(1)
+        pyautogui.typewrite(password)
+        time.sleep(2)
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/bonk_login.png",confidence=0.75)
+            pyautogui.moveTo(x, y)
+            pyautogui.click()
+            return True
+        except Exception as e:
+            print(f"Error moving and clicking: {e}")
+#OS level
+def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages, submit_button, ip_required):
+    ##new tab open
+    pyautogui.hotkey('ctrl','t')
+    time.sleep(2)
+    #Paste Link
+    pyautogui.hotkey('ctrl','l')
+    time.sleep(2)
+    pyautogui.typewrite(url)
+    time.sleep(1)
+    pyautogui.press('enter')
+    time.sleep(3)
+    for i in range(15):
+        time.sleep(1)
+        current_title =get_active_window_title()
+        print(f"Current login title: {current_title}")
+        if 'Login' in current_title:
+            #Login Found
+            cloudflare_without_driver()
+            time.sleep(1)
+            for frm in CSB1_farms:
+                collection_csb = db[f'Farm{frm}']
+                query = {"type": "main"}
+                doc = collection_csb.find_one(query)
+                res = doc["response"]
+                req = doc["request"]
+                if req == 'ipfixer':
+                    if 'Changed' in res:
+                        print('IP is BAD HANLDE SITE')
+                        return 404
+            Fill_mailpass_faucets(current_title, email, password)
+            time.sleep(3)
+        if 'Dashboard' in current_title:
+            pyautogui.hotkey('ctrl','w')
+            return True
+
 
 
 
@@ -1825,16 +1974,36 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
                 return 405
 
             if function == 1:
+                sb1.disconnect()
+                time.sleep(2)
                 login_to_faucet('https://earn-pepe.com/login', sb1, earnpp_email, earnpp_pass, 'cloudflare_success', window_list, 'button#ClaimBtn', ip_required = ip_required)
-                #login_to_faucet('https://earn-pepe.com/login', sb1, earnpp_email, earnpp_pass, 'rscaptcha', window_list, 'button#loginBtn')
+                sb1.connect()
+                driver.uc_open(url)
+                time.sleep(3)
             elif function == 2:
+                sb1.disconnect()
+                time.sleep(2)
                 login_to_faucet('https://feyorra.site/login', sb1, feyorra_email, feyorra_pass, 'cloudflare_success', window_list, 'button#ClaimBtn',ip_required = ip_required)
+                sb1.connect()
+                driver.uc_open(url)
+                time.sleep(3)
             elif function == 3:
-                login_to_faucet('https://earn-trump.com/login', sb1, earnpp_email, earnpp_pass,  'cloudflare_success', window_list, 'button#ClaimBtn', ip_required = ip_required) #'not_a_robot'
+                sb1.disconnect()
+                time.sleep(2)
+                login_to_faucet('https://earn-trump.com/login', sb1, earnpp_email, earnpp_pass,  'cloudflare_success', window_list, 'button#ClaimBtn', ip_required = ip_required)
+                sb1.connect() #'not_a_robot'
+                driver.uc_open(url)
+                time.sleep(3)
             elif function == 4:
-                login_to_faucet('https://earn-bonk.com/login', sb1, feyorra_email, feyorra_pass,  'cloudflare_success', window_list, 'button#ClaimBtn', ip_required = ip_required)  #'not_a_robot'
-
-
+                sb1.disconnect()
+                time.sleep(2)
+                login_to_faucet('https://earn-bonk.com/login', sb1, feyorra_email, feyorra_pass,  'cloudflare_success', window_list, 'button#ClaimBtn', ip_required = ip_required)
+                sb1.connect()  #'not_a_robot'
+                driver.uc_open(url)
+                time.sleep(3)
+            driver.switch_to.window(window)
+            driver.uc_open(url)
+            time.sleep(3)
         elif expected_title in current_title:
             if driver.current_window_handle not in window_list:
                 ready = True
@@ -2757,8 +2926,9 @@ def open_browsers():
         user_data_dir=chrome_user_data_dir,
         binary_location=chrome_binary_path,
         page_load_strategy="eager",
-        #extension_dir="/root/Desktop/MFV6/mysterium,/root/Desktop/MFV6/fingerprint,/root/Desktop/MFV6/cookie,/root/Desktop/MFV6/mfhelper,/root/Desktop/MFV6/sweet",
+
         chromium_arg=[
+            "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36",
             "--disable-dev-shm-usage",
             "--disable-background-timer-throttling",
             "--disable-backgrounding-occluded-windows",
@@ -2814,6 +2984,7 @@ def open_browsers():
         update = {"$set": {"response": 'Setup Done...'}}
         result = collection.update_one(query, update)
 
+    #sb1.disconnect()
     #time.sleep(99999)
     return sb1
 

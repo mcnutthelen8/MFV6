@@ -473,8 +473,8 @@ def get_ip(driver):
             driver.open_new_window()
             try:
                 #driver.switch_to.newest_window()
-                #driver.get('https://api.ipify.org/')
-                driver.get('https://checkip.amazonaws.com/')
+                driver.get('https://api.ipify.org/')
+                #driver.get('https://checkip.amazonaws.com/')
                 
                 ip_address = driver.get_text('body')
                 print('IP =', ip_address)
@@ -3389,7 +3389,7 @@ while True:
                 reset_count = 16
                 reset_count_isacc = 0
 
-            #ip_address = get_ip(sb1) 
+            ip_address = get_ip(sb1) 
             if reset_count >= 20:
                 print('reset count higher')
                 try:

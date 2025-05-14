@@ -1,5 +1,5 @@
 
-print('Version 9.8.8')
+print('Version 9.8.9')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -420,7 +420,7 @@ def add_messages(type_value, new_messages):
     except Exception as e:
         print(e)
 
-def insert_data(ip, amount1, amount2, amount3, amount4,emailg):
+def insert_data(ip, amount1, amount2, amount3, amount4,accuracy,emailg):
     sri_lanka_tz = pytz.timezone('Asia/Colombo')
     utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
     sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
@@ -435,7 +435,9 @@ def insert_data(ip, amount1, amount2, amount3, amount4,emailg):
         "bonk": amount4,
         "Status": now,
         "Ip": ip,
+        "mainfaucet":accuracy,
         "response": 'Running'
+
         
     }
     update = {"$set": sample_document}
@@ -1438,14 +1440,19 @@ def solve_icon_captcha(sb1):
             base64_images2 = [
                 "iVBORw0KGgoAAAANSUhEUgAAAToAAAAXCAIAAAAUZRRXAAAACXBI",
                 "iVBORw0KGgoAAAANSUhEUgAAAV0AAAAXCAIAAAAnXgteAAAACXBI",
+                
             ]
 
+            if 'iVBORw0KGgoAAAANSUhEUgAAAV0AAAAXCAIAAAAnXgteAAAACXBI' in captchaElement:
+                print("Opps Error found in the first list.")
+                pyautogui.press('f5')
+                return 201
+            
 
-            for base64_image in base64_images2:
-                if base64_image in captchaElement:
-                    print("Opps Error found in the first list.")
-                    pyautogui.press('f5')
-                    return False
+            if "iVBORw0KGgoAAAANSUhEUgAAAToAAAAXCAIAAAAUZRRXAAAACXBI" in captchaElement:
+                print("Select Timeout")
+                pyautogui.press('f5')
+                return False
             return False
 
         if filtered_elements:
@@ -2904,6 +2911,11 @@ def clear_browser_cache_history(driver):
         sb1 = open_browsers()
     except Exception as e:
         print(f"Error clearing browser cache: {e}")
+def calculate_accuracy_captchas(total_tests, failed_tests):
+    if total_tests == 0:
+        return 0
+    accuracy = ((total_tests - failed_tests) / total_tests) * 100
+    return round(accuracy, 2)
 
 fresh_start_faucet = True
 login_faucet_detect = True
@@ -3107,7 +3119,7 @@ def open_faucets():
 
                 quer2y = {"type": "main"}
                 dochh2 = collection.find_one(quer2y)
-                faucetlayout = dochh2["mainfaucet"]
+                faucetlayout = 1 #dochh2["mainfaucet"]
                 print(f'Farm ID:{farm_id} | Faucet Layout: {faucetlayout}')
 
                 ipscore = get_ipscore(ip_address)
@@ -3352,6 +3364,11 @@ print('Starting Loop')
 
 Script_Started = time.time()
 script_seconds_only = 0
+
+solving_accuracy = 0
+failed_captchas = 0
+total_captchas_received = 0
+
 previous_script_seconds_only = 0
 while True:
     try:
@@ -3398,7 +3415,7 @@ while True:
                 reset_count = 16
                 reset_count_isacc = 0
 
-            ip_address = get_ip(sb1) 
+            #ip_address = get_ip(sb1) 
             if reset_count >= 20:
                 print('reset count higher')
                 try:
@@ -3450,6 +3467,10 @@ while True:
                                 earnpp_coins = val
                             gg = solve_icon_captcha(sb1)
                             if gg:
+                                if gg == 201:
+                                    #wrong detect:
+                                    failed_captchas += 1
+                                total_captchas_received += 1
                                 earnpp_limit_reached = None
                             else:
                                 if Limit_Checked():
@@ -3469,7 +3490,7 @@ while True:
                             response_messege('Lock.. Found on EarnPP')
                             earnpp_coins = 0
                         elif 'Google' in title:
-                            reset_count +=7
+                            reset_count +=25
                         elif 'Just' in title:
                             debug_messages(f'Just.. Found on EarnPP')
 
@@ -3522,6 +3543,10 @@ while True:
                                 feyorra_coins = val
                             gg = solve_icon_captcha(sb1)
                             if gg:
+                                if gg == 201:
+                                    #wrong detect:
+                                    failed_captchas += 1
+                                total_captchas_received += 1
                                 feyorra_limit_reached =None
                                 
                             else:
@@ -3541,7 +3566,7 @@ while True:
                             cloudflare(sb1, login = False)
                             debug_messages(f'Just Fixed Feyorra')
                         elif 'Google' in title:
-                            reset_count +=7
+                            reset_count +=25
                         elif 'aintenance' in title:
                             debug_messages(f'maintenance.. Found on Feyorra')
                             response_messege('maintenance.. Found on Feyorra')
@@ -3591,6 +3616,10 @@ while True:
                                 earntrump_coins = val
                             gg = solve_icon_captcha(sb1)
                             if gg:
+                                if gg == 201:
+                                    #wrong detect:
+                                    failed_captchas += 1
+                                total_captchas_received += 1
                                 earntrump_limit_reached =None
                             else:
                                 if Limit_Checked():
@@ -3609,7 +3638,7 @@ while True:
                             cloudflare(sb1, login = False)
                             debug_messages(f'Just Fixed Trump')
                         elif 'Google' in title:
-                            reset_count +=5
+                            reset_count +=25
                         elif 'aintenance' in title:
                             debug_messages(f'maintenance.. Found on Trump')
                             response_messege('maintenance.. Found on Trump')
@@ -3661,6 +3690,10 @@ while True:
                                 earnbonk_coins = val
                             gg = solve_icon_captcha(sb1)
                             if gg:
+                                if gg == 201:
+                                    #wrong detect:
+                                    failed_captchas += 1
+                                total_captchas_received += 1
                                 earnbonk_limit_reached =None
 
                             else:
@@ -3682,7 +3715,7 @@ while True:
                             cloudflare(sb1, login = False)
                             debug_messages(f'Just Fixed Bonk')
                         elif 'Google' in title:
-                            reset_count +=5
+                            reset_count +=25
                         elif 'aintenance' in title:
                             debug_messages(f'maintenance.. Found on Bonk')
                             response_messege('maintenance.. Found on Bonk')
@@ -3807,7 +3840,11 @@ while True:
                     if earnpp_coins and feyorra_coins and earnbonk_coins and earntrump_coins: 
                         start_time3 = time.time()
                         emailgg = f'{earnpp_email} <br>country: {server_name1} <br>Current Layout:{layout} <br>Farm:{farm_id} <br>Pre-Session Reset:{previous_script_seconds_only} <br>Session Reset:{script_seconds_only}'
-                        insert_data(ip_address, earnpp_coins, feyorra_coins, earntrump_coins, earnbonk_coins, emailgg)
+                        solving_accuracy = calculate_accuracy_captchas(total_captchas_received, failed_captchas)
+                        winning_captcha_amount = total_captchas_received - failed_captchas
+                        accuracy_info = f'Ratio: {winning_captcha_amount} / {total_captchas_received} <br> Accuracy : {solving_accuracy}'
+
+                        insert_data(ip_address, earnpp_coins, feyorra_coins, earntrump_coins, earnbonk_coins, accuracy_info, emailgg)
                     else:
                         response_messege(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | Trump:{earntrump_coins}|BONK:{earnbonk_coins} ')
                     #elif earnpp_coins and feyorra_coins and claimc_coins:

@@ -43,7 +43,7 @@ fresh = args.fresh
 
 
 CSB1_farms = []
-
+sb1 = None
 
 
 fb_pass = 'ashen1997'
@@ -977,6 +977,7 @@ def ipfixer():
     update = {"$set": {"response": 'Fixing...🟠'}}
     result = collection.update_one(query, update)
     global layout
+    global sb1
     while True:
 
         pyautogui.moveTo(100, 200)
@@ -2587,7 +2588,7 @@ feyorra_limit_reached = None
 earntrump_limit_reached = None
 earnbonk_limit_reached = None
 #if run_sb1:
-sb1 = None
+
 def are_extensions_exist():
     for i in range(3):
         time.sleep(2)

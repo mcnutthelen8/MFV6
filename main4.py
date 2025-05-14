@@ -1,5 +1,5 @@
 
-print('Version 9.9.1')
+print('Version 9.9.2')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -1452,7 +1452,7 @@ def solve_icon_captcha(sb1):
             if "iVBORw0KGgoAAAANSUhEUgAAAToAAAAXCAIAAAAUZRRXAAAACXBI" in captchaElement:
                 print("Select Timeout")
                 pyautogui.press('f5')
-                return False
+                return 101
             return False
 
         if filtered_elements:
@@ -3377,6 +3377,7 @@ solving_accuracy = 0
 failed_captchas = 0
 total_captchas_received = 0
 
+
 previous_script_seconds_only = 0
 while True:
     try:
@@ -3385,6 +3386,7 @@ while True:
         if mainscript == 1:
             
             debug_messages(f'Ip address Found:{ip_address}')
+            set_refresh_faucets = 0
             cc_faucet = None
             script_elapsed_time = time.time() - Script_Started
             script_seconds_only = int(script_elapsed_time)
@@ -3430,6 +3432,7 @@ while True:
 
             #ip_address = get_ip(sb1) 
             if reset_count >= 20:
+                
                 print('reset count higher')
                 try:
                     sb1.quit()
@@ -3483,6 +3486,8 @@ while True:
                                 if gg == 201:
                                     #wrong detect:
                                     failed_captchas += 1
+                                if gg == 101:
+                                    set_refresh_faucets += 1
                                 total_captchas_received += 1
                                 earnpp_limit_reached = None
                             else:
@@ -3559,6 +3564,9 @@ while True:
                                 if gg == 201:
                                     #wrong detect:
                                     failed_captchas += 1
+
+                                if gg == 101:
+                                    set_refresh_faucets += 1
                                 total_captchas_received += 1
                                 feyorra_limit_reached =None
                                 
@@ -3632,6 +3640,8 @@ while True:
                                 if gg == 201:
                                     #wrong detect:
                                     failed_captchas += 1
+                                if gg == 101:
+                                    set_refresh_faucets += 1
                                 total_captchas_received += 1
                                 earntrump_limit_reached =None
                             else:
@@ -3706,6 +3716,8 @@ while True:
                                 if gg == 201:
                                     #wrong detect:
                                     failed_captchas += 1
+                                if gg == 101:
+                                    set_refresh_faucets += 1
                                 total_captchas_received += 1
                                 earnbonk_limit_reached =None
 
@@ -3765,6 +3777,8 @@ while True:
 ###################################################################################################################
 
 
+                if set_refresh_faucets == 4:
+                    reset_count +=6
 
                 elapsed_time = time.time() - start_time
                 seconds_only = int(elapsed_time)

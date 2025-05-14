@@ -120,10 +120,10 @@ def get_mails_passowrds(farm_id):
         elif '2' in layout:
             server_name1 = 'thailand' # 'morocco' #'bulgaria'
             CSB1_farms = Farm_list #[6, 7, 8, 9, 10]
-            earnpp_email = 'metroboom9106@gmail.com'
-            earnpp_pass = 'metroboom9106'
-            feyorra_email = 'metroboom9106@gmail.com'
-            feyorra_pass = 'metroboom9106'
+            earnpp_email = 'bommetro5@gmail.com'
+            earnpp_pass = 'bommetro5'
+            feyorra_email = 'bommetro5@gmail.com'
+            feyorra_pass = 'bommetro5'
         elif '3' in layout:
             server_name1 = 'thailand' # 'morocco' #'bulgaria'
             CSB1_farms =Farm_list#[6, 7, 8, 9, 10]
@@ -1414,6 +1414,10 @@ def solve_icon_captcha(sb1):
         #print("Filtered elements:")
         # Assign the first element to captchaElement
         if len(filtered_elements) < 5:
+            if len(filtered_elements) == 0:
+                print('No img on page..')
+                return False
+            
             captchaElement = filtered_elements[0]
             base64_images2 = [
                 "iVBORw0KGgoAAAANSUhEUgAAAToAAAAXCAIAAAAUZRRXAAAACXBI",
@@ -1479,7 +1483,7 @@ def solve_icon_captcha(sb1):
         for item, img_path in category_dic.items():
             print(f"{item} is {img_path}")
             if best_match in item or item in best_match:
-                mouse_moveclick(cropped_path={img_path})
+                mouse_moveclick(cropped_path=img_path)
                 return True
             
         print('Something went wrong')

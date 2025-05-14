@@ -1422,7 +1422,7 @@ def solve_icon_captcha(sb1):
         '''
 
         filtered_elements = sb1.execute_script(script)
-        print("Script result:", filtered_elements)
+        #print("Script result:", filtered_elements)
 
         # Print each element
         #print("Filtered elements:")
@@ -1491,7 +1491,7 @@ def solve_icon_captcha(sb1):
             #using it later...for debugging
         
         for item, base64_path in category_dic.items():
-            print(f"{item} Checking")
+            #print(f"{item} Checking")
             if best_match in item or item in best_match:
                 #preview = base64_path[:100]
                 element = sb1.find_element(By.CSS_SELECTOR, f'img[src*="{base64_path}"]')

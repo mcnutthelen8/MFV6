@@ -1,5 +1,5 @@
 
-print('Version 9.9.2')
+print('Version 9.9.4')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -670,6 +670,12 @@ def mysterium_vpn_connect(server_name, driver):
                 pyautogui.press('enter')
                 time.sleep(8)
                 pyautogui.scroll(-500)
+                collection_csb = db[f'Farm{farm_id}']
+                query = {"type": "main"}
+                doc = collection_csb.find_one(query)
+                layout_test = doc["withdraw_mail"]
+                if layout_test != layout:
+                    return
                 time.sleep(2)
                 for frm in CSB1_farms:
                     collection_csb = db[f'Farm{frm}']
@@ -717,6 +723,13 @@ def fix_ip(drive, name):
         get_mails_passowrds(farm_id)
         ip_address = get_ip(drive)
         ip_address = extract_valid_ipv4(ip_address)
+        collection_csb = db[f'Farm{farm_id}']
+        query = {"type": "main"}
+        doc = collection_csb.find_one(query)
+        layout_test = doc["withdraw_mail"]
+        if layout_test != layout:
+            return
+
         if ip_address:
 
             quer2y = {"type": "main"}
@@ -963,13 +976,33 @@ def ipfixer():
     query = {"type": "main"}
     update = {"$set": {"response": 'Fixing...🟠'}}
     result = collection.update_one(query, update)
-
+    global layout
     while True:
-        
+
         pyautogui.moveTo(100, 200)
         pyautogui.moveTo(200, 400)
         doc = collection.find_one(query)
         request = doc["request"]
+        layout_test = doc["withdraw_mail"]
+        if layout_test != layout:
+            print(f'Wrong Farm ID | {layout_test} / {layout} ')
+            try:
+                sb1.quit()
+                time.sleep(2)
+            except Exception as e:
+                print(f"sb1.quit() failed: {e}")
+
+            # Fallback kill
+            for proc_name in ['chrome', 'chromium']:
+                try:
+                    subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
+                    print(f"All {proc_name} script_seconds_only killed (if any).")
+                except Exception as e:
+                    print(f"Failed to kill {proc_name} script_seconds_only: {e}")
+                    
+            time.sleep(2)
+            sb1 = open_browsers()
+            time.sleep(2)
         if request == 'ipfixer':
             preip = get_ip(sb1)
             if preip:
@@ -3862,7 +3895,14 @@ while True:
                 elapsed_time3 = time.time() - start_time3
                 seconds_only3 = int(elapsed_time3)
                 debug_messages(f'MangoDB Seconds:{seconds_only3}')
-                if seconds_only3 > 130:
+                if seconds_only3 > 200:
+                    quer2y = {"type": "main"}
+                    dochh2 = collection.find_one(quer2y)
+                    layout_test = dochh2["withdraw_mail"]
+                    if layout_test != layout:
+                        print('Wrong Farm layout')
+                        reset_count +=30
+
                     print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | Trump:{earntrump_coins}|BONK:{earnbonk_coins} ')
                     if earnpp_coins and feyorra_coins and earnbonk_coins and earntrump_coins: 
                         start_time3 = time.time()

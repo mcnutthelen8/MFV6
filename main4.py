@@ -1,5 +1,5 @@
 
-print('Version 9.8.9')
+print('Version 9.9.0')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -3382,6 +3382,11 @@ while True:
             script_seconds_only = int(script_elapsed_time)
             debug_messages(f'script_elapsed_time Seconds:{script_seconds_only}')
             if script_seconds_only > 1200:
+                solving_accuracy = 0
+                failed_captchas = 0
+                total_captchas_received = 0
+
+
                 Script_Started = time.time()
                 try:
                     sb1.quit()

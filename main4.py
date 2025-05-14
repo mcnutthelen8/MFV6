@@ -1,5 +1,5 @@
 
-print('Version 9.8.2')
+print('Version 9.8.5')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -473,8 +473,8 @@ def get_ip(driver):
             driver.open_new_window()
             try:
                 #driver.switch_to.newest_window()
-                driver.get('https://api.ipify.org/')
-                #driver.get('https://checkip.amazonaws.com/')
+                #driver.get('https://api.ipify.org/')
+                driver.get('https://checkip.amazonaws.com/')
                 
                 ip_address = driver.get_text('body')
                 print('IP =', ip_address)

@@ -1,5 +1,5 @@
 
-print('Version 9.9.0')
+print('Version 9.9.1')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -1815,11 +1815,13 @@ def Fill_mailpass_faucets(sitekey, email, password):
     if 'Earn-pepe' in sitekey:
         pyautogui.click(852, 451)
         time.sleep(1)
-        pyautogui.typewrite(email)
+        clipboard.copy(email)
+        pyautogui.hotkey('ctrl', 'v')
         time.sleep(1)
-        pyautogui.click(815, 537)
+        pyautogui.click(812, 537)
         time.sleep(1)
-        pyautogui.typewrite(password)
+        clipboard.copy(password)
+        pyautogui.hotkey('ctrl', 'v')
         time.sleep(2)
         try:
             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/pepe_login.png",confidence=0.75)
@@ -1832,11 +1834,13 @@ def Fill_mailpass_faucets(sitekey, email, password):
     if 'Feyorra' in sitekey:
         pyautogui.click(883, 338)
         time.sleep(1)
-        pyautogui.typewrite(email)
+        clipboard.copy(email)
+        pyautogui.hotkey('ctrl', 'v')
         time.sleep(1)
-        pyautogui.click(815, 419)
+        pyautogui.click(810, 419)
         time.sleep(1)
-        pyautogui.typewrite(password)
+        clipboard.copy(password)
+        pyautogui.hotkey('ctrl', 'v')
         time.sleep(2)
         try:
             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/feyorra_loginbt.png",confidence=0.75)
@@ -1849,11 +1853,13 @@ def Fill_mailpass_faucets(sitekey, email, password):
     if 'Earn-Trump' in sitekey:
         pyautogui.click(883, 403)
         time.sleep(1)
-        pyautogui.typewrite(email)
+        clipboard.copy(email)
+        pyautogui.hotkey('ctrl', 'v')
         time.sleep(1)
-        pyautogui.click(815, 499)
+        pyautogui.click(810, 499)
         time.sleep(1)
-        pyautogui.typewrite(password)
+        clipboard.copy(password)
+        pyautogui.hotkey('ctrl', 'v')
         time.sleep(2)
         try:
             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/trump_login.png",confidence=0.75)
@@ -1866,11 +1872,13 @@ def Fill_mailpass_faucets(sitekey, email, password):
     if 'Earn-Bonk' in sitekey:
         pyautogui.click(883, 453)
         time.sleep(1)
-        pyautogui.typewrite(email)
+        clipboard.copy(email)
+        pyautogui.hotkey('ctrl', 'v')
         time.sleep(1)
-        pyautogui.click(815, 566)
+        pyautogui.click(810, 566)
         time.sleep(1)
-        pyautogui.typewrite(password)
+        clipboard.copy(password)
+        pyautogui.hotkey('ctrl', 'v')
         time.sleep(2)
         try:
             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/bonk_login.png",confidence=0.75)

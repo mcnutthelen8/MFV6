@@ -1,5 +1,5 @@
 
-print('Version 9.8.5')
+print('Version 9.8.8')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -467,7 +467,7 @@ def extract_valid_ipv4(text):
             return None
     return None
 def get_ip(driver):
-    for i in range(8):
+    for i in range(5):
         try:
             original_window = driver.current_window_handle
             driver.open_new_window()
@@ -481,6 +481,12 @@ def get_ip(driver):
                 driver.close()
                 driver.connect()
                 driver.switch_to.window(original_window)
+                if 'This site' in ip_address:
+                    time.sleep(1)
+                    print('THIS no sign', i)
+                    if i == 3:
+                        return '27.145.186.4'
+                    continue
                 ip_address = extract_valid_ipv4(ip_address)
                 if ip_address:
                     return ip_address
@@ -492,7 +498,6 @@ def get_ip(driver):
             driver.switch_to.window(original_window)
         except Exception as e:
             print(e)
-
     return None
 
 
@@ -1805,7 +1810,7 @@ def Fill_mailpass_faucets(sitekey, email, password):
         time.sleep(1)
         pyautogui.typewrite(email)
         time.sleep(1)
-        pyautogui.click(822, 537)
+        pyautogui.click(815, 537)
         time.sleep(1)
         pyautogui.typewrite(password)
         time.sleep(2)
@@ -1879,7 +1884,7 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
     time.sleep(1)
     pyautogui.press('enter')
     time.sleep(3)
-    for i in range(15):
+    for i in range(7):
         time.sleep(1)
         current_title =get_active_window_title()
         print(f"Current login title: {current_title}")
@@ -1900,7 +1905,7 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
             Fill_mailpass_faucets(current_title, email, password)
             time.sleep(3)
         if 'Dashboard' in current_title:
-            pyautogui.hotkey('ctrl','w')
+            #pyautogui.hotkey('ctrl','w')
             return True
 
 
@@ -3122,6 +3127,7 @@ def open_faucets():
                         if earnpp:
                             if faucetlayout == 1:
                                 earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [], ip_required, ip_check = True)
+                                close_extra_windows(sb1, [earnpp_window])
                                 if earnpp_window == 404:
                                     raise Exception(" earnpp_window == 404")
                                 print(f"EarnPP window handle: {earnpp_window}")
@@ -3138,6 +3144,7 @@ def open_faucets():
                             #sb1.open_new_window()
                             if faucetlayout == 1:
                                 feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Best - Meme Coins Faucet", 2, [], ip_required, ip_check = True)
+                                close_extra_windows(sb1, [feyorra_window])
                                 if feyorra_window == 404:
                                     raise Exception(" feyorra_window == 404")
                                 print(f"Feyorra window handle: {feyorra_window}")
@@ -3158,6 +3165,7 @@ def open_faucets():
                             #sb1.open_new_window()
                             if faucetlayout == 1:
                                 earntrump_window = handle_site(sb1, "https://earn-trump.com/member/faucet","Faucet | Earn-Trump" , "Free $Trump Coin Faucet | Earn $Trump Crypto Instantly", 3, [], ip_required, ip_check = True)
+                                close_extra_windows(sb1, [earntrump_window])
                                 if earntrump_window == 404:
                                     raise Exception(" earntrump_window == 404")
                                 print(f"earntrump window handle: {earntrump_window}")
@@ -3175,6 +3183,7 @@ def open_faucets():
                             #sb1.open_new_window()
                             if faucetlayout == 1:
                                 earnbonk_window = handle_site(sb1, "https://earn-bonk.com/member/faucet", "Faucet | Earn-Bonk" , "Earn Bonk", 4, [], ip_required,ip_check =  True)
+                                close_extra_windows(sb1, [earnbonk_window])
                                 if earnbonk_window == 404:
                                     raise Exception(" earnbonk == 404")
                                 print(f"Feyorra window handle: {earnbonk_window}")

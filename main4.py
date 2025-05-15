@@ -1,5 +1,5 @@
 
-print('Version 9.9.6')
+print('Version 9.9.7')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -3908,7 +3908,8 @@ while True:
                     print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | Trump:{earntrump_coins}|BONK:{earnbonk_coins} ')
                     if earnpp_coins and feyorra_coins and earnbonk_coins and earntrump_coins: 
                         start_time3 = time.time()
-                        emailgg = f'{earnpp_email} <br>country: {server_name1} <br>Current Layout:{layout} <br>Farm:{farm_id} <br>Pre-Session Reset:{previous_script_seconds_only} <br>Session Reset:{script_seconds_only}'
+                        Script_Started_elsg = time.time() - Script_Started
+                        emailgg = f'{earnpp_email} <br>country: {server_name1} <br>Current Layout:{layout} <br>Farm:{farm_id} <br>Pre-Session Reset:{Script_Started_elsg} <br>Session Reset:{script_seconds_only}'
                         solving_accuracy = calculate_accuracy_captchas(total_captchas_received, failed_captchas)
                         winning_captcha_amount = total_captchas_received - failed_captchas
                         accuracy_info = f'Ratio: {winning_captcha_amount} / {total_captchas_received} <br> Accuracy : {solving_accuracy}'

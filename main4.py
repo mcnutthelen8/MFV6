@@ -3432,8 +3432,8 @@ while True:
             debug_messages(f'Ip address Found:{ip_address}')
             set_refresh_faucets = 0
             cc_faucet = None
-            #script_elapsed_time = time.time() - Script_Started
-            #script_seconds_only = int(script_elapsed_time)
+            script_elapsed_time = time.time() - Script_Started
+            script_seconds_only = int(script_elapsed_time)
             #debug_messages(f'script_elapsed_time Seconds:{script_seconds_only}')
             if script_seconds_only > 1200:
                 solving_accuracy = 0

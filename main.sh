@@ -9,7 +9,7 @@ trap "echo '[!] Interrupted by user, exiting.'; exit 0" SIGINT
 IDLE_LIMIT_MS=150000       # 2.4 minutes in milliseconds
 GRACE_PERIOD=200            # Initial wait time in seconds
 SCRIPT_CMD="python3 main4.py --farm 1 --fresh 3"
-FORCE_RESTART_INTERVAL=1800  # 30 minutes in seconds
+FORCE_RESTART_INTERVAL=1000  # 30 minutes in seconds
 
 # Check if xprintidle is installed
 if ! command -v xprintidle &>/dev/null; then

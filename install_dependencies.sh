@@ -35,9 +35,9 @@ sudo apt-get --fix-broken install -y
 # Set screen resolution (adjust VNC-0 if necessary)
 echo "Setting screen resolution..."
 #Docker VNC
-#xrandr --output VNC-0 --mode 1920x1080
+xrandr --output VNC-0 --mode 1920x1080
 #CRD 
-cvt 1920 1080 | grep Modeline | sed 's/Modeline //' | xargs -I{} bash -c 'xrandr --newmode {}; xrandr --addmode DUMMY0 1920x1080_60.00; xrandr --output DUMMY0 --mode 1920x1080_60.00'
+#cvt 1920 1080 | grep Modeline | sed 's/Modeline //' | xargs -I{} bash -c 'xrandr --newmode {}; xrandr --addmode DUMMY0 1920x1080_60.00; xrandr --output DUMMY0 --mode 1920x1080_60.00'
 
 
 
@@ -79,9 +79,9 @@ sudo apt-get --fix-broken install -y
 # Set screen resolution (adjust VNC-0 if necessary)
 echo "Setting screen resolution..."
 #Docker VNC
-#xrandr --output VNC-0 --mode 1920x1080
+xrandr --output VNC-0 --mode 1920x1080
 #CRD 
-cvt 1920 1080 | grep Modeline | sed 's/Modeline //' | xargs -I{} bash -c 'xrandr --newmode {}; xrandr --addmode DUMMY0 1920x1080_60.00; xrandr --output DUMMY0 --mode 1920x1080_60.00'
+#cvt 1920 1080 | grep Modeline | sed 's/Modeline //' | xargs -I{} bash -c 'xrandr --newmode {}; xrandr --addmode DUMMY0 1920x1080_60.00; xrandr --output DUMMY0 --mode 1920x1080_60.00'
 
 
 # Download and unzip Mysterium extension

@@ -1,5 +1,5 @@
 
-print('Version 9.9.5')
+print('Version 9.9.6')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -2006,7 +2006,11 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
                 if 'Changed' in res:
                     print('IP is BAD HANLDE SITE')
                     return 404
-
+        quer2y = {"type": "main"}
+        dochh2 = collection.find_one(quer2y)
+        layout_test = dochh2["withdraw_mail"]
+        if layout_test != layout:
+            return 404
         all_windows = driver.window_handles
         for window in all_windows:
             if window not in window_list:
@@ -2980,11 +2984,11 @@ def open_browsers():
         headed=True,
         undetectable=True,
         undetected= True,
-        no_sandbox=True,  # --no-sandbox
         disable_gpu=True,  # --disable-gpu
         user_data_dir=chrome_user_data_dir,
         binary_location=chrome_binary_path,
         page_load_strategy="eager",
+        
 
         chromium_arg=[
             "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36",
@@ -2992,6 +2996,12 @@ def open_browsers():
             "--disable-background-timer-throttling",
             "--disable-backgrounding-occluded-windows",
             "--disable-renderer-backgrounding",
+            "--disable-infobars",
+            "--disable-translate",
+            "--disable-default-apps",
+            "--no-first-run",
+            "--disable-blink-features=AutomationControlled",
+
 
         ]
     )
@@ -3422,9 +3432,9 @@ while True:
             debug_messages(f'Ip address Found:{ip_address}')
             set_refresh_faucets = 0
             cc_faucet = None
-            script_elapsed_time = time.time() - Script_Started
-            script_seconds_only = int(script_elapsed_time)
-            debug_messages(f'script_elapsed_time Seconds:{script_seconds_only}')
+            #script_elapsed_time = time.time() - Script_Started
+            #script_seconds_only = int(script_elapsed_time)
+            #debug_messages(f'script_elapsed_time Seconds:{script_seconds_only}')
             if script_seconds_only > 1200:
                 solving_accuracy = 0
                 failed_captchas = 0
@@ -3453,16 +3463,6 @@ while True:
                 previous_script_seconds_only = script_seconds_only
                 Script_Started = time.time()
 
-            if reset_count_isacc >= 7:
-                response_messege('oops.. reset_count_isacc triggers')
-                blacklistedIP.append(ip_address)
-                mysterium_vpn_connect(server_name1, sb1)
-                time.sleep(7)
-                mysterium_vpn_connect(server_name1, sb1)
-                time.sleep(5)
-                
-                reset_count = 16
-                reset_count_isacc = 0
 
             #ip_address = get_ip(sb1) 
             if reset_count >= 20:
@@ -3812,6 +3812,7 @@ while True:
 
 
                 if set_refresh_faucets == 4:
+                    response_messege(f'All Site getting Timeout:{reset_count}')
                     reset_count +=6
 
                 elapsed_time = time.time() - start_time
@@ -3896,7 +3897,7 @@ while True:
                 elapsed_time3 = time.time() - start_time3
                 seconds_only3 = int(elapsed_time3)
                 debug_messages(f'MangoDB Seconds:{seconds_only3}')
-                if seconds_only3 > 200:
+                if seconds_only3 > 130:
                     quer2y = {"type": "main"}
                     dochh2 = collection.find_one(quer2y)
                     layout_test = dochh2["withdraw_mail"]

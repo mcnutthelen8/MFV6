@@ -1,5 +1,5 @@
 
-print('Version 9.9.9.4')
+print('Version 9.9.9.5')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -1968,16 +1968,29 @@ earntrump_window = None
 earnbonk_window = None
 
 def close_extra_windows(driver, keep_window_handles):
-    gg = False
-    current_window = driver.current_window_handle
-    all_windows = driver.window_handles
-    for window in all_windows:
-        if window not in keep_window_handles:
-            driver.switch_to.window(window)
-            driver.close()
-            gg = True
-    driver.switch_to.window(current_window)
-    return gg
+    """
+    Close every window not in `keep_window_handles`, but never close
+    the last remaining window in the session.
+    Returns True if any extra window was closed.
+    """
+    closed_any = False
+    # Always re-query handles, in case they shift when you close one:
+    for handle in list(driver.window_handles):
+        # If this handle should be kept, skip it:
+        if handle in keep_window_handles:
+            continue
+        # If closing this would leave zero windows, bail out:
+        if len(driver.window_handles) <= 1:
+            break
+        driver.switch_to.window(handle)
+        driver.close()
+        closed_any = True
+
+    # Switch back to your original “main” window at the end
+    # (but only if it still exists):
+    if keep_window_handles and keep_window_handles[0] in driver.window_handles:
+        driver.switch_to.window(keep_window_handles[0])
+    return closed_any
 
 def handle_captcha_and_cloudflare(driver):
     cloudflare(driver, login = False)
@@ -2005,10 +2018,8 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         layout_test = dochh2["withdraw_mail"]
         if layout_test != layout:
             return 404
-        all_windows = driver.window_handles
-        for window in all_windows:
-            if window not in window_list:
-                driver.switch_to.window(window)
+
+        close_extra_windows(sb1,window_list)
         current_title = driver.get_title()
         print(f"Current title: {current_title}")
         if "Google" in current_title:
@@ -2071,7 +2082,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
                     driver.switch_to.window(window)
             driver.uc_open(url)
             handle_captcha_and_cloudflare(driver)
-
+    print('Site fine Return to Function')
     return driver.current_window_handle
 
 
@@ -2279,11 +2290,8 @@ def withdraw_faucet(driver, sitekey):
         currency = dochh["currency"]
         driver.open_new_window()
         current_window = driver.current_window_handle
-        all_windows = driver.window_handles
-        for window in all_windows:
-            if window != current_window:
-                driver.switch_to.window(window)
-                driver.close()  # Close the tab
+
+        close_extra_windows(sb1, [current_window])
         driver.switch_to.window(current_window)
         pyautogui.moveTo(100, 200)
         pyautogui.moveTo(200, 400)
@@ -2743,12 +2751,7 @@ def mysterium_reinstaller_old():
     #install 
     response_messege('Changed IP🔴 :Mys Reinstaller')
     current_window = sb1.current_window_handle
-    all_windows = sb1.window_handles
-    for window in all_windows:
-        if window != current_window:
-            sb1.switch_to.window(window)
-            sb1.close()  # Close the tab
-            sb1.connect()
+    close_extra_windows(sb1, [current_window])
     sb1.switch_to.window(current_window)
     sb1.uc_open("chrome://extensions/")
     pyautogui.click(300, 300)
@@ -3085,12 +3088,7 @@ def open_faucets():
             pyautogui.moveTo(200, 400)
             print('ff')
             current_window = sb1.current_window_handle
-            all_windows = sb1.window_handles
-            for window in all_windows:
-                if window != current_window:
-                    sb1.switch_to.window(window)
-                    sb1.close()  # Close the tab
-                    sb1.connect()
+            close_extra_windows(sb1, [current_window])
             sb1.switch_to.window(current_window)
             sb1.uc_open("chrome://extensions/")
             time.sleep(1)
@@ -3145,12 +3143,7 @@ def open_faucets():
             pyautogui.moveTo(200, 400)
             if ip_address:
                 current_window = sb1.current_window_handle
-                all_windows = sb1.window_handles
-                for window in all_windows:
-                    if window != current_window:
-                        sb1.switch_to.window(window)
-                        sb1.close()  # Close the tab
-                        sb1.connect()
+                close_extra_windows(sb1, [current_window])
                 sb1.switch_to.window(current_window)
                 sb1.uc_open("chrome://extensions/")
                 time.sleep(2)

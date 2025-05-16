@@ -291,10 +291,10 @@ def get_mails_passowrds(farm_id):
         elif '4' in layout:
             server_name1 = 'canada' #'georgia'# 
             CSB1_farms = Farm_list
-            earnpp_email = 'andrewperera8@gmail.com'
-            earnpp_pass = 'andrewperera8'
-            feyorra_email = 'andrewperera8@gmail.com'
-            feyorra_pass = 'andrewperera8'
+            earnpp_email = '' #'andrewperera8@gmail.com'
+            earnpp_pass = ''#'andrewperera8'
+            feyorra_email = ''#'andrewperera8@gmail.com'
+            feyorra_pass = ''#'andrewperera8'
         elif '5' in layout:
             server_name1 = 'canada' #'georgia'# 
             CSB1_farms = Farm_list
@@ -662,7 +662,7 @@ def mysterium_vpn_connect(server_name, driver):
  
             print("quick_connect Found")
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/search_mysterium.png", region=(1325, 494, 800, 400), confidence=0.95)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/search_mysterium_nomachine_paths.png", region=(1325, 494, 800, 400), confidence=0.95)
                 pyautogui.click(x, y)
                 print("search_mysterium Found")
                 time.sleep(2)
@@ -2135,31 +2135,27 @@ def install_extensions(extension_name):
             time.sleep(2)
             for i in range(1,100):
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mfv6_unselect.png", region=(388, 260, 300, 300), confidence=0.60)
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mfv6_unselect_nomachine_paths.png", region=(388, 260, 300, 300), confidence=0.70)
                     pyautogui.click(x, y)
                     print("mfv6_unselect Button Found")
+                    time.sleep(1)
                         
                 except pyautogui.ImageNotFoundException:
                     print("No mfv6_unselect Button.")
+                #####Select Your Extension
+                extension_path = f"/root/Desktop/MFV6/images/{extension_name}_nomachine_paths.png" 
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mfv6_select.png", region=(388, 260, 300, 300), confidence=0.90)
+                    x, y = pyautogui.locateCenterOnScreen(extension_path, region=(545, 200, 500, 500), confidence=0.9)
                     pyautogui.click(x, y)
-                    print("mfv6_select Button Found")
-                    #####Select Your Extension
-                    extension_path = f"/root/Desktop/MFV6/images/{extension_name}.png" 
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen(extension_path, region=(545, 200, 500, 500), confidence=0.9)
-                        pyautogui.click(x, y)
-                        print(f"{extension_path} folder Found")
-                        time.sleep(2)
-                        pyautogui.click(1467, 123)
-                        print(f"{extension_path} folder Installed Complete")
-                        return True
-                    
-                    except pyautogui.ImageNotFoundException:
-                        print(f"No {extension_path} folder.")
+                    print(f"{extension_path} folder Found")
+                    time.sleep(2)
+                    pyautogui.click(1467, 123)
+                    print(f"{extension_path} folder Installed Complete")
+                    return True
+                
                 except pyautogui.ImageNotFoundException:
-                    print("No mfv6_select Button.")
+                    print(f"No {extension_path} folder.")
+
                 time.sleep(1)
                 print(f'Waiting Seconds:{i}')
 
@@ -2661,6 +2657,12 @@ def get_browser_proxy():
 def sweet_enable():
     for x in range(5):
         try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_nl_icon.png",  region=(1625, 43, 700, 300), confidence=0.98)
+            return
+            
+        except pyautogui.ImageNotFoundException:
+            pass
+        try:
             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_dis_icon.png",  region=(1625, 43, 700, 300), confidence=0.98)
             pyautogui.click(x, y)
             for i in range(5):
@@ -2674,7 +2676,7 @@ def sweet_enable():
                 except pyautogui.ImageNotFoundException:
                     print("Waiting for Sweet to pop")
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_sg2.png", confidence=0.8)
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_nl.png", confidence=0.8)
                     pyautogui.click(x, y)
                     time.sleep(5)
                     pyautogui.click(300, 300)
@@ -2685,11 +2687,33 @@ def sweet_enable():
                     print("Waiting for Sweet to pop")
         except pyautogui.ImageNotFoundException:
             print("No icon_image_loaded Human.")
-        try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sg_sweet_icon.png",  region=(1625, 43, 700, 300), confidence=0.99)
-            return
-        except pyautogui.ImageNotFoundException:
-            print("No icon_image_loaded Human.")
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_us.png", region=(1625, 43, 700, 300), confidence=0.98)
+                pyautogui.click(x, y)
+                for i in range(5):
+                    time.sleep(3)
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_connect.png", confidence=0.8)
+                        pyautogui.click(x, y)
+                        time.sleep(5)
+                        #pyautogui.click(300, 300)
+                        time.sleep(8)
+                    except pyautogui.ImageNotFoundException:
+                        print("Waiting for Sweet to pop")
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_nl.png", confidence=0.8)
+                        pyautogui.click(x, y)
+                        time.sleep(5)
+                        pyautogui.click(300, 300)
+                        time.sleep(5)
+                        return
+                        
+                    except pyautogui.ImageNotFoundException:
+                        print("Waiting for Sweet to pop")
+                
+            except pyautogui.ImageNotFoundException:
+                print("Waiting for Sweet to pop")
+
 import shutil
 def delete_folder(folder_path):
     if os.path.exists(folder_path) and os.path.isdir(folder_path):
@@ -2996,10 +3020,6 @@ def open_browsers():
             "--disable-background-timer-throttling",
             "--disable-backgrounding-occluded-windows",
             "--disable-renderer-backgrounding",
-            "--disable-infobars",
-            "--disable-translate",
-            "--disable-default-apps",
-            "--no-first-run",
             "--disable-blink-features=AutomationControlled",
 
 
@@ -3090,11 +3110,12 @@ def open_faucets():
                         print(f"All {proc_name} processes killed (if any).")
                     except Exception as e:
                         print(f"Failed to kill {proc_name} processes: {e}")
-                time.sleep(6)
+                time.sleep(4)
                 sb1 = open_browsers()
                 continue
             pyautogui.moveTo(100, 200)
             pyautogui.moveTo(200, 400)
+            print('ff')
             current_window = sb1.current_window_handle
             all_windows = sb1.window_handles
             for window in all_windows:
@@ -3435,38 +3456,42 @@ while True:
             script_elapsed_time = time.time() - Script_Started
             script_seconds_only = int(script_elapsed_time)
             #debug_messages(f'script_elapsed_time Seconds:{script_seconds_only}')
-            if script_seconds_only > 1200:
-                solving_accuracy = 0
-                failed_captchas = 0
-                total_captchas_received = 0
+            #if script_seconds_only > 12000000000:
+            #    print('Script 20m')
+            #    solving_accuracy = 0
+            #    failed_captchas = 0
+            #    total_captchas_received = 0
 
 
-                Script_Started = time.time()
-                try:
-                    sb1.quit()
-                    time.sleep(2)
-                except Exception as e:
-                    print(f"sb1.quit() failed: {e}")
+            #    Script_Started = time.time()
+            #    try:
+            #        sb1.quit()
+            #        time.sleep(2)
+            #    except Exception as e:
+            #        print(f"sb1.quit() failed: {e}")
 
                 # Fallback kill
-                for proc_name in ['chrome', 'chromium']:
-                    try:
-                        subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
-                        print(f"All {proc_name} script_seconds_only killed (if any).")
-                    except Exception as e:
-                        print(f"Failed to kill {proc_name} script_seconds_only: {e}")
+            #    for proc_name in ['chrome', 'chromium']:
+            #        try:
+            #            subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
+            #            print(f"All {proc_name} script_seconds_only killed (if any).")
+            #        except Exception as e:
+            #            print(f"Failed to kill {proc_name} script_seconds_only: {e}")
                         
-                time.sleep(2)
-                sb1 = open_browsers()
+            #    time.sleep(2)
+            #    sb1 = open_browsers()
 
-                earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required = open_faucets()
-                previous_script_seconds_only = script_seconds_only
-                Script_Started = time.time()
+            #    earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required = open_faucets()
+            #    previous_script_seconds_only = script_seconds_only
+            #    Script_Started = time.time()
 
 
             #ip_address = get_ip(sb1) 
             if reset_count >= 20:
-                
+                print('reset count hut')
+                solving_accuracy = 0
+                failed_captchas = 0
+                total_captchas_received = 0
                 print('reset count higher')
                 try:
                     sb1.quit()
@@ -3813,7 +3838,7 @@ while True:
 
                 if set_refresh_faucets == 4:
                     response_messege(f'All Site getting Timeout:{reset_count}')
-                    reset_count +=6
+                    reset_count +=4
 
                 elapsed_time = time.time() - start_time
                 seconds_only = int(elapsed_time)
@@ -3909,10 +3934,10 @@ while True:
                     if earnpp_coins and feyorra_coins and earnbonk_coins and earntrump_coins: 
                         start_time3 = time.time()
                         Script_Started_elsg = time.time() - Script_Started
-                        emailgg = f'{earnpp_email} <br>country: {server_name1} <br>Current Layout:{layout} <br>Farm:{farm_id} <br>Pre-Session Reset:{Script_Started_elsg} <br>Session Reset:{script_seconds_only}'
+                        emailgg = f'{earnpp_email} <br>country: {server_name1} <br>Current Layout:{layout} <br>Farm:{farm_id} <br>Pre-Session Reset:{previous_script_seconds_only} <br>Session Reset:{script_seconds_only}'
                         solving_accuracy = calculate_accuracy_captchas(total_captchas_received, failed_captchas)
                         winning_captcha_amount = total_captchas_received - failed_captchas
-                        accuracy_info = f'Ratio: {winning_captcha_amount} / {total_captchas_received} <br> Accuracy : {solving_accuracy}'
+                        accuracy_info = f'Ratio: {winning_captcha_amount} / {total_captchas_received} <br> Accuracy : {solving_accuracy}%'
 
                         insert_data(ip_address, earnpp_coins, feyorra_coins, earntrump_coins, earnbonk_coins, accuracy_info, emailgg)
                     else:

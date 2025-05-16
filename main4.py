@@ -1991,10 +1991,6 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         pyautogui.moveTo(100, 200)
         pyautogui.moveTo(200, 400)
         
-        if ip_check:
-            ip_address = get_ip(driver)
-            if ip_required != ip_address:
-                return 404
         for frm in CSB1_farms:
             collection_csb = db[f'Farm{frm}']
             query = {"type": "main"}

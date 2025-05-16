@@ -2671,18 +2671,12 @@ def sweet_enable():
                 time.sleep(3)
                 try:
                     a, b = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_connect.png", confidence=0.8)
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_nl2.png", confidence=0.98)
-                        pyautogui.click(x, y)
-                        time.sleep(5)
-                        pyautogui.click(300, 300)
-                        time.sleep(5)
-                        return
-                        
-                    except pyautogui.ImageNotFoundException:
-                        print("Waiting for Sweet to pop")
+                    pyautogui.click(1518, 438)
+                    time.sleep(2)
+
                     pyautogui.click(a, b)
                     time.sleep(8)
+                    return
                 except pyautogui.ImageNotFoundException:
                     print("Waiting for Sweet to pop")
 
@@ -2691,17 +2685,10 @@ def sweet_enable():
             try:
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_us.png", region=(1625, 43, 700, 300), confidence=0.98)
                 pyautogui.click(x, y)
-                try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_nl2.png", confidence=0.98)
-                    pyautogui.click(x, y)
-                    time.sleep(5)
-                    pyautogui.click(300, 300)
-                    time.sleep(5)
-                    return
-                    
-                except pyautogui.ImageNotFoundException:
-                    print("Waiting for Sweet to pop")
-
+                time.sleep(3)
+                pyautogui.click(1518, 438)
+                time.sleep(2)
+                return
                 
             except pyautogui.ImageNotFoundException:
                 print("Waiting for Sweet to pop")

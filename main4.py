@@ -1,5 +1,5 @@
 
-print('Version 9.9.9.5')
+print('Version 9.9.9.7')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -1968,12 +1968,8 @@ earntrump_window = None
 earnbonk_window = None
 
 def close_extra_windows(driver, keep_window_handles):
-    """
-    Close every window not in `keep_window_handles`, but never close
-    the last remaining window in the session.
-    Returns True if any extra window was closed.
-    """
     closed_any = False
+    print('Closing Tabs')
     # Always re-query handles, in case they shift when you close one:
     for handle in list(driver.window_handles):
         # If this handle should be kept, skip it:
@@ -1990,15 +1986,17 @@ def close_extra_windows(driver, keep_window_handles):
     # (but only if it still exists):
     if keep_window_handles and keep_window_handles[0] in driver.window_handles:
         driver.switch_to.window(keep_window_handles[0])
+    sb1.connect()
+    print('Closed Stats:', closed_any)
     return closed_any
 
 def handle_captcha_and_cloudflare(driver):
     cloudflare(driver, login = False)
 
 def handle_site(driver, url, expected_title, not_expected_title , function, window_list ,ip_required, ip_check = False):
-    driver.uc_open(url)
     ready = False
     while not ready:
+        print('Handle Site....')
         time.sleep(1)
         pyautogui.moveTo(100, 200)
         pyautogui.moveTo(200, 400)
@@ -2019,7 +2017,13 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         if layout_test != layout:
             return 404
 
-        close_extra_windows(sb1,window_list)
+        all_windows = driver.window_handles
+        for window in all_windows:
+            if window not in window_list:
+                driver.switch_to.window(window)
+
+        driver.uc_open(url)
+        time.sleep(1)
         current_title = driver.get_title()
         print(f"Current title: {current_title}")
         if "Google" in current_title:
@@ -2040,26 +2044,30 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
                 sb1.disconnect()
                 time.sleep(2)
                 login_to_faucet('https://earn-pepe.com/login', sb1, earnpp_email, earnpp_pass, 'cloudflare_success', window_list, 'button#ClaimBtn', ip_required = ip_required)
+                sb1.connect()
                 time.sleep(3)
             elif function == 2:
                 sb1.disconnect()
                 time.sleep(2)
                 login_to_faucet('https://feyorra.site/login', sb1, feyorra_email, feyorra_pass, 'cloudflare_success', window_list, 'button#ClaimBtn',ip_required = ip_required)
+                sb1.connect()
 
                 time.sleep(3)
             elif function == 3:
                 sb1.disconnect()
                 time.sleep(2)
                 login_to_faucet('https://earn-trump.com/login', sb1, earnpp_email, earnpp_pass,  'cloudflare_success', window_list, 'button#ClaimBtn', ip_required = ip_required)
+                sb1.connect()
 
                 time.sleep(3)
             elif function == 4:
                 sb1.disconnect()
                 time.sleep(2)
                 login_to_faucet('https://earn-bonk.com/login', sb1, feyorra_email, feyorra_pass,  'cloudflare_success', window_list, 'button#ClaimBtn', ip_required = ip_required)
+                sb1.connect()
 
                 time.sleep(3)
-
+            time.sleep(1)
             continue
         elif expected_title in current_title:
             if driver.current_window_handle not in window_list:
@@ -2081,7 +2089,6 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
                 if window not in window_list:
                     driver.switch_to.window(window)
             driver.uc_open(url)
-            handle_captcha_and_cloudflare(driver)
     print('Site fine Return to Function')
     return driver.current_window_handle
 
@@ -3185,6 +3192,7 @@ def open_faucets():
                     else:
                         raise Exception("Ip changed")
 
+                    
                     ip_address = get_ip(sb1)
                     if ip_required == ip_address:
                         response_messege('Feyorra Loging Fresh')

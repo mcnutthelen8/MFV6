@@ -1,5 +1,5 @@
 
-print('Version 9.9.9.9')
+print('Version 9.9.9.9.1')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -3026,30 +3026,39 @@ def open_browsers():
     gggv = are_extensions_exist()
     get_mails_passowrds(farm_id)
     if gggv:
-        if fresh >= 3:
-            sweet = install_extensions('sweet')
-            cookie = install_extensions('cookie')
-            mysterium = install_extensions('mysterium')
-            fingerprint = install_extensions('fingerprint')
-            mfhelper = install_extensions('mfhelper')
-            if fingerprint and mysterium and sweet and cookie and mfhelper:
-                print('All Extensions are installed..')
-                query = {"type": "main"}
-                update = {"$set": {"response": 'All Extensions are installed..'}}
-                result = collection.update_one(query, update)
-
-        if fresh >= 2:
-            if pin_extensions():
-                print('All Extensions are pinned')
-                query = {"type": "main"}
-                update = {"$set": {"response": 'All Extensions are pinned'}}
-                result = collection.update_one(query, update)
-
-                if mysterium_login(sb1):
-                    print('Mysterium Login Done...')
+        ip_address = get_ip(sb1)
+        ipscore = get_ipscore(ip_address)
+        proxycheck = get_proxycheck(sb1, ip_address, server_name= server_name1)
+        if ipscore and proxycheck == 200:
+            print(f'Good IP found: {ip_address}')
+            update_ip(ip_address, config_path="mfhelper/config.json")
+        else:
+            print('No good IP')
+            response_messege(f'Bad IP:{ip_address} | Installing Extensions')
+            if fresh >= 3:
+                sweet = install_extensions('sweet')
+                cookie = install_extensions('cookie')
+                mysterium = install_extensions('mysterium')
+                fingerprint = install_extensions('fingerprint')
+                mfhelper = install_extensions('mfhelper')
+                if fingerprint and mysterium and sweet and cookie and mfhelper:
+                    print('All Extensions are installed..')
                     query = {"type": "main"}
-                    update = {"$set": {"response": 'Mysterium Login Done...'}}
+                    update = {"$set": {"response": 'All Extensions are installed..'}}
                     result = collection.update_one(query, update)
+
+            if fresh >= 2:
+                if pin_extensions():
+                    print('All Extensions are pinned')
+                    query = {"type": "main"}
+                    update = {"$set": {"response": 'All Extensions are pinned'}}
+                    result = collection.update_one(query, update)
+
+                    if mysterium_login(sb1):
+                        print('Mysterium Login Done...')
+                        query = {"type": "main"}
+                        update = {"$set": {"response": 'Mysterium Login Done...'}}
+                        result = collection.update_one(query, update)
 
     if fresh >= 1:            
             #facebook_login()

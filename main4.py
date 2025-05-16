@@ -1,5 +1,5 @@
 
-print('Version 9.9.9.3')
+print('Version 9.9.9.4')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -291,10 +291,10 @@ def get_mails_passowrds(farm_id):
         elif '4' in layout:
             server_name1 = 'canada' #'georgia'# 
             CSB1_farms = Farm_list
-            earnpp_email = '' #'andrewperera8@gmail.com'
-            earnpp_pass = ''#'andrewperera8'
-            feyorra_email = ''#'andrewperera8@gmail.com'
-            feyorra_pass = ''#'andrewperera8'
+            earnpp_email = 'drewaperea@gmail.com' #'andrewperera8@gmail.com'
+            earnpp_pass = 'drewaperea'#'andrewperera8'
+            feyorra_email = 'drewaperea@gmail.com'#'andrewperera8@gmail.com'
+            feyorra_pass = 'drewaperea'#'andrewperera8'
         elif '5' in layout:
             server_name1 = 'canada' #'georgia'# 
             CSB1_farms = Farm_list
@@ -1975,7 +1975,6 @@ def close_extra_windows(driver, keep_window_handles):
         if window not in keep_window_handles:
             driver.switch_to.window(window)
             driver.close()
-            driver.connect()
             gg = True
     driver.switch_to.window(current_window)
     return gg
@@ -2030,29 +2029,27 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
                 sb1.disconnect()
                 time.sleep(2)
                 login_to_faucet('https://earn-pepe.com/login', sb1, earnpp_email, earnpp_pass, 'cloudflare_success', window_list, 'button#ClaimBtn', ip_required = ip_required)
-                driver.uc_open(url)
                 time.sleep(3)
             elif function == 2:
                 sb1.disconnect()
                 time.sleep(2)
                 login_to_faucet('https://feyorra.site/login', sb1, feyorra_email, feyorra_pass, 'cloudflare_success', window_list, 'button#ClaimBtn',ip_required = ip_required)
-                driver.uc_open(url)
+
                 time.sleep(3)
             elif function == 3:
                 sb1.disconnect()
                 time.sleep(2)
                 login_to_faucet('https://earn-trump.com/login', sb1, earnpp_email, earnpp_pass,  'cloudflare_success', window_list, 'button#ClaimBtn', ip_required = ip_required)
-                driver.uc_open(url)
+
                 time.sleep(3)
             elif function == 4:
                 sb1.disconnect()
                 time.sleep(2)
                 login_to_faucet('https://earn-bonk.com/login', sb1, feyorra_email, feyorra_pass,  'cloudflare_success', window_list, 'button#ClaimBtn', ip_required = ip_required)
-                driver.uc_open(url)
+
                 time.sleep(3)
-            driver.switch_to.window(window)
-            driver.uc_open(url)
-            time.sleep(3)
+
+            continue
         elif expected_title in current_title:
             if driver.current_window_handle not in window_list:
                 ready = True

@@ -1,5 +1,5 @@
 
-print('Version 9.9.8')
+print('Version 9.9.9')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -1037,7 +1037,7 @@ def ipfixer():
                         print('Ready Count:', ready_count)
                         if len(res_farms) == len(CSB1_farms):
                             time.sleep(5)
-                            if gg2344 > 6:
+                            if gg2344 > 4:
                                 return
                                 reff_farm = farm_id
                                 if farm_id == 1:
@@ -1079,8 +1079,6 @@ def ipfixer():
                     sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
                     now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
                     print(now)
-                    update = {"$set": {"response": f'Changed IP🔴: {preip} |{now}'}}
-                    result = collection.update_one(query, update)
                     ip = fix_ip(sb1, server_name1)
                     gg2344 = 0
         else:
@@ -1933,7 +1931,7 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
     time.sleep(1)
     pyautogui.press('enter')
     time.sleep(3)
-    for i in range(7):
+    for i in range(5):
         time.sleep(1)
         current_title =get_active_window_title()
         print(f"Current login title: {current_title}")
@@ -2035,28 +2033,24 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
                 sb1.disconnect()
                 time.sleep(2)
                 login_to_faucet('https://earn-pepe.com/login', sb1, earnpp_email, earnpp_pass, 'cloudflare_success', window_list, 'button#ClaimBtn', ip_required = ip_required)
-                sb1.connect()
                 driver.uc_open(url)
                 time.sleep(3)
             elif function == 2:
                 sb1.disconnect()
                 time.sleep(2)
                 login_to_faucet('https://feyorra.site/login', sb1, feyorra_email, feyorra_pass, 'cloudflare_success', window_list, 'button#ClaimBtn',ip_required = ip_required)
-                sb1.connect()
                 driver.uc_open(url)
                 time.sleep(3)
             elif function == 3:
                 sb1.disconnect()
                 time.sleep(2)
                 login_to_faucet('https://earn-trump.com/login', sb1, earnpp_email, earnpp_pass,  'cloudflare_success', window_list, 'button#ClaimBtn', ip_required = ip_required)
-                sb1.connect() #'not_a_robot'
                 driver.uc_open(url)
                 time.sleep(3)
             elif function == 4:
                 sb1.disconnect()
                 time.sleep(2)
                 login_to_faucet('https://earn-bonk.com/login', sb1, feyorra_email, feyorra_pass,  'cloudflare_success', window_list, 'button#ClaimBtn', ip_required = ip_required)
-                sb1.connect()  #'not_a_robot'
                 driver.uc_open(url)
                 time.sleep(3)
             driver.switch_to.window(window)
@@ -3181,6 +3175,7 @@ def open_faucets():
                     print(f'Good IP found: {ip_address}')
                     update_ip(ip_address, config_path="mfhelper/config.json")
                 else:
+                    print('404 Errore')
                     raise Exception(" earnpp_window == 404")
                 fresh_start_faucet = True
                 pyautogui.moveTo(100, 200)
@@ -3194,6 +3189,7 @@ def open_faucets():
                                 earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [], ip_required, ip_check = True)
                                 close_extra_windows(sb1, [earnpp_window])
                                 if earnpp_window == 404:
+                                    print('404 Errore')
                                     raise Exception(" earnpp_window == 404")
                                 print(f"EarnPP window handle: {earnpp_window}")
 
@@ -3211,6 +3207,7 @@ def open_faucets():
                                 feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Best - Meme Coins Faucet", 2, [], ip_required, ip_check = True)
                                 close_extra_windows(sb1, [feyorra_window])
                                 if feyorra_window == 404:
+                                    print('404 Errore')
                                     raise Exception(" feyorra_window == 404")
                                 print(f"Feyorra window handle: {feyorra_window}")
                                 time.sleep(2)
@@ -3232,6 +3229,7 @@ def open_faucets():
                                 earntrump_window = handle_site(sb1, "https://earn-trump.com/member/faucet","Faucet | Earn-Trump" , "Free $Trump Coin Faucet | Earn $Trump Crypto Instantly", 3, [], ip_required, ip_check = True)
                                 close_extra_windows(sb1, [earntrump_window])
                                 if earntrump_window == 404:
+                                    print('404 Errore')
                                     raise Exception(" earntrump_window == 404")
                                 print(f"earntrump window handle: {earntrump_window}")
 
@@ -3250,6 +3248,7 @@ def open_faucets():
                                 earnbonk_window = handle_site(sb1, "https://earn-bonk.com/member/faucet", "Faucet | Earn-Bonk" , "Earn Bonk", 4, [], ip_required,ip_check =  True)
                                 close_extra_windows(sb1, [earnbonk_window])
                                 if earnbonk_window == 404:
+                                    print('404 Errore')
                                     raise Exception(" earnbonk == 404")
                                 print(f"Feyorra window handle: {earnbonk_window}")
                                 time.sleep(3)
@@ -3270,6 +3269,7 @@ def open_faucets():
                         if faucetlayout == 1:
                             earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [], ip_required)
                             if earnpp_window == 404:
+                                print('404 Errore')
                                 raise Exception(" earnpp_window == 404")
                             print(f"EarnPP window handle: {earnpp_window}")
 
@@ -3285,6 +3285,7 @@ def open_faucets():
                         if faucetlayout == 1:
                             feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Best - Meme Coins Faucet", 2, [earnpp_window], ip_required)
                             if feyorra_window == 404:
+                                print('404 Errore')
                                 raise Exception(" feyorra_window == 404")
                             elif feyorra_window == 405:
                                 login_faucet_detect = True
@@ -3547,6 +3548,7 @@ while True:
                             response_messege('Lock.. Found on EarnPP')
                             earnpp_coins = 0
                         elif 'Google' in title:
+                            response_messege('Google.. Found on EarnPP')
                             reset_count +=25
                         elif 'Just' in title:
                             debug_messages(f'Just.. Found on EarnPP')
@@ -3626,6 +3628,7 @@ while True:
                             cloudflare(sb1, login = False)
                             debug_messages(f'Just Fixed Feyorra')
                         elif 'Google' in title:
+                            response_messege('Google.. Found on Feyorra')
                             reset_count +=25
                         elif 'aintenance' in title:
                             debug_messages(f'maintenance.. Found on Feyorra')
@@ -3700,6 +3703,7 @@ while True:
                             cloudflare(sb1, login = False)
                             debug_messages(f'Just Fixed Trump')
                         elif 'Google' in title:
+                            response_messege('Google.. Found on Trump')
                             reset_count +=25
                         elif 'aintenance' in title:
                             debug_messages(f'maintenance.. Found on Trump')
@@ -3779,6 +3783,7 @@ while True:
                             cloudflare(sb1, login = False)
                             debug_messages(f'Just Fixed Bonk')
                         elif 'Google' in title:
+                            response_messege('Google.. Found on Bonk')
                             reset_count +=25
                         elif 'aintenance' in title:
                             debug_messages(f'maintenance.. Found on Bonk')

@@ -1,5 +1,5 @@
 
-print('Version 9.9.9.7')
+print('Version 9.9.9.8')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -1994,6 +1994,7 @@ def handle_captcha_and_cloudflare(driver):
     cloudflare(driver, login = False)
 
 def handle_site(driver, url, expected_title, not_expected_title , function, window_list ,ip_required, ip_check = False):
+    driver.uc_open(url)
     ready = False
     while not ready:
         print('Handle Site....')
@@ -2016,13 +2017,17 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
         layout_test = dochh2["withdraw_mail"]
         if layout_test != layout:
             return 404
-
+        
         all_windows = driver.window_handles
         for window in all_windows:
             if window not in window_list:
                 driver.switch_to.window(window)
-
-        driver.uc_open(url)
+                time.sleep(1)
+        print("WINDOW LIST:", window_list)
+        print("CURRENT LIST:", all_windows)
+        print('Switch:',window)
+        if ip_check:
+            driver.uc_open(url)
         time.sleep(1)
         current_title = driver.get_title()
         print(f"Current title: {current_title}")
@@ -2089,6 +2094,9 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
                 if window not in window_list:
                     driver.switch_to.window(window)
             driver.uc_open(url)
+            print("WINDOW LIST2:", window_list)
+            print("CURRENT LIST2:", all_windows)
+            print('Switch2:',window)
     print('Site fine Return to Function')
     return driver.current_window_handle
 

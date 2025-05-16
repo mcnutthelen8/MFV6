@@ -1,5 +1,5 @@
 
-print('Version 9.9.9.8')
+print('Version 9.9.9.9')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -1969,7 +1969,7 @@ earnbonk_window = None
 
 def close_extra_windows(driver, keep_window_handles):
     closed_any = False
-    print('Closing Tabs')
+    #print('Closing Tabs')
     # Always re-query handles, in case they shift when you close one:
     for handle in list(driver.window_handles):
         # If this handle should be kept, skip it:
@@ -1986,8 +1986,7 @@ def close_extra_windows(driver, keep_window_handles):
     # (but only if it still exists):
     if keep_window_handles and keep_window_handles[0] in driver.window_handles:
         driver.switch_to.window(keep_window_handles[0])
-    sb1.connect()
-    print('Closed Stats:', closed_any)
+    #print('Closed Stats:', closed_any)
     return closed_any
 
 def handle_captcha_and_cloudflare(driver):
@@ -3529,8 +3528,6 @@ while True:
                                 if gg == 201:
                                     #wrong detect:
                                     failed_captchas += 1
-                                if gg == 101:
-                                    set_refresh_faucets += 1
                                 total_captchas_received += 1
                                 earnpp_limit_reached = None
                             else:
@@ -3609,8 +3606,6 @@ while True:
                                     #wrong detect:
                                     failed_captchas += 1
 
-                                if gg == 101:
-                                    set_refresh_faucets += 1
                                 total_captchas_received += 1
                                 feyorra_limit_reached =None
                                 
@@ -3685,8 +3680,7 @@ while True:
                                 if gg == 201:
                                     #wrong detect:
                                     failed_captchas += 1
-                                if gg == 101:
-                                    set_refresh_faucets += 1
+
                                 total_captchas_received += 1
                                 earntrump_limit_reached =None
                             else:
@@ -3762,8 +3756,7 @@ while True:
                                 if gg == 201:
                                     #wrong detect:
                                     failed_captchas += 1
-                                if gg == 101:
-                                    set_refresh_faucets += 1
+
                                 total_captchas_received += 1
                                 earnbonk_limit_reached =None
 
@@ -3823,10 +3816,6 @@ while True:
 
 ###################################################################################################################
 
-
-                if set_refresh_faucets == 4:
-                    response_messege(f'All Site getting Timeout:{reset_count}')
-                    reset_count +=4
 
                 elapsed_time = time.time() - start_time
                 seconds_only = int(elapsed_time)

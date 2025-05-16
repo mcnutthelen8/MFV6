@@ -2,61 +2,98 @@
 set -o nounset
 set -o pipefail
 
-# Trap Ctrl+C to exit cleanly
 trap "echo '[!] Interrupted by user, exiting.'; exit 0" SIGINT
 
-# Configuration
-IDLE_LIMIT_MS=150000       # 2.4 minutes in milliseconds
-GRACE_PERIOD=200            # Initial wait time in seconds
 SCRIPT_CMD="python3 main4.py --farm 1 --fresh 3"
-FORCE_RESTART_INTERVAL=1000  # 30 minutes in seconds
+GRACE_PERIOD=50
+FORCE_CPU=95
+FORCE_RAM=5000
+OVERLOAD_DURATION=60
+MONITOR_INTERVAL=5
+FORCE_RESTART_AFTER=1800       # Force restart after 1 hour
+IDLE_LIMIT=250                 # Idle limit in seconds (3 minutes)
+LOG_FILE="watchdog.txt"
 
-# Check if xprintidle is installed
-if ! command -v xprintidle &>/dev/null; then
-    echo "[W] xprintidle not found. Please: sudo apt install xprintidle"
-    exit 1
-fi
-
-# Function to kill script and Chrome gracefully
 kill_all() {
     local pid="$1"
-    echo "[⚠] Killing process $pid and Chrome at $(date)"
+    echo "[⚠] Killing PID $pid and all Chrome and python3 processes at $(date)" | tee -a "$LOG_FILE"
     kill "$pid" 2>/dev/null || true
     sleep 2
     kill -9 "$pid" 2>/dev/null || true
     pkill -f "chrome" 2>/dev/null || true
-    pkill -f "main5.py" 2>/dev/null || true
+    pkill -f "python3" 2>/dev/null || true
 }
 
 while true; do
-    echo "=== 🚀 Launching at $(date) ==="
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] === 🚀 Starting new session ===" | tee -a "$LOG_FILE"
     eval "$SCRIPT_CMD" &
     PID=$!
-    START_TIME=$(date +%s)
+    overload_start=0
+    session_start=$(date +%s)
 
-    echo "[⏳] Waiting $GRACE_PERIOD seconds for PyAutoGUI to move the mouse..."
+    echo "[⏳] Waiting $GRACE_PERIOD seconds for setup..." | tee -a "$LOG_FILE"
     sleep "$GRACE_PERIOD"
 
     while kill -0 "$PID" 2>/dev/null; do
-        IDLE_TIME_MS=$(xprintidle)
-        NOW=$(date +%s)
-        ELAPSED=$(( NOW - START_TIME ))
+        # Get current time and elapsed time
+        now=$(date +%s)
+        elapsed_session=$(( now - session_start ))
 
-        if [ "$IDLE_TIME_MS" -gt "$IDLE_LIMIT_MS" ]; then
-            echo "[⚠️] Idle time exceeded: $((IDLE_TIME_MS / 1000)) seconds"
+        # CPU usage check
+        if command -v mpstat &>/dev/null; then
+            cpu_idle=$(mpstat 1 1 | awk '/Average/ {print $12}')
+            cpu_usage=$(echo "100 - $cpu_idle" | bc)
+        else
+            cpu_idle=$(top -bn1 | grep "Cpu(s)" | awk -F',' '{print $4}' | awk '{print $1}')
+            cpu_usage=$(echo "100 - $cpu_idle" | bc)
+        fi
+
+        cpu_int=${cpu_usage%.*}
+        if [[ -z "$cpu_int" ]]; then cpu_int=0; fi
+
+        ram_usage=$(free -m | awk '/^Mem:/ {print $3}')
+
+        # IDLE detection via xprintidle
+        idle_ms=$(xprintidle 2>/dev/null || echo 0)
+        idle_sec=$(( idle_ms / 1000 ))
+
+        # Log optional
+        #echo "[INFO] CPU=${cpu_int}% RAM=${ram_usage}MB Idle=${idle_sec}s" | tee -a "$LOG_FILE"
+
+        # Force restart after 1 hour
+        if (( elapsed_session >= FORCE_RESTART_AFTER )); then
+            echo "[⏱] Force restart after 1 hour ($elapsed_session sec)" | tee -a "$LOG_FILE"
             kill_all "$PID"
             break
         fi
 
-        if [ "$ELAPSED" -ge "$FORCE_RESTART_INTERVAL" ]; then
-            echo "[🔄] 30 minutes elapsed, restarting script at $(date)"
+        # Idle user detection
+        if (( idle_sec >= IDLE_LIMIT )); then
+            echo "[💤] No user input for $idle_sec seconds. Restarting..." | tee -a "$LOG_FILE"
             kill_all "$PID"
             break
         fi
 
-        sleep 5
+        # Resource overload check
+        if (( cpu_int > FORCE_CPU )) || (( ram_usage > FORCE_RAM )); then
+            if [[ $overload_start -eq 0 ]]; then
+                overload_start=$(date +%s)
+            else
+                elapsed=$(( now - overload_start ))
+                echo "[🔥] High usage | Elapsed: ${elapsed}s" | tee -a "$LOG_FILE"
+                echo "[$(date '+%Y-%m-%d %H:%M:%S')] [INFO] CPU=${cpu_usage}% | RAM=${ram_usage}MB" | tee -a "$LOG_FILE"
+                if (( elapsed >= OVERLOAD_DURATION )); then
+                    echo "[🔥] High usage sustained. Restarting..." | tee -a "$LOG_FILE"
+                    kill_all "$PID"
+                    break
+                fi
+            fi
+        else
+            overload_start=0
+        fi
+
+        sleep "$MONITOR_INTERVAL"
     done
 
-    echo "[🔁] Restarting in 10 seconds at $(date)..."
     sleep 10
 done

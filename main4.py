@@ -2654,6 +2654,8 @@ def get_browser_proxy():
     return browser_proxy
 
  
+
+
 def sweet_enable():
     for x in range(5):
         try:
@@ -2668,40 +2670,9 @@ def sweet_enable():
             for i in range(5):
                 time.sleep(3)
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_connect.png", confidence=0.8)
-                    pyautogui.click(x, y)
-                    time.sleep(5)
-                    #pyautogui.click(300, 300)
-                    time.sleep(8)
-                except pyautogui.ImageNotFoundException:
-                    print("Waiting for Sweet to pop")
-                try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_nl.png", confidence=0.95)
-                    pyautogui.click(x, y)
-                    time.sleep(5)
-                    pyautogui.click(300, 300)
-                    time.sleep(5)
-                    return
-                    
-                except pyautogui.ImageNotFoundException:
-                    print("Waiting for Sweet to pop")
-        except pyautogui.ImageNotFoundException:
-            print("No icon_image_loaded Human.")
-            try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_us.png", region=(1625, 43, 700, 300), confidence=0.98)
-                pyautogui.click(x, y)
-                for i in range(5):
-                    time.sleep(3)
+                    a, b = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_connect.png", confidence=0.8)
                     try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_connect.png", confidence=0.8)
-                        pyautogui.click(x, y)
-                        time.sleep(5)
-                        #pyautogui.click(300, 300)
-                        time.sleep(8)
-                    except pyautogui.ImageNotFoundException:
-                        print("Waiting for Sweet to pop")
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_nl.png", confidence=0.95)
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_nl2.png", confidence=0.98)
                         pyautogui.click(x, y)
                         time.sleep(5)
                         pyautogui.click(300, 300)
@@ -2710,9 +2681,31 @@ def sweet_enable():
                         
                     except pyautogui.ImageNotFoundException:
                         print("Waiting for Sweet to pop")
+                    pyautogui.click(a, b)
+                    time.sleep(8)
+                except pyautogui.ImageNotFoundException:
+                    print("Waiting for Sweet to pop")
+
+        except pyautogui.ImageNotFoundException:
+            print("No icon_image_loaded Human.")
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_us.png", region=(1625, 43, 700, 300), confidence=0.98)
+                pyautogui.click(x, y)
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_nl2.png", confidence=0.98)
+                    pyautogui.click(x, y)
+                    time.sleep(5)
+                    pyautogui.click(300, 300)
+                    time.sleep(5)
+                    return
+                    
+                except pyautogui.ImageNotFoundException:
+                    print("Waiting for Sweet to pop")
+
                 
             except pyautogui.ImageNotFoundException:
                 print("Waiting for Sweet to pop")
+
 
 import shutil
 def delete_folder(folder_path):

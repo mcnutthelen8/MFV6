@@ -1,5 +1,5 @@
 
-print('Version 9.9.7')
+print('Version 9.9.8')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -2676,7 +2676,7 @@ def sweet_enable():
                 except pyautogui.ImageNotFoundException:
                     print("Waiting for Sweet to pop")
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_nl.png", confidence=0.8)
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_nl.png", confidence=0.95)
                     pyautogui.click(x, y)
                     time.sleep(5)
                     pyautogui.click(300, 300)
@@ -2701,7 +2701,7 @@ def sweet_enable():
                     except pyautogui.ImageNotFoundException:
                         print("Waiting for Sweet to pop")
                     try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_nl.png", confidence=0.8)
+                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_nl.png", confidence=0.95)
                         pyautogui.click(x, y)
                         time.sleep(5)
                         pyautogui.click(300, 300)

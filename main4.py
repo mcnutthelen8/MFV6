@@ -1,5 +1,5 @@
 
-print('Version 9.9.9.9.1')
+print('Version 9.9.9.9.3')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -44,7 +44,7 @@ fresh = args.fresh
 
 CSB1_farms = []
 sb1 = None
-
+ip_address = ''
 
 fb_pass = 'ashen1997'
 yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
@@ -274,10 +274,10 @@ def get_mails_passowrds(farm_id):
         elif '2' in layout:
             server_name1 = 'canada' #'georgia'# 
             CSB1_farms = Farm_list
-            earnpp_email = 'yvonne6363@gmail.com'
-            earnpp_pass = 'yvonne6363'
-            feyorra_email = 'yvonne6363@gmail.com'
-            feyorra_pass = 'yvonne6363'
+            earnpp_email = 'neyvon432@gmail.com'
+            earnpp_pass = 'neyvon432'
+            feyorra_email = 'neyvon432@gmail.com'
+            feyorra_pass = 'neyvon432'
 
 
         elif '3' in layout:
@@ -328,10 +328,10 @@ def get_mails_passowrds(farm_id):
         elif '2' in layout:
             server_name1 = 'germany' #'chile'
             CSB1_farms =Farm_list
-            earnpp_email = 'rondolfapa9@gmail.com'
-            earnpp_pass = 'rondolfapa9'
-            feyorra_email = 'rondolfapa9@gmail.com'
-            feyorra_pass = 'rondolfapa9'
+            earnpp_email = 'taptioronl8@gmail.com'
+            earnpp_pass = 'taptioronl8'
+            feyorra_email = 'taptioronl8@gmail.com'
+            feyorra_pass = 'taptioronl8'
         elif '3' in layout:
             server_name1 = 'germany' #'chile'
             CSB1_farms = Farm_list
@@ -480,6 +480,7 @@ def get_ip(driver):
                 
                 ip_address = driver.get_text('body')
                 print('IP =', ip_address)
+                ip_address = ip_address.replace(' ', '')
                 driver.close()
                 driver.connect()
                 driver.switch_to.window(original_window)
@@ -501,6 +502,61 @@ def get_ip(driver):
         except Exception as e:
             print(e)
     return None
+
+def Full_blacklist_Check(sb1, ip_to_check, current_layout):
+    ip_to_check = ip_to_check.replace(' ','')
+    collectionbip = db[f'LocalCSB']
+    #BlackLIST
+    quer2y = {"type": "main"}
+    dochh = collectionbip.find_one(quer2y)
+    black_list = dochh["blacklistedIP"]
+    if ip_to_check in black_list:
+        response_messege(f'Changed IP : found on blacklist...{ip_to_check}')
+        print(f'IP found on blacklist...{ip_to_check}')
+        return False
+
+
+    ipscore = get_ipscore(ip_to_check)
+    proxycheck = get_proxycheck(sb1, ip_to_check, server_name= server_name1)
+    if ipscore and proxycheck == 200:
+
+        #FxLx List
+        quer2y = {"type": "main"}
+        dochh = collectionbip.find_one(quer2y)
+        fxlx_list = dochh["blacklistedIP2"]
+
+        # Track where the IP is used
+        used_in = []
+
+        for layout, ips in fxlx_list.items():
+            if ip_to_check in ips:
+                used_in.append(layout)
+        print(used_in)
+
+        # Output result
+
+        print(f"IP {ip_to_check} is also used in: {', '.join(used_in)}")
+        if len(used_in) == 1:
+            if current_layout in used_in:
+                print('Already Using this')
+                response_messege(f'Ready IP :Already Using this {ip_address}')
+                print('Good IP')
+                return True
+            else:
+                print('Already USing on another layout...',used_in)
+                response_messege(f'Changed IP :Already Using this {used_in}')
+                return False
+        elif len(used_in) == 0:
+            print('Unique IP Found')
+            response_messege(f'Ready IP :Unique {ip_address}')
+            return True
+        else:
+            response_messege(f'Changed IP : Duplicate Use...{ip_to_check} | Farms: {len(used_in)}')
+            print('Duplicate Use',len(used_in))
+        return False
+    else:
+        response_messege(f'Changed IP : IP Score:{ipscore} | proxycheck:{proxycheck} | IP: {ip_to_check}')
+        return False
 
 
  
@@ -718,7 +774,7 @@ def fix_ip(drive, name):
     ipscore = None
     proxycheck = None
     ip_address = 0
-    while not (ipscore and proxycheck):
+    while True:
 
         get_mails_passowrds(farm_id)
         ip_address = get_ip(drive)
@@ -735,64 +791,25 @@ def fix_ip(drive, name):
             quer2y = {"type": "main"}
             dochh2 = collection.find_one(quer2y)
             layout2 = dochh2["withdraw_mail"]
-            global blacklistedIP
-            collectionbip = db[f'LocalCSB']
-            quer2y = {"type": "main"}
-            dochh = collectionbip.find_one(quer2y)
-            blacklistedIP2 = dochh["blacklistedIP"]
-            if len(blacklistedIP) <= len(blacklistedIP2):
-                blacklistedIP += blacklistedIP2
-            #print(blacklistedIP)
             lay = re.search(r'\d+', layout2).group()
-            other_blacklists = get_blacklistedip2(f'F{farm_id}L{lay}')
+            other_blacklists = Full_blacklist_Check(drive, ip_address, f'F{farm_id}L{lay}')
             if other_blacklists:
-                    blacklistedIP = other_blacklists + blacklistedIP 
-            if ip_address in blacklistedIP:
+                print(f'Good IP found: {ip_address}')
+                return ip_address
+            else:
                 print(f'Bad IP detected: {ip_address}. Changing IP...1')
                 query = {"type": "main"}
-                update = {"$set": {"response": f'Blacklisted IP🔴: {ip_address}'}}
+                update = {"$set": {"response": f'Changed IP Blacklisted IP🔴: {ip_address}'}}
                 result = collection.update_one(query, update)
                 for i in CSB1_farms:
                     collection_csb = db[f'Farm{i}']
                     update = {"$set": {"request": 'ipfixer'}}
                     result = collection_csb.update_one(query, update)
                     print('Update Farm', i)
-    
-                # Ensure this block is properly indented
-                proxycheck = get_proxycheck(drive, ip_address, server_name=name)
-                if proxycheck == 50 or proxycheck == 200 or proxycheck != 301:
-                    #mysterium_vpn_Recon_ip(name, drive)
-                    mysterium_vpn_connect(name, drive)
-                else:
-                    mysterium_vpn_connect(name, drive)
-    
+                mysterium_vpn_connect(name, drive)
                 print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
                 time.sleep(5)
-            else:
-                ip_address = extract_valid_ipv4(ip_address)
-                if ip_address:
-                    ipscore = get_ipscore(ip_address)
-                    proxycheck = get_proxycheck(drive, ip_address, server_name= name)
-                    if ipscore and proxycheck == 200:
-                        print(f'Good IP found: {ip_address}')
-                        return ip_address
-                    else:
-                        print(f'Bad IP detected: {ip_address}. Changing IP...2')
-                        query = {"type": "main"}
-                        update = {"$set": {"response": f'Changed IP🔴: {ip_address}'}}
-                        result = collection.update_one(query, update)
-                        for i in CSB1_farms:
-                            collection_csb = db[f'Farm{i}']
-                            update = {"$set": {"request": 'ipfixer'}}
-                            result = collection_csb.update_one(query, update)
-                            print('Update Farm', i)
-                        if proxycheck == 50 or proxycheck == 200 or proxycheck != 301:
-                            #mysterium_vpn_Recon_ip(name, drive)
-                            mysterium_vpn_connect(name, drive)
-                        else:
-                            mysterium_vpn_connect(name, drive)
-                        print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
-                        time.sleep(5)
+
     
  
 ####################################Control Panel Shit##########################################################
@@ -972,10 +989,10 @@ def ipfixer():
     preip = 0
     respo = 0
     gg2344 = 0
-    ready_count = 0
     query = {"type": "main"}
-    update = {"$set": {"response": 'Fixing...🟠'}}
+    update = {"$set": {"request": 'ipfixer'}}
     result = collection.update_one(query, update)
+    ready_count = 0
     global layout
     global sb1
     while True:
@@ -987,6 +1004,7 @@ def ipfixer():
         layout_test = doc["withdraw_mail"]
         if layout_test != layout:
             print(f'Wrong Farm ID | {layout_test} / {layout} ')
+            response_messege(f'Wrong Farm ID | {layout_test} / {layout} ')
             try:
                 sb1.quit()
                 time.sleep(2)
@@ -1039,30 +1057,6 @@ def ipfixer():
                             time.sleep(5)
                             if gg2344 > 4:
                                 return
-                                reff_farm = farm_id
-                                if farm_id == 1:
-                                    
-                                    #clear_browser_cache_history(sb1)
-                                    #sb1.uc_open("chrome://extensions/")
-                                    return
-                                elif farm_id == 2:
-                                    reff_farm = 1
-                                elif farm_id == 3:
-                                    reff_farm = 2
-                                elif farm_id == 4:
-                                    reff_farm = 3
-                                elif farm_id == 5:
-                                    reff_farm = 4
-
-                                collection_csb = db[f'Farm{reff_farm}']
-                                query = {"type": "main"}
-                                doc = collection_csb.find_one(query)
-                                #res = doc["response"]
-                                req = doc["request"]
-                                if req == 'mainscript': #and 'Loging' not in res:
-                                    #clear_browser_cache_history(sb1)
-                                    #sb1.uc_open("chrome://extensions/")
-                                    return
                             else:
                                 gg2344 += 1
                         else:
@@ -2606,50 +2600,31 @@ def are_extensions_exist():
             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cookie_icon.png", region=(1225, 33, 755, 400), confidence=0.9)
             #pyautogui.click(x, y)
             print("extension_icon Button Found")
-            return False
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1225, 33, 755, 400), confidence=0.95)
+                #pyautogui.click(x, y)
+                print("mysterium_icon_emptyf Button Found")
+                return False
+
+            except pyautogui.ImageNotFoundException:
+                print("No mysterium_icon_emptyf Button.")
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_connected.png", region=(1225, 33, 755, 400), confidence=0.95)
+                #pyautogui.click(x, y)
+                print("mysterium_icon_emptyf Button Found")
+                return False
+
+            except pyautogui.ImageNotFoundException:
+                print("No mysterium_icon_emptyf Button.")
 
         except pyautogui.ImageNotFoundException:
             print("No extension_icon Button.")
-            return True
+    return True
         
 
 
-def get_blacklistedip2(input):
-    ips = []
-    collectionbip = db[f'LocalCSB']
-    quer2y = {"type": "main"}
-    dochh = collectionbip.find_one(quer2y)
-    blacklistedIP = dochh["blacklistedIP2"]
-
-    for x in range(1,5):
-        fn = f'F{farm_id}L{x}'
-        try:
-            if fn == input:
-                continue
-            else:
-                data_list = blacklistedIP[fn]
-                ips = ips + data_list
-                print('Layout:',x)
-
-        except Exception as e:
-            pass
-    print(ips)
-    return ips
 
 
-def add_blacklistedip2(input, ip):
-    collectionbip = db[f'LocalCSB']
-    query = {"type": "main"}
-    update = {
-        "$addToSet": {  # Ensures the IP is added only if it doesn't already exist
-            f"blacklistedIP2.{input}": ip
-        }
-    }
-    result = collectionbip.update_one(query, update)
-    if result.modified_count > 0:
-        print(f"Successfully added IP '{ip}' to {input}.")
-    else:
-        print(f"No update occurred. IP '{ip}' might already exist.")
 
 
 
@@ -2757,7 +2732,19 @@ def mysterium_reinstaller():
             print("No icon_image_loaded Human.")
 
 
-
+def add_blacklistedip2(input, ip):
+    collectionbip = db[f'LocalCSB']
+    query = {"type": "main"}
+    update = {
+        "$addToSet": {  # Ensures the IP is added only if it doesn't already exist
+            f"blacklistedIP2.{input}": ip
+        }
+    }
+    result = collectionbip.update_one(query, update)
+    if result.modified_count > 0:
+        print(f"Successfully added IP '{ip}' to {input}.")
+    else:
+        print(f"No update occurred. IP '{ip}' might already exist.")
 
 def mysterium_reinstaller_old():
     #find externsion
@@ -2833,6 +2820,17 @@ def fix_wrong_pins():
     except Exception as e:
         print('ERR fix wrong pin',e)
  
+
+def fix_tab_search_icon():
+    try:
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/tab_search_icon.png", region=(1625, 40, 400, 300), confidence=0.99)
+        pyautogui.rightClick(x,y)
+        time.sleep(3)
+        pyautogui.click(1790 ,130)
+        time.sleep(1)
+
+    except Exception as e:
+        print('No fix_tab_search_icon',e)
 
 browser_proxy = ''
 query = {"type": "main"}
@@ -2988,6 +2986,14 @@ def open_browsers():
     layout = dochh2["withdraw_mail"]
     print(f'Farm ID:{farm_id} | Layout: {layout}')
     chrome_user_data_dir = f'/root/.config/google-chrome/{browser_proxy}{layout}'
+    try:
+        for l in range(1,7):
+            if chrome_user_data_dir == f'/root/.config/google-chrome/{browser_proxy}Layout{l}':
+                print(f'No Del Layout{l}')
+            else:
+                delete_folder(f'/root/.config/google-chrome/{browser_proxy}Layout{l}')
+    except Exception as e:
+        pass
     sb1 = Driver(
         uc=True,
         headed=True,
@@ -3023,24 +3029,34 @@ def open_browsers():
     time.sleep(8)
     #sb1.execute_script("window.scrollTo(0, 300);")
     print(sb1.get_title())
+    fix_tab_search_icon()
     gggv = are_extensions_exist()
     get_mails_passowrds(farm_id)
     if gggv:
         ip_address = get_ip(sb1)
-        ipscore = get_ipscore(ip_address)
-        proxycheck = get_proxycheck(sb1, ip_address, server_name= server_name1)
-        if ipscore and proxycheck == 200:
+        lay = re.search(r'\d+', layout).group()
+        Not_Black_Listed_Stt = Full_blacklist_Check(sb1, ip_address,f'F{farm_id}L{lay}')
+        if Not_Black_Listed_Stt:
             print(f'Good IP found: {ip_address}')
             update_ip(ip_address, config_path="mfhelper/config.json")
+            query = {"type": "main"}
+            update = {"$set": {"response": f'Ready IP at Start:{ip_address}'}}
+            result = collection.update_one(query, update)
+            return sb1
+
         else:
+            query = {"type": "main"}
+            update = {"$set": {"request": 'ipfixer'}}
+            result = collection.update_one(query, update)
             print('No good IP')
-            response_messege(f'Bad IP:{ip_address} | Installing Extensions')
+            response_messege(f'Changed IP:{ip_address} | Installing Extensions')
             if fresh >= 3:
                 sweet = install_extensions('sweet')
                 cookie = install_extensions('cookie')
                 mysterium = install_extensions('mysterium')
                 fingerprint = install_extensions('fingerprint')
                 mfhelper = install_extensions('mfhelper')
+                fix_tab_search_icon()
                 if fingerprint and mysterium and sweet and cookie and mfhelper:
                     print('All Extensions are installed..')
                     query = {"type": "main"}
@@ -3081,6 +3097,7 @@ def open_faucets():
             global faucetlayout
             global fresh_start_faucet
             global login_faucet_detect
+            ip_required = None
             quer2y = {"type": "main"}
             dochh2 = collection.find_one(quer2y)
             layout2 = dochh2["withdraw_mail"]
@@ -3116,77 +3133,45 @@ def open_faucets():
             sb1.uc_open("chrome://extensions/")
             time.sleep(1)
             global blacklistedIP
-            collectionbip = db[f'LocalCSB']
-            quer2y = {"type": "main"}
-            dochh = collectionbip.find_one(quer2y)
-            blacklistedIP2 = dochh["blacklistedIP"]
-            if len(blacklistedIP) <= len(blacklistedIP2):
-                blacklistedIP += blacklistedIP2
-            print(blacklistedIP)
             lay = re.search(r'\d+', layout2).group()
-            other_blacklists = get_blacklistedip2(f'F{farm_id}L{lay}')
-            if other_blacklists:
-                blacklistedIP = blacklistedIP + other_blacklists
-            response_messege('Fixing IP')
             ip_address = get_ip(sb1)
-            ipscore = get_ipscore(ip_address)
-            proxycheck = get_proxycheck(sb1, ip_address, server_name= server_name1)
-            if ipscore and proxycheck == 200:
-                if ip_address in blacklistedIP:
-                    print('IP Blacklisted')
-                    response_messege(f'IP Blacklisted{ip_address}')
-                    ipfixer()
-                    ip_required = fix_ip(sb1, server_name1)
-                    ip_address = get_ip(sb1)
+            Not_Black_Listed_Stt = Full_blacklist_Check(sb1,ip_address,f'F{farm_id}L{lay}')
+            if Not_Black_Listed_Stt:
+                print(f'Good IP found: {ip_address}')
+                for frm in CSB1_farms:
+                    collection_csb = db[f'Farm{frm}']
+                    query = {"type": "main"}
+                    doc = collection_csb.find_one(query)
+                    res = doc["response"]
+                    req = doc["request"]
+                    if req == 'ipfixer':
+                        if 'Ready' in res or 'Loging' in res:
+                            print('IP is ready')
+                            ip_required = ip_address
+                            update_ip(ip_address, config_path="mfhelper/config.json")
 
-                else:
-                    print(f'Good IP found: {ip_address}')
-                    for frm in CSB1_farms:
-                        collection_csb = db[f'Farm{frm}']
-                        query = {"type": "main"}
-                        doc = collection_csb.find_one(query)
-                        res = doc["response"]
-                        req = doc["request"]
-                        if req == 'ipfixer':
-                            if 'Ready' in res:
-                                print('IP is ready')
-
-                            else:
-                                ipfixer()
-                                ip_required = fix_ip(sb1, server_name1)
-                                ip_address = get_ip(sb1)
-
+                        else:
+            
+                            ipfixer()
+                            raise Exception("Ready IP ipfixer Done")
+                    else:
+                        ip_required = ip_address
+                        update_ip(ip_address, config_path="mfhelper/config.json")
             else:
                 ipfixer()
-                ip_required = fix_ip(sb1, server_name1)
-                ip_address = get_ip(sb1)
+                raise Exception("Ready IP ipfixer Done")
 
-            ip_address = get_ip(sb1)
             pyautogui.moveTo(100, 200)
             pyautogui.moveTo(200, 400)
             if ip_address:
+                add_blacklistedip2(f'F{farm_id}L{lay}', ip_address)
                 current_window = sb1.current_window_handle
                 close_extra_windows(sb1, [current_window])
                 sb1.switch_to.window(current_window)
                 sb1.uc_open("chrome://extensions/")
-                time.sleep(2)
-                ip_required = ip_address
-                add_blacklistedip2(f'F{farm_id}L{lay}', ip_address)
                 get_mails_passowrds(farm_id)
-
-                quer2y = {"type": "main"}
-                dochh2 = collection.find_one(quer2y)
                 faucetlayout = 1 #dochh2["mainfaucet"]
                 print(f'Farm ID:{farm_id} | Faucet Layout: {faucetlayout}')
-
-                ipscore = get_ipscore(ip_address)
-                proxycheck = get_proxycheck(sb1, ip_address, server_name= server_name1)
-                if ipscore and proxycheck == 200:
-                    print(f'Good IP found: {ip_address}')
-                    update_ip(ip_address, config_path="mfhelper/config.json")
-                else:
-                    print('404 Errore')
-                    raise Exception(" earnpp_window == 404")
                 fresh_start_faucet = True
                 pyautogui.moveTo(100, 200)
                 pyautogui.moveTo(200, 400)
@@ -3394,7 +3379,7 @@ def open_faucets():
 
                     return earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required
         except Exception as e:
-                response_messege(f'Resetting Browser{e}')
+                response_messege(f'Resetting Browser: {e}')
                 try:
                     sb1.quit()
                     time.sleep(2)
@@ -3829,7 +3814,7 @@ while True:
                 elapsed_time = time.time() - start_time
                 seconds_only = int(elapsed_time)
                 debug_messages(f'ClaimCoins Seconds:{seconds_only}')
-                if seconds_only > 20:
+                if seconds_only > 50:
                     start_time = time.time()
                     if earnpp_coins == earnpp_coins_pre:
                         start_time = time.time()

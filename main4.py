@@ -3076,12 +3076,6 @@ def open_browsers():
                         update = {"$set": {"response": 'Mysterium Login Done...'}}
                         result = collection.update_one(query, update)
 
-    if fresh >= 1:            
-            #facebook_login()
-        sb1.maximize_window()
-        query = {"type": "main"}
-        update = {"$set": {"response": 'Setup Done...'}}
-        result = collection.update_one(query, update)
 
     #sb1.disconnect()
     #time.sleep(99999)

@@ -1,5 +1,5 @@
 
-print('Version 9.9.9.9.5')
+print('Version 9.9.9.9.6')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -3099,7 +3099,7 @@ def open_faucets():
             browser_proxy2  =get_browser_proxy()
             chrome_user_data_dir2 = f'/root/.config/google-chrome/{browser_proxy2}{layout2}'
             if chrome_user_data_dir == chrome_user_data_dir2 and layout == layout2 and browser_proxy2 == browser_proxy:
-                response_messege(f'Same Browser | L {layout2}')
+                print(f'Same Browser | L {layout2}')
             else:
                 response_messege(f'Resetting Browser')
                 try:

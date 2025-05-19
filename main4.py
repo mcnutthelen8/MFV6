@@ -1,5 +1,5 @@
 
-print('Version 9.9.9.9.6')
+print('Version 9.9.9.9.7')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -2594,6 +2594,7 @@ earnbonk_limit_reached = None
 #if run_sb1:
 
 def are_extensions_exist():
+    all_extensions_not = True
     for i in range(3):
         time.sleep(2)
         try:
@@ -2604,22 +2605,51 @@ def are_extensions_exist():
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1225, 33, 755, 400), confidence=0.95)
                 #pyautogui.click(x, y)
                 print("mysterium_icon_emptyf Button Found")
-                return False
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_dis_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
+                    #pyautogui.click(x, y)
+                    print("sweet_dis_icon Button Found")
+                    all_extensions_not = False
 
+                except pyautogui.ImageNotFoundException:
+                    print("No sweet_dis_icon Button.")
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_nl_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
+                    #pyautogui.click(x, y)
+                    print("sweet_nl_icon Button Found")
+                    all_extensions_not = False
+
+                except pyautogui.ImageNotFoundException:
+                    print("No sweet_nl_icon Button.")
             except pyautogui.ImageNotFoundException:
                 print("No mysterium_icon_emptyf Button.")
             try:
                 x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_connected.png", region=(1225, 33, 755, 400), confidence=0.95)
                 #pyautogui.click(x, y)
                 print("mysterium_icon_emptyf Button Found")
-                return False
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_dis_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
+                    #pyautogui.click(x, y)
+                    print("sweet_dis_icon Button Found")
+                    all_extensions_not = False
+
+                except pyautogui.ImageNotFoundException:
+                    print("No sweet_dis_icon Button.")
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_nl_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
+                    #pyautogui.click(x, y)
+                    print("sweet_nl_icon Button Found")
+                    all_extensions_not = False
+
+                except pyautogui.ImageNotFoundException:
+                    print("No sweet_nl_icon Button.")
 
             except pyautogui.ImageNotFoundException:
                 print("No mysterium_icon_emptyf Button.")
 
         except pyautogui.ImageNotFoundException:
             print("No extension_icon Button.")
-    return True
+    return all_extensions_not
         
 
 
@@ -2745,6 +2775,23 @@ def add_blacklistedip2(input, ip):
         print(f"Successfully added IP '{ip}' to {input}.")
     else:
         print(f"No update occurred. IP '{ip}' might already exist.")
+    try:
+        query = {"type": 'ip_log'}
+        existing_doc = collectionbip.find_one(query)
+        print("Existing document before update")
+        new_message = f'{input} | {ip}' # {'2024-09-06 03:47:14': 220}  # Use a new timestamp
+        messages = existing_doc['messages']
+        messages.update(new_message)
+        update = {"$set": {"messages": messages}}
+        result = collectionbip.update_one(query, update)
+        print("Updated document")
+        if result.matched_count > 0:
+            print(f"Added new messages to existing document. Updated {result.modified_count} document(s).")
+        else:
+            print("No document found with the specified type.")
+    except Exception as e:
+        print(e)
+
 
 def mysterium_reinstaller_old():
     #find externsion
@@ -2935,6 +2982,8 @@ def update_ip(new_ip, config_path="mfhelper/config.json"):
         print(f"Updated targetIP to: {new_ip}")
     except Exception as e:
         print(f"Error updating config.json: {e}")
+
+
 def clear_browser_cache_history(driver):
     try:
         global sb1

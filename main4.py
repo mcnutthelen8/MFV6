@@ -1,5 +1,5 @@
 
-print('Version 9.9.9.9.7')
+print('Version 9.9.9.9.8')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -1946,7 +1946,7 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
             Fill_mailpass_faucets(current_title, email, password)
             time.sleep(3)
         if 'Dashboard' in current_title:
-            #pyautogui.hotkey('ctrl','w')
+            pyautogui.hotkey('ctrl','w')
             return True
 
 
@@ -2776,10 +2776,15 @@ def add_blacklistedip2(input, ip):
     else:
         print(f"No update occurred. IP '{ip}' might already exist.")
     try:
+        sri_lanka_tz = pytz.timezone('Asia/Colombo')
+        utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
+        sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
+        now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
+
         query = {"type": 'ip_log'}
         existing_doc = collectionbip.find_one(query)
         print("Existing document before update")
-        new_message = f'{input} | {ip}' # {'2024-09-06 03:47:14': 220}  # Use a new timestamp
+        new_message = {now:f'{input} | {ip}'} # {'2024-09-06 03:47:14': 220}  # Use a new timestamp
         messages = existing_doc['messages']
         messages.update(new_message)
         update = {"$set": {"messages": messages}}

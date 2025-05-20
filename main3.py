@@ -695,12 +695,12 @@ def mysterium_vpn_connect(server_name, driver):
     sweet_enable()
     fix_wrong_pins()
     try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1425, 43, 550, 300), confidence=0.95)
         pyautogui.click(x, y)
         print("mysterium_icon_empty Found")
         time.sleep(5)
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/myserium_disconnect.png", region=(1325, 190, 800, 400), confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/myserium_disconnect.png", region=(800, 190, 1300, 400), confidence=0.95)
             pyautogui.click(x, y)
             print("myserium_disconnect Found")
         except pyautogui.ImageNotFoundException:
@@ -714,11 +714,11 @@ def mysterium_vpn_connect(server_name, driver):
         except Exception as e:
             print("mysterium_logged")
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/quick_connect.png", region=(1325, 190, 800, 400), confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/quick_connect.png", region=(1125, 190, 900, 400), confidence=0.95)
  
             print("quick_connect Found")
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/search_mysterium.png", region=(1325, 494, 800, 400), confidence=0.95)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/search_mysterium.png", region=(1125, 494, 900, 400), confidence=0.95)
                 pyautogui.click(x, y)
                 print("search_mysterium Found")
                 time.sleep(2)

@@ -1,16 +1,15 @@
 
 
-
 #!/usr/bin/env bash
 set -o nounset
 set -o pipefail
 
 trap "echo '[!] Interrupted by user, exiting.'; exit 0" SIGINT
 
-SCRIPT_CMD="python3 main4.py --farm 5 --fresh 3"
+SCRIPT_CMD="python3 main3.py --farm 1 --fresh 3"
 GRACE_PERIOD=80
 FORCE_CPU=95
-FORCE_RAM=5500
+FORCE_RAM=3700
 OVERLOAD_DURATION=14
 MONITOR_INTERVAL=5
 FORCE_RESTART_AFTER=1800       # Force restart after 1 hour
@@ -27,9 +26,11 @@ kill_all() {
     else
         echo "[⚠] No PID provided. Killing all Chrome and python3 processes at $(date)" | tee -a "$LOG_FILE"
     fi
+    pkill -f "main3.py" 2>/dev/null || true
     pkill -f "chrome" 2>/dev/null || true
-    pkill -f "python3" 2>/dev/null || true
 }
+
+
 
 while true; do
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] === 🚀 Starting new session ===" | tee -a "$LOG_FILE"

@@ -35,7 +35,7 @@ sudo apt-get --fix-broken install -y
 # Set screen resolution (adjust VNC-0 if necessary)
 echo "Setting screen resolution..."
 #Docker VNC
-#xrandr --output VNC-0 --mode 1920x1080
+xrandr --output VNC-0 --mode 1920x1080
 #Nomachine
 xrandr --output nxoutput0 --mode 1920x1080
 #CRD 

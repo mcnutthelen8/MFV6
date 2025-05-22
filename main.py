@@ -1,6 +1,6 @@
 
-
-
+print('Version 9.9.9.9.9')
+import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
 from selenium.webdriver.support.ui import WebDriverWait
@@ -28,7 +28,7 @@ import clipboard
 import os
 import subprocess
 
-
+query = {"type": "main"}
 # Example usage
 pyautogui.moveTo(100, 100)
 pyautogui.click(100, 200, duration=0.5)
@@ -38,12 +38,13 @@ parser.add_argument('--farm', type=int, help="Farm")
 parser.add_argument('--fresh', type=int, help="Fresh")
 args = parser.parse_args()
 farm_id = args.farm
+print('Farm',farm_id)
 fresh = args.fresh
 
 
 CSB1_farms = []
-
-
+sb1 = None
+ip_address = ''
 
 fb_pass = 'ashen1997'
 yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
@@ -78,6 +79,10 @@ feyorra_email = ''
 feyorra_pass = ''
 layout = ''
 
+farm_ip_address = ''
+farm_user_agent = ''
+farm_location = ''
+
 Farm_list = [1, 2, 3, 4, 5]
 
 def get_mails_passowrds(farm_id):
@@ -90,6 +95,9 @@ def get_mails_passowrds(farm_id):
     global layout
     global mysterium_raw
     global Farm_list
+    global farm_ip_address
+    global farm_user_agent
+    global farm_location
 
     collection = db[f'Farm{farm_id}']
     quer2y = {"type": "main"}
@@ -112,18 +120,30 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'thailand'
             CSB1_farms = Farm_list
-            earnpp_email = 'khabibmakanzie5@gmail.com'
-            earnpp_pass = 'khabibmakanzie5'
-            feyorra_email = 'khabibmakanzie5@gmail.com'
-            feyorra_pass = 'khabibmakanzie5'
+            earnpp_email = 'mackbinb23@gmail.com'
+            earnpp_pass = 'mackbinb23'
+            feyorra_email = 'mackbinb23@gmail.com'
+            feyorra_pass = 'mackbinb23'
+
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@193.160.83.71:6392'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+            #"--user-agent=Mozilla/5.0 (Linux; Android 12; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Mobile Safari/537.36"
+
 
         elif '2' in layout:
             server_name1 = 'thailand' # 'morocco' #'bulgaria'
             CSB1_farms = Farm_list #[6, 7, 8, 9, 10]
-            earnpp_email = 'metroboom9106@gmail.com'
-            earnpp_pass = 'metroboom9106'
-            feyorra_email = 'metroboom9106@gmail.com'
-            feyorra_pass = 'metroboom9106'
+            earnpp_email = 'bommetro5@gmail.com'
+            earnpp_pass = 'bommetro5'
+            feyorra_email = 'bommetro5@gmail.com'
+            feyorra_pass = 'bommetro5'
+
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@192.53.142.61:5758'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+
+
         elif '3' in layout:
             server_name1 = 'thailand' # 'morocco' #'bulgaria'
             CSB1_farms =Farm_list#[6, 7, 8, 9, 10]
@@ -131,6 +151,11 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'grandkolla19972'
             feyorra_email = 'jjona323h123@gmail.com'
             feyorra_pass = 'jjona323h123'
+
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@192.53.142.54:5751'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+
 
         elif '4' in layout:
             server_name1 = 'thailand'
@@ -140,13 +165,36 @@ def get_mails_passowrds(farm_id):
             feyorra_email = 'gihanfer9076@gmail.com'
             feyorra_pass = 'gihanfer9076'
 
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@193.160.82.7:5979'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+
         elif '5' in layout:
             server_name1 = 'thailand'
             CSB1_farms = Farm_list
-            earnpp_email = 'ddilakshi2326@gmail.com'
-            earnpp_pass = 'ddilakshi2326'
-            feyorra_email = 'ddilakshi2326@gmail.com'
-            feyorra_pass = 'ddilakshi2326'
+            earnpp_email = 'ddilakshi23@gmail.com'
+            earnpp_pass = 'ddilakshi23'
+            feyorra_email = 'ddilakshi23@gmail.com'
+            feyorra_pass = 'ddilakshi23' 
+
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@192.53.142.108:5805'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+
+
+        elif '6' in layout:
+            server_name1 = 'thailand'
+            CSB1_farms = Farm_list
+            earnpp_email = 'shemprer@gmail.com'
+            earnpp_pass = 'shemprer'
+            feyorra_email = 'shemprer@gmail.com'
+            feyorra_pass = 'shemprer'
+            
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@192.53.137.153:6441'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+
+        
         else:
             print('Layout issue', layout)
 
@@ -160,6 +208,12 @@ def get_mails_passowrds(farm_id):
             feyorra_email = 'helenmcnutt6@gmail.com'
             feyorra_pass = 'helenmcnutt6'
 
+            
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@72.1.181.186:5580'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+
+
         elif '2' in layout:
             server_name1 = 'poland' #'portugal'
             CSB1_farms = Farm_list
@@ -168,6 +222,11 @@ def get_mails_passowrds(farm_id):
             feyorra_email = 'gtared666@gmail.com'
             feyorra_pass = 'gtared666'
 
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@72.1.154.8:7899'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+
+
         elif '3' in layout:
             server_name1 = 'poland' #'portugal'
             CSB1_farms = Farm_list
@@ -175,6 +234,13 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'grncaptain6'
             feyorra_email = 'grncaptain6@gmail.com'
             feyorra_pass = 'grncaptain6'
+
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@72.1.181.43:5437'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+
+
+
         elif '4' in layout:
             server_name1 = 'poland'
             CSB1_farms = Farm_list
@@ -182,55 +248,127 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'roxashen97'
             feyorra_email = 'roxashen97@gmail.com'
             feyorra_pass = 'roxashen97'
+
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@192.53.142.219:5916'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+
+
         elif '5' in layout:
-            server_name1 = 'poland'
+            server_name1 = 'austria'
             CSB1_farms = Farm_list
-            earnpp_email = 'kollygnda77@gmail.com'
-            earnpp_pass = 'kollygnda77'
-            feyorra_email = 'kollygnda77@gmail.com'
-            feyorra_pass = 'kollygnda77'
+            earnpp_email = 'oronchu23@gmail.com'
+            earnpp_pass = 'oronchu23'
+            feyorra_email = 'oronchu23@gmail.com'
+            feyorra_pass = 'oronchu23' 
+
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@192.53.138.184:6122'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+
+        elif '6' in layout:
+            server_name1 = 'austria'
+            CSB1_farms = Farm_list
+            earnpp_email = 'drameson3@gmail.com'
+            earnpp_pass = 'drameson3'
+            feyorra_email = 'drameson3@gmail.com'
+            feyorra_pass = 'drameson3'
+
+
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@193.160.83.224:6545'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+
+
         else:
             print('Layout issue', layout)
 
     elif farm_id == 3:
 
         if '1' in layout:
-            server_name1 = 'turkey'
+            server_name1 = 'france'
             CSB1_farms =Farm_list
-            earnpp_email = 'gkolnda999@gmail.com'
-            earnpp_pass = 'gkolnda999'
-            feyorra_email = 'gkolnda999@gmail.com'
-            feyorra_pass = 'gkolnda999'
+            earnpp_email = 'shldmky53@gmail.com'
+            earnpp_pass = 'shldmky53'
+            feyorra_email = 'shldmky53@gmail.com'
+            feyorra_pass = 'shldmky53'
+
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@192.53.137.36:6324'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+
 
         elif '2' in layout:
-            server_name1 = 'turkey' #'belgium'
+            server_name1 = 'france' #'belgium'
             CSB1_farms =Farm_list
             earnpp_email = 'merlelcn666@gmail.com'
             earnpp_pass = 'merlelcn666'
             feyorra_email = 'merlelcn666@gmail.com'
             feyorra_pass = 'merlelcn666'
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@72.1.154.57:7948'################################
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+
+
 
         elif '3' in layout:
-            server_name1 = 'turkey' #'belgium'
+            server_name1 = 'france' #'belgium'
             CSB1_farms = Farm_list
             earnpp_email = 'tanishaamy2500@gmail.com'
             earnpp_pass = 'tanishaamy2500'
             feyorra_email = 'tanishaamy2500@gmail.com'
             feyorra_pass = 'tanishaamy2500'
+
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@192.53.138.183:6121'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+
+
+
+
         elif '4' in layout:
-            server_name1 = 'turkey' #'belgium'
+            server_name1 = 'france' #'belgium'
             CSB1_farms =Farm_list
             earnpp_email = 'hayzgonzle5@gmail.com'
             earnpp_pass = 'hayzgonzle5'
             feyorra_email = 'hayzgonzle5@gmail.com'
             feyorra_pass = 'hayzgonzle5'
+
+
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@192.53.66.74:6180'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+
+
         elif '5' in layout:
-            server_name1 = 'turkey' #'belgium'
+            server_name1 = 'france' #'belgium'
             CSB1_farms =Farm_list
-            earnpp_email = 'scramblepenny55@gmail.com'
-            earnpp_pass = 'scramblepenny55'
-            feyorra_email = 'scramblepenny55@gmail.com'
-            feyorra_pass = 'scramblepenny55'
+            earnpp_email = 'henndaneys5@gmail.com'
+            earnpp_pass = 'henndaneys5'
+            feyorra_email = 'henndaneys5@gmail.com'
+            feyorra_pass = 'henndaneys5' 
+
+
+
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@192.53.66.97:6203'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+
+
+
+            
+        elif '6' in layout:
+            server_name1 = 'france'
+            CSB1_farms = Farm_list
+            earnpp_email = 'sumithrohan2@gmail.com'
+            earnpp_pass = 'sumithrohan2'
+            feyorra_email = 'sumithrohan2@gmail.com'
+            feyorra_pass = 'sumithrohan2'
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@192.53.66.104:6210'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+
+
 
         else:
             print('Layout issue', layout)
@@ -244,13 +382,25 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'berendkalpana55'
             feyorra_email = 'berendkalpana55@gmail.com'
             feyorra_pass = 'berendkalpana55'
+
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@193.160.82.149:6121'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+
+
         elif '2' in layout:
             server_name1 = 'canada' #'georgia'# 
             CSB1_farms = Farm_list
-            earnpp_email = 'yvonne6363@gmail.com'
-            earnpp_pass = 'yvonne6363'
-            feyorra_email = 'yvonne6363@gmail.com'
-            feyorra_pass = 'yvonne6363'
+            earnpp_email = 'neyvon432@gmail.com'
+            earnpp_pass = 'neyvon432'
+            feyorra_email = 'neyvon432@gmail.com'
+            feyorra_pass = 'neyvon432'
+
+
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@82.140.180.39:6999'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+
 
 
         elif '3' in layout:
@@ -261,20 +411,52 @@ def get_mails_passowrds(farm_id):
             feyorra_email = 'sheldnkumr86@gmail.com'
             feyorra_pass = 'sheldnkumr86'
 
+
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@82.140.180.185:7145'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+
+
         elif '4' in layout:
             server_name1 = 'canada' #'georgia'# 
             CSB1_farms = Farm_list
-            earnpp_email = 'andrewperera8@gmail.com'
-            earnpp_pass = 'andrewperera8'
-            feyorra_email = 'andrewperera8@gmail.com'
-            feyorra_pass = 'andrewperera8'
+            earnpp_email = 'drewaperea@gmail.com' #'andrewperera8@gmail.com'
+            earnpp_pass = 'drewaperea'#'andrewperera8'
+            feyorra_email = 'drewaperea@gmail.com'#'andrewperera8@gmail.com'
+            feyorra_pass = 'drewaperea'#'andrewperera8'
+
+
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@72.1.181.192:5586'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+
+
+
         elif '5' in layout:
             server_name1 = 'canada' #'georgia'# 
             CSB1_farms = Farm_list
             earnpp_email = 'howard998@gmail.com'
             earnpp_pass = 'howard998'
             feyorra_email = 'howard998@gmail.com'
-            feyorra_pass = 'howard998'
+            feyorra_pass = 'howard998' 
+
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@72.1.181.145:5539'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+
+
+        elif '6' in layout:
+            server_name1 = 'canada'
+            CSB1_farms = Farm_list
+            earnpp_email = 'amberodum7@gmail.com'
+            earnpp_pass = 'amberodum7'
+            feyorra_email = 'amberodum7@gmail.com'
+            feyorra_pass = 'amberodum7'
+
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@82.140.180.46:7006'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'Europe/Paris'
+
 
 
         else:
@@ -290,13 +472,25 @@ def get_mails_passowrds(farm_id):
             feyorra_email = 'ernestost5@gmail.com'
             feyorra_pass = 'ernestost5'
 
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@82.140.180.6:6966'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'Europe/Paris'
+
+
+
         elif '2' in layout:
             server_name1 = 'germany' #'chile'
             CSB1_farms =Farm_list
-            earnpp_email = 'rondolfapa9@gmail.com'
-            earnpp_pass = 'rondolfapa9'
-            feyorra_email = 'rondolfapa9@gmail.com'
-            feyorra_pass = 'rondolfapa9'
+            earnpp_email = 'taptioronl8@gmail.com'
+            earnpp_pass = 'taptioronl8'
+            feyorra_email = 'taptioronl8@gmail.com'
+            feyorra_pass = 'taptioronl8'
+
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@72.1.181.41:5435'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'America/New_York'
+
+
         elif '3' in layout:
             server_name1 = 'germany' #'chile'
             CSB1_farms = Farm_list
@@ -305,13 +499,22 @@ def get_mails_passowrds(farm_id):
             feyorra_email = 'kevincharl3@gmail.com'
             feyorra_pass = 'kevincharl3'
 
+
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@82.140.180.81:7041'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'Europe/Paris'
+
         elif '4' in layout:
             server_name1 = 'germany' #'chile'
             CSB1_farms = Farm_list
-            earnpp_email = 'leonardken7@gmail.com'
-            earnpp_pass = 'leonardken7'
-            feyorra_email = 'leonardken7@gmail.com'
-            feyorra_pass = 'leonardken7'
+            earnpp_email = 'kendleo4@gmail.com'
+            earnpp_pass = 'kendleo4'
+            feyorra_email = 'kendleo4@gmail.com'
+            feyorra_pass = 'kendleo4'
+
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@82.140.180.158:7118'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'Europe/Paris'
 
         elif '5' in layout:
             server_name1 = 'germany' #'chile'
@@ -319,7 +522,23 @@ def get_mails_passowrds(farm_id):
             earnpp_email = 'willsmile31@gmail.com'
             earnpp_pass = 'willsmile31'
             feyorra_email = 'willsmile31@gmail.com'
-            feyorra_pass = 'willsmile31'
+            feyorra_pass = 'willsmile31' 
+
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@82.140.180.107:7067'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'Europe/Paris'
+
+        elif '6' in layout:
+            server_name1 = 'germany'
+            CSB1_farms = Farm_list
+            earnpp_email = 'adaavery5@gmail.com'
+            earnpp_pass = 'adaavery5'
+            feyorra_email = 'adaavery5@gmail.com'
+            feyorra_pass = 'adaavery5'
+
+            farm_ip_address = 'kscpxecv:nxp0ortome2m@82.140.180.149:7109'
+            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
+            farm_location = 'Europe/Paris'
 
         else:
             print('Layout issue', layout)
@@ -377,7 +596,7 @@ def add_messages(type_value, new_messages):
     except Exception as e:
         print(e)
 
-def insert_data(ip, amount1, amount2, amount3, amount4,emailg):
+def insert_data(ip, amount1, amount2, amount3, amount4,accuracy,emailg):
     sri_lanka_tz = pytz.timezone('Asia/Colombo')
     utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
     sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
@@ -392,7 +611,9 @@ def insert_data(ip, amount1, amount2, amount3, amount4,emailg):
         "bonk": amount4,
         "Status": now,
         "Ip": ip,
+        "mainfaucet":accuracy,
         "response": 'Running'
+
         
     }
     update = {"$set": sample_document}
@@ -408,8 +629,23 @@ def insert_data(ip, amount1, amount2, amount3, amount4,emailg):
 
     return
 
+def extract_valid_ipv4(text):
+    # Remove leading/trailing spaces
+    text = text.strip()
+
+    # Regex match for an IPv4 address
+    match = re.search(r'\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b', text)
+    if match:
+        ip_candidate = match.group()
+        try:
+            # Validate IP format (ensures each octet is 0–255)
+            ipaddress.IPv4Address(ip_candidate)
+            return ip_candidate
+        except ipaddress.AddressValueError:
+            return None
+    return None
 def get_ip(driver):
-    for i in range(1,5):
+    for i in range(5):
         try:
             original_window = driver.current_window_handle
             driver.open_new_window()
@@ -420,11 +656,19 @@ def get_ip(driver):
                 
                 ip_address = driver.get_text('body')
                 print('IP =', ip_address)
+                ip_address = ip_address.replace(' ', '')
                 driver.close()
                 driver.connect()
                 driver.switch_to.window(original_window)
-                
-                return ip_address
+                if 'This site' in ip_address:
+                    time.sleep(1)
+                    print('THIS no sign', i)
+                    if i == 3:
+                        return '27.145.186.4'
+                    continue
+                ip_address = extract_valid_ipv4(ip_address)
+                if ip_address:
+                    return ip_address
             
             except Exception as e:
                 print(e)
@@ -433,77 +677,137 @@ def get_ip(driver):
             driver.switch_to.window(original_window)
         except Exception as e:
             print(e)
-
     return None
 
+def Full_blacklist_Check(sb1, ip_to_check, current_layout):
+    ip_to_check = ip_to_check.replace(' ','')
+    collectionbip = db[f'LocalCSB']
+    #BlackLIST
+    quer2y = {"type": "main"}
+    dochh = collectionbip.find_one(quer2y)
+    black_list = dochh["blacklistedIP"]
+    if ip_to_check in black_list:
+        response_messege(f'Changed IP : found on blacklist...{ip_to_check}')
+        print(f'IP found on blacklist...{ip_to_check}')
+        return False
 
+
+    ipscore = get_ipscore(ip_to_check)
+    proxycheck = get_proxycheck(sb1, ip_to_check, server_name= server_name1)
+    if ipscore and proxycheck == 200:
+
+        #FxLx List
+        quer2y = {"type": "main"}
+        dochh = collectionbip.find_one(quer2y)
+        fxlx_list = dochh["blacklistedIP2"]
+
+        # Track where the IP is used
+        used_in = []
+
+        for layout, ips in fxlx_list.items():
+            if ip_to_check in ips:
+                used_in.append(layout)
+        print(used_in)
+
+        # Output result
+
+        print(f"IP {ip_to_check} is also used in: {', '.join(used_in)}")
+        if len(used_in) == 1:
+            if current_layout in used_in:
+                print('Already Using this')
+                response_messege(f'Ready IP :Already Using this {ip_address}')
+                print('Good IP')
+                return True
+            else:
+                print('Already USing on another layout...',used_in)
+                response_messege(f'Changed IP :Already Using this {used_in}')
+                return False
+        elif len(used_in) == 0:
+            print('Unique IP Found')
+            response_messege(f'Ready IP :Unique {ip_address}')
+            return True
+        else:
+            response_messege(f'Changed IP : Duplicate Use...{ip_to_check} | Farms: {len(used_in)}')
+            print('Duplicate Use',len(used_in))
+        return False
+    else:
+        response_messege(f'Changed IP : IP Score:{ipscore} | proxycheck:{proxycheck} | IP: {ip_to_check}')
+        return False
 
 
  
 def get_proxycheck_inbrowser(sb1, ip, server_name):   
-    url = f'https://proxycheck.io/v2/{ip}?vpn=1&asn=1'
-    val = False
-    try:
-        original_window = sb1.current_window_handle
-        sb1.open_new_window()
-        sb1.get(url)
-        ip_address_raw = sb1.get_text('body')
-        #print("Raw Response:", ip_address_raw)
-        ip_address = json.loads(ip_address_raw)
-        proxy_status = ip_address[str(ip)]["proxy"]
-        country = ip_address[str(ip)]["country"]
- 
-        print(f"IP Address: {ip} \nProxy Status: {proxy_status} \nCountry: {country}")
-        if country.lower() in server_name.lower():
-            if proxy_status == 'no':
-                val = 200
+    for i in range(9):
+        url = f'https://proxycheck.io/v2/{ip}?vpn=1&asn=1'
+        val = False
+        try:
+            original_window = sb1.current_window_handle
+            sb1.open_new_window()
+            sb1.get(url)
+            ip_address_raw = sb1.get_text('body')
+            #print("Raw Response:", ip_address_raw)
+            ip_address = json.loads(ip_address_raw)
+            proxy_status = ip_address[str(ip)]["proxy"]
+            country = ip_address[str(ip)]["country"]
+    
+            print(f"IP Address: {ip} \nProxy Status: {proxy_status} \nCountry: {country}")
+            if server_name == server_name: #country.lower() in server_name.lower():
+                if proxy_status in 'no' or 'no' in proxy_status:
+                    print(f'{country} is valid with proxy status.')
+                    val = 200
+                else:
+                    print(f'{country} is valid with not proxy status.')
+                    val = 50
             else:
-                print(f'{country} is valid with not proxy status.')
-                val = 50
-        else:
-            return 301
-        sb1.close()
-        sb1.connect()
-        sb1.switch_to.window(original_window)
- 
-        return val
- 
-    except Exception as e:
-        print(f'ibbrowser ProxyCheck Error: {e}')
-        return val
+                print(f'{country} is not {server_name}')
+                return 301
+
+            sb1.close()
+            sb1.connect()
+            sb1.switch_to.window(original_window)
+    
+            return val
+    
+        except Exception as e:
+            print(f'ibbrowser ProxyCheck Error: {e}')
+        time.sleep(2)  # Wait before retrying
  
  
 def get_proxycheck(driver, ip, server_name):
-    url = f'https://proxycheck.io/v2/{ip}?vpn=1&asn=1'
-    try:
-        response = requests.get(url)
-        response.raise_for_status()  # Raise an HTTPError for bad responses
-        result = response.json()
-        #print(result)
-        # Extract IP address and proxy status
-        status = result.get('status')
-        if status == 'ok':
-            ip_address = ip
-            ip_info = result.get(f'{ip_address}', {})
-            proxy_status = ip_info.get('proxy', 'Unknown')
-            country = ip_info.get('country', 'Unknown')
-            print(f"IP Address: {ip_address} \nProxy Status: {proxy_status} \country Status: {country}")
-            if country.lower() in server_name.lower():
-                if proxy_status =='no':
-                    return 200
+    for i in range(9):
+        url = f'https://proxycheck.io/v2/{ip}?vpn=1&asn=1'
+        try:
+            response = requests.get(url)
+            response.raise_for_status()  # Raise an HTTPError for bad responses
+            result = response.json()
+            #print(result)
+            # Extract IP address and proxy status
+            status = result.get('status')
+            if status == 'ok':
+                ip_address = ip
+                ip_info = result.get(f'{ip_address}', {})
+                proxy_status = ip_info.get('proxy', 'Unknown')
+                country = ip_info.get('country', 'Unknown')
+                print(f"IP Address: {ip_address} \nProxy Status: {proxy_status} \country Status: {country}")
+                if server_name == server_name: #country.lower() in server_name.lower():
+                    if proxy_status =='no':
+                        return 200
+                    else:
+                        print(f'{country} is not {200}')
+                        return 50
                 else:
-                    print(f'{country} is not {200}')
-                    return 50
+                    return 301
+            elif 'error' in status:
+                continue
             else:
-                return 301
-        else:
-            print("Error: Status not OK : Trying Inbrowser Way")
-            val = get_proxycheck_inbrowser(driver, ip, server_name)
-            return val
-    except requests.RequestException as e:
-        print(f"Error retrieving IP address and proxy status: {e}")
-        return False
- 
+                print("Error: Status not OK : Trying Inbrowser Way")
+                val = get_proxycheck_inbrowser(driver, ip, server_name)
+                if val:
+                    return val
+        except requests.RequestException as e:
+            print(f"Error retrieving IP address and proxy status: {e}")
+        time.sleep(2)  # Wait before retrying
+
  
 def get_ipscore(ip):
     url = f'https://ipqualityscore.com/api/json/ip/Bfg1dzryVqbpSwtbxgWb1uVkXLrr1Nzr/{ip}?strictness=3&allow_public_access_points=true&lighter_penalties=true&mobile=true'
@@ -541,24 +845,38 @@ def get_ipscore(ip):
             return True
         else:
             print("Conditions not met: Returning None")
-            return None
+            return True
  
     except requests.RequestException as e:
         print(f"Error retrieving IP data: {e}")
-        return None
+        return True
 
 def mysterium_vpn_connect(server_name, driver):
+    try:
+        query = {"type": "main"}
+        for i in CSB1_farms:
+            collection_csb = db[f'Farm{i}']
+            sample_document = {
+                "response": f'Changed IP🔴: Farm {farm_id} |fix_ip',
+                "request": 'ipfixer'
+                
+            }
+            update = {"$set": sample_document}
+            result = collection_csb.update_one(query, update)
+            print('Update Farm fix_ip', i)
+    except Exception as e:
+        print(e)
 
-    sweet_enable()
     mysterium_reinstaller()
+    sweet_enable()
     fix_wrong_pins()
     try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1425, 43, 550, 300), confidence=0.95)
         pyautogui.click(x, y)
         print("mysterium_icon_empty Found")
         time.sleep(5)
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/myserium_disconnect.png", region=(1325, 190, 800, 400), confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/myserium_disconnect.png", region=(800, 190, 1300, 400), confidence=0.95)
             pyautogui.click(x, y)
             print("myserium_disconnect Found")
         except pyautogui.ImageNotFoundException:
@@ -572,19 +890,49 @@ def mysterium_vpn_connect(server_name, driver):
         except Exception as e:
             print("mysterium_logged")
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/quick_connect.png", region=(1325, 190, 800, 400), confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/quick_connect.png", region=(1125, 190, 900, 400), confidence=0.95)
  
             print("quick_connect Found")
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/search_mysterium.png", region=(1325, 494, 800, 400), confidence=0.95)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/search_mysterium.png", region=(1125, 494, 900, 400), confidence=0.95)
                 pyautogui.click(x, y)
                 print("search_mysterium Found")
                 time.sleep(2)
                 pyautogui.typewrite(server_name)
                 pyautogui.press('enter')
-                time.sleep(10)
+                time.sleep(8)
                 pyautogui.scroll(-500)
+                collection_csb = db[f'Farm{farm_id}']
+                query = {"type": "main"}
+                doc = collection_csb.find_one(query)
+                layout_test = doc["withdraw_mail"]
+                if layout_test != layout:
+                    return
                 time.sleep(2)
+                for frm in CSB1_farms:
+                    collection_csb = db[f'Farm{frm}']
+                    query = {"type": "main"}
+                    doc = collection_csb.find_one(query)
+                    res = doc["response"]
+                    req = doc["request"]
+                    if 'Loging' in res or 'mainscript' in req:
+                        response_messege(f'Farm{frm} is not at ipfixing')
+                        time.sleep(4)
+                        try:
+                            query = {"type": "main"}
+                            for i in CSB1_farms:
+                                collection_csb = db[f'Farm{i}']
+                                sample_document = {
+                                    "response": f'Changed IP🔴: Farm {farm_id} |fix_ip',
+                                    "request": 'ipfixer'
+                                    
+                                }
+                                update = {"$set": sample_document}
+                                result = collection_csb.update_one(query, update)
+                                print('Update Farm fix_ip', i)
+                        except Exception as e:
+                            print(e)
+                        return False
                 pyautogui.click(1627, 568)
                 return True
             except pyautogui.ImageNotFoundException:
@@ -602,69 +950,44 @@ def fix_ip(drive, name):
     ipscore = None
     proxycheck = None
     ip_address = 0
-    while not (ipscore and proxycheck):
+    while True:
+
         get_mails_passowrds(farm_id)
         ip_address = get_ip(drive)
-        quer2y = {"type": "main"}
-        dochh2 = collection.find_one(quer2y)
-        layout2 = dochh2["withdraw_mail"]
-        global blacklistedIP
-        collectionbip = db[f'LocalCSB']
-        quer2y = {"type": "main"}
-        dochh = collectionbip.find_one(quer2y)
-        blacklistedIP2 = dochh["blacklistedIP"]
-        if len(blacklistedIP) <= len(blacklistedIP2):
-            blacklistedIP += blacklistedIP2
-        #print(blacklistedIP)
-        lay = re.search(r'\d+', layout2).group()
-        other_blacklists = get_blacklistedip2(f'F{farm_id}L{lay}')
-        if other_blacklists:
-                blacklistedIP = other_blacklists + blacklistedIP 
-        if ip_address in blacklistedIP:
-            print(f'Bad IP detected: {ip_address}. Changing IP...1')
-            query = {"type": "main"}
-            update = {"$set": {"response": f'Blacklisted IP🔴: {ip_address}'}}
-            result = collection.update_one(query, update)
-            for i in CSB1_farms:
-                collection_csb = db[f'Farm{i}']
-                update = {"$set": {"request": 'ipfixer'}}
-                result = collection_csb.update_one(query, update)
-                print('Update Farm', i)
- 
-            # Ensure this block is properly indented
-            proxycheck = get_proxycheck(drive, ip_address, server_name=name)
-            if proxycheck == 50 or proxycheck == 200 or proxycheck != 301:
-                #mysterium_vpn_Recon_ip(name, drive)
-                mysterium_vpn_connect(name, drive)
-            else:
-                mysterium_vpn_connect(name, drive)
- 
-            print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
-            time.sleep(5)
-        else:
-            ipscore = get_ipscore(ip_address)
-            proxycheck = get_proxycheck(drive, ip_address, server_name= name)
-            if ipscore and proxycheck == 200:
+        ip_address = extract_valid_ipv4(ip_address)
+        collection_csb = db[f'Farm{farm_id}']
+        query = {"type": "main"}
+        doc = collection_csb.find_one(query)
+        layout_test = doc["withdraw_mail"]
+        if layout_test != layout:
+            return
+
+        if ip_address:
+
+            quer2y = {"type": "main"}
+            dochh2 = collection.find_one(quer2y)
+            layout2 = dochh2["withdraw_mail"]
+            lay = re.search(r'\d+', layout2).group()
+            other_blacklists = Full_blacklist_Check(drive, ip_address, f'F{farm_id}L{lay}')
+            if other_blacklists:
                 print(f'Good IP found: {ip_address}')
                 return ip_address
             else:
-                print(f'Bad IP detected: {ip_address}. Changing IP...2')
+                print(f'Bad IP detected: {ip_address}. Changing IP...1')
                 query = {"type": "main"}
-                update = {"$set": {"response": f'Changed IP🔴: {ip_address}'}}
+                update = {"$set": {"response": f'Changed IP Blacklisted IP🔴: {ip_address}'}}
                 result = collection.update_one(query, update)
                 for i in CSB1_farms:
                     collection_csb = db[f'Farm{i}']
                     update = {"$set": {"request": 'ipfixer'}}
                     result = collection_csb.update_one(query, update)
                     print('Update Farm', i)
-                if proxycheck == 50 or proxycheck == 200 or proxycheck != 301:
-                    #mysterium_vpn_Recon_ip(name, drive)
-                    mysterium_vpn_connect(name, drive)
-                else:
-                    mysterium_vpn_connect(name, drive)
+                #mysterium_vpn_connect(name, drive)
+                
                 print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
                 time.sleep(5)
- 
+
+    
  
 ####################################Control Panel Shit##########################################################
 def mysterium_web_login(driver):
@@ -747,7 +1070,7 @@ def mysterium_login(driver):
         time.sleep(1)
         sweet_enable()
         driver.uc_open('https://app.mysteriumvpn.com/')
-        time.sleep(8)
+        time.sleep(10)
         titile = sb1.get_title()
         pyautogui.click(113, 100)
         time.sleep(1)
@@ -843,22 +1166,39 @@ def ipfixer():
     preip = 0
     respo = 0
     gg2344 = 0
-    ready_count = 0
     query = {"type": "main"}
-    update = {"$set": {"response": 'Fixing...🟠'}}
+    update = {"$set": {"request": 'ipfixer'}}
     result = collection.update_one(query, update)
-    for i in CSB1_farms:
-        collection_csb = db[f'Farm{i}']
-        update = {"$set": {"request": 'ipfixer'}}
-        result = collection_csb.update_one(query, update)
-        print('Update Farm', i)
-
+    ready_count = 0
+    global layout
+    global sb1
     while True:
-        
+
         pyautogui.moveTo(100, 200)
         pyautogui.moveTo(200, 400)
         doc = collection.find_one(query)
         request = doc["request"]
+        layout_test = doc["withdraw_mail"]
+        if layout_test != layout:
+            print(f'Wrong Farm ID | {layout_test} / {layout} ')
+            response_messege(f'Wrong Farm ID | {layout_test} / {layout} ')
+            try:
+                sb1.quit()
+                time.sleep(2)
+            except Exception as e:
+                print(f"sb1.quit() failed: {e}")
+
+            # Fallback kill
+            for proc_name in ['chrome', 'chromium']:
+                try:
+                    subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
+                    print(f"All {proc_name} script_seconds_only killed (if any).")
+                except Exception as e:
+                    print(f"Failed to kill {proc_name} script_seconds_only: {e}")
+                    
+            time.sleep(2)
+            sb1 = open_browsers()
+            time.sleep(2)
         if request == 'ipfixer':
             preip = get_ip(sb1)
             if preip:
@@ -892,10 +1232,8 @@ def ipfixer():
                         print('Ready Count:', ready_count)
                         if len(res_farms) == len(CSB1_farms):
                             time.sleep(5)
-                            if gg2344 > 6:
-                                query = {"type": "main"}
-                                update = {"$set": {"request": 'mainscript'}}
-                                result = collection.update_one(query, update)
+                            if gg2344 > 4:
+                                return
                             else:
                                 gg2344 += 1
                         else:
@@ -912,9 +1250,7 @@ def ipfixer():
                     sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
                     now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
                     print(now)
-                    update = {"$set": {"response": f'Changed IP🔴: {preip} |{now}'}}
-                    result = collection.update_one(query, update)
-                    ip = fix_ip(sb1, server_name1)
+                    #ip = fix_ip(sb1, server_name1)
                     gg2344 = 0
         else:
             return True
@@ -994,10 +1330,10 @@ import numpy as np
 from tensorflow.keras.preprocessing import image
 
 # Load the trained model
-model = tf.keras.models.load_model('captcha_model_v12.keras')
+model = tf.keras.models.load_model('captcha_model_v16.keras')
+category_classes_list  =  ['award-solid', 'bell-solid', 'broom-solid', 'bug-solid', 'bullhorn-solid', 'camera-solid', 'cannabis-solid', 'capsules-solid', 'car-burst-solid', 'car-solid', 'carrot-solid', 'cat-solid', 'certificate-solid', 'charging-station-solid', 'chart-line-solid', 'check-solid', 'chess-knight-solid', 'circle-xmark-solid', 'clock-rotate-left-solid', 'couch-solid', 'crow-solid', 'democrat-solid', 'dice-solid', 'dog-solid', 'dove-solid', 'dragon-solid', 'droplet-solid', 'envelope-solid', 'face-surprise-solid', 'face-tired-solid', 'feather-pointed-solid', 'gear-solid', 'gem-solid', 'gift-solid', 'gopuram-solid', 'graduation-cap-solid', 'guitar-solid', 'hammer-solid', 'hat-wizard-solid', 'heart-solid', 'helicopter-solid', 'house-solid', 'image-solid', 'key-solid', 'kiwi-bird-solid', 'laptop-solid', 'leaf-solid', 'lightbulb-solid', 'link-solid', 'lock-solid', 'marker-solid', 'microchip-solid', 'microphone-solid', 'money-bill-wave-solid', 'moon-solid', 'mug-hot-solid', 'mug-saucer-solid', 'music-solid', 'oil-can-solid', 'paw-solid', 'piggy-bank-solid', 'pizza-slice-solid', 'plug-solid', 'puzzle-piece-solid', 'republican-solid', 'ribbon-solid', 'robot-solid', 'rocket-solid', 'rotate-solid', 'satellite-solid', 'scissors-solid', 'screwdriver-wrench-solid', 'ship-solid', 'shuttle-space-solid', 'signal-solid', 'sim-card-solid', 'sitemap-solid', 'skull-crossbones-solid', 'smoking-solid', 'snowman-solid', 'spa-solid', 'spider-solid', 'spoon-solid', 'star-of-david-solid', 'star-solid', 'sun-solid', 'syringe-solid', 'tablets-solid', 'tag-solid', 'temperature-half-solid', 'thermometer-solid', 'thumbs-up-solid', 'thumbtack-solid', 'tooth-solid', 'tractor-solid', 'traffic-light-solid', 'train-subway-solid', 'tree-solid', 'truck-monster-solid', 'truck-pickup-solid', 'umbrella-solid', 'user-solid', 'utensils-solid', 'van-shuttle-solid', 'vector-square-solid', 'vial-solid', 'vials-solid', 'video-solid', 'volleyball-solid', 'xmark-solid', 'yin-yang-solid']
 
-category_classes_list =  ['award', 'bell', 'broom', 'bug', 'bullhorn', 'camera', 'cannabis', 'capsules', 'car-crash', 'car', 'carrot', 'cat', 'certificate', 'charging-station', 'chart-line', 'check', 'chess-knight', 'times-circle', 'history', 'couch', 'crow', 'democrat', 'dice', 'dog', 'dove', 'dragon', 'tint', 'envelope', 'surprise', 'tired', 'feather-alt', 'cog', 'gem', 'gift', 'gopuram', 'graduation-cap', 'guitar', 'hammer', 'hat-wizard', 'heart', 'helicopter', 'home', 'image', 'key', 'kiwi-bird', 'laptop', 'leaf', 'lightbulb', 'link', 'lock', 'marker', 'microchip', 'microphone', 'money-bill-wave', 'moon', 'coffee', 'coffee', 'music', 'oil-can', 'paw', 'piggy-bank', 'pizza-slice', 'plug', 'puzzle-piece', 'republican', 'ribbon', 'robot', 'rocket', 'sync-alt', 'satellite', 'cut', 'tools', 'ship', 'space-shuttle', 'signal', 'sim-card', 'sitemap', 'skull-crossbones', 'smoking', 'snowman', 'spa', 'spider', 'star-of-david', 'star', 'sun', 'syringe', 'tablets', 'tag', 'thermometer-half', 'thermometer', 'thumbs-up', 'thumbtack', 'tooth', 'tractor', 'traffic-light', 'subway', 'tree', 'truck-monster', 'truck-pickup', 'umbrella', 'user', 'utensil-spoon', 'shuttle-van', 'vector-square', 'vial', 'vials', 'video', 'volleyball-ball', 'times', 'yin-yang']
-def predict_image(image_path, category_options):
+def predict_image_from_list(image_path, category_options):
     #print(f"Predicting image: {image_path}")
     img_size = (50, 45)
     class_names = category_classes_list
@@ -1023,6 +1359,25 @@ def predict_image(image_path, category_options):
     print(f"\n<¯ Predicted Best Match: {best_match[0]} with confidence {best_match[1]:.4f}\n")
     return best_match[0] , best_match[1]
 
+def predict_image(image_path):
+    #print(f"Predicting image: {image_path}")
+    img_size = (50, 45)
+
+    img = image.load_img(image_path, target_size=img_size)
+    img_array = image.img_to_array(img)
+    img_array = np.expand_dims(img_array, axis=0)  # Add batch dimension
+
+    # Predict the class
+    prediction = model.predict(img_array)
+
+    # Get the index of the class with the highest probability
+    predicted_class_index = np.argmax(prediction)
+
+    # Get the predicted class name and confidence score
+    predicted_class_name = category_classes_list[predicted_class_index]
+    confidence_score = prediction[0][predicted_class_index]  # Confidence score for the predicted class
+    print(f"Predicted class: {predicted_class_name} with confidence: {confidence_score:.4f}")
+    return predicted_class_name
 
 def save_with_random_number(image_path):
     # Split the filename and extension
@@ -1086,7 +1441,7 @@ captcha_basetring = ''
 #V3
 #Steps to solve the captcha:
 #1. Get the captcha 
-def solve_icon_captcha(sb1):
+def solve_icon_captcha_v3(sb1):
     try:
         print("solve_icon_captcha_v3")
 
@@ -1148,13 +1503,10 @@ def solve_icon_captcha(sb1):
         # Assign the first element to captchaElement
         if len(filtered_elements) < 5:
             captchaElement = filtered_elements[0]
-
             base64_images2 = [
                 "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAToAAAAXCAIAAAAUZRRXAAAACXBI",
                 "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAV0AAAAXCAIAAAAnXgteAAAACXBI",
             ]
-
-            # Check if any image on the page matches a base64 image from the list
 
 
             for base64_image in base64_images2:
@@ -1162,6 +1514,7 @@ def solve_icon_captcha(sb1):
                     print("Opps Error found in the first list.")
                     pyautogui.press('f5')
                     return False
+
             return False
 
         if filtered_elements:
@@ -1238,6 +1591,143 @@ def solve_icon_captcha(sb1):
     except Exception as e:
         print(f"Error solving captcha: {e}")
         return False
+
+
+#V4
+#1. Get the captcha 
+
+#V4
+#1. Get the captcha 
+def solve_icon_captcha(sb1):
+    try:
+        print("solve_icon_captcha_v4")
+        #time.sleep(1)
+        global captcha_basetring
+        title = sb1.get_title()
+        form_selector = 'form[method="POST"]'
+        if 'Earn-pepe' in title:
+            form_selector = 'form#Claimformx'
+        elif 'Feyorra' in title:
+            form_selector = 'form#Claimform'
+        elif 'Earn-Trump' in title:
+            form_selector = 'form#ClaimForm'
+        elif 'Earn-Bonk' in title:
+            form_selector = 'form#dataform'
+
+        script = f'''
+            const form = document.querySelector('{form_selector}');
+            if (!form) return [];
+
+            const imgs = form.querySelectorAll('img');
+            const base64s = [];
+
+            imgs.forEach(img => {{
+                const src = img.src;
+                if (src.startsWith("data:image/") && src.includes("base64,")) {{
+                    base64s.push(src.split("base64,")[1]);
+                }}
+            }});
+
+            return base64s;
+        '''
+
+        filtered_elements = sb1.execute_script(script)
+        #print("Script result:", filtered_elements)
+
+        # Print each element
+        #print("Filtered elements:")
+        # Assign the first element to captchaElement
+        if len(filtered_elements) < 3:
+            print('Less Item on list :', len(filtered_elements))
+            captchaElement = filtered_elements[0]
+            base64_images2 = [
+                "iVBORw0KGgoAAAANSUhEUgAAAToAAAAXCAIAAAAUZRRXAAAACXBI",
+                "iVBORw0KGgoAAAANSUhEUgAAAV0AAAAXCAIAAAAnXgteAAAACXBI",
+                
+            ]
+
+            if 'iVBORw0KGgoAAAANSUhEUgAAAV0AAAAXCAIAAAAnXgteAAAACXBI' in captchaElement:
+                print("Opps Error found in the first list.")
+                pyautogui.press('f5')
+                return 201
+            
+
+            if "iVBORw0KGgoAAAANSUhEUgAAAToAAAAXCAIAAAAUZRRXAAAACXBI" in captchaElement:
+                print("Select Timeout")
+                pyautogui.press('f5')
+                return 101
+            return False
+
+        if filtered_elements:
+            captchaElement = filtered_elements[0]
+            if captcha_basetring != captchaElement:
+                #print("\nCaptcha Element:", captchaElement)
+                save_base64_image(captchaElement, 'captchaElement.png')
+                captcha_basetring = captchaElement
+                #save_with_random_number('captchaElement.png')
+
+
+        to_remove = [
+            filtered_elements[0],  # First element
+            filtered_elements[1],  # Second element
+            "#loginBtnSpinner.fas fa-circle-notch fa-spin d-none"
+            "#loginBtnSpinner.fas fa-circle-notch fa-spin d-none me-6"  # Specific element"
+            "#loginBtnSpinner.fas.fa-spinner.fa-spin.d-none.me-6"
+            "#loginBtnSpinner.fas.fa-spinner.fa-spin.d-none.me-1"
+        ]
+
+        filtered_elements = [el for el in filtered_elements if el not in to_remove]
+        filtered_elements = [el for el in filtered_elements if '#loginBtnSpinner' not in el]
+
+
+        category_dic = {}
+        category_elementss =[]
+        for index, base64_paths in enumerate(filtered_elements):
+            #print(f"Index: {index}, Item: {item}")
+            save_base64_image(base64_paths, f'Answer_{index}.png')
+            best_match = predict_image(f'Answer_{index}.png')
+            category_dic[best_match] = base64_paths
+            category_elementss.append(best_match)
+
+
+        if is_image_width_greater_than_200('captchaElement.png'):
+            print('image is more than 200 width lol')
+            #pyautogui.press('f5')
+            return False 
+        best_match = ''
+        best_match, score = predict_image_from_list("captchaElement.png", category_elementss) #
+        print("Best match:", best_match, "score:", score)
+
+        if score < 0.1:
+            print("Score is too low")
+            #save_with_random_number('captchaElement.png')
+            #save_with_random_number('captchaElement.png')
+            #return False
+            #using it later...for debugging
+        
+        for item, base64_path in category_dic.items():
+            #print(f"{item} Checking")
+            if best_match in item or item in best_match:
+                #preview = base64_path[:100]
+                element = sb1.find_element(By.CSS_SELECTOR, f'img[src*="{base64_path}"]')
+                click_element_with_mouse(sb1, element, duration=0.1)
+                #capture_element_screenshot(sb1, f'img[src*="{base64_path}"]', screenshot_path="full_screenshot.png", cropped_path=f"aaaacaptcha.png")
+                #mouse_moveclick(cropped_path=f"aaaacaptcha.png")
+                print('Solved',item )
+                return True
+            
+        print('Something went wrong')
+        return False
+
+
+    except Exception as e:
+        print(f"Error solving captcha: {e}")
+        return False
+
+
+
+
+
 
 
 def get_active_window_title():
@@ -1419,8 +1909,8 @@ def cloudflare_dark(sb, login = True):
         print(e)
 
 
-
-def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages, submit_button):
+#Driver Method
+def login_to_faucet_old(url, driver, email, password, captcha_image, restrict_pages, submit_button, ip_required):
 
     driver.uc_open(url)
     time.sleep(2)
@@ -1447,35 +1937,16 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
         # Step 3: Wait for the CAPTCHA checkbox to be validated
         print("CAPTCHA Check")
         if captcha_image:
-            if 'rscaptcha'in captcha_image:
-                    try:
-                        #solve_least_img(sb1)
-                        if 'Feyorra' in current_title:
-                            pyautogui.click(932 ,728)
-                            time.sleep(1)
-                            pyautogui.click(943 ,788)
-                                    #x:943 y:788
-                            time.sleep(5)
-                            return
-                        if 'ClaimCoin' in current_title:
-                            pyautogui.click(973, 833)
-                            time.sleep(5)
-                            return
-                        pyautogui.click(957 ,886)
-                        time.sleep(5)
-                        if driver.is_element_visible(submit_button):
-                            sb1.uc_click(submit_button)
-                        time.sleep(5)
-                        return
-                    except Exception as e:
-                        print(f'ERR:{e}') 
-            else:
                 for i in range(1, 10):
                     time.sleep(1)
                     #pyautogui.moveTo(100, 200)
 
                     sb1.execute_script("window.scrollTo(0, 1000);")
                     cloudflare(driver, True)
+                    ip_address = get_ip(driver)
+                    if ip_required != ip_address:
+                        print("IP address mismatch, login")
+                        return False
                     all_windows = driver.window_handles
                     for window in all_windows:
                         if window not in restrict_pages:
@@ -1483,10 +1954,6 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                     try:
                         x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
                         if x and y: 
-
-                            #login_button = driver.find_element(By.CSS_SELECTOR, submit_button)
-                            #click_element_with_pyautogui(driver, login_button)
-                            #click_element_with_pyautogui(sb1, 'button[type="submit"]')
                             if 'Feyorra' in current_title:
 
                                 mouse_moveclick(cropped_path="/root/Desktop/MFV6/images/feyorra_loginbt.png")
@@ -1495,15 +1962,12 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
                                 #x:943 y:788
                                 time.sleep(5)
      
-                            if driver.is_element_visible(submit_button):
-                                sb1.uc_click(submit_button)
-                            #pyautogui.click(939 ,760)
-                            #pyautogui.click(939 ,760)
-
-                            
-                            
-                            #driver.execute_script("arguments[0].scrollIntoView(true);", login_button)
-                            #login_button.click(submit_button)
+                            #if driver.is_element_visible(submit_button):
+                            #    sb1.uc_click(submit_button)
+                            #element = sb1.find_element(By.CSS_SELECTOR, submit_button)
+                            #click_element_with_mouse(sb1, element, duration=0.2)
+                            capture_element_screenshot(sb1, submit_button, screenshot_path="full_screenshot.png", cropped_path=f"login_buttong.png")
+                            mouse_moveclick(cropped_path=f"login_buttong.png")
                             time.sleep(5)
                             return
                     except Exception as e:
@@ -1520,6 +1984,148 @@ def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages,
         print("🚀 Login attempt made!")
     
 
+def cloudflare_without_driver():
+    for i in range(100):
+        gtitle = get_active_window_title()
+        if 'Login' in gtitle:
+            try:
+                time.sleep(1)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
+                print("verify_cloudflare git Found")
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.7)
+                    pyautogui.click(x, y)
+                    time.sleep(5)
+
+                except Exception as e:
+                    print(e)
+
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_success.png", confidence=0.7)
+                    pyautogui.click(x, y)
+                    time.sleep(1)
+                    return True
+
+                except Exception as e:
+                    print(e)
+            except Exception as e:
+                print('cloudflare not found keep trying')
+        else:
+            return
+
+#OS Level Method
+def Fill_mailpass_faucets(sitekey, email, password):
+    if 'Earn-pepe' in sitekey:
+        pyautogui.click(852, 451)
+        time.sleep(1)
+        clipboard.copy(email)
+        pyautogui.hotkey('ctrl', 'v')
+        time.sleep(1)
+        pyautogui.click(812, 537)
+        time.sleep(1)
+        clipboard.copy(password)
+        pyautogui.hotkey('ctrl', 'v')
+        time.sleep(2)
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/pepe_login.png",confidence=0.75)
+            pyautogui.moveTo(x, y)
+            pyautogui.click()
+            return True
+        except Exception as e:
+            print(f"Error moving and clicking: {e}")
+
+    if 'Feyorra' in sitekey:
+        pyautogui.click(883, 338)
+        time.sleep(1)
+        clipboard.copy(email)
+        pyautogui.hotkey('ctrl', 'v')
+        time.sleep(1)
+        pyautogui.click(810, 419)
+        time.sleep(1)
+        clipboard.copy(password)
+        pyautogui.hotkey('ctrl', 'v')
+        time.sleep(2)
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/feyorra_loginbt.png",confidence=0.75)
+            pyautogui.moveTo(x, y)
+            pyautogui.click()
+            return True
+        except Exception as e:
+            print(f"Error moving and clicking: {e}")
+
+    if 'Earn-Trump' in sitekey:
+        pyautogui.click(883, 403)
+        time.sleep(1)
+        clipboard.copy(email)
+        pyautogui.hotkey('ctrl', 'v')
+        time.sleep(1)
+        pyautogui.click(810, 499)
+        time.sleep(1)
+        clipboard.copy(password)
+        pyautogui.hotkey('ctrl', 'v')
+        time.sleep(2)
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/trump_login.png",confidence=0.75)
+            pyautogui.moveTo(x, y)
+            pyautogui.click()
+            return True
+        except Exception as e:
+            print(f"Error moving and clicking: {e}")
+            
+    if 'Earn-Bonk' in sitekey:
+        pyautogui.click(883, 453)
+        time.sleep(1)
+        clipboard.copy(email)
+        pyautogui.hotkey('ctrl', 'v')
+        time.sleep(1)
+        pyautogui.click(810, 566)
+        time.sleep(1)
+        clipboard.copy(password)
+        pyautogui.hotkey('ctrl', 'v')
+        time.sleep(2)
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/bonk_login.png",confidence=0.75)
+            pyautogui.moveTo(x, y)
+            pyautogui.click()
+            return True
+        except Exception as e:
+            print(f"Error moving and clicking: {e}")
+#OS level
+def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages, submit_button, ip_required):
+    ##new tab open
+    pyautogui.hotkey('ctrl','t')
+    time.sleep(2)
+    #Paste Link
+    pyautogui.hotkey('ctrl','l')
+    time.sleep(2)
+    pyautogui.typewrite(url)
+    time.sleep(1)
+    pyautogui.press('enter')
+    time.sleep(3)
+    for i in range(5):
+        time.sleep(1)
+        current_title =get_active_window_title()
+        print(f"Current login title: {current_title}")
+        if 'Login' in current_title:
+            #Login Found
+            cloudflare_without_driver()
+            time.sleep(1)
+            for frm in CSB1_farms:
+                collection_csb = db[f'Farm{frm}']
+                query = {"type": "main"}
+                doc = collection_csb.find_one(query)
+                res = doc["response"]
+                req = doc["request"]
+                if req == 'ipfixer':
+                    if 'Changed' in res:
+                        print('IP is BAD HANLDE SITE')
+                        return 404
+            Fill_mailpass_faucets(current_title, email, password)
+            time.sleep(3)
+        if 'Dashboard' in current_title:
+            pyautogui.hotkey('ctrl','w')
+            return True
+
 
 
 
@@ -1533,59 +2139,111 @@ earntrump_window = None
 earnbonk_window = None
 
 def close_extra_windows(driver, keep_window_handles):
-    gg = False
-    current_window = driver.current_window_handle
-    all_windows = driver.window_handles
-    for window in all_windows:
-        if window not in keep_window_handles:
-            driver.switch_to.window(window)
-            driver.close()
-            driver.connect()
-            gg = True
-    driver.switch_to.window(current_window)
-    return gg
+    closed_any = False
+    #print('Closing Tabs')
+    # Always re-query handles, in case they shift when you close one:
+    for handle in list(driver.window_handles):
+        # If this handle should be kept, skip it:
+        if handle in keep_window_handles:
+            continue
+        # If closing this would leave zero windows, bail out:
+        if len(driver.window_handles) <= 1:
+            break
+        driver.switch_to.window(handle)
+        driver.close()
+        closed_any = True
+
+    # Switch back to your original “main” window at the end
+    # (but only if it still exists):
+    if keep_window_handles and keep_window_handles[0] in driver.window_handles:
+        driver.switch_to.window(keep_window_handles[0])
+    #print('Closed Stats:', closed_any)
+    return closed_any
 
 def handle_captcha_and_cloudflare(driver):
     cloudflare(driver, login = False)
 
-def handle_site(driver, url, expected_title, not_expected_title , function, window_list ,ip_required):
+def handle_site(driver, url, expected_title, not_expected_title , function, window_list ,ip_required, ip_check = False):
     driver.uc_open(url)
     ready = False
     while not ready:
+        print('Handle Site....')
         time.sleep(1)
         pyautogui.moveTo(100, 200)
         pyautogui.moveTo(200, 400)
+        
+        for frm in CSB1_farms:
+            collection_csb = db[f'Farm{frm}']
+            query = {"type": "main"}
+            doc = collection_csb.find_one(query)
+            res = doc["response"]
+            req = doc["request"]
+            if req == 'ipfixer':
+                if 'Changed' in res:
+                    print('IP is BAD HANLDE SITE')
+                    return 404
+        quer2y = {"type": "main"}
+        dochh2 = collection.find_one(quer2y)
+        layout_test = dochh2["withdraw_mail"]
+        if layout_test != layout:
+            return 404
+        
         all_windows = driver.window_handles
         for window in all_windows:
             if window not in window_list:
                 driver.switch_to.window(window)
+                time.sleep(1)
+        print("WINDOW LIST:", window_list)
+        print("CURRENT LIST:", all_windows)
+        print('Switch:',window)
+        if ip_check:
+            driver.uc_open(url)
+        time.sleep(1)
         current_title = driver.get_title()
         print(f"Current title: {current_title}")
         if "Google" in current_title:
             return 404
-        #ip_address = get_ip(driver)
-        #if ip_required != ip_address:
-        #    return 404
+        
+
         get_mails_passowrds(farm_id)
 
 
         if not_expected_title in current_title:
             print(f"{current_title} is not the expected title. Reconnecting...")
             if window_list:
+                print('error 405')
                 login_faucet_detect = True
                 return 405
 
             if function == 1:
-                login_to_faucet('https://earn-pepe.com/login', sb1, earnpp_email, earnpp_pass, 'cloudflare_success', window_list, 'button#ClaimBtn')
-                #login_to_faucet('https://earn-pepe.com/login', sb1, earnpp_email, earnpp_pass, 'rscaptcha', window_list, 'button#loginBtn')
+                sb1.disconnect()
+                time.sleep(2)
+                login_to_faucet('https://earn-pepe.com/login', sb1, earnpp_email, earnpp_pass, 'cloudflare_success', window_list, 'button#ClaimBtn', ip_required = ip_required)
+                sb1.connect()
+                time.sleep(3)
             elif function == 2:
-                login_to_faucet('https://feyorra.site/login', sb1, feyorra_email, feyorra_pass, 'cloudflare_success', window_list, 'button#ClaimBtn')
+                sb1.disconnect()
+                time.sleep(2)
+                login_to_faucet('https://feyorra.site/login', sb1, feyorra_email, feyorra_pass, 'cloudflare_success', window_list, 'button#ClaimBtn',ip_required = ip_required)
+                sb1.connect()
+
+                time.sleep(3)
             elif function == 3:
-                login_to_faucet('https://earn-trump.com/login', sb1, earnpp_email, earnpp_pass,  'cloudflare_success', window_list, 'button#ClaimBtn') #'not_a_robot'
+                sb1.disconnect()
+                time.sleep(2)
+                login_to_faucet('https://earn-trump.com/login', sb1, earnpp_email, earnpp_pass,  'cloudflare_success', window_list, 'button#ClaimBtn', ip_required = ip_required)
+                sb1.connect()
+
+                time.sleep(3)
             elif function == 4:
-                login_to_faucet('https://earn-bonk.com/login', sb1, feyorra_email, feyorra_pass,  'cloudflare_success', window_list, 'button#ClaimBtn')  #'not_a_robot'
+                sb1.disconnect()
+                time.sleep(2)
+                login_to_faucet('https://earn-bonk.com/login', sb1, feyorra_email, feyorra_pass,  'cloudflare_success', window_list, 'button#ClaimBtn', ip_required = ip_required)
+                sb1.connect()
 
-
+                time.sleep(3)
+            time.sleep(1)
+            continue
         elif expected_title in current_title:
             if driver.current_window_handle not in window_list:
                 ready = True
@@ -1606,8 +2264,10 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
                 if window not in window_list:
                     driver.switch_to.window(window)
             driver.uc_open(url)
-            handle_captcha_and_cloudflare(driver)
-
+            print("WINDOW LIST2:", window_list)
+            print("CURRENT LIST2:", all_windows)
+            print('Switch2:',window)
+    print('Site fine Return to Function')
     return driver.current_window_handle
 
 
@@ -1659,31 +2319,27 @@ def install_extensions(extension_name):
             time.sleep(2)
             for i in range(1,100):
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mfv6_unselect.png", region=(388, 260, 300, 300), confidence=0.60)
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mfv6_unselect.png", region=(388, 260, 300, 300), confidence=0.70)
                     pyautogui.click(x, y)
                     print("mfv6_unselect Button Found")
+                    time.sleep(1)
                         
                 except pyautogui.ImageNotFoundException:
                     print("No mfv6_unselect Button.")
+                #####Select Your Extension
+                extension_path = f"/root/Desktop/MFV6/images/{extension_name}.png" 
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mfv6_select.png", region=(388, 260, 300, 300), confidence=0.90)
+                    x, y = pyautogui.locateCenterOnScreen(extension_path, region=(545, 200, 500, 500), confidence=0.9)
                     pyautogui.click(x, y)
-                    print("mfv6_select Button Found")
-                    #####Select Your Extension
-                    extension_path = f"/root/Desktop/MFV6/images/{extension_name}.png" 
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen(extension_path, region=(545, 200, 500, 500), confidence=0.9)
-                        pyautogui.click(x, y)
-                        print(f"{extension_path} folder Found")
-                        time.sleep(2)
-                        pyautogui.click(1467, 123)
-                        print(f"{extension_path} folder Installed Complete")
-                        return True
-                    
-                    except pyautogui.ImageNotFoundException:
-                        print(f"No {extension_path} folder.")
+                    print(f"{extension_path} folder Found")
+                    time.sleep(2)
+                    pyautogui.click(1467, 123)
+                    print(f"{extension_path} folder Installed Complete")
+                    return True
+                
                 except pyautogui.ImageNotFoundException:
-                    print("No mfv6_select Button.")
+                    print(f"No {extension_path} folder.")
+
                 time.sleep(1)
                 print(f'Waiting Seconds:{i}')
 
@@ -1819,11 +2475,8 @@ def withdraw_faucet(driver, sitekey):
         currency = dochh["currency"]
         driver.open_new_window()
         current_window = driver.current_window_handle
-        all_windows = driver.window_handles
-        for window in all_windows:
-            if window != current_window:
-                driver.switch_to.window(window)
-                driver.close()  # Close the tab
+
+        close_extra_windows(sb1, [current_window])
         driver.switch_to.window(current_window)
         pyautogui.moveTo(100, 200)
         pyautogui.moveTo(200, 400)
@@ -1836,7 +2489,15 @@ def withdraw_faucet(driver, sitekey):
         if 'Just' in title:
             cloudflare(driver, login = False)
         elif 'Faucetpay' in title:
-            driver.execute_script(f"window.scrollTo(0, 1000);")
+            driver.execute_script("""const element = document.querySelector('button#ClaimBtn'); 
+                const rect = element.getBoundingClientRect();
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const offset = rect.bottom + scrollTop + 20 - window.innerHeight;
+                window.scrollTo({
+                top: offset > 0 ? offset : 0,
+                behavior: 'smooth'
+                });
+                """)
             time.sleep(1)
             driver.execute_script("""(function() {
                     const priorityCoins = ["SOL", "LTC", "DOGE", "TRX", "PEPE"];
@@ -1855,7 +2516,7 @@ def withdraw_faucet(driver, sitekey):
 
                                 console.log(`${coinCode}: ${percent}%`);
 
-                                if (percent > 9) {
+                                if (percent > 15) {
                                     input.click();
                                     console.log(` Clicked ${coinCode} radio button`);
                                     selected = true;
@@ -1877,7 +2538,7 @@ def withdraw_faucet(driver, sitekey):
             cloudflare(driver, login = True)
             time.sleep(2)
             driver.uc_click('button#ClaimBtn')
-            time.sleep(8)
+            time.sleep(10)
             response_messege(f'EarnPP FaucetPay Withdrawed')
 ###########################################################################
         #Feyorra
@@ -1888,7 +2549,15 @@ def withdraw_faucet(driver, sitekey):
         if 'Just' in title:
             cloudflare(driver, login = False)
         elif 'Faucetpay' in title:
-            driver.execute_script(f"window.scrollTo(0, 1000);")
+            driver.execute_script("""const element = document.querySelector('button#ClaimBtn'); 
+                const rect = element.getBoundingClientRect();
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const offset = rect.bottom + scrollTop + 20 - window.innerHeight;
+                window.scrollTo({
+                top: offset > 0 ? offset : 0,
+                behavior: 'smooth'
+                });
+                """)
             time.sleep(1)
             driver.execute_script("""(function () {
                     const priorityCoins = ["SOL", "LTC", "DOGE", "TRX", "PEPE"];
@@ -1908,7 +2577,7 @@ def withdraw_faucet(driver, sitekey):
 
                                 console.log(`${coinCode}: ${percent}%`);
 
-                                if (percent > 9) {
+                                if (percent > 15) {
                                     input.click();
                                     console.log(` Clicked ${coinCode} radio button`);
                                     selected = true;
@@ -1931,7 +2600,7 @@ def withdraw_faucet(driver, sitekey):
             cloudflare(driver, login = True)
             time.sleep(2)
             driver.uc_click('button#ClaimBtn')
-            time.sleep(8)
+            time.sleep(10)
             response_messege(f'Fey FaucetPay Withdrawed')
 
 ###########################################################################
@@ -1943,7 +2612,15 @@ def withdraw_faucet(driver, sitekey):
         if 'Just' in title:
             cloudflare(driver, login = False)
         elif 'Faucetpay' in title:
-            driver.execute_script(f"window.scrollTo(0, 1000);")
+            driver.execute_script("""const element = document.querySelector('button#ClaimBtn'); 
+                const rect = element.getBoundingClientRect();
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const offset = rect.bottom + scrollTop + 20 - window.innerHeight;
+                window.scrollTo({
+                top: offset > 0 ? offset : 0,
+                behavior: 'smooth'
+                });
+                """)
             time.sleep(1)
             driver.execute_script("""(function () {
                 const priorityCoins = ["SOL", "LTC", "DOGE", "TRX"];
@@ -1962,7 +2639,7 @@ def withdraw_faucet(driver, sitekey):
 
                             console.log(`${coinCode}: ${percent}%`);
 
-                            if (percent > 9) {
+                            if (percent > 15) {
                                 input.click();
                                 console.log(` Clicked ${coinCode} radio button`);
                                 selected = true;
@@ -1986,7 +2663,7 @@ def withdraw_faucet(driver, sitekey):
             cloudflare(driver, login = True)
             time.sleep(2)
             driver.uc_click('button#ClaimBtn')
-            time.sleep(8)
+            time.sleep(10)
             response_messege(f'Trump FaucetPay Withdrawed')
 ###########################################################################
         #Earn bonk
@@ -1997,7 +2674,15 @@ def withdraw_faucet(driver, sitekey):
         if 'Just' in title:
             cloudflare(driver, login = False)
         elif 'Faucetpay' in title:
-            driver.execute_script(f"window.scrollTo(0, 1000);")
+            driver.execute_script("""const element = document.querySelector('button#ClaimBtn'); 
+                const rect = element.getBoundingClientRect();
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                const offset = rect.bottom + scrollTop + 20 - window.innerHeight;
+                window.scrollTo({
+                top: offset > 0 ? offset : 0,
+                behavior: 'smooth'
+                });
+                """)
             time.sleep(1)
             driver.execute_script("""(function() {
                 const priorityCoins = ["SOL", "LTC", "DOGE", "TRX"];
@@ -2016,7 +2701,7 @@ def withdraw_faucet(driver, sitekey):
 
                             console.log(`${coinCode}: ${percent}%`);
 
-                            if (percent > 9) {
+                            if (percent > 15) {
                                 input.click();
                                 console.log(` Clicked ${coinCode} radio button`);
                                 selected = true;
@@ -2041,10 +2726,10 @@ def withdraw_faucet(driver, sitekey):
             cloudflare(driver, login = True)
             time.sleep(2)
             driver.uc_click('button#ClaimBtn')
-            time.sleep(8)
+            time.sleep(10)
             response_messege(f'BONK FaucetPay Withdrawed')
         query = {"type": "main"}
-        update = {"$set": {"request": 'ipfixer'}}
+        update = {"$set": {"request": 'mainscript'}}
         result = collection.update_one(query, update)
     except Exception as e:
         print(f'ERR on withdraw{e}')
@@ -2084,43 +2769,174 @@ feyorra_limit_reached = None
 earntrump_limit_reached = None
 earnbonk_limit_reached = None
 #if run_sb1:
-sb1 = None
+
 def are_extensions_exist():
+    all_extensions_not = True
     for i in range(3):
         time.sleep(2)
         try:
             x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cookie_icon.png", region=(1225, 33, 755, 400), confidence=0.9)
             #pyautogui.click(x, y)
             print("extension_icon Button Found")
-            return False
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1225, 33, 755, 400), confidence=0.95)
+                #pyautogui.click(x, y)
+                print("mysterium_icon_emptyf Button Found")
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_dis_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
+                    #pyautogui.click(x, y)
+                    print("sweet_dis_icon Button Found")
+                    all_extensions_not = False
+
+                except pyautogui.ImageNotFoundException:
+                    print("No sweet_dis_icon Button.")
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_nl_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
+                    #pyautogui.click(x, y)
+                    print("sweet_nl_icon Button Found")
+                    all_extensions_not = False
+
+                except pyautogui.ImageNotFoundException:
+                    print("No sweet_nl_icon Button.")
+            except pyautogui.ImageNotFoundException:
+                print("No mysterium_icon_emptyf Button.")
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_connected.png", region=(1225, 33, 755, 400), confidence=0.95)
+                #pyautogui.click(x, y)
+                print("mysterium_icon_emptyf Button Found")
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_dis_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
+                    #pyautogui.click(x, y)
+                    print("sweet_dis_icon Button Found")
+                    all_extensions_not = False
+
+                except pyautogui.ImageNotFoundException:
+                    print("No sweet_dis_icon Button.")
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_nl_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
+                    #pyautogui.click(x, y)
+                    print("sweet_nl_icon Button Found")
+                    all_extensions_not = False
+
+                except pyautogui.ImageNotFoundException:
+                    print("No sweet_nl_icon Button.")
+
+            except pyautogui.ImageNotFoundException:
+                print("No mysterium_icon_emptyf Button.")
 
         except pyautogui.ImageNotFoundException:
             print("No extension_icon Button.")
-            return True
+    return all_extensions_not
         
 
 
-def get_blacklistedip2(input):
-    ips = []
+
+
+
+
+
+def get_browser_proxy():
     collectionbip = db[f'LocalCSB']
     quer2y = {"type": "main"}
     dochh = collectionbip.find_one(quer2y)
-    blacklistedIP = dochh["blacklistedIP2"]
+    proxy = dochh["browser_proxy"]
+    print('BRowser PRoxy :', proxy)
+    global browser_proxy
+    browser_proxy = proxy
+    return browser_proxy
 
-    for x in range(1,5):
-        fn = f'F{farm_id}L{x}'
+ 
+
+
+def sweet_enable():
+    for x in range(5):
         try:
-            if fn == input:
-                continue
-            else:
-                data_list = blacklistedIP[fn]
-                ips = ips + data_list
-                print('Layout:',x)
-
-        except Exception as e:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_nl_icon.png",  region=(1625, 43, 700, 300), confidence=0.98)
+            return
+            
+        except pyautogui.ImageNotFoundException:
             pass
-    print(ips)
-    return ips
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_dis_icon.png",  region=(1625, 43, 700, 300), confidence=0.98)
+            pyautogui.click(x, y)
+            for i in range(5):
+                time.sleep(3)
+                try:
+                    a, b = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_connect.png", confidence=0.8)
+                    pyautogui.click(1518, 438)
+                    time.sleep(2)
+
+                    pyautogui.click(a, b)
+                    time.sleep(8)
+                    return
+                except pyautogui.ImageNotFoundException:
+                    print("Waiting for Sweet to pop")
+
+        except pyautogui.ImageNotFoundException:
+            print("No icon_image_loaded Human.")
+            try:
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_us.png", region=(1625, 43, 700, 300), confidence=0.98)
+                pyautogui.click(x, y)
+                time.sleep(3)
+                pyautogui.click(1518, 438)
+                time.sleep(2)
+                return
+                
+            except pyautogui.ImageNotFoundException:
+                print("Waiting for Sweet to pop")
+
+
+import shutil
+def delete_folder(folder_path):
+    if os.path.exists(folder_path) and os.path.isdir(folder_path):
+        try:
+            shutil.rmtree(folder_path)
+            print(f"Deleted: {folder_path}")
+        except Exception as e:
+            print(f"Error deleting {folder_path}: {e}")
+    else:
+        print(f"Folder not found or not a directory: {folder_path}")
+
+def mysterium_reinstaller():
+    response_messege('Changed IP🔴 :Mys Reinstaller')
+    global sb1
+    global chrome_user_data_dir
+    global layout
+    global browser_proxy
+    for i in range(4):
+        try:
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_connected.png", region=(1625, 43, 400, 300), confidence=0.99)
+            if x and y:
+
+                pyautogui.moveTo(100, 100)
+                pyautogui.click(100, 200, duration=0.5)
+                browser_proxy  =get_browser_proxy()
+
+                quer2y = {"type": "main"}
+                dochh2 = collection.find_one(quer2y)
+                layout = dochh2["withdraw_mail"]
+                print(f'Farm ID:{farm_id} | Layout: {layout}')
+                chrome_user_data_dir = f'/root/.config/google-chrome/{browser_proxy}{layout}'
+                try:
+                    sb1.quit()
+                    time.sleep(2)
+                except Exception as e:
+                    print(f"sb1.quit() failed: {e}")
+
+                # Fallback kill
+                for proc_name in ['chrome', 'chromium']:
+                    try:
+                        subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
+                        print(f"All {proc_name} processes killed (if any).")
+                    except Exception as e:
+                        print(f"Failed to kill {proc_name} processes: {e}")
+                time.sleep(3)
+                delete_folder(chrome_user_data_dir)
+                sb1 = open_browsers()
+                return
+ 
+        except pyautogui.ImageNotFoundException:
+            print("No icon_image_loaded Human.")
 
 
 def add_blacklistedip2(input, ip):
@@ -2136,67 +2952,36 @@ def add_blacklistedip2(input, ip):
         print(f"Successfully added IP '{ip}' to {input}.")
     else:
         print(f"No update occurred. IP '{ip}' might already exist.")
+    try:
+        sri_lanka_tz = pytz.timezone('Asia/Colombo')
+        utc_now = datetime.datetime.utcnow().replace(tzinfo=pytz.utc)  # Corrected here
+        sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
+        now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
+
+        query = {"type": 'ip_log'}
+        existing_doc = collectionbip.find_one(query)
+        print("Existing document before update")
+        new_message = {now:f'{input} | {ip}'} # {'2024-09-06 03:47:14': 220}  # Use a new timestamp
+        messages = existing_doc['messages']
+        messages.update(new_message)
+        update = {"$set": {"messages": messages}}
+        result = collectionbip.update_one(query, update)
+        print("Updated document")
+        if result.matched_count > 0:
+            print(f"Added new messages to existing document. Updated {result.modified_count} document(s).")
+        else:
+            print("No document found with the specified type.")
+    except Exception as e:
+        print(e)
 
 
-
-def get_browser_proxy():
-    collectionbip = db[f'LocalCSB']
-    quer2y = {"type": "main"}
-    dochh = collectionbip.find_one(quer2y)
-    proxy = dochh["browser_proxy"]
-    print('BRowser PRoxy :', proxy)
-    global browser_proxy
-    browser_proxy = proxy
-    return browser_proxy
-
- 
-def sweet_enable():
-    for x in range(5):
-        try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_dis_icon.png",  region=(1625, 43, 700, 300), confidence=0.98)
-            pyautogui.click(x, y)
-            for i in range(5):
-                time.sleep(3)
-                try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_connect.png", confidence=0.8)
-                    pyautogui.click(x, y)
-                    time.sleep(5)
-                    #pyautogui.click(300, 300)
-                    time.sleep(8)
-                except pyautogui.ImageNotFoundException:
-                    print("Waiting for Sweet to pop")
-                try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_sg2.png", confidence=0.8)
-                    pyautogui.click(x, y)
-                    time.sleep(5)
-                    pyautogui.click(300, 300)
-                    time.sleep(5)
-                    return
-                    
-                except pyautogui.ImageNotFoundException:
-                    print("Waiting for Sweet to pop")
-        except pyautogui.ImageNotFoundException:
-            print("No icon_image_loaded Human.")
-        try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sg_sweet_icon.png",  region=(1625, 43, 700, 300), confidence=0.99)
-            return
-        except pyautogui.ImageNotFoundException:
-            print("No icon_image_loaded Human.")
- 
- 
- 
-def mysterium_reinstaller():
+def mysterium_reinstaller_old():
     #find externsion
     #delete
     #install 
     response_messege('Changed IP🔴 :Mys Reinstaller')
     current_window = sb1.current_window_handle
-    all_windows = sb1.window_handles
-    for window in all_windows:
-        if window != current_window:
-            sb1.switch_to.window(window)
-            sb1.close()  # Close the tab
-            sb1.connect()
+    close_extra_windows(sb1, [current_window])
     sb1.switch_to.window(current_window)
     sb1.uc_open("chrome://extensions/")
     pyautogui.click(300, 300)
@@ -2264,6 +3049,17 @@ def fix_wrong_pins():
     except Exception as e:
         print('ERR fix wrong pin',e)
  
+
+def fix_tab_search_icon():
+    try:
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/tab_search_icon.png", region=(1625, 40, 400, 300), confidence=0.99)
+        pyautogui.rightClick(x,y)
+        time.sleep(3)
+        pyautogui.click(1790 ,130)
+        time.sleep(1)
+
+    except Exception as e:
+        print('No fix_tab_search_icon',e)
 
 browser_proxy = ''
 query = {"type": "main"}
@@ -2369,6 +3165,53 @@ def update_ip(new_ip, config_path="mfhelper/config.json"):
     except Exception as e:
         print(f"Error updating config.json: {e}")
 
+
+def clear_browser_cache_history(driver):
+    try:
+        global sb1
+        response_messege(f'Clearing Cahe')
+        driver.open("chrome://settings/clearBrowserData")
+        time.sleep(8)
+        pyautogui.click(869, 468)
+        time.sleep(2)
+        pyautogui.click(869, 585)
+        time.sleep(2)
+        pyautogui.click(1161, 797)
+        time.sleep(5)
+        try:
+            sb1.quit()
+            time.sleep(1)
+        except Exception as e:
+            print(f"sb1.quit() failed: {e}")
+
+        # Fallback kill
+        for proc_name in ['chrome', 'chromium']:
+            try:
+                subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
+                print(f"All {proc_name} processes killed (if any).")
+            except Exception as e:
+                print(f"Failed to kill {proc_name} processes: {e}")
+        time.sleep(2)
+        sb1 = open_browsers()
+    except Exception as e:
+        print(f"Error clearing browser cache: {e}")
+def calculate_accuracy_captchas(total_tests, failed_tests):
+    if total_tests == 0:
+        return 0
+    accuracy = ((total_tests - failed_tests) / total_tests) * 100
+    return round(accuracy, 2)
+
+def Fix_Chrome_Timezone(timezone_input):
+    timezone = timezone_input #"America/Denver"
+    cmd = f"ls /usr/share/zoneinfo/{timezone} && sudo ln -sf /usr/share/zoneinfo/{timezone} /etc/localtime"
+
+    try:
+        subprocess.run(cmd, shell=True, check=True)
+        print(f"Timezone successfully set to {timezone}")
+    except subprocess.CalledProcessError:
+        print(f"Failed to set timezone to {timezone}")
+
+
 fresh_start_faucet = True
 login_faucet_detect = True
 def open_browsers():
@@ -2376,17 +3219,50 @@ def open_browsers():
     global chrome_user_data_dir
     global layout
     global browser_proxy
+    global farm_location
+    global farm_user_agent
+
     pyautogui.moveTo(100, 100)
     pyautogui.click(100, 200, duration=0.5)
     browser_proxy  =get_browser_proxy()
+    get_mails_passowrds(farm_id)
+    Fix_Chrome_Timezone(farm_location)
 
     quer2y = {"type": "main"}
     dochh2 = collection.find_one(quer2y)
     layout = dochh2["withdraw_mail"]
     print(f'Farm ID:{farm_id} | Layout: {layout}')
     chrome_user_data_dir = f'/root/.config/google-chrome/{browser_proxy}{layout}'
+    try:
+        for l in range(1,7):
+            if chrome_user_data_dir == f'/root/.config/google-chrome/{browser_proxy}Layout{l}':
+                print(f'No Del Layout{l}')
+            else:
+                delete_folder(f'/root/.config/google-chrome/{browser_proxy}Layout{l}')
+    except Exception as e:
+        pass
+    sb1 = Driver(
+        uc=True,
+        headed=True,
+        undetectable=True,
+        undetected= True,
+        disable_gpu=True,  # --disable-gpu
+        user_data_dir=chrome_user_data_dir,
+        binary_location=chrome_binary_path,
+        page_load_strategy="eager",
+        
 
-    sb1 = Driver(uc=True, headed=True, undetectable=True, undetected=True, user_data_dir=chrome_user_data_dir, binary_location=chrome_binary_path, page_load_strategy='none')#, proxy=browser_proxy )
+        chromium_arg=[
+            "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36",
+            "--disable-dev-shm-usage",
+            "--disable-background-timer-throttling",
+            "--disable-backgrounding-occluded-windows",
+            "--disable-renderer-backgrounding",
+            "--disable-blink-features=AutomationControlled",
+
+
+        ]
+    )
     sb1.maximize_window()
     sb1.uc_open("chrome://extensions/")
     current_window = sb1.current_window_handle
@@ -2400,42 +3276,55 @@ def open_browsers():
     time.sleep(8)
     #sb1.execute_script("window.scrollTo(0, 300);")
     print(sb1.get_title())
+    fix_tab_search_icon()
     gggv = are_extensions_exist()
-    get_mails_passowrds(farm_id)
+    fresh = 0
     if gggv:
-        if fresh >= 3:
-            
-            sweet = install_extensions('sweet')
-            cookie = install_extensions('cookie')
-            mysterium = install_extensions('mysterium')
-            fingerprint = install_extensions('fingerprint')
-            mfhelper = install_extensions('mfhelper')
-            if fingerprint and mysterium and sweet and cookie and mfhelper:
-                print('All Extensions are installed..')
-                query = {"type": "main"}
-                update = {"$set": {"response": 'All Extensions are installed..'}}
-                result = collection.update_one(query, update)
+        ip_address = get_ip(sb1)
+        lay = re.search(r'\d+', layout).group()
+        Not_Black_Listed_Stt = Full_blacklist_Check(sb1, ip_address,f'F{farm_id}L{lay}')
+        if Not_Black_Listed_Stt:
+            print(f'Good IP found: {ip_address}')
+            update_ip(ip_address, config_path="mfhelper/config.json")
+            query = {"type": "main"}
+            update = {"$set": {"response": f'Ready IP at Start:{ip_address}'}}
+            result = collection.update_one(query, update)
+            return sb1
 
-        if fresh >= 2:
-            if pin_extensions():
-                print('All Extensions are pinned')
-                query = {"type": "main"}
-                update = {"$set": {"response": 'All Extensions are pinned'}}
-                result = collection.update_one(query, update)
-
-                if mysterium_login(sb1):
-                    print('Mysterium Login Done...')
+        else:
+            query = {"type": "main"}
+            update = {"$set": {"request": 'ipfixer'}}
+            result = collection.update_one(query, update)
+            print('No good IP')
+            response_messege(f'Changed IP:{ip_address} | Installing Extensions')
+            if fresh >= 3:
+                sweet = install_extensions('sweet')
+                cookie = install_extensions('cookie')
+                mysterium = install_extensions('mysterium')
+                fingerprint = install_extensions('fingerprint')
+                mfhelper = install_extensions('mfhelper')
+                fix_tab_search_icon()
+                if fingerprint and mysterium and sweet and cookie and mfhelper:
+                    print('All Extensions are installed..')
                     query = {"type": "main"}
-                    update = {"$set": {"response": 'Mysterium Login Done...'}}
+                    update = {"$set": {"response": 'All Extensions are installed..'}}
                     result = collection.update_one(query, update)
 
-    if fresh >= 1:            
-            #facebook_login()
-        sb1.maximize_window()
-        query = {"type": "main"}
-        update = {"$set": {"response": 'Setup Done...'}}
-        result = collection.update_one(query, update)
-    
+            if fresh >= 2:
+                if pin_extensions():
+                    print('All Extensions are pinned')
+                    query = {"type": "main"}
+                    update = {"$set": {"response": 'All Extensions are pinned'}}
+                    result = collection.update_one(query, update)
+
+                    if mysterium_login(sb1):
+                        print('Mysterium Login Done...')
+                        query = {"type": "main"}
+                        update = {"$set": {"response": 'Mysterium Login Done...'}}
+                        result = collection.update_one(query, update)
+
+
+    #sb1.disconnect()
     #time.sleep(99999)
     return sb1
 
@@ -2444,9 +3333,12 @@ def open_faucets():
     global sb1
     while True:
         try:
+            pyautogui.moveTo(100, 200)
+            pyautogui.moveTo(200, 400)
             global faucetlayout
             global fresh_start_faucet
             global login_faucet_detect
+            ip_required = None
             quer2y = {"type": "main"}
             dochh2 = collection.find_one(quer2y)
             layout2 = dochh2["withdraw_mail"]
@@ -2454,7 +3346,7 @@ def open_faucets():
             browser_proxy2  =get_browser_proxy()
             chrome_user_data_dir2 = f'/root/.config/google-chrome/{browser_proxy2}{layout2}'
             if chrome_user_data_dir == chrome_user_data_dir2 and layout == layout2 and browser_proxy2 == browser_proxy:
-                response_messege(f'Same Browser | L {layout2}')
+                print(f'Same Browser | L {layout2}')
             else:
                 response_messege(f'Resetting Browser')
                 try:
@@ -2470,105 +3362,70 @@ def open_faucets():
                         print(f"All {proc_name} processes killed (if any).")
                     except Exception as e:
                         print(f"Failed to kill {proc_name} processes: {e}")
-                time.sleep(6)
+                time.sleep(4)
                 sb1 = open_browsers()
                 continue
             pyautogui.moveTo(100, 200)
             pyautogui.moveTo(200, 400)
+            print('ff')
             current_window = sb1.current_window_handle
-            all_windows = sb1.window_handles
-            for window in all_windows:
-                if window != current_window:
-                    sb1.switch_to.window(window)
-                    sb1.close()  # Close the tab
-                    sb1.connect()
+            close_extra_windows(sb1, [current_window])
             sb1.switch_to.window(current_window)
             sb1.uc_open("chrome://extensions/")
             time.sleep(1)
             global blacklistedIP
-            collectionbip = db[f'LocalCSB']
-            quer2y = {"type": "main"}
-            dochh = collectionbip.find_one(quer2y)
-            blacklistedIP2 = dochh["blacklistedIP"]
-            if len(blacklistedIP) <= len(blacklistedIP2):
-                blacklistedIP += blacklistedIP2
-            print(blacklistedIP)
             lay = re.search(r'\d+', layout2).group()
-            other_blacklists = get_blacklistedip2(f'F{farm_id}L{lay}')
-            if other_blacklists:
-                blacklistedIP = blacklistedIP + other_blacklists
-            response_messege('Fixing IP')
             ip_address = get_ip(sb1)
-            ipscore = get_ipscore(ip_address)
-            proxycheck = get_proxycheck(sb1, ip_address, server_name= server_name1)
-            if ipscore and proxycheck == 200:
-                if ip_address in blacklistedIP:
-                    print('IP Blacklisted')
-                    response_messege(f'IP Blacklisted{ip_address}')
-                    ipfixer()
-                    ip_required = fix_ip(sb1, server_name1)
-                    ip_address = get_ip(sb1)
+            Not_Black_Listed_Stt = Full_blacklist_Check(sb1,ip_address,f'F{farm_id}L{lay}')
+            if Not_Black_Listed_Stt:
+                print(f'Good IP found: {ip_address}')
+                for frm in CSB1_farms:
+                    collection_csb = db[f'Farm{frm}']
+                    query = {"type": "main"}
+                    doc = collection_csb.find_one(query)
+                    res = doc["response"]
+                    req = doc["request"]
+                    if req == 'ipfixer':
+                        if 'Ready' in res or 'Loging' in res:
+                            print('IP is ready')
+                            ip_required = ip_address
+                            update_ip(ip_address, config_path="mfhelper/config.json")
 
-                else:
-                    print(f'Good IP found: {ip_address}')
-                    for frm in CSB1_farms:
-                        collection_csb = db[f'Farm{frm}']
-                        query = {"type": "main"}
-                        doc = collection_csb.find_one(query)
-                        res = doc["response"]
-                        req = doc["request"]
-                        if req == 'ipfixer':
-                            if 'Ready' in res:
-                                print('IP is ready')
-
-                            else:
-                                ipfixer()
-                                ip_required = fix_ip(sb1, server_name1)
-                                ip_address = get_ip(sb1)
-
+                        else:
+            
+                            ipfixer()
+                            raise Exception("Ready IP ipfixer Done")
+                    else:
+                        ip_required = ip_address
+                        update_ip(ip_address, config_path="mfhelper/config.json")
             else:
                 ipfixer()
-                ip_required = fix_ip(sb1, server_name1)
-                ip_address = get_ip(sb1)
+                raise Exception("Ready IP ipfixer Done")
 
-            ip_address = get_ip(sb1)
-            
+            pyautogui.moveTo(100, 200)
+            pyautogui.moveTo(200, 400)
             if ip_address:
+                add_blacklistedip2(f'F{farm_id}L{lay}', ip_address)
                 current_window = sb1.current_window_handle
-                all_windows = sb1.window_handles
-                for window in all_windows:
-                    if window != current_window:
-                        sb1.switch_to.window(window)
-                        sb1.close()  # Close the tab
-                        sb1.connect()
+                close_extra_windows(sb1, [current_window])
                 sb1.switch_to.window(current_window)
                 sb1.uc_open("chrome://extensions/")
-                time.sleep(2)
-                ip_required = ip_address
-                add_blacklistedip2(f'F{farm_id}L{lay}', ip_address)
                 get_mails_passowrds(farm_id)
-
-                quer2y = {"type": "main"}
-                dochh2 = collection.find_one(quer2y)
-                faucetlayout = dochh2["mainfaucet"]
+                faucetlayout = 1 #dochh2["mainfaucet"]
                 print(f'Farm ID:{farm_id} | Faucet Layout: {faucetlayout}')
-
-                ipscore = get_ipscore(ip_address)
-                proxycheck = get_proxycheck(sb1, ip_address, server_name= server_name1)
-                if ipscore and proxycheck == 200:
-                    print(f'Good IP found: {ip_address}')
-                    update_ip(ip_address, config_path="mfhelper/config.json")
-                else:
-                    raise Exception(" earnpp_window == 404")
                 fresh_start_faucet = True
+                pyautogui.moveTo(100, 200)
+                pyautogui.moveTo(200, 400)
                 if fresh_start_faucet == True:
                     ip_address = get_ip(sb1)
                     if ip_required == ip_address:
                         response_messege('EarnPP Loging Fresh')
                         if earnpp:
                             if faucetlayout == 1:
-                                earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [], ip_required)
+                                earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [], ip_required, ip_check = True)
+                                close_extra_windows(sb1, [earnpp_window])
                                 if earnpp_window == 404:
+                                    print('404 Errore')
                                     raise Exception(" earnpp_window == 404")
                                 print(f"EarnPP window handle: {earnpp_window}")
 
@@ -2577,14 +3434,17 @@ def open_faucets():
                     else:
                         raise Exception("Ip changed")
 
+                    
                     ip_address = get_ip(sb1)
                     if ip_required == ip_address:
                         response_messege('Feyorra Loging Fresh')
                         if feyorra:
                             #sb1.open_new_window()
                             if faucetlayout == 1:
-                                feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Best - Meme Coins Faucet", 2, [], ip_required)
+                                feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Best - Meme Coins Faucet", 2, [], ip_required, ip_check = True)
+                                close_extra_windows(sb1, [feyorra_window])
                                 if feyorra_window == 404:
+                                    print('404 Errore')
                                     raise Exception(" feyorra_window == 404")
                                 print(f"Feyorra window handle: {feyorra_window}")
                                 time.sleep(2)
@@ -2603,8 +3463,10 @@ def open_faucets():
                         if earntrump:
                             #sb1.open_new_window()
                             if faucetlayout == 1:
-                                earntrump_window = handle_site(sb1, "https://earn-trump.com/member/faucet","Faucet | Earn-Trump" , "Free $Trump Coin Faucet | Earn $Trump Crypto Instantly", 3, [], ip_required)
+                                earntrump_window = handle_site(sb1, "https://earn-trump.com/member/faucet","Faucet | Earn-Trump" , "Free $Trump Coin Faucet | Earn $Trump Crypto Instantly", 3, [], ip_required, ip_check = True)
+                                close_extra_windows(sb1, [earntrump_window])
                                 if earntrump_window == 404:
+                                    print('404 Errore')
                                     raise Exception(" earntrump_window == 404")
                                 print(f"earntrump window handle: {earntrump_window}")
 
@@ -2620,11 +3482,13 @@ def open_faucets():
                         if earnbonk:
                             #sb1.open_new_window()
                             if faucetlayout == 1:
-                                earnbonk_window = handle_site(sb1, "https://earn-bonk.com/member/faucet", "Faucet | Earn-Bonk" , "Earn Bonk", 4, [], ip_required)
+                                earnbonk_window = handle_site(sb1, "https://earn-bonk.com/member/faucet", "Faucet | Earn-Bonk" , "Earn Bonk", 4, [], ip_required,ip_check =  True)
+                                close_extra_windows(sb1, [earnbonk_window])
                                 if earnbonk_window == 404:
+                                    print('404 Errore')
                                     raise Exception(" earnbonk == 404")
                                 print(f"Feyorra window handle: {earnbonk_window}")
-                                time.sleep(4)
+                                time.sleep(3)
                                 Click_Understand()
 
                         else:
@@ -2632,7 +3496,8 @@ def open_faucets():
                     else:
                         raise Exception("Ip changed")
 
-
+                pyautogui.moveTo(100, 200)
+                pyautogui.moveTo(200, 400)
 
                 ################################################################
                 if ip_required == ip_address:
@@ -2641,6 +3506,7 @@ def open_faucets():
                         if faucetlayout == 1:
                             earnpp_window = handle_site(sb1, "https://earn-pepe.com/member/faucet","Faucet | Earn-pepe" , "Home | Earn-pepe", 1, [], ip_required)
                             if earnpp_window == 404:
+                                print('404 Errore')
                                 raise Exception(" earnpp_window == 404")
                             print(f"EarnPP window handle: {earnpp_window}")
 
@@ -2656,6 +3522,7 @@ def open_faucets():
                         if faucetlayout == 1:
                             feyorra_window = handle_site(sb1, "https://feyorra.site/member/faucet", "Faucet | Feyorra" , "Best - Meme Coins Faucet", 2, [earnpp_window], ip_required)
                             if feyorra_window == 404:
+                                print('404 Errore')
                                 raise Exception(" feyorra_window == 404")
                             elif feyorra_window == 405:
                                 login_faucet_detect = True
@@ -2739,9 +3606,21 @@ def open_faucets():
                     previous_reset_count = 0
 
                     login_faucet_detect = False
+                    pyautogui.moveTo(100, 200)
+                    pyautogui.moveTo(200, 400)
+                    for frm in CSB1_farms:
+                        collection_csb = db[f'Farm{frm}']
+                        query = {"type": "main"}
+                        doc = collection_csb.find_one(query)
+                        res = doc["response"]
+                        req = doc["request"]
+                        if req == 'ipfixer':
+                            if 'Changed' in res:
+                                raise Exception(" earnbonk == 404")
+
                     return earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required
         except Exception as e:
-                response_messege(f'Resetting Browser{e}')
+                response_messege(f'Resetting Browser: {e}')
                 try:
                     sb1.quit()
                     time.sleep(2)
@@ -2776,54 +3655,30 @@ print('Starting Loop')
 
 Script_Started = time.time()
 script_seconds_only = 0
+
+solving_accuracy = 0
+failed_captchas = 0
+total_captchas_received = 0
+
+
+previous_script_seconds_only = 0
 while True:
     try:
-        #pyautogui.moveTo(100, 200)
-        #pyautogui.moveTo(200, 400)
         mainscript = control_panel()
         print('control_panel', mainscript)
         if mainscript == 1:
             
             debug_messages(f'Ip address Found:{ip_address}')
+            set_refresh_faucets = 0
             cc_faucet = None
             script_elapsed_time = time.time() - Script_Started
             script_seconds_only = int(script_elapsed_time)
-            debug_messages(f'script_elapsed_time Seconds:{script_seconds_only}')
-            if script_seconds_only > 1300:
-                Script_Started = time.time()
-                try:
-                    sb1.quit()
-                    time.sleep(2)
-                except Exception as e:
-                    print(f"sb1.quit() failed: {e}")
 
-                # Fallback kill
-                for proc_name in ['chrome', 'chromium']:
-                    try:
-                        subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
-                        print(f"All {proc_name} script_seconds_only killed (if any).")
-                    except Exception as e:
-                        print(f"Failed to kill {proc_name} script_seconds_only: {e}")
-                        
-                time.sleep(2)
-                sb1 = open_browsers()
-
-                earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required = open_faucets()
-                Script_Started = time.time()
-
-            if reset_count_isacc >= 7:
-                response_messege('oops.. reset_count_isacc triggers')
-                blacklistedIP.append(ip_address)
-                mysterium_vpn_connect(server_name1, sb1)
-                time.sleep(7)
-                mysterium_vpn_connect(server_name1, sb1)
-                time.sleep(5)
-                
-                reset_count = 16
-                reset_count_isacc = 0
-
-            #ip_address = get_ip(sb1) 
-            if reset_count >= 15:
+            if reset_count >= 20:
+                print('reset count hut')
+                solving_accuracy = 0
+                failed_captchas = 0
+                total_captchas_received = 0
                 print('reset count higher')
                 try:
                     sb1.quit()
@@ -2839,10 +3694,12 @@ while True:
                     except Exception as e:
                         print(f"Failed to kill {proc_name} reset_count: {e}")
                 time.sleep(2)
+                sb1 = open_browsers()
                 earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required = open_faucets()
-                Script_Started = time.time()
                 reset_count = 0
                 reset_count_isacc = 0
+                Script_Started = time.time()
+                previous_script_seconds_only = script_seconds_only
 
             if previous_reset_count == reset_count:
                 reset_count = 0
@@ -2855,7 +3712,7 @@ while True:
                 all_window_handles = [earnpp_window,feyorra_window,earntrump_window,earnbonk_window]
                 gg23g= close_extra_windows(sb1, all_window_handles)
                 if gg23g:
-                    reset_count +=5
+                    reset_count +=3
 
                 print(f'Reset_count:{reset_count}')
 
@@ -2872,6 +3729,10 @@ while True:
                                 earnpp_coins = val
                             gg = solve_icon_captcha(sb1)
                             if gg:
+                                if gg == 201:
+                                    #wrong detect:
+                                    failed_captchas += 1
+                                total_captchas_received += 1
                                 earnpp_limit_reached = None
                             else:
                                 if Limit_Checked():
@@ -2882,7 +3743,7 @@ while True:
                                         response_messege('Pepe Limit Reached')
                                         earnpp_limit_reached =True
                                 else:
-                                    refresh_count +=4
+                                    refresh_count +=2
                             debug_messages(f'Solved Icon Captcha on EarnPP')
 
 
@@ -2891,7 +3752,8 @@ while True:
                             response_messege('Lock.. Found on EarnPP')
                             earnpp_coins = 0
                         elif 'Google' in title:
-                            reset_count +=7
+                            response_messege('Google.. Found on EarnPP')
+                            reset_count +=25
                         elif 'Just' in title:
                             debug_messages(f'Just.. Found on EarnPP')
 
@@ -2944,6 +3806,11 @@ while True:
                                 feyorra_coins = val
                             gg = solve_icon_captcha(sb1)
                             if gg:
+                                if gg == 201:
+                                    #wrong detect:
+                                    failed_captchas += 1
+
+                                total_captchas_received += 1
                                 feyorra_limit_reached =None
                                 
                             else:
@@ -2955,7 +3822,7 @@ while True:
                                         response_messege('Feyorra Limit Reached')
                                         feyorra_limit_reached =True
                                 else:
-                                    refresh_count +=4
+                                    refresh_count +=2
 
                                 
                         elif 'Just' in title:
@@ -2963,7 +3830,8 @@ while True:
                             cloudflare(sb1, login = False)
                             debug_messages(f'Just Fixed Feyorra')
                         elif 'Google' in title:
-                            reset_count +=7
+                            response_messege('Google.. Found on Feyorra')
+                            reset_count +=25
                         elif 'aintenance' in title:
                             debug_messages(f'maintenance.. Found on Feyorra')
                             response_messege('maintenance.. Found on Feyorra')
@@ -3013,6 +3881,11 @@ while True:
                                 earntrump_coins = val
                             gg = solve_icon_captcha(sb1)
                             if gg:
+                                if gg == 201:
+                                    #wrong detect:
+                                    failed_captchas += 1
+
+                                total_captchas_received += 1
                                 earntrump_limit_reached =None
                             else:
                                 if Limit_Checked():
@@ -3023,7 +3896,7 @@ while True:
                                         response_messege('Trump Limit Reached')
                                         earntrump_limit_reached =True
                                 else:
-                                    refresh_count +=4
+                                    refresh_count +=2
 
                                 
                         elif 'Just' in title:
@@ -3031,7 +3904,8 @@ while True:
                             cloudflare(sb1, login = False)
                             debug_messages(f'Just Fixed Trump')
                         elif 'Google' in title:
-                            reset_count +=5
+                            response_messege('Google.. Found on Trump')
+                            reset_count +=25
                         elif 'aintenance' in title:
                             debug_messages(f'maintenance.. Found on Trump')
                             response_messege('maintenance.. Found on Trump')
@@ -3083,6 +3957,11 @@ while True:
                                 earnbonk_coins = val
                             gg = solve_icon_captcha(sb1)
                             if gg:
+                                if gg == 201:
+                                    #wrong detect:
+                                    failed_captchas += 1
+
+                                total_captchas_received += 1
                                 earnbonk_limit_reached =None
 
                             else:
@@ -3096,7 +3975,7 @@ while True:
                                         earnbonk_limit_reached =True
                                 else:
                                     #Click_Understand()
-                                    refresh_count +=4
+                                    refresh_count +=2
 
                                 
                         elif 'Just' in title:
@@ -3104,7 +3983,8 @@ while True:
                             cloudflare(sb1, login = False)
                             debug_messages(f'Just Fixed Bonk')
                         elif 'Google' in title:
-                            reset_count +=5
+                            response_messege('Google.. Found on Bonk')
+                            reset_count +=25
                         elif 'aintenance' in title:
                             debug_messages(f'maintenance.. Found on Bonk')
                             response_messege('maintenance.. Found on Bonk')
@@ -3141,11 +4021,10 @@ while True:
 ###################################################################################################################
 
 
-
                 elapsed_time = time.time() - start_time
                 seconds_only = int(elapsed_time)
                 debug_messages(f'ClaimCoins Seconds:{seconds_only}')
-                if seconds_only > 20:
+                if seconds_only > 50:
                     start_time = time.time()
                     if earnpp_coins == earnpp_coins_pre:
                         start_time = time.time()
@@ -3225,16 +4104,26 @@ while True:
                 seconds_only3 = int(elapsed_time3)
                 debug_messages(f'MangoDB Seconds:{seconds_only3}')
                 if seconds_only3 > 130:
+                    quer2y = {"type": "main"}
+                    dochh2 = collection.find_one(quer2y)
+                    layout_test = dochh2["withdraw_mail"]
+                    if layout_test != layout:
+                        print('Wrong Farm layout')
+                        reset_count +=30
+
                     print(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | Trump:{earntrump_coins}|BONK:{earnbonk_coins} ')
                     if earnpp_coins and feyorra_coins and earnbonk_coins and earntrump_coins: 
                         start_time3 = time.time()
-                        emailgg = f'{earnpp_email} <br>country: {server_name1} <br>Current Layout:{layout} <br>Farm:{farm_id} <br>Session Reset:{script_seconds_only}'
-                        insert_data(ip_address, earnpp_coins, feyorra_coins, earntrump_coins, earnbonk_coins, emailgg)
+                        Script_Started_elsg = time.time() - Script_Started
+                        emailgg = f'{earnpp_email} <br>country: {server_name1} <br>Current Layout:{layout} <br>Farm:{farm_id} <br>Pre-Session Reset:{previous_script_seconds_only} <br>Session Reset:{script_seconds_only}'
+                        solving_accuracy = calculate_accuracy_captchas(total_captchas_received, failed_captchas)
+                        winning_captcha_amount = total_captchas_received - failed_captchas
+                        accuracy_info = f'Ratio: {winning_captcha_amount} / {total_captchas_received} <br> Accuracy : {solving_accuracy}%'
+
+                        insert_data(ip_address, earnpp_coins, feyorra_coins, earntrump_coins, earnbonk_coins, accuracy_info, emailgg)
                     else:
                         response_messege(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | Trump:{earntrump_coins}|BONK:{earnbonk_coins} ')
-                    #elif earnpp_coins and feyorra_coins and claimc_coins:
-                    #    start_time3 = time.time()
-                    #    insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins, 0)
+
                     
                     
 
@@ -3263,11 +4152,10 @@ while True:
 
         if mainscript == 4:
             withdraw_faucet(sb1, 1) 
+            reset_count +=30
 
         if mainscript == 6:
-            withdraw_faucet(sb1, 2) 
-        if mainscript == 7:
-            withdraw_faucet(sb1, 3) 
+            pass
 
         if mainscript == 8:
             sb1.quit()
@@ -3294,11 +4182,15 @@ while True:
             for proc_name in ['chrome', 'chromium']:
                 try:
                     subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
-                    print(f"All {proc_name} Hell No killed (if any).")
+                    print(f"All {proc_name} Hell killed (if any).")
                 except Exception as e:
-                    print(f"Failed to kill {proc_name} Hell No: {e}")
+                    print(f"Failed to kill {proc_name} Hell: {e}")
             time.sleep(10)
             sb1 = open_browsers()
-            reset_count +=15
+            earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required = open_faucets()
+            reset_count = 0
+            reset_count_isacc = 0
+            Script_Started = time.time()
+            previous_script_seconds_only = script_seconds_only
         reset_count +=2
      

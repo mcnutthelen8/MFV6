@@ -89,7 +89,7 @@ xrandr --output nxoutput0 --mode 1920x1080
 
 # Download and unzip Mysterium extension
 echo "Downloading and unzipping Mysterium extension..."
-wget "https://clients2.googleusercontent.com/crx/blobs/AcmIXboeI0jOhQJuWQiGcP26lEczd-mmGbtJ8tw7Xfh3ViDg97iKC7Uut3sTEBDxH4geJuNqb_QilrWMVh-KtsGU1hZ8yvV0viGrlLYoIAVpHmA0JkmrOe5EeSbc9A5YWLvjAMZSmuW0zhzofVu6OeZPMmU1prneYkDgOA/DCLJFNHBJPILFPMIMIPCIJGAALCABFHD_0_0_1_0.crx" -O mysterium.crx
+wget "https://clients2.googleusercontent.com/crx/blobs/AR5vvTqubtVV5aVepSABGlBG3y7lsxqE1_eZ9CC1AW2HJIros4Z6vxBZeicez6ODrI5S6G9akqmKxINYfSxFCvLJK-qwgRrhUFkYfAm0_6G4YfOgO-P6PfMspiS1zOv-30c4AMZSmuVj573y_tqmiWcnYlmz-GmfpizZvA/DCLJFNHBJPILFPMIMIPCIJGAALCABFHD_0_1_0_0.crx" -O mysterium.crx
 unzip mysterium.crx -d /root/Desktop/MFV6/mysterium
 
 echo "Downloading and unzipping Nopecha extension..."

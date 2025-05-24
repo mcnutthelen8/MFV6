@@ -1,5 +1,5 @@
 
-print('Version 9.9.9.9.9')
+print('Version 9.9.9.9.8')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -79,10 +79,6 @@ feyorra_email = ''
 feyorra_pass = ''
 layout = ''
 
-farm_ip_address = ''
-farm_user_agent = ''
-farm_location = ''
-
 Farm_list = [1, 2, 3, 4, 5]
 
 def get_mails_passowrds(farm_id):
@@ -95,9 +91,6 @@ def get_mails_passowrds(farm_id):
     global layout
     global mysterium_raw
     global Farm_list
-    global farm_ip_address
-    global farm_user_agent
-    global farm_location
 
     collection = db[f'Farm{farm_id}']
     quer2y = {"type": "main"}
@@ -125,12 +118,6 @@ def get_mails_passowrds(farm_id):
             feyorra_email = 'mackbinb23@gmail.com'
             feyorra_pass = 'mackbinb23'
 
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@193.160.83.71:6392'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
-            #"--user-agent=Mozilla/5.0 (Linux; Android 12; Pixel 6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Mobile Safari/537.36"
-
-
         elif '2' in layout:
             server_name1 = 'thailand' # 'morocco' #'bulgaria'
             CSB1_farms = Farm_list #[6, 7, 8, 9, 10]
@@ -138,12 +125,6 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'bommetro5'
             feyorra_email = 'bommetro5@gmail.com'
             feyorra_pass = 'bommetro5'
-
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@192.53.142.61:5758'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
-
-
         elif '3' in layout:
             server_name1 = 'thailand' # 'morocco' #'bulgaria'
             CSB1_farms =Farm_list#[6, 7, 8, 9, 10]
@@ -151,11 +132,6 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'grandkolla19972'
             feyorra_email = 'jjona323h123@gmail.com'
             feyorra_pass = 'jjona323h123'
-
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@192.53.142.54:5751'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
-
 
         elif '4' in layout:
             server_name1 = 'thailand'
@@ -165,10 +141,6 @@ def get_mails_passowrds(farm_id):
             feyorra_email = 'gihanfer9076@gmail.com'
             feyorra_pass = 'gihanfer9076'
 
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@193.160.82.7:5979'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
-
         elif '5' in layout:
             server_name1 = 'thailand'
             CSB1_farms = Farm_list
@@ -176,12 +148,7 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'ddilakshi23'
             feyorra_email = 'ddilakshi23@gmail.com'
             feyorra_pass = 'ddilakshi23' 
-
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@192.53.142.108:5805'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
-
-
+            
         elif '6' in layout:
             server_name1 = 'thailand'
             CSB1_farms = Farm_list
@@ -189,10 +156,6 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'shemprer'
             feyorra_email = 'shemprer@gmail.com'
             feyorra_pass = 'shemprer'
-            
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@192.53.137.153:6441'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
 
         
         else:
@@ -208,12 +171,6 @@ def get_mails_passowrds(farm_id):
             feyorra_email = 'helenmcnutt6@gmail.com'
             feyorra_pass = 'helenmcnutt6'
 
-            
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@72.1.181.186:5580'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
-
-
         elif '2' in layout:
             server_name1 = 'poland' #'portugal'
             CSB1_farms = Farm_list
@@ -222,11 +179,6 @@ def get_mails_passowrds(farm_id):
             feyorra_email = 'gtared666@gmail.com'
             feyorra_pass = 'gtared666'
 
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@72.1.154.8:7899'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
-
-
         elif '3' in layout:
             server_name1 = 'poland' #'portugal'
             CSB1_farms = Farm_list
@@ -234,13 +186,6 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'grncaptain6'
             feyorra_email = 'grncaptain6@gmail.com'
             feyorra_pass = 'grncaptain6'
-
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@72.1.181.43:5437'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
-
-
-
         elif '4' in layout:
             server_name1 = 'poland'
             CSB1_farms = Farm_list
@@ -248,12 +193,6 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'roxashen97'
             feyorra_email = 'roxashen97@gmail.com'
             feyorra_pass = 'roxashen97'
-
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@192.53.142.219:5916'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
-
-
         elif '5' in layout:
             server_name1 = 'austria'
             CSB1_farms = Farm_list
@@ -261,11 +200,7 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'oronchu23'
             feyorra_email = 'oronchu23@gmail.com'
             feyorra_pass = 'oronchu23' 
-
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@192.53.138.184:6122'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
-
+            
         elif '6' in layout:
             server_name1 = 'austria'
             CSB1_farms = Farm_list
@@ -273,13 +208,6 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'drameson3'
             feyorra_email = 'drameson3@gmail.com'
             feyorra_pass = 'drameson3'
-
-
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@193.160.83.224:6545'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
-
-
         else:
             print('Layout issue', layout)
 
@@ -293,11 +221,6 @@ def get_mails_passowrds(farm_id):
             feyorra_email = 'shldmky53@gmail.com'
             feyorra_pass = 'shldmky53'
 
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@192.53.137.36:6324'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
-
-
         elif '2' in layout:
             server_name1 = 'france' #'belgium'
             CSB1_farms =Farm_list
@@ -305,11 +228,6 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'merlelcn666'
             feyorra_email = 'merlelcn666@gmail.com'
             feyorra_pass = 'merlelcn666'
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@72.1.154.57:7948'################################
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
-
-
 
         elif '3' in layout:
             server_name1 = 'france' #'belgium'
@@ -318,14 +236,6 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'tanishaamy2500'
             feyorra_email = 'tanishaamy2500@gmail.com'
             feyorra_pass = 'tanishaamy2500'
-
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@192.53.138.183:6121'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
-
-
-
-
         elif '4' in layout:
             server_name1 = 'france' #'belgium'
             CSB1_farms =Farm_list
@@ -333,13 +243,6 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'hayzgonzle5'
             feyorra_email = 'hayzgonzle5@gmail.com'
             feyorra_pass = 'hayzgonzle5'
-
-
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@192.53.66.74:6180'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
-
-
         elif '5' in layout:
             server_name1 = 'france' #'belgium'
             CSB1_farms =Farm_list
@@ -347,15 +250,6 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'henndaneys5'
             feyorra_email = 'henndaneys5@gmail.com'
             feyorra_pass = 'henndaneys5' 
-
-
-
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@192.53.66.97:6203'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
-
-
-
             
         elif '6' in layout:
             server_name1 = 'france'
@@ -364,11 +258,6 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'sumithrohan2'
             feyorra_email = 'sumithrohan2@gmail.com'
             feyorra_pass = 'sumithrohan2'
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@192.53.66.104:6210'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
-
-
 
         else:
             print('Layout issue', layout)
@@ -382,12 +271,6 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'berendkalpana55'
             feyorra_email = 'berendkalpana55@gmail.com'
             feyorra_pass = 'berendkalpana55'
-
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@193.160.82.149:6121'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
-
-
         elif '2' in layout:
             server_name1 = 'canada' #'georgia'# 
             CSB1_farms = Farm_list
@@ -395,12 +278,6 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'neyvon432'
             feyorra_email = 'neyvon432@gmail.com'
             feyorra_pass = 'neyvon432'
-
-
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@82.140.180.39:6999'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
-
 
 
         elif '3' in layout:
@@ -411,12 +288,6 @@ def get_mails_passowrds(farm_id):
             feyorra_email = 'sheldnkumr86@gmail.com'
             feyorra_pass = 'sheldnkumr86'
 
-
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@82.140.180.185:7145'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
-
-
         elif '4' in layout:
             server_name1 = 'canada' #'georgia'# 
             CSB1_farms = Farm_list
@@ -424,14 +295,6 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'drewaperea'#'andrewperera8'
             feyorra_email = 'drewaperea@gmail.com'#'andrewperera8@gmail.com'
             feyorra_pass = 'drewaperea'#'andrewperera8'
-
-
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@72.1.181.192:5586'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
-
-
-
         elif '5' in layout:
             server_name1 = 'canada' #'georgia'# 
             CSB1_farms = Farm_list
@@ -439,12 +302,7 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'howard998'
             feyorra_email = 'howard998@gmail.com'
             feyorra_pass = 'howard998' 
-
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@72.1.181.145:5539'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
-
-
+            
         elif '6' in layout:
             server_name1 = 'canada'
             CSB1_farms = Farm_list
@@ -452,11 +310,6 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'amberodum7'
             feyorra_email = 'amberodum7@gmail.com'
             feyorra_pass = 'amberodum7'
-
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@82.140.180.46:7006'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'Europe/Paris'
-
 
 
         else:
@@ -472,12 +325,6 @@ def get_mails_passowrds(farm_id):
             feyorra_email = 'ernestost5@gmail.com'
             feyorra_pass = 'ernestost5'
 
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@82.140.180.6:6966'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'Europe/Paris'
-
-
-
         elif '2' in layout:
             server_name1 = 'germany' #'chile'
             CSB1_farms =Farm_list
@@ -485,12 +332,6 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'taptioronl8'
             feyorra_email = 'taptioronl8@gmail.com'
             feyorra_pass = 'taptioronl8'
-
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@72.1.181.41:5435'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'America/New_York'
-
-
         elif '3' in layout:
             server_name1 = 'germany' #'chile'
             CSB1_farms = Farm_list
@@ -498,11 +339,6 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'kevincharl3'
             feyorra_email = 'kevincharl3@gmail.com'
             feyorra_pass = 'kevincharl3'
-
-
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@82.140.180.81:7041'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'Europe/Paris'
 
         elif '4' in layout:
             server_name1 = 'germany' #'chile'
@@ -512,10 +348,6 @@ def get_mails_passowrds(farm_id):
             feyorra_email = 'kendleo4@gmail.com'
             feyorra_pass = 'kendleo4'
 
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@82.140.180.158:7118'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'Europe/Paris'
-
         elif '5' in layout:
             server_name1 = 'germany' #'chile'
             CSB1_farms =Farm_list
@@ -523,11 +355,7 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'willsmile31'
             feyorra_email = 'willsmile31@gmail.com'
             feyorra_pass = 'willsmile31' 
-
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@82.140.180.107:7067'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'Europe/Paris'
-
+            
         elif '6' in layout:
             server_name1 = 'germany'
             CSB1_farms = Farm_list
@@ -535,10 +363,6 @@ def get_mails_passowrds(farm_id):
             earnpp_pass = 'adaavery5'
             feyorra_email = 'adaavery5@gmail.com'
             feyorra_pass = 'adaavery5'
-
-            farm_ip_address = 'kscpxecv:nxp0ortome2m@82.140.180.149:7109'
-            farm_user_agent = '--user-agent=Mozilla/5.0 (X11; CrOS x86_64 15862.94.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36'
-            farm_location = 'Europe/Paris'
 
         else:
             print('Layout issue', layout)
@@ -751,7 +575,7 @@ def get_proxycheck_inbrowser(sb1, ip, server_name):
             country = ip_address[str(ip)]["country"]
     
             print(f"IP Address: {ip} \nProxy Status: {proxy_status} \nCountry: {country}")
-            if server_name == server_name: #country.lower() in server_name.lower():
+            if country.lower() in server_name.lower():
                 if proxy_status in 'no' or 'no' in proxy_status:
                     print(f'{country} is valid with proxy status.')
                     val = 200
@@ -789,7 +613,7 @@ def get_proxycheck(driver, ip, server_name):
                 proxy_status = ip_info.get('proxy', 'Unknown')
                 country = ip_info.get('country', 'Unknown')
                 print(f"IP Address: {ip_address} \nProxy Status: {proxy_status} \country Status: {country}")
-                if server_name == server_name: #country.lower() in server_name.lower():
+                if country.lower() in server_name.lower():
                     if proxy_status =='no':
                         return 200
                     else:
@@ -845,11 +669,11 @@ def get_ipscore(ip):
             return True
         else:
             print("Conditions not met: Returning None")
-            return True
+            return None
  
     except requests.RequestException as e:
         print(f"Error retrieving IP data: {e}")
-        return True
+        return None
 
 def mysterium_vpn_connect(server_name, driver):
     try:
@@ -871,12 +695,12 @@ def mysterium_vpn_connect(server_name, driver):
     sweet_enable()
     fix_wrong_pins()
     try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1425, 43, 550, 300), confidence=0.95)
+        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
         pyautogui.click(x, y)
         print("mysterium_icon_empty Found")
         time.sleep(5)
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/myserium_disconnect.png", region=(800, 190, 1300, 400), confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/myserium_disconnect.png", region=(1325, 190, 800, 400), confidence=0.95)
             pyautogui.click(x, y)
             print("myserium_disconnect Found")
         except pyautogui.ImageNotFoundException:
@@ -890,11 +714,11 @@ def mysterium_vpn_connect(server_name, driver):
         except Exception as e:
             print("mysterium_logged")
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/quick_connect.png", region=(1125, 190, 900, 400), confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/quick_connect.png", region=(1325, 190, 800, 400), confidence=0.95)
  
             print("quick_connect Found")
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/search_mysterium.png", region=(1125, 494, 900, 400), confidence=0.95)
+                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/search_mysterium_nomachine_paths.png", region=(1325, 494, 800, 400), confidence=0.95)
                 pyautogui.click(x, y)
                 print("search_mysterium Found")
                 time.sleep(2)
@@ -982,8 +806,7 @@ def fix_ip(drive, name):
                     update = {"$set": {"request": 'ipfixer'}}
                     result = collection_csb.update_one(query, update)
                     print('Update Farm', i)
-                #mysterium_vpn_connect(name, drive)
-                
+                mysterium_vpn_connect(name, drive)
                 print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
                 time.sleep(5)
 
@@ -1250,7 +1073,7 @@ def ipfixer():
                     sri_lanka_time = utc_now.astimezone(sri_lanka_tz)
                     now = sri_lanka_time.strftime('%Y-%m-%d %H:%M:%S')
                     print(now)
-                    #ip = fix_ip(sb1, server_name1)
+                    ip = fix_ip(sb1, server_name1)
                     gg2344 = 0
         else:
             return True
@@ -1330,7 +1153,7 @@ import numpy as np
 from tensorflow.keras.preprocessing import image
 
 # Load the trained model
-model = tf.keras.models.load_model('captcha_model_v16.keras')
+model = tf.keras.models.load_model('captcha_model_v17.keras')
 category_classes_list  =  ['award-solid', 'bell-solid', 'broom-solid', 'bug-solid', 'bullhorn-solid', 'camera-solid', 'cannabis-solid', 'capsules-solid', 'car-burst-solid', 'car-solid', 'carrot-solid', 'cat-solid', 'certificate-solid', 'charging-station-solid', 'chart-line-solid', 'check-solid', 'chess-knight-solid', 'circle-xmark-solid', 'clock-rotate-left-solid', 'couch-solid', 'crow-solid', 'democrat-solid', 'dice-solid', 'dog-solid', 'dove-solid', 'dragon-solid', 'droplet-solid', 'envelope-solid', 'face-surprise-solid', 'face-tired-solid', 'feather-pointed-solid', 'gear-solid', 'gem-solid', 'gift-solid', 'gopuram-solid', 'graduation-cap-solid', 'guitar-solid', 'hammer-solid', 'hat-wizard-solid', 'heart-solid', 'helicopter-solid', 'house-solid', 'image-solid', 'key-solid', 'kiwi-bird-solid', 'laptop-solid', 'leaf-solid', 'lightbulb-solid', 'link-solid', 'lock-solid', 'marker-solid', 'microchip-solid', 'microphone-solid', 'money-bill-wave-solid', 'moon-solid', 'mug-hot-solid', 'mug-saucer-solid', 'music-solid', 'oil-can-solid', 'paw-solid', 'piggy-bank-solid', 'pizza-slice-solid', 'plug-solid', 'puzzle-piece-solid', 'republican-solid', 'ribbon-solid', 'robot-solid', 'rocket-solid', 'rotate-solid', 'satellite-solid', 'scissors-solid', 'screwdriver-wrench-solid', 'ship-solid', 'shuttle-space-solid', 'signal-solid', 'sim-card-solid', 'sitemap-solid', 'skull-crossbones-solid', 'smoking-solid', 'snowman-solid', 'spa-solid', 'spider-solid', 'spoon-solid', 'star-of-david-solid', 'star-solid', 'sun-solid', 'syringe-solid', 'tablets-solid', 'tag-solid', 'temperature-half-solid', 'thermometer-solid', 'thumbs-up-solid', 'thumbtack-solid', 'tooth-solid', 'tractor-solid', 'traffic-light-solid', 'train-subway-solid', 'tree-solid', 'truck-monster-solid', 'truck-pickup-solid', 'umbrella-solid', 'user-solid', 'utensils-solid', 'van-shuttle-solid', 'vector-square-solid', 'vial-solid', 'vials-solid', 'video-solid', 'volleyball-solid', 'xmark-solid', 'yin-yang-solid']
 
 def predict_image_from_list(image_path, category_options):
@@ -1908,6 +1731,18 @@ def cloudflare_dark(sb, login = True):
     except Exception as e:
         print(e)
 
+def previous_script_seconds_cal(pre_g,gg):
+    total_str, added_str = pre_g.split(' | ')
+    total = int(total_str)
+    added = int(added_str)
+
+    # Add the new seconds
+    new_total = total + gg
+
+    # Format the result
+    result = f'{new_total} | {gg}'
+    return result
+
 
 #Driver Method
 def login_to_faucet_old(url, driver, email, password, captcha_image, restrict_pages, submit_button, ip_required):
@@ -2319,7 +2154,7 @@ def install_extensions(extension_name):
             time.sleep(2)
             for i in range(1,100):
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mfv6_unselect.png", region=(388, 260, 300, 300), confidence=0.70)
+                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mfv6_unselect_nomachine_paths.png", region=(388, 260, 300, 300), confidence=0.70)
                     pyautogui.click(x, y)
                     print("mfv6_unselect Button Found")
                     time.sleep(1)
@@ -2327,7 +2162,7 @@ def install_extensions(extension_name):
                 except pyautogui.ImageNotFoundException:
                     print("No mfv6_unselect Button.")
                 #####Select Your Extension
-                extension_path = f"/root/Desktop/MFV6/images/{extension_name}.png" 
+                extension_path = f"/root/Desktop/MFV6/images/{extension_name}_nomachine_paths.png" 
                 try:
                     x, y = pyautogui.locateCenterOnScreen(extension_path, region=(545, 200, 500, 500), confidence=0.9)
                     pyautogui.click(x, y)
@@ -3201,17 +3036,68 @@ def calculate_accuracy_captchas(total_tests, failed_tests):
     accuracy = ((total_tests - failed_tests) / total_tests) * 100
     return round(accuracy, 2)
 
-def Fix_Chrome_Timezone(timezone_input):
-    timezone = timezone_input #"America/Denver"
-    cmd = f"ls /usr/share/zoneinfo/{timezone} && sudo ln -sf /usr/share/zoneinfo/{timezone} /etc/localtime"
-
-    try:
-        subprocess.run(cmd, shell=True, check=True)
-        print(f"Timezone successfully set to {timezone}")
-    except subprocess.CalledProcessError:
-        print(f"Failed to set timezone to {timezone}")
 
 
+
+def quick_open_faucet(sb1):
+    sb1.open_new_window()
+    current_window = sb1.current_window_handle
+    close_extra_windows(sb1, [current_window])
+    earnpp_window = None
+    feyorra_window = None
+    trump_window = None
+    bonk_window = None
+
+
+    ##Open All Faucets
+    sb1.uc_open('https://earn-pepe.com/member/faucet')
+    if 'Just' in sb1.get_title():
+        cloudflare(sb1, login = False)
+        time.sleep(5)
+
+    sb1.open_new_window()
+    sb1.uc_open('https://feyorra.site/member/faucet')
+    if 'Just' in sb1.get_title():
+        cloudflare(sb1, login = False)
+        #time.sleep(5)
+
+    sb1.open_new_window()
+    sb1.uc_open('https://earn-trump.com/member/faucet')
+    if 'Just' in sb1.get_title():
+        cloudflare(sb1, login = False)
+        #time.sleep(5)
+
+    sb1.open_new_window()
+    sb1.uc_open('https://earn-bonk.com/member/faucet')
+    if 'Just' in sb1.get_title():
+        cloudflare(sb1, login = False)
+        #time.sleep(5)
+
+    all_window_handles = sb1.window_handles
+    for handle in all_window_handles:
+        sb1.switch_to.window(handle)
+        if "Faucet | Earn-pepe" in sb1.get_title():
+            earnpp_window = sb1.current_window_handle
+            print('EarnPP Window Found')
+
+        elif "Faucet | Feyorra" in sb1.get_title():
+            feyorra_window = sb1.current_window_handle
+            print('Feyorra Window Found')
+
+        elif "Faucet | Earn-Trump" in sb1.get_title():
+            trump_window = sb1.current_window_handle
+            print('Trump Window Found')
+
+        elif "Faucet | Earn-Bonk" in sb1.get_title():
+            bonk_window = sb1.current_window_handle
+            print('Bonk Window Found')
+
+    return earnpp_window, feyorra_window, trump_window, bonk_window
+
+
+
+
+already_ready = False
 fresh_start_faucet = True
 login_faucet_detect = True
 def open_browsers():
@@ -3219,14 +3105,11 @@ def open_browsers():
     global chrome_user_data_dir
     global layout
     global browser_proxy
-    global farm_location
-    global farm_user_agent
+    global already_ready
 
     pyautogui.moveTo(100, 100)
     pyautogui.click(100, 200, duration=0.5)
     browser_proxy  =get_browser_proxy()
-    get_mails_passowrds(farm_id)
-    Fix_Chrome_Timezone(farm_location)
 
     quer2y = {"type": "main"}
     dochh2 = collection.find_one(quer2y)
@@ -3273,23 +3156,32 @@ def open_browsers():
     sb1.connect()
     sb1.switch_to.window(current_window2)
     sb1.uc_open("chrome://extensions/")
-    time.sleep(8)
+    #time.sleep(8)
     #sb1.execute_script("window.scrollTo(0, 300);")
     print(sb1.get_title())
     fix_tab_search_icon()
     gggv = are_extensions_exist()
-    fresh = 0
+    get_mails_passowrds(farm_id)
+    ip_address = get_ip(sb1)
+    lay = re.search(r'\d+', layout).group()
+    Not_Black_Listed_Stt = Full_blacklist_Check(sb1, ip_address,f'F{farm_id}L{lay}')
+    if Not_Black_Listed_Stt:
+        print(f'Good IP Ready IP at Start: {ip_address}')
+        update_ip(ip_address, config_path="mfhelper/config.json")
+        query = {"type": "main"}
+        update = {"$set": {"response": f'Ready IP at Start:{ip_address}'}}
+        result = collection.update_one(query, update)
+        already_ready = True
+        return sb1 #, True
     if gggv:
-        ip_address = get_ip(sb1)
-        lay = re.search(r'\d+', layout).group()
-        Not_Black_Listed_Stt = Full_blacklist_Check(sb1, ip_address,f'F{farm_id}L{lay}')
         if Not_Black_Listed_Stt:
-            print(f'Good IP found: {ip_address}')
+            print(f'Good IP Ready IP at Start: {ip_address}')
             update_ip(ip_address, config_path="mfhelper/config.json")
             query = {"type": "main"}
             update = {"$set": {"response": f'Ready IP at Start:{ip_address}'}}
             result = collection.update_one(query, update)
-            return sb1
+            already_ready = True
+            return sb1 #, True
 
         else:
             query = {"type": "main"}
@@ -3326,7 +3218,7 @@ def open_browsers():
 
     #sb1.disconnect()
     #time.sleep(99999)
-    return sb1
+    return sb1 #, False
 
 faucetlayout = None
 def open_faucets():
@@ -3338,6 +3230,7 @@ def open_faucets():
             global faucetlayout
             global fresh_start_faucet
             global login_faucet_detect
+            global already_ready
             ip_required = None
             quer2y = {"type": "main"}
             dochh2 = collection.find_one(quer2y)
@@ -3362,12 +3255,38 @@ def open_faucets():
                         print(f"All {proc_name} processes killed (if any).")
                     except Exception as e:
                         print(f"Failed to kill {proc_name} processes: {e}")
-                time.sleep(4)
+                #time.sleep(4)
                 sb1 = open_browsers()
                 continue
             pyautogui.moveTo(100, 200)
             pyautogui.moveTo(200, 400)
-            print('ff')
+            print('ff already_ready',already_ready)
+
+            if already_ready:
+                for frm in CSB1_farms:
+                    collection_csb = db[f'Farm{frm}']
+                    query = {"type": "main"}
+                    doc = collection_csb.find_one(query)
+                    res = doc["response"]
+                    req = doc["request"]
+                    if req == 'ipfixer':
+                        if 'Changed' in res:
+                            query = {"type": "main"}
+                            update = {"$set": {"request": 'ipfixer'}}
+                            result = collection.update_one(query, update)
+                            raise Exception(" earnbonk == 404")
+                        
+                earnpp_window, feyorra_window, earntrump_window, earnbonk_window =quick_open_faucet(sb1)
+                ip_address = get_ip(sb1)
+                lay = re.search(r'\d+', layout2).group()
+                Not_Black_Listed_Stt = Full_blacklist_Check(sb1,ip_address,f'F{farm_id}L{lay}')
+                if Not_Black_Listed_Stt and earnpp_window and feyorra_window and earntrump_window and earnbonk_window:
+                    print('All Faucets are opened')
+                    return earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_address
+                else:
+                    already_ready = False
+
+
             current_window = sb1.current_window_handle
             close_extra_windows(sb1, [current_window])
             sb1.switch_to.window(current_window)
@@ -3378,6 +3297,7 @@ def open_faucets():
             ip_address = get_ip(sb1)
             Not_Black_Listed_Stt = Full_blacklist_Check(sb1,ip_address,f'F{farm_id}L{lay}')
             if Not_Black_Listed_Stt:
+                
                 print(f'Good IP found: {ip_address}')
                 for frm in CSB1_farms:
                     collection_csb = db[f'Farm{frm}']
@@ -3617,6 +3537,7 @@ def open_faucets():
                         if req == 'ipfixer':
                             if 'Changed' in res:
                                 raise Exception(" earnbonk == 404")
+                    already_ready = True
 
                     return earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required
         except Exception as e:
@@ -3661,7 +3582,8 @@ failed_captchas = 0
 total_captchas_received = 0
 
 
-previous_script_seconds_only = 0
+previous_script_seconds_only = '0 | 0'
+
 while True:
     try:
         mainscript = control_panel()
@@ -3673,7 +3595,38 @@ while True:
             cc_faucet = None
             script_elapsed_time = time.time() - Script_Started
             script_seconds_only = int(script_elapsed_time)
+            #debug_messages(f'script_elapsed_time Seconds:{script_seconds_only}')
+            if script_seconds_only > 400:
+                #print('Script 5m')
+                #solving_accuracy = 0
+                #failed_captchas = 0
+                #total_captchas_received = 0
 
+
+                Script_Started = time.time()
+                try:
+                    sb1.quit()
+                    #time.sleep(2)
+                except Exception as e:
+                    print(f"sb1.quit() failed: {e}")
+
+                # Fallback kill
+                for proc_name in ['chrome', 'chromium']:
+                    try:
+                        subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
+                        print(f"All {proc_name} script_seconds_only killed (if any).")
+                    except Exception as e:
+                        print(f"Failed to kill {proc_name} script_seconds_only: {e}")
+                        
+
+                sb1 = open_browsers()
+
+                earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required = open_faucets()
+                previous_script_seconds_only = previous_script_seconds_cal(previous_script_seconds_only,script_seconds_only) #script_seconds_only
+                Script_Started = time.time()
+
+
+            #ip_address = get_ip(sb1) 
             if reset_count >= 20:
                 print('reset count hut')
                 solving_accuracy = 0
@@ -3699,7 +3652,7 @@ while True:
                 reset_count = 0
                 reset_count_isacc = 0
                 Script_Started = time.time()
-                previous_script_seconds_only = script_seconds_only
+                previous_script_seconds_only = previous_script_seconds_cal(previous_script_seconds_only,script_seconds_only)
 
             if previous_reset_count == reset_count:
                 reset_count = 0
@@ -3790,7 +3743,7 @@ while True:
                         debug_messages(f'Switching Pages to Feyorra')
                         sb1.switch_to.window(feyorra_window)
                         debug_messages(f'Getting Pages Titile:Feyorra')
-                        pyautogui.press('enter')
+                        #pyautogui.press('enter')
                         title =sb1.get_title()
 
                         if 'Faucet | Feyorra' in title:
@@ -3870,7 +3823,7 @@ while True:
                         debug_messages(f'Switching Pages to earntrump')
                         sb1.switch_to.window(earntrump_window)
                         debug_messages(f'Getting Pages Titile:earntrump')
-                        pyautogui.press('enter')
+                        #pyautogui.press('enter')
                         title =sb1.get_title()
 
                         if 'Faucet | Earn-Trump' in title:
@@ -3942,7 +3895,7 @@ while True:
                         debug_messages(f'Switching Pages to earnbonk')
                         sb1.switch_to.window(earnbonk_window)
                         debug_messages(f'Getting Pages Titile:earnbonk')
-                        pyautogui.press('enter')
+                        #pyautogui.press('enter')
                         title =sb1.get_title()
 
                         if 'Faucet | Earn-Bonk' in title:
@@ -4024,7 +3977,7 @@ while True:
                 elapsed_time = time.time() - start_time
                 seconds_only = int(elapsed_time)
                 debug_messages(f'ClaimCoins Seconds:{seconds_only}')
-                if seconds_only > 50:
+                if seconds_only > 80:
                     start_time = time.time()
                     if earnpp_coins == earnpp_coins_pre:
                         start_time = time.time()
@@ -4123,7 +4076,9 @@ while True:
                         insert_data(ip_address, earnpp_coins, feyorra_coins, earntrump_coins, earnbonk_coins, accuracy_info, emailgg)
                     else:
                         response_messege(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | Trump:{earntrump_coins}|BONK:{earnbonk_coins} ')
-
+                    #elif earnpp_coins and feyorra_coins and claimc_coins:
+                    #    start_time3 = time.time()
+                    #    insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins, 0)
                     
                     
 
@@ -4191,6 +4146,6 @@ while True:
             reset_count = 0
             reset_count_isacc = 0
             Script_Started = time.time()
-            previous_script_seconds_only = script_seconds_only
+            previous_script_seconds_only = previous_script_seconds_cal(previous_script_seconds_only,script_seconds_only)
         reset_count +=2
      

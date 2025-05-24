@@ -7,7 +7,7 @@ set -o pipefail
 
 trap "echo '[!] Interrupted by user, exiting.'; exit 0" SIGINT
 
-SCRIPT_CMD="python3 main4.py --farm 5 --fresh 3"
+SCRIPT_CMD="python3 main.py --farm 5 --fresh 3"
 GRACE_PERIOD=80
 FORCE_CPU=95
 FORCE_RAM=5500

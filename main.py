@@ -1,5 +1,5 @@
 
-print('Version 9.9.9.9.9.1')
+print('Version 9.9.9.9.9.2')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -3302,7 +3302,7 @@ def open_browsers():
                 sweet = install_extensions('sweet')
                 cookie = install_extensions('cookie')
                 mysterium = install_extensions('mysterium')
-                fingerprint = True #install_extensions('fingerprint')
+                fingerprint = install_extensions('fingerprint')
                 mfhelper = install_extensions('mfhelper')
                 fix_tab_search_icon()
                 if fingerprint and mysterium and sweet and cookie and mfhelper:

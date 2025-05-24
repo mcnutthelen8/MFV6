@@ -558,7 +558,25 @@ def Full_blacklist_Check(sb1, ip_to_check, current_layout):
         response_messege(f'Changed IP : IP Score:{ipscore} | proxycheck:{proxycheck} | IP: {ip_to_check}')
         return False
 
-
+def get_timezone(ip):
+    url = f'https://proxycheck.io/v2/{ip}?vpn=1&asn=1'
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an HTTPError for bad responses
+        result = response.json()
+        #print(result)
+        # Extract IP address and proxy status
+        status = result.get('status')
+        if status == 'ok':
+            ip_address = ip
+            ip_info = result.get(f'{ip_address}', {})
+            proxy_status = ip_info.get('proxy', 'Unknown')
+            country = ip_info.get('country', 'Unknown')
+            timezone = ip_info.get('timezone')
+            print(f"IP Address: {ip_address} \nProxy Status: {proxy_status} \country Status: {country} \nTimezone: {timezone}")
+            return timezone
+    except requests.RequestException as e:
+        print(f"Error retrieving IP address and proxy status: {e}")
  
 def get_proxycheck_inbrowser(sb1, ip, server_name):   
     for i in range(9):
@@ -573,6 +591,7 @@ def get_proxycheck_inbrowser(sb1, ip, server_name):
             ip_address = json.loads(ip_address_raw)
             proxy_status = ip_address[str(ip)]["proxy"]
             country = ip_address[str(ip)]["country"]
+            #timezone = ip_address[str(ip)]["timezone"]
     
             print(f"IP Address: {ip} \nProxy Status: {proxy_status} \nCountry: {country}")
             if country.lower() in server_name.lower():
@@ -596,7 +615,42 @@ def get_proxycheck_inbrowser(sb1, ip, server_name):
             print(f'ibbrowser ProxyCheck Error: {e}')
         time.sleep(2)  # Wait before retrying
  
- 
+def get_proxycheck_with_api(driver, ip, server_name):
+    for i in range(9):
+        url = f'https://proxycheck.io/v2/{ip}?key=434489-84608j-v97020-20y548?vpn=1&asn=1'
+        try:
+            response = requests.get(url)
+            response.raise_for_status()  # Raise an HTTPError for bad responses
+            result = response.json()
+            #print(result)
+            # Extract IP address and proxy status
+            status = result.get('status')
+            if status == 'ok':
+                ip_address = ip
+                ip_info = result.get(f'{ip_address}', {})
+                proxy_status = ip_info.get('proxy', 'Unknown')
+                country = ip_info.get('country', 'Unknown')
+                
+                print(f"IP Address: {ip_address} \nProxy Status: {proxy_status} \country Status: {country}")
+                if country.lower() in server_name.lower():
+                    if proxy_status =='no':
+                        return 200
+                    else:
+                        print(f'{country} is not {200}')
+                        return 50
+                else:
+                    return 301
+            elif 'error' in status:
+                continue
+            else:
+                print("Error: Status not OK : Trying Inbrowser Way")
+                val = get_proxycheck_inbrowser(driver, ip, server_name)
+                if val:
+                    return val
+        except requests.RequestException as e:
+            print(f"Error retrieving IP address and proxy status: {e}")
+        time.sleep(2)  # Wait before retrying
+
 def get_proxycheck(driver, ip, server_name):
     for i in range(9):
         url = f'https://proxycheck.io/v2/{ip}?vpn=1&asn=1'
@@ -612,6 +666,7 @@ def get_proxycheck(driver, ip, server_name):
                 ip_info = result.get(f'{ip_address}', {})
                 proxy_status = ip_info.get('proxy', 'Unknown')
                 country = ip_info.get('country', 'Unknown')
+                
                 print(f"IP Address: {ip_address} \nProxy Status: {proxy_status} \country Status: {country}")
                 if country.lower() in server_name.lower():
                     if proxy_status =='no':
@@ -625,7 +680,7 @@ def get_proxycheck(driver, ip, server_name):
                 continue
             else:
                 print("Error: Status not OK : Trying Inbrowser Way")
-                val = get_proxycheck_inbrowser(driver, ip, server_name)
+                val = get_proxycheck_with_api(driver, ip, server_name)
                 if val:
                     return val
         except requests.RequestException as e:
@@ -3037,7 +3092,15 @@ def calculate_accuracy_captchas(total_tests, failed_tests):
     return round(accuracy, 2)
 
 
-
+def fix_all_cloudflare(sb1):
+    cloud = False
+    all_window_handles = sb1.window_handles
+    for handle in all_window_handles:
+        sb1.switch_to.window(handle)
+        if 'Just' in sb1.get_title():
+            cloudflare(sb1, login = False)
+            time.sleep(2)
+            cloud = True
 
 def quick_open_faucet(sb1):
     sb1.open_new_window()
@@ -3051,31 +3114,32 @@ def quick_open_faucet(sb1):
 
     ##Open All Faucets
     sb1.uc_open('https://earn-pepe.com/member/faucet')
-    if 'Just' in sb1.get_title():
-        cloudflare(sb1, login = False)
-        time.sleep(5)
 
     sb1.open_new_window()
     sb1.uc_open('https://feyorra.site/member/faucet')
-    if 'Just' in sb1.get_title():
-        cloudflare(sb1, login = False)
-        #time.sleep(5)
 
     sb1.open_new_window()
     sb1.uc_open('https://earn-trump.com/member/faucet')
-    if 'Just' in sb1.get_title():
-        cloudflare(sb1, login = False)
-        #time.sleep(5)
+
 
     sb1.open_new_window()
     sb1.uc_open('https://earn-bonk.com/member/faucet')
-    if 'Just' in sb1.get_title():
-        cloudflare(sb1, login = False)
-        #time.sleep(5)
+
+    
+    #time.sleep(2)
+
+    cloudg = fix_all_cloudflare(sb1)
+    if cloudg:
+        cloudg = fix_all_cloudflare(sb1)
+
+
+    print('Length of all windows:', len(sb1.window_handles))
 
     all_window_handles = sb1.window_handles
     for handle in all_window_handles:
         sb1.switch_to.window(handle)
+        print('Current Window Title:', sb1.get_title())
+
         if "Faucet | Earn-pepe" in sb1.get_title():
             earnpp_window = sb1.current_window_handle
             print('EarnPP Window Found')
@@ -3091,11 +3155,45 @@ def quick_open_faucet(sb1):
         elif "Faucet | Earn-Bonk" in sb1.get_title():
             bonk_window = sb1.current_window_handle
             print('Bonk Window Found')
+    if earnpp_window and feyorra_window and trump_window and bonk_window:
+        print('All Faucet Windows Found')
+    else:
+        print('Not all Faucet Windows Found, trying again')
+        all_window_handles = sb1.window_handles
+        for handle in all_window_handles:
+            sb1.switch_to.window(handle)
+
+            if "Faucet | Earn-pepe" in sb1.get_title():
+                earnpp_window = sb1.current_window_handle
+                print('EarnPP Window Found')
+
+            elif "Faucet | Feyorra" in sb1.get_title():
+                feyorra_window = sb1.current_window_handle
+                print('Feyorra Window Found')
+
+            elif "Faucet | Earn-Trump" in sb1.get_title():
+                trump_window = sb1.current_window_handle
+                print('Trump Window Found')
+
+            elif "Faucet | Earn-Bonk" in sb1.get_title():
+                bonk_window = sb1.current_window_handle
+                print('Bonk Window Found')
 
     return earnpp_window, feyorra_window, trump_window, bonk_window
 
 
+def timezone_changer(timezone_str):
 
+    timezone =timezone_str
+    cmd = f"ls /usr/share/zoneinfo/{timezone} && sudo ln -sf /usr/share/zoneinfo/{timezone} /etc/localtime"
+
+    try:
+        subprocess.run(cmd, shell=True, check=True)
+        print(f"Timezone successfully set to {timezone}")
+    except subprocess.CalledProcessError:
+        print(f"Failed to set timezone to {timezone}")
+
+ip_memory_cache = '' 
 
 already_ready = False
 fresh_start_faucet = True
@@ -3106,6 +3204,7 @@ def open_browsers():
     global layout
     global browser_proxy
     global already_ready
+    global ip_memory_cache
 
     pyautogui.moveTo(100, 100)
     pyautogui.click(100, 200, duration=0.5)
@@ -3164,6 +3263,16 @@ def open_browsers():
     get_mails_passowrds(farm_id)
     ip_address = get_ip(sb1)
     lay = re.search(r'\d+', layout).group()
+
+    if ip_memory_cache == ip_address:
+        print(f'IP Already Using and Ready: {ip_address}')
+        query = {"type": "main"}
+        update = {"$set": {"response": f'Ready IP for Reuse Session:{ip_address}'}}
+        result = collection.update_one(query, update)
+        already_ready = True
+        return sb1 #, True
+
+
     Not_Black_Listed_Stt = Full_blacklist_Check(sb1, ip_address,f'F{farm_id}L{lay}')
     if Not_Black_Listed_Stt:
         print(f'Good IP Ready IP at Start: {ip_address}')
@@ -3193,7 +3302,7 @@ def open_browsers():
                 sweet = install_extensions('sweet')
                 cookie = install_extensions('cookie')
                 mysterium = install_extensions('mysterium')
-                fingerprint = install_extensions('fingerprint')
+                fingerprint = True #install_extensions('fingerprint')
                 mfhelper = install_extensions('mfhelper')
                 fix_tab_search_icon()
                 if fingerprint and mysterium and sweet and cookie and mfhelper:
@@ -3231,6 +3340,8 @@ def open_faucets():
             global fresh_start_faucet
             global login_faucet_detect
             global already_ready
+            global ip_memory_cache
+
             ip_required = None
             quer2y = {"type": "main"}
             dochh2 = collection.find_one(quer2y)
@@ -3241,7 +3352,7 @@ def open_faucets():
             if chrome_user_data_dir == chrome_user_data_dir2 and layout == layout2 and browser_proxy2 == browser_proxy:
                 print(f'Same Browser | L {layout2}')
             else:
-                response_messege(f'Resetting Browser')
+                #@response_messege(f'Resetting Browser')
                 try:
                     sb1.quit()
                     time.sleep(2)
@@ -3270,20 +3381,35 @@ def open_faucets():
                     res = doc["response"]
                     req = doc["request"]
                     if req == 'ipfixer':
-                        if 'Changed' in res:
-                            query = {"type": "main"}
-                            update = {"$set": {"request": 'ipfixer'}}
-                            result = collection.update_one(query, update)
+                        if 'Ready' in res or 'Loging' in res:
+                            print(f'IP is ready Farm{frm}')
+
+                        else:
+            
+                            ipfixer()
                             already_ready = False
-                           #raise Exception(" earnbonk == 404")
+                            raise Exception("Ready IP ipfixer Done earnbonk == 404")
                         
                 if already_ready:    
                     earnpp_window, feyorra_window, earntrump_window, earnbonk_window =quick_open_faucet(sb1)
                     ip_address = get_ip(sb1)
                     lay = re.search(r'\d+', layout2).group()
-                    Not_Black_Listed_Stt = Full_blacklist_Check(sb1,ip_address,f'F{farm_id}L{lay}')
+                    Not_Black_Listed_Stt = True
+                    if ip_memory_cache != ip_address:
+                        Not_Black_Listed_Stt = Full_blacklist_Check(sb1,ip_address,f'F{farm_id}L{lay}')
+                        if Not_Black_Listed_Stt:
+                            tizon = get_timezone(ip_address)
+                            timezone_changer(tizon)
+                            add_blacklistedip2(f'F{farm_id}L{lay}', ip_address)
+                            ip_memory_cache = ip_address
+
+                    print(f'Not_Black_Listed_Stt: {Not_Black_Listed_Stt} | IP: {ip_address} | earnpp_window: {earnpp_window} | feyorra_window: {feyorra_window} | earntrump_window: {earntrump_window} | earnbonk_window: {earnbonk_window}')
                     if Not_Black_Listed_Stt and earnpp_window and feyorra_window and earntrump_window and earnbonk_window:
                         print('All Faucets are opened')
+                        query = {"type": "main"}
+                        update = {"$set": {"request": 'mainscript'}}
+                        result = collection.update_one(query, update)
+                        
                         return earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_address
                     else:
                         already_ready = False
@@ -3338,6 +3464,8 @@ def open_faucets():
                 fresh_start_faucet = True
                 pyautogui.moveTo(100, 200)
                 pyautogui.moveTo(200, 400)
+                tizon = get_timezone(ip_address)
+                timezone_changer(tizon)
                 if fresh_start_faucet == True:
                     ip_address = get_ip(sb1)
                     if ip_required == ip_address:
@@ -3500,7 +3628,7 @@ def open_faucets():
                 
                 ip_address = get_ip(sb1)
                 if ip_required == ip_address:
-                    response_messege('Started')
+                    response_messege('Ready IP | Started')
                     query = {"type": "main"}
                     update = {"$set": {"request": 'mainscript'}}
                     result = collection.update_one(query, update)
@@ -3539,6 +3667,7 @@ def open_faucets():
                         if req == 'ipfixer':
                             if 'Changed' in res:
                                 raise Exception(" earnbonk == 404")
+                    ip_memory_cache = ip_address
                     already_ready = True
 
                     return earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required

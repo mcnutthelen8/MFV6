@@ -3274,17 +3274,19 @@ def open_faucets():
                             query = {"type": "main"}
                             update = {"$set": {"request": 'ipfixer'}}
                             result = collection.update_one(query, update)
-                            raise Exception(" earnbonk == 404")
+                            already_ready = False
+                           #raise Exception(" earnbonk == 404")
                         
-                earnpp_window, feyorra_window, earntrump_window, earnbonk_window =quick_open_faucet(sb1)
-                ip_address = get_ip(sb1)
-                lay = re.search(r'\d+', layout2).group()
-                Not_Black_Listed_Stt = Full_blacklist_Check(sb1,ip_address,f'F{farm_id}L{lay}')
-                if Not_Black_Listed_Stt and earnpp_window and feyorra_window and earntrump_window and earnbonk_window:
-                    print('All Faucets are opened')
-                    return earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_address
-                else:
-                    already_ready = False
+                if already_ready:    
+                    earnpp_window, feyorra_window, earntrump_window, earnbonk_window =quick_open_faucet(sb1)
+                    ip_address = get_ip(sb1)
+                    lay = re.search(r'\d+', layout2).group()
+                    Not_Black_Listed_Stt = Full_blacklist_Check(sb1,ip_address,f'F{farm_id}L{lay}')
+                    if Not_Black_Listed_Stt and earnpp_window and feyorra_window and earntrump_window and earnbonk_window:
+                        print('All Faucets are opened')
+                        return earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_address
+                    else:
+                        already_ready = False
 
 
             current_window = sb1.current_window_handle

@@ -1,5 +1,5 @@
 
-print('Version 9.9.9.9.9.2')
+print('Version 9.9.9.9.9.4')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -871,6 +871,12 @@ def fix_ip(drive, name):
 def mysterium_web_login(driver):
     driver.uc_open('https://app.mysteriumvpn.com/')
     time.sleep(5)
+    if are_extensions_exist():
+        pass
+    else:
+        print("Extensions not found, installing...")
+        return False
+
     for i in range(1,100):
         time.sleep(1)
         try:
@@ -932,7 +938,7 @@ def mysterium_web_login(driver):
             print("No cookie_icon .")
  
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/allow_button.png", region=(1080, 247, 400, 300), confidence=0.99)
+            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/allow_button.png", region=(1080, 247, 400, 300), confidence=0.7)
             pyautogui.click(x, y)
             print("allow_button Found")
  
@@ -952,6 +958,11 @@ def mysterium_login(driver):
         titile = sb1.get_title()
         pyautogui.click(113, 100)
         time.sleep(1)
+        if are_extensions_exist():
+            print("Extensions found, proceeding with login...")
+        else:
+            print("Extensions not found, installing...")
+            return False
  
         if 'Home' in titile:
  
@@ -3255,7 +3266,7 @@ def open_browsers():
     sb1.connect()
     sb1.switch_to.window(current_window2)
     sb1.uc_open("chrome://extensions/")
-    #time.sleep(8)
+    #time.sleep(5000000000)
     #sb1.execute_script("window.scrollTo(0, 300);")
     print(sb1.get_title())
     fix_tab_search_icon()
@@ -3737,17 +3748,9 @@ while True:
                 Script_Started = time.time()
                 try:
                     sb1.quit()
-                    #time.sleep(2)
+                    time.sleep(1)
                 except Exception as e:
                     print(f"sb1.quit() failed: {e}")
-
-                # Fallback kill
-                for proc_name in ['chrome', 'chromium']:
-                    try:
-                        subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
-                        print(f"All {proc_name} script_seconds_only killed (if any).")
-                    except Exception as e:
-                        print(f"Failed to kill {proc_name} script_seconds_only: {e}")
                         
 
                 sb1 = open_browsers()

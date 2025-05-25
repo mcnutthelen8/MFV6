@@ -1,5 +1,5 @@
 
-print('Version 9.9.9.9.9.4')
+print('Version 9.9.9.9.9.2')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -871,12 +871,6 @@ def fix_ip(drive, name):
 def mysterium_web_login(driver):
     driver.uc_open('https://app.mysteriumvpn.com/')
     time.sleep(5)
-    if are_extensions_exist():
-        pass
-    else:
-        print("Extensions not found, installing...")
-        return False
-
     for i in range(1,100):
         time.sleep(1)
         try:
@@ -958,11 +952,6 @@ def mysterium_login(driver):
         titile = sb1.get_title()
         pyautogui.click(113, 100)
         time.sleep(1)
-        if are_extensions_exist():
-            print("Extensions found, proceeding with login...")
-        else:
-            print("Extensions not found, installing...")
-            return False
  
         if 'Home' in titile:
  

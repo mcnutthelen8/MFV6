@@ -351,10 +351,10 @@ def get_mails_passowrds(farm_id):
         elif '5' in layout:
             server_name1 = 'germany' #'chile'
             CSB1_farms =Farm_list
-            earnpp_email = 'willsmile31@gmail.com'
-            earnpp_pass = 'willsmile31'
-            feyorra_email = 'willsmile31@gmail.com'
-            feyorra_pass = 'willsmile31' 
+            earnpp_email = 'llwimisle53@gmail.com'
+            earnpp_pass = 'llwimisle53'
+            feyorra_email = 'llwimisle53@gmail.com'
+            feyorra_pass = 'llwimisle53' 
             
         elif '6' in layout:
             server_name1 = 'germany'

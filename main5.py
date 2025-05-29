@@ -1,5 +1,5 @@
 
-print('Version 9.9.9.9.9.7')
+print('Version 9.9.9.9.9.8')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -475,7 +475,7 @@ def get_mails_passowrds(farm_id):
     elif farm_id == 8:
 
         if '1' in layout:
-            server_name1 = 'vietnam'
+            server_name1 = 'malaysia'
             CSB1_farms =Farm_list2
             earnpp_email = 'dionreyes@gmail.com' 
             earnpp_pass = 'dionreyes'
@@ -483,14 +483,14 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'dionreyes'
 
         elif '2' in layout:
-            server_name1 = 'vietnam' #'chile'
+            server_name1 = 'malaysia' #'chile'
             CSB1_farms =Farm_list2
             earnpp_email = 'mcwilliams88@gmail.com'
             earnpp_pass = 'mcwilliams88'
             feyorra_email = 'mcwilliams88@gmail.com'
             feyorra_pass = 'mcwilliams88'
         elif '3' in layout:
-            server_name1 = 'vietnam' #'chile'
+            server_name1 = 'malaysia' #'chile'
             CSB1_farms = Farm_list2
             earnpp_email = 'aspen769@gmail.com'
             earnpp_pass = 'aspen769'
@@ -498,7 +498,7 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'aspen769'
 
         elif '4' in layout:
-            server_name1 = 'vietnam' #'chile'
+            server_name1 = 'malaysia' #'chile'
             CSB1_farms = Farm_list2
             earnpp_email = 'esquivel681@gmail.com'
             earnpp_pass = 'esquivel681'
@@ -506,7 +506,7 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'esquivel681'
 
         elif '5' in layout:
-            server_name1 = 'vietnam' #'chile'
+            server_name1 = 'malaysia' #'chile'
             CSB1_farms =Farm_list2
             earnpp_email = 'marcello184@gmail.com'
             earnpp_pass = 'marcello184'
@@ -514,7 +514,7 @@ def get_mails_passowrds(farm_id):
             feyorra_pass = 'marcello184' 
             
         elif '6' in layout:
-            server_name1 = 'vietnam'
+            server_name1 = 'malaysia'
             CSB1_farms = Farm_list2
             earnpp_email = 'whitman34@gmail.com'
             earnpp_pass = 'whitman34'

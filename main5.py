@@ -477,10 +477,10 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'malaysia'
             CSB1_farms =Farm_list2
-            earnpp_email = 'dionreyes@gmail.com' 
-            earnpp_pass = 'dionreyes'
-            feyorra_email = 'dionreyes@gmail.com'
-            feyorra_pass = 'dionreyes'
+            earnpp_email = 'erenyeger688@gmail.com' 
+            earnpp_pass = 'erenyeger688'
+            feyorra_email = 'erenyeger688@gmail.com'
+            feyorra_pass = 'erenyeger688'
 
         elif '2' in layout:
             server_name1 = 'malaysia' #'chile'
@@ -3624,7 +3624,7 @@ def open_faucets():
                 pyautogui.moveTo(200, 400)
                 tizon = get_timezone(ip_address)
                 timezone_changer(tizon)
-                time.sleep(99999)
+                #time.sleep(99999)
                 if fresh_start_faucet == True:
                     ip_address = get_ip(sb1)
                     if ip_required == ip_address:

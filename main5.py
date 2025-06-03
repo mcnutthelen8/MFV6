@@ -3393,7 +3393,7 @@ def open_browsers():
         
 
         chromium_arg=[
-            "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36",
+            
             "--disable-dev-shm-usage",
             "--disable-background-timer-throttling",
             "--disable-backgrounding-occluded-windows",

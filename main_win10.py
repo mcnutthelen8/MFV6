@@ -3277,6 +3277,7 @@ iana_to_windows = {
     "Europe/Warsaw": "Central European Standard Time",       # Poland
     "Europe/Paris": "Romance Standard Time",                 # France
     "Europe/Berlin": "W. Europe Standard Time",              # Germany
+    "Europe/Vienna": "W. Europe Standard Time",              # Austria
     "America/Toronto": "Eastern Standard Time",              # Canada (Ontario/Quebec)
     "America/Vancouver": "Pacific Standard Time",            # Canada (British Columbia)
     "America/Edmonton": "Mountain Standard Time",            # Canada (Alberta)

@@ -8,7 +8,7 @@ taskkill /f /im python.exe >nul 2>&1
 taskkill /f /im chrome.exe >nul 2>&1
 
 echo Running Python script...
-start "" cmd /c " python main5.py
+start "" cmd /c " python main_win10.py
 
 echo Waiting 1 hour...
 timeout /t 3600 /nobreak

@@ -1,5 +1,5 @@
 
-print('Version 9.9.9.9.8')
+print('Version 9.9.9.9.9.8')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -31,20 +31,19 @@ import subprocess
 query = {"type": "main"}
 # Example usage
 pyautogui.moveTo(100, 100)
-pyautogui.click(100, 200, duration=0.5)
+#pyautogui.click(100, 200, duration=0.5)
 # Initialize the argument parser
-parser = argparse.ArgumentParser(description="Process some arguments.")
-parser.add_argument('--farm', type=int, help="Farm")
-parser.add_argument('--fresh', type=int, help="Fresh")
-args = parser.parse_args()
-farm_id = args.farm
+#parser = argparse.ArgumentParser(description="Process some arguments.")
+#parser.add_argument('--farm', type=int, help="Farm")
+#parser.add_argument('--fresh', type=int, help="Fresh")
+#args = parser.parse_args()
+farm_id =1
 print('Farm',farm_id)
-fresh = args.fresh
+fresh = 1 # args.fresh
 
 
 CSB1_farms = []
 sb1 = None
-ip_address = ''
 
 fb_pass = 'ashen1997'
 yt_api_key = 'AIzaSyCoAMmJOYzKhFdLO5oEmwI2Ne7C329jJtg'
@@ -79,7 +78,8 @@ feyorra_email = ''
 feyorra_pass = ''
 layout = ''
 
-Farm_list = [1, 2, 3, 4, 5]
+Farm_list = [1, 2, 3]
+Farm_list2 = [5, 6, 7, 8]
 
 def get_mails_passowrds(farm_id):
     global server_name1
@@ -91,6 +91,7 @@ def get_mails_passowrds(farm_id):
     global layout
     global mysterium_raw
     global Farm_list
+    global Farm_list2
 
     collection = db[f'Farm{farm_id}']
     quer2y = {"type": "main"}
@@ -98,13 +99,11 @@ def get_mails_passowrds(farm_id):
     layout = dochh2["withdraw_mail"]
     print(f'Farm ID:{farm_id} | Layout: {layout}')
 
-    if farm_id <= 5:
+    if farm_id <= 4:
         mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
-        CSB1_farms =Farm_list
     else:
 
-        mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie.json"
-        CSB1_farms =Farm_list
+        mysterium_raw = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/main/mysterium_cookie_mcnutt.json"
 
 
 
@@ -216,10 +215,10 @@ def get_mails_passowrds(farm_id):
         if '1' in layout:
             server_name1 = 'france'
             CSB1_farms =Farm_list
-            earnpp_email = 'markshlld51@gmail.com'
-            earnpp_pass = 'markshlld51'
-            feyorra_email = 'markshlld51@gmail.com'
-            feyorra_pass = 'markshlld51'
+            earnpp_email = 'shldmky53@gmail.com'
+            earnpp_pass = 'shldmky53'
+            feyorra_email = 'shldmky53@gmail.com'
+            feyorra_pass = 'shldmky53'
 
         elif '2' in layout:
             server_name1 = 'france' #'belgium'
@@ -315,11 +314,16 @@ def get_mails_passowrds(farm_id):
         else:
             print('Layout issue', layout)
 
+######################################################################################################################################################
+######################################################################################################################################################
+######################################################################################################################################################
+######################################################################################################################################################
+
     elif farm_id == 5:
 
         if '1' in layout:
             server_name1 = 'germany'
-            CSB1_farms =Farm_list
+            CSB1_farms =Farm_list2
             earnpp_email = 'ernestost5@gmail.com' 
             earnpp_pass = 'ernestost5'
             feyorra_email = 'ernestost5@gmail.com'
@@ -327,14 +331,14 @@ def get_mails_passowrds(farm_id):
 
         elif '2' in layout:
             server_name1 = 'germany' #'chile'
-            CSB1_farms =Farm_list
+            CSB1_farms =Farm_list2
             earnpp_email = 'taptioronl8@gmail.com'
             earnpp_pass = 'taptioronl8'
             feyorra_email = 'taptioronl8@gmail.com'
             feyorra_pass = 'taptioronl8'
         elif '3' in layout:
             server_name1 = 'germany' #'chile'
-            CSB1_farms = Farm_list
+            CSB1_farms = Farm_list2
             earnpp_email = 'kevincharl3@gmail.com'
             earnpp_pass = 'kevincharl3'
             feyorra_email = 'kevincharl3@gmail.com'
@@ -342,7 +346,7 @@ def get_mails_passowrds(farm_id):
 
         elif '4' in layout:
             server_name1 = 'germany' #'chile'
-            CSB1_farms = Farm_list
+            CSB1_farms = Farm_list2
             earnpp_email = 'kendleo4@gmail.com'
             earnpp_pass = 'kendleo4'
             feyorra_email = 'kendleo4@gmail.com'
@@ -350,19 +354,172 @@ def get_mails_passowrds(farm_id):
 
         elif '5' in layout:
             server_name1 = 'germany' #'chile'
-            CSB1_farms =Farm_list
-            earnpp_email = 'willsmile31@gmail.com'
-            earnpp_pass = 'willsmile31'
-            feyorra_email = 'willsmile31@gmail.com'
-            feyorra_pass = 'willsmile31' 
+            CSB1_farms =Farm_list2
+            earnpp_email = 'llwimisle53@gmail.com'
+            earnpp_pass = 'llwimisle53'
+            feyorra_email = 'llwimisle53@gmail.com'
+            feyorra_pass = 'llwimisle53' 
             
         elif '6' in layout:
             server_name1 = 'germany'
-            CSB1_farms = Farm_list
+            CSB1_farms = Farm_list2
             earnpp_email = 'adaavery5@gmail.com'
             earnpp_pass = 'adaavery5'
             feyorra_email = 'adaavery5@gmail.com'
             feyorra_pass = 'adaavery5'
+
+
+
+    elif farm_id == 6:
+
+        if '1' in layout:
+            server_name1 = 'sweden'
+            CSB1_farms =Farm_list2
+            earnpp_email = 'helmstarr80@gmail.com' 
+            earnpp_pass = 'helmstarr80'
+            feyorra_email = 'helmstarr80@gmail.com'
+            feyorra_pass = 'helmstarr80'
+
+        elif '2' in layout:
+            server_name1 = 'sweden' #'chile'
+            CSB1_farms =Farm_list2
+            earnpp_email = 'debbyemerson@gmail.com'
+            earnpp_pass = 'debbyemerson'
+            feyorra_email = 'debbyemerson@gmail.com'
+            feyorra_pass = 'debbyemerson'
+        elif '3' in layout:
+            server_name1 = 'sweden' #'chile'
+            CSB1_farms = Farm_list2
+            earnpp_email = 'marcfink18@gmail.com'
+            earnpp_pass = 'marcfink18'
+            feyorra_email = 'marcfink18@gmail.com'
+            feyorra_pass = 'marcfink18'
+
+        elif '4' in layout:
+            server_name1 = 'sweden' #'chile'
+            CSB1_farms = Farm_list2
+            earnpp_email = 'solanohazel7@gmail.com'
+            earnpp_pass = 'solanohazel7'
+            feyorra_email = 'solanohazel7@gmail.com'
+            feyorra_pass = 'solanohazel7'
+
+        elif '5' in layout:
+            server_name1 = 'sweden' #'chile'
+            CSB1_farms =Farm_list2
+            earnpp_email = 'vadabecerra75@gmail.com'
+            earnpp_pass = 'vadabecerra75'
+            feyorra_email = 'vadabecerra75@gmail.com'
+            feyorra_pass = 'vadabecerra75' 
+            
+        elif '6' in layout:
+            server_name1 = 'sweden'
+            CSB1_farms = Farm_list2
+            earnpp_email = 'ervinmeyer29@gmail.com'
+            earnpp_pass = 'ervinmeyer29'
+            feyorra_email = 'ervinmeyer29@gmail.com'
+            feyorra_pass = 'ervinmeyer29'
+
+
+
+    elif farm_id == 7:
+
+        if '1' in layout:
+            server_name1 = 'new zealand'
+            CSB1_farms =Farm_list2
+            earnpp_email = 'hickssarah4@gmail.com' 
+            earnpp_pass = 'hickssarah4'
+            feyorra_email = 'hickssarah4@gmail.com'
+            feyorra_pass = 'hickssarah4'
+
+        elif '2' in layout:
+            server_name1 = 'new zealand' #'chile'
+            CSB1_farms =Farm_list2
+            earnpp_email = 'ervinleanne8@gmail.com'
+            earnpp_pass = 'ervinleanne8'
+            feyorra_email = 'ervinleanne8@gmail.com'
+            feyorra_pass = 'ervinleanne8'
+        elif '3' in layout:
+            server_name1 = 'new zealand' #'chile'
+            CSB1_farms = Farm_list2
+            earnpp_email = 'aidenjarett2@gmail.com'
+            earnpp_pass = 'aidenjarett2'
+            feyorra_email = 'aidenjarett2@gmail.com'
+            feyorra_pass = 'aidenjarett2'
+
+        elif '4' in layout:
+            server_name1 = 'new zealand' #'chile'
+            CSB1_farms = Farm_list2
+            earnpp_email = 'cashspencer2@gmail.com'
+            earnpp_pass = 'cashspencer2'
+            feyorra_email = 'cashspencer2@gmail.com'
+            feyorra_pass = 'cashspencer2'
+
+        elif '5' in layout:
+            server_name1 = 'new zealand' #'chile'
+            CSB1_farms =Farm_list2
+            earnpp_email = 'snowbasil33@gmail.com'
+            earnpp_pass = 'snowbasil33'
+            feyorra_email = 'snowbasil33@gmail.com'
+            feyorra_pass = 'snowbasil33' 
+            
+        elif '6' in layout:
+            server_name1 = 'new zealand'
+            CSB1_farms = Farm_list2
+            earnpp_email = 'jettweller92@gmail.com'
+            earnpp_pass = 'jettweller92'
+            feyorra_email = 'jettweller92@gmail.com'
+            feyorra_pass = 'jettweller92'
+
+
+    elif farm_id == 8:
+
+        if '1' in layout:
+            server_name1 = 'malaysia'
+            CSB1_farms =Farm_list2
+            earnpp_email = 'erenyeger688@gmail.com' 
+            earnpp_pass = 'erenyeger688'
+            feyorra_email = 'erenyeger688@gmail.com'
+            feyorra_pass = 'erenyeger688'
+
+        elif '2' in layout:
+            server_name1 = 'malaysia' #'chile'
+            CSB1_farms =Farm_list2
+            earnpp_email = 'mcwilliams88@gmail.com'
+            earnpp_pass = 'mcwilliams88'
+            feyorra_email = 'mcwilliams88@gmail.com'
+            feyorra_pass = 'mcwilliams88'
+        elif '3' in layout:
+            server_name1 = 'malaysia' #'chile'
+            CSB1_farms = Farm_list2
+            earnpp_email = 'aspen769@gmail.com'
+            earnpp_pass = 'aspen769'
+            feyorra_email = 'aspen769@gmail.com'
+            feyorra_pass = 'aspen769'
+
+        elif '4' in layout:
+            server_name1 = 'malaysia' #'chile'
+            CSB1_farms = Farm_list2
+            earnpp_email = 'esquivel681@gmail.com'
+            earnpp_pass = 'esquivel681'
+            feyorra_email = 'esquivel681@gmail.com'
+            feyorra_pass = 'esquivel681'
+
+        elif '5' in layout:
+            server_name1 = 'malaysia' #'chile'
+            CSB1_farms =Farm_list2
+            earnpp_email = 'marcello184@gmail.com'
+            earnpp_pass = 'marcello184'
+            feyorra_email = 'marcello184@gmail.com'
+            feyorra_pass = 'marcello184' 
+            
+        elif '6' in layout:
+            server_name1 = 'malaysia'
+            CSB1_farms = Farm_list2
+            earnpp_email = 'whitman34@gmail.com'
+            earnpp_pass = 'whitman34'
+            feyorra_email = 'whitman34@gmail.com'
+            feyorra_pass = 'whitman34'
+
 
         else:
             print('Layout issue', layout)
@@ -389,7 +546,7 @@ ip_required = 0
 
 run_sb1 = True
 
-chrome_binary_path = '/opt/google/chrome/google-chrome'
+chrome_binary_path = 'C:/Program Files/Google/Chrome/Application/chrome.exe'
 chrome_user_data_dir = '/root/.config/google-chrome/'
 
 
@@ -505,6 +662,7 @@ def get_ip(driver):
 
 def Full_blacklist_Check(sb1, ip_to_check, current_layout):
     ip_to_check = ip_to_check.replace(' ','')
+    ip_address = ip_to_check
     collectionbip = db[f'LocalCSB']
     #BlackLIST
     quer2y = {"type": "main"}
@@ -558,7 +716,25 @@ def Full_blacklist_Check(sb1, ip_to_check, current_layout):
         response_messege(f'Changed IP : IP Score:{ipscore} | proxycheck:{proxycheck} | IP: {ip_to_check}')
         return False
 
-
+def get_timezone(ip):
+    url = f'https://proxycheck.io/v2/{ip}?vpn=1&asn=1'
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # Raise an HTTPError for bad responses
+        result = response.json()
+        #print(result)
+        # Extract IP address and proxy status
+        status = result.get('status')
+        if status == 'ok':
+            ip_address = ip
+            ip_info = result.get(f'{ip_address}', {})
+            proxy_status = ip_info.get('proxy', 'Unknown')
+            country = ip_info.get('country', 'Unknown')
+            timezone = ip_info.get('timezone')
+            print(f"IP Address: {ip_address} \nProxy Status: {proxy_status} \country Status: {country} \nTimezone: {timezone}")
+            return timezone
+    except requests.RequestException as e:
+        print(f"Error retrieving IP address and proxy status: {e}")
  
 def get_proxycheck_inbrowser(sb1, ip, server_name):   
     for i in range(9):
@@ -573,6 +749,7 @@ def get_proxycheck_inbrowser(sb1, ip, server_name):
             ip_address = json.loads(ip_address_raw)
             proxy_status = ip_address[str(ip)]["proxy"]
             country = ip_address[str(ip)]["country"]
+            #timezone = ip_address[str(ip)]["timezone"]
     
             print(f"IP Address: {ip} \nProxy Status: {proxy_status} \nCountry: {country}")
             if country.lower() in server_name.lower():
@@ -596,7 +773,42 @@ def get_proxycheck_inbrowser(sb1, ip, server_name):
             print(f'ibbrowser ProxyCheck Error: {e}')
         time.sleep(2)  # Wait before retrying
  
- 
+def get_proxycheck_with_api(driver, ip, server_name):
+    for i in range(9):
+        url = f'https://proxycheck.io/v2/{ip}?key=434489-84608j-v97020-20y548?vpn=1&asn=1'
+        try:
+            response = requests.get(url)
+            response.raise_for_status()  # Raise an HTTPError for bad responses
+            result = response.json()
+            #print(result)
+            # Extract IP address and proxy status
+            status = result.get('status')
+            if status == 'ok':
+                ip_address = ip
+                ip_info = result.get(f'{ip_address}', {})
+                proxy_status = ip_info.get('proxy', 'Unknown')
+                country = ip_info.get('country', 'Unknown')
+                
+                print(f"IP Address: {ip_address} \nProxy Status: {proxy_status} \country Status: {country}")
+                if country.lower() in server_name.lower():
+                    if proxy_status =='no':
+                        return 200
+                    else:
+                        print(f'{country} is not {200}')
+                        return 50
+                else:
+                    return 301
+            elif 'error' in status:
+                continue
+            else:
+                print("Error: Status not OK : Trying Inbrowser Way")
+                val = get_proxycheck_inbrowser(driver, ip, server_name)
+                if val:
+                    return val
+        except requests.RequestException as e:
+            print(f"Error retrieving IP address and proxy status: {e}")
+        time.sleep(2)  # Wait before retrying
+
 def get_proxycheck(driver, ip, server_name):
     for i in range(9):
         url = f'https://proxycheck.io/v2/{ip}?vpn=1&asn=1'
@@ -612,6 +824,7 @@ def get_proxycheck(driver, ip, server_name):
                 ip_info = result.get(f'{ip_address}', {})
                 proxy_status = ip_info.get('proxy', 'Unknown')
                 country = ip_info.get('country', 'Unknown')
+                
                 print(f"IP Address: {ip_address} \nProxy Status: {proxy_status} \country Status: {country}")
                 if country.lower() in server_name.lower():
                     if proxy_status =='no':
@@ -625,7 +838,7 @@ def get_proxycheck(driver, ip, server_name):
                 continue
             else:
                 print("Error: Status not OK : Trying Inbrowser Way")
-                val = get_proxycheck_inbrowser(driver, ip, server_name)
+                val = get_proxycheck_with_api(driver, ip, server_name)
                 if val:
                     return val
         except requests.RequestException as e:
@@ -695,18 +908,18 @@ def mysterium_vpn_connect(server_name, driver):
     sweet_enable()
     fix_wrong_pins()
     try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
+        x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
         pyautogui.click(x, y)
         print("mysterium_icon_empty Found")
         time.sleep(5)
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/myserium_disconnect.png", region=(1325, 190, 800, 400), confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/myserium_disconnect.png", region=(1325, 190, 800, 400), confidence=0.95)
             pyautogui.click(x, y)
             print("myserium_disconnect Found")
         except pyautogui.ImageNotFoundException:
             print("No myserium_disconnect .")
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.9)
             #pyautogui.click(x, y)
             print("mysterium_login Found")
             mysterium_login(driver)
@@ -714,11 +927,11 @@ def mysterium_vpn_connect(server_name, driver):
         except Exception as e:
             print("mysterium_logged")
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/quick_connect.png", region=(1325, 190, 800, 400), confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/quick_connect.png", region=(1325, 190, 800, 400), confidence=0.95)
  
             print("quick_connect Found")
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/search_mysterium_nomachine_paths.png", region=(1325, 494, 800, 400), confidence=0.95)
+                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/search_mysterium_nomachine_paths.png", region=(1325, 494, 800, 400), confidence=0.95)
                 pyautogui.click(x, y)
                 print("search_mysterium Found")
                 time.sleep(2)
@@ -806,7 +1019,8 @@ def fix_ip(drive, name):
                     update = {"$set": {"request": 'ipfixer'}}
                     result = collection_csb.update_one(query, update)
                     print('Update Farm', i)
-                mysterium_vpn_connect(name, drive)
+                #mysterium_vpn_connect(name, drive)
+                mysteryum_changer(name)
                 print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
                 time.sleep(5)
 
@@ -819,20 +1033,20 @@ def mysterium_web_login(driver):
     for i in range(1,100):
         time.sleep(1)
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cookie_icon.png", region=(1525, 43, 600, 300), confidence=0.99)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cookie_icon.png", region=(1525, 43, 600, 300), confidence=0.99)
             pyautogui.click(x, y)
             print("cookie_icon Found")
             time.sleep(3)
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/all_site.png", region=(1300, 212, 600, 300), confidence=0.99)
+                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/all_site.png", region=(1300, 212, 600, 300), confidence=0.99)
                 pyautogui.click(x, y)
                 print("all_site Found")
             except pyautogui.ImageNotFoundException:
                 print("No all_site .")
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
+                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
                 time.sleep(3)
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
+                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
                 pyautogui.click(x, y)
                 print("import_icon Found")
                 time.sleep(3)
@@ -854,7 +1068,7 @@ def mysterium_web_login(driver):
                         #pyautogui.typewrite(text_content)
                         time.sleep(5)
                         try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
+                            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
                             pyautogui.click(x, y)
                             print("import_icon Found")
  
@@ -877,7 +1091,7 @@ def mysterium_web_login(driver):
             print("No cookie_icon .")
  
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/allow_button.png", region=(1080, 247, 400, 300), confidence=0.99)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/allow_button.png", region=(1080, 247, 400, 300), confidence=0.7)
             pyautogui.click(x, y)
             print("allow_button Found")
  
@@ -901,32 +1115,32 @@ def mysterium_login(driver):
         if 'Home' in titile:
  
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
+                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
                 pyautogui.click(x, y)
                 print("mysterium_icon_empty Found")
                 i = 1
                 for i in range(1, 10):
                     time.sleep(1)
                     try:
-                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.9)
+                        x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.9)
                         pyautogui.click(x, y)
                         print("mysterium_login Found")
                         for i in range(1, 10):
                             time.sleep(2)
                             try:
-                                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_allow.png", region=(842, 750, 400, 300), confidence=0.99)
+                                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/mysterium_allow.png", region=(842, 750, 400, 300), confidence=0.99)
                                 pyautogui.click(x, y)
                                 print("mysterium_allow Found")
                                 time.sleep(3)
                                 try:
-                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
+                                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
                                     pyautogui.click(x, y)
                                     print("mysterium_icon_empty 2 Found")
                                     time.sleep(3)
                                     for i in range(1,100):
                                         time.sleep(1)
                                         try:
-                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/settings_mysterium.png", region=(1445, 630, 400, 300), confidence=0.9)
+                                            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/settings_mysterium.png", region=(1445, 630, 400, 300), confidence=0.9)
                                             pyautogui.click(x, y)
                                             print("settings_mysterium 2 Found")
                                             time.sleep(1)
@@ -934,7 +1148,7 @@ def mysterium_login(driver):
                                             print("No settings_mysterium 2.")
  
                                         try:
-                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/connection_mysterium_option.png", region=(1325, 109, 800, 900), confidence=0.9)
+                                            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/connection_mysterium_option.png", region=(1325, 109, 800, 900), confidence=0.9)
                                             pyautogui.click(x, y)
                                             print("connection_mysterium_option Found")
                                             time.sleep(1)
@@ -942,7 +1156,7 @@ def mysterium_login(driver):
                                             print("No connection_mysterium_option.")
  
                                         try:
-                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/refresh_ip_off.png", region=(1325, 109, 800, 900), confidence=0.9)
+                                            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/refresh_ip_off.png", region=(1325, 109, 800, 900), confidence=0.9)
                                             pyautogui.click(1640, 300)
                                             pyautogui.click(1668, 300)
                                             pyautogui.click(1714, 300)
@@ -952,7 +1166,7 @@ def mysterium_login(driver):
                                             print("No refresh_ip_off.")
  
                                         try:
-                                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/refresh_ip_on.png", region=(1325, 109, 800, 900), confidence=0.9)
+                                            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/refresh_ip_on.png", region=(1325, 109, 800, 900), confidence=0.9)
                                             pyautogui.click(300, 300)
                                             print("refresh_ip_on Found")
                                             return True
@@ -1153,7 +1367,7 @@ import numpy as np
 from tensorflow.keras.preprocessing import image
 
 # Load the trained model
-model = tf.keras.models.load_model('captcha_model_v16.keras')
+model = tf.keras.models.load_model('captcha_model_v17.keras')
 category_classes_list  =  ['award-solid', 'bell-solid', 'broom-solid', 'bug-solid', 'bullhorn-solid', 'camera-solid', 'cannabis-solid', 'capsules-solid', 'car-burst-solid', 'car-solid', 'carrot-solid', 'cat-solid', 'certificate-solid', 'charging-station-solid', 'chart-line-solid', 'check-solid', 'chess-knight-solid', 'circle-xmark-solid', 'clock-rotate-left-solid', 'couch-solid', 'crow-solid', 'democrat-solid', 'dice-solid', 'dog-solid', 'dove-solid', 'dragon-solid', 'droplet-solid', 'envelope-solid', 'face-surprise-solid', 'face-tired-solid', 'feather-pointed-solid', 'gear-solid', 'gem-solid', 'gift-solid', 'gopuram-solid', 'graduation-cap-solid', 'guitar-solid', 'hammer-solid', 'hat-wizard-solid', 'heart-solid', 'helicopter-solid', 'house-solid', 'image-solid', 'key-solid', 'kiwi-bird-solid', 'laptop-solid', 'leaf-solid', 'lightbulb-solid', 'link-solid', 'lock-solid', 'marker-solid', 'microchip-solid', 'microphone-solid', 'money-bill-wave-solid', 'moon-solid', 'mug-hot-solid', 'mug-saucer-solid', 'music-solid', 'oil-can-solid', 'paw-solid', 'piggy-bank-solid', 'pizza-slice-solid', 'plug-solid', 'puzzle-piece-solid', 'republican-solid', 'ribbon-solid', 'robot-solid', 'rocket-solid', 'rotate-solid', 'satellite-solid', 'scissors-solid', 'screwdriver-wrench-solid', 'ship-solid', 'shuttle-space-solid', 'signal-solid', 'sim-card-solid', 'sitemap-solid', 'skull-crossbones-solid', 'smoking-solid', 'snowman-solid', 'spa-solid', 'spider-solid', 'spoon-solid', 'star-of-david-solid', 'star-solid', 'sun-solid', 'syringe-solid', 'tablets-solid', 'tag-solid', 'temperature-half-solid', 'thermometer-solid', 'thumbs-up-solid', 'thumbtack-solid', 'tooth-solid', 'tractor-solid', 'traffic-light-solid', 'train-subway-solid', 'tree-solid', 'truck-monster-solid', 'truck-pickup-solid', 'umbrella-solid', 'user-solid', 'utensils-solid', 'van-shuttle-solid', 'vector-square-solid', 'vial-solid', 'vials-solid', 'video-solid', 'volleyball-solid', 'xmark-solid', 'yin-yang-solid']
 
 def predict_image_from_list(image_path, category_options):
@@ -1254,10 +1468,10 @@ def click_element_with_mouse(driver, element, duration=0.1):
 
     # Adjust for the window offset to calculate screen position
     x_center += offset_x / 2
-    y_center += offset_y + 15
+    y_center += offset_y #+ 15
 
     # Move the mouse to the exact center and click
-    pyautogui.moveTo(x_center - 3, y_center, duration=duration)
+    pyautogui.moveTo(x_center , y_center, duration=duration)
     pyautogui.click()
 
 captcha_basetring = ''
@@ -1553,17 +1767,23 @@ def solve_icon_captcha(sb1):
 
 
 
+import ctypes
+import ctypes.wintypes
+
 def get_active_window_title():
     try:
-        # Get the window ID of the active window
-        window_id = subprocess.check_output(["xdotool", "getactivewindow"], text=True).strip()
-        
-        # Get the window title using the window ID
-        window_title = subprocess.check_output(["xdotool", "getwindowname", window_id], text=True).strip()
-        
-        return window_title
-    except subprocess.CalledProcessError:
-        return None  # Return None if there's an error (e.g., no active window)
+        user32 = ctypes.windll.user32
+        kernel32 = ctypes.windll.kernel32
+        hwnd = user32.GetForegroundWindow()
+
+        length = user32.GetWindowTextLengthW(hwnd)
+        buffer = ctypes.create_unicode_buffer(length + 1)
+        user32.GetWindowTextW(hwnd, buffer, length + 1)
+
+        return buffer.value if buffer.value else None
+    except Exception:
+        return None
+
 
 def cloudflare(sb, login = True):
     try:
@@ -1578,10 +1798,10 @@ def cloudflare(sb, login = True):
                     if 'Just' in gtitle:
                                 try:
                                     time.sleep(1)
-                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
+                                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_win10.png", confidence=0.55)
                                     print("verify_cloudflare git Found Just")
                                     try:
-                                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.7)
+                                        x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.55)
                                         pyautogui.click(x, y)
                                         time.sleep(5)
     
@@ -1599,7 +1819,7 @@ def cloudflare(sb, login = True):
             else:
 
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
+                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_win10.png", confidence=0.55)
                     print("verify_cloudflare git Found")
                     if x and y:
                         sb.disconnect() 
@@ -1609,10 +1829,10 @@ def cloudflare(sb, login = True):
                             if 'Login' in page_title or 'Faucetpay' in page_title:
                                 try:
                                     time.sleep(1)
-                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
+                                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_win10.png", confidence=0.55)
                                     print("verify_cloudflare git Found")
                                     try:
-                                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.7)
+                                        x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.55)
                                         pyautogui.click(x, y)
                                         time.sleep(5)
     
@@ -1620,7 +1840,7 @@ def cloudflare(sb, login = True):
                                         print(e)
     
                                     try:
-                                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_success.png", confidence=0.7)
+                                        x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_success_win10.png", confidence=0.55)
                                         pyautogui.click(x, y)
                                         time.sleep(1)
                                         sb.connect()
@@ -1662,10 +1882,10 @@ def cloudflare_dark(sb, login = True):
                     if 'Just' in gtitle:
                                 try:
                                     time.sleep(1)
-                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_dark.png", confidence=0.7)
+                                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_dark.png", confidence=0.7)
                                     print("verify_cloudflare git Found Just")
                                     try:
-                                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box_dark.png", confidence=0.7)
+                                        x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_dark.png", confidence=0.7)
                                         pyautogui.click(x, y)
                                         time.sleep(5)
     
@@ -1683,7 +1903,7 @@ def cloudflare_dark(sb, login = True):
             else:
 
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_dark.png", confidence=0.7)
+                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_dark.png", confidence=0.7)
                     print("verify_cloudflare git Found")
                     if x and y:
                         sb.disconnect() 
@@ -1693,10 +1913,10 @@ def cloudflare_dark(sb, login = True):
                             if 'Login' in page_title or 'Faucet' in page_title:
                                 try:
                                     time.sleep(1)
-                                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_dark.png", confidence=0.7)
+                                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_dark.png", confidence=0.7)
                                     print("verify_cloudflare git Found")
                                     try:
-                                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box_dark.png", confidence=0.7)
+                                        x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_dark.png", confidence=0.7)
                                         pyautogui.click(x, y)
                                         time.sleep(5)
     
@@ -1704,7 +1924,7 @@ def cloudflare_dark(sb, login = True):
                                         print(e)
     
                                     try:
-                                        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_success_dark.png", confidence=0.7)
+                                        x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_success_dark.png", confidence=0.7)
                                         pyautogui.click(x, y)
                                         time.sleep(1)
                                         sb.connect()
@@ -1730,6 +1950,18 @@ def cloudflare_dark(sb, login = True):
  
     except Exception as e:
         print(e)
+
+def previous_script_seconds_cal(pre_g,gg):
+    total_str, added_str = pre_g.split(' | ')
+    total = int(total_str)
+    added = int(added_str)
+
+    # Add the new seconds
+    new_total = total + gg
+
+    # Format the result
+    result = f'{new_total} | {gg}'
+    return result
 
 
 #Driver Method
@@ -1775,11 +2007,11 @@ def login_to_faucet_old(url, driver, email, password, captcha_image, restrict_pa
                         if window not in restrict_pages:
                             driver.switch_to.window(window)
                     try:
-                        x, y = pyautogui.locateCenterOnScreen(f"/root/Desktop/MFV6/images/{captcha_image}.png", confidence=0.85)
+                        x, y = pyautogui.locateCenterOnScreen(f"C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/{captcha_image}.png", confidence=0.85)
                         if x and y: 
                             if 'Feyorra' in current_title:
 
-                                mouse_moveclick(cropped_path="/root/Desktop/MFV6/images/feyorra_loginbt.png")
+                                mouse_moveclick(cropped_path="C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/feyorra_loginbt.png")
                                 time.sleep(1)
                                 #pyautogui.click(943 ,788)
                                 #x:943 y:788
@@ -1813,10 +2045,10 @@ def cloudflare_without_driver():
         if 'Login' in gtitle:
             try:
                 time.sleep(1)
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare.png", confidence=0.7)
+                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_win10.png", confidence=0.55)
                 print("verify_cloudflare git Found")
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_box.png", confidence=0.7)
+                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.55)
                     pyautogui.click(x, y)
                     time.sleep(5)
 
@@ -1824,7 +2056,7 @@ def cloudflare_without_driver():
                     print(e)
 
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cloudflare_success.png", confidence=0.7)
+                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_success_win10.png", confidence=0.55)
                     pyautogui.click(x, y)
                     time.sleep(1)
                     return True
@@ -1839,80 +2071,85 @@ def cloudflare_without_driver():
 #OS Level Method
 def Fill_mailpass_faucets(sitekey, email, password):
     if 'Earn-pepe' in sitekey:
-        pyautogui.click(852, 451)
+        pyautogui.click(852, 430)
         time.sleep(1)
         clipboard.copy(email)
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(1)
-        pyautogui.click(812, 537)
+        pyautogui.click(812, 516)
         time.sleep(1)
         clipboard.copy(password)
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(2)
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/pepe_login.png",confidence=0.75)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/pepe_login.png",confidence=0.5)
             pyautogui.moveTo(x, y)
             pyautogui.click()
             return True
         except Exception as e:
             print(f"Error moving and clicking: {e}")
-
+        pyautogui.press('enter')
+        
     if 'Feyorra' in sitekey:
-        pyautogui.click(883, 338)
+        pyautogui.click(883, 316)
         time.sleep(1)
         clipboard.copy(email)
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(1)
-        pyautogui.click(810, 419)
+        pyautogui.click(810, 397)
         time.sleep(1)
         clipboard.copy(password)
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(2)
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/feyorra_loginbt.png",confidence=0.75)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/feyorra_loginbt.png",confidence=0.5)
             pyautogui.moveTo(x, y)
             pyautogui.click()
             return True
         except Exception as e:
             print(f"Error moving and clicking: {e}")
+        pyautogui.press('enter')
 
     if 'Earn-Trump' in sitekey:
-        pyautogui.click(883, 403)
+        pyautogui.click(883, 385)
         time.sleep(1)
         clipboard.copy(email)
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(1)
-        pyautogui.click(810, 499)
+        pyautogui.click(810, 473)
         time.sleep(1)
         clipboard.copy(password)
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(2)
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/trump_login.png",confidence=0.75)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/trump_login.png",confidence=0.5)
             pyautogui.moveTo(x, y)
             pyautogui.click()
             return True
         except Exception as e:
             print(f"Error moving and clicking: {e}")
-            
+        pyautogui.press('enter')
+
     if 'Earn-Bonk' in sitekey:
-        pyautogui.click(883, 453)
+        pyautogui.click(883, 418)
         time.sleep(1)
         clipboard.copy(email)
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(1)
-        pyautogui.click(810, 566)
+        pyautogui.click(810, 534)
         time.sleep(1)
         clipboard.copy(password)
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(2)
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/bonk_login.png",confidence=0.75)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/bonk_login.png",confidence=0.5)
             pyautogui.moveTo(x, y)
             pyautogui.click()
             return True
         except Exception as e:
             print(f"Error moving and clicking: {e}")
+        pyautogui.press('enter')
+
 #OS level
 def login_to_faucet(url, driver, email, password, captcha_image, restrict_pages, submit_button, ip_required):
     ##new tab open
@@ -2096,7 +2333,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
 
 def pin_extensions():
     try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/extension_icon.png", region=(1234, 30, 683, 522), confidence=0.9)
+        x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/extension_icon.png", region=(1234, 30, 683, 522), confidence=0.9)
         pyautogui.click(x, y)
         print("extension_icon Button Found")
 
@@ -2104,7 +2341,7 @@ def pin_extensions():
             time.sleep(1)
             pyautogui.moveTo(1700, 30)
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/pin.png", region=(1234, 30, 683, 522), confidence=0.9)
+                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/pin.png", region=(1234, 30, 683, 522), confidence=0.9)
                 pyautogui.click(x, y)
                 pyautogui.moveTo(1700, 30)
                 print("pin Button Found")
@@ -2112,7 +2349,7 @@ def pin_extensions():
             except pyautogui.ImageNotFoundException:
                 print("No pin Button.")
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/all_pinned.png", region=(1234, 30, 683, 522), confidence=0.99)
+                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/all_pinned.png", region=(1234, 30, 683, 522), confidence=0.99)
                 pyautogui.moveTo(1700, 40)
                 print("all_pinned Button Found")
                 return True   
@@ -2129,20 +2366,20 @@ def install_extensions(extension_name):
 
     for i in range(1,4):
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/dev_off.png", region=(1700, 95, 300, 300), confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/dev_off.png", region=(1700, 95, 300, 300), confidence=0.9)
             pyautogui.click(x, y)
             print("Developer Button Found")
         except pyautogui.ImageNotFoundException:
             print("No Developer Button.")
         time.sleep(2)
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/load_unpack.png", region=(2, 100, 400, 400), confidence=0.90)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/load_unpack.png", region=(2, 100, 400, 400), confidence=0.90)
             pyautogui.click(x, y)
             print("load_unpack Button Found")
             time.sleep(2)
             for i in range(1,100):
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mfv6_unselect_nomachine_paths.png", region=(388, 260, 300, 300), confidence=0.70)
+                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/mfv6_unselect_nomachine_paths.png", region=(388, 260, 300, 300), confidence=0.70)
                     pyautogui.click(x, y)
                     print("mfv6_unselect Button Found")
                     time.sleep(1)
@@ -2150,7 +2387,7 @@ def install_extensions(extension_name):
                 except pyautogui.ImageNotFoundException:
                     print("No mfv6_unselect Button.")
                 #####Select Your Extension
-                extension_path = f"/root/Desktop/MFV6/images/{extension_name}_nomachine_paths.png" 
+                extension_path = f"C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/{extension_name}_nomachine_paths.png" 
                 try:
                     x, y = pyautogui.locateCenterOnScreen(extension_path, region=(545, 200, 500, 500), confidence=0.9)
                     pyautogui.click(x, y)
@@ -2598,15 +2835,15 @@ def are_extensions_exist():
     for i in range(3):
         time.sleep(2)
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/cookie_icon.png", region=(1225, 33, 755, 400), confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cookie_icon.png", region=(1225, 33, 755, 400), confidence=0.9)
             #pyautogui.click(x, y)
             print("extension_icon Button Found")
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1225, 33, 755, 400), confidence=0.95)
+                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/mysterium_icon_empty.png", region=(1225, 33, 755, 400), confidence=0.95)
                 #pyautogui.click(x, y)
                 print("mysterium_icon_emptyf Button Found")
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_dis_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
+                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/sweet_dis_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
                     #pyautogui.click(x, y)
                     print("sweet_dis_icon Button Found")
                     all_extensions_not = False
@@ -2614,7 +2851,7 @@ def are_extensions_exist():
                 except pyautogui.ImageNotFoundException:
                     print("No sweet_dis_icon Button.")
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_nl_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
+                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/sweet_nl_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
                     #pyautogui.click(x, y)
                     print("sweet_nl_icon Button Found")
                     all_extensions_not = False
@@ -2624,11 +2861,11 @@ def are_extensions_exist():
             except pyautogui.ImageNotFoundException:
                 print("No mysterium_icon_emptyf Button.")
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_connected.png", region=(1225, 33, 755, 400), confidence=0.95)
+                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/mysterium_icon_connected.png", region=(1225, 33, 755, 400), confidence=0.95)
                 #pyautogui.click(x, y)
                 print("mysterium_icon_emptyf Button Found")
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_dis_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
+                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/sweet_dis_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
                     #pyautogui.click(x, y)
                     print("sweet_dis_icon Button Found")
                     all_extensions_not = False
@@ -2636,7 +2873,7 @@ def are_extensions_exist():
                 except pyautogui.ImageNotFoundException:
                     print("No sweet_dis_icon Button.")
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_nl_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
+                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/sweet_nl_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
                     #pyautogui.click(x, y)
                     print("sweet_nl_icon Button Found")
                     all_extensions_not = False
@@ -2674,18 +2911,18 @@ def get_browser_proxy():
 def sweet_enable():
     for x in range(5):
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_nl_icon.png",  region=(1625, 43, 700, 300), confidence=0.98)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/sweet_nl_icon.png",  region=(1625, 43, 700, 300), confidence=0.98)
             return
             
         except pyautogui.ImageNotFoundException:
             pass
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_dis_icon.png",  region=(1625, 43, 700, 300), confidence=0.98)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/sweet_dis_icon.png",  region=(1625, 43, 700, 300), confidence=0.98)
             pyautogui.click(x, y)
             for i in range(5):
                 time.sleep(3)
                 try:
-                    a, b = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_connect.png", confidence=0.8)
+                    a, b = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/sweet_connect.png", confidence=0.8)
                     pyautogui.click(1518, 438)
                     time.sleep(2)
 
@@ -2698,7 +2935,7 @@ def sweet_enable():
         except pyautogui.ImageNotFoundException:
             print("No icon_image_loaded Human.")
             try:
-                x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/sweet_us.png", region=(1625, 43, 700, 300), confidence=0.98)
+                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/sweet_us.png", region=(1625, 43, 700, 300), confidence=0.98)
                 pyautogui.click(x, y)
                 time.sleep(3)
                 pyautogui.click(1518, 438)
@@ -2709,17 +2946,6 @@ def sweet_enable():
                 print("Waiting for Sweet to pop")
 
 
-import shutil
-def delete_folder(folder_path):
-    if os.path.exists(folder_path) and os.path.isdir(folder_path):
-        try:
-            shutil.rmtree(folder_path)
-            print(f"Deleted: {folder_path}")
-        except Exception as e:
-            print(f"Error deleting {folder_path}: {e}")
-    else:
-        print(f"Folder not found or not a directory: {folder_path}")
-
 def mysterium_reinstaller():
     response_messege('Changed IP🔴 :Mys Reinstaller')
     global sb1
@@ -2728,7 +2954,7 @@ def mysterium_reinstaller():
     global browser_proxy
     for i in range(4):
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_connected.png", region=(1625, 43, 400, 300), confidence=0.99)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/mysterium_icon_connected.png", region=(1625, 43, 400, 300), confidence=0.99)
             if x and y:
 
                 pyautogui.moveTo(100, 100)
@@ -2761,6 +2987,17 @@ def mysterium_reinstaller():
         except pyautogui.ImageNotFoundException:
             print("No icon_image_loaded Human.")
 
+
+import shutil
+def delete_folder(folder_path):
+    if os.path.exists(folder_path) and os.path.isdir(folder_path):
+        try:
+            shutil.rmtree(folder_path)
+            print(f"Deleted: {folder_path}")
+        except Exception as e:
+            print(f"Error deleting {folder_path}: {e}")
+    else:
+        print(f"Folder not found or not a directory: {folder_path}")
 
 def add_blacklistedip2(input, ip):
     collectionbip = db[f'LocalCSB']
@@ -2798,91 +3035,11 @@ def add_blacklistedip2(input, ip):
         print(e)
 
 
-def mysterium_reinstaller_old():
-    #find externsion
-    #delete
-    #install 
-    response_messege('Changed IP🔴 :Mys Reinstaller')
-    current_window = sb1.current_window_handle
-    close_extra_windows(sb1, [current_window])
-    sb1.switch_to.window(current_window)
-    sb1.uc_open("chrome://extensions/")
-    pyautogui.click(300, 300)
-    time.sleep(3)
-    for i in range(4):
-        try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_connected.png", region=(1625, 43, 400, 300), confidence=0.99)
-            pyautogui.rightClick(x, y)
-            for i in range(5):
-                try:
-                    x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/remove_from_chrome.png", confidence=0.95)
-                    pyautogui.click(x, y)
-                    for i in range(5):
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/remove_button.png", confidence=0.95)
-                            pyautogui.click(x, y)
-                            time.sleep(3)
-                            pyautogui.click(x, y)
-                            time.sleep(1)
-                            pyautogui.click(x, y)
-                            time.sleep(1)
- 
-                            mysterium = install_extensions('mysterium')
-                            time.sleep(2)
-                            gg = pin_extensions()
- 
-                            if gg:
-                                fix_wrong_pins()
-                                return mysterium
-                            else:
-                                break
-                        except pyautogui.ImageNotFoundException:
-                            print("No icon_image_loaded Human.")
- 
-                except pyautogui.ImageNotFoundException:
-                    print("No icon_image_loaded Human.")
- 
-        except pyautogui.ImageNotFoundException:
-            print("No icon_image_loaded Human.")
-        try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
-            return
-        except pyautogui.ImageNotFoundException:
-            print("No icon_image_loaded Human.")
-            mysterium = install_extensions('mysterium')
-            time.sleep(2)
-            gg = pin_extensions()
-            if gg:
-                fix_wrong_pins()
-                return mysterium
+
  
  
- 
-def fix_wrong_pins():
-    try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/wrong_pin.png", region=(1625, 40, 400, 300), confidence=0.98)
-        pyautogui.moveTo( 1778,82)
-        time.sleep(1)
-        pyautogui.mouseDown( 1778,82 ,button='left')
-        time.sleep(1)
-        pyautogui.moveTo( 1741,82 )
-        time.sleep(1)
-        pyautogui.mouseUp( 1741,82 ,button='left')
-        time.sleep(1)
-    except Exception as e:
-        print('ERR fix wrong pin',e)
  
 
-def fix_tab_search_icon():
-    try:
-        x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/tab_search_icon.png", region=(1625, 40, 400, 300), confidence=0.99)
-        pyautogui.rightClick(x,y)
-        time.sleep(3)
-        pyautogui.click(1790 ,130)
-        time.sleep(1)
-
-    except Exception as e:
-        print('No fix_tab_search_icon',e)
 
 browser_proxy = ''
 query = {"type": "main"}
@@ -2899,7 +3056,7 @@ def Limit_Checked():
     title = sb1.get_title()
     if 'Earn-pepe1' in title:
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/pepe_limit.png", confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/pepe_limit.png", confidence=0.9)
             print('Limit Reached')
             return True
         except Exception as e:    
@@ -2907,7 +3064,7 @@ def Limit_Checked():
             return False
     elif 'Earn-Trump12' in title:
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/trump_limit.png", confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/trump_limit.png", confidence=0.9)
             print('Limit Reached')
             return True
         except Exception as e:    
@@ -2915,7 +3072,7 @@ def Limit_Checked():
             return False
     elif 'Feyorra' in title:
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/feyorra_limit.png", confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/feyorra_limit_win10.png", confidence=0.9)
             print('Limit Reached')
             return True
         except Exception as e:    
@@ -2923,7 +3080,7 @@ def Limit_Checked():
             return False
     elif 'Earn-Bonk' in title:
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/bonk_limit.png", confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/bonk_limit_win10.png", confidence=0.9)
             print('Limit Reached')
             return True
         except Exception as e:    
@@ -2935,25 +3092,9 @@ def Click_Understand():
     print('Trying CLicks')
     #time.sleep(1)
     title = sb1.get_title()
-    if 'Earn-pepe1' in title:
+    if 'Feyorra' in title:
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/pepe_limit.png", confidence=0.95)
-            #print('Limit Reached')
-            return True
-        except Exception as e:    
-            #print("No icon_image_loaded Human.")
-            return False
-    elif 'Earn-Trump12' in title:
-        try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/trump_limit.png", confidence=0.95)
-            #print('Limit Reached')
-            return True
-        except Exception as e:    
-            #print("No icon_image_loaded Human.")
-            return False
-    elif 'Feyorra' in title:
-        try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/feyorra_understand.png", confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/feyorra_understand.png", confidence=0.8)
             pyautogui.click(x, y, duration = 0.2)
             #print('Limit Reached')
             return True
@@ -2962,7 +3103,7 @@ def Click_Understand():
             return False
     elif 'Earn-Bonk' in title:
         try:
-            x, y = pyautogui.locateCenterOnScreen("/root/Desktop/MFV6/images/bonk_understand.png", confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/bonk_understand.png", confidence=0.8)
             #print('Limit Reached')
             pyautogui.click(x, y, duration = 0.2)
             return True
@@ -2989,41 +3130,179 @@ def update_ip(new_ip, config_path="mfhelper/config.json"):
         print(f"Error updating config.json: {e}")
 
 
-def clear_browser_cache_history(driver):
-    try:
-        global sb1
-        response_messege(f'Clearing Cahe')
-        driver.open("chrome://settings/clearBrowserData")
-        time.sleep(8)
-        pyautogui.click(869, 468)
-        time.sleep(2)
-        pyautogui.click(869, 585)
-        time.sleep(2)
-        pyautogui.click(1161, 797)
-        time.sleep(5)
-        try:
-            sb1.quit()
-            time.sleep(1)
-        except Exception as e:
-            print(f"sb1.quit() failed: {e}")
 
-        # Fallback kill
-        for proc_name in ['chrome', 'chromium']:
-            try:
-                subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
-                print(f"All {proc_name} processes killed (if any).")
-            except Exception as e:
-                print(f"Failed to kill {proc_name} processes: {e}")
-        time.sleep(2)
-        sb1 = open_browsers()
-    except Exception as e:
-        print(f"Error clearing browser cache: {e}")
 def calculate_accuracy_captchas(total_tests, failed_tests):
     if total_tests == 0:
         return 0
     accuracy = ((total_tests - failed_tests) / total_tests) * 100
     return round(accuracy, 2)
 
+
+def fix_all_cloudflare(sb1):
+    cloud = False
+    all_window_handles = sb1.window_handles
+    for handle in all_window_handles:
+        sb1.switch_to.window(handle)
+        if 'Just' in sb1.get_title():
+            cloudflare(sb1, login = False)
+            time.sleep(2)
+            cloud = True
+
+def quick_open_faucet(sb1):
+    sb1.open_new_window()
+    current_window = sb1.current_window_handle
+    close_extra_windows(sb1, [current_window])
+    earnpp_window = None
+    feyorra_window = None
+    trump_window = None
+    bonk_window = None
+
+
+    ##Open All Faucets
+    sb1.uc_open('https://earn-pepe.com/member/faucet')
+
+    sb1.open_new_window()
+    sb1.uc_open('https://feyorra.site/member/faucet')
+
+    sb1.open_new_window()
+    sb1.uc_open('https://earn-trump.com/member/faucet')
+
+
+    sb1.open_new_window()
+    sb1.uc_open('https://earn-bonk.com/member/faucet')
+
+    
+    #time.sleep(2)
+
+    cloudg = fix_all_cloudflare(sb1)
+    if cloudg:
+        cloudg = fix_all_cloudflare(sb1)
+
+
+    print('Length of all windows:', len(sb1.window_handles))
+
+    all_window_handles = sb1.window_handles
+    for handle in all_window_handles:
+        sb1.switch_to.window(handle)
+        print('Current Window Title:', sb1.get_title())
+
+        if "Faucet | Earn-pepe" in sb1.get_title():
+            earnpp_window = sb1.current_window_handle
+            print('EarnPP Window Found')
+
+        elif "Faucet | Feyorra" in sb1.get_title():
+            feyorra_window = sb1.current_window_handle
+            print('Feyorra Window Found')
+
+        elif "Faucet | Earn-Trump" in sb1.get_title():
+            trump_window = sb1.current_window_handle
+            print('Trump Window Found')
+
+        elif "Faucet | Earn-Bonk" in sb1.get_title():
+            bonk_window = sb1.current_window_handle
+            print('Bonk Window Found')
+    if earnpp_window and feyorra_window and trump_window and bonk_window:
+        print('All Faucet Windows Found')
+    else:
+        print('Not all Faucet Windows Found, trying again')
+        all_window_handles = sb1.window_handles
+        for handle in all_window_handles:
+            sb1.switch_to.window(handle)
+
+            if "Faucet | Earn-pepe" in sb1.get_title():
+                earnpp_window = sb1.current_window_handle
+                print('EarnPP Window Found')
+
+            elif "Faucet | Feyorra" in sb1.get_title():
+                feyorra_window = sb1.current_window_handle
+                print('Feyorra Window Found')
+
+            elif "Faucet | Earn-Trump" in sb1.get_title():
+                trump_window = sb1.current_window_handle
+                print('Trump Window Found')
+
+            elif "Faucet | Earn-Bonk" in sb1.get_title():
+                bonk_window = sb1.current_window_handle
+                print('Bonk Window Found')
+
+    return earnpp_window, feyorra_window, trump_window, bonk_window
+from ctypes import wintypes
+
+
+from pywinauto import Desktop
+def focus_and_maximize_window(partial_title):
+    try:
+        windows = Desktop(backend="uia").windows()
+        for win in windows:
+            title = win.window_text()
+            if partial_title.lower() in title.lower():
+                win.set_focus()
+                win.maximize()
+                print(f"Activated and maximized: {title}")
+                return
+        print(f"No matching window found for: {partial_title}")
+    except Exception as e:
+        print(f"Error: {e}")
+def mysteryum_changer(server):
+    try:
+        focus_and_maximize_window("Mysterium")
+        time.sleep(2)
+        pyautogui.click(301, 321)  # Click on the Mysterium icon in the system tray
+        time.sleep(2)
+
+        pyautogui.click(112, 104)  # Click on the Mysterium icon in the system tray
+        time.sleep(2)
+        pyautogui.click(415, 103)
+        time.sleep(2)
+        pyautogui.click(112, 104)  # Press the Delete key to remove the current server
+        time.sleep(2)
+        pyautogui.typewrite(server)  # Type the server name
+        time.sleep(3)
+        pyautogui.click(145, 482, duration=0.5)  # Click on the "Change Server" button
+        time.sleep(5)  # Wait for the server change to take effect
+        pyautogui.hotkey('alt', 'tab') 
+    except Exception as e:
+        print(f"Error changing Mysterium server: {e}")
+    focus_and_maximize_window("Chrome")
+
+iana_to_windows = {
+    "Asia/Bangkok": "SE Asia Standard Time",
+    "Asia/Kolkata": "India Standard Time",
+    "Europe/London": "GMT Standard Time",
+    "America/New_York": "Eastern Standard Time",
+    "America/Los_Angeles": "Pacific Standard Time",
+    "UTC": "UTC",
+
+    # Added timezones
+    "Europe/Warsaw": "Central European Standard Time",       # Poland
+    "Europe/Paris": "Romance Standard Time",                 # France
+    "Europe/Berlin": "W. Europe Standard Time",              # Germany
+    "America/Toronto": "Eastern Standard Time",              # Canada (Ontario/Quebec)
+    "America/Vancouver": "Pacific Standard Time",            # Canada (British Columbia)
+    "America/Edmonton": "Mountain Standard Time",            # Canada (Alberta)
+    "America/Winnipeg": "Central Standard Time",             # Canada (Manitoba)
+}
+
+def timezone_changer(timezone_str):
+    """
+    Sets Windows timezone using an IANA timezone name by converting it to the corresponding Windows name.
+    """
+    windows_tz = iana_to_windows.get(timezone_str)
+    
+    if not windows_tz:
+        print(f"Unknown IANA timezone: {timezone_str}")
+        return
+
+    try:
+        cmd = f'powershell -Command "tzutil /s \'{windows_tz}\'"'
+        subprocess.run(cmd, shell=True, check=True)
+        print(f"Timezone successfully set to: {timezone_str} ({windows_tz})")
+    except subprocess.CalledProcessError:
+        print(f"Failed to set timezone to: {timezone_str} ({windows_tz})")
+
+ip_memory_cache = '' 
+
+already_ready = False
 fresh_start_faucet = True
 login_faucet_detect = True
 def open_browsers():
@@ -3031,42 +3310,44 @@ def open_browsers():
     global chrome_user_data_dir
     global layout
     global browser_proxy
+    global already_ready
+    global ip_memory_cache
+
     pyautogui.moveTo(100, 100)
-    pyautogui.click(100, 200, duration=0.5)
+    #pyautogui.click(100, 200, duration=0.5)
     browser_proxy  =get_browser_proxy()
 
     quer2y = {"type": "main"}
     dochh2 = collection.find_one(quer2y)
     layout = dochh2["withdraw_mail"]
     print(f'Farm ID:{farm_id} | Layout: {layout}')
-    chrome_user_data_dir = f'/root/.config/google-chrome/{browser_proxy}{layout}'
+    chrome_user_data_dir = f'C:/Users/WhatUpTime.com/AppData/Local/Google/Chrome/User Data/{browser_proxy}{layout}'
     try:
         for l in range(1,7):
-            if chrome_user_data_dir == f'/root/.config/google-chrome/{browser_proxy}Layout{l}':
+            if chrome_user_data_dir == f'C:/Users/WhatUpTime.com/AppData/Local/Google/Chrome/User Data/{browser_proxy}Layout{l}':
                 print(f'No Del Layout{l}')
             else:
-                delete_folder(f'/root/.config/google-chrome/{browser_proxy}Layout{l}')
+                delete_folder(f'C:/Users/WhatUpTime.com/AppData/Local/Google/Chrome/User Data/{browser_proxy}Layout{l}')
     except Exception as e:
         pass
     sb1 = Driver(
         uc=True,
         headed=True,
         undetectable=True,
-        undetected= True,
-        disable_gpu=True,  # --disable-gpu
-        user_data_dir=chrome_user_data_dir,
-        binary_location=chrome_binary_path,
-        page_load_strategy="eager",
-        
+        undetected=True,
+        disable_gpu=True,
+        no_sandbox=True,
 
+        user_data_dir=chrome_user_data_dir,  # e.g., "C:/Users/YourName/AppData/Local/Google/Chrome/User Data/Profile 1"
+        binary_location=chrome_binary_path,  # e.g., "C:/Program Files/Google/Chrome/Application/chrome.exe"
+        page_load_strategy="none",
+        extension_dir="C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/mfhelper", 
         chromium_arg=[
-            "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.7103.92 Safari/537.36",
-            "--disable-dev-shm-usage",
+            # Windows-specific and stealth-friendly arguments
+            "--disable-blink-features=AutomationControlled",
             "--disable-background-timer-throttling",
             "--disable-backgrounding-occluded-windows",
             "--disable-renderer-backgrounding",
-            "--disable-blink-features=AutomationControlled",
-
 
         ]
     )
@@ -3080,60 +3361,39 @@ def open_browsers():
     sb1.connect()
     sb1.switch_to.window(current_window2)
     sb1.uc_open("chrome://extensions/")
-    time.sleep(8)
+    focus_and_maximize_window("Chrome")
+    #time.sleep(5000000000)
     #sb1.execute_script("window.scrollTo(0, 300);")
     print(sb1.get_title())
-    fix_tab_search_icon()
-    gggv = are_extensions_exist()
+    #fix_tab_search_icon()
+    #gggv = are_extensions_exist()
     get_mails_passowrds(farm_id)
-    if gggv:
-        ip_address = get_ip(sb1)
-        lay = re.search(r'\d+', layout).group()
-        Not_Black_Listed_Stt = Full_blacklist_Check(sb1, ip_address,f'F{farm_id}L{lay}')
-        if Not_Black_Listed_Stt:
-            print(f'Good IP found: {ip_address}')
-            update_ip(ip_address, config_path="mfhelper/config.json")
-            query = {"type": "main"}
-            update = {"$set": {"response": f'Ready IP at Start:{ip_address}'}}
-            result = collection.update_one(query, update)
-            return sb1
+    ip_address = get_ip(sb1)
+    lay = re.search(r'\d+', layout).group()
 
-        else:
-            query = {"type": "main"}
-            update = {"$set": {"request": 'ipfixer'}}
-            result = collection.update_one(query, update)
-            print('No good IP')
-            response_messege(f'Changed IP:{ip_address} | Installing Extensions')
-            if fresh >= 3:
-                sweet = install_extensions('sweet')
-                cookie = install_extensions('cookie')
-                mysterium = install_extensions('mysterium')
-                fingerprint = install_extensions('fingerprint')
-                mfhelper = install_extensions('mfhelper')
-                fix_tab_search_icon()
-                if fingerprint and mysterium and sweet and cookie and mfhelper:
-                    print('All Extensions are installed..')
-                    query = {"type": "main"}
-                    update = {"$set": {"response": 'All Extensions are installed..'}}
-                    result = collection.update_one(query, update)
+    if ip_memory_cache == ip_address:
+        print(f'IP Already Using and Ready: {ip_address}')
+        query = {"type": "main"}
+        update = {"$set": {"response": f'Ready IP for Reuse Session:{ip_address}'}}
+        result = collection.update_one(query, update)
+        already_ready = True
+        return sb1 #, True
 
-            if fresh >= 2:
-                if pin_extensions():
-                    print('All Extensions are pinned')
-                    query = {"type": "main"}
-                    update = {"$set": {"response": 'All Extensions are pinned'}}
-                    result = collection.update_one(query, update)
 
-                    if mysterium_login(sb1):
-                        print('Mysterium Login Done...')
-                        query = {"type": "main"}
-                        update = {"$set": {"response": 'Mysterium Login Done...'}}
-                        result = collection.update_one(query, update)
+    Not_Black_Listed_Stt = Full_blacklist_Check(sb1, ip_address,f'F{farm_id}L{lay}')
+    if Not_Black_Listed_Stt:
+        print(f'Good IP Ready IP at Start: {ip_address}')
+        update_ip(ip_address, config_path="mfhelper/config.json")
+        query = {"type": "main"}
+        update = {"$set": {"response": f'Ready IP at Start:{ip_address}'}}
+        result = collection.update_one(query, update)
+        already_ready = True
+        return sb1 #, True
 
 
     #sb1.disconnect()
     #time.sleep(99999)
-    return sb1
+    return sb1 #, False
 
 faucetlayout = None
 def open_faucets():
@@ -3145,36 +3405,75 @@ def open_faucets():
             global faucetlayout
             global fresh_start_faucet
             global login_faucet_detect
+            global already_ready
+            global ip_memory_cache
+            focus_and_maximize_window("Chrome")
             ip_required = None
             quer2y = {"type": "main"}
             dochh2 = collection.find_one(quer2y)
             layout2 = dochh2["withdraw_mail"]
             print(f'Farm ID:{farm_id} | Layout: {layout2}')
             browser_proxy2  =get_browser_proxy()
-            chrome_user_data_dir2 = f'/root/.config/google-chrome/{browser_proxy2}{layout2}'
+            chrome_user_data_dir2 = f'C:/Users/WhatUpTime.com/AppData/Local/Google/Chrome/User Data/{browser_proxy2}{layout2}'
             if chrome_user_data_dir == chrome_user_data_dir2 and layout == layout2 and browser_proxy2 == browser_proxy:
                 print(f'Same Browser | L {layout2}')
             else:
-                response_messege(f'Resetting Browser')
+                #@response_messege(f'Resetting Browser')
                 try:
                     sb1.quit()
                     time.sleep(2)
                 except Exception as e:
                     print(f"sb1.quit() failed: {e}")
 
-                # Fallback kill
-                for proc_name in ['chrome', 'chromium']:
-                    try:
-                        subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
-                        print(f"All {proc_name} processes killed (if any).")
-                    except Exception as e:
-                        print(f"Failed to kill {proc_name} processes: {e}")
-                time.sleep(4)
                 sb1 = open_browsers()
                 continue
             pyautogui.moveTo(100, 200)
             pyautogui.moveTo(200, 400)
-            print('ff')
+            print('ff already_ready',already_ready)
+            focus_and_maximize_window("Chrome")
+
+            if already_ready:
+                for frm in CSB1_farms:
+                    collection_csb = db[f'Farm{frm}']
+                    query = {"type": "main"}
+                    doc = collection_csb.find_one(query)
+                    res = doc["response"]
+                    req = doc["request"]
+                    if req == 'ipfixer':
+                        if 'Ready' in res or 'Loging' in res:
+                            print(f'IP is ready Farm{frm}')
+
+                        else:
+            
+                            ipfixer()
+                            already_ready = False
+                            raise Exception("Ready IP ipfixer Done earnbonk == 404")
+                        
+                if already_ready:    
+                    earnpp_window, feyorra_window, earntrump_window, earnbonk_window =quick_open_faucet(sb1)
+                    ip_address = get_ip(sb1)
+                    lay = re.search(r'\d+', layout2).group()
+                    Not_Black_Listed_Stt = True
+                    if ip_memory_cache != ip_address:
+                        Not_Black_Listed_Stt = Full_blacklist_Check(sb1,ip_address,f'F{farm_id}L{lay}')
+                        if Not_Black_Listed_Stt:
+                            tizon = get_timezone(ip_address)
+                            timezone_changer(tizon)
+                            add_blacklistedip2(f'F{farm_id}L{lay}', ip_address)
+                            ip_memory_cache = ip_address
+
+                    print(f'Not_Black_Listed_Stt: {Not_Black_Listed_Stt} | IP: {ip_address} | earnpp_window: {earnpp_window} | feyorra_window: {feyorra_window} | earntrump_window: {earntrump_window} | earnbonk_window: {earnbonk_window}')
+                    if Not_Black_Listed_Stt and earnpp_window and feyorra_window and earntrump_window and earnbonk_window:
+                        print('All Faucets are opened')
+                        query = {"type": "main"}
+                        update = {"$set": {"request": 'mainscript'}}
+                        result = collection.update_one(query, update)
+                        
+                        return earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_address
+                    else:
+                        already_ready = False
+
+
             current_window = sb1.current_window_handle
             close_extra_windows(sb1, [current_window])
             sb1.switch_to.window(current_window)
@@ -3185,6 +3484,7 @@ def open_faucets():
             ip_address = get_ip(sb1)
             Not_Black_Listed_Stt = Full_blacklist_Check(sb1,ip_address,f'F{farm_id}L{lay}')
             if Not_Black_Listed_Stt:
+                focus_and_maximize_window("Chrome")
                 print(f'Good IP found: {ip_address}')
                 for frm in CSB1_farms:
                     collection_csb = db[f'Farm{frm}']
@@ -3223,6 +3523,9 @@ def open_faucets():
                 fresh_start_faucet = True
                 pyautogui.moveTo(100, 200)
                 pyautogui.moveTo(200, 400)
+                tizon = get_timezone(ip_address)
+                timezone_changer(tizon)
+                #time.sleep(99999)
                 if fresh_start_faucet == True:
                     ip_address = get_ip(sb1)
                     if ip_required == ip_address:
@@ -3385,7 +3688,7 @@ def open_faucets():
                 
                 ip_address = get_ip(sb1)
                 if ip_required == ip_address:
-                    response_messege('Started')
+                    response_messege('Ready IP | Started')
                     query = {"type": "main"}
                     update = {"$set": {"request": 'mainscript'}}
                     result = collection.update_one(query, update)
@@ -3424,6 +3727,8 @@ def open_faucets():
                         if req == 'ipfixer':
                             if 'Changed' in res:
                                 raise Exception(" earnbonk == 404")
+                    ip_memory_cache = ip_address
+                    already_ready = True
 
                     return earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required
         except Exception as e:
@@ -3433,14 +3738,6 @@ def open_faucets():
                     time.sleep(2)
                 except Exception as e:
                     print(f"sb1.quit() failed: {e}")
-
-                # Fallback kill
-                for proc_name in ['chrome', 'chromium']:
-                    try:
-                        subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
-                        print(f"All {proc_name} processes killed (if any).")
-                    except Exception as e:
-                        print(f"Failed to kill {proc_name} processes: {e}")
                 time.sleep(4)
                 sb1 = open_browsers()
                 reset_count +=15
@@ -3468,7 +3765,8 @@ failed_captchas = 0
 total_captchas_received = 0
 
 
-previous_script_seconds_only = 0
+previous_script_seconds_only = '0 | 0'
+
 while True:
     try:
         mainscript = control_panel()
@@ -3481,34 +3779,26 @@ while True:
             script_elapsed_time = time.time() - Script_Started
             script_seconds_only = int(script_elapsed_time)
             #debug_messages(f'script_elapsed_time Seconds:{script_seconds_only}')
-            #if script_seconds_only > 12000000000:
-            #    print('Script 20m')
-            #    solving_accuracy = 0
-            #    failed_captchas = 0
-            #    total_captchas_received = 0
+            if script_seconds_only > 1500:
+                #print('Script 5m')
+                solving_accuracy = 0
+                failed_captchas = 0
+                total_captchas_received = 0
 
 
-            #    Script_Started = time.time()
-            #    try:
-            #        sb1.quit()
-            #        time.sleep(2)
-            #    except Exception as e:
-            #        print(f"sb1.quit() failed: {e}")
-
-                # Fallback kill
-            #    for proc_name in ['chrome', 'chromium']:
-            #        try:
-            #            subprocess.run(['pkill', '-f', proc_name], check=False, stderr=subprocess.DEVNULL)
-            #            print(f"All {proc_name} script_seconds_only killed (if any).")
-            #        except Exception as e:
-            #            print(f"Failed to kill {proc_name} script_seconds_only: {e}")
+                Script_Started = time.time()
+                try:
+                    sb1.quit()
+                    time.sleep(1)
+                except Exception as e:
+                    print(f"sb1.quit() failed: {e}")
                         
-            #    time.sleep(2)
-            #    sb1 = open_browsers()
 
-            #    earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required = open_faucets()
-            #    previous_script_seconds_only = script_seconds_only
-            #    Script_Started = time.time()
+                sb1 = open_browsers()
+
+                earnpp_window,feyorra_window,earntrump_window,earnbonk_window,  ip_address, ip_required = open_faucets()
+                previous_script_seconds_only = previous_script_seconds_cal(previous_script_seconds_only,script_seconds_only) #script_seconds_only
+                Script_Started = time.time()
 
 
             #ip_address = get_ip(sb1) 
@@ -3537,7 +3827,7 @@ while True:
                 reset_count = 0
                 reset_count_isacc = 0
                 Script_Started = time.time()
-                previous_script_seconds_only = script_seconds_only
+                previous_script_seconds_only = previous_script_seconds_cal(previous_script_seconds_only,script_seconds_only)
 
             if previous_reset_count == reset_count:
                 reset_count = 0
@@ -3628,7 +3918,7 @@ while True:
                         debug_messages(f'Switching Pages to Feyorra')
                         sb1.switch_to.window(feyorra_window)
                         debug_messages(f'Getting Pages Titile:Feyorra')
-                        pyautogui.press('enter')
+                        #pyautogui.press('enter')
                         title =sb1.get_title()
 
                         if 'Faucet | Feyorra' in title:
@@ -3708,7 +3998,7 @@ while True:
                         debug_messages(f'Switching Pages to earntrump')
                         sb1.switch_to.window(earntrump_window)
                         debug_messages(f'Getting Pages Titile:earntrump')
-                        pyautogui.press('enter')
+                        #pyautogui.press('enter')
                         title =sb1.get_title()
 
                         if 'Faucet | Earn-Trump' in title:
@@ -3780,7 +4070,7 @@ while True:
                         debug_messages(f'Switching Pages to earnbonk')
                         sb1.switch_to.window(earnbonk_window)
                         debug_messages(f'Getting Pages Titile:earnbonk')
-                        pyautogui.press('enter')
+                        #pyautogui.press('enter')
                         title =sb1.get_title()
 
                         if 'Faucet | Earn-Bonk' in title:
@@ -3862,7 +4152,7 @@ while True:
                 elapsed_time = time.time() - start_time
                 seconds_only = int(elapsed_time)
                 debug_messages(f'ClaimCoins Seconds:{seconds_only}')
-                if seconds_only > 50:
+                if seconds_only > 80:
                     start_time = time.time()
                     if earnpp_coins == earnpp_coins_pre:
                         start_time = time.time()
@@ -4031,6 +4321,6 @@ while True:
             reset_count = 0
             reset_count_isacc = 0
             Script_Started = time.time()
-            previous_script_seconds_only = script_seconds_only
+            previous_script_seconds_only = previous_script_seconds_cal(previous_script_seconds_only,script_seconds_only)
         reset_count +=2
      

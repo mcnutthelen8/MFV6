@@ -78,7 +78,7 @@ feyorra_email = ''
 feyorra_pass = ''
 layout = ''
 
-Farm_list = [1, 2, 3]
+Farm_list = [1, 2, 3, 4, 5]
 Farm_list2 = [5, 6, 7, 8]
 
 def get_mails_passowrds(farm_id):
@@ -908,18 +908,18 @@ def mysterium_vpn_connect(server_name, driver):
     sweet_enable()
     fix_wrong_pins()
     try:
-        x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
+        x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
         pyautogui.click(x, y)
         print("mysterium_icon_empty Found")
         time.sleep(5)
         try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/myserium_disconnect.png", region=(1325, 190, 800, 400), confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/myserium_disconnect.png", region=(1325, 190, 800, 400), confidence=0.95)
             pyautogui.click(x, y)
             print("myserium_disconnect Found")
         except pyautogui.ImageNotFoundException:
             print("No myserium_disconnect .")
         try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.9)
             #pyautogui.click(x, y)
             print("mysterium_login Found")
             mysterium_login(driver)
@@ -927,11 +927,11 @@ def mysterium_vpn_connect(server_name, driver):
         except Exception as e:
             print("mysterium_logged")
         try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/quick_connect.png", region=(1325, 190, 800, 400), confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/quick_connect.png", region=(1325, 190, 800, 400), confidence=0.95)
  
             print("quick_connect Found")
             try:
-                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/search_mysterium_nomachine_paths.png", region=(1325, 494, 800, 400), confidence=0.95)
+                x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/search_mysterium_nomachine_paths.png", region=(1325, 494, 800, 400), confidence=0.95)
                 pyautogui.click(x, y)
                 print("search_mysterium Found")
                 time.sleep(2)
@@ -987,6 +987,7 @@ def fix_ip(drive, name):
     ipscore = None
     proxycheck = None
     ip_address = 0
+    
     while True:
 
         get_mails_passowrds(farm_id)
@@ -1008,6 +1009,20 @@ def fix_ip(drive, name):
             other_blacklists = Full_blacklist_Check(drive, ip_address, f'F{farm_id}L{lay}')
             if other_blacklists:
                 print(f'Good IP found: {ip_address}')
+                try:
+                    sb1.quit()
+                    time.sleep(2)
+                except Exception as e:
+                    print(f"sb1.quit() failed: {e}")
+                browser_proxy  =get_browser_proxy()
+                quer2y = {"type": "main"}
+                dochh2 = collection.find_one(quer2y)
+                layout = dochh2["withdraw_mail"]
+                print(f'Farm ID:{farm_id} | Layout: {layout}')
+                chrome_user_data_dir = f'C:/Users/Administrator/AppData/Local/Google/Chrome/User Data/{browser_proxy}{layout}'
+                delete_folder(chrome_user_data_dir)
+
+                sb1 = open_browsers()
                 return ip_address
             else:
                 print(f'Bad IP detected: {ip_address}. Changing IP...1')
@@ -1033,20 +1048,20 @@ def mysterium_web_login(driver):
     for i in range(1,100):
         time.sleep(1)
         try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cookie_icon.png", region=(1525, 43, 600, 300), confidence=0.99)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cookie_icon.png", region=(1525, 43, 600, 300), confidence=0.99)
             pyautogui.click(x, y)
             print("cookie_icon Found")
             time.sleep(3)
             try:
-                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/all_site.png", region=(1300, 212, 600, 300), confidence=0.99)
+                x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/all_site.png", region=(1300, 212, 600, 300), confidence=0.99)
                 pyautogui.click(x, y)
                 print("all_site Found")
             except pyautogui.ImageNotFoundException:
                 print("No all_site .")
             try:
-                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
+                x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
                 time.sleep(3)
-                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
+                x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
                 pyautogui.click(x, y)
                 print("import_icon Found")
                 time.sleep(3)
@@ -1068,7 +1083,7 @@ def mysterium_web_login(driver):
                         #pyautogui.typewrite(text_content)
                         time.sleep(5)
                         try:
-                            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
+                            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/import_icon.png", region=(1300, 212, 900, 900), confidence=0.99)
                             pyautogui.click(x, y)
                             print("import_icon Found")
  
@@ -1091,7 +1106,7 @@ def mysterium_web_login(driver):
             print("No cookie_icon .")
  
         try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/allow_button.png", region=(1080, 247, 400, 300), confidence=0.7)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/allow_button.png", region=(1080, 247, 400, 300), confidence=0.7)
             pyautogui.click(x, y)
             print("allow_button Found")
  
@@ -1099,105 +1114,6 @@ def mysterium_web_login(driver):
             print("No allow_button .")
         #driver.close()
  
-def mysterium_login(driver):
-    while True:
-        mysterium_reinstaller()
-        response_messege('Changed IP🔴 :Mys installed')
-        fix_wrong_pins()
-        time.sleep(1)
-        sweet_enable()
-        driver.uc_open('https://app.mysteriumvpn.com/')
-        time.sleep(10)
-        titile = sb1.get_title()
-        pyautogui.click(113, 100)
-        time.sleep(1)
- 
-        if 'Home' in titile:
- 
-            try:
-                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
-                pyautogui.click(x, y)
-                print("mysterium_icon_empty Found")
-                i = 1
-                for i in range(1, 10):
-                    time.sleep(1)
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.9)
-                        pyautogui.click(x, y)
-                        print("mysterium_login Found")
-                        for i in range(1, 10):
-                            time.sleep(2)
-                            try:
-                                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/mysterium_allow.png", region=(842, 750, 400, 300), confidence=0.99)
-                                pyautogui.click(x, y)
-                                print("mysterium_allow Found")
-                                time.sleep(3)
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.99)
-                                    pyautogui.click(x, y)
-                                    print("mysterium_icon_empty 2 Found")
-                                    time.sleep(3)
-                                    for i in range(1,100):
-                                        time.sleep(1)
-                                        try:
-                                            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/settings_mysterium.png", region=(1445, 630, 400, 300), confidence=0.9)
-                                            pyautogui.click(x, y)
-                                            print("settings_mysterium 2 Found")
-                                            time.sleep(1)
-                                        except pyautogui.ImageNotFoundException:
-                                            print("No settings_mysterium 2.")
- 
-                                        try:
-                                            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/connection_mysterium_option.png", region=(1325, 109, 800, 900), confidence=0.9)
-                                            pyautogui.click(x, y)
-                                            print("connection_mysterium_option Found")
-                                            time.sleep(1)
-                                        except pyautogui.ImageNotFoundException:
-                                            print("No connection_mysterium_option.")
- 
-                                        try:
-                                            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/refresh_ip_off.png", region=(1325, 109, 800, 900), confidence=0.9)
-                                            pyautogui.click(1640, 300)
-                                            pyautogui.click(1668, 300)
-                                            pyautogui.click(1714, 300)
-                                            print("refresh_ip_off Found")
-                                            time.sleep(1)
-                                        except pyautogui.ImageNotFoundException:
-                                            print("No refresh_ip_off.")
- 
-                                        try:
-                                            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/refresh_ip_on.png", region=(1325, 109, 800, 900), confidence=0.9)
-                                            pyautogui.click(300, 300)
-                                            print("refresh_ip_on Found")
-                                            return True
-                                        except pyautogui.ImageNotFoundException:
-                                            print("No refresh_ip_on.")
- 
-                                                        #return True
-                                except pyautogui.ImageNotFoundException:
-                                    print("No mysterium_icon_empty 2.")
- 
-                            except pyautogui.ImageNotFoundException:
-                                print("No mysterium_allow .")
- 
-                    except pyautogui.ImageNotFoundException:
-                        print("No mysterium_login .")
- 
- 
-            except pyautogui.ImageNotFoundException:
-                print("No mysterium_icon_empty .")
-                            #return True
-        elif 'Just' in titile:
-            cloudflare(driver, login = False)
-        elif 'Dashboard' in titile:
-            mysterium_web_login(driver)
-        else:
-            try:
-                response_messege('Mysterium Login')
-            except Exception as e:
-                pass
- 
-
 def ipfixer():
     ip = 0
     preip = 0
@@ -1798,10 +1714,10 @@ def cloudflare(sb, login = True):
                     if 'Just' in gtitle:
                                 try:
                                     time.sleep(1)
-                                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_win10.png", confidence=0.55)
+                                    x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_win10.png", confidence=0.55)
                                     print("verify_cloudflare git Found Just")
                                     try:
-                                        x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.55)
+                                        x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.55)
                                         pyautogui.click(x, y)
                                         time.sleep(5)
     
@@ -1819,7 +1735,7 @@ def cloudflare(sb, login = True):
             else:
 
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_win10.png", confidence=0.55)
+                    x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_win10.png", confidence=0.55)
                     print("verify_cloudflare git Found")
                     if x and y:
                         sb.disconnect() 
@@ -1829,10 +1745,10 @@ def cloudflare(sb, login = True):
                             if 'Login' in page_title or 'Faucetpay' in page_title:
                                 try:
                                     time.sleep(1)
-                                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_win10.png", confidence=0.55)
+                                    x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_win10.png", confidence=0.55)
                                     print("verify_cloudflare git Found")
                                     try:
-                                        x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.55)
+                                        x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.55)
                                         pyautogui.click(x, y)
                                         time.sleep(5)
     
@@ -1840,7 +1756,7 @@ def cloudflare(sb, login = True):
                                         print(e)
     
                                     try:
-                                        x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_success_win10.png", confidence=0.55)
+                                        x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_success_win10.png", confidence=0.55)
                                         pyautogui.click(x, y)
                                         time.sleep(1)
                                         sb.connect()
@@ -1882,10 +1798,10 @@ def cloudflare_dark(sb, login = True):
                     if 'Just' in gtitle:
                                 try:
                                     time.sleep(1)
-                                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_dark.png", confidence=0.7)
+                                    x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_dark.png", confidence=0.7)
                                     print("verify_cloudflare git Found Just")
                                     try:
-                                        x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_dark.png", confidence=0.7)
+                                        x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_dark.png", confidence=0.7)
                                         pyautogui.click(x, y)
                                         time.sleep(5)
     
@@ -1903,7 +1819,7 @@ def cloudflare_dark(sb, login = True):
             else:
 
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_dark.png", confidence=0.7)
+                    x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_dark.png", confidence=0.7)
                     print("verify_cloudflare git Found")
                     if x and y:
                         sb.disconnect() 
@@ -1913,10 +1829,10 @@ def cloudflare_dark(sb, login = True):
                             if 'Login' in page_title or 'Faucet' in page_title:
                                 try:
                                     time.sleep(1)
-                                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_dark.png", confidence=0.7)
+                                    x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_dark.png", confidence=0.7)
                                     print("verify_cloudflare git Found")
                                     try:
-                                        x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_dark.png", confidence=0.7)
+                                        x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_dark.png", confidence=0.7)
                                         pyautogui.click(x, y)
                                         time.sleep(5)
     
@@ -1924,7 +1840,7 @@ def cloudflare_dark(sb, login = True):
                                         print(e)
     
                                     try:
-                                        x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_success_dark.png", confidence=0.7)
+                                        x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_success_dark.png", confidence=0.7)
                                         pyautogui.click(x, y)
                                         time.sleep(1)
                                         sb.connect()
@@ -2007,11 +1923,11 @@ def login_to_faucet_old(url, driver, email, password, captcha_image, restrict_pa
                         if window not in restrict_pages:
                             driver.switch_to.window(window)
                     try:
-                        x, y = pyautogui.locateCenterOnScreen(f"C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/{captcha_image}.png", confidence=0.85)
+                        x, y = pyautogui.locateCenterOnScreen(f"C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/{captcha_image}.png", confidence=0.85)
                         if x and y: 
                             if 'Feyorra' in current_title:
 
-                                mouse_moveclick(cropped_path="C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/feyorra_loginbt.png")
+                                mouse_moveclick(cropped_path="C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/feyorra_loginbt.png")
                                 time.sleep(1)
                                 #pyautogui.click(943 ,788)
                                 #x:943 y:788
@@ -2045,10 +1961,10 @@ def cloudflare_without_driver():
         if 'Login' in gtitle:
             try:
                 time.sleep(1)
-                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_win10.png", confidence=0.55)
+                x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_win10.png", confidence=0.55)
                 print("verify_cloudflare git Found")
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.55)
+                    x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.55)
                     pyautogui.click(x, y)
                     time.sleep(5)
 
@@ -2056,7 +1972,7 @@ def cloudflare_without_driver():
                     print(e)
 
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cloudflare_success_win10.png", confidence=0.55)
+                    x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_success_win10.png", confidence=0.55)
                     pyautogui.click(x, y)
                     time.sleep(1)
                     return True
@@ -2073,16 +1989,22 @@ def Fill_mailpass_faucets(sitekey, email, password):
     if 'Earn-pepe' in sitekey:
         pyautogui.click(852, 430)
         time.sleep(1)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('backspace')
+        time.sleep(1)
         clipboard.copy(email)
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(1)
         pyautogui.click(812, 516)
         time.sleep(1)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('backspace')
+        time.sleep(1)
         clipboard.copy(password)
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(2)
         try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/pepe_login.png",confidence=0.5)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/pepe_login.png",confidence=0.5)
             pyautogui.moveTo(x, y)
             pyautogui.click()
             return True
@@ -2093,16 +2015,22 @@ def Fill_mailpass_faucets(sitekey, email, password):
     if 'Feyorra' in sitekey:
         pyautogui.click(883, 316)
         time.sleep(1)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('backspace')
+        time.sleep(1)
         clipboard.copy(email)
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(1)
         pyautogui.click(810, 397)
         time.sleep(1)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('backspace')
+        time.sleep(1)
         clipboard.copy(password)
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(2)
         try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/feyorra_loginbt.png",confidence=0.5)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/feyorra_loginbt.png",confidence=0.5)
             pyautogui.moveTo(x, y)
             pyautogui.click()
             return True
@@ -2113,16 +2041,22 @@ def Fill_mailpass_faucets(sitekey, email, password):
     if 'Earn-Trump' in sitekey:
         pyautogui.click(883, 385)
         time.sleep(1)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('backspace')
+        time.sleep(1)
         clipboard.copy(email)
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(1)
         pyautogui.click(810, 473)
         time.sleep(1)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('backspace')
+        time.sleep(1)
         clipboard.copy(password)
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(2)
         try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/trump_login.png",confidence=0.5)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/trump_login.png",confidence=0.5)
             pyautogui.moveTo(x, y)
             pyautogui.click()
             return True
@@ -2133,16 +2067,22 @@ def Fill_mailpass_faucets(sitekey, email, password):
     if 'Earn-Bonk' in sitekey:
         pyautogui.click(883, 418)
         time.sleep(1)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('backspace')
+        time.sleep(1)
         clipboard.copy(email)
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(1)
         pyautogui.click(810, 534)
         time.sleep(1)
+        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.press('backspace')
+        time.sleep(1)
         clipboard.copy(password)
         pyautogui.hotkey('ctrl', 'v')
         time.sleep(2)
         try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/bonk_login.png",confidence=0.5)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/bonk_login.png",confidence=0.5)
             pyautogui.moveTo(x, y)
             pyautogui.click()
             return True
@@ -2333,7 +2273,7 @@ def handle_site(driver, url, expected_title, not_expected_title , function, wind
 
 def pin_extensions():
     try:
-        x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/extension_icon.png", region=(1234, 30, 683, 522), confidence=0.9)
+        x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/extension_icon.png", region=(1234, 30, 683, 522), confidence=0.9)
         pyautogui.click(x, y)
         print("extension_icon Button Found")
 
@@ -2341,7 +2281,7 @@ def pin_extensions():
             time.sleep(1)
             pyautogui.moveTo(1700, 30)
             try:
-                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/pin.png", region=(1234, 30, 683, 522), confidence=0.9)
+                x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/pin.png", region=(1234, 30, 683, 522), confidence=0.9)
                 pyautogui.click(x, y)
                 pyautogui.moveTo(1700, 30)
                 print("pin Button Found")
@@ -2349,7 +2289,7 @@ def pin_extensions():
             except pyautogui.ImageNotFoundException:
                 print("No pin Button.")
             try:
-                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/all_pinned.png", region=(1234, 30, 683, 522), confidence=0.99)
+                x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/all_pinned.png", region=(1234, 30, 683, 522), confidence=0.99)
                 pyautogui.moveTo(1700, 40)
                 print("all_pinned Button Found")
                 return True   
@@ -2366,20 +2306,20 @@ def install_extensions(extension_name):
 
     for i in range(1,4):
         try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/dev_off.png", region=(1700, 95, 300, 300), confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/dev_off.png", region=(1700, 95, 300, 300), confidence=0.9)
             pyautogui.click(x, y)
             print("Developer Button Found")
         except pyautogui.ImageNotFoundException:
             print("No Developer Button.")
         time.sleep(2)
         try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/load_unpack.png", region=(2, 100, 400, 400), confidence=0.90)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/load_unpack.png", region=(2, 100, 400, 400), confidence=0.90)
             pyautogui.click(x, y)
             print("load_unpack Button Found")
             time.sleep(2)
             for i in range(1,100):
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/mfv6_unselect_nomachine_paths.png", region=(388, 260, 300, 300), confidence=0.70)
+                    x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/mfv6_unselect_nomachine_paths.png", region=(388, 260, 300, 300), confidence=0.70)
                     pyautogui.click(x, y)
                     print("mfv6_unselect Button Found")
                     time.sleep(1)
@@ -2387,7 +2327,7 @@ def install_extensions(extension_name):
                 except pyautogui.ImageNotFoundException:
                     print("No mfv6_unselect Button.")
                 #####Select Your Extension
-                extension_path = f"C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/{extension_name}_nomachine_paths.png" 
+                extension_path = f"C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/{extension_name}_nomachine_paths.png" 
                 try:
                     x, y = pyautogui.locateCenterOnScreen(extension_path, region=(545, 200, 500, 500), confidence=0.9)
                     pyautogui.click(x, y)
@@ -2835,15 +2775,15 @@ def are_extensions_exist():
     for i in range(3):
         time.sleep(2)
         try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/cookie_icon.png", region=(1225, 33, 755, 400), confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cookie_icon.png", region=(1225, 33, 755, 400), confidence=0.9)
             #pyautogui.click(x, y)
             print("extension_icon Button Found")
             try:
-                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/mysterium_icon_empty.png", region=(1225, 33, 755, 400), confidence=0.95)
+                x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/mysterium_icon_empty.png", region=(1225, 33, 755, 400), confidence=0.95)
                 #pyautogui.click(x, y)
                 print("mysterium_icon_emptyf Button Found")
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/sweet_dis_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
+                    x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/sweet_dis_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
                     #pyautogui.click(x, y)
                     print("sweet_dis_icon Button Found")
                     all_extensions_not = False
@@ -2851,7 +2791,7 @@ def are_extensions_exist():
                 except pyautogui.ImageNotFoundException:
                     print("No sweet_dis_icon Button.")
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/sweet_nl_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
+                    x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/sweet_nl_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
                     #pyautogui.click(x, y)
                     print("sweet_nl_icon Button Found")
                     all_extensions_not = False
@@ -2861,11 +2801,11 @@ def are_extensions_exist():
             except pyautogui.ImageNotFoundException:
                 print("No mysterium_icon_emptyf Button.")
             try:
-                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/mysterium_icon_connected.png", region=(1225, 33, 755, 400), confidence=0.95)
+                x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/mysterium_icon_connected.png", region=(1225, 33, 755, 400), confidence=0.95)
                 #pyautogui.click(x, y)
                 print("mysterium_icon_emptyf Button Found")
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/sweet_dis_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
+                    x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/sweet_dis_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
                     #pyautogui.click(x, y)
                     print("sweet_dis_icon Button Found")
                     all_extensions_not = False
@@ -2873,7 +2813,7 @@ def are_extensions_exist():
                 except pyautogui.ImageNotFoundException:
                     print("No sweet_dis_icon Button.")
                 try:
-                    x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/sweet_nl_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
+                    x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/sweet_nl_icon.png", region=(1225, 33, 755, 400), confidence=0.95)
                     #pyautogui.click(x, y)
                     print("sweet_nl_icon Button Found")
                     all_extensions_not = False
@@ -2911,18 +2851,18 @@ def get_browser_proxy():
 def sweet_enable():
     for x in range(5):
         try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/sweet_nl_icon.png",  region=(1625, 43, 700, 300), confidence=0.98)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/sweet_nl_icon.png",  region=(1625, 43, 700, 300), confidence=0.98)
             return
             
         except pyautogui.ImageNotFoundException:
             pass
         try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/sweet_dis_icon.png",  region=(1625, 43, 700, 300), confidence=0.98)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/sweet_dis_icon.png",  region=(1625, 43, 700, 300), confidence=0.98)
             pyautogui.click(x, y)
             for i in range(5):
                 time.sleep(3)
                 try:
-                    a, b = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/sweet_connect.png", confidence=0.8)
+                    a, b = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/sweet_connect.png", confidence=0.8)
                     pyautogui.click(1518, 438)
                     time.sleep(2)
 
@@ -2935,7 +2875,7 @@ def sweet_enable():
         except pyautogui.ImageNotFoundException:
             print("No icon_image_loaded Human.")
             try:
-                x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/sweet_us.png", region=(1625, 43, 700, 300), confidence=0.98)
+                x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/sweet_us.png", region=(1625, 43, 700, 300), confidence=0.98)
                 pyautogui.click(x, y)
                 time.sleep(3)
                 pyautogui.click(1518, 438)
@@ -2954,7 +2894,7 @@ def mysterium_reinstaller():
     global browser_proxy
     for i in range(4):
         try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/mysterium_icon_connected.png", region=(1625, 43, 400, 300), confidence=0.99)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/mysterium_icon_connected.png", region=(1625, 43, 400, 300), confidence=0.99)
             if x and y:
 
                 pyautogui.moveTo(100, 100)
@@ -3056,7 +2996,7 @@ def Limit_Checked():
     title = sb1.get_title()
     if 'Earn-pepe1' in title:
         try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/pepe_limit.png", confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/pepe_limit.png", confidence=0.9)
             print('Limit Reached')
             return True
         except Exception as e:    
@@ -3064,7 +3004,7 @@ def Limit_Checked():
             return False
     elif 'Earn-Trump12' in title:
         try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/trump_limit.png", confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/trump_limit.png", confidence=0.9)
             print('Limit Reached')
             return True
         except Exception as e:    
@@ -3072,7 +3012,7 @@ def Limit_Checked():
             return False
     elif 'Feyorra' in title:
         try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/feyorra_limit_win10.png", confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/feyorra_limit_win10.png", confidence=0.9)
             print('Limit Reached')
             return True
         except Exception as e:    
@@ -3080,7 +3020,7 @@ def Limit_Checked():
             return False
     elif 'Earn-Bonk' in title:
         try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/bonk_limit_win10.png", confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/bonk_limit_win10.png", confidence=0.9)
             print('Limit Reached')
             return True
         except Exception as e:    
@@ -3094,7 +3034,7 @@ def Click_Understand():
     title = sb1.get_title()
     if 'Feyorra' in title:
         try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/feyorra_understand.png", confidence=0.8)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/feyorra_understand.png", confidence=0.8)
             pyautogui.click(x, y, duration = 0.2)
             #print('Limit Reached')
             return True
@@ -3103,7 +3043,7 @@ def Click_Understand():
             return False
     elif 'Earn-Bonk' in title:
         try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/images/bonk_understand.png", confidence=0.8)
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/bonk_understand.png", confidence=0.8)
             #print('Limit Reached')
             pyautogui.click(x, y, duration = 0.2)
             return True
@@ -3322,13 +3262,13 @@ def open_browsers():
     dochh2 = collection.find_one(quer2y)
     layout = dochh2["withdraw_mail"]
     print(f'Farm ID:{farm_id} | Layout: {layout}')
-    chrome_user_data_dir = f'C:/Users/WhatUpTime.com/AppData/Local/Google/Chrome/User Data/{browser_proxy}{layout}'
+    chrome_user_data_dir = f'C:/Users/Administrator/AppData/Local/Google/Chrome/User Data/{browser_proxy}{layout}'
     try:
         for l in range(1,7):
-            if chrome_user_data_dir == f'C:/Users/WhatUpTime.com/AppData/Local/Google/Chrome/User Data/{browser_proxy}Layout{l}':
+            if chrome_user_data_dir == f'C:/Users/Administrator/AppData/Local/Google/Chrome/User Data/{browser_proxy}Layout{l}':
                 print(f'No Del Layout{l}')
             else:
-                delete_folder(f'C:/Users/WhatUpTime.com/AppData/Local/Google/Chrome/User Data/{browser_proxy}Layout{l}')
+                delete_folder(f'C:/Users/Administrator/AppData/Local/Google/Chrome/User Data/{browser_proxy}Layout{l}')
     except Exception as e:
         pass
     sb1 = Driver(
@@ -3342,7 +3282,7 @@ def open_browsers():
         user_data_dir=chrome_user_data_dir,  # e.g., "C:/Users/YourName/AppData/Local/Google/Chrome/User Data/Profile 1"
         binary_location=chrome_binary_path,  # e.g., "C:/Program Files/Google/Chrome/Application/chrome.exe"
         page_load_strategy="none",
-        extension_dir="C:/Users/WhatUpTime.com/Downloads/MFV6-main/MFV6-main/mfhelper", 
+        extension_dir="C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/mfhelper", 
         chromium_arg=[
             # Windows-specific and stealth-friendly arguments
             "--disable-blink-features=AutomationControlled",
@@ -3415,7 +3355,7 @@ def open_faucets():
             layout2 = dochh2["withdraw_mail"]
             print(f'Farm ID:{farm_id} | Layout: {layout2}')
             browser_proxy2  =get_browser_proxy()
-            chrome_user_data_dir2 = f'C:/Users/WhatUpTime.com/AppData/Local/Google/Chrome/User Data/{browser_proxy2}{layout2}'
+            chrome_user_data_dir2 = f'C:/Users/Administrator/AppData/Local/Google/Chrome/User Data/{browser_proxy2}{layout2}'
             if chrome_user_data_dir == chrome_user_data_dir2 and layout == layout2 and browser_proxy2 == browser_proxy:
                 print(f'Same Browser | L {layout2}')
             else:

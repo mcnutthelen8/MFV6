@@ -888,101 +888,6 @@ def get_ipscore(ip):
         print(f"Error retrieving IP data: {e}")
         return None
 
-def mysterium_vpn_connect(server_name, driver):
-    try:
-        query = {"type": "main"}
-        for i in CSB1_farms:
-            collection_csb = db[f'Farm{i}']
-            sample_document = {
-                "response": f'Changed IP🔴: Farm {farm_id} |fix_ip',
-                "request": 'ipfixer'
-                
-            }
-            update = {"$set": sample_document}
-            result = collection_csb.update_one(query, update)
-            print('Update Farm fix_ip', i)
-    except Exception as e:
-        print(e)
-
-    mysterium_reinstaller()
-    sweet_enable()
-    fix_wrong_pins()
-    try:
-        x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/mysterium_icon_empty.png", region=(1625, 43, 400, 300), confidence=0.95)
-        pyautogui.click(x, y)
-        print("mysterium_icon_empty Found")
-        time.sleep(5)
-        try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/myserium_disconnect.png", region=(1325, 190, 800, 400), confidence=0.95)
-            pyautogui.click(x, y)
-            print("myserium_disconnect Found")
-        except pyautogui.ImageNotFoundException:
-            print("No myserium_disconnect .")
-        try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/mysterium_login.png", region=(1375, 543, 600, 300), confidence=0.9)
-            #pyautogui.click(x, y)
-            print("mysterium_login Found")
-            mysterium_login(driver)
-            #return 0
-        except Exception as e:
-            print("mysterium_logged")
-        try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/quick_connect.png", region=(1325, 190, 800, 400), confidence=0.95)
- 
-            print("quick_connect Found")
-            try:
-                x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/search_mysterium_nomachine_paths.png", region=(1325, 494, 800, 400), confidence=0.95)
-                pyautogui.click(x, y)
-                print("search_mysterium Found")
-                time.sleep(2)
-                pyautogui.typewrite(server_name)
-                pyautogui.press('enter')
-                time.sleep(8)
-                pyautogui.scroll(-500)
-                collection_csb = db[f'Farm{farm_id}']
-                query = {"type": "main"}
-                doc = collection_csb.find_one(query)
-                layout_test = doc["withdraw_mail"]
-                if layout_test != layout:
-                    return
-                time.sleep(2)
-                for frm in CSB1_farms:
-                    collection_csb = db[f'Farm{frm}']
-                    query = {"type": "main"}
-                    doc = collection_csb.find_one(query)
-                    res = doc["response"]
-                    req = doc["request"]
-                    if 'Loging' in res or 'mainscript' in req:
-                        response_messege(f'Farm{frm} is not at ipfixing')
-                        time.sleep(4)
-                        try:
-                            query = {"type": "main"}
-                            for i in CSB1_farms:
-                                collection_csb = db[f'Farm{i}']
-                                sample_document = {
-                                    "response": f'Changed IP🔴: Farm {farm_id} |fix_ip',
-                                    "request": 'ipfixer'
-                                    
-                                }
-                                update = {"$set": sample_document}
-                                result = collection_csb.update_one(query, update)
-                                print('Update Farm fix_ip', i)
-                        except Exception as e:
-                            print(e)
-                        return False
-                pyautogui.click(1627, 568)
-                return True
-            except pyautogui.ImageNotFoundException:
-                print("No search_mysterium .")
-        except pyautogui.ImageNotFoundException:
-            print("No quick_connect .")
- 
- 
-    except pyautogui.ImageNotFoundException:
-        print("No mysterium_icon_empty .")
-    return None
- 
- 
 def fix_ip(drive, name):
     ipscore = None
     proxycheck = None
@@ -1009,20 +914,6 @@ def fix_ip(drive, name):
             other_blacklists = Full_blacklist_Check(drive, ip_address, f'F{farm_id}L{lay}')
             if other_blacklists:
                 print(f'Good IP found: {ip_address}')
-                try:
-                    sb1.quit()
-                    time.sleep(2)
-                except Exception as e:
-                    print(f"sb1.quit() failed: {e}")
-                browser_proxy  =get_browser_proxy()
-                quer2y = {"type": "main"}
-                dochh2 = collection.find_one(quer2y)
-                layout = dochh2["withdraw_mail"]
-                print(f'Farm ID:{farm_id} | Layout: {layout}')
-                chrome_user_data_dir = f'C:/Users/Administrator/AppData/Local/Google/Chrome/User Data/{browser_proxy}{layout}'
-                delete_folder(chrome_user_data_dir)
-
-                sb1 = open_browsers()
                 return ip_address
             else:
                 print(f'Bad IP detected: {ip_address}. Changing IP...1')

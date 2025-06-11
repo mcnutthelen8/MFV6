@@ -78,7 +78,7 @@ feyorra_email = ''
 feyorra_pass = ''
 layout = ''
 
-Farm_list = [1, 2, 3, 4, 5]
+Farm_list = [1, 2, 3]
 Farm_list2 = [5, 6, 7, 8]
 
 def get_mails_passowrds(farm_id):
@@ -323,7 +323,7 @@ def get_mails_passowrds(farm_id):
 
         if '1' in layout:
             server_name1 = 'germany'
-            CSB1_farms =Farm_list2
+            CSB1_farms =Farm_list
             earnpp_email = 'ernestost5@gmail.com' 
             earnpp_pass = 'ernestost5'
             feyorra_email = 'ernestost5@gmail.com'
@@ -331,14 +331,14 @@ def get_mails_passowrds(farm_id):
 
         elif '2' in layout:
             server_name1 = 'germany' #'chile'
-            CSB1_farms =Farm_list2
+            CSB1_farms =Farm_list
             earnpp_email = 'taptioronl8@gmail.com'
             earnpp_pass = 'taptioronl8'
             feyorra_email = 'taptioronl8@gmail.com'
             feyorra_pass = 'taptioronl8'
         elif '3' in layout:
             server_name1 = 'germany' #'chile'
-            CSB1_farms = Farm_list2
+            CSB1_farms = Farm_list
             earnpp_email = 'kevincharl3@gmail.com'
             earnpp_pass = 'kevincharl3'
             feyorra_email = 'kevincharl3@gmail.com'
@@ -346,7 +346,7 @@ def get_mails_passowrds(farm_id):
 
         elif '4' in layout:
             server_name1 = 'germany' #'chile'
-            CSB1_farms = Farm_list2
+            CSB1_farms = Farm_list
             earnpp_email = 'kendleo4@gmail.com'
             earnpp_pass = 'kendleo4'
             feyorra_email = 'kendleo4@gmail.com'
@@ -354,7 +354,7 @@ def get_mails_passowrds(farm_id):
 
         elif '5' in layout:
             server_name1 = 'germany' #'chile'
-            CSB1_farms =Farm_list2
+            CSB1_farms =Farm_list
             earnpp_email = 'llwimisle53@gmail.com'
             earnpp_pass = 'llwimisle53'
             feyorra_email = 'llwimisle53@gmail.com'
@@ -362,7 +362,7 @@ def get_mails_passowrds(farm_id):
             
         elif '6' in layout:
             server_name1 = 'germany'
-            CSB1_farms = Farm_list2
+            CSB1_farms = Farm_list
             earnpp_email = 'adaavery5@gmail.com'
             earnpp_pass = 'adaavery5'
             feyorra_email = 'adaavery5@gmail.com'

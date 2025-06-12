@@ -12,8 +12,11 @@
 
 
     <h1 class="title-main">Farm Information</h1>
+
     <div id="data">Loading..</div><br>
     <div id="CSB-panel">Loading..</div>
+
+
     <br><br>
     <h1 class="title-main" >Chart Information</h1>
     <div class="container1"><h2>Sky RPM Chart</h2>
@@ -133,6 +136,71 @@
         }
     }
     
+    const zones = [
+    { start: 0, end: 240 },     // 00:00–04:00 UTC → 05:30–09:30 SLT
+  { start: 240, end: 480 },   // 04:00–08:00 UTC → 09:30–13:30 SLT
+  { start: 480, end: 720 },   // 08:00–12:00 UTC → 13:30–17:30 SLT
+  { start: 720, end: 960 },   // 12:00–16:00 UTC → 17:30–21:30 SLT
+  { start: 960, end: 1200 },  // 16:00–20:00 UTC → 21:30–01:30 SLT
+  { start: 1200, end: 1440 }  // 20:00–24:00 UTC → 01:30–05:30 SLT
+
+];
+
+function pad(n) {
+  return n.toString().padStart(2, '0');
+}
+
+function updateZone() {
+  const now = new Date();
+  const hours = now.getUTCHours();
+  const minutes = now.getUTCMinutes();
+  const seconds = now.getUTCSeconds();
+
+  const currentMinutes = hours * 60 + minutes;
+  const totalNowSeconds = currentMinutes * 60 + seconds;
+
+  let currentZone = 0;
+  let secondsToNext = 0;
+
+  for (let i = 0; i < zones.length; i++) {
+    const zoneStart = zones[i].start * 60;
+    const zoneEnd = zones[i].end * 60;
+
+    if (totalNowSeconds >= zoneStart && totalNowSeconds < zoneEnd) {
+      currentZone = i + 1;
+      secondsToNext = zoneEnd - totalNowSeconds;
+      break;
+    }
+  }
+
+  const hoursLeft = Math.floor(secondsToNext / 3600);
+  const minutesLeft = Math.floor((secondsToNext % 3600) / 60);
+  const secondsLeft = secondsToNext % 60;
+
+  const zoneElem = document.getElementById("zone");
+  const timerElem = document.getElementById("timer");
+
+  if (zoneElem && timerElem) {
+    zoneElem.textContent = `Current Zone: ${currentZone}`;
+    timerElem.textContent = `Time left for next zone: ${pad(hoursLeft)}h ${pad(minutesLeft)}m ${pad(secondsLeft)}s`;
+  }
+}
+
+// ⏳ Wait until both elements exist before starting the update interval
+function waitForElementsAndStart() {
+  const zoneElem = document.getElementById("zone");
+  const timerElem = document.getElementById("timer");
+
+  if (zoneElem && timerElem) {
+    updateZone();
+    setInterval(updateZone, 1000);
+  } else {
+    setTimeout(waitForElementsAndStart, 500); // try again in 0.5s
+  }
+}
+
+waitForElementsAndStart();
+
     </script>
 </body>
 </html>

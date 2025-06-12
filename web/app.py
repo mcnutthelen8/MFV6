@@ -5,6 +5,50 @@ from datetime import datetime, timedelta
 import pytz
 import random
 import requests
+from datetime import datetime, time, timezone
+
+
+def get_current_zone():
+    now = datetime.now(timezone.utc).time()
+
+    zones = [
+        (time(0, 0), time(4, 0)),       # Zone 1: 00:00–04:00 UTC → 05:30–09:30 SLT
+        (time(4, 0), time(8, 0)),       # Zone 2: 04:00–08:00 UTC → 09:30–13:30 SLT
+        (time(8, 0), time(12, 0)),      # Zone 3: 08:00–12:00 UTC → 13:30–17:30 SLT
+        (time(12, 0), time(16, 0)),     # Zone 4: 12:00–16:00 UTC → 17:30–21:30 SLT
+        (time(16, 0), time(20, 0)),     # Zone 5: 16:00–20:00 UTC → 21:30–01:30 SLT
+        (time(20, 0), time(23, 59, 59)) # Zone 6: 20:00–23:59 UTC → 01:30–05:29 SL
+    ]
+
+    for i, (start, end) in enumerate(zones, start=1):
+        if start <= now < end:
+            return i
+
+    return 6  # fallback for edge case like exactly 23:59:59
+
+def trigger_zone_action(current_layout):
+    zone = get_current_zone()
+    desired_layout = f"Layout{zone}"
+    #print('zone',zone)
+    #return
+    if current_layout == desired_layout:
+        return
+
+    print(f"changing time is in Zone {zone}, setting {desired_layout}")
+    for i in range(1, 9):
+        query = {"type": "main"}
+        farm   = f"Farm{i}"
+        payload = {
+            "request":      "ipfixer",
+            "withdraw_mail": desired_layout,
+        }
+        result = db[farm].update_one(query, {"$set": payload})
+        if result.modified_count:
+            print(f"  • Farm{i}: Updated")
+        elif result.upserted_id is not None:
+            print(f"  • Farm{i}: Inserted new doc ({result.upserted_id})")
+        else:
+            print(f"  • Farm{i}: already up to date")
 
 
 app = Flask(__name__)
@@ -28,9 +72,9 @@ def rpm_cal(results):
         else:
             print("No 'messages' field found in this document or document is not a dictionary")
     
-    if not messages2:
-        print("No valid documents found.")
-        return 0 
+    #if not messages2:
+    #    print("No valid documents found.")
+    #    return 0 
 
     data_dict = messages2[0]
     sri_lanka_tz = pytz.timezone('Asia/Colombo')
@@ -196,27 +240,27 @@ def get_data():
     all_charts_feyorra = []
     all_charts_time_feyorra = []
     csb_source = ""
-    for i in range(1, 11): 
+    for i in range(1, 9): 
         farm_name = f'Farm{i}'
         collection = db[farm_name]
         document = collection.find_one(query)
         message_pepe = collection.find({"type": "pepelom"})
         message_feyorra = collection.find({"type": "feyorramack"})
         message_claimc = collection.find({"type": "claimcoins"})
-        #message_bitmoon = collection.find({"type": "bitmoon"})
+        message_bonk = collection.find({"type": "bonkmgs"})
         
         if document: #and message_pepe:
             rpm_pepe1 = rpm_cal(message_pepe)
             rpm_feyorra1 = rpm_cal(message_feyorra)
             rpm_claimc1 = rpm_cal(message_claimc)
-            #rpm_bitmo1 = rpm_cal(message_bitmoon)
+            rpm_bitmo1 = rpm_cal(message_bonk)
             #print(rpm_pepe1)
             #rpm_feyorra = int(float(rpm_feyorra1))
-            rpm_feyorra = f'<b style="color:limegreen;">{round(rpm_feyorra1, 5)} </b>' if round(rpm_feyorra1, 5) > 0.01  else f'<b style="color:red;">{round(rpm_feyorra1, 5)} </b>'
+            rpm_feyorra = f'<b style="color:limegreen;">{round(rpm_feyorra1, 5)} </b>' if round(rpm_feyorra1, 5) > 0.04  else f'<b style="color:red;">{round(rpm_feyorra1, 5)} </b>'
 
-            rpm_pepe = f'<b style="color:limegreen;">{round(rpm_pepe1, 5)} </b>' if round(rpm_pepe1, 5) > 0.03  else f'<b style="color:red;">{round(rpm_pepe1, 5)} </b>'
-            rpm_claimc = f'<b style="color:limegreen;">{abs(int(rpm_claimc1))} </b>' if abs(int(rpm_claimc1)) > 60  else f'<b style="color:red;">{abs(int(rpm_claimc1))} </b>'
-            #rpm_bitmo = f'<b style="color:limegreen;">{abs(int(rpm_bitmo1))} </b>' if abs(int(rpm_bitmo1)) > 40  else f'<b style="color:red;">{abs(int(rpm_bitmo1))} </b>'
+            rpm_pepe = f'<b style="color:limegreen;">{round(rpm_pepe1, 5)} </b>' if round(rpm_pepe1, 5) > 0.04  else f'<b style="color:red;">{round(rpm_pepe1, 5)} </b>'
+            rpm_claimc = f'<b style="color:limegreen;">{round(rpm_claimc1, 5)} </b>' if round(rpm_claimc1, 5) > 0.04  else f'<b style="color:red;">{round(rpm_claimc1, 5)} </b>'
+            rpm_bitmo = f'<b style="color:limegreen;">{round(rpm_bitmo1, 5)} </b>' if round(rpm_bitmo1, 5) > 0.03  else f'<b style="color:red;">{round(rpm_bitmo1, 5)} </b>'
             
             
             #print(rpm_pepe)
@@ -225,20 +269,26 @@ def get_data():
             given_time_str = document['Status']
             given_time = datetime.strptime(given_time_str, "%Y-%m-%d %H:%M:%S")
             time_difference = current_time - given_time
-            status = f'<b style="color:limegreen;">{given_time_str}🟢 </b>' if time_difference <= timedelta(minutes=5) else f'<b style="color:red;">{given_time_str}🔴 </b>'
+            status = f'<b style="color:limegreen;">{given_time_str}🟢 </b>' if time_difference <= timedelta(minutes=3) else f'<b style="color:red;">{given_time_str}🔴 </b>'
 
             # Prepare the table content for this farm
             email = document['Email']
             withdraw_mail = document['withdraw_mail']
-            mails = f'<b>Account:</b> {email} <br><b>Layout:</b> {withdraw_mail}'
+            trigger_zone_action(withdraw_mail)
+            mainfaucet = document['mainfaucet']
+            mails = f'<b>Account:</b> {email} <br><b>Layout:</b> {withdraw_mail}<br>{mainfaucet}'
             ip_address = document['Ip']
             pepelom = document['pepelom']
             feyorramack = document['feyorramack']
-            claimc = document['claimcoins']
+            claimc = document['trump']
+            bonk_amount = document['bonk']
 
-            vals = pepelom + feyorramack
+            vals = pepelom + feyorramack + claimc
+            vals *= 0.26
             earnstat +=vals
-            #bitmon = document['bitmoon']
+            vals  = bonk_amount
+            vals *= 0.22
+            earnstat +=vals
             # Convert the string values to floats
             #pepe_valuex = float(pepelom.replace(',', ''))
             #feyorra_valuex = float(feyorramack.replace(',', ''))
@@ -248,23 +298,27 @@ def get_data():
 
             req = document['request']
             res = document['response']
+            
 
 
 
-            if res == 'Running':
-                if time_difference >= timedelta(minutes=5):
+            if res == 'Running' or 'Ready IP for Reuse Session' in res:
+                if time_difference >= timedelta(minutes=3):
                     res = f'Offline🔴'
                 else:
                     res = f'Running🟢'
-                    runningfarmstat += 1
-
+                   
+            if time_difference >= timedelta(minutes=3):
+                pass
+            else:
+                runningfarmstat += 1
             # Append this farm's data to the combined source string
             farm_source = f"""
                 <tr>
-                    <td rowspan="6">{farm_name}</td>
-                    <td rowspan="6">{mails}</td>
-                    <td rowspan="6">{ip_address}</td>
-                    <td rowspan="6">{status}</td>
+                    <td rowspan="8">{farm_name}</td>
+                    <td rowspan="8">{mails}</td>
+                    <td rowspan="8">{ip_address}</td>
+                    <td rowspan="8">{status}</td>
                     <td rowspan="2">Pepe</td>
                     <th>Amount</th>
                     <th>RPH</th>
@@ -273,16 +327,16 @@ def get_data():
                     <td rowspan="2" colspan="1">{res}</td>
                 </tr>
                 <tr>
-                    <td>{pepelom}</td>
-                    <td>{rpm_pepe}</td>
+                    <th>{pepelom}</th>
+                    <th>{rpm_pepe}</th>
                     
                 </tr>
                 <tr>
                     <td rowspan="2">Feyorra</td>
-                    <th>Amount</th>
-                    <th>RPH</th>
+                    <th>{feyorramack}</th>
+                    <th>{rpm_feyorra}</th>
 
-                <td rowspan="4" colspan="3">
+                <td rowspan="6" colspan="3">
                     <button type="submit" name="button" value="ipfixer-{farm_name}" class="button-control-panel">IP Fixer</button>
                     <button type="submit" name="button" value="mainscript-{farm_name}" class="button-control-panel">Main Script</button>
                     <button type="submit" name="button" value="reset-{farm_name}" class="button-control-panel">Reset</button>
@@ -291,26 +345,35 @@ def get_data():
                     <br>
                     <button type="submit" name="button" value="withdrawpepe-{farm_name}" class="button-control-panel">Pepe Withdraw</button>
                     <button type="submit" name="button" value="withdrawfeyorra-{farm_name}" class="button-control-panel">Feyorra Withdraw</button>
-                    <button type="submit" name="button" value="withdrawclaimc-{farm_name}" class="button-control-panel">ClaimC Withdraw</button>
+                    <button type="submit" name="button" value="mainfaucet1-{farm_name}" class="button-control-panel">MainFaucet1</button>
+                    <button type="submit" name="button" value="mainfaucet2-{farm_name}" class="button-control-panel">MainFaucet2</button>
                     <br>
                     <button type="submit" name="button" value="Layout1-{farm_name}" class="button-control-panel">Layout 1</button>
                     <button type="submit" name="button" value="Layout2-{farm_name}" class="button-control-panel">Layout 2</button>
                     <button type="submit" name="button" value="Layout3-{farm_name}" class="button-control-panel">Layout 3</button>
                     <button type="submit" name="button" value="Layout4-{farm_name}" class="button-control-panel">Layout 4</button>
+                    <button type="submit" name="button" value="Layout5-{farm_name}" class="button-control-panel">Layout 5</button>
+                    <button type="submit" name="button" value="Layout6-{farm_name}" class="button-control-panel">Layout 6</button>
                 </td>
                 </tr>
                 <tr>
-                    <td>{feyorramack}</td>
-                    <td>{rpm_feyorra}</td>
+
                 </tr>
                 <tr>
-                    <td rowspan="2">ClaimC</td>
-                    <th>Amount</th>
-                    <th>RPH</th>
+                    <td rowspan="2">Trump</td>
+                    <th>{claimc}</th>
+                    <th>{rpm_claimc}</th>
                 </tr>
                 <tr>
-                    <td>{claimc}</td>
-                    <td>{rpm_claimc}</td>
+
+                </tr>
+                <tr>
+                    <td rowspan="2">Bonk</td>
+                    <th>{bonk_amount}</th>
+                    <th>{rpm_bitmo}</th>
+                </tr>
+                <tr>
+
                 </tr>
 
             """
@@ -381,7 +444,7 @@ def get_data():
         else:
             all_sources += f"<tr><td colspan='7'>No data found for {farm_name}</td></tr>"
 
-        if i % 5 == 0:
+        if 2==5: #i % 5 == 0:
             farm_source = f"""
                                 </table><br>
                     """
@@ -410,6 +473,8 @@ def get_data():
             #                        <button type="submit" name="button" value="CSB{quotient}-kill" class="button-control-panel">Kill</button>
             #                        <button type="submit" name="button" value="CSB{quotient}-None" class="button-control-panel">None</button><br>'''
             devbox_withbutton += f'''<button type="submit" name="button" value="CSB{quotient}-ipfixer" class="button-control-panel">IP Fixer</button><br>
+                                    <button type="submit" name="button" value="CSB{quotient}-withdrawpepe" class="button-control-panel">withdraw pepe</button><br>
+                                    <button type="submit" name="button" value="CSB{quotient}-withdrawfeyorra" class="button-control-panel">withdraw feyorra</button><br>
                                     <button type="submit" name="button" value="CSB{quotient}-Layout1" class="button-control-panel">Layout 1</button><br>
                                     <button type="submit" name="button" value="CSB{quotient}-Layout2" class="button-control-panel">Layout 2</button><br>
                                     <button type="submit" name="button" value="CSB{quotient}-Layout3" class="button-control-panel">Layout 3</button><br>
@@ -502,7 +567,7 @@ def get_data():
 
             all_sources += farm_source
 
-        if i % 5 == 0 and i != 12:
+        if 2==5: #i % 5 == 0 and i != 12:
             all_sources += """<table id="maintable">
                                     <tr>
                                         <th>FarmID</th>
@@ -515,15 +580,15 @@ def get_data():
 
 
 
-    collection = db[f'LocalCSB']
-    document2 = collection.find_one({"csb_script_id": f"LocalCSB"})
+    #collection = db[f'LocalCSB']
+    #document2 = collection.find_one({"csb_script_id": f"LocalCSB"})
 
-    csb_script_id = document2['csb_script_id']
-    csb_logins = document2['csb_logins']
-    devboxes = document2['devboxes']
-    ucredit = document2['ucredit']
-    rq = document2['request']
-    rs = document2['response']
+    csb_script_id = "2" # document2['csb_script_id']
+    csb_logins = "2"# document2['csb_logins']
+    devboxes ="2"  #document2['devboxes']
+    ucredit = "2"# document2['ucredit']
+    rq = "2" #document2['request']
+    rs = "2" #document2['response']
     hello = f'{rq} | {rs}'
 
     devbox_list = devboxes.split('<br>\n')
@@ -543,12 +608,12 @@ def get_data():
 
     current_time = datetime.now()
 
-    given_time_str = document2['status']
-    given_time = datetime.strptime(given_time_str, "%Y-%m-%d %H:%M:%S")
-    time_difference = current_time - given_time
-    status = f'<b style="color:limegreen;">{given_time_str}🟢 </b>' if time_difference <= timedelta(minutes=30) else f'<b style="color:red;">{given_time_str}🔴 </b>'
+    #given_time_str = document2['status']
+    #given_time = datetime.strptime(given_time_str, "%Y-%m-%d %H:%M:%S")
+    #time_difference = current_time - given_time
+    #status = f'<b style="color:limegreen;">{given_time_str}🟢 </b>' if time_difference <= timedelta(minutes=30) else f'<b style="color:red;">{given_time_str}🔴 </b>'
 
-    earnstat *= 0.25
+    #earnstat *= 0.25
     runningfarmstat = f"🟢 {runningfarmstat}" if runningfarmstat == 10 or runningfarmstat==5 else f"🔴 {runningfarmstat}"
 
     mainpanel = f"""
@@ -559,8 +624,12 @@ def get_data():
             <p style="font-size: 20px;font-style:oblique;">Farm Status</p>
         </div>
         <div class="main-panel-box" id="farm-running">
-            <p id="runningcsbstat" style="font-size: 40px;font-style: italic;">{runningcsbstat}/3</p>
-            <p style="font-size: 20px;font-style:oblique;">CSB Status</p>
+
+        <div class="zone-box">
+            <h1>Zone Timer</h1>
+            <div id="zone">Current Zone: </div>
+            <div id="timer">Time left for next zone: </div>
+        </div>
         </div>
         <div class="main-panel-box" id="earning">
             <p id="earningstat" style="font-size: 40px;font-style: italic;">{earnstat:.2f}$</p>
@@ -619,8 +688,9 @@ def button_control_panel():
         else:
             print("No document was updated.", farm, func)
         return Response(status=200)
-    
-    elif 'CSB' in button_value and 'ipfixer'  in button_value:
+
+
+    elif 'CSB' in button_value and 'ipfixer'  in button_value or 'CSB' in button_value and 'withdraw'  in button_value :
         farm, func = button_value.split('-')
         print(farm, func,'hellow')
         query = {"type": "main"}
@@ -725,7 +795,43 @@ def button_control_panel():
             print("No document was updated.", farm, func)
         return Response(status=200)
     
+    elif "mainfaucet1" in button_value:
+        query = {"type": "main"}
+        func, farm = button_value.split('-')
+        print(farm, func)
+        print('aritoo')
+
+        collection = db[farm]
+        #doc = collection.find_one(query)
+        sample = {
+            "mainfaucet": 1,
+            
+        }
+        result = collection.update_one(query, {"$set": sample})  
+        if result.modified_count > 0:
+            print(f"Updated {result.modified_count} document(s).")
+        else:
+            print("No document was updated.", farm, func)
+        return Response(status=200)
     
+    elif "mainfaucet2" in button_value:
+        query = {"type": "main"}
+        func, farm = button_value.split('-')
+        print(farm, func)
+
+        collection = db[farm]
+        #doc = collection.find_one(query)
+        sample = {
+            "mainfaucet": 2,
+            
+        }
+        result = collection.update_one(query, {"$set": sample})  
+        if result.modified_count > 0:
+            print(f"Updated {result.modified_count} document(s).")
+        else:
+            print("No document was updated.", farm, func)
+        return Response(status=200)
+
     else:
         query = {"type": "main"}
         func, farm = button_value.split('-')

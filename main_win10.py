@@ -3611,7 +3611,7 @@ while True:
             script_elapsed_time = time.time() - Script_Started
             script_seconds_only = int(script_elapsed_time)
             #debug_messages(f'script_elapsed_time Seconds:{script_seconds_only}')
-            if script_seconds_only > 1500:
+            if script_seconds_only > 11500:
                 #print('Script 5m')
                 solving_accuracy = 0
                 failed_captchas = 0

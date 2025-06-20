@@ -27,20 +27,65 @@ import argparse
 import clipboard
 import os
 import subprocess
+import socket
+import psutil
+
 
 query = {"type": "main"}
 # Example usage
 pyautogui.moveTo(100, 100)
-#pyautogui.click(100, 200, duration=0.5)
-# Initialize the argument parser
-#parser = argparse.ArgumentParser(description="Process some arguments.")
-#parser.add_argument('--farm', type=int, help="Farm")
-#parser.add_argument('--fresh', type=int, help="Fresh")
-#args = parser.parse_args()
+vps_ip = ''
 farm_id =1
 print('Farm',farm_id)
 fresh = 1 # args.fresh
+pyautogui.FAILSAFE = False
+from ctypes import wintypes
 
+
+from pywinauto import Desktop
+def focus_and_maximize_window(partial_title):
+    try:
+        windows = Desktop(backend="uia").windows()
+        for win in windows:
+            title = win.window_text()
+            if partial_title.lower() in title.lower():
+                win.set_focus()
+                win.maximize()
+                print(f"Activated and maximized: {title}")
+                return
+        print(f"No matching window found for: {partial_title}")
+    except Exception as e:
+        print(f"Error: {e}")
+def get_ip_OS(timeout=10):
+    try:
+        # Check if DNS and basic connectivity works
+        socket.setdefaulttimeout(timeout)
+        host = socket.gethostbyname("www.google.com")
+        s = socket.create_connection((host, 80), timeout)
+        s.close()
+
+        # Get public IP from AWS IP check service
+        response = requests.get("https://checkip.amazonaws.com/", timeout=timeout)
+        ip = response.text.strip()
+        print(f"Internet is working. Public IP: {ip}")
+        return ip
+
+    except Exception:
+        print("No internet connection.")
+    return None
+
+ip_address = get_ip_OS()
+if ip_address == None:
+    for i in range(5):
+        ip_address = get_ip_OS()
+        if vps_ip == ip_address:
+            break
+
+        else:
+            focus_and_maximize_window("Mysterium")
+            time.sleep(2)
+            pyautogui.click(1319, 878)
+            time.sleep(4)
 
 CSB1_farms = []
 sb1 = None
@@ -79,8 +124,8 @@ feyorra_pass = ''
 layout = ''
 
 Farm_list = [1, 2, 3]
-Farm_list2 = [5, 6, 7, 8]
-
+Farm_list2 = [4, 5]
+Farm_list3 = [5, 6, 7, 8]
 def get_mails_passowrds(farm_id):
     global server_name1
     global CSB1_farms
@@ -625,6 +670,8 @@ def extract_valid_ipv4(text):
         except ipaddress.AddressValueError:
             return None
     return None
+
+
 def get_ip(driver):
     for i in range(5):
         try:
@@ -660,9 +707,13 @@ def get_ip(driver):
             print(e)
     return None
 
+
+
 def Full_blacklist_Check(sb1, ip_to_check, current_layout):
     ip_to_check = ip_to_check.replace(' ','')
     ip_address = ip_to_check
+    if  vps_ip == ip_address:
+        return False
     collectionbip = db[f'LocalCSB']
     #BlackLIST
     quer2y = {"type": "main"}
@@ -896,17 +947,15 @@ def fix_ip(drive, name):
     while True:
 
         get_mails_passowrds(farm_id)
-        ip_address = get_ip(drive)
-        ip_address = extract_valid_ipv4(ip_address)
-        collection_csb = db[f'Farm{farm_id}']
-        query = {"type": "main"}
-        doc = collection_csb.find_one(query)
-        layout_test = doc["withdraw_mail"]
-        if layout_test != layout:
-            return
-
+        ip_address = get_ip_OS()
         if ip_address:
-
+            collection_csb = db[f'Farm{farm_id}']
+            query = {"type": "main"}
+            doc = collection_csb.find_one(query)
+            layout_test = doc["withdraw_mail"]
+            if layout_test != layout:
+                return
+            
             quer2y = {"type": "main"}
             dochh2 = collection.find_one(quer2y)
             layout2 = dochh2["withdraw_mail"]
@@ -929,7 +978,10 @@ def fix_ip(drive, name):
                 mysteryum_changer(name)
                 print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
                 time.sleep(5)
-
+        else:
+            mysteryum_changer(name)
+            print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
+            time.sleep(5)
     
  
 ####################################Control Panel Shit##########################################################
@@ -1044,7 +1096,7 @@ def ipfixer():
             sb1 = open_browsers()
             time.sleep(2)
         if request == 'ipfixer':
-            preip = get_ip(sb1)
+            preip = get_ip_OS()
             if preip:
                 if ip == preip:
                         sri_lanka_tz = pytz.timezone('Asia/Colombo')
@@ -1135,6 +1187,18 @@ def control_panel():
             print('No function Found to Run')
     except Exception as e:
         print(f"Control Panel Function Exception:{e}")
+        ip_address = get_ip_OS()
+        if ip_address == None:
+            for i in range(5):
+                ip_address = get_ip_OS()
+                if vps_ip == ip_address:
+                    return 10
+
+                else:
+                    focus_and_maximize_window("Mysterium")
+                    time.sleep(2)
+                    pyautogui.click(1319, 878)
+                    time.sleep(4)
     return None
 
 
@@ -1805,7 +1869,7 @@ def login_to_faucet_old(url, driver, email, password, captcha_image, restrict_pa
 
                     sb1.execute_script("window.scrollTo(0, 1000);")
                     cloudflare(driver, True)
-                    ip_address = get_ip(driver)
+                    ip_address = get_ip_OS()
                     if ip_required != ip_address:
                         print("IP address mismatch, login")
                         return False
@@ -3057,43 +3121,66 @@ def quick_open_faucet(sb1):
                 print('Bonk Window Found')
 
     return earnpp_window, feyorra_window, trump_window, bonk_window
-from ctypes import wintypes
 
 
-from pywinauto import Desktop
-def focus_and_maximize_window(partial_title):
+def ensure_mysterium_window_running():
+    mysterium_path = r"C:\Users\Administrator\Downloads\myst_win\myst_win\mysterium_vpn.exe"
+    keyword = "mysterium"
+
     try:
         windows = Desktop(backend="uia").windows()
         for win in windows:
             title = win.window_text()
-            if partial_title.lower() in title.lower():
-                win.set_focus()
-                win.maximize()
-                print(f"Activated and maximized: {title}")
+            if keyword.lower() in title.lower():
+                print(f"Mysterium is already running (Window: {title})")
                 return
-        print(f"No matching window found for: {partial_title}")
-    except Exception as e:
-        print(f"Error: {e}")
-def mysteryum_changer(server):
-    try:
-        focus_and_maximize_window("Mysterium")
-        time.sleep(2)
-        pyautogui.click(301, 321)  # Click on the Mysterium icon in the system tray
-        time.sleep(2)
 
-        pyautogui.click(112, 104)  # Click on the Mysterium icon in the system tray
-        time.sleep(2)
-        pyautogui.click(415, 103)
-        time.sleep(2)
-        pyautogui.click(112, 104)  # Press the Delete key to remove the current server
-        time.sleep(2)
-        pyautogui.typewrite(server)  # Type the server name
-        time.sleep(3)
-        pyautogui.click(145, 482, duration=0.5)  # Click on the "Change Server" button
-        time.sleep(5)  # Wait for the server change to take effect
-        pyautogui.hotkey('alt', 'tab') 
+        # If no window found, launch it
+        if os.path.exists(mysterium_path):
+            print("Mysterium not found. Launching...")
+            subprocess.Popen([mysterium_path], shell=False)
+            time.sleep(5)  # Wait for the application to launch
+        else:
+            print("Error: Mysterium path does not exist.")
+
     except Exception as e:
-        print(f"Error changing Mysterium server: {e}")
+        print(f"Window detection failed: {e}")
+def mysteryum_changer(server):
+    ref = True
+    for i in range(10):
+        if ref:
+            try:
+                ensure_mysterium_window_running()
+                focus_and_maximize_window("Mysterium")
+                time.sleep(2)
+                pyautogui.click(301, 321)  # Click on the Mysterium icon in the system tray
+                time.sleep(2)
+
+                pyautogui.click(112, 104)  # Click on the Mysterium icon in the system tray
+                time.sleep(2)
+                pyautogui.click(415, 103)
+                time.sleep(2)
+                pyautogui.click(112, 104)  # Press the Delete key to remove the current server
+                time.sleep(2)
+                pyautogui.typewrite(server)  # Type the server name
+                time.sleep(3)
+                pyautogui.click(145, 482, duration=0.5)  # Click on the "Change Server" button
+                time.sleep(5)  # Wait for the server change to take effect
+                pyautogui.hotkey('alt', 'tab') 
+            except Exception as e:
+                print(f"Error changing Mysterium server: {e}")
+        ip_address = get_ip_OS()
+        if ip_address == vps_ip:
+            ref = True
+            continue
+        elif ip_address == None:
+            focus_and_maximize_window("Mysterium")
+            time.sleep(2)
+            pyautogui.click(1150, 916, duration=0.5)  # Click on the Mysterium icon in the system tray
+            time.sleep(5)
+            ref = False
+        else:
+            break
     focus_and_maximize_window("Chrome")
 
 iana_to_windows = {
@@ -3132,6 +3219,55 @@ def timezone_changer(timezone_str):
     except subprocess.CalledProcessError:
         print(f"Failed to set timezone to: {timezone_str} ({windows_tz})")
 
+
+def close_mysterium_and_wireguard():
+    # List of processes to kill
+    targets = ["mysterium_vpn.exe", "wireguard_svc.exe"]
+
+    for proc in psutil.process_iter(['pid', 'name']):
+        try:
+            if proc.info['name'] in targets:
+                print(f"Killing {proc.info['name']} (PID: {proc.info['pid']})")
+                proc.kill()
+        except (psutil.NoSuchProcess, psutil.AccessDenied):
+            pass
+
+    # Try to gracefully close Mysterium VPN if it's open via taskkill (just in case)
+    subprocess.call('taskkill /f /im mysterium_vpn.exe >nul 2>&1', shell=True)
+    subprocess.call('taskkill /f /im wireguard_svc.exe >nul 2>&1', shell=True)
+
+def kill_all_python_processes():
+    current_pid = os.getpid()
+    for proc in psutil.process_iter(['pid', 'name']):
+        try:
+            if 'python' in proc.info['name'].lower():
+                if proc.info['pid'] != current_pid:
+                    print(f"Killing other Python process: PID {proc.info['pid']}")
+                    proc.kill()
+        except (psutil.NoSuchProcess, psutil.AccessDenied):
+            pass
+    print(f"Killing current Python process: PID {current_pid}")
+    psutil.Process(current_pid).kill()
+def Kill_Script():
+    try:
+        sb1.quit()
+        time.sleep(2)
+    except Exception as e:
+        print(f"sb1.quit() failed: {e}")
+    for i in range(5):
+        ip_address = get_ip_OS()
+        if vps_ip == ip_address:
+            close_mysterium_and_wireguard()
+            kill_all_python_processes()
+            return
+
+        else:
+            focus_and_maximize_window("Mysterium")
+            time.sleep(2)
+            pyautogui.click(1319, 878)
+            time.sleep(2)
+
+
 ip_memory_cache = '' 
 
 already_ready = False
@@ -3152,6 +3288,9 @@ def open_browsers():
     quer2y = {"type": "main"}
     dochh2 = collection.find_one(quer2y)
     layout = dochh2["withdraw_mail"]
+    if layout == 'Layout7':
+        Kill_Script()
+        raise ValueError("Layout cannot be 7, please check the database configuration.")
     print(f'Farm ID:{farm_id} | Layout: {layout}')
     chrome_user_data_dir = f'C:/Users/Administrator/AppData/Local/Google/Chrome/User Data/{browser_proxy}{layout}'
     try:
@@ -3200,7 +3339,7 @@ def open_browsers():
     #fix_tab_search_icon()
     #gggv = are_extensions_exist()
     get_mails_passowrds(farm_id)
-    ip_address = get_ip(sb1)
+    ip_address = get_ip_OS()
     lay = re.search(r'\d+', layout).group()
 
     if ip_memory_cache == ip_address:
@@ -3283,7 +3422,7 @@ def open_faucets():
                         
                 if already_ready:    
                     earnpp_window, feyorra_window, earntrump_window, earnbonk_window =quick_open_faucet(sb1)
-                    ip_address = get_ip(sb1)
+                    ip_address = get_ip_OS()
                     lay = re.search(r'\d+', layout2).group()
                     Not_Black_Listed_Stt = True
                     if ip_memory_cache != ip_address:
@@ -3313,7 +3452,7 @@ def open_faucets():
             time.sleep(1)
             global blacklistedIP
             lay = re.search(r'\d+', layout2).group()
-            ip_address = get_ip(sb1)
+            ip_address = get_ip_OS()
             Not_Black_Listed_Stt = Full_blacklist_Check(sb1,ip_address,f'F{farm_id}L{lay}')
             if Not_Black_Listed_Stt:
                 focus_and_maximize_window("Chrome")
@@ -3359,7 +3498,7 @@ def open_faucets():
                 timezone_changer(tizon)
                 #time.sleep(99999)
                 if fresh_start_faucet == True:
-                    ip_address = get_ip(sb1)
+                    ip_address = get_ip_OS()
                     if ip_required == ip_address:
                         response_messege('EarnPP Loging Fresh')
                         if earnpp:
@@ -3377,7 +3516,7 @@ def open_faucets():
                         raise Exception("Ip changed")
 
                     
-                    ip_address = get_ip(sb1)
+                    ip_address = get_ip_OS()
                     if ip_required == ip_address:
                         response_messege('Feyorra Loging Fresh')
                         if feyorra:
@@ -3399,7 +3538,7 @@ def open_faucets():
                     else:
                         raise Exception("Ip changed")
                     
-                    ip_address = get_ip(sb1)
+                    ip_address = get_ip_OS()
                     if ip_required == ip_address:
                         response_messege('trump Loging Fresh')
                         if earntrump:
@@ -3418,7 +3557,7 @@ def open_faucets():
                     else:
                         raise Exception("Ip changed")
                     
-                    ip_address = get_ip(sb1)
+                    ip_address = get_ip_OS()
                     if ip_required == ip_address:
                         response_messege('earnbonk Loging Fresh')
                         if earnbonk:
@@ -3518,7 +3657,7 @@ def open_faucets():
                     raise Exception("Ip changed")
                 
                 
-                ip_address = get_ip(sb1)
+                ip_address = get_ip_OS()
                 if ip_required == ip_address:
                     response_messege('Ready IP | Started')
                     query = {"type": "main"}
@@ -3603,6 +3742,10 @@ while True:
     try:
         mainscript = control_panel()
         print('control_panel', mainscript)
+        if mainscript == 10:
+            mainscript = 1
+            reset_count = 50
+
         if mainscript == 1:
             
             debug_messages(f'Ip address Found:{ip_address}')
@@ -3611,7 +3754,7 @@ while True:
             script_elapsed_time = time.time() - Script_Started
             script_seconds_only = int(script_elapsed_time)
             #debug_messages(f'script_elapsed_time Seconds:{script_seconds_only}')
-            if script_seconds_only > 11500:
+            if script_seconds_only > 2200:
                 #print('Script 5m')
                 solving_accuracy = 0
                 failed_captchas = 0
@@ -4131,7 +4274,21 @@ while True:
 
     except Exception as e:
         print(f'Oh Hell No{e}')
+        ip_address = get_ip_OS()
+        if ip_address == None:
+            for i in range(5):
+                ip_address = get_ip_OS()
+                if vps_ip == ip_address:
+                    break
+
+                else:
+                    focus_and_maximize_window("Mysterium")
+                    time.sleep(2)
+                    pyautogui.click(1319, 878)
+                    time.sleep(4)
+
         response_messege(f'Oh Hell No{e}')
+
         if 'no such window' in str(e) or 'invalid session' in str(e) or 'NoHTTPConnectionPool' in str(e):
             response_messege(f'Resetting Browser')
             try:

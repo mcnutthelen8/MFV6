@@ -1,5 +1,5 @@
 
-print('Version 9.9.9.9.9.8')
+print('Version 9 tuxler Edition')
 import ipaddress
 from selenium.webdriver.common.by import By
 from urllib.parse import urlparse, parse_qs
@@ -29,15 +29,16 @@ import os
 import subprocess
 import socket
 import psutil
+from selenium.webdriver.common.action_chains import ActionChains
 
 
 query = {"type": "main"}
 # Example usage
 pyautogui.moveTo(100, 100)
-vps_ip = '172.238.101.178'
+vps_ip = '172.104.153.200'
 farm_id =5
 print('Farm',farm_id)
-fresh = 1 # args.fresh
+fresh = 2 # args.fresh
 pyautogui.FAILSAFE = False
 from ctypes import wintypes
 
@@ -56,36 +57,6 @@ def focus_and_maximize_window(partial_title):
         print(f"No matching window found for: {partial_title}")
     except Exception as e:
         print(f"Error: {e}")
-def get_ip_OS(timeout=10):
-    try:
-        # Check if DNS and basic connectivity works
-        socket.setdefaulttimeout(timeout)
-        host = socket.gethostbyname("www.google.com")
-        s = socket.create_connection((host, 80), timeout)
-        s.close()
-
-        # Get public IP from AWS IP check service
-        response = requests.get("https://checkip.amazonaws.com/", timeout=timeout)
-        ip = response.text.strip()
-        print(f"Internet is working. Public IP: {ip}")
-        return ip
-
-    except Exception:
-        print("No internet connection.")
-    return None
-
-ip_address = get_ip_OS()
-if ip_address == None:
-    for i in range(5):
-        ip_address = get_ip_OS()
-        if vps_ip == ip_address:
-            break
-
-        else:
-            focus_and_maximize_window("Mysterium")
-            time.sleep(2)
-            pyautogui.click(1319, 878)
-            time.sleep(4)
 
 CSB1_farms = []
 sb1 = None
@@ -123,9 +94,9 @@ feyorra_email = ''
 feyorra_pass = ''
 layout = ''
 
-Farm_list = [1, 2, 3]
-Farm_list2 = [4, 5]
-Farm_list3 = [ 6, 7, 8]
+Farm_list = [farm_id]
+Farm_list2 = [farm_id]
+Farm_list3 = [ farm_id]
 def get_mails_passowrds(farm_id):
     global server_name1
     global CSB1_farms
@@ -359,10 +330,6 @@ def get_mails_passowrds(farm_id):
         else:
             print('Layout issue', layout)
 
-######################################################################################################################################################
-######################################################################################################################################################
-######################################################################################################################################################
-######################################################################################################################################################
 
     elif farm_id == 5:
 
@@ -413,6 +380,10 @@ def get_mails_passowrds(farm_id):
             feyorra_email = 'adaavery5@gmail.com'
             feyorra_pass = 'adaavery5'
 
+######################################################################################################################################################
+######################################################################################################################################################
+######################################################################################################################################################
+######################################################################################################################################################
 
 
     elif farm_id == 6:
@@ -686,7 +657,6 @@ def get_ip(driver):
                 print('IP =', ip_address)
                 ip_address = ip_address.replace(' ', '')
                 driver.close()
-                driver.connect()
                 driver.switch_to.window(original_window)
                 if 'This site' in ip_address:
                     time.sleep(1)
@@ -701,7 +671,6 @@ def get_ip(driver):
             except Exception as e:
                 print(e)
             driver.close() 
-            driver.connect()
             driver.switch_to.window(original_window)
         except Exception as e:
             print(e)
@@ -943,11 +912,12 @@ def fix_ip(drive, name):
     ipscore = None
     proxycheck = None
     ip_address = 0
+    global sb1
     
     while True:
 
         get_mails_passowrds(farm_id)
-        ip_address = get_ip_OS()
+        ip_address = get_ip(sb1)
         if ip_address:
             collection_csb = db[f'Farm{farm_id}']
             query = {"type": "main"}
@@ -960,7 +930,7 @@ def fix_ip(drive, name):
             dochh2 = collection.find_one(quer2y)
             layout2 = dochh2["withdraw_mail"]
             lay = re.search(r'\d+', layout2).group()
-            other_blacklists = Full_blacklist_Check(drive, ip_address, f'F{farm_id}L{lay}')
+            other_blacklists = Full_blacklist_Check(sb1, ip_address, f'F{farm_id}L{lay}')
             if other_blacklists:
                 print(f'Good IP found: {ip_address}')
                 return ip_address
@@ -975,11 +945,11 @@ def fix_ip(drive, name):
                     result = collection_csb.update_one(query, update)
                     print('Update Farm', i)
                 #mysterium_vpn_connect(name, drive)
-                mysteryum_changer(name)
+                sb1 = tuxler_changer(sb1)
                 print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
                 time.sleep(5)
         else:
-            mysteryum_changer(name)
+            sb1 = tuxler_changer(sb1)
             print(f'Changing IP due to ipscore: {ipscore} and proxycheck: {proxycheck}')
             time.sleep(5)
     
@@ -1096,7 +1066,7 @@ def ipfixer():
             sb1 = open_browsers()
             time.sleep(2)
         if request == 'ipfixer':
-            preip = get_ip_OS()
+            preip = get_ip(sb1)
             if preip:
                 if ip == preip:
                         sri_lanka_tz = pytz.timezone('Asia/Colombo')
@@ -1128,13 +1098,13 @@ def ipfixer():
                         print('Ready Count:', ready_count)
                         if len(res_farms) == len(CSB1_farms):
                             time.sleep(5)
-                            if gg2344 > 4:
+                            if gg2344 > 2:
                                 return
                             else:
                                 gg2344 += 1
                         else:
                             gg2344 = 1
-                        time.sleep(5)
+                        time.sleep(3)
                             
 
                     
@@ -1187,18 +1157,6 @@ def control_panel():
             print('No function Found to Run')
     except Exception as e:
         print(f"Control Panel Function Exception:{e}")
-        ip_address = get_ip_OS()
-        if ip_address == None:
-            for i in range(5):
-                ip_address = get_ip_OS()
-                if vps_ip == ip_address:
-                    return 10
-
-                else:
-                    focus_and_maximize_window("Mysterium")
-                    time.sleep(2)
-                    pyautogui.click(1319, 878)
-                    time.sleep(4)
     return None
 
 
@@ -1869,7 +1827,7 @@ def login_to_faucet_old(url, driver, email, password, captcha_image, restrict_pa
 
                     sb1.execute_script("window.scrollTo(0, 1000);")
                     cloudflare(driver, True)
-                    ip_address = get_ip_OS()
+                    ip_address = get_ip(driver)
                     if ip_required != ip_address:
                         print("IP address mismatch, login")
                         return False
@@ -3169,7 +3127,7 @@ def mysteryum_changer(server):
                 pyautogui.hotkey('alt', 'tab') 
             except Exception as e:
                 print(f"Error changing Mysterium server: {e}")
-        ip_address = get_ip_OS()
+        ip_address = get_ip(sb1)
         if ip_address == vps_ip:
             ref = True
             continue
@@ -3255,7 +3213,7 @@ def Kill_Script():
     except Exception as e:
         print(f"sb1.quit() failed: {e}")
     for i in range(5):
-        ip_address = get_ip_OS()
+        ip_address = get_ip(sb1)
         if vps_ip == ip_address:
             close_mysterium_and_wireguard()
             kill_all_python_processes()
@@ -3267,6 +3225,76 @@ def Kill_Script():
             pyautogui.click(1319, 878)
             time.sleep(2)
 
+def adding_hostnames_ex(sb1):
+    try:
+        sb1.open_new_window()
+        sb1.uc_open('chrome-extension://knnjcgcagfalemdgiohopakmkkmfpmba/data/options/index.html')
+        time.sleep(2)
+        textarea = sb1.find_element(By.CSS_SELECTOR, 'textarea#hosts')
+        textarea.clear() 
+        textarea.send_keys('earn-pepe.com, earn-trump.com, earn-bonk.com, feyorra.site')
+        time.sleep(1)
+        inputg = sb1.find_element(By.CSS_SELECTOR, 'input#save')
+        inputg.click()
+        time.sleep(2)
+        print("adding hostname success")
+    except Exception as e:
+        print('gg')
+
+
+
+import pygetwindow as gw
+
+def focus_tuxler():
+    windows = gw.getWindowsWithTitle("Tuxler")
+    if not windows:
+        print("Tuxler window not found.")
+        return
+
+    win = windows[0]
+    try:
+        if win.isMinimized:
+            win.restore()
+        win.activate()
+
+        # Move window to position (e.g., top-left corner)
+        win.moveTo(100, 100)  # You can change this to any (x, y)
+
+        print(f"Focused and moved: {win.title}")
+    except Exception as e:
+        print(f"Activation failed, trying manual click: {e}")
+        try:
+            win_x, win_y = win.topleft
+            win_w, win_h = win.width, win.height
+            pyautogui.click(win_x + win_w // 2, win_y + 10)  # Click title bar
+            win.moveTo(100, 100)  # Try to move even after manual click
+            print("Clicked and moved manually.")
+        except Exception as e2:
+            print(f"Manual click or move failed: {e2}")
+
+
+def tuxler_changer(driver):
+    global sb1
+    try:
+
+        focus_tuxler()
+        time.sleep(2)
+        pyautogui.click(415, 285, duration=0.5)  
+        time.sleep(3)
+        pyautogui.click(408, 618, duration=0.5)  
+        time.sleep(14)  
+        try:
+            sb1.quit()
+            time.sleep(2)
+        except Exception as e:
+            print(f"driver.quit() failed: {e}")
+
+        focus_and_maximize_window("Chrome")
+        time.sleep(2)
+        sb1 = open_browsers()
+        return sb1
+    except Exception as e:
+        print(f"Error in tuxler_changer: {e}")
 
 ip_memory_cache = '' 
 
@@ -3312,7 +3340,10 @@ def open_browsers():
         user_data_dir=chrome_user_data_dir,  # e.g., "C:/Users/YourName/AppData/Local/Google/Chrome/User Data/Profile 1"
         binary_location=chrome_binary_path,  # e.g., "C:/Program Files/Google/Chrome/Application/chrome.exe"
         page_load_strategy="none",
-        extension_dir="C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/mfhelper", 
+        extension_dir=",".join([
+            "C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/mfhelper",
+            "C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/fingerprint"
+        ]),
         chromium_arg=[
             # Windows-specific and stealth-friendly arguments
             "--disable-blink-features=AutomationControlled",
@@ -3333,13 +3364,13 @@ def open_browsers():
     sb1.switch_to.window(current_window2)
     sb1.uc_open("chrome://extensions/")
     focus_and_maximize_window("Chrome")
-    #time.sleep(5000000000)
+    sb1.set_page_load_timeout(30)
     #sb1.execute_script("window.scrollTo(0, 300);")
     print(sb1.get_title())
     #fix_tab_search_icon()
     #gggv = are_extensions_exist()
     get_mails_passowrds(farm_id)
-    ip_address = get_ip_OS()
+    ip_address = get_ip(sb1)
     lay = re.search(r'\d+', layout).group()
 
     if ip_memory_cache == ip_address:
@@ -3422,7 +3453,7 @@ def open_faucets():
                         
                 if already_ready:    
                     earnpp_window, feyorra_window, earntrump_window, earnbonk_window =quick_open_faucet(sb1)
-                    ip_address = get_ip_OS()
+                    ip_address = get_ip(sb1)
                     lay = re.search(r'\d+', layout2).group()
                     Not_Black_Listed_Stt = True
                     if ip_memory_cache != ip_address:
@@ -3452,7 +3483,7 @@ def open_faucets():
             time.sleep(1)
             global blacklistedIP
             lay = re.search(r'\d+', layout2).group()
-            ip_address = get_ip_OS()
+            ip_address = get_ip(sb1)
             Not_Black_Listed_Stt = Full_blacklist_Check(sb1,ip_address,f'F{farm_id}L{lay}')
             if Not_Black_Listed_Stt:
                 focus_and_maximize_window("Chrome")
@@ -3498,7 +3529,9 @@ def open_faucets():
                 timezone_changer(tizon)
                 #time.sleep(99999)
                 if fresh_start_faucet == True:
-                    ip_address = get_ip_OS()
+                    adding_hostnames_ex(sb1)
+                    close_extra_windows(sb1, [current_window])
+                    ip_address = get_ip(sb1)
                     if ip_required == ip_address:
                         response_messege('EarnPP Loging Fresh')
                         if earnpp:
@@ -3516,7 +3549,7 @@ def open_faucets():
                         raise Exception("Ip changed")
 
                     
-                    ip_address = get_ip_OS()
+                    ip_address = get_ip(sb1)
                     if ip_required == ip_address:
                         response_messege('Feyorra Loging Fresh')
                         if feyorra:
@@ -3538,7 +3571,7 @@ def open_faucets():
                     else:
                         raise Exception("Ip changed")
                     
-                    ip_address = get_ip_OS()
+                    ip_address = get_ip(sb1)
                     if ip_required == ip_address:
                         response_messege('trump Loging Fresh')
                         if earntrump:
@@ -3557,7 +3590,7 @@ def open_faucets():
                     else:
                         raise Exception("Ip changed")
                     
-                    ip_address = get_ip_OS()
+                    ip_address = get_ip(sb1)
                     if ip_required == ip_address:
                         response_messege('earnbonk Loging Fresh')
                         if earnbonk:
@@ -3657,7 +3690,7 @@ def open_faucets():
                     raise Exception("Ip changed")
                 
                 
-                ip_address = get_ip_OS()
+                ip_address = get_ip(sb1)
                 if ip_required == ip_address:
                     response_messege('Ready IP | Started')
                     query = {"type": "main"}
@@ -3754,7 +3787,7 @@ while True:
             script_elapsed_time = time.time() - Script_Started
             script_seconds_only = int(script_elapsed_time)
             #debug_messages(f'script_elapsed_time Seconds:{script_seconds_only}')
-            if script_seconds_only > 2200:
+            if script_seconds_only > 2000:
                 #print('Script 5m')
                 solving_accuracy = 0
                 failed_captchas = 0
@@ -3828,6 +3861,7 @@ while True:
                         if 'Faucet | Earn-pepe' in title:
                             debug_messages(f'Solving Icon Captcha on EarnPP')
                             val = get_coins(sb1, 1)
+
                             if val:
                                 earnpp_coins = val
                             gg = solve_icon_captcha(sb1)
@@ -3901,6 +3935,7 @@ while True:
                             if No_understand_Feyorra:
                                 Click_Understand()
                             val = get_coins(sb1, 2)
+
                             if val:
                                 if feyorra_coins and val and No_understand_Feyorra:
                                     if val > feyorra_coins:
@@ -3982,6 +4017,7 @@ while True:
                             val = get_coins(sb1, 1)
                             if val:
                                 earntrump_coins = val
+
                             gg = solve_icon_captcha(sb1)
                             if gg:
                                 if gg == 201:
@@ -4053,6 +4089,7 @@ while True:
                             if No_understand_BONK:
                                 Click_Understand()
                             val = get_coins(sb1, 2)
+
                             if val:
                                 if earnbonk_coins and val and No_understand_BONK:
                                     if val > earnbonk_coins:
@@ -4123,7 +4160,6 @@ while True:
 
 ###################################################################################################################
 
-
                 elapsed_time = time.time() - start_time
                 seconds_only = int(elapsed_time)
                 debug_messages(f'ClaimCoins Seconds:{seconds_only}')
@@ -4163,6 +4199,9 @@ while True:
                             if refresh_count >= 50:
                                 reset_count +=5
                             refresh_count +=1
+
+                            refresh_count +=1
+
                     elif earnbonk_coins == earnbonk_coins_pre:
                         start_time = time.time()
 
@@ -4202,6 +4241,7 @@ while True:
                         earntrump_coins_pre = earntrump_coins
                         earnbonk_coins_pre = earnbonk_coins
                         refresh_count = 0
+
 
                 elapsed_time3 = time.time() - start_time3
                 seconds_only3 = int(elapsed_time3)
@@ -4274,18 +4314,11 @@ while True:
 
     except Exception as e:
         print(f'Oh Hell No{e}')
-        ip_address = get_ip_OS()
+        ip_address = get_ip(sb1)
         if ip_address == None:
-            for i in range(5):
-                ip_address = get_ip_OS()
-                if vps_ip == ip_address:
-                    break
-
-                else:
-                    focus_and_maximize_window("Mysterium")
-                    time.sleep(2)
-                    pyautogui.click(1319, 878)
-                    time.sleep(4)
+            query = {"type": "main"}
+            update = {"$set": {"request": 'ipfixer'}}
+            result = collection.update_one(query, update)
 
         response_messege(f'Oh Hell No{e}')
 

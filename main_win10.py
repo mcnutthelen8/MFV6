@@ -73,6 +73,16 @@ claimc_email = 'yvonne12463@gmail.com'
 claimc_pass = 'Uwuinsta@2005'
 
 
+
+# Force IPv4-only in all DNS resolution
+original_getaddrinfo = socket.getaddrinfo
+def force_ipv4_getaddrinfo(*args, **kwargs):
+    return [
+        info for info in original_getaddrinfo(*args, **kwargs)
+        if info[0] == socket.AF_INET
+    ]
+socket.getaddrinfo = force_ipv4_getaddrinfo
+
 mongo_uri = "mongodb+srv://redgta36:J6n7Hoz2ribHmMmx@moneyfarm.wwzcs.mongodb.net/?retryWrites=true&w=majority&appName=moneyfarm"
 
 client = MongoClient(mongo_uri)
@@ -628,6 +638,7 @@ def insert_data(ip, amount1, amount2, amount3, amount4,accuracy,emailg):
 
 def extract_valid_ipv4(text):
     # Remove leading/trailing spaces
+    print('Validating IP from ipv4')
     text = text.strip()
 
     # Regex match for an IPv4 address
@@ -666,6 +677,7 @@ def get_ip(driver):
                     continue
                 ip_address = extract_valid_ipv4(ip_address)
                 if ip_address:
+                    print('Valid IP ')
                     return ip_address
             
             except Exception as e:
@@ -679,6 +691,7 @@ def get_ip(driver):
 
 
 def Full_blacklist_Check(sb1, ip_to_check, current_layout):
+    print('Full Blacklist Check')
     ip_to_check = ip_to_check.replace(' ','')
     ip_address = ip_to_check
     if  vps_ip == ip_address:
@@ -693,10 +706,12 @@ def Full_blacklist_Check(sb1, ip_to_check, current_layout):
         print(f'IP found on blacklist...{ip_to_check}')
         return False
 
-
+    print('Full Blacklist VPN Check')
     ipscore = get_ipscore(ip_to_check)
     proxycheck = get_proxycheck(sb1, ip_to_check, server_name= server_name1)
+    
     if ipscore and proxycheck == 200:
+        print('Full Blacklist Other Farm Check')
 
         #FxLx List
         quer2y = {"type": "main"}
@@ -792,7 +807,8 @@ def get_proxycheck_inbrowser(sb1, ip, server_name):
         except Exception as e:
             print(f'ibbrowser ProxyCheck Error: {e}')
         time.sleep(2)  # Wait before retrying
- 
+
+
 def get_proxycheck_with_api(driver, ip, server_name):
     for i in range(9):
         url = f'https://proxycheck.io/v2/{ip}?key=434489-84608j-v97020-20y548?vpn=1&asn=1'
@@ -1196,8 +1212,9 @@ import numpy as np
 from tensorflow.keras.preprocessing import image
 
 # Load the trained model
-model = tf.keras.models.load_model('captcha_model_v17.keras')
-category_classes_list  =  ['award-solid', 'bell-solid', 'broom-solid', 'bug-solid', 'bullhorn-solid', 'camera-solid', 'cannabis-solid', 'capsules-solid', 'car-burst-solid', 'car-solid', 'carrot-solid', 'cat-solid', 'certificate-solid', 'charging-station-solid', 'chart-line-solid', 'check-solid', 'chess-knight-solid', 'circle-xmark-solid', 'clock-rotate-left-solid', 'couch-solid', 'crow-solid', 'democrat-solid', 'dice-solid', 'dog-solid', 'dove-solid', 'dragon-solid', 'droplet-solid', 'envelope-solid', 'face-surprise-solid', 'face-tired-solid', 'feather-pointed-solid', 'gear-solid', 'gem-solid', 'gift-solid', 'gopuram-solid', 'graduation-cap-solid', 'guitar-solid', 'hammer-solid', 'hat-wizard-solid', 'heart-solid', 'helicopter-solid', 'house-solid', 'image-solid', 'key-solid', 'kiwi-bird-solid', 'laptop-solid', 'leaf-solid', 'lightbulb-solid', 'link-solid', 'lock-solid', 'marker-solid', 'microchip-solid', 'microphone-solid', 'money-bill-wave-solid', 'moon-solid', 'mug-hot-solid', 'mug-saucer-solid', 'music-solid', 'oil-can-solid', 'paw-solid', 'piggy-bank-solid', 'pizza-slice-solid', 'plug-solid', 'puzzle-piece-solid', 'republican-solid', 'ribbon-solid', 'robot-solid', 'rocket-solid', 'rotate-solid', 'satellite-solid', 'scissors-solid', 'screwdriver-wrench-solid', 'ship-solid', 'shuttle-space-solid', 'signal-solid', 'sim-card-solid', 'sitemap-solid', 'skull-crossbones-solid', 'smoking-solid', 'snowman-solid', 'spa-solid', 'spider-solid', 'spoon-solid', 'star-of-david-solid', 'star-solid', 'sun-solid', 'syringe-solid', 'tablets-solid', 'tag-solid', 'temperature-half-solid', 'thermometer-solid', 'thumbs-up-solid', 'thumbtack-solid', 'tooth-solid', 'tractor-solid', 'traffic-light-solid', 'train-subway-solid', 'tree-solid', 'truck-monster-solid', 'truck-pickup-solid', 'umbrella-solid', 'user-solid', 'utensils-solid', 'van-shuttle-solid', 'vector-square-solid', 'vial-solid', 'vials-solid', 'video-solid', 'volleyball-solid', 'xmark-solid', 'yin-yang-solid']
+model = tf.keras.models.load_model('captcha_model_v18.keras')
+category_classes_list  =['award-solid', 'bell-solid', 'broom-solid', 'bug-solid', 'bullhorn-solid', 'camera-solid', 'cannabis-solid', 'capsules-solid', 'car-burst-solid', 'car-solid', 'carrot-solid', 'cat-solid', 'certificate-solid', 'charging-station-solid', 'chart-line-solid', 'check-solid', 'chess-knight-solid', 'circle-xmark-solid', 'clock-rotate-left-solid', 'couch-solid', 'crow-solid', 'democrat-solid', 'dice-solid', 'dog-solid', 'dove-solid', 'dragon-solid', 'droplet-solid', 'envelope-solid', 'face-surprise-solid', 'face-tired-solid', 'feather-pointed-solid', 'fish-solid', 'gear-solid', 'gem-solid', 'gift-solid', 'glasses-solid', 'gopuram-solid', 'graduation-cap-solid', 'guitar-solid', 'hammer-solid', 'hat-wizard-solid', 'heart-solid', 'helicopter-solid', 'house-solid', 'icons-solid', 'image-solid', 'key-solid', 'kiwi-bird-solid', 'laptop-solid', 'leaf-solid', 'lightbulb-solid', 'link-solid', 'lock-solid', 'marker-solid', 'memory-solid', 'microchip-solid', 'microphone-solid', 'money-bill-wave-solid', 'moon-solid', 'mug-hot-solid', 'mug-saucer-solid', 'music-solid', 'oil-can-solid', 'paw-solid', 'piggy-bank-solid', 'pizza-slice-solid', 'plug-solid', 'puzzle-piece-solid', 'republican-solid', 'ribbon-solid', 'robot-solid', 'rocket-solid', 'rotate-solid', 'satellite-solid', 'scissors-solid', 'screwdriver-wrench-solid', 'ship-solid', 'shuttle-space-solid', 'signal-solid', 'sim-card-solid', 'sitemap-solid', 'skull-crossbones-solid', 'smoking-solid', 'snowman-solid', 'spa-solid', 'spider-solid', 'spoon-solid', 'star-of-david-solid', 'star-solid', 'sun-solid', 'syringe-solid', 'tablets-solid', 'tag-solid', 'temperature-half-solid', 'thermometer-solid', 'thumbs-up-solid', 'thumbtack-solid', 'tooth-solid', 'tractor-solid', 'traffic-light-solid', 'train-subway-solid', 'tree-solid', 'truck-monster-solid', 'truck-pickup-solid', 'umbrella-solid', 'user-solid', 'utensils-solid', 'van-shuttle-solid', 'vector-square-solid', 'vial-solid', 'vials-solid', 'video-solid', 'volleyball-solid', 'xmark-solid', 'yin-yang-solid']
+
 
 def predict_image_from_list(image_path, category_options):
     #print(f"Predicting image: {image_path}")
@@ -4266,11 +4283,7 @@ while True:
                         insert_data(ip_address, earnpp_coins, feyorra_coins, earntrump_coins, earnbonk_coins, accuracy_info, emailgg)
                     else:
                         response_messege(f'EarnPP:{earnpp_coins} | Feyorra:{feyorra_coins} | Trump:{earntrump_coins}|BONK:{earnbonk_coins} ')
-                    #elif earnpp_coins and feyorra_coins and claimc_coins:
-                    #    start_time3 = time.time()
-                    #    insert_data(ip_address, earnpp_coins, feyorra_coins, claimc_coins, 0)
-                    
-                    
+
 
                 else:
                     print(f'MngoDB:{seconds_only3}')
@@ -4278,8 +4291,6 @@ while True:
                 print('Ip fucked')
                 reset_count +=4
                 response_messege(f'Ip fucked|{reset_count}|{ip_address}')
-                #ip_required = fix_ip(sb1, server_name1)
-                #ip_address = get_ip(sb1)
     
 
         if mainscript == 2:
@@ -4314,12 +4325,6 @@ while True:
 
     except Exception as e:
         print(f'Oh Hell No{e}')
-        ip_address = get_ip(sb1)
-        if ip_address == None:
-            query = {"type": "main"}
-            update = {"$set": {"request": 'ipfixer'}}
-            result = collection.update_one(query, update)
-
         response_messege(f'Oh Hell No{e}')
 
         if 'no such window' in str(e) or 'invalid session' in str(e) or 'NoHTTPConnectionPool' in str(e):
@@ -4345,4 +4350,10 @@ while True:
             Script_Started = time.time()
             previous_script_seconds_only = previous_script_seconds_cal(previous_script_seconds_only,script_seconds_only)
         reset_count +=2
+        ip_address = get_ip(sb1)
+        if ip_address == None:
+            query = {"type": "main"}
+            update = {"$set": {"request": 'ipfixer'}}
+            result = collection.update_one(query, update)
+
      

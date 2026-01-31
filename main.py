@@ -4420,6 +4420,7 @@ def gplink_handle():
                 
         except Exception as e:
             pass
+    
     if 'GPlinks' in title:
         pyautogui.moveTo(300,509)
         pyautogui.scroll(5000)
@@ -4653,6 +4654,8 @@ def gplink_handle():
                         pass
         except Exception as e:
             pass
+    else:
+        pyautogui.click(1116,525, duration=1)
 
 
 

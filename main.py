@@ -1,3 +1,4 @@
+print("Version 10.4.3 loaded.")
 import pyautogui
 import time
 import win32gui
@@ -23,9 +24,28 @@ import psutil
 import subprocess
 import requests
 import difflib
+import os
 Mysterium_Mode = False
 
-farm_id =1
+
+def get_farm_id(filepath="farmid.txt"):
+    """Reads and prints the number from farmid.txt."""
+    if os.path.exists(filepath):
+        with open(filepath, "r") as f:
+            content = f.read().strip()
+            print(f"📍 Current Farm ID: {content}")
+            return content
+    return None
+
+print("Getting Farm ID...")
+farm_id = get_farm_id()
+print("Farm ID obtained.")
+print(f"Farm ID String: {farm_id}")
+
+if farm_id is None:
+    print("Error: farmid.txt not found or empty. Defaulting to Farm ID 1.")
+    for i in range(59):
+        time.sleep(999999)
 
 ipqs_key = "Bfg1dzryVqbpSwtbxgWb1uVkXLrr1Nzr"
 ipqs_website = ''

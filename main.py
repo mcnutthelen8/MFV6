@@ -46,7 +46,56 @@ if farm_id is None:
     print("Error: farmid.txt not found or empty. Defaulting to Farm ID 1.")
     for i in range(59):
         time.sleep(999999)
+APPS = {
+    "Tuxler": {
+        "title": "Tuxler",
+        "exe_name": "tuxlerVPN.exe",
+        "path": r"C:\Program Files (x86)\tuxlerVPN\tuxlerVPN.exe"
+    },
+    "AdsPower": {
+        "title": "AdsPower",
+        "exe_name": "AdsPower Global.exe",
+        "path": r"C:\Program Files\AdsPower Global\AdsPower Global.exe"
+    }
+}
 
+def kill_apps32():
+    """Forcefully closes Tuxler and AdsPower processes."""
+    for name, info in APPS.items():
+        print(f"🛑 Killing {name}...")
+        # /F is force, /IM is image name, /T kills child processes too
+        os.system(f'taskkill /F /IM "{info["exe_name"]}" /T >nul 2>&1')
+
+def ensure_apps_running32():
+    """Checks if windows exist; if not, launches them."""
+    try:
+        windows = Desktop(backend="uia").windows()
+        existing_titles = [win.window_text().lower() for win in windows]
+        
+        for name, info in APPS.items():
+            is_running = any(info["title"].lower() in t for t in existing_titles)
+            
+            if not is_running:
+                print(f"🚀 {name} not found. Launching...")
+                if os.path.exists(info["path"]):
+                    subprocess.Popen([info["path"]])
+                else:
+                    print(f"❌ Path missing: {info['path']}")
+            else:
+                print(f"✅ {name} is already running.")
+    except Exception as e:
+        print(f"Error: {e}")
+
+
+
+ensure_apps_running32()
+
+
+
+
+
+
+# =========================
 ipqs_key = "Bfg1dzryVqbpSwtbxgWb1uVkXLrr1Nzr"
 ipqs_website = ''
 ipqs_key_list = []

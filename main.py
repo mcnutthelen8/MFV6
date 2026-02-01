@@ -33,8 +33,9 @@ def get_farm_id(filepath="farmid.txt"):
     if os.path.exists(filepath):
         with open(filepath, "r") as f:
             content = f.read().strip()
-            print(f"📍 Current Farm ID: {content}")
-            return content
+            fid = int(content)
+            print(f"📍 Current Farm ID: {fid}")
+            return fid
     return None
 
 print("Getting Farm ID...")
@@ -304,7 +305,8 @@ if farm_id == 10:
     tuxlermail1 = ['adaavery972g2@gmail.com:RiverSky2711@',
                    'adaavery972g3@gmail.com:RiverSky2711@']
 
-
+print("tuxlermail1:", tuxlermail1)
+print("Connecting to MongoDB...")
 mongo_uri = "mongodb+srv://redgta36:J6n7Hoz2ribHmMmx@moneyfarm.wwzcs.mongodb.net/?retryWrites=true&w=majority&appName=moneyfarm"
 
 #client = MongoClient(mongo_uri)
@@ -1018,7 +1020,7 @@ def always_active():
     pyautogui.click(547, 874)  # C
     time.sleep(1)
 
-def get_next_account(file_path= f"adspower_acc{farm_id}.txt"):
+def get_next_account(file_path= f"adspower_acc.txt"):
     accounts = []
     
     # Read accounts
@@ -2444,11 +2446,13 @@ def tuxler_account_changer():
                 time.sleep(1)
                 pyautogui.press('esc')
                 time.sleep(1)
-
+        #time.sleep(10)
+        print('Changing tuxler account')        
+        #time.sleep(10)
         try:
             x, y = pyautogui.locateCenterOnScreen('butpremium_tuxler.png', confidence=0.9)
             if x and y:
-                
+                print('Premium button found, logging in with new account')
                 pyautogui.click(148,116)
                 time.sleep(2)
                 pyautogui.click(211,146)
@@ -2469,6 +2473,8 @@ def tuxler_account_changer():
                 time.sleep(8)
                 return True   
         except Exception as e:
+            print('No premium button found',e)
+            print(f'Erro:{e}')
             pass
 
         pyautogui.click(148,116)
@@ -5471,11 +5477,12 @@ def tuxler_stat_check():
         try:
             x, y = pyautogui.locateCenterOnScreen('butpremium_tuxler.png', confidence=0.9)
             if x and y:
+                print("Tuxler Logout detected, changing account...")
                 tuxler_account_changer()
                 
                 
         except Exception as e:
-            pass
+            print("NOT Tuxler Logout detected")
         pyautogui.click(148,116)
         time.sleep(2)
         pyautogui.click(211,146)

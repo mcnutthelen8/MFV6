@@ -1,4 +1,4 @@
-print("Version 10.4.9 loaded.")
+print("Version 10.5.1 loaded.")
 import pyautogui
 import time
 import win32gui
@@ -1018,7 +1018,7 @@ def always_active():
     pyautogui.click(547, 874)  # C
     time.sleep(1)
 
-def get_next_account(file_path= "adspower_acc.txt"):
+def get_next_account(file_path= f"adspower_acc{farm_id}.txt"):
     accounts = []
     
     # Read accounts

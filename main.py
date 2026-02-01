@@ -1,4 +1,4 @@
-print("Version 10.5.2 loaded.")
+print("Version 10.5.5 loaded.")
 import pyautogui
 import time
 import win32gui
@@ -5959,7 +5959,8 @@ while True:
 
                 if script_seconds_only > 700:
                     gg = True
-
+                if script_seconds_only > 500:
+                    tpi = True
                 if layout == 1:
                     if layout == 1:
                         try:

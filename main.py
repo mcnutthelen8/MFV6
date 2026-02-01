@@ -1,4 +1,4 @@
-print("Version 10.5.1 loaded.")
+print("Version 10.5.2 loaded.")
 import pyautogui
 import time
 import win32gui
@@ -2486,7 +2486,7 @@ def tuxler_account_changer():
         # Extract values
         expire, location_changes = extract_expire_and_location(text)
         print(f"\nExtracted -> Expiration date: {expire}, Location changes: {location_changes}")
-        if location_changes == 100:
+        if location_changes == 100 or location_changes > 99:
             #text = ocr_screen_region(180, 432, 290, 40)
             #if text in tuxlermail1:
             for account in tuxlermail1:

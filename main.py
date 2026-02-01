@@ -67,25 +67,27 @@ def kill_apps32():
         os.system(f'taskkill /F /IM "{info["exe_name"]}" /T >nul 2>&1')
 
 def ensure_apps_running32():
-    """Checks if windows exist; if not, launches them."""
+    """Checks if windows exist; if not, triggers the batch launcher."""
     try:
         windows = Desktop(backend="uia").windows()
         existing_titles = [win.window_text().lower() for win in windows]
         
-        for name, info in APPS.items():
-            is_running = any(info["title"].lower() in t for t in existing_titles)
-            
-            if not is_running:
-                print(f"🚀 {name} not found. Launching...")
-                if os.path.exists(info["path"]):
-                    subprocess.Popen([info["path"]])
-                else:
-                    print(f"❌ Path missing: {info['path']}")
+        # Check if either app is missing
+        tuxler_running = any("tuxler" in t for t in existing_titles)
+        adspower_running = any("adspower" in t for t in existing_titles)
+
+        if not tuxler_running or not adspower_running:
+            print("🚀 One or more apps missing. Running batch launcher...")
+            if os.path.exists("launch_apps.bat"):
+                # shell=True is used here specifically to run the .bat file
+                subprocess.Popen(["launch_apps.bat"], shell=True)
             else:
-                print(f"✅ {name} is already running.")
+                print("❌ Batch file 'launch_apps.bat' not found!")
+        else:
+            print("✅ All apps are already running.")
+            
     except Exception as e:
         print(f"Error: {e}")
-
 
 
 ensure_apps_running32()
@@ -4384,7 +4386,7 @@ def gplink_handle():
     except Exception as e:
         pass
 
-
+    pyautogui.click(1116,525, duration=1)
     if clickads_gplink_attempts >= 2:
         pyautogui.press('f5')
         time.sleep(1)
@@ -4654,8 +4656,8 @@ def gplink_handle():
                         pass
         except Exception as e:
             pass
-    else:
-        pyautogui.click(1116,525, duration=1)
+
+        
 
 
 

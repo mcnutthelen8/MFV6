@@ -1,20 +1,13 @@
 @echo off
-setlocal enabledelayedexpansion
+TITLE MFV6 Bot Launcher
 
-:loop
-cd C:\Users\Administrator\Downloads\MFV6-main\MFV6-main
+:: Change directory to your project folder
+cd /d "C:\Users\Administrator\Downloads\MFV6-main\MFV6-main"
 
-echo Killing Python and Chrome-related processes...
-taskkill /f /im python.exe >nul 2>&1
-taskkill /f /im chrome.exe >nul 2>&1
-taskkill /f /im chromedriver.exe >nul 2>&1
-taskkill /f /im uc_driver.exe >nul 2>&1
+echo Starting MFV6 Scripts...
 
-echo Running Python script...
-start "" cmd /c "python main_win10.py"
+:: Start each script in a new window
+::start "Browser Config" python browser_configure.py
+::start "CSB Handle" python csb_handle.py
+start "Main Bot" python main.py
 
-echo Waiting 30 minutes...
-timeout /t 1800 /nobreak
-
-echo Restarting script...
-goto loop

@@ -1,4 +1,4 @@
-print("Version 10.4.5 loaded.")
+print("Version 10.4.9 loaded.")
 import pyautogui
 import time
 import win32gui
@@ -66,28 +66,73 @@ def kill_apps32():
         # /F is force, /IM is image name, /T kills child processes too
         os.system(f'taskkill /F /IM "{info["exe_name"]}" /T >nul 2>&1')
 
-def ensure_apps_running32():
-    """Checks if windows exist; if not, triggers the batch launcher."""
-    try:
-        windows = Desktop(backend="uia").windows()
-        existing_titles = [win.window_text().lower() for win in windows]
-        
-        # Check if either app is missing
-        tuxler_running = any("tuxler" in t for t in existing_titles)
-        adspower_running = any("adspower" in t for t in existing_titles)
+def launch_via_run_dialog(app_path):
+    """Mimics a human pressing Win+R and typing the path."""
+    print(f"⌨️ Mimicking human launch for: {app_path}")
+    
+    # 1. Open Run Dialog (Win + R)
+    pyautogui.hotkey('win', 'r')
+    time.sleep(1) # Wait for dialog to appear
+    
+    # 2. Type the path
+    pyautogui.write(app_path)
+    time.sleep(0.5)
+    
+    # 3. Press Enter
+    pyautogui.press('enter')
+    print("✅ Command sent to Windows Run dialog.")
 
-        if not tuxler_running or not adspower_running:
-            print("🚀 One or more apps missing. Running batch launcher...")
-            if os.path.exists("launch_apps.bat"):
-                # shell=True is used here specifically to run the .bat file
-                subprocess.Popen(["launch_apps.bat"], shell=True)
-            else:
-                print("❌ Batch file 'launch_apps.bat' not found!")
-        else:
-            print("✅ All apps are already running.")
+def ensure_apps_running32():
+    """Checks if windows exist; if not, launches them via Windows Shell."""
+    try:
+        for i in range(15):
+            # 1. Check windows
+            windows = Desktop(backend="uia").windows()
+            existing_titles = [win.window_text().lower() for win in windows]
+            
+            tuxler_running = any("tuxler" in t for t in existing_titles)
+            adspower_running = any("adspower" in t for t in existing_titles)
+
+            # 2. Launch Tuxler if missing
+            if not tuxler_running:
+                path = APPS["Tuxler"]["path"]
+                if os.path.exists(path):
+                    print("🚀 Launching Tuxler via Shell...")
+                    launch_via_run_dialog(path)
+                    #os.startfile(path) # This is the "magic" line for Windows
+                else:
+                    print(f"❌ Tuxler path missing: {path}")
+
+            # 3. Launch AdsPower if missing
+            if not adspower_running:
+                path = APPS["AdsPower"]["path"]
+                if os.path.exists(path):
+                    print("🚀 Launching AdsPower via Shell...")
+                    launch_via_run_dialog(path)
+                    #os.startfile(path) # Decouples from Python entirely
+                else:
+                    print(f"❌ AdsPower path missing: {path}")
+            for i in range(15):
+                time.sleep(1)
+                # Re-check windows
+                windows = Desktop(backend="uia").windows()
+                existing_titles = [win.window_text().lower() for win in windows]
+                
+                tuxler_running = any("tuxler" in t for t in existing_titles)
+                adspower_running = any("adspower" in t for t in existing_titles)
+                if tuxler_running and adspower_running:
+                    break
+                else:
+                    print("⏳ Waiting for apps to launch...")
+                    print(f"Current windows: {tuxler_running}, {adspower_running}")
+
+            if tuxler_running and adspower_running:
+                print("✅ All apps are already running.")
+                return True
+        return False
             
     except Exception as e:
-        print(f"Error: {e}")
+        print(f"Error in ensure_apps: {e}")
 
 
 ensure_apps_running32()
@@ -4386,7 +4431,8 @@ def gplink_handle():
     except Exception as e:
         pass
 
-    pyautogui.click(1116,525, duration=1)
+    pyautogui.click(1116,525, duration=0.5)
+
     if clickads_gplink_attempts >= 2:
         pyautogui.press('f5')
         time.sleep(1)
@@ -5507,7 +5553,8 @@ def restart_tuxler():
 
     # Start the app again
     print("Starting Tuxler...")
-    process = subprocess.Popen([app_path], shell=False)
+    launch_via_run_dialog(app_path)
+    #process = subprocess.Popen([app_path], shell=False)
 
     # Wait for it to show up
     time.sleep(10)
@@ -5517,9 +5564,19 @@ def restart_tuxler():
                   for p in psutil.process_iter(['name']))
     if running:
         print("Tuxler started successfully ✅")
+        return True
     else:
         print("Failed to start Tuxler ❌")
-
+        launch_via_run_dialog(app_path)
+    time.sleep(5)
+    running = any("tuxler".lower() in (p.info['name'] or "").lower() 
+                  for p in psutil.process_iter(['name']))
+    if running:
+        print("Tuxler started successfully ✅")
+        return True
+    else:
+        print("Failed to start Tuxler ❌")
+        launch_via_run_dialog(app_path)
     return process
 
 

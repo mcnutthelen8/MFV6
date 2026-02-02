@@ -1,4 +1,4 @@
-print("Version 10.5.5 loaded.")
+print("Version 10.5.6 loaded.")
 import pyautogui
 import time
 import win32gui
@@ -427,23 +427,52 @@ def add_farm_activity(farmid, country, ipaddress, duration, sites, fingerprints_
     update_farm_stat(farmid, tuxler_left, expiredate )
 
 def update_content_extension():
-    query = {"type": "main"}
-    document = maindb_collection.find_one(query)
+    pymongo_or_git = 'git'
+    if pymongo_or_git == 'pymongo':
+        query = {"type": "main"}
+        document = maindb_collection.find_one(query)
 
-    if document and "extension_updates" in document:
-        js_content = document["extension_updates"]
+        if document and "extension_updates" in document:
+            js_content = document["extension_updates"]
 
-        # Path to content.js
-        file_path = r"C:\Users\Administrator\Downloads\MFV6-main\MFV6-main\extension\content.js"
+            # Path to content.js
+            file_path = r"C:\Users\Administrator\Downloads\MFV6-main\MFV6-main\extension\content.js"
 
-        # Write the content to content.js
-        with open(file_path, "w", encoding="utf-8") as f:
-            f.write(js_content)
+            # Write the content to content.js
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write(js_content)
+            
+            print(f"[Success] content.js updated with extension_updates from MongoDB.")
+        else:
+            print("[Error] No document found or 'extension_updates' field missing.")
+
+    # URL to the raw GitHub file
+    url = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/refs/heads/main/content.js"
+    
+    # Path to your local content.js
+    file_path = r"C:\Users\Administrator\Downloads\MFV6-main\MFV6-main\extension\content.js"
+
+    try:
+        # Fetch the content from GitHub
+        response = requests.get(url)
         
-        print(f"[Success] content.js updated with extension_updates from MongoDB.")
-    else:
-        print("[Error] No document found or 'extension_updates' field missing.")
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
+            js_content = response.text
 
+            # Write the content to content.js
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write(js_content)
+            
+            print(f"[Success] content.js updated from GitHub.")
+        else:
+            print(f"[Error] Failed to fetch file. Status code: {response.status_code}")
+            
+    except Exception as e:
+        print(f"[Error] An unexpected error occurred: {e}")
+
+
+        
 def convert_numeric(value):
     """
     Convert a value to int or float if it's a numeric string.

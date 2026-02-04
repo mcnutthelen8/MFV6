@@ -1,4 +1,5 @@
-print("Version 10.5.6 loaded.")
+
+print("Version 10.5.7 loaded.")
 import pyautogui
 import time
 import win32gui
@@ -4467,6 +4468,7 @@ def gplink_handle():
         pass
 
     pyautogui.click(1116,525, duration=0.5)
+    pyautogui.click(1543,108, duration=0.5)
 
     if clickads_gplink_attempts >= 2:
         pyautogui.press('f5')

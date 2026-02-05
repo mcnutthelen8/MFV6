@@ -4457,6 +4457,13 @@ def gplink_handle():
                 
         except Exception as e:
             pass
+        try:
+            x, y = pyautogui.locateCenterOnScreen( 'closeannoyad.png', region=[1354,72,320,150], confidence=0.98)
+            if x and y:
+                pyautogui.click(x, y, duration=0.1)
+                time.sleep(2)
+        except Exception as e:
+            pass
     try:
         x, y = pyautogui.locateCenterOnScreen( 'resumevidgp.png', region=[1,83,1914,956], confidence=0.9)
         if x and y:
@@ -4468,11 +4475,8 @@ def gplink_handle():
         pass
 
     
-    if 'GPlinks' in title:
-        pass
-    else:
-        pyautogui.click(1116,525, duration=0.5)
-        pyautogui.click(1543,108, duration=0.5)
+    pyautogui.click(1116,525, duration=0.5)
+
 
     if clickads_gplink_attempts >= 2:
         pyautogui.press('f5')

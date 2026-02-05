@@ -1,5 +1,5 @@
 
-print("Version 10.5.7 loaded.")
+print("Version 10.5.6 loaded.")
 import pyautogui
 import time
 import win32gui
@@ -2896,123 +2896,30 @@ def inidanxlinks():
         pass
 
     close_ads()
-    buttons_list = ['dualtap53.png','dotap34.png','op35.png','dtap9.png','dutap5.png','opne4535.png','opne4535.png','opne4535.png', 'opne4535.png', 'tap2indi.png' 'dualtap3gl.png' ,'notrobot_indi2.png', 'opnconindi2.png', 'dualtap2.png' ,'opencon_indiax.png', 'dualtap_india2.png', 'dualtap_india.png', 'imnotrobot_indiax.png' ,'dualtap_india1.png', 'dualtapgotoin.png', 'dualtapgotoin2.png', 'opencon2.png']
-
-    closead = [ 'closead.png', 'closerr213.png', 'closead123.png' ,'close1234.png','close21311v.png','close21311h.png','close213.png','viewads_click.png']
-    for ad in closead:
+    buttons = ['indiadasclose.png','indiax_closead2.png', 'indiax_closead1.png','indiax_notrobo2.png','indiax_dualtap3.png','indiax_dualtap2.png','indiax_openc.png','indiax_notrobo1.png' ,'indiax_dualtap1.png','indiax_open_con.png','indiax_getlink.png']
+    for button in buttons:
         try:
-            x, y = pyautogui.locateCenterOnScreen(ad, confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen(button,confidence=0.9)
             if x and y:
-                pyautogui.click(x, y, duration=0.2)
-        except Exception as e:
-            pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('scroll_page_india.png',  confidence=0.8)
-        if x and y:
-            pyautogui.moveTo(random.randint(860, 1050), random.randint(230, 400), duration=0.2)
-            pyautogui.scroll(-5000)
-            pyautogui.moveTo(random.randint(860, 1050), random.randint(230, 400), duration=0.2)
-            pyautogui.scroll(-5000)
-            pyautogui.moveTo(random.randint(860, 1050), random.randint(230, 400), duration=0.2)
-            pyautogui.scroll(-5000)
-            pyautogui.moveTo(random.randint(860, 1050), random.randint(230, 400), duration=0.2)
-            pyautogui.scroll(-5000)
-            pyautogui.moveTo(random.randint(860, 1050), random.randint(230, 400), duration=0.2)
-            pyautogui.scroll(100)
-            
-            for button in buttons_list:
-                try:
-                    x, y = pyautogui.locateCenterOnScreen(button, region=[416,69,926,1066], confidence=0.75)
-                    if x and y:
-                        human_click(x, y, duration=0.2)
-                        time.sleep(0.5)
-                        pyautogui.click(493,19, duration = 0.2)
-                        time.sleep(0.5)
-                except Exception as e:
-                    pass
-            pyautogui.moveTo(random.randint(860, 1050), random.randint(230, 400), duration=0.2)
-            pyautogui.scroll(-500)
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('scroll_indi2.png',  confidence=0.8)
-        if x and y:
-            pyautogui.moveTo(random.randint(860, 1050), random.randint(230, 400), duration=0.2)
-            pyautogui.scroll(-5000)
-            pyautogui.moveTo(random.randint(860, 1050), random.randint(230, 400), duration=0.2)
-            pyautogui.scroll(-5000)
-            pyautogui.moveTo(random.randint(860, 1050), random.randint(230, 400), duration=0.2)
-            pyautogui.scroll(-5000)
-            pyautogui.moveTo(random.randint(860, 1050), random.randint(230, 400), duration=0.2)
-            pyautogui.scroll(-5000)
-            pyautogui.moveTo(random.randint(860, 1050), random.randint(230, 400), duration=0.2)
-            pyautogui.scroll(100)
-            
-            for button in buttons_list:
-                try:
-                    x, y = pyautogui.locateCenterOnScreen(button, region=[416,69,926,1066], confidence=0.8)
-                    if x and y:
-                        human_click(x, y, duration=0.2)
-                        time.sleep(0.5)
-                        pyautogui.click(493,19, duration = 0.2)
-                        time.sleep(0.5)
-                except Exception as e:
-                    pass
-            pyautogui.moveTo(random.randint(860, 1050), random.randint(230, 400), duration=0.2)
-            pyautogui.scroll(-500)
-    except Exception as e:
-        pass
-
-    for button in buttons_list:
-        try:
-            x, y = pyautogui.locateCenterOnScreen(button, region=[516,69,816,1066], confidence=0.75)
-            if x and y:
-                human_click(x, y, duration=0.2)
+                human_click(x, y, duration=0.1)
                 time.sleep(0.5)
                 pyautogui.click(493,19, duration = 0.2)
-                time.sleep(0.5)
+                time.sleep(1)
+
         except Exception as e:
             pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('getlink_indiax.png', confidence=0.9)
-        if x and y:
-            title = get_focused_window_title()
-            human_click(x, y, duration=0.2)
-            time.sleep(0.5)
-            pyautogui.click(493,19, duration = 0.2)
-            time.sleep(5)
-            title2 = get_focused_window_title()
-            print(f'Title before click: {title}, Title after click: {title2}')
-            if title != title2:
-                return 5
-            time.sleep(5)
-            title2 = get_focused_window_title()
-            print(f'Title before click: {title}, Title after click: {title2}')
-            if title != title2:
-                return 5
-    except Exception as e:
-        pass
-    if 2 == 3:
+    for button in buttons:
         try:
-            x, y = pyautogui.locateCenterOnScreen('clickadsimage_wait20sec.png', confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen(button,confidence=0.9)
             if x and y:
-                print('Waiting for 20 seconds')
+                human_click(x, y, duration=0.1)
+                time.sleep(0.5)
+                pyautogui.click(493,19, duration = 0.2)
+                time.sleep(1)
 
-                value = random.choices([2, 5], weights=[9, 1], k=1)[0]
-                if value == 5:
-                    pyautogui.rightClick(random.randint(860, 1050), random.randint(230, 400), duration=0.2)
-                    time.sleep(0.2)
-                    try:
-
-                        x, y = pyautogui.locateCenterOnScreen('opennewtab.png', confidence=0.98)
-                        if x and y:
-                            print('Waiting for 20 seconds')
-                            pyautogui.click(x, y, duration=0.2)
-                    except Exception as e:
-                        pass
-                    pyautogui.click(60,400)
         except Exception as e:
             pass
+
 
 
 def swiftnlf():
@@ -5065,7 +4972,7 @@ def shortx_handle():
                 pass
     except Exception as e:
         pass
-    buttslist = ['shortxcss.png', 'linkdown_shotx.png', 'clickhere_shotx.png', 'continue4_shortx.png']
+    buttslist = ['shortxcss.png', 'linkdown_shotx.png', 'clickhere_shotx.png', 'gen_shotx.png']
     for butt in buttslist:
         try:
             x, y = pyautogui.locateCenterOnScreen(butt, region=[572,68,762,960], confidence=0.7)
@@ -5988,7 +5895,7 @@ while True:
         time.sleep(2)
         switch_to_window(window2)
         pyautogui.click(493,19, duration = 0.4)
-        shorlink = random_link('link2')
+        shorlink = random_link('link4')
         open_link(link = shorlink ,newtab = False)
         time.sleep(2)
 
@@ -6190,7 +6097,7 @@ while True:
                                 pyautogui.click(150,200, duration = 0.4)
 
                                 ggwin2 = None
-                                ggwin2 = shortx_handle()
+                                ggwin2 = inidanxlinks()
                                 if ggwin2 == 5:
                                     cuty = True
                                 elif ggwin2 == 1:

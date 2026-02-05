@@ -1,5 +1,5 @@
 
-print("Version 10.5.7 loaded.")
+print("Version 10.5.6 loaded.")
 import pyautogui
 import time
 import win32gui
@@ -5676,6 +5676,7 @@ def hyperhustlebrows():
         shorlink = random_link('link3')
         open_link(link = shorlink ,newtab = False)
         time.sleep(2)
+        pyautogui.click(1056,192, duration=0.6)
 
 
 
@@ -6227,6 +6228,7 @@ while True:
                                         shorlink = random_link('link3')
                                         open_link(link = shorlink ,newtab = False)
                                         time.sleep(2)
+                                        pyautogui.click(1056,192, duration=0.6)
 
 
 
@@ -6242,6 +6244,7 @@ while True:
                                         shorlink = random_link('link3')
                                         open_link(link = shorlink ,newtab = False)
                                         time.sleep(2)
+                                        pyautogui.click(1056,192, duration=0.6)
 
                                 if hyperrefreshstat3 == False:
                                     if script_seconds_only > hyperrefreshtime3:
@@ -6255,6 +6258,7 @@ while True:
                                         shorlink = random_link('link3')
                                         open_link(link = shorlink ,newtab = False)
                                         time.sleep(2)
+                                        pyautogui.click(1056,192, duration=0.6)
 
 
 
@@ -6271,6 +6275,7 @@ while True:
                                         shorlink = random_link('link3')
                                         open_link(link = shorlink ,newtab = False)
                                         time.sleep(2)
+                                        pyautogui.click(1056,192, duration=0.6)
 
                                     
                                 try:

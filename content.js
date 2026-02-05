@@ -136,8 +136,6 @@
   // 🔹 Define links by type
   const linkTypes = {
     link1: [
-{ url: 'https://gplinks.co/c2fYUis', sites: siteGroups.common },
-
 { url: 'https://gplinks.co/RrybixVq', sites: siteGroups.common },
 { url: 'https://gplinks.co/poPc7UDt', sites: siteGroups.common },
 { url: 'https://gplinks.co/B5ZRb', sites: siteGroups.common },
@@ -166,36 +164,40 @@
 { url: 'https://shortxlinks.in/Q6LL8', sites: siteGroups.common },
 { url: 'https://shortxlinks.in/DPLGfq', sites: siteGroups.common },
 { url: 'https://shortxlinks.in/DL5R', sites: siteGroups.common },
-{ url: 'https://shortxlinks.in/xQ1l', sites: siteGroups.common },
+
 
 
     ],
     link3: [
-{ url: 'https://oii.la/FUBPHx5Z', sites: siteGroups.common },
-{ url: 'https://oii.la/oxFkeF', sites: siteGroups.common },
-{ url: 'https://oii.la/8fhobxFiMk', sites: siteGroups.common },
-{ url: 'https://oii.la/kukY', sites: siteGroups.common },
-{ url: 'https://oii.la/rVvgizszNN', sites: siteGroups.common },
-{ url: 'https://oii.la/ySEolao', sites: siteGroups.common },
-{ url: 'https://oii.la/rWNPVx4ASy', sites: siteGroups.common },
-{ url: 'https://oii.la/oUHYI1', sites: siteGroups.common },
-{ url: 'https://oii.la/mLFxZWIi', sites: siteGroups.common },
+        { url: 'https://hyperhustle.online/', sites: siteGroups.common },
+{ url: 'https://hyperhustle.online/High-Probability-Trading', sites: siteGroups.common },
+{ url: 'https://hyperhustle.online/', sites: siteGroups.common },
+{ url: 'https://hyperhustle.online/Crypto-vs-Forex-vs-Stocks-Choosing-Your-Battlefield', sites: siteGroups.common },
+{ url: 'https://hyperhustle.online/index?filter=strategies', sites: siteGroups.common },
+
+{ url: 'https://hyperhustle.online/The-Triple-Threat-Strategy', sites: siteGroups.common },
+{ url: 'https://hyperhustle.online/Deploy-Applications', sites: siteGroups.common },
+{ url: 'https://hyperhustle.online/tools', sites: siteGroups.common },
+{ url: 'https://hyperhustle.online/which-exchange-has-the-best-liquidity-for-small-caps', sites: siteGroups.common },
+{ url: 'https://hyperhustle.online/', sites: siteGroups.common },
+{ url: 'https://hyperhustle.online/which-exchange-has-the-best-liquidity-for-small-caps', sites: siteGroups.common },
+{ url: 'https://hyperhustle.online/', sites: siteGroups.common },
+{ url: 'https://hyperhustle.online/?page=2', sites: siteGroups.common },
 
 
     ],
     link4: [
-{ url: 'https://indiaearnx.com/rvad9V5', sites: siteGroups.common },
-{ url: 'https://indiaearnx.com/4JwV', sites: siteGroups.common },
-{ url: 'https://indiaearnx.com/4fZ', sites: siteGroups.common },
-{ url: 'https://indiaearnx.com/z8AB1', sites: siteGroups.common },
-{ url: 'https://indiaearnx.com/CIYG3D', sites: siteGroups.common },
-{ url: 'https://indiaearnx.com/GsDUC', sites: siteGroups.common },
-{ url: 'https://indiaearnx.com/UKh8', sites: siteGroups.common },
-{ url: 'https://indiaearnx.com/VDiSM', sites: siteGroups.common },
-{ url: 'https://indiaearnx.com/WkvBti', sites: siteGroups.common },
-{ url: 'https://indiaearnx.com/bu13X0Sz', sites: siteGroups.common },
-{ url: 'https://indiaearnx.com/yPbxqt', sites: siteGroups.common },
-{ url: 'https://indiaearnx.com/0dHmw', sites: siteGroups.common },
+{ url: 'https://shrinkme.top/ErZtG6d', sites: siteGroups.common },
+{ url: 'https://shrinkme.top/eCD1lNfV', sites: siteGroups.common },
+{ url: 'https://shrinkme.top/oifVNJ', sites: siteGroups.common },
+{ url: 'https://shrinkme.top/XP8EZW', sites: siteGroups.common },
+{ url: 'https://shrinkme.top/TiNwNrxN', sites: siteGroups.common },
+{ url: 'https://shrinkme.top/OSjOd', sites: siteGroups.common },
+{ url: 'https://shrinkme.top/9xTdP', sites: siteGroups.common },
+{ url: 'https://shrinkme.top/lvbxdWC', sites: siteGroups.common },
+{ url: 'https://shrinkme.top/cEkh', sites: siteGroups.common },
+{ url: 'https://shrinkme.top/qzjSmQx', sites: siteGroups.common },
+{ url: 'https://shrinkme.top/gFnyq', sites: siteGroups.common },
     ],
     link8: [
 { url: 'https://adurl.io/CJRsBh7', sites: siteGroups.common },

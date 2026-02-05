@@ -2899,7 +2899,7 @@ def inidanxlinks():
     buttons = ['indiadasclose.png','indiax_closead2.png', 'indiax_closead1.png','indiax_notrobo2.png','indiax_dualtap3.png','indiax_dualtap2.png','indiax_openc.png','indiax_notrobo1.png' ,'indiax_dualtap1.png','indiax_open_con.png','indiax_getlink.png']
     for button in buttons:
         try:
-            x, y = pyautogui.locateCenterOnScreen(button,confidence=0.98)
+            x, y = pyautogui.locateCenterOnScreen(button,confidence=0.95)
             if x and y:
                 human_click(x, y, duration=0.1)
                 time.sleep(0.5)
@@ -2910,7 +2910,7 @@ def inidanxlinks():
             pass
     for button in buttons:
         try:
-            x, y = pyautogui.locateCenterOnScreen(button,confidence=0.98)
+            x, y = pyautogui.locateCenterOnScreen(button,confidence=0.95)
             if x and y:
                 human_click(x, y, duration=0.1)
                 time.sleep(0.5)
@@ -2922,7 +2922,7 @@ def inidanxlinks():
     adsclosebutton = [ 'closeadsgoogle1.png','closeadsgoole11.png','closeadsgoole10.png', 'closeadsgoole2.png', 'closeadsgoole3.png', 'closeadsgoole4.png', 'closeadsgoole5.png', 'closeadsgoole6.png', 'closeadsgoole7.png', 'closeadsgoole9.png','closeadsgoole8.png']
     for adbutton in adsclosebutton:
         try:
-            x, y = pyautogui.locateCenterOnScreen( adbutton, region=[1,83,1914,956], confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen( adbutton, region=[1,83,1914,956], confidence=0.95)
             if x and y:
                 pyautogui.click(x, y, duration=0.1)
                 time.sleep(1)
@@ -2930,7 +2930,7 @@ def inidanxlinks():
         except Exception as e:
             pass
     try:
-        x, y = pyautogui.locateCenterOnScreen( 'skipvidgp.png', confidence=0.9)
+        x, y = pyautogui.locateCenterOnScreen( 'skipvidgp.png', confidence=0.95)
         if x and y:
             pyautogui.click(x, y, duration=0.1)
             time.sleep(1)
@@ -2938,7 +2938,7 @@ def inidanxlinks():
     except Exception as e:
         pass
     try:
-        x, y = pyautogui.locateCenterOnScreen( 'closevideoadgp.png', region=[900,212,714,522], confidence=0.9)
+        x, y = pyautogui.locateCenterOnScreen( 'closevideoadgp.png', region=[900,212,714,522], confidence=0.95)
         if x and y:
             pyautogui.click(x, y, duration=0.1)
             time.sleep(1)
@@ -2950,7 +2950,7 @@ def inidanxlinks():
     except Exception as e:
         pass
     try:
-        x, y = pyautogui.locateCenterOnScreen( 'skipvidgp.png', confidence=0.9)
+        x, y = pyautogui.locateCenterOnScreen( 'skipvidgp.png', confidence=0.95)
         if x and y:
             pyautogui.click(x, y, duration=0.1)
             time.sleep(2)

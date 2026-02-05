@@ -2908,17 +2908,46 @@ def inidanxlinks():
 
         except Exception as e:
             pass
-    for button in buttons:
-        try:
-            x, y = pyautogui.locateCenterOnScreen(button,confidence=0.98)
-            if x and y:
-                human_click(x, y, duration=0.1)
-                time.sleep(0.5)
-                pyautogui.click(493,19, duration = 0.2)
-                time.sleep(1)
-
-        except Exception as e:
-            pass
+    try:
+        x, y = pyautogui.locateCenterOnScreen( 'skipvidgp.png', confidence=0.9)
+        if x and y:
+            pyautogui.click(x, y, duration=0.1)
+            time.sleep(1)
+            pyautogui.click(494,19, duration = 0.2)
+    except Exception as e:
+        pass
+    try:
+        x, y = pyautogui.locateCenterOnScreen( 'closevideoadgp.png', region=[900,212,714,522], confidence=0.9)
+        if x and y:
+            pyautogui.click(x, y, duration=0.1)
+            time.sleep(1)
+            pyautogui.click(970, 638, duration=0.1)
+            time.sleep(1)
+            pyautogui.click(494,19, duration = 0.2)
+            return
+            
+    except Exception as e:
+        pass
+    try:
+        x, y = pyautogui.locateCenterOnScreen( 'skipvidgp.png', confidence=0.9)
+        if x and y:
+            pyautogui.click(x, y, duration=0.1)
+            time.sleep(2)
+            pyautogui.click(494,19, duration = 0.2)
+            return
+            
+    except Exception as e:
+        pass
+    try:
+        x, y = pyautogui.locateCenterOnScreen( 'resumevidgp.png', region=[1,83,1914,956], confidence=0.9)
+        if x and y:
+            pyautogui.click(x, y, duration=0.1)
+            time.sleep(2)
+            pyautogui.click(494,19, duration = 0.2)
+            return
+            
+    except Exception as e:
+        pass
 
 
 

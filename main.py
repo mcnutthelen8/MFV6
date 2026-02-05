@@ -4467,8 +4467,12 @@ def gplink_handle():
     except Exception as e:
         pass
 
-    pyautogui.click(1116,525, duration=0.5)
-    pyautogui.click(1543,108, duration=0.5)
+    
+    if 'GPlinks' in title:
+        pass
+    else:
+        pyautogui.click(1116,525, duration=0.5)
+        pyautogui.click(1543,108, duration=0.5)
 
     if clickads_gplink_attempts >= 2:
         pyautogui.press('f5')

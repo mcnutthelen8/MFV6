@@ -136,6 +136,8 @@
   // 🔹 Define links by type
   const linkTypes = {
     link1: [
+{ url: 'https://gplinks.co/c2fYUis', sites: siteGroups.common },
+
 { url: 'https://gplinks.co/RrybixVq', sites: siteGroups.common },
 { url: 'https://gplinks.co/poPc7UDt', sites: siteGroups.common },
 { url: 'https://gplinks.co/B5ZRb', sites: siteGroups.common },
@@ -164,40 +166,36 @@
 { url: 'https://shortxlinks.in/Q6LL8', sites: siteGroups.common },
 { url: 'https://shortxlinks.in/DPLGfq', sites: siteGroups.common },
 { url: 'https://shortxlinks.in/DL5R', sites: siteGroups.common },
-
+{ url: 'https://shortxlinks.in/xQ1l', sites: siteGroups.common },
 
 
     ],
     link3: [
-        { url: 'https://hyperhustle.online/', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/High-Probability-Trading', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/Crypto-vs-Forex-vs-Stocks-Choosing-Your-Battlefield', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/index?filter=strategies', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/The-Triple-Threat-Strategy', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/Deploy-Applications', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/tools', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/which-exchange-has-the-best-liquidity-for-small-caps', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/which-exchange-has-the-best-liquidity-for-small-caps', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/?page=2', sites: siteGroups.common },
+{ url: 'https://oii.la/FUBPHx5Z', sites: siteGroups.common },
+{ url: 'https://oii.la/oxFkeF', sites: siteGroups.common },
+{ url: 'https://oii.la/8fhobxFiMk', sites: siteGroups.common },
+{ url: 'https://oii.la/kukY', sites: siteGroups.common },
+{ url: 'https://oii.la/rVvgizszNN', sites: siteGroups.common },
+{ url: 'https://oii.la/ySEolao', sites: siteGroups.common },
+{ url: 'https://oii.la/rWNPVx4ASy', sites: siteGroups.common },
+{ url: 'https://oii.la/oUHYI1', sites: siteGroups.common },
+{ url: 'https://oii.la/mLFxZWIi', sites: siteGroups.common },
 
 
     ],
     link4: [
-{ url: 'https://shrinkme.top/ErZtG6d', sites: siteGroups.common },
-{ url: 'https://shrinkme.top/eCD1lNfV', sites: siteGroups.common },
-{ url: 'https://shrinkme.top/oifVNJ', sites: siteGroups.common },
-{ url: 'https://shrinkme.top/XP8EZW', sites: siteGroups.common },
-{ url: 'https://shrinkme.top/TiNwNrxN', sites: siteGroups.common },
-{ url: 'https://shrinkme.top/OSjOd', sites: siteGroups.common },
-{ url: 'https://shrinkme.top/9xTdP', sites: siteGroups.common },
-{ url: 'https://shrinkme.top/lvbxdWC', sites: siteGroups.common },
-{ url: 'https://shrinkme.top/cEkh', sites: siteGroups.common },
-{ url: 'https://shrinkme.top/qzjSmQx', sites: siteGroups.common },
-{ url: 'https://shrinkme.top/gFnyq', sites: siteGroups.common },
+{ url: 'https://indiaearnx.com/rvad9V5', sites: siteGroups.common },
+{ url: 'https://indiaearnx.com/4JwV', sites: siteGroups.common },
+{ url: 'https://indiaearnx.com/4fZ', sites: siteGroups.common },
+{ url: 'https://indiaearnx.com/z8AB1', sites: siteGroups.common },
+{ url: 'https://indiaearnx.com/CIYG3D', sites: siteGroups.common },
+{ url: 'https://indiaearnx.com/GsDUC', sites: siteGroups.common },
+{ url: 'https://indiaearnx.com/UKh8', sites: siteGroups.common },
+{ url: 'https://indiaearnx.com/VDiSM', sites: siteGroups.common },
+{ url: 'https://indiaearnx.com/WkvBti', sites: siteGroups.common },
+{ url: 'https://indiaearnx.com/bu13X0Sz', sites: siteGroups.common },
+{ url: 'https://indiaearnx.com/yPbxqt', sites: siteGroups.common },
+{ url: 'https://indiaearnx.com/0dHmw', sites: siteGroups.common },
     ],
     link8: [
 { url: 'https://adurl.io/CJRsBh7', sites: siteGroups.common },
@@ -614,6 +612,12 @@ function gpscroll() {
         "#captchaForm button",
         "#skip-btn",
 
+        "#robotContinue",
+        "#rtgli1",
+        "#rtgli1",
+        "#rtg-snp2",
+        "#open-continue-btn",
+
 
     ];
 
@@ -626,23 +630,39 @@ function gpscroll() {
 
 
     function checkAndScroll() {
-        buttonSelectors.forEach(selector => {
+// 1. Check for the specific "Scroll down" instruction header
+        const scrollInstruction = document.querySelector("h4#txt3");
+        let shouldRestrictScrolling = false;
 
+        if (isVisible(scrollInstruction) && scrollInstruction.textContent.includes("Scroll down")) {
+            shouldRestrictScrolling = true;
+        }
+        // 2. Loop through selectors
+        for (const selector of buttonSelectors) {
             const btn = document.querySelector(selector);
+            
             if (isVisible(btn)) {
+                const rect = btn.getBoundingClientRect();
+                const distanceFromTop = rect.top + window.scrollY;
+
+                // 3. Apply your logic: 
+                // If the instruction exists, only scroll if the button is deep (e.g., > 1500px)
+                if (shouldRestrictScrolling && distanceFromTop < 1500) {
+                    console.log("Skipping scroll: Instruction visible and button is above 1500px");
+                    continue; 
+                }
+
                 btn.scrollIntoView({ behavior: "smooth", block: "center" });
                 console.log("Scrolled to:", selector);
+                break; // Stop at the first valid button found to prevent "jitter"
+            }
+        }
 
-            }
-        });
+        // 4. Handle the success alert separately
         const alertSuccess = document.querySelector("div.alert.alert-success");
-        if (alertSuccess) {
-            const alertText = alertSuccess.textContent.trim();
-            if (alertText.includes("Scroll down and complete the below")) {
-                console.log("✅ Skipping scroll — success message detected.");
-                alertSuccess.scrollIntoView({ behavior: "smooth", block: "center" });
-                console.log("Scrolled to:", selector);
-            }
+        if (isVisible(alertSuccess) && alertSuccess.textContent.includes("Scroll down and complete")) {
+            alertSuccess.scrollIntoView({ behavior: "smooth", block: "center" });
+            console.log("Scrolled to Success Alert");
         }
 
 
@@ -654,3 +674,48 @@ function gpscroll() {
 
 // Start the watcher
 gpscroll();
+
+
+(function gpbuttonpop() {
+    const buttonSelectors = [
+        "#VerifyBtn",
+        "#NextBtn",
+        "#captchaForm button",
+        "#skip-btn",
+    ];
+
+    function isVisible(el) {
+        return el && el.offsetParent !== null && window.getComputedStyle(el).display !== "none";
+    }
+
+    function popButtonsToFront() {
+        buttonSelectors.forEach(selector => {
+            const elements = document.querySelectorAll(selector);
+            
+            elements.forEach(btn => {
+                // Only act if visible AND hasn't been popped yet
+                if (isVisible(btn) && btn.dataset.popped !== "true") {
+                    console.log("[Popper] Lifting button:", selector);
+
+                    // Apply the "God Tier" z-index and fixed position
+                    btn.style.setProperty('position', 'fixed', 'important');
+                    btn.style.setProperty('top', '50px', 'important');
+                    btn.style.setProperty('left', '50px', 'important');
+                    btn.style.setProperty('z-index', '2147483647', 'important');
+                    
+                    // Visual feedback so you know it worked
+                    btn.style.setProperty('border', '4px solid lime', 'important');
+                    btn.style.setProperty('box-shadow', '0 0 15px rgba(0,0,0,0.5)', 'important');
+
+                    // Mark so we don't repeat this on the same element
+                    btn.dataset.popped = "true";
+                }
+            });
+        });
+    }
+
+    // Run every 1 second to catch buttons that appear after timers
+    setInterval(popButtonsToFront, 1000);
+})();
+
+gpbuttonpop();

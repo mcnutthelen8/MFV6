@@ -1,5 +1,5 @@
 
-print("Version 10.5.8 loaded.")
+print("Version 10.5.6 loaded.")
 import pyautogui
 import time
 import win32gui
@@ -2885,7 +2885,7 @@ def inidanxlinks():
         return 5
 
     try:
-        x, y = pyautogui.locateCenterOnScreen('js_ok.png', region=[930,130,342,165] ,confidence=0.9)
+        x, y = pyautogui.locateCenterOnScreen('js_ok.png', region=[930,130,342,165] ,confidence=0.99)
         if x and y:
             human_click(x, y, duration=1)
             time.sleep(2)
@@ -2899,7 +2899,7 @@ def inidanxlinks():
     buttons = ['indiadasclose.png','indiax_closead2.png', 'indiax_closead1.png','indiax_notrobo2.png','indiax_dualtap3.png','indiax_dualtap2.png','indiax_openc.png','indiax_notrobo1.png' ,'indiax_dualtap1.png','indiax_open_con.png','indiax_getlink.png']
     for button in buttons:
         try:
-            x, y = pyautogui.locateCenterOnScreen(button,confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen(button,confidence=0.98)
             if x and y:
                 human_click(x, y, duration=0.1)
                 time.sleep(0.5)
@@ -2910,7 +2910,7 @@ def inidanxlinks():
             pass
     for button in buttons:
         try:
-            x, y = pyautogui.locateCenterOnScreen(button,confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen(button,confidence=0.98)
             if x and y:
                 human_click(x, y, duration=0.1)
                 time.sleep(0.5)

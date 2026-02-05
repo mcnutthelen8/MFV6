@@ -1,5 +1,5 @@
 
-print("Version 10.5.6 loaded.")
+print("Version 10.5.7 loaded.")
 import pyautogui
 import time
 import win32gui
@@ -1831,7 +1831,7 @@ def close_ads():
     close_window_by_name("Save As") 
     for i in range(5):
         try:
-            x, y = pyautogui.locateCenterOnScreen('newcloseadas2.png.png', region=[1151,204,227,450] ,confidence=0.98)
+            x, y = pyautogui.locateCenterOnScreen('newcloseadas2.png', region=[1151,204,227,450] ,confidence=0.98)
             if x and y:
                 human_click(x, y, duration=0.3)
                 time.sleep(0.5)

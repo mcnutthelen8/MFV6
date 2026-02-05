@@ -2908,6 +2908,27 @@ def inidanxlinks():
 
         except Exception as e:
             pass
+    for button in buttons:
+        try:
+            x, y = pyautogui.locateCenterOnScreen(button,confidence=0.98)
+            if x and y:
+                human_click(x, y, duration=0.1)
+                time.sleep(0.5)
+                pyautogui.click(493,19, duration = 0.2)
+                time.sleep(1)
+
+        except Exception as e:
+            pass
+    adsclosebutton = [ 'closeadsgoogle1.png','closeadsgoole11.png','closeadsgoole10.png', 'closeadsgoole2.png', 'closeadsgoole3.png', 'closeadsgoole4.png', 'closeadsgoole5.png', 'closeadsgoole6.png', 'closeadsgoole7.png', 'closeadsgoole9.png','closeadsgoole8.png']
+    for adbutton in adsclosebutton:
+        try:
+            x, y = pyautogui.locateCenterOnScreen( adbutton, region=[1,83,1914,956], confidence=0.9)
+            if x and y:
+                pyautogui.click(x, y, duration=0.1)
+                time.sleep(1)
+                pyautogui.click(494,19, duration = 0.2)
+        except Exception as e:
+            pass
     try:
         x, y = pyautogui.locateCenterOnScreen( 'skipvidgp.png', confidence=0.9)
         if x and y:
@@ -6040,7 +6061,7 @@ while True:
                         close_window(window2)
 
 
-                if script_seconds_only > 700:
+                if script_seconds_only > 820:
                     gg = True
                 if script_seconds_only > 500:
                     tpi = True
@@ -6160,7 +6181,7 @@ while True:
 
 
                 if layout == 1:
-                    if layout == 1: ##if cuty == None or cuty == False:
+                    if random.random() < 0.68: ##if cuty == None or cuty == False:
                         try:
                             switch_to_window(window3)
                             if win32gui.IsWindow(window3):

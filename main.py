@@ -6108,6 +6108,17 @@ while True:
                     gg = True
                 if script_seconds_only > 500:
                     tpi = True
+
+                try:
+                    x, y = pyautogui.locateCenterOnScreen('leavebuttong.png',  confidence=0.98)
+                    if x and y:
+                        print('leave  working')
+                        pyautogui.click(x,y)
+                        time.sleep(3)
+                        continue
+
+                except Exception as e:
+                    pass
                 if layout == 1:
                     if layout == 1:
                         try:
@@ -6236,7 +6247,7 @@ while True:
                                         shorlink = random_link('link3')
                                         open_link(link = shorlink ,newtab = False)
                                         time.sleep(2)
-                                        pyautogui.click(1056,192, duration=0.6)
+                                        #pyautogui.click(1056,192, duration=0.6)
 
 
 
@@ -6252,7 +6263,7 @@ while True:
                                         shorlink = random_link('link3')
                                         open_link(link = shorlink ,newtab = False)
                                         time.sleep(2)
-                                        pyautogui.click(1056,192, duration=0.6)
+                                        #pyautogui.click(1056,192, duration=0.6)
 
                                 if hyperrefreshstat3 == False:
                                     if script_seconds_only > hyperrefreshtime3:
@@ -6266,7 +6277,8 @@ while True:
                                         shorlink = random_link('link3')
                                         open_link(link = shorlink ,newtab = False)
                                         time.sleep(2)
-                                        pyautogui.click(1056,192, duration=0.6)
+
+                                        #pyautogui.click(1056,192, duration=0.6)
 
 
 

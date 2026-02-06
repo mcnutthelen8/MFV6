@@ -4236,7 +4236,7 @@ def gplink_handle():
         x, y = pyautogui.locateCenterOnScreen('blackcloseads_gp.png',  confidence=0.95)
         if x and y:
             pyautogui.click(x, y, duration=0.1)
-            time.sleep(1)
+            time.sleep(0.2)
             pyautogui.click(494,19, duration = 0.2)
             
     except Exception as e:
@@ -4245,7 +4245,7 @@ def gplink_handle():
         x, y = pyautogui.locateCenterOnScreen('blackcloseads_gpskip.png',  confidence=0.95)
         if x and y:
             pyautogui.click(x, y, duration=0.1)
-            time.sleep(1)
+            time.sleep(0.2)
             pyautogui.click(494,19, duration = 0.2)
             
     except Exception as e:
@@ -4265,15 +4265,7 @@ def gplink_handle():
         pyautogui.click(22,62)
         time.sleep(5)
         return
-    if 'TeASFSFWEtop' in title: #'Telegram A Desktop' in title:
-        try:
-            x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-            if x and y:
-                pyautogui.click(952,636)
-                time.sleep(1)
-                return
-        except Exception as e:
-            pass
+
     try:
         x, y = pyautogui.locateCenterOnScreen('noworkingpage.png', confidence=0.98)
         if x and y:
@@ -4304,9 +4296,9 @@ def gplink_handle():
             x, y = pyautogui.locateCenterOnScreen(button,  confidence=0.9)
             if x and y:
                 human_click(x, y, duration=0.2)
-                time.sleep(1)
+                time.sleep(0.5)
                 pyautogui.click(494,19, duration = 0.2)
-                time.sleep(1)
+                time.sleep(0.5)
                 conbutfond_found = True
                 break
                 
@@ -4320,9 +4312,9 @@ def gplink_handle():
                     x, y = pyautogui.locateCenterOnScreen(button,  confidence=0.9)
                     if x and y:
                         human_click(x, y, duration=0.2)
-                        time.sleep(1)
+                        time.sleep(0.5)
                         pyautogui.click(494,19, duration = 0.2)
-                        time.sleep(1)
+                        time.sleep(0.5)
                         clickads_gplink = False
                         
                 except Exception as e:
@@ -4365,7 +4357,7 @@ def gplink_handle():
             x, y = pyautogui.locateCenterOnScreen( adbutton, region=[1,83,1914,956], confidence=0.9)
             if x and y:
                 pyautogui.click(x, y, duration=0.1)
-                time.sleep(1)
+                time.sleep(0.5)
                 pyautogui.click(494,19, duration = 0.2)
         except Exception as e:
             pass
@@ -4373,7 +4365,7 @@ def gplink_handle():
         x, y = pyautogui.locateCenterOnScreen( 'skipvidgp.png', confidence=0.9)
         if x and y:
             pyautogui.click(x, y, duration=0.1)
-            time.sleep(1)
+            time.sleep(0.5)
             pyautogui.click(494,19, duration = 0.2)
     except Exception as e:
         pass
@@ -4381,9 +4373,9 @@ def gplink_handle():
         x, y = pyautogui.locateCenterOnScreen( 'closevideoadgp.png', region=[900,212,714,522], confidence=0.9)
         if x and y:
             pyautogui.click(x, y, duration=0.1)
-            time.sleep(1)
+            time.sleep(0.5)
             pyautogui.click(970, 638, duration=0.1)
-            time.sleep(1)
+            time.sleep(0.5)
             pyautogui.click(494,19, duration = 0.2)
             return
             
@@ -4417,9 +4409,9 @@ def gplink_handle():
             x, y = pyautogui.locateCenterOnScreen(button,  confidence=0.9)
             if x and y:
                 human_click(x, y, duration=0.2)
-                time.sleep(1)
+                time.sleep(0.5)
                 pyautogui.click(494,19, duration = 0.2)
-                time.sleep(1)
+                time.sleep(0.5)
                 conbutfond_found = True
                 break
                 
@@ -4433,9 +4425,9 @@ def gplink_handle():
                     x, y = pyautogui.locateCenterOnScreen(button,  confidence=0.9)
                     if x and y:
                         human_click(x, y, duration=0.2)
-                        time.sleep(1)
+                        time.sleep(0.5)
                         pyautogui.click(494,19, duration = 0.2)
-                        time.sleep(1)
+                        time.sleep(0.5)
                         clickads_gplink = False
                         
                 except Exception as e:
@@ -4472,41 +4464,6 @@ def gplink_handle():
     pyautogui.click(1116,525, duration=0.5)
 
 
-    if clickads_gplink_attempts >= 2:
-        pyautogui.press('f5')
-        time.sleep(1)
-        clickads_gplink_attempts = 0
-        return
-
-    if clickads_gplink:
-        pyautogui.rightClick(random.randint(770, 790), random.randint(300, 325), duration=0.4)
-
-        time.sleep(1)
-
-        try:
-            x, y = pyautogui.locateCenterOnScreen('openlinktab.png',region=[750,260,300,300],confidence=0.99)
-            if x and y:
-                clickads_gplink_attempts +=1
-                #pyautogui.click(x, y, duration=0.1)
-                #time.sleep(2)
-                return 
-
-                
-        except Exception as e:
-            pass
-        pyautogui.rightClick(random.randint(655, 665), random.randint(955, 965), duration=0.4)
-        time.sleep(1)
-        try:
-            x, y = pyautogui.locateCenterOnScreen('openlinktab.png',region=[750,260,300,300],confidence=0.99)
-            if x and y:
-                clickads_gplink_attempts +=1
-                #pyautogui.click(x, y, duration=0.1)
-                #time.sleep(2)
-                return 
-
-                
-        except Exception as e:
-            pass
     
     if 'GPlinks' in title:
         pyautogui.moveTo(300,509)
@@ -5975,11 +5932,11 @@ while True:
     duration_time = time.time()
     layout = 1
     if layout == 1:
-        #switch_to_window(window1)
-        #pyautogui.click(493,19, duration = 0.4)
-        #shorlink = random_link('link1')
-        #open_link(link = shorlink ,newtab = False)
-        #time.sleep(2)
+        switch_to_window(window1)
+        pyautogui.click(493,19, duration = 0.4)
+        shorlink = random_link('link1')
+        open_link(link = shorlink ,newtab = False)
+        time.sleep(2)
         switch_to_window(window2)
         pyautogui.click(493,19, duration = 0.4)
         shorlink = random_link('link4')
@@ -6501,3 +6458,18 @@ while True:
 
             except Exception as e:
                 print("An error occurred:", e)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

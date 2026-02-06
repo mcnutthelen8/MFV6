@@ -2896,7 +2896,7 @@ def inidanxlinks():
         pass
 
     close_ads()
-    buttons = [ 'opencon5.png','indiax_closead5.png', 'indiax_dualtap4.png','idiaad_open3.png','idiaad_dual3.png','indiadasclose.png','indiax_closead3.png','indiax_closead4.png','indiax_closead2.png', 'indiax_closead1.png','indiax_notrobo2.png','indiax_dualtap3.png','indiax_dualtap2.png','indiax_openc.png','indiax_notrobo1.png' ,'indiax_dualtap1.png','indiax_open_con.png','indiax_getlink.png']
+    buttons = ['consent5.png','indiax_notrobo5.png','indiax_dualtap5.png','indiax_dualtap52.png','indiax_dualtap23.png','indiax_openc5.png','indiax_openc52.png','opencon53.png','opencon5.png','indiax_closead5.png', 'indiax_dualtap4.png','idiaad_open3.png','idiaad_dual3.png','indiadasclose.png','indiax_closead3.png','indiax_closead4.png','indiax_closead2.png', 'indiax_closead1.png','indiax_notrobo2.png','indiax_dualtap3.png','indiax_dualtap2.png','indiax_openc.png','indiax_notrobo1.png' ,'indiax_dualtap1.png','indiax_open_con.png','indiax_getlink.png']
     button_clicked = False
     for button in buttons:
         try:
@@ -5996,10 +5996,10 @@ while True:
         open_link(link = shorlink ,newtab = False)
         time.sleep(2)
         
-        hyperrefreshtime1 = random.randint(200, 400)
-        hyperrefreshtime2 = random.randint(200, 500)
-        hyperrefreshtime3 = random.randint(400, 700)
-        hyperrefreshtime4 = random.randint(600, 700)
+        hyperrefreshtime1 = random.randint(200, 500)
+        hyperrefreshtime2 = random.randint(200, 800)
+        hyperrefreshtime3 = random.randint(400, 1000)
+        hyperrefreshtime4 = random.randint(600, 1000)
 
         hyperrefreshstat1 = False
         hyperrefreshstat2 = False

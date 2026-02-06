@@ -6070,8 +6070,8 @@ while True:
 
                 except Exception as e:
                     pass
-                if layout == 2:
-                    if layout == 2:
+                if layout == 1:
+                    if layout == 1:
                         try:
                             
                             if win32gui.IsWindow(window1):

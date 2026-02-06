@@ -1,5 +1,5 @@
 
-print("Version 10.5.9 loaded.")
+print("Version 10.5.6 loaded.")
 import pyautogui
 import time
 import win32gui
@@ -6142,6 +6142,8 @@ while True:
                         #tpi = True
                             pass
                     
+                if tpi == True:
+                    close_window(window3)
 
                 if layout == 1:
                     if tpi == False: ##if cuty == None or cuty == False:
@@ -6187,7 +6189,7 @@ while True:
 
 
                 if layout == 1:
-                    if random.random() < 0.4: ##if cuty == None or cuty == False:
+                    if random.random() < 0.5: ##if cuty == None or cuty == False:
                         try:
                             switch_to_window(window3)
                             if win32gui.IsWindow(window3):

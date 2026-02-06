@@ -577,7 +577,7 @@ function gpscroll22() {
 
 
 
-    function checkAndScroll() {
+    function checkAndScroll334() {
 // 1. Check for the specific "Scroll down" instruction header
         const scrollInstruction = document.querySelector("h4#txt3");
         let shouldRestrictScrolling = false;
@@ -617,7 +617,7 @@ function gpscroll22() {
     }
 
 
-    setInterval(checkAndScroll, 1000);
+    //setInterval(checkAndScroll34, 1000);
 }
 
 // Start the watcher
@@ -691,9 +691,10 @@ function gpscroll() {
             
             if (isVisible(btn)) {
                 const rect = btn.getBoundingClientRect();
+                
                 const distanceFromTop = rect.top + window.scrollY;
 
-                if (shouldRestrictScrolling && distanceFromTop < 1100) {
+                if (shouldRestrictScrolling && distanceFromTop < 1500) {
                     continue; 
                 }
 

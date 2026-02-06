@@ -6189,7 +6189,7 @@ while True:
 
 
                 if layout == 1:
-                    if random.random() < 0.68: ##if cuty == None or cuty == False:
+                    if random.random() < 0.4: ##if cuty == None or cuty == False:
                         try:
                             switch_to_window(window3)
                             if win32gui.IsWindow(window3):

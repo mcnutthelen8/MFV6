@@ -2896,7 +2896,7 @@ def inidanxlinks():
         pass
 
     close_ads()
-    buttons = ['consent5.png','indiax_notrobo5.png','indiax_dualtap5.png','indiax_dualtap52.png','indiax_dualtap23.png','indiax_openc5.png','indiax_openc52.png','opencon53.png','opencon5.png','indiax_closead5.png', 'indiax_dualtap4.png','idiaad_open3.png','idiaad_dual3.png','indiadasclose.png','indiax_closead3.png','indiax_closead4.png','indiax_closead2.png', 'indiax_closead1.png','indiax_notrobo2.png','indiax_dualtap3.png','indiax_dualtap2.png','indiax_openc.png','indiax_notrobo1.png' ,'indiax_dualtap1.png','indiax_open_con.png','indiax_getlink.png']
+    buttons = ['wait_for_page.png','consent5.png','indiax_notrobo5.png','indiax_dualtap5.png','indiax_dualtap52.png','indiax_dualtap23.png','indiax_openc5.png','indiax_openc52.png','opencon53.png','opencon5.png','indiax_closead5.png', 'indiax_dualtap4.png','idiaad_open3.png','idiaad_dual3.png','indiadasclose.png','indiax_closead3.png','indiax_closead4.png','indiax_closead2.png', 'indiax_closead1.png','indiax_notrobo2.png','indiax_dualtap3.png','indiax_dualtap2.png','indiax_openc.png','indiax_notrobo1.png' ,'indiax_dualtap1.png','indiax_open_con.png','indiax_getlink.png']
     button_clicked = False
     for button in buttons:
         try:
@@ -4351,7 +4351,7 @@ def gplink_handle():
         pass
 
 
-    adsclosebutton = [ 'closeadsgoogle1.png','closeadsgoole11.png','closeadsgoole10.png', 'closeadsgoole2.png', 'closeadsgoole3.png', 'closeadsgoole4.png', 'closeadsgoole5.png', 'closeadsgoole6.png', 'closeadsgoole7.png', 'closeadsgoole9.png','closeadsgoole8.png']
+    adsclosebutton = [ 'consent5.png','closeadsgoogle1.png','closeadsgoole11.png','closeadsgoole10.png', 'closeadsgoole2.png', 'closeadsgoole3.png', 'closeadsgoole4.png', 'closeadsgoole5.png', 'closeadsgoole6.png', 'closeadsgoole7.png', 'closeadsgoole9.png','closeadsgoole8.png']
     for adbutton in adsclosebutton:
         try:
             x, y = pyautogui.locateCenterOnScreen( adbutton, region=[1,83,1914,956], confidence=0.9)
@@ -6066,6 +6066,17 @@ while True:
                         print('leave  working')
                         pyautogui.click(x,y)
                         time.sleep(3)
+                        continue
+
+                except Exception as e:
+                    pass
+                try:
+                    x, y = pyautogui.locateCenterOnScreen('wait_for_page.png',  confidence=0.98)
+                    if x and y:
+                        print('wait_for_page working')
+                        pyautogui.click(x,y)
+                        time.sleep(3)
+                        close_window(window3)
                         continue
 
                 except Exception as e:

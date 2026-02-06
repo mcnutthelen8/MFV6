@@ -6146,7 +6146,7 @@ while True:
                     close_window(window3)
 
                 if layout == 1:
-                    if tpi == False: ##if cuty == None or cuty == False:
+                    
                         try:
                             switch_to_window(window2)
                             if win32gui.IsWindow(window2):

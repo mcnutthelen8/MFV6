@@ -508,62 +508,7 @@ function handleMrProBloggerSite() {
 setTimeout(handleMrProBloggerSite, 2000);
 
 
-function autoScrollButtons() {
-    const buttonSelectors = [
-        "#robotSection",
-        "#robotButton",
-        "#robot",
-        "#robot2",
-        "#rtg-snp2",
-        "#rtgli1",
-        "#rtg-generate",
-        "#robotContinueButton"
-    ];
 
-    const buttonSelectors2 = [
-        "#robotButton",
-        "#open-continue-btn",
-        "#robotContinueButton",
-        "#robot2",
-        "#rtg-snp2",
-
-    ];
-
-    const scrolled = new Set();
-
-    function isVisible(el) {
-        return (
-            el &&
-            el.offsetParent !== null &&
-            window.getComputedStyle(el).display !== "none"
-        );
-    }
-
-    function checkAndScroll() {
-        const verifySection = document.querySelector("h4#txt3");
-        const restrictToList2 = isVisible(verifySection);
-
-        const selectorsToUse = restrictToList2 ? buttonSelectors2 : buttonSelectors;
-
-        selectorsToUse.forEach(selector => {
-            if (scrolled.has(selector)) return;
-
-            const btn = document.querySelector(selector);
-            if (!isVisible(btn)) return;
-
-            btn.scrollIntoView({ behavior: "smooth", block: "center" });
-            console.log("Scrolled to:", selector);
-
-        });
-
-
-    }
-
-    const loopId = setInterval(checkAndScroll, 1000);
-}
-
-// Start the watcher
-autoScrollButtons();
 
 
 
@@ -607,7 +552,7 @@ function handleBlogButtons() {
 handleBlogButtons();
 
 
-function gpscroll() {
+function gpscroll22() {
 
     const buttonSelectors = [
         "#VerifyBtn",
@@ -676,6 +621,107 @@ function gpscroll() {
 }
 
 // Start the watcher
+
+
+function gpscroll() {
+    const buttonSelectors = [
+        "#VerifyBtn",
+        "#NextBtn",
+        "#captchaForm button",
+        "#skip-btn",
+
+        //"#robotSection",
+        "#robotButton",
+        "#robot",
+        "#robot2",
+        //"#rtg-snp2",
+        "#rtgli1",
+        "#rtg-generate",
+        "#robotContinueButton",
+        "#robotButton",
+        "#open-continue-btn",
+        "#robotContinueButton",
+        "#robot2",
+        "#rtg-snp2",
+        "#open-continue-btn"
+
+
+    ];
+
+    // Keep track of clicked elements to avoid repeats
+    const clickedElements = new WeakSet();
+
+    // Helper: Simulate an organic, multi-step click
+    async function naturalClick(element) {
+        if (!element || clickedElements.has(element)) return;
+
+        const events = ['mouseenter', 'mouseover', 'mousedown', 'mouseup', 'click'];
+        
+        events.forEach(eventType => {
+            const event = new MouseEvent(eventType, {
+                view: window,
+                bubbles: true,
+                cancelable: true,
+                buttons: 1
+            });
+            element.dispatchEvent(event);
+        });
+
+        clickedElements.add(element); // Mark as clicked
+        console.log("Naturally clicked and tagged element:", element);
+    }
+
+    function isVisible(el) {
+        if (!el) return false;
+        const style = window.getComputedStyle(el);
+        return (style.display !== 'none' && style.visibility !== 'hidden' && el.offsetWidth > 0);
+    }
+
+    function checkAndScroll() {
+        const scrollInstruction = document.querySelector("h4#txt3");
+        let shouldRestrictScrolling = false;
+
+        if (isVisible(scrollInstruction) && scrollInstruction.textContent.includes("Scroll down")) {
+            shouldRestrictScrolling = true;
+        }
+
+        // buttonSelectors assumed to be defined in your outer scope
+        for (const selector of buttonSelectors) {
+            const btn = document.querySelector(selector);
+            
+            if (isVisible(btn)) {
+                const rect = btn.getBoundingClientRect();
+                const distanceFromTop = rect.top + window.scrollY;
+
+                if (shouldRestrictScrolling && distanceFromTop < 1100) {
+                    continue; 
+                }
+
+                // 1. Scroll to it
+                btn.scrollIntoView({ behavior: "smooth", block: "center" });
+                
+                // 2. Click it if we haven't already
+                if (!clickedElements.has(btn)) {
+                    // Slight delay after scroll to feel more "human"
+                    //setTimeout(() => naturalClick(btn), 500);
+                    const randomDelay = Math.floor(Math.random() * 1001) + 1000;
+                    
+                    console.log(`Waiting ${randomDelay}ms before clicking...`);
+                    setTimeout(() => naturalClick(btn), randomDelay);
+                }
+
+                break; 
+            }
+        }
+
+        // Handle success alert
+        const alertSuccess = document.querySelector("div.alert.alert-success");
+        if (isVisible(alertSuccess) && alertSuccess.textContent.includes("Scroll down and complete")) {
+            alertSuccess.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+    }
+
+    setInterval(checkAndScroll, 1000);
+}
+
 gpscroll();
-
-

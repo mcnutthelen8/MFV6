@@ -2897,6 +2897,7 @@ def inidanxlinks():
 
     close_ads()
     buttons = [ 'idiaad_open3.png','idiaad_dual3.png','indiadasclose.png','indiax_closead2.png', 'indiax_closead1.png','indiax_notrobo2.png','indiax_dualtap3.png','indiax_dualtap2.png','indiax_openc.png','indiax_notrobo1.png' ,'indiax_dualtap1.png','indiax_open_con.png','indiax_getlink.png']
+    button_clicked = False
     for button in buttons:
         try:
             x, y = pyautogui.locateCenterOnScreen(button,confidence=0.95)
@@ -2905,6 +2906,7 @@ def inidanxlinks():
                 time.sleep(0.5)
                 pyautogui.click(493,19, duration = 0.2)
                 time.sleep(1)
+                button_clicked = True
 
         except Exception as e:
             pass
@@ -2919,6 +2921,33 @@ def inidanxlinks():
 
         except Exception as e:
             pass
+    if button_clicked:
+        time.sleep(2)
+        button_clicked = False
+        for button in buttons:
+            try:
+                x, y = pyautogui.locateCenterOnScreen(button,confidence=0.95)
+                if x and y:
+                    human_click(x, y, duration=0.1)
+                    time.sleep(0.5)
+                    pyautogui.click(493,19, duration = 0.2)
+                    time.sleep(1)
+                    button_clicked = True
+            except Exception as e:
+                pass
+    if button_clicked:
+        time.sleep(2)
+        for button in buttons:
+            try:
+                x, y = pyautogui.locateCenterOnScreen(button,confidence=0.95)
+                if x and y:
+                    human_click(x, y, duration=0.1)
+                    time.sleep(0.5)
+                    pyautogui.click(493,19, duration = 0.2)
+                    time.sleep(1)
+
+            except Exception as e:
+                pass
     adsclosebutton = [ 'closeadsgoogle1.png','closeadsgoole11.png','closeadsgoole10.png', 'closeadsgoole2.png', 'closeadsgoole3.png', 'closeadsgoole4.png', 'closeadsgoole5.png', 'closeadsgoole6.png', 'closeadsgoole7.png', 'closeadsgoole9.png','closeadsgoole8.png']
     for adbutton in adsclosebutton:
         try:
@@ -6069,7 +6098,7 @@ while True:
                         close_window(window2)
 
 
-                if script_seconds_only > 820:
+                if script_seconds_only >900:
                     gg = True
                 if script_seconds_only > 500:
                     tpi = True

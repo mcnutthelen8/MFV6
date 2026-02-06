@@ -1,5 +1,5 @@
 
-print("Version 10.5.6 loaded.")
+print("Version 10.5.9 loaded.")
 import pyautogui
 import time
 import win32gui
@@ -2177,6 +2177,7 @@ def facebook_leaving():
 def destined_reached(text):
     keywords = [
         '405 Not Allowed',
+        '502 Bad Gateway',
         'This link is risky',
         'Database Error',
         'Privacy Error',

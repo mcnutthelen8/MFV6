@@ -5914,7 +5914,7 @@ while True:
         #    continue
     else:
         focus_and_maximize_window('SunBrowser')
-    #window1 = open_detatch_tab()
+    window1 = open_detatch_tab()
     window2 = open_detatch_tab()
     #cutty_window = open_detatch_tab()
     window3 = open_detatch_tab()

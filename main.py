@@ -2896,7 +2896,7 @@ def inidanxlinks():
         pass
 
     close_ads()
-    buttons = ['indiadasclose.png','indiax_closead2.png', 'indiax_closead1.png','indiax_notrobo2.png','indiax_dualtap3.png','indiax_dualtap2.png','indiax_openc.png','indiax_notrobo1.png' ,'indiax_dualtap1.png','indiax_open_con.png','indiax_getlink.png']
+    buttons = [ 'idiaad_open3.png','idiaad_dual3.png','indiadasclose.png','indiax_closead2.png', 'indiax_closead1.png','indiax_notrobo2.png','indiax_dualtap3.png','indiax_dualtap2.png','indiax_openc.png','indiax_notrobo1.png' ,'indiax_dualtap1.png','indiax_open_con.png','indiax_getlink.png']
     for button in buttons:
         try:
             x, y = pyautogui.locateCenterOnScreen(button,confidence=0.95)
@@ -2929,6 +2929,14 @@ def inidanxlinks():
                 pyautogui.click(494,19, duration = 0.2)
         except Exception as e:
             pass
+    try:
+        x, y = pyautogui.locateCenterOnScreen( 'idiaad_rsum.png', confidence=0.95)
+        if x and y:
+            pyautogui.click(x, y, duration=0.1)
+            time.sleep(1)
+            pyautogui.click(494,19, duration = 0.2)
+    except Exception as e:
+        pass
     try:
         x, y = pyautogui.locateCenterOnScreen( 'skipvidgp.png', confidence=0.95)
         if x and y:

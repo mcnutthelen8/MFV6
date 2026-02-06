@@ -5957,7 +5957,7 @@ while True:
         #    continue
     else:
         focus_and_maximize_window('SunBrowser')
-    window1 = open_detatch_tab()
+    #window1 = open_detatch_tab()
     window2 = open_detatch_tab()
     #cutty_window = open_detatch_tab()
     window3 = open_detatch_tab()
@@ -5975,11 +5975,11 @@ while True:
     duration_time = time.time()
     layout = 1
     if layout == 1:
-        switch_to_window(window1)
-        pyautogui.click(493,19, duration = 0.4)
-        shorlink = random_link('link1')
-        open_link(link = shorlink ,newtab = False)
-        time.sleep(2)
+        #switch_to_window(window1)
+        #pyautogui.click(493,19, duration = 0.4)
+        #shorlink = random_link('link1')
+        #open_link(link = shorlink ,newtab = False)
+        #time.sleep(2)
         switch_to_window(window2)
         pyautogui.click(493,19, duration = 0.4)
         shorlink = random_link('link4')
@@ -6113,8 +6113,8 @@ while True:
 
                 except Exception as e:
                     pass
-                if layout == 1:
-                    if layout == 1:
+                if layout == 2:
+                    if layout == 2:
                         try:
                             
                             if win32gui.IsWindow(window1):

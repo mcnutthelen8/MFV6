@@ -6057,7 +6057,7 @@ while True:
 
                 if script_seconds_only >1200:
                     gg = True
-                if script_seconds_only > 500:
+                if script_seconds_only > 600:
                     tpi = True
 
                 try:
@@ -6132,7 +6132,7 @@ while True:
                     
 
                 if layout == 1:
-                    if layout == 1: ##if cuty == None or cuty == False:
+                    if tpi == False: ##if cuty == None or cuty == False:
                         try:
                             switch_to_window(window2)
                             if win32gui.IsWindow(window2):

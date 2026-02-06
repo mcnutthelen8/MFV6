@@ -5940,17 +5940,13 @@ while True:
         time.sleep(2)
         switch_to_window(window2)
         pyautogui.click(493,19, duration = 0.4)
-        shorlink = random_link('link4')
+        shorlink = random_link('link2')
         open_link(link = shorlink ,newtab = False)
         time.sleep(2)
 
-        if random.random() < 0.93:   # 0.9 = 90%
-            shorlink = random_link('link3')
-        else:
-            shorlink = "https://hyperhustle.online/"
         switch_to_window(window3)
         pyautogui.click(493,19, duration = 0.4)
-        shorlink = random_link('link3')
+        shorlink = random_link('link4')
         open_link(link = shorlink ,newtab = False)
         time.sleep(2)
         
@@ -6056,7 +6052,7 @@ while True:
                         close_window(window2)
 
 
-                if script_seconds_only >1200:
+                if script_seconds_only >800:
                     gg = True
                 if script_seconds_only > 600:
                     tpi = True
@@ -6142,8 +6138,8 @@ while True:
                         #tpi = True
                             pass
                     
-                if tpi == True:
-                    close_window(window3)
+                #if tpi == True:
+                #    close_window(window3)
 
                 if layout == 1:
                     
@@ -6155,7 +6151,7 @@ while True:
                                 pyautogui.click(150,200, duration = 0.4)
 
                                 ggwin2 = None
-                                ggwin2 = inidanxlinks()
+                                ggwin2 = shortx_handle()
                                 if ggwin2 == 5:
                                     cuty = True
                                 elif ggwin2 == 1:
@@ -6186,9 +6182,50 @@ while True:
                             pass
 
 
-
-
                 if layout == 1:
+                    
+                        try:
+                            switch_to_window(window3)
+                            if win32gui.IsWindow(window3):
+
+                                switch = switch_to_window(window3)
+                                pyautogui.click(150,200, duration = 0.4)
+
+                                ggwin2 = None
+                                ggwin2 = inidanxlinks()
+                                if ggwin2 == 5:
+                                    tpi = True
+                                elif ggwin2 == 1:
+                                    tpi = False
+
+                                                    
+
+                                    
+                                try:
+                                    x, y = pyautogui.locateCenterOnScreen('thissiteerror.png', region=[526,160,530,470], confidence=0.95)
+                                    if x and y:
+                                        print('site not working shortix')
+                                        tpi = True
+                                except Exception as e:
+                                    pass
+                            else:
+                                print('cuty not exist')                               
+                                
+                                
+                                if tpi:
+                                    pass
+                                else:
+                                    sites_done += 1
+                                tpi = True
+                        except Exception as e:
+                            #cuty = True
+                            pass
+
+
+
+
+
+                if layout == 5:
                     if random.random() < 0.5: ##if cuty == None or cuty == False:
                         try:
                             switch_to_window(window3)

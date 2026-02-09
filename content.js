@@ -623,40 +623,40 @@ function gpscroll22() {
 // Start the watcher
 
 
-function gpscroll() {
-    const buttonSelectors = [
-        "#VerifyBtn",
-        "#NextBtn",
-        "#captchaForm button",
-        "#skip-btn",
 
-        //"#robotSection",
+
+
+
+function gpscroll() {
+    // Buttons that should be SCROLLED to AND CLICKED
+    const clickSelectors = [
         "#robotButton",
         "#robot",
         "#robot2",
-        //"#rtg-snp2",
         "#rtgli1",
         "#rtg-generate",
         "#robotContinueButton",
-        "#robotButton",
         "#open-continue-btn",
-        "#robotContinueButton",
-        "#robot2",
-        "#rtg-snp2",
-        "#open-continue-btn"
-
-
+        "#rtg-snp2"
     ];
 
-    // Keep track of clicked elements to avoid repeats
+    // Buttons that should ONLY be SCROLLED to (NOT clicked)
+    const scrollOnlySelectors = [
+        "#VerifyBtn",
+        "#NextBtn",
+        "#captchaForm button",
+        "#skip-btn"
+    ];
+
+    // Combine them for the initial search loop
+    const allSelectors = [...clickSelectors, ...scrollOnlySelectors];
+
     const clickedElements = new WeakSet();
 
-    // Helper: Simulate an organic, multi-step click
     async function naturalClick(element) {
         if (!element || clickedElements.has(element)) return;
 
         const events = ['mouseenter', 'mouseover', 'mousedown', 'mouseup', 'click'];
-        
         events.forEach(eventType => {
             const event = new MouseEvent(eventType, {
                 view: window,
@@ -667,7 +667,7 @@ function gpscroll() {
             element.dispatchEvent(event);
         });
 
-        clickedElements.add(element); // Mark as clicked
+        clickedElements.add(element);
         console.log("Naturally clicked and tagged element:", element);
     }
 
@@ -685,37 +685,35 @@ function gpscroll() {
             shouldRestrictScrolling = true;
         }
 
-        // buttonSelectors assumed to be defined in your outer scope
-        for (const selector of buttonSelectors) {
+        for (const selector of allSelectors) {
             const btn = document.querySelector(selector);
             
             if (isVisible(btn)) {
                 const rect = btn.getBoundingClientRect();
-                
                 const distanceFromTop = rect.top + window.scrollY;
 
                 if (shouldRestrictScrolling && distanceFromTop < 1500) {
                     continue; 
                 }
 
-                // 1. Scroll to it
+                // 1. Scroll to the button regardless of type
                 btn.scrollIntoView({ behavior: "smooth", block: "center" });
                 
-                // 2. Click it if we haven't already
-                if (!clickedElements.has(btn)) {
-                    // Slight delay after scroll to feel more "human"
-                    //setTimeout(() => naturalClick(btn), 500);
+                // 2. ONLY click if it's NOT in the scroll-only list
+                const isScrollOnly = scrollOnlySelectors.some(s => btn.matches(s));
+
+                if (!isScrollOnly && !clickedElements.has(btn)) {
                     const randomDelay = Math.floor(Math.random() * 1001) + 1000;
-                    
-                    console.log(`Waiting ${randomDelay}ms before clicking...`);
+                    console.log(`Targeting ${selector}. Waiting ${randomDelay}ms before clicking...`);
                     setTimeout(() => naturalClick(btn), randomDelay);
+                } else if (isScrollOnly) {
+                    console.log(`Focused on ${selector}, but skipping click as requested.`);
                 }
 
                 break; 
             }
         }
 
-        // Handle success alert
         const alertSuccess = document.querySelector("div.alert.alert-success");
         if (isVisible(alertSuccess) && alertSuccess.textContent.includes("Scroll down and complete")) {
             alertSuccess.scrollIntoView({ behavior: "smooth", block: "center" });

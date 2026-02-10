@@ -623,52 +623,75 @@ function gpscroll22() {
 // Start the watcher
 
 
-
-
-
-
 function gpscroll() {
-    // Buttons that should be SCROLLED to AND CLICKED
     const clickSelectors = [
-        "#robotButton",
-        "#robot",
-        "#robot2",
-        "#rtgli1",
-        "#rtg-generate",
-        "#robotContinueButton",
-        "#open-continue-btn",
-        "#rtg-snp2"
+        "#robotButton", "#robot", "#robot2", "#rtgli1", 
+        "#rtg-generate", "#robotContinueButton", "#open-continue-btn", "#rtg-snp2"
     ];
 
-    // Buttons that should ONLY be SCROLLED to (NOT clicked)
     const scrollOnlySelectors = [
-        "#VerifyBtn",
-        "#NextBtn",
-        "#captchaForm button",
-        "#skip-btn"
+        "#VerifyBtn", "#NextBtn", "#captchaForm button", "#skip-btn"
     ];
 
-    // Combine them for the initial search loop
-    const allSelectors = [...clickSelectors, ...scrollOnlySelectors];
+    // CSS Injection - Use a generic ID to avoid suspicion
+    const styleId = 'ui-helper-styles';
+    if (!document.getElementById(styleId)) {
+        const style = document.createElement('style');
+        style.id = styleId;
+        style.innerHTML = `
+            .btn-rescue-active {
+                z-index: 2147483647 !important;
+                position: relative !important;
+                outline: 3px solid #00FF00 !important; /* Help you find it */
+            }
+            .obstacle-ghost {
+                pointer-events: none !important;
+                opacity: 0.1 !important; 
+                filter: grayscale(1) !important;
+            }
+        `;
+        document.head.appendChild(style);
+    }
 
     const clickedElements = new WeakSet();
+
+    function rescueAndPrepare(btn) {
+        if (!btn || btn.classList.contains('btn-rescue-active')) return;
+        btn.classList.add('btn-rescue-active');
+
+        const rect = btn.getBoundingClientRect();
+        // Sampling points to detect overlays
+        const points = [
+            [rect.left + rect.width / 2, rect.top + rect.height / 2],
+            [rect.left + 2, rect.top + 2],
+            [rect.right - 2, rect.bottom - 2]
+        ];
+
+        points.forEach(([x, y]) => {
+            const el = document.elementFromPoint(x, y);
+            // Only ghost it if it's NOT the button and NOT a parent of the button
+            if (el && el !== btn && !btn.contains(el) && !el.contains(btn)) {
+                el.classList.add('obstacle-ghost');
+            }
+        });
+    }
 
     async function naturalClick(element) {
         if (!element || clickedElements.has(element)) return;
 
-        const events = ['mouseenter', 'mouseover', 'mousedown', 'mouseup', 'click'];
-        events.forEach(eventType => {
-            const event = new MouseEvent(eventType, {
-                view: window,
-                bubbles: true,
-                cancelable: true,
-                buttons: 1
-            });
-            element.dispatchEvent(event);
-        });
+        // Improved event sequence to look more modern/human
+        const props = { view: window, bubbles: true, cancelable: true, buttons: 1 };
+        element.dispatchEvent(new PointerEvent('pointerdown', props));
+        element.dispatchEvent(new MouseEvent('mousedown', props));
+        
+        // Slight delay for "hold" duration
+        await new Promise(r => setTimeout(r, 50));
+
+        element.dispatchEvent(new PointerEvent('pointerup', props));
+        element.dispatchEvent(new MouseEvent('mouseup', props));
+        element.dispatchEvent(new MouseEvent('click', props));
 
         clickedElements.add(element);
-        console.log("Naturally clicked and tagged element:", element);
     }
 
     function isVisible(el) {
@@ -678,6 +701,7 @@ function gpscroll() {
     }
 
     function checkAndScroll() {
+        const allSelectors = [...clickSelectors, ...scrollOnlySelectors];
         const scrollInstruction = document.querySelector("h4#txt3");
         let shouldRestrictScrolling = false;
 
@@ -692,31 +716,30 @@ function gpscroll() {
                 const rect = btn.getBoundingClientRect();
                 const distanceFromTop = rect.top + window.scrollY;
 
-                if (shouldRestrictScrolling && distanceFromTop < 1500) {
-                    continue; 
-                }
+                if (shouldRestrictScrolling && distanceFromTop < 1500) continue; 
+                const btnText = (btn.innerText || btn.textContent || btn.value || "").toLowerCase();
 
-                // 1. Scroll to the button regardless of type
+                if (btnText.includes("wait") || btnText.includes("...")) {
+                    continue; // Stay where you are until the button is ready
+                }
+                // 1. Bring to focus
                 btn.scrollIntoView({ behavior: "smooth", block: "center" });
                 
-                // 2. ONLY click if it's NOT in the scroll-only list
+                // 2. Clear obstacles regardless of type (helps automation too!)
+                
+
                 const isScrollOnly = scrollOnlySelectors.some(s => btn.matches(s));
 
                 if (!isScrollOnly && !clickedElements.has(btn)) {
-                    const randomDelay = Math.floor(Math.random() * 1001) + 1000;
-                    console.log(`Targeting ${selector}. Waiting ${randomDelay}ms before clicking...`);
+                    const randomDelay = Math.floor(Math.random() * 1000) + 1200;
                     setTimeout(() => naturalClick(btn), randomDelay);
-                } else if (isScrollOnly) {
-                    console.log(`Focused on ${selector}, but skipping click as requested.`);
                 }
+                if (isScrollOnly) {
+                    rescueAndPrepare(btn);
 
+                }
                 break; 
             }
-        }
-
-        const alertSuccess = document.querySelector("div.alert.alert-success");
-        if (isVisible(alertSuccess) && alertSuccess.textContent.includes("Scroll down and complete")) {
-            alertSuccess.scrollIntoView({ behavior: "smooth", block: "center" });
         }
     }
 

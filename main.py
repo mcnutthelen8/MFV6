@@ -5845,43 +5845,34 @@ while True:
                 try:
                     x, y = pyautogui.locateCenterOnScreen('rektcaptcha_icon.png', region=[1653,31,261,61], confidence=0.9)
                     if x and y:
+
+                        human_click(1110,173, duration=1)
+                        time.sleep(1)
+                        if clipboard.paste() != '':
+                            browsero_Failed = False
+                            break
+
+                        
+                        human_click(1106, 172, duration=1)
+                        time.sleep(1)
+                        if clipboard.paste() != '':
+                            browsero_Failed = False
+                            break
+
+                                        
                         try:
-                            x, y = pyautogui.locateCenterOnScreen('clip_adspower.png', region=[956,80,348,192], confidence=0.9)
+                            x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
                             if x and y:
-                                human_click(x, y, duration=1)
-                                time.sleep(1)
-                                if clipboard.paste() != '':
-                                    browsero_Failed = False
-                                    break
+                                adspowerfreeze += 1
+                                if adspowerfreeze >= 6:
+                                    pyautogui.press('f5')
+                                    time.sleep(4)
+                                    adspowerfreeze = 1
+                                print("Page loaded but adspowerfreeze not found, retrying...", adspowerfreeze)
 
                                     
                         except Exception as e:
-                            print("Clipboard icon not found, retrying...", i)    
-                            try:
-                                x, y = pyautogui.locateCenterOnScreen('clip_adspower2.png', region=[956,80,348,192], confidence=0.9)
-                                if x and y:
-                                    human_click(x, y, duration=1)
-                                    time.sleep(1)
-                                    if clipboard.paste() != '':
-                                        browsero_Failed = False
-                                        break
-
-                                        
-                            except Exception as e:
-                                print("Clipboard icon not found, retrying2...", i)   
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-                                    if x and y:
-                                        adspowerfreeze += 1
-                                        if adspowerfreeze >= 6:
-                                            pyautogui.press('f5')
-                                            time.sleep(4)
-                                            adspowerfreeze = 1
-                                        print("Page loaded but adspowerfreeze not found, retrying...", adspowerfreeze)
-
-                                            
-                                except Exception as e:
-                                    pass
+                            pass
                 except Exception as e:
                     print("Rektcaptcha icon not found, retrying...", i)
                     if i == 24:

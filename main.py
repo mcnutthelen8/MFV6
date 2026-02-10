@@ -5858,18 +5858,30 @@ while True:
                         except Exception as e:
                             print("Clipboard icon not found, retrying...", i)    
                             try:
-                                x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
+                                x, y = pyautogui.locateCenterOnScreen('clip_adspower2.png', region=[956,80,348,192], confidence=0.9)
                                 if x and y:
-                                    adspowerfreeze += 1
-                                    if adspowerfreeze >= 6:
-                                        pyautogui.press('f5')
-                                        time.sleep(4)
-                                        adspowerfreeze = 1
-                                    print("Page loaded but adspowerfreeze not found, retrying...", adspowerfreeze)
+                                    human_click(x, y, duration=1)
+                                    time.sleep(1)
+                                    if clipboard.paste() != '':
+                                        browsero_Failed = False
+                                        break
 
                                         
                             except Exception as e:
-                                pass
+                                print("Clipboard icon not found, retrying2...", i)   
+                                try:
+                                    x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
+                                    if x and y:
+                                        adspowerfreeze += 1
+                                        if adspowerfreeze >= 6:
+                                            pyautogui.press('f5')
+                                            time.sleep(4)
+                                            adspowerfreeze = 1
+                                        print("Page loaded but adspowerfreeze not found, retrying...", adspowerfreeze)
+
+                                            
+                                except Exception as e:
+                                    pass
                 except Exception as e:
                     print("Rektcaptcha icon not found, retrying...", i)
                     if i == 24:

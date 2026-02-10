@@ -27,7 +27,7 @@ import requests
 import difflib
 import os
 Mysterium_Mode = False
-
+time.sleep(10000)
 
 def get_farm_id(filepath="farmid.txt"):
     """Reads and prints the number from farmid.txt."""

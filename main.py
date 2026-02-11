@@ -27,7 +27,7 @@ import requests
 import difflib
 import os
 Mysterium_Mode = False
-time.sleep(99999)
+
 
 def get_farm_id(filepath="farmid.txt"):
     """Reads and prints the number from farmid.txt."""
@@ -2664,7 +2664,31 @@ def ipqs_browsercheck(ip, api_key, api_list):
                 print("NOT PASSED")
                 return None
 
+
+def update_fraud_report(text):
+    # The new content to insert
+    new_content = """
+Device Fingerprinting
+Real-Time Fraud Blocking
+25+ Platform Integration
+Custom Fraud Rules
+Bot Traffic Filtering"""
+
+    # Define the start and end anchors
+    # We use re.escape to handle special characters and .*? (dotall) to match across lines
+    pattern = re.compile(
+        r"(Affiliate Fraud Detection Dashboard)(.*?)(Supported Platform Integrations)", 
+        re.DOTALL
+    )
+
+    # Perform the replacement
+    # \1 and \3 keep the original anchor headers intact
+    updated_text = pattern.sub(f"\\1\n\n{new_content}\n\n\\3", text)
+    
+    return updated_text
+
 def extract_ip_info24metric(text, ip):
+    text = update_fraud_report(text)
     def find(label):
         pattern = rf"{label}\s*:?[\s]*([A-Za-z0-9 ._-]+)"
         match = re.search(pattern, text, re.IGNORECASE)
@@ -2676,6 +2700,7 @@ def extract_ip_info24metric(text, ip):
     is_vpn = find(r"VPN")
     is_proxy = find(r"Proxy")
     networkip = find(r"Network")
+    print(is_vpn, is_proxy, networkip)
     if networkip and is_vpn:
         print(f"Extracted Network IP: {networkip} and {ip}")
         if networkip != '2003' and is_vpn != '- - -':
@@ -2687,8 +2712,6 @@ def extract_ip_info24metric(text, ip):
                 print("Warning: This IP may be risky to use.")
                 return 'badip'
     return 'noip'
-       
-
 
 def metrics24_lookups(ip):
     open_link(link=f'https://www.24metrics.com/#anchor-ip-scanner', newtab=False)
@@ -6072,8 +6095,8 @@ while True:
 
                 if script_seconds_only >800:
                     gg = True
-                #if script_seconds_only > 600:
-                #    tpi = True
+                if script_seconds_only > 700:
+                    tpi = True
 
                 try:
                     x, y = pyautogui.locateCenterOnScreen('leavebuttong.png',  confidence=0.98)

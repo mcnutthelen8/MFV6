@@ -6072,8 +6072,8 @@ while True:
 
                 if script_seconds_only >800:
                     gg = True
-                if script_seconds_only > 600:
-                    tpi = True
+                #if script_seconds_only > 600:
+                #    tpi = True
 
                 try:
                     x, y = pyautogui.locateCenterOnScreen('leavebuttong.png',  confidence=0.98)

@@ -1,5 +1,5 @@
 
-print("Version 10.5.8 loaded.")
+print("Version 10.5.9 loaded.")
 import pyautogui
 import time
 import win32gui
@@ -4708,16 +4708,18 @@ def shortx_handle():
                 time.sleep(1)
                 full_screen = pyautogui.screenshot()
                 button_clicked = True
-
+                if img_name == 'clickhere_shotx.png':
+                    return
         except Exception:
             pass
     
     if button_clicked:
-        for i in range(5):
+        for i in range(3):
             for img_name in shortxbuttons:
                 try:
                     match = pyautogui.locate(img_name, full_screen, region=[572,68,762,960], confidence=0.9)
                     if match:
+
                         x, y = pyautogui.center(match)
                         human_click(x, y, duration=0.3)
                         time.sleep(0.5)
@@ -4727,6 +4729,8 @@ def shortx_handle():
                         button_clicked = True
                         if img_name == 'linkdown_shotx.png':
                             time.sleep(2)
+                        if img_name == 'clickhere_shotx.png':
+                            return
                         continue
                 except Exception:
                     pass
@@ -5878,11 +5882,11 @@ while True:
                                 try:
                                     x, y = pyautogui.locateCenterOnScreen('resubmission.png', region=[585,210,585,290], confidence=0.8)
                                     if x and y:
-                                        pyautogui.click(24,64)
+                                        pyautogui.click(1027,235)
                                         time.sleep(3)
                                         #pyautogui.moveTo(500,300)
                                         #pyautogui.scroll(5000)
-                                        tpi = True
+                                        #tpi = True
                                 except Exception as e:
                                     pass
 
@@ -5919,7 +5923,16 @@ while True:
 
                                                     
 
-                                    
+                                try:
+                                    x, y = pyautogui.locateCenterOnScreen('resubmission.png', region=[585,210,585,290], confidence=0.8)
+                                    if x and y:
+                                        pyautogui.click(1027,235)
+                                        time.sleep(3)
+                                        #pyautogui.moveTo(500,300)
+                                        #pyautogui.scroll(5000)
+                                        #tpi = True
+                                except Exception as e:
+                                    pass
                                 try:
                                     x, y = pyautogui.locateCenterOnScreen('thissiteerror.png', region=[526,160,530,470], confidence=0.95)
                                     if x and y:
@@ -5961,7 +5974,16 @@ while True:
 
                                                     
 
-                                    
+                                try:
+                                    x, y = pyautogui.locateCenterOnScreen('resubmission.png', region=[585,210,585,290], confidence=0.8)
+                                    if x and y:
+                                        pyautogui.click(1027,235)
+                                        time.sleep(3)
+                                        #pyautogui.moveTo(500,300)
+                                        #pyautogui.scroll(5000)
+                                        #tpi = True
+                                except Exception as e:
+                                    pass
                                 try:
                                     x, y = pyautogui.locateCenterOnScreen('thissiteerror.png', region=[526,160,530,470], confidence=0.95)
                                     if x and y:

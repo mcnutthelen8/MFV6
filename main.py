@@ -1,5 +1,5 @@
 
-print("Version 10.5.9 loaded.")
+print("Version 10.5.8 loaded.")
 import pyautogui
 import time
 import win32gui
@@ -2199,7 +2199,7 @@ def close_ads():
             ('closeadg23.png', None, 0.98),
             ('closeads321.png', None, 0.98),
             ('closeadsgootrans.png', None, 0.98),
-            ('adremoved.png', None, 0.98)
+            
         ]
 
     for i in range(5):
@@ -2230,10 +2230,7 @@ def close_ads():
                         return True
                     
                     # Logic for Page Refresh
-                    if img_name == 'adremoved.png':
-                        pyautogui.press('f5')
-                        time.sleep(2)
-                        break # Take new screenshot after refresh
+
 
                     # Standard Ad Click Flow
                     if img_name in ['closeadgoogle511.png', 'close_ads19.png']:
@@ -3047,7 +3044,13 @@ def inidanxlinks():
         except Exception:
             pass
 
-
+    try:
+        x, y = pyautogui.locateCenterOnScreen( 'adremoved.png', confidence=0.95)
+        if x and y:
+            pyautogui.press('f5')
+            return
+    except Exception as e:
+        pass
     try:
         x, y = pyautogui.locateCenterOnScreen( 'idiaad_rsum.png', confidence=0.95)
         if x and y:
@@ -4378,7 +4381,7 @@ def gplink_handle():
     full_screen = pyautogui.screenshot()
 
 
-    adsclosebutton = ['resumevid_gp.png', 'skipvidgp.png', 'resumevidgp.png','closevideoadgp.png', 'consent5.png',  'closeadsgoogle1.png','closeadsgoole11.png','closeadsgoole10.png', 'closeadsgoole2.png', 'closeadsgoole3.png', 'closeadsgoole4.png', 'closeadsgoole5.png', 'closeadsgoole6.png', 'closeadsgoole7.png', 'closeadsgoole9.png','closeadsgoole8.png']
+    adsclosebutton = ['adremoved.png','resumevid_gp.png', 'skipvidgp.png', 'resumevidgp.png','closevideoadgp.png', 'consent5.png',  'closeadsgoogle1.png','closeadsgoole11.png','closeadsgoole10.png', 'closeadsgoole2.png', 'closeadsgoole3.png', 'closeadsgoole4.png', 'closeadsgoole5.png', 'closeadsgoole6.png', 'closeadsgoole7.png', 'closeadsgoole9.png','closeadsgoole8.png']
     for adbutton in adsclosebutton:
         try:
             if adbutton == 'closevideoadgp.png':
@@ -4389,6 +4392,11 @@ def gplink_handle():
                 match = pyautogui.locate(adbutton, full_screen,  region=[1,83,1914,956], confidence=0.9)
             if match:
                 x, y = pyautogui.center(match)
+                if adbutton == 'adremoved.png':
+                    pyautogui.press('f5')
+                    time.sleep(2)
+                    return
+
                 if adbutton == 'closevideoadgp.png':
                     pyautogui.click(x, y, duration=0.1)
                     time.sleep(0.5)
@@ -4411,9 +4419,6 @@ def gplink_handle():
             pass
 
 
-
-
-    
     
     pyautogui.click(1116,525, duration=0.5)
 

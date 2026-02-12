@@ -5831,7 +5831,7 @@ while True:
                         close_window(window2)
 
 
-                if script_seconds_only >800:
+                if script_seconds_only >720:
                     gg = True
                 #if script_seconds_only > 700:
                 #    tpi = True

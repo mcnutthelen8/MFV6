@@ -4709,12 +4709,13 @@ def shortx_handle():
                 #pyautogui.click(x,y)
                 human_click(x, y, duration=0.3)
                 time.sleep(0.5)
+                if img_name == 'clickhere_shotx.png':
+                    return
                 pyautogui.click(493,19, duration = 0.4)
                 time.sleep(1)
                 full_screen = pyautogui.screenshot()
                 button_clicked = True
-                if img_name == 'clickhere_shotx.png':
-                    return
+
         except Exception:
             pass
     
@@ -4728,14 +4729,15 @@ def shortx_handle():
                         x, y = pyautogui.center(match)
                         human_click(x, y, duration=0.3)
                         time.sleep(0.5)
+                        if img_name == 'clickhere_shotx.png':
+                            return
                         pyautogui.click(493,19, duration = 0.4)
                         time.sleep(1)
                         full_screen = pyautogui.screenshot()
                         button_clicked = True
                         if img_name == 'linkdown_shotx.png':
                             time.sleep(2)
-                        if img_name == 'clickhere_shotx.png':
-                            return
+
                         continue
                 except Exception:
                     pass

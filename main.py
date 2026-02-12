@@ -1951,7 +1951,7 @@ def close_ads2():
         except Exception as e:
             pass
         try:
-            x, y = pyautogui.locateCenterOnScreen('consent.png', region=[920,722,344,83] ,confidence=0.98)
+            x, y = pyautogui.locateCenterOnScreen('consent.png', region=[920,722,344,83] ,confidence=0.9)
             if x and y:
                 human_click(x, y, duration=1)
                 time.sleep(1)
@@ -2176,7 +2176,7 @@ def close_ads():
             ('close_ad2.png', [1108, 168, 92, 463], 0.97),
             ('close_ad7.png', [1335, 733, 260, 145], 0.98),
             ('close_ad17.png', [1680, 45, 280, 280], 0.98),
-            ('consent.png', [920, 722, 344, 83], 0.98),
+            ('consent.png', [920, 722, 344, 83], 0.9),
             ('close_ads19.png', [1194, 256, 192, 167], 0.98),
             ('close_ad75.png', [1335, 733, 260, 145], 0.98),
             ('agreevalue.png', [908, 586, 1012, 465], 0.98),
@@ -2989,7 +2989,7 @@ def zyrox_handle():
 
 
 
-def inidanxlinks():
+def inidanxlinks(simple=False):
     pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.4)
     pyautogui.click(493,19, duration = 0.4)
     title = get_focused_window_title()
@@ -3009,48 +3009,53 @@ def inidanxlinks():
             return 5
     except Exception as e:
         pass
+    
+    if simple:
+        close_ads()
+        
+        buttons = ['wait_for_page.png','consent5.png','indiax_notrobo5.png','indiax_dualtap5.png','indiax_dualtap52.png','indiax_dualtap23.png','indiax_openc5.png','indiax_openc52.png','opencon53.png','opencon5.png','indiax_closead5.png', 'indiax_dualtap4.png','idiaad_open3.png','idiaad_dual3.png','indiadasclose.png','indiax_closead3.png','indiax_closead4.png','indiax_closead2.png', 'indiax_closead1.png','indiax_notrobo2.png','indiax_dualtap3.png','indiax_dualtap2.png','indiax_openc.png','indiax_notrobo1.png' ,'indiax_dualtap1.png','indiax_open_con.png','indiax_getlink.png']
 
-    close_ads()
-    buttons = ['wait_for_page.png','consent5.png','indiax_notrobo5.png','indiax_dualtap5.png','indiax_dualtap52.png','indiax_dualtap23.png','indiax_openc5.png','indiax_openc52.png','opencon53.png','opencon5.png','indiax_closead5.png', 'indiax_dualtap4.png','idiaad_open3.png','idiaad_dual3.png','indiadasclose.png','indiax_closead3.png','indiax_closead4.png','indiax_closead2.png', 'indiax_closead1.png','indiax_notrobo2.png','indiax_dualtap3.png','indiax_dualtap2.png','indiax_openc.png','indiax_notrobo1.png' ,'indiax_dualtap1.png','indiax_open_con.png','indiax_getlink.png']
+        full_screen = pyautogui.screenshot()
+        for img_name in buttons:
+            try:
 
-    full_screen = pyautogui.screenshot()
-    for img_name in buttons:
+                match = pyautogui.locate(img_name, full_screen, confidence=0.98)
+                if img_name == 'consent5.png':
+                    match = pyautogui.locate(img_name, full_screen, confidence=0.9)
+                if match:
+                    x, y = pyautogui.center(match)
+                    pyautogui.click(x,y)
+                    time.sleep(0.5)
+                    pyautogui.click(493,19, duration = 0.4)
+                    time.sleep(0.5)
+                    full_screen = pyautogui.screenshot()
+
+            except Exception:
+                pass
+
+        adsclosebutton = [ 'closeadsgoogle1.png','closeadsgoole11.png','closeadsgoole10.png', 'closeadsgoole2.png', 'closeadsgoole3.png', 'closeadsgoole4.png', 'closeadsgoole5.png', 'closeadsgoole6.png', 'closeadsgoole7.png', 'closeadsgoole9.png','closeadsgoole8.png']
+        full_screen = pyautogui.screenshot()
+        for img_name in adsclosebutton:
+            try:
+                match = pyautogui.locate(img_name, full_screen,  region=[1,83,1914,956],confidence=0.98)
+                if match:
+                    x, y = pyautogui.center(match)
+                    pyautogui.click(x,y)
+                    time.sleep(0.5)
+                    pyautogui.click(493,19, duration = 0.4)
+                    time.sleep(0.5)
+                    full_screen = pyautogui.screenshot()
+
+            except Exception:
+                pass
+
         try:
-            match = pyautogui.locate(img_name, full_screen, confidence=0.98)
-            if match:
-                x, y = pyautogui.center(match)
-                pyautogui.click(x,y)
-                time.sleep(0.5)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(0.5)
-                full_screen = pyautogui.screenshot()
-
-        except Exception:
+            x, y = pyautogui.locateCenterOnScreen( 'adremoved.png', confidence=0.95)
+            if x and y:
+                pyautogui.press('f5')
+                return
+        except Exception as e:
             pass
-
-    adsclosebutton = [ 'closeadsgoogle1.png','closeadsgoole11.png','closeadsgoole10.png', 'closeadsgoole2.png', 'closeadsgoole3.png', 'closeadsgoole4.png', 'closeadsgoole5.png', 'closeadsgoole6.png', 'closeadsgoole7.png', 'closeadsgoole9.png','closeadsgoole8.png']
-    full_screen = pyautogui.screenshot()
-    for img_name in adsclosebutton:
-        try:
-            match = pyautogui.locate(img_name, full_screen,  region=[1,83,1914,956],confidence=0.98)
-            if match:
-                x, y = pyautogui.center(match)
-                pyautogui.click(x,y)
-                time.sleep(0.5)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(0.5)
-                full_screen = pyautogui.screenshot()
-
-        except Exception:
-            pass
-
-    try:
-        x, y = pyautogui.locateCenterOnScreen( 'adremoved.png', confidence=0.95)
-        if x and y:
-            pyautogui.press('f5')
-            return
-    except Exception as e:
-        pass
     try:
         x, y = pyautogui.locateCenterOnScreen( 'idiaad_rsum.png', confidence=0.95)
         if x and y:
@@ -5689,7 +5694,7 @@ while True:
     window1 = open_detatch_tab()
     window2 = open_detatch_tab()
     #cutty_window = open_detatch_tab()
-    #window3 = open_detatch_tab()
+    window3 = open_detatch_tab()
     #window4 = open_detatch_tab()
     print("Window IDs:", window1, window2)
     script_elapsed_time3 = time.time() - duration_time
@@ -5715,11 +5720,11 @@ while True:
         open_link(link = shorlink ,newtab = False)
         time.sleep(2)
 
-        #switch_to_window(window3)
-        #pyautogui.click(493,19, duration = 0.4)
-        #shorlink = random_link('link4')
-        #open_link(link = shorlink ,newtab = False)
-        #time.sleep(2)
+        switch_to_window(window3)
+        pyautogui.click(493,19, duration = 0.4)
+        shorlink = random_link('link4')
+        open_link(link = shorlink ,newtab = False)
+        time.sleep(2)
         
         hyperrefreshtime1 = random.randint(200, 500)
         hyperrefreshtime2 = random.randint(200, 800)
@@ -5769,8 +5774,9 @@ while True:
         clickads_gplink = True
         clickads_gplink_attempts = 0
 
-        check_indx = True
+        check_indx = 1
         while gg == None:
+            check_indx += 1
             try:
 
 
@@ -5964,9 +5970,15 @@ while True:
                             pass
 
 
-                if layout == 3:
-                    if check_indx:
-                        check_indx = False
+                if layout == 1:
+
+                        if check_indx % 4 == 0:
+                            results = True
+                        else:
+                            results = False
+
+                        # Print the results
+
                         try:
                             switch_to_window(window3)
                             if win32gui.IsWindow(window3):
@@ -5975,11 +5987,13 @@ while True:
                                 pyautogui.click(150,200, duration = 0.4)
 
                                 ggwin2 = None
-                                ggwin2 = inidanxlinks()
+                                ggwin2 = inidanxlinks(results)
                                 if ggwin2 == 5:
-                                    tpi = True
+                                    pass
+                                    #tpi = True
                                 elif ggwin2 == 1:
-                                    tpi = False
+                                    pass
+                                    #tpi = False
 
                                                     
 
@@ -6012,8 +6026,7 @@ while True:
                         except Exception as e:
                             #cuty = True
                             pass
-                    else:
-                        check_indx = True
+
 
 
 

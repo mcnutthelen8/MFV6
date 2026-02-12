@@ -188,7 +188,6 @@
     ],
     link4: [
 { url: 'https://indiaearnx.com/rvad9V5', sites: siteGroups.common },
-{ url: 'https://indiaearnx.com/4JwV', sites: siteGroups.common },
 { url: 'https://indiaearnx.com/4fZ', sites: siteGroups.common },
 { url: 'https://indiaearnx.com/z8AB1', sites: siteGroups.common },
 { url: 'https://indiaearnx.com/CIYG3D', sites: siteGroups.common },

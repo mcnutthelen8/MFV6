@@ -1826,7 +1826,7 @@ def configure_rektcaptcha():
             print("Rektcaptcha not found:", e)
 
 
-def close_ads():
+def close_ads2():
     #pyautogui.click(493,19, duration = 0.4)
     close_window_by_name("Save As") 
     for i in range(5):
@@ -1891,7 +1891,7 @@ def close_ads():
         except Exception as e:
             pass
         try:
-            x, y = pyautogui.locateCenterOnScreen('mini_popup_close.png', region=[705,463,515,232] ,confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen('mini_popup_close.png', region=[705,463,515,232] ,confidence=0.97)
             if x and y:
                 human_click(x, y, duration=1)
                 time.sleep(1)
@@ -1901,7 +1901,7 @@ def close_ads():
         except Exception as e:
             pass
         try:
-            x, y = pyautogui.locateCenterOnScreen('unloaded_adclose.png', region=[705,463,515,232] ,confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen('unloaded_adclose.png', region=[705,463,515,232] ,confidence=0.97)
             if x and y:
                 human_click(x, y, duration=1)
                 time.sleep(1)
@@ -1911,7 +1911,7 @@ def close_ads():
         except Exception as e:
             pass
         try:
-            x, y = pyautogui.locateCenterOnScreen('close_ad2.png', region=[1108,168,92,463] ,confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen('close_ad2.png', region=[1108,168,92,463] ,confidence=0.97)
             if x and y:
                 human_click(x, y, duration=1)
                 time.sleep(1)
@@ -1921,7 +1921,7 @@ def close_ads():
         except Exception as e:
             pass
         try:
-            x, y = pyautogui.locateCenterOnScreen('close_ad7.png', region=[1335,733,260,145] ,confidence=0.94)
+            x, y = pyautogui.locateCenterOnScreen('close_ad7.png', region=[1335,733,260,145] ,confidence=0.98)
             if x and y:
                 human_click(x, y, duration=1)
                 time.sleep(1)
@@ -1931,7 +1931,7 @@ def close_ads():
         except Exception as e:
             pass
         try:
-            x, y = pyautogui.locateCenterOnScreen('closeadgoogle511.png' ,confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen('closeadgoogle511.png' ,confidence=0.98)
             if x and y:
                 human_click(x, y, duration=0.2)
                 time.sleep(0.6)
@@ -1941,7 +1941,7 @@ def close_ads():
         except Exception as e:
             pass
         try:
-            x, y = pyautogui.locateCenterOnScreen('close_ad17.png', region=[1680,45,280,280] ,confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen('close_ad17.png', region=[1680,45,280,280] ,confidence=0.98)
             if x and y:
                 human_click(x, y, duration=1)
                 time.sleep(1)
@@ -1951,7 +1951,7 @@ def close_ads():
         except Exception as e:
             pass
         try:
-            x, y = pyautogui.locateCenterOnScreen('consent.png', region=[920,722,344,83] ,confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen('consent.png', region=[920,722,344,83] ,confidence=0.98)
             if x and y:
                 human_click(x, y, duration=1)
                 time.sleep(1)
@@ -1961,7 +1961,7 @@ def close_ads():
         except Exception as e:
             pass
         try:
-            x, y = pyautogui.locateCenterOnScreen('close_ads19.png', region=[1194,256,192,167] ,confidence=0.94)
+            x, y = pyautogui.locateCenterOnScreen('close_ads19.png', region=[1194,256,192,167] ,confidence=0.98)
             if x and y:
                 pyautogui.click(x, y, duration=0.2)
                 time.sleep(1)
@@ -1971,7 +1971,7 @@ def close_ads():
         except Exception as e:
             pass
         try:
-            x, y = pyautogui.locateCenterOnScreen('close_ad75.png', region=[1335,733,260,145] ,confidence=0.94)
+            x, y = pyautogui.locateCenterOnScreen('close_ad75.png', region=[1335,733,260,145] ,confidence=0.98)
             if x and y:
                 human_click(x, y, duration=1)
                 time.sleep(1)
@@ -1981,7 +1981,7 @@ def close_ads():
         except Exception as e:
             pass
         try:
-            x, y = pyautogui.locateCenterOnScreen('agreevalue.png', region=[908,586,1012,465] ,confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen('agreevalue.png', region=[908,586,1012,465] ,confidence=0.98)
             if x and y:
                 human_click(x, y, duration=1)
                 time.sleep(1)
@@ -1991,7 +1991,7 @@ def close_ads():
         except Exception as e:
             pass
         try:
-            x, y = pyautogui.locateCenterOnScreen('block_js.png', region=[186,80,320,165] ,confidence=0.92)
+            x, y = pyautogui.locateCenterOnScreen('block_js.png', region=[186,80,320,165] ,confidence=0.98)
             if x and y:
                 human_click(x, y, duration=1)
                 time.sleep(1)
@@ -2003,7 +2003,7 @@ def close_ads():
         except Exception as e:
             pass
         try:
-            x, y = pyautogui.locateCenterOnScreen('close_ads_gg.png', region=[1280,229,223,660] ,confidence=0.92)
+            x, y = pyautogui.locateCenterOnScreen('close_ads_gg.png', region=[1280,229,223,660] ,confidence=0.98)
             if x and y:
                 human_click(x, y, duration=1)
                 time.sleep(1)
@@ -2013,7 +2013,7 @@ def close_ads():
         except Exception as e:
             pass
         try:
-            x, y = pyautogui.locateCenterOnScreen('close_ad6.png', region=[1280,229,223,660] ,confidence=0.92)
+            x, y = pyautogui.locateCenterOnScreen('close_ad6.png', region=[1280,229,223,660] ,confidence=0.98)
             if x and y:
                 human_click(x, y, duration=1)
                 time.sleep(1)
@@ -2023,7 +2023,7 @@ def close_ads():
         except Exception as e:
             pass
         try:
-            x, y = pyautogui.locateCenterOnScreen('close_ad3.png', region=[1836,55,85,98] ,confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen('close_ad3.png', region=[1836,55,85,98] ,confidence=0.98)
             if x and y:
                 human_click(x, y, duration=1)
                 time.sleep(1)
@@ -2033,7 +2033,7 @@ def close_ads():
         except Exception as e:
             pass
         try:
-            x, y = pyautogui.locateCenterOnScreen('close_ad4.png', region=[1780,85,135,138] ,confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen('close_ad4.png', region=[1780,85,135,138] ,confidence=0.98)
             if x and y:
                 human_click(x, y, duration=1)
                 time.sleep(1)
@@ -2043,7 +2043,7 @@ def close_ads():
         except Exception as e:
             pass
         try:
-            x, y = pyautogui.locateCenterOnScreen('close_ad5.png', region=[876,527,484,413] ,confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen('close_ad5.png', region=[876,527,484,413] ,confidence=0.98)
             if x and y:
                 human_click(x, y, duration=1)
                 time.sleep(1)
@@ -2054,7 +2054,7 @@ def close_ads():
             pass
 
         try:
-            x, y = pyautogui.locateCenterOnScreen('close_ad8.png', region=[876,527,484,413] ,confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen('close_ad8.png', region=[876,527,484,413] ,confidence=0.98)
             if x and y:
                 human_click(x, y, duration=1)
                 time.sleep(1)
@@ -2064,7 +2064,7 @@ def close_ads():
         except Exception as e:
             pass
         try:
-            x, y = pyautogui.locateCenterOnScreen('close_ad9.png', region=[1083,108,360,865] ,confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen('close_ad9.png', region=[1083,108,360,865] ,confidence=0.98)
             if x and y:
                 human_click(x, y, duration=1)
                 time.sleep(1)
@@ -2075,7 +2075,7 @@ def close_ads():
             pass
 
         try:
-            x, y = pyautogui.locateCenterOnScreen('closeadsgoogleg.png' ,confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen('closeadsgoogleg.png' ,confidence=0.98)
             if x and y:
                 pyautogui.click(x, y, duration=0.4)
                 time.sleep(1)
@@ -2085,7 +2085,7 @@ def close_ads():
         except Exception as e:
             pass       
         try:
-            x, y = pyautogui.locateCenterOnScreen('adclosegoogle2g.png' ,confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen('adclosegoogle2g.png' ,confidence=0.98)
             if x and y:
                 pyautogui.click(x, y, duration=0.4)
                 time.sleep(1)
@@ -2095,7 +2095,7 @@ def close_ads():
         except Exception as e:
             pass            
         try:
-            x, y = pyautogui.locateCenterOnScreen('closeadsgloogle2g.png' ,confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen('closeadsgloogle2g.png' ,confidence=0.98)
             if x and y:
                 pyautogui.click(x, y, duration=0.4)
                 time.sleep(1)
@@ -2105,7 +2105,7 @@ def close_ads():
         except Exception as e:
             pass  
         try:
-            x, y = pyautogui.locateCenterOnScreen('closegoolge3.png' ,confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen('closegoolge3.png' ,confidence=0.98)
             if x and y:
                 pyautogui.click(x, y, duration=0.4)
                 time.sleep(1)
@@ -2115,7 +2115,7 @@ def close_ads():
         except Exception as e:
             pass  
         try:
-            x, y = pyautogui.locateCenterOnScreen('closeadg23.png' ,confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen('closeadg23.png' ,confidence=0.98)
             if x and y:
                 pyautogui.click(x, y, duration=0.4)
                 time.sleep(1)
@@ -2126,7 +2126,7 @@ def close_ads():
             pass  
 
         try:
-            x, y = pyautogui.locateCenterOnScreen('closeads321.png' ,confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen('closeads321.png' ,confidence=0.98)
             if x and y:
                 pyautogui.click(x, y, duration=0.4)
                 time.sleep(1)
@@ -2138,7 +2138,7 @@ def close_ads():
 
 
         try:
-            x, y = pyautogui.locateCenterOnScreen('closeadsgootrans.png' ,confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen('closeadsgootrans.png' ,confidence=0.98)
             if x and y:
                 pyautogui.click(x, y, duration=0.4)
                 time.sleep(1)
@@ -2148,7 +2148,7 @@ def close_ads():
         except Exception as e:
             pass 
         try:
-            x, y = pyautogui.locateCenterOnScreen('adremoved.png' ,confidence=0.9)
+            x, y = pyautogui.locateCenterOnScreen('adremoved.png' ,confidence=0.98)
             if x and y:
                 pyautogui.press('f5')
                 time.sleep(2)
@@ -2160,6 +2160,99 @@ def close_ads():
 
 
 
+
+
+def close_ads():
+    # 1. Configuration: Put your images and their specific regions in a list
+    # Format: (image_name, region_or_None, confidence)
+    close_window_by_name("Save As") 
+    ad_resources = [
+            ('newcloseadas2.png', [1151, 204, 227, 450], 0.98),
+            ('newcloseadas.png', [1151, 204, 227, 350], 0.95),
+            ('js_ok.png', [930, 130, 342, 165], 0.95),
+            ('reload_confrim.png', [930, 130, 342, 165], 0.95),
+            ('mini_popup_close.png', [705, 463, 515, 232], 0.97),
+            ('unloaded_adclose.png', [705, 463, 515, 232], 0.97),
+            ('close_ad2.png', [1108, 168, 92, 463], 0.97),
+            ('close_ad7.png', [1335, 733, 260, 145], 0.98),
+            ('close_ad17.png', [1680, 45, 280, 280], 0.98),
+            ('consent.png', [920, 722, 344, 83], 0.98),
+            ('close_ads19.png', [1194, 256, 192, 167], 0.98),
+            ('close_ad75.png', [1335, 733, 260, 145], 0.98),
+            ('agreevalue.png', [908, 586, 1012, 465], 0.98),
+            ('block_js.png', [186, 80, 320, 165], 0.98),
+            ('close_ads_gg.png', [1280, 229, 223, 660], 0.98),
+            ('close_ad6.png', [1280, 229, 223, 660], 0.98),
+            ('close_ad3.png', [1836, 55, 85, 98], 0.98),
+            ('close_ad4.png', [1780, 85, 135, 138], 0.98),
+            ('close_ad5.png', [876, 527, 484, 413], 0.98),
+            ('close_ad8.png', [876, 527, 484, 413], 0.98),
+            ('close_ad9.png', [1083, 108, 360, 865], 0.98),
+            # Global searches (No region specified in your old code)
+            ('cancelads2.png', None, 0.95),
+            ('cancelads1.png', None, 0.95),
+            ('closeadgoogle511.png', None, 0.98),
+            ('closeadsgoogleg.png', None, 0.98),
+            ('adclosegoogle2g.png', None, 0.98),
+            ('closeadsgloogle2g.png', None, 0.98),
+            ('closegoolge3.png', None, 0.98),
+            ('closeadg23.png', None, 0.98),
+            ('closeads321.png', None, 0.98),
+            ('closeadsgootrans.png', None, 0.98),
+            ('adremoved.png', None, 0.98)
+        ]
+
+    for i in range(5):
+        print(f"Attempt {i+1} to close ads...")
+        
+        # 2. THE SECRET SAUCE: Take ONE screenshot for the whole loop
+        # This prevents taking 30 separate screenshots
+        full_screen = pyautogui.screenshot()
+
+        for img_name, reg, conf in ad_resources:
+            try:
+                # 3. Search WITHIN the screenshot we already took
+                # Use grayscale=True for 30% more speed
+                match = pyautogui.locate(img_name, full_screen, region=reg, confidence=conf)
+                
+                if match:
+                    print(f"Found {img_name} on attempt {i+1}")
+                    x, y = pyautogui.center(match)
+                    
+                    # Logic for special buttons (JS/Reload/Block)
+                    if img_name in ['js_ok.png', 'reload_confrim.png', 'block_js.png']:
+                        human_click(x, y, duration=1)
+                        time.sleep(2)
+                        if img_name == 'block_js.png': 
+                             human_click(x, y, duration=1) # Double click logic from your code
+                             time.sleep(1)
+                        pyautogui.click(95, 62)
+                        return True
+                    
+                    # Logic for Page Refresh
+                    if img_name == 'adremoved.png':
+                        pyautogui.press('f5')
+                        time.sleep(2)
+                        break # Take new screenshot after refresh
+
+                    # Standard Ad Click Flow
+                    if img_name in ['closeadgoogle511.png', 'close_ads19.png']:
+                        # These had faster durations in your old code
+                        pyautogui.click(x, y, duration=0.2)
+                        time.sleep(0.6)
+                        pyautogui.click(493, 19, duration=0.2)
+                    else:
+                        human_click(x, y, duration=0.3 if 'cancel' in img_name else 1)
+                        time.sleep(0.5 if 'cancel' in img_name else 1)
+                        pyautogui.click(493, 19, duration=0.4)
+                    
+                    time.sleep(1)
+                    break # Found one, break to re-scan with fresh screenshot
+
+            except Exception:
+                continue
+                
+        return False
 
 
 
@@ -2898,6 +2991,7 @@ def zyrox_handle():
     close_ads()
 
 
+
 def inidanxlinks():
     pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.4)
     pyautogui.click(493,19, duration = 0.4)
@@ -2921,67 +3015,39 @@ def inidanxlinks():
 
     close_ads()
     buttons = ['wait_for_page.png','consent5.png','indiax_notrobo5.png','indiax_dualtap5.png','indiax_dualtap52.png','indiax_dualtap23.png','indiax_openc5.png','indiax_openc52.png','opencon53.png','opencon5.png','indiax_closead5.png', 'indiax_dualtap4.png','idiaad_open3.png','idiaad_dual3.png','indiadasclose.png','indiax_closead3.png','indiax_closead4.png','indiax_closead2.png', 'indiax_closead1.png','indiax_notrobo2.png','indiax_dualtap3.png','indiax_dualtap2.png','indiax_openc.png','indiax_notrobo1.png' ,'indiax_dualtap1.png','indiax_open_con.png','indiax_getlink.png']
-    button_clicked = False
-    for button in buttons:
+
+    full_screen = pyautogui.screenshot()
+    for img_name in buttons:
         try:
-            x, y = pyautogui.locateCenterOnScreen(button,confidence=0.95)
-            if x and y:
-                human_click(x, y, duration=0.1)
+            match = pyautogui.locate(img_name, full_screen, confidence=0.95)
+            if match:
+                x, y = pyautogui.center(match)
+                pyautogui.click(x,y)
                 time.sleep(0.5)
-                pyautogui.click(493,19, duration = 0.2)
-                time.sleep(1)
-                button_clicked = True
-
-        except Exception as e:
-            pass
-    for button in buttons:
-        try:
-            x, y = pyautogui.locateCenterOnScreen(button,confidence=0.95)
-            if x and y:
-                human_click(x, y, duration=0.1)
+                pyautogui.click(493,19, duration = 0.4)
                 time.sleep(0.5)
-                pyautogui.click(493,19, duration = 0.2)
-                time.sleep(1)
+                full_screen = pyautogui.screenshot()
 
-        except Exception as e:
+        except Exception:
             pass
-    if button_clicked:
-        time.sleep(2)
-        button_clicked = False
-        for button in buttons:
-            try:
-                x, y = pyautogui.locateCenterOnScreen(button,confidence=0.95)
-                if x and y:
-                    human_click(x, y, duration=0.1)
-                    time.sleep(0.5)
-                    pyautogui.click(493,19, duration = 0.2)
-                    time.sleep(1)
-                    button_clicked = True
-            except Exception as e:
-                pass
-    if button_clicked:
-        time.sleep(2)
-        for button in buttons:
-            try:
-                x, y = pyautogui.locateCenterOnScreen(button,confidence=0.95)
-                if x and y:
-                    human_click(x, y, duration=0.1)
-                    time.sleep(0.5)
-                    pyautogui.click(493,19, duration = 0.2)
-                    time.sleep(1)
 
-            except Exception as e:
-                pass
     adsclosebutton = [ 'closeadsgoogle1.png','closeadsgoole11.png','closeadsgoole10.png', 'closeadsgoole2.png', 'closeadsgoole3.png', 'closeadsgoole4.png', 'closeadsgoole5.png', 'closeadsgoole6.png', 'closeadsgoole7.png', 'closeadsgoole9.png','closeadsgoole8.png']
-    for adbutton in adsclosebutton:
+    full_screen = pyautogui.screenshot()
+    for img_name in adsclosebutton:
         try:
-            x, y = pyautogui.locateCenterOnScreen( adbutton, region=[1,83,1914,956], confidence=0.95)
-            if x and y:
-                pyautogui.click(x, y, duration=0.1)
-                time.sleep(1)
-                pyautogui.click(494,19, duration = 0.2)
-        except Exception as e:
+            match = pyautogui.locate(img_name, full_screen,  region=[1,83,1914,956],confidence=0.95)
+            if match:
+                x, y = pyautogui.center(match)
+                pyautogui.click(x,y)
+                time.sleep(0.5)
+                pyautogui.click(493,19, duration = 0.4)
+                time.sleep(0.5)
+                full_screen = pyautogui.screenshot()
+
+        except Exception:
             pass
+
+
     try:
         x, y = pyautogui.locateCenterOnScreen( 'idiaad_rsum.png', confidence=0.95)
         if x and y:
@@ -3033,108 +3099,7 @@ def inidanxlinks():
 
 
 
-def swiftnlf():
-    pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.4)
-    pyautogui.click(493,19, duration = 0.4)
-    title = get_focused_window_title()
 
-    if destined_reached(title):
-        return 5
-    if newtab_validate(title):
-        return 5
-
-    try:
-        x, y = pyautogui.locateCenterOnScreen('js_ok.png', region=[930,130,342,165] ,confidence=0.9)
-        if x and y:
-            human_click(x, y, duration=1)
-            time.sleep(2)
-            pyautogui.click(493,19, duration = 0.2)
-            time.sleep(2)
-            return 5
-    except Exception as e:
-        pass
-
-    close_ads()
-    if 'SwiftLnx' in title:
-        pyautogui.moveTo(random.randint(50, 1000), random.randint(200, 500))
-        pyautogui.scroll(-5000)
-        time.sleep(1)
-        try:
-            x, y = pyautogui.locateCenterOnScreen('swif_getlink.png',confidence=0.9)
-            if x and y:
-                human_click(x, y, duration=0.1)
-                time.sleep(0.5)
-                pyautogui.click(493,19, duration = 0.2)
-                time.sleep(0.5)
-                return
-        except Exception as e:
-            pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('adcollaps.png',confidence=0.9)
-        if x and y:
-            human_click(x, y, duration=0.1)
-            time.sleep(0.5)
-            pyautogui.click(493,19, duration = 0.2)
-            time.sleep(0.5)
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('swif_close.png',confidence=0.9)
-        if x and y:
-            human_click(x, y, duration=0.1)
-            time.sleep(0.5)
-            pyautogui.click(493,19, duration = 0.2)
-            time.sleep(0.5)
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('swif_despage.png',confidence=0.7)
-        if x and y:
-            human_click(x, y, duration=0.1)
-            time.sleep(0.5)
-            pyautogui.click(493,19, duration = 0.2)
-            time.sleep(0.5)
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('swif_clckhr.png',confidence=0.7)
-        if x and y:
-            human_click(x, y, duration=0.1)
-            time.sleep(0.5)
-            pyautogui.click(493,19, duration = 0.2)
-            time.sleep(0.5)
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('swif_done.png',confidence=0.7)
-        if x and y:
-            
-            for i in range(5):
-                pyautogui.moveTo(random.randint(50, 1000), random.randint(200, 500))
-                pyautogui.scroll(-200)
-                try:
-                    x, y = pyautogui.locateCenterOnScreen('swif_clckhr.png',confidence=0.7)
-                    if x and y:
-                        human_click(x, y, duration=0.1)
-                        time.sleep(0.5)
-                        pyautogui.click(493,19, duration = 0.2)
-                        time.sleep(2)
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen('swif_despage.png',confidence=0.7)
-                            if x and y:
-                                human_click(x, y, duration=0.1)
-                                time.sleep(0.5)
-                                pyautogui.click(493,19, duration = 0.2)
-                                time.sleep(0.5)
-                        except Exception as e:
-                            pass
-                        return
-                except Exception as e:
-                    pass
-            pyautogui.moveTo(random.randint(50, 1000), random.randint(200, 500))
-            pyautogui.scroll(2000)      
-    except Exception as e:
-        pass
 
 shrinkearn_continue= 1 
 
@@ -4243,6 +4208,9 @@ def shrinkme_handle():
 
 clickads_gplink = True
 clickads_gplink_attempts = 0
+
+
+
 def gplink_handle():
     global clickads_gplink
     global clickads_gplink_attempts
@@ -4256,46 +4224,11 @@ def gplink_handle():
         shorlink = random_link('link1')
         open_link(link = shorlink ,newtab = False)
         return 
-    try:
-        x, y = pyautogui.locateCenterOnScreen('blackcloseads_gp.png',  confidence=0.95)
-        if x and y:
-            pyautogui.click(x, y, duration=0.1)
-            time.sleep(0.2)
-            pyautogui.click(494,19, duration = 0.2)
-            
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('blackcloseads_gpskip.png',  confidence=0.95)
-        if x and y:
-            pyautogui.click(x, y, duration=0.1)
-            time.sleep(0.2)
-            pyautogui.click(494,19, duration = 0.2)
-            
-    except Exception as e:
-        pass
-    if 'Just' in title:
-        try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.6)
-            pyautogui.click(x, y,duration=1)
-            time.sleep(1)
-            pyautogui.click(x, y,duration=1)
-            time.sleep(5)
-            return
-
-        except Exception as e:
-            pass
     if 'This link is risky' in title:
         pyautogui.click(22,62)
         time.sleep(5)
         return
-
-    try:
-        x, y = pyautogui.locateCenterOnScreen('noworkingpage.png', confidence=0.98)
-        if x and y:
-            return 5
-    except Exception as e:
-        pass
+    
     if 'Note from' in title:
         pyautogui.click(292,20)
         time.sleep(1)
@@ -4313,17 +4246,118 @@ def gplink_handle():
             shorlink = random_link('link1')
             open_link(link = shorlink ,newtab = False)
             return 1
-    con_buttons = ['cancel2.png','close12new.png','cancel3.png','cancel1.png']
-    conbutfond_found = False
-    for button in con_buttons:
+        
+
+    if 'Just' in title:
         try:
-            x, y = pyautogui.locateCenterOnScreen(button,  confidence=0.9)
-            if x and y:
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.6)
+            pyautogui.click(x, y,duration=1)
+            time.sleep(1)
+            pyautogui.click(x, y,duration=1)
+            time.sleep(5)
+            return
+
+        except Exception as e:
+            pass
+
+    conbutfond_found = False
+##########################################
+    black_closeads_button = [
+
+            ('blackcloseads_gp.png', None, 0.9),
+            ('blackcloseads_gpskip.png', None, 0.9),
+            ('noworkingpage.png', None, 0.95),
+            ('rewrdingp.png', None, 0.9),
+            ('continuenewgpg.png', None, 0.9),
+
+            ('gp_verifynew.png', None, 0.9),
+            ('gp_connew.png', None, 0.7),
+            ('gp_connew3.png', None, 0.8),
+            ('gp_verifynew3.png', None, 0.8),
+            ('gp_verifynew2.png', None, 0.8),
+
+        ]
+        
+    gpbuttons = ['gp_verifynew.png', 'gp_connew.png', 'gp_connew3.png', 'gp_verifynew2.png','gp_verifynew3.png']
+
+
+    full_screen = pyautogui.screenshot()
+
+    for img_name, reg, conf in black_closeads_button:
+        try:
+            # 3. Search WITHIN the screenshot we already took
+            # Use grayscale=True for 30% more speed
+            match = pyautogui.locate(img_name, full_screen, region=reg, confidence=conf)
+            if match:
+                if img_name == 'noworkingpage.png':
+                    return 5
+                if img_name == 'rewrdingp.png':
+                    return 
+                
+                x, y = pyautogui.center(match)
+                if img_name == 'continuenewgpg.png':
+                    pyautogui.click(x, y, duration=0.1)
+                    return 
+
+                
+                human_click(x, y, duration=0.2)
+                time.sleep(0.5)
+                pyautogui.click(493, 19, duration=0.3)
+
+                if img_name in gpbuttons:
+                    time.sleep(1)
+                    conbutfond_found = True
+                full_screen = pyautogui.screenshot()
+
+        except Exception as e:
+            pass
+
+#################################################
+    con_buttons = [
+            
+            ('cancel2.png', None, 0.9),
+            ('close12new.png', None, 0.9),
+            ('cancel3.png', None, 0.9),
+            ('cancel1.png', None, 0.9),
+
+    ]
+    if conbutfond_found == True:
+        combined_buttons = con_buttons + black_closeads_button
+        for i in range(6):
+            for img_name, reg, conf in combined_buttons:
+                try:
+
+                    match = pyautogui.locate(img_name, full_screen, region=reg, confidence=conf)
+                    if match:
+                        x, y = pyautogui.center(match)
+                        human_click(x, y, duration=0.2)
+                        time.sleep(0.5)
+                        pyautogui.click(494,19, duration = 0.2)
+                        time.sleep(0.5)
+                        full_screen = pyautogui.screenshot()
+                        
+                        
+                        
+                except Exception as e:
+                    pass
+        return
+
+
+
+    conbutfond_found = False
+    for img_name, reg, conf in con_buttons:
+        try:
+            # 3. Search WITHIN the screenshot we already took
+            # Use grayscale=True for 30% more speed
+            match = pyautogui.locate(img_name, full_screen, region=reg, confidence=conf)
+            if match:
+                x, y = pyautogui.center(match)
                 human_click(x, y, duration=0.2)
                 time.sleep(0.5)
                 pyautogui.click(494,19, duration = 0.2)
                 time.sleep(0.5)
                 conbutfond_found = True
+                full_screen = pyautogui.screenshot()
                 break
                 
         except Exception as e:
@@ -4343,147 +4377,47 @@ def gplink_handle():
                         
                 except Exception as e:
                     pass
+
     close_ads()
-    try:
-        x, y = pyautogui.locateCenterOnScreen('rewrdingp.png',  confidence=0.95)
-        if x and y:
-            print('rewardads gp')
-            return
-            
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('continuenewgpg.png',  confidence=0.95)
-        if x and y:
-            pyautogui.click(x, y, duration=0.1)
-            return
-            
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-        if x and y:
-            try:
-                x, y = pyautogui.locateCenterOnScreen('gplinknotadclick.png', region=[1161,33,444,50], confidence=0.99)
-                if x and y:
-                    pass
-            except Exception as e:
-                print('page loaded on different ad gplink')
-                pyautogui.click(23,66)
-                time.sleep(3)
-    except Exception as e:
-        pass
+    full_screen = pyautogui.screenshot()
 
 
-    adsclosebutton = [ 'consent5.png','closeadsgoogle1.png','closeadsgoole11.png','closeadsgoole10.png', 'closeadsgoole2.png', 'closeadsgoole3.png', 'closeadsgoole4.png', 'closeadsgoole5.png', 'closeadsgoole6.png', 'closeadsgoole7.png', 'closeadsgoole9.png','closeadsgoole8.png']
+    adsclosebutton = ['resumevid_gp.png', 'skipvidgp.png', 'resumevidgp.png','closevideoadgp.png', 'consent5.png',  'closeadsgoogle1.png','closeadsgoole11.png','closeadsgoole10.png', 'closeadsgoole2.png', 'closeadsgoole3.png', 'closeadsgoole4.png', 'closeadsgoole5.png', 'closeadsgoole6.png', 'closeadsgoole7.png', 'closeadsgoole9.png','closeadsgoole8.png']
     for adbutton in adsclosebutton:
         try:
-            x, y = pyautogui.locateCenterOnScreen( adbutton, region=[1,83,1914,956], confidence=0.9)
-            if x and y:
+            if adbutton == 'closevideoadgp.png':
+                match = pyautogui.locate(adbutton, full_screen, region=[900,212,714,522], confidence=0.9)
+            elif adbutton == 'skipvidgp.png':
+                match = pyautogui.locate(adbutton, full_screen,  confidence=0.9)
+            else:
+                match = pyautogui.locate(adbutton, full_screen,  region=[1,83,1914,956], confidence=0.9)
+            if match:
+                x, y = pyautogui.center(match)
+                if adbutton == 'closevideoadgp.png':
+                    pyautogui.click(x, y, duration=0.1)
+                    time.sleep(0.5)
+                    pyautogui.click(970, 638, duration=0.1)
+                    time.sleep(0.5)
+                    pyautogui.click(494,19, duration = 0.2)
+                    return
+                if adbutton == 'resumevidgp.png':
+                    pyautogui.click(x, y, duration=0.1)
+                    time.sleep(2)
+                    pyautogui.click(494,19, duration = 0.2)
+                    return
+                
                 pyautogui.click(x, y, duration=0.1)
                 time.sleep(0.5)
                 pyautogui.click(494,19, duration = 0.2)
+                full_screen = pyautogui.screenshot()
+
         except Exception as e:
             pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen( 'skipvidgp.png', confidence=0.9)
-        if x and y:
-            pyautogui.click(x, y, duration=0.1)
-            time.sleep(0.5)
-            pyautogui.click(494,19, duration = 0.2)
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen( 'closevideoadgp.png', region=[900,212,714,522], confidence=0.9)
-        if x and y:
-            pyautogui.click(x, y, duration=0.1)
-            time.sleep(0.5)
-            pyautogui.click(970, 638, duration=0.1)
-            time.sleep(0.5)
-            pyautogui.click(494,19, duration = 0.2)
-            return
-            
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen( 'skipvidgp.png', confidence=0.9)
-        if x and y:
-            pyautogui.click(x, y, duration=0.1)
-            time.sleep(2)
-            pyautogui.click(494,19, duration = 0.2)
-            return
-            
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen( 'resumevidgp.png', region=[1,83,1914,956], confidence=0.9)
-        if x and y:
-            pyautogui.click(x, y, duration=0.1)
-            time.sleep(2)
-            pyautogui.click(494,19, duration = 0.2)
-            return
-            
-    except Exception as e:
-        pass
-
-    con_buttons = ['cancel2.png','close12new.png','cancel3.png','cancel1.png', 'blackcloseads_gpskip.png','blackcloseads_gp.png','gp_verifynew.png', 'gp_connew.png', 'gp_connew3.png', 'gp_verifynew2.png','gp_verifynew3.png',  'resumevid_gp.png']
-    conbutfond_found = False
-    for button in con_buttons:
-        try:
-            x, y = pyautogui.locateCenterOnScreen(button,  confidence=0.9)
-            if x and y:
-                human_click(x, y, duration=0.2)
-                time.sleep(0.5)
-                pyautogui.click(494,19, duration = 0.2)
-                time.sleep(0.5)
-                conbutfond_found = True
-                break
-                
-        except Exception as e:
-            pass
-    if conbutfond_found == True:
-        for i in range(5):
-            #pyautogui.click(494,19, duration = 0.2)
-            for button in con_buttons:
-                try:
-                    x, y = pyautogui.locateCenterOnScreen(button,  confidence=0.9)
-                    if x and y:
-                        human_click(x, y, duration=0.2)
-                        time.sleep(0.5)
-                        pyautogui.click(494,19, duration = 0.2)
-                        time.sleep(0.5)
-                        clickads_gplink = False
-                        
-                except Exception as e:
-                    pass
 
 
-    adsclosebutton = [ 'closeadsgoogle1.png','closeadsgoole10.png', 'closeadsgoole2.png', 'closeadsgoole3.png', 'closeadsgoole4.png', 'closeadsgoole5.png', 'closeadsgoole6.png', 'closeadsgoole7.png', 'closeadsgoole9.png','closeadsgoole8.png']
-    for adbutton in adsclosebutton:
-        try:
-            x, y = pyautogui.locateCenterOnScreen( adbutton, region=[1,83,1914,956], confidence=0.9)
-            if x and y:
-                pyautogui.click(x, y, duration=0.1)
-                
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen( 'closeannoyad.png', region=[1354,72,320,150], confidence=0.98)
-            if x and y:
-                pyautogui.click(x, y, duration=0.1)
-                time.sleep(2)
-        except Exception as e:
-            pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen( 'resumevidgp.png', region=[1,83,1914,956], confidence=0.9)
-        if x and y:
-            pyautogui.click(x, y, duration=0.1)
-            time.sleep(2)
-            return
-            
-    except Exception as e:
-        pass
 
+
+    
     
     pyautogui.click(1116,525, duration=0.5)
 
@@ -4728,175 +4662,6 @@ def gplink_handle():
 
 
 
-def exe_handle():
-    pyautogui.click(493,19, duration = 0.4)
-    pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=1)
-
-    title = get_focused_window_title()
-    #if destined_reached(title):
-    #    return True
-    if 'Just' in title:
-        try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.6)
-            pyautogui.click(x, y,duration=1)
-            time.sleep(1)
-            pyautogui.click(x, y,duration=1)
-            time.sleep(5)
-
-        except Exception as e:
-            pass
-
-    try:
-        x, y = pyautogui.locateCenterOnScreen('fbg_lg.png', region=[394,83,303,123], confidence=0.95)
-        if x and y:
-            pyautogui.scroll(500)
-            time.sleep(1)
-            pyautogui.click(1090, 820)  # Click on the 'Leave' button
-            time.sleep(1)
-            pyautogui.click(1117, 550)
-            pyautogui.click(1117, 540)
-            pyautogui.click(1117, 530)
-            pyautogui.click(1117, 520)
-            pyautogui.click(1117, 510)
-            pyautogui.click(1117, 500)
-            pyautogui.click(1117, 490)
-            pyautogui.click(1117, 480)
-            pyautogui.click(1117, 470)
-            pyautogui.click(1117, 460)
-            pyautogui.click(1117, 450)
-            pyautogui.click(1117, 430)
-            pyautogui.click(1117, 420)
-            pyautogui.click(1117, 410)
-            pyautogui.click(1117, 400)
-            return 
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('yt_logo.png', region=[699,56,240,136], confidence=0.94)
-        if x and y:
-            pyautogui.click(885,394)
-            time.sleep(1)
-            return 
-    except Exception as e:
-        pass
-    close_ads()
-    try:
-        x, y = pyautogui.locateCenterOnScreen('gpverify.png', region=[610,55,670,989], confidence=0.9)
-        if x and y:
-            human_click(x, y, duration=1)
-            time.sleep(1)
-            pyautogui.click(493,19, duration = 0.4)
-            time.sleep(1)
-            pyautogui.moveTo(x, y, duration=1)
-            pyautogui.scroll(-2000)
-            time.sleep(1)
-             
-    except Exception as e:
-        pass
-
-
-def linkjust_handle():
-    pyautogui.click(493,19, duration = 0.4)
-    
-    pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=1)
-
-    title = get_focused_window_title()
-    #if destined_reached(title):
-    #    return True
-
-    if 'Just' in title:
-        try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.6)
-            pyautogui.click(x, y,duration=1)
-            time.sleep(1)
-            pyautogui.click(x, y,duration=1)
-            time.sleep(5)
-
-        except Exception as e:
-            pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('consent.png', region=[920,722,344,83] ,confidence=0.95)
-        if x and y:
-            human_click(x, y, duration=1)
-            time.sleep(1)
-            pyautogui.click(493,19, duration = 0.4)
-            time.sleep(2)
-            
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('leave_js.png', confidence=0.95)
-        if x and y:
-            human_click(x, y, duration=1)
-            time.sleep(1)
-            pyautogui.click(493,19, duration = 0.4)
-            time.sleep(1)
-            
-    except Exception as e:
-        pass
-    
-    close_ads()
-    if 'Linkjust' in title:
-        try:
-            x, y = pyautogui.locateCenterOnScreen('closeads_lj.png', confidence=0.9)
-            if x and y:
-                for i in range(8):
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen('closeads_lj.png', confidence=0.9)
-                        if x and y:
-                            pyautogui.click(x, y, duration=0.5)
-                            time.sleep(1)
-                            pyautogui.click(493,19, duration = 0.4)
-                            time.sleep(1)
-                    except Exception as e:
-                        break
-        except Exception as e:
-            pass
-        pyautogui.moveTo(300,309)
-        pyautogui.scroll(-2000)
-        try:
-            x, y = pyautogui.locateCenterOnScreen('justlink_getlink.png', confidence=0.9)
-            if x and y:
-                for i in range(6):
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen('justlink_getlink.png', confidence=0.9)
-                        if x and y:
-                            pyautogui.click(x, y, duration=0.5)
-                            time.sleep(1)
-                            pyautogui.click(493,19, duration = 0.4)
-                            time.sleep(1)
-                             
-                    except Exception as e:
-                        return
-        except Exception as e:
-            pass
-    liget = None
-    if liget:
-        liget = None
-        validlivk = None
-        linkjusturls = ['playrd7.online', 'gold-24.net', 'forexrw7.com', 'linkjust.com','news-365', 'insurance2usa.com','procinehub.com', 'shortxlinks.com','mtc1.dnmf' ,'mtc1']
-        liget = get_link()
-        if liget:
-            for link in linkjusturls:
-                if link in liget or liget in link:
-                    print("Linkjust URL found:", link)
-                    validlivk = True
-                    break
-
-            if validlivk:
-                print("Valid Linkjust URL found:", liget)
-            else:
-                for link in traffic_links:
-                    if link in liget or liget in link:
-                        print("Linkjust URL found:", link)
-                        validlivk = True
-                        break
-                if validlivk:
-                    pass
-                else:
-                    shortlinks = random_link('link4')
-                    open_link(link = shortlinks, newtab = False)
-
 
 
 def shortx_handle():
@@ -4922,46 +4687,6 @@ def shortx_handle():
 
         except Exception as e:
             pass
-    if 'AFFAF AFSFAF FADesktop' in title:
-        try:
-            x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-            if x and y:
-                pyautogui.click(952,636)
-                time.sleep(1)
-                return
-        except Exception as e:
-            pass
-    close_ads()
-    try:
-        x, y = pyautogui.locateCenterOnScreen('getlink_shotx.png', region=[572,68,762,960], confidence=0.8)
-        if x and y:
-            pyautogui.click(x,y)
-            time.sleep(1)
-            pyautogui.click(493,19, duration = 0.4)
-            time.sleep(1)
-            pyautogui.click(x,y)
-            time.sleep(1)
-            pyautogui.click(493,19, duration = 0.4)
-            time.sleep(1)
-            return 1
-             
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('getlink_shotx2.png', region=[572,68,762,960], confidence=0.8)
-        if x and y:
-            pyautogui.click(x,y)
-            time.sleep(1)
-            pyautogui.click(493,19, duration = 0.4)
-            time.sleep(1)
-            pyautogui.click(x,y)
-            time.sleep(1)
-            pyautogui.click(493,19, duration = 0.4)
-            time.sleep(1)
-            return 1
-             
-    except Exception as e:
-        pass
     try:
         x, y = pyautogui.locateCenterOnScreen('acceptsxg.png', region=[572,68,762,960], confidence=0.7)
         if x and y:
@@ -4969,37 +4694,53 @@ def shortx_handle():
             time.sleep(0.5)
     except Exception as e:
         pass
+
+    close_ads()
+
     button_clicked = False
+    full_screen = pyautogui.screenshot()
+    shortxbuttons = ['getlink_shotx.png', 'getlink_shotx2.png', 'imnorobo_shortx.png', 'gen_shotx.png', 'genlink2_shortx.png','shortxcss.png', 'linkdown_shotx.png', 'clickhere_shotx.png', 'gen_shotx.png']
+    for img_name in shortxbuttons:
+        try:
+            match = pyautogui.locate(img_name, full_screen, region=[572,68,762,960], confidence=0.75)
+            if match:
+                x, y = pyautogui.center(match)
+                #pyautogui.click(x,y)
+                human_click(x, y, duration=0.3)
+                time.sleep(0.5)
+                pyautogui.click(493,19, duration = 0.4)
+                time.sleep(1)
+                full_screen = pyautogui.screenshot()
+                button_clicked = True
+
+        except Exception:
+            pass
+    
+    if button_clicked:
+        for i in range(5):
+            for img_name in shortxbuttons:
+                try:
+                    match = pyautogui.locate(img_name, full_screen, region=[572,68,762,960], confidence=0.75)
+                    if match:
+                        x, y = pyautogui.center(match)
+                        human_click(x, y, duration=0.3)
+                        time.sleep(0.5)
+                        pyautogui.click(493,19, duration = 0.4)
+                        time.sleep(1)
+                        full_screen = pyautogui.screenshot()
+                        button_clicked = True
+                        if img_name == 'linkdown_shotx.png':
+                            time.sleep(2)
+                except Exception:
+                    pass
+
+
+
     try:
-        x, y = pyautogui.locateCenterOnScreen('imnorobo_shortx.png', region=[572,68,762,960], confidence=0.7)
-        if x and y:
-            pyautogui.click(x,y)
-            time.sleep(0.5)
-            button_clicked = True
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('gen_shotx.png', region=[572,68,762,960], confidence=0.7)
-        if x and y:
-            pyautogui.click(x,y)
-            time.sleep(0.5)
-            button_clicked = True
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('genlink2_shortx.png', region=[572,68,762,960], confidence=0.7)
-        if x and y:
-            pyautogui.click(x,y)
-            time.sleep(0.5)
-            button_clicked = True
-             
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
+        x, y = pyautogui.locateCenterOnScreen('please_wait_get.png', region=[572,68,762,960], confidence=0.8)
         if x and y:
             try:
-                x, y = pyautogui.locateCenterOnScreen('please_wait_get.png', region=[572,68,762,960], confidence=0.8)
+                x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
                 if x and y:
                     for i in range(7):
                         time.sleep(1)
@@ -5040,32 +4781,11 @@ def shortx_handle():
                 pass
     except Exception as e:
         pass
-    buttslist = ['shortxcss.png', 'linkdown_shotx.png', 'clickhere_shotx.png', 'gen_shotx.png']
-    for butt in buttslist:
-        try:
-            x, y = pyautogui.locateCenterOnScreen(butt, region=[572,68,762,960], confidence=0.7)
-            if x and y:
-                pyautogui.click(x,y)
-                if butt == 'linkdown_shotx.png':
-                    time.sleep(3)
-                time.sleep(0.5)
-                button_clicked = True
-             
-        except Exception as e:
-            pass
-    if button_clicked:
-        for butt in buttslist:
-            try:
-                x, y = pyautogui.locateCenterOnScreen(butt, region=[572,68,762,960], confidence=0.7)
-                if x and y:
-                    pyautogui.click(x,y)
-                    time.sleep(0.5)
-                    button_clicked = True
-                
-            except Exception as e:
-                pass
-    if button_clicked:
-        return 1
+
+
+
+
+
 
 def adding_extensions():
     open_link(link = 'chrome://extensions/', newtab = False)
@@ -6038,6 +5758,8 @@ while True:
         #layout = 1
         clickads_gplink = True
         clickads_gplink_attempts = 0
+
+        check_indx = True
         while gg == None:
             try:
 
@@ -6095,8 +5817,8 @@ while True:
 
                 if script_seconds_only >800:
                     gg = True
-                if script_seconds_only > 700:
-                    tpi = True
+                #if script_seconds_only > 700:
+                #    tpi = True
 
                 try:
                     x, y = pyautogui.locateCenterOnScreen('leavebuttong.png',  confidence=0.98)
@@ -6224,7 +5946,8 @@ while True:
 
 
                 if layout == 1:
-                    
+                    if check_indx:
+                        check_indx = False
                         try:
                             switch_to_window(window3)
                             if win32gui.IsWindow(window3):
@@ -6261,7 +5984,8 @@ while True:
                         except Exception as e:
                             #cuty = True
                             pass
-
+                    else:
+                        check_indx = True
 
 
 
@@ -6550,18 +6274,3 @@ while True:
 
             except Exception as e:
                 print("An error occurred:", e)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

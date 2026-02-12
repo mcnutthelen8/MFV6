@@ -4706,8 +4706,8 @@ def shortx_handle():
             match = pyautogui.locate(img_name, full_screen, region=[572,68,762,960], confidence=0.9)
             if match:
                 x, y = pyautogui.center(match)
-                #pyautogui.click(x,y)
-                human_click(x, y, duration=0.3)
+                pyautogui.click(x,y)
+                #human_click(x, y, duration=0.1)
                 time.sleep(0.5)
                 if img_name == 'clickhere_shotx.png':
                     return
@@ -4724,10 +4724,12 @@ def shortx_handle():
             for img_name in shortxbuttons:
                 try:
                     match = pyautogui.locate(img_name, full_screen, region=[572,68,762,960], confidence=0.9)
-                    if match:
+                    match_reload = pyautogui.locate('loaded_page.png', full_screen, region=[60,33,77,58], confidence=0.95)
+                    if match and match_reload:
 
                         x, y = pyautogui.center(match)
-                        human_click(x, y, duration=0.3)
+                        pyautogui.click(x,y)
+                        #human_click(x, y, duration=0.1)
                         time.sleep(0.5)
                         if img_name == 'clickhere_shotx.png':
                             return

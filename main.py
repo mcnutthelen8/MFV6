@@ -2221,12 +2221,12 @@ def close_ads():
                     
                     # Logic for special buttons (JS/Reload/Block)
                     if img_name in ['js_ok.png', 'reload_confrim.png', 'block_js.png']:
-                        human_click(x, y, duration=1)
+                        pyautogui.click(x, y, duration=0.1)
                         time.sleep(2)
                         if img_name == 'block_js.png': 
-                             human_click(x, y, duration=1) # Double click logic from your code
-                             time.sleep(1)
-                        pyautogui.click(95, 62)
+                            pyautogui.click(x, y, duration=0.1) 
+                            time.sleep(1)
+                        #pyautogui.click(95, 62)
                         return True
                     
                     # Logic for Page Refresh

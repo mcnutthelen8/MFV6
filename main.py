@@ -5687,7 +5687,7 @@ while True:
     window1 = open_detatch_tab()
     window2 = open_detatch_tab()
     #cutty_window = open_detatch_tab()
-    window3 = open_detatch_tab()
+    #window3 = open_detatch_tab()
     #window4 = open_detatch_tab()
     print("Window IDs:", window1, window2)
     script_elapsed_time3 = time.time() - duration_time
@@ -5713,11 +5713,11 @@ while True:
         open_link(link = shorlink ,newtab = False)
         time.sleep(2)
 
-        switch_to_window(window3)
-        pyautogui.click(493,19, duration = 0.4)
-        shorlink = random_link('link4')
-        open_link(link = shorlink ,newtab = False)
-        time.sleep(2)
+        #switch_to_window(window3)
+        #pyautogui.click(493,19, duration = 0.4)
+        #shorlink = random_link('link4')
+        #open_link(link = shorlink ,newtab = False)
+        #time.sleep(2)
         
         hyperrefreshtime1 = random.randint(200, 500)
         hyperrefreshtime2 = random.randint(200, 800)
@@ -5962,7 +5962,7 @@ while True:
                             pass
 
 
-                if layout == 1:
+                if layout == 3:
                     if check_indx:
                         check_indx = False
                         try:
@@ -6109,139 +6109,6 @@ while True:
 
 
 
-
-
-
-
-
-                if layout == 2:
-                    if layout ==2:
-                        try:
-                            
-                            if win32gui.IsWindow(window3):
-                                switch = switch_to_window(window3)
-                                if switch:
-                                    ggwin3 = None
-                                    ggwin3 = adlink_handle()
-                                    if ggwin3 == 5:
-                                        oii = True
-                                    elif ggwin3 == 1:
-                                        oii = False
-                                        window3_lastclick = time.time()
-      
-                                                
-                                    time.sleep(1)
-                                    validwin3_stat = True# linked_validate()
-                                    if validwin3_stat == False:
-                                        ggwin3_unvalid +=1
-                                        print("ggwin3_unvalid",ggwin3_unvalid)
-                                    if ggwin3_unvalid >= 11:
-                                        oii = True           
-
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('thissiteerror.png', region=[526,160,530,470], confidence=0.95)
-                                    if x and y:
-                                        pyautogui.click(24,64)
-                                        time.sleep(3)
-                                        #pyautogui.moveTo(500,300)
-                                        #pyautogui.scroll(5000)
-                                        oii = True
-                                except Exception as e:
-                                    pass
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('resubmission.png', region=[585,210,585,290], confidence=0.85)
-                                    if x and y:
-                                        pyautogui.click(24,64)
-                                        time.sleep(3)
-                                        #pyautogui.moveTo(500,300)
-                                        #pyautogui.scroll(5000)
-                                        oii= True
-                                except Exception as e:
-                                    pass
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('cssnotload2.png', region=[1,66,230,190], confidence=0.8)
-                                    if x and y:
-                                        pyautogui.press('f5')
-                                        time.sleep(3)
-                                except Exception as e:
-                                    pass
-                            else:
-                                print('oii not exist')
-                                
-                                if oii:
-                                    pass
-                                else:
-                                    sites_done += 1
-                                oii = True
-
-                        except Exception as e:
-                            #oii = True
-                            pass
-                
-                if layout ==2:
-                    if layout == 2: ##if cuty == None or cuty == False:
-                        try:
-                            
-                            if win32gui.IsWindow(window4):
-                                switch = switch_to_window(window4)
-                                if switch:
-
-                                    ggwin4 = None
-                                    ggwin4 = adurl_handle()
-                                    if ggwin4 == 5:
-                                        fc_lc = True
-                                    elif ggwin4 == 1:
-                                        fc_lc = False
-                                        window4_lastclick = time.time()
-
-                                time.sleep(1)
-                                validwin4_stat = linked_validate()
-                                if validwin4_stat == False:
-                                    ggwin4_unvalid +=1
-                                    print("ggwin4_unvalid",ggwin4_unvalid)
-                                if ggwin4_unvalid >= 11:
-                                    fc_lc = True           
-
-
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('thissiteerror.png', region=[526,160,530,470], confidence=0.95)
-                                    if x and y:
-                                        pyautogui.click(24,64)
-                                        time.sleep(3)
-                                        #pyautogui.moveTo(500,300)
-                                        #pyautogui.scroll(5000)
-                                        fc_lc = True
-                                except Exception as e:
-                                    pass
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('resubmission.png', region=[585,210,585,290], confidence=0.85)
-                                    if x and y:
-                                        pyautogui.click(24,64)
-                                        time.sleep(3)
-                                        #pyautogui.moveTo(500,300)
-                                        #pyautogui.scroll(5000)
-                                        fc_lc= True
-                                except Exception as e:
-                                    pass
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('cssnotload2.png', region=[1,66,230,190], confidence=0.8)
-                                    if x and y:
-                                        pyautogui.press('f5')
-                                        time.sleep(3)
-                                except Exception as e:
-                                    pass
-                            else:
-                                print('fc_lc not exist')
-                                
-                                if fc_lc:
-                                    pass
-                                else:
-                                    sites_done += 1
-                                fc_lc = True
-
-                        except Exception as e:
-                            #oii = True
-                            pass
 
 
 

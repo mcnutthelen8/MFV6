@@ -3019,7 +3019,7 @@ def inidanxlinks():
     full_screen = pyautogui.screenshot()
     for img_name in buttons:
         try:
-            match = pyautogui.locate(img_name, full_screen, confidence=0.95)
+            match = pyautogui.locate(img_name, full_screen, confidence=0.98)
             if match:
                 x, y = pyautogui.center(match)
                 pyautogui.click(x,y)
@@ -3035,7 +3035,7 @@ def inidanxlinks():
     full_screen = pyautogui.screenshot()
     for img_name in adsclosebutton:
         try:
-            match = pyautogui.locate(img_name, full_screen,  region=[1,83,1914,956],confidence=0.95)
+            match = pyautogui.locate(img_name, full_screen,  region=[1,83,1914,956],confidence=0.98)
             if match:
                 x, y = pyautogui.center(match)
                 pyautogui.click(x,y)
@@ -4224,11 +4224,7 @@ def gplink_handle():
         shorlink = random_link('link1')
         open_link(link = shorlink ,newtab = False)
         return 
-    if 'This link is risky' in title:
-        pyautogui.click(22,62)
-        time.sleep(5)
-        return
-    
+
     if 'Note from' in title:
         pyautogui.click(292,20)
         time.sleep(1)
@@ -4702,7 +4698,7 @@ def shortx_handle():
     shortxbuttons = ['getlink_shotx.png', 'getlink_shotx2.png', 'imnorobo_shortx.png', 'gen_shotx.png', 'genlink2_shortx.png','shortxcss.png', 'linkdown_shotx.png', 'clickhere_shotx.png', 'gen_shotx.png']
     for img_name in shortxbuttons:
         try:
-            match = pyautogui.locate(img_name, full_screen, region=[572,68,762,960], confidence=0.75)
+            match = pyautogui.locate(img_name, full_screen, region=[572,68,762,960], confidence=0.9)
             if match:
                 x, y = pyautogui.center(match)
                 #pyautogui.click(x,y)
@@ -4720,7 +4716,7 @@ def shortx_handle():
         for i in range(5):
             for img_name in shortxbuttons:
                 try:
-                    match = pyautogui.locate(img_name, full_screen, region=[572,68,762,960], confidence=0.75)
+                    match = pyautogui.locate(img_name, full_screen, region=[572,68,762,960], confidence=0.9)
                     if match:
                         x, y = pyautogui.center(match)
                         human_click(x, y, duration=0.3)
@@ -4731,6 +4727,7 @@ def shortx_handle():
                         button_clicked = True
                         if img_name == 'linkdown_shotx.png':
                             time.sleep(2)
+                        continue
                 except Exception:
                     pass
 

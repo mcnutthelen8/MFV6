@@ -752,3 +752,36 @@ function gpscroll() {
 }
 
 gpscroll();
+
+
+function setupDeadEndRedirect() {
+    if (!window.location.href.includes("powergam.online")) return;
+
+    let secondsMissing = 0;
+
+    const checkStatus = () => {
+        // SAFETY: If the browser is still spinning/loading, don't count yet
+        if (document.readyState !== 'complete') return; 
+
+        const timerDiv = document.querySelector("#myTimerDiv");
+        const scrollSelectors = ["#VerifyBtn", "#NextBtn", "#captchaForm button", "#skip-btn"];
+        
+        const anyButtonVisible = scrollSelectors.some(selector => {
+            const el = document.querySelector(selector);
+            return el && el.offsetHeight > 0; // Check if it's actually drawn on screen
+        });
+
+        // If something is happening, reset the timer
+        if (timerDiv || anyButtonVisible) {
+            secondsMissing = 0; 
+        } else {
+            secondsMissing++;
+        }
+
+        if (secondsMissing >= 5) {
+            window.location.href = "https://web.telegram.org/a/get#link1";
+        }
+    };
+
+    setInterval(checkStatus, 1000);
+}

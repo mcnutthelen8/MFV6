@@ -32,6 +32,7 @@
 
         "explore.org",
         "dynamicslab",
+        "demo.dynamicslab.ai",
         "learn-anything",
         "hacksplaining",
         "ifixit.com",
@@ -188,6 +189,7 @@
     ],
     link4: [
 { url: 'https://indiaearnx.com/rvad9V5', sites: siteGroups.common },
+{ url: 'https://indiaearnx.com/4JwV', sites: siteGroups.common },
 { url: 'https://indiaearnx.com/4fZ', sites: siteGroups.common },
 { url: 'https://indiaearnx.com/z8AB1', sites: siteGroups.common },
 { url: 'https://indiaearnx.com/CIYG3D', sites: siteGroups.common },
@@ -621,7 +623,6 @@ function gpscroll22() {
 
 // Start the watcher
 
-
 function gpscroll() {
     const clickSelectors = [
         "#robotButton", "#robot", "#robot2", "#rtgli1", 
@@ -632,65 +633,69 @@ function gpscroll() {
         "#VerifyBtn", "#NextBtn", "#captchaForm button", "#skip-btn"
     ];
 
-    // CSS Injection - Use a generic ID to avoid suspicion
     const styleId = 'ui-helper-styles';
     if (!document.getElementById(styleId)) {
         const style = document.createElement('style');
         style.id = styleId;
         style.innerHTML = `
-            .btn-rescue-active {
-                z-index: 2147483647 !important;
-                position: relative !important;
-                outline: 3px solid #00FF00 !important; /* Help you find it */
-            }
-            .obstacle-ghost {
-                pointer-events: none !important;
-                opacity: 0.1 !important; 
-                filter: grayscale(1) !important;
-            }
+// ... inside your styleId block ...
+.btn-rescue-active {
+    z-index: 2147483647 !important;
+    position: relative !important;
+    outline: 3px solid #00FF00 !important;
+    /* ADD THIS: This ensures the button itself still accepts clicks 
+       even if the browser thinks it's being "tampered" with */
+    pointer-events: auto !important; 
+    user-select: auto !important;
+}
+
+.obstacle-ghost {
+    /* Instead of just opacity, we MUST kill the ability to block the mouse */
+    pointer-events: none !important;
+    opacity: 0 !important; 
+    visibility: hidden !important; 
+}
         `;
         document.head.appendChild(style);
     }
 
-    const clickedElements = new WeakSet();
+    const processedElements = new WeakSet();
 
-    function rescueAndPrepare(btn) {
-        if (!btn || btn.classList.contains('btn-rescue-active')) return;
-        btn.classList.add('btn-rescue-active');
+function rescueAndPrepare(btn) {
+    if (!btn || btn.classList.contains('btn-rescue-active')) return;
 
-        const rect = btn.getBoundingClientRect();
-        // Sampling points to detect overlays
-        const points = [
-            [rect.left + rect.width / 2, rect.top + rect.height / 2],
-            [rect.left + 2, rect.top + 2],
-            [rect.right - 2, rect.bottom - 2]
-        ];
+    const rect = btn.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
 
-        points.forEach(([x, y]) => {
-            const el = document.elementFromPoint(x, y);
-            // Only ghost it if it's NOT the button and NOT a parent of the button
-            if (el && el !== btn && !btn.contains(el) && !el.contains(btn)) {
-                el.classList.add('obstacle-ghost');
-            }
-        });
+    // Check what is actually covering the button
+    let topEl = document.elementFromPoint(x, y);
+
+    // Loop to find all overlays above the button and "ghost" them
+    while (topEl && topEl !== btn && !btn.contains(topEl) && topEl !== document.documentElement) {
+        topEl.classList.add('obstacle-ghost');
+        topEl.style.pointerEvents = 'none'; // Force it in JS too
+        // Re-check what is now at that point
+        topEl = document.elementFromPoint(x, y);
     }
 
-    async function naturalClick(element) {
-        if (!element || clickedElements.has(element)) return;
+    btn.classList.add('btn-rescue-active');
+}
 
-        // Improved event sequence to look more modern/human
-        const props = { view: window, bubbles: true, cancelable: true, buttons: 1 };
+    async function naturalClick(element) {
+        if (!element || processedElements.has(element)) return;
+
+        const props = { view: window, bubbles: true, cancelable: true, buttons: 1, isTrusted: true };
         element.dispatchEvent(new PointerEvent('pointerdown', props));
         element.dispatchEvent(new MouseEvent('mousedown', props));
         
-        // Slight delay for "hold" duration
-        await new Promise(r => setTimeout(r, 50));
+        await new Promise(r => setTimeout(r, Math.random() * 50 + 30));
 
         element.dispatchEvent(new PointerEvent('pointerup', props));
         element.dispatchEvent(new MouseEvent('mouseup', props));
         element.dispatchEvent(new MouseEvent('click', props));
 
-        clickedElements.add(element);
+        processedElements.add(element);
     }
 
     function isVisible(el) {
@@ -715,34 +720,71 @@ function gpscroll() {
                 const rect = btn.getBoundingClientRect();
                 const distanceFromTop = rect.top + window.scrollY;
 
-                if (shouldRestrictScrolling && distanceFromTop < 1500) continue; 
-                const btnText = (btn.innerText || btn.textContent || btn.value || "").toLowerCase();
+                if (shouldRestrictScrolling && distanceFromTop < 1000) continue; 
+                
+                const btnText = (btn.innerText || btn.textContent || "").toLowerCase();
+                if (btnText.includes("wait") || btnText.includes("...")) continue;
 
-                if (btnText.includes("wait") || btnText.includes("...")) {
-                    continue; // Stay where you are until the button is ready
-                }
-                // 1. Bring to focus
+                // Move to button
                 btn.scrollIntoView({ behavior: "smooth", block: "center" });
                 
-                // 2. Clear obstacles regardless of type (helps automation too!)
-                
-
                 const isScrollOnly = scrollOnlySelectors.some(s => btn.matches(s));
 
-                if (!isScrollOnly && !clickedElements.has(btn)) {
-                    const randomDelay = Math.floor(Math.random() * 1000) + 1200;
-                    setTimeout(() => naturalClick(btn), randomDelay);
-                }
                 if (isScrollOnly) {
+                    // Try to fix overlays without breaking the button's listeners
                     rescueAndPrepare(btn);
-
+                } else {
+                    // Random delay to mimic human reaction to the button appearing
+                    const randomDelay = Math.floor(Math.random() * 800) + 1000;
+                    setTimeout(() => naturalClick(btn), randomDelay);
                 }
                 break; 
             }
         }
     }
 
-    setInterval(checkAndScroll, 1000);
+    setInterval(checkAndScroll, 1500); // Slightly slower check to reduce CPU fingerprint
 }
 
+
+
 gpscroll();
+
+function setupDeadEndRedirect() {
+    // 1. Check if we are on the target domain
+    if (!window.location.href.includes("powergam.online")) return;
+
+    let secondsMissing = 0;
+
+    const checkStatus = () => {
+        const timerDiv = document.querySelector("#myTimerDiv");
+        
+        // 2. Check for the scroll buttons (Safety check)
+        const scrollSelectors = ["#VerifyBtn", "#NextBtn", "#captchaForm button", "#skip-btn"];
+        const anyButtonVisible = scrollSelectors.some(selector => {
+            const el = document.querySelector(selector);
+            return el && el.offsetWidth > 0 && el.style.display !== 'none';
+        });
+
+        // 3. Logic: If timer exists OR a button exists, reset the counter
+        if (timerDiv || anyButtonVisible) {
+            secondsMissing = 0; 
+            // console.log("Status: Active elements found. Resetting fallback timer.");
+        } else {
+            secondsMissing++;
+            console.log(`Status: Nothing found. Redirecting in ${5 - secondsMissing}s...`);
+        }
+
+        // 4. Trigger redirect after 5 consecutive seconds of nothingness
+        if (secondsMissing >= 5) {
+            console.log("Dead end detected. Redirecting to Telegram...");
+            window.location.href = "https://web.telegram.org/a/get#link1";
+        }
+    };
+
+    // Run this check every 1 second
+    setInterval(checkStatus, 1000);
+}
+
+// Initialize the new function
+setupDeadEndRedirect();

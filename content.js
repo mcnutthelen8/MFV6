@@ -638,54 +638,54 @@ function gpscroll() {
         const style = document.createElement('style');
         style.id = styleId;
         style.innerHTML = `
-// ... inside your styleId block ...
-.btn-rescue-active {
-    z-index: 2147483647 !important;
-    position: relative !important;
-    outline: 3px solid #00FF00 !important;
-    /* ADD THIS: This ensures the button itself still accepts clicks 
-       even if the browser thinks it's being "tampered" with */
-    pointer-events: auto !important; 
-    user-select: auto !important;
-}
-
-.obstacle-ghost {
-    /* Instead of just opacity, we MUST kill the ability to block the mouse */
-    pointer-events: none !important;
-    opacity: 0 !important; 
-    visibility: hidden !important; 
-}
+            .btn-rescue-active {
+                z-index: 2147483647 !important;
+                position: relative !important;
+                outline: 3px solid #00FF00 !important;
+                pointer-events: auto !important; 
+                user-select: auto !important;
+            }
+            .obstacle-ghost {
+                pointer-events: none !important;
+                opacity: 0 !important; 
+                visibility: hidden !important; 
+            }
         `;
         document.head.appendChild(style);
     }
 
     const processedElements = new WeakSet();
+    const processedElements2 = new WeakSet();
+    let isLocked = false; // NEW: Prevents overlapping logic runs
 
-function rescueAndPrepare(btn) {
-    if (!btn || btn.classList.contains('btn-rescue-active')) return;
+    function rescueAndPrepare(btn) {
+        if (!btn || btn.classList.contains('btn-rescue-active') || processedElements2.has(btn)) return;
 
-    const rect = btn.getBoundingClientRect();
-    const x = rect.left + rect.width / 2;
-    const y = rect.top + rect.height / 2;
+        const rect = btn.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
 
-    // Check what is actually covering the button
-    let topEl = document.elementFromPoint(x, y);
+        let topEl = document.elementFromPoint(x, y);
+        let loopLimit = 0; // SAFETY: prevents freezing if DOM doesn't update
 
-    // Loop to find all overlays above the button and "ghost" them
-    while (topEl && topEl !== btn && !btn.contains(topEl) && topEl !== document.documentElement) {
-        topEl.classList.add('obstacle-ghost');
-        topEl.style.pointerEvents = 'none'; // Force it in JS too
-        // Re-check what is now at that point
-        topEl = document.elementFromPoint(x, y);
+        while (topEl && topEl !== btn && !btn.contains(topEl) && topEl !== document.documentElement && loopLimit < 15) {
+            if (topEl === document.body) break;
+
+            topEl.classList.add('obstacle-ghost');
+            topEl.style.pointerEvents = 'none';
+            topEl = document.elementFromPoint(x, y);
+            loopLimit++; 
+        }
+
+        btn.classList.add('btn-rescue-active');
+        processedElements2.add(btn);
     }
-
-    btn.classList.add('btn-rescue-active');
-}
 
     async function naturalClick(element) {
         if (!element || processedElements.has(element)) return;
+        processedElements.add(element); // Move this to the top to prevent double-firing
 
-        const props = { view: window, bubbles: true, cancelable: true, buttons: 1, isTrusted: true };
+        const props = { view: window, bubbles: true, cancelable: true, buttons: 1 };
         element.dispatchEvent(new PointerEvent('pointerdown', props));
         element.dispatchEvent(new MouseEvent('mousedown', props));
         
@@ -694,17 +694,18 @@ function rescueAndPrepare(btn) {
         element.dispatchEvent(new PointerEvent('pointerup', props));
         element.dispatchEvent(new MouseEvent('mouseup', props));
         element.dispatchEvent(new MouseEvent('click', props));
-
-        processedElements.add(element);
     }
 
     function isVisible(el) {
         if (!el) return false;
         const style = window.getComputedStyle(el);
-        return (style.display !== 'none' && style.visibility !== 'hidden' && el.offsetWidth > 0);
+        const rect = el.getBoundingClientRect();
+        return (style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0);
     }
 
     function checkAndScroll() {
+        if (isLocked) return; // Don't run if a click is pending
+
         const allSelectors = [...clickSelectors, ...scrollOnlySelectors];
         const scrollInstruction = document.querySelector("h4#txt3");
         let shouldRestrictScrolling = false;
@@ -725,28 +726,29 @@ function rescueAndPrepare(btn) {
                 const btnText = (btn.innerText || btn.textContent || "").toLowerCase();
                 if (btnText.includes("wait") || btnText.includes("...")) continue;
 
-                // Move to button
-                btn.scrollIntoView({ behavior: "smooth", block: "center" });
+                // Only scroll if the button isn't already visible in the center area
+                if (rect.top < 0 || rect.bottom > window.innerHeight) {
+                    btn.scrollIntoView({ behavior: "smooth", block: "center" });
+                }
                 
                 const isScrollOnly = scrollOnlySelectors.some(s => btn.matches(s));
 
                 if (isScrollOnly) {
-                    // Try to fix overlays without breaking the button's listeners
                     rescueAndPrepare(btn);
                 } else {
-                    // Random delay to mimic human reaction to the button appearing
+                    isLocked = true; // Lock logic until the click is done
                     const randomDelay = Math.floor(Math.random() * 800) + 1000;
-                    setTimeout(() => naturalClick(btn), randomDelay);
+                    setTimeout(async () => {
+                        await naturalClick(btn);
+                        isLocked = false; // Unlock
+                    }, randomDelay);
                 }
                 break; 
             }
         }
     }
 
-    setInterval(checkAndScroll, 1500); // Slightly slower check to reduce CPU fingerprint
+    setInterval(checkAndScroll, 1500);
 }
 
-
-
 gpscroll();
-

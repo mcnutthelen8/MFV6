@@ -27,7 +27,7 @@ import requests
 import difflib
 import os
 Mysterium_Mode = False
-time.sleep(99999)
+
 
 def get_farm_id(filepath="farmid.txt"):
     """Reads and prints the number from farmid.txt."""
@@ -2815,11 +2815,11 @@ def metrics24_lookups(ip):
             pass
         time.sleep(1)
 
-    met24_empty = ['24met_empty.png', '24met_empty2.png', '24met_empty3.png']
-    lookup_metr = ['lookup_metr.png', 'lookup_metr2.png', 'lookup_metr3.png']
+    met24_empty = ['24met_empty.png', '24met_empty2.png', '24met_empty3.png' , '24met_empty4.png']
+    lookup_metr = ['lookup_metr.png', 'lookup_metr2.png', 'lookup_metr3.png' , 'lookup_metr4.png']
     for i in range(33):
         try:
-            x, y = pyautogui.locateCenterOnScreen('24met_acceptcookie.png',  confidence=0.7)
+            x, y = pyautogui.locateCenterOnScreen('24met_acceptcookie.png',  confidence=0.6)
             if x and y:
                 pyautogui.click(x, y)
         except Exception as e:

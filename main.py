@@ -5982,7 +5982,7 @@ while True:
 
                 if layout == 1:
 
-                        if check_indx % 10 == 0:
+                        if check_indx % 4 == 0:
                             results = True
                         else:
                             results = False
@@ -5994,7 +5994,7 @@ while True:
                             if win32gui.IsWindow(window3):
 
                                 switch = switch_to_window(window3)
-                                pyautogui.click(150,200, duration = 0.4)
+                                
 
                                 ggwin2 = None
                                 ggwin2 = inidanxlinks(results)

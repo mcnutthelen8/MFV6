@@ -2990,8 +2990,9 @@ def zyrox_handle():
 
 
 def inidanxlinks(simple=False):
-    pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.4)
+    
     pyautogui.click(493,19, duration = 0.4)
+    pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.4)
     title = get_focused_window_title()
 
     if destined_reached(title):
@@ -3019,9 +3020,9 @@ def inidanxlinks(simple=False):
         for img_name in buttons:
             try:
 
-                match = pyautogui.locate(img_name, full_screen, confidence=0.98)
+                match = pyautogui.locate(img_name, full_screen, confidence=0.99)
                 if img_name == 'consent5.png':
-                    match = pyautogui.locate(img_name, full_screen, confidence=0.9)
+                    match = pyautogui.locate(img_name, full_screen, confidence=0.99)
                 if match:
                     x, y = pyautogui.center(match)
                     pyautogui.click(x,y)
@@ -3037,7 +3038,7 @@ def inidanxlinks(simple=False):
         full_screen = pyautogui.screenshot()
         for img_name in adsclosebutton:
             try:
-                match = pyautogui.locate(img_name, full_screen,  region=[1,83,1914,956],confidence=0.98)
+                match = pyautogui.locate(img_name, full_screen,  region=[1,83,1914,956],confidence=0.99)
                 if match:
                     x, y = pyautogui.center(match)
                     pyautogui.click(x,y)
@@ -3050,14 +3051,14 @@ def inidanxlinks(simple=False):
                 pass
 
         try:
-            x, y = pyautogui.locateCenterOnScreen( 'adremoved.png', confidence=0.95)
+            x, y = pyautogui.locateCenterOnScreen( 'adremoved.png', confidence=0.98)
             if x and y:
                 pyautogui.press('f5')
                 return
         except Exception as e:
             pass
     try:
-        x, y = pyautogui.locateCenterOnScreen( 'idiaad_rsum.png', confidence=0.95)
+        x, y = pyautogui.locateCenterOnScreen( 'idiaad_rsum.png', confidence=0.99)
         if x and y:
             pyautogui.click(x, y, duration=0.1)
             time.sleep(1)
@@ -3065,7 +3066,7 @@ def inidanxlinks(simple=False):
     except Exception as e:
         pass
     try:
-        x, y = pyautogui.locateCenterOnScreen( 'skipvidgp.png', confidence=0.95)
+        x, y = pyautogui.locateCenterOnScreen( 'skipvidgp.png', confidence=0.99)
         if x and y:
             pyautogui.click(x, y, duration=0.1)
             time.sleep(1)
@@ -3073,7 +3074,7 @@ def inidanxlinks(simple=False):
     except Exception as e:
         pass
     try:
-        x, y = pyautogui.locateCenterOnScreen( 'closevideoadgp.png', region=[900,212,714,522], confidence=0.95)
+        x, y = pyautogui.locateCenterOnScreen( 'closevideoadgp.png', region=[900,212,714,522], confidence=0.99)
         if x and y:
             pyautogui.click(x, y, duration=0.1)
             time.sleep(1)
@@ -3085,7 +3086,7 @@ def inidanxlinks(simple=False):
     except Exception as e:
         pass
     try:
-        x, y = pyautogui.locateCenterOnScreen( 'skipvidgp.png', confidence=0.95)
+        x, y = pyautogui.locateCenterOnScreen( 'skipvidgp.png', confidence=0.99)
         if x and y:
             pyautogui.click(x, y, duration=0.1)
             time.sleep(2)
@@ -3095,7 +3096,7 @@ def inidanxlinks(simple=False):
     except Exception as e:
         pass
     try:
-        x, y = pyautogui.locateCenterOnScreen( 'resumevidgp.png', region=[1,83,1914,956], confidence=0.9)
+        x, y = pyautogui.locateCenterOnScreen( 'resumevidgp.png', region=[1,83,1914,956], confidence=0.99)
         if x and y:
             pyautogui.click(x, y, duration=0.1)
             time.sleep(2)
@@ -5972,7 +5973,7 @@ while True:
 
                 if layout == 1:
 
-                        if check_indx % 4 == 0:
+                        if check_indx % 10 == 0:
                             results = True
                         else:
                             results = False

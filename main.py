@@ -27,7 +27,7 @@ import requests
 import difflib
 import os
 Mysterium_Mode = False
-time.sleep(9999)
+
 
 def get_farm_id(filepath="farmid.txt"):
     """Reads and prints the number from farmid.txt."""
@@ -2754,9 +2754,18 @@ def ipqs_browsercheck(ip, api_key, api_list):
                 print("NOT PASSED")
                 return None
 
-
+def clean_headers(text):
+    """
+    Renames marketing headers so the regex doesn't mistake them for data fields.
+    """
+    # Replace common marketing headers that interfere with data extraction
+    text = re.sub(r"Proxy & VPN Detection", "Prxxy & CPN Datection", text, flags=re.IGNORECASE)
+    text = re.sub(r"VPN & Proxy Detection", "CPN & Prxxy Datection", text, flags=re.IGNORECASE)
+    text = re.sub(r"Detecting Proxies", "Detecting Prxxies", text, flags=re.IGNORECASE)
+    return text
 def update_fraud_report(text):
     # The new content to insert
+    text = clean_headers(text)
     new_content = """
 Device Fingerprinting
 Real-Time Fraud Blocking

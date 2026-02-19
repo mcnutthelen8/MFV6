@@ -5694,11 +5694,11 @@ while True:
         #fingerpintid = fingerpint()
         #pyautogui.hotkey('ctrl', 'w')
 
-        #rek_ready = configure_rektcaptcha()
+        rek_ready = configure_rektcaptcha()
         
-        #if not rek_ready :
-        #    print("Rektcaptcha not ready, retrying...")
-        #    continue
+        if not rek_ready :
+            print("Rektcaptcha not ready, retrying...")
+            continue
     else:
         focus_and_maximize_window('SunBrowser')
     window1 = open_detatch_tab()

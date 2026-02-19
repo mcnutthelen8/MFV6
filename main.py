@@ -1515,7 +1515,7 @@ def create_browser():
                         stringtg = """
 Search Google or type a URL
 """
-                        if stringtg in ipaddress or ipaddress in stringtg:
+                        if stringtg in ipaddress or ipaddress in stringtg or ipaddress == "https://api.ipify.org/":
                             for i in range(8):
                                 time.sleep(3)
                                 pyautogui.click(200, 219)
@@ -1525,7 +1525,7 @@ Search Google or type a URL
                                 pyautogui.hotkey('ctrl', 'c')
                                 time.sleep(0.5)
                                 ipaddress = clipboard.paste()
-                                if stringtg not in ipaddress and ipaddress not in stringtg:
+                                if stringtg not in ipaddress and ipaddress not in stringtg or ipaddress == "https://api.ipify.org/":
                                     break
                         if ipaddress:
                             pass

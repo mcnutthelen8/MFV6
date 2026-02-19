@@ -5972,7 +5972,7 @@ while True:
 
                 if layout == 1:
 
-                        if check_indx % 7 == 0:
+                        if check_indx % 4 == 0:
                             results = True
                         else:
                             results = False

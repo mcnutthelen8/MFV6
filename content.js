@@ -679,6 +679,13 @@ function gpscroll() {
 
         btn.classList.add('btn-rescue-active');
         processedElements2.add(btn);
+// --- NEW LOGIC: Clear from memory after 10 seconds ---
+        setTimeout(() => {
+            processedElements2.delete(btn);
+            btn.classList.remove('btn-rescue-active');
+            // Note: We leave 'obstacle-ghost' on the ads we already hid 
+            // to keep the path clear.
+        }, 10000);
     }
 
     async function naturalClick(element) {

@@ -2957,9 +2957,11 @@ def linked_validate():
                 if word in text or word in title.lower():
                     print(f'{word} found in {text} or {title}')
                     return True
-
-            status = send_telegram_message(TOKEN, USER_ID, f"Broken Link Found: {text}. 🐍")
-            print(status)
+            if ' demo.dynamicslab.ai' in title.lower() or 'always active window - always visible' in title.lower() or '/get_option_verify_bot' in title.lower():
+                    print(f'Demo link found in title: {title}')
+                    return True     
+            #status = send_telegram_message(TOKEN, USER_ID, f"Broken Link Found: {text}. 🐍")
+            #print(status)
             return False
     except Exception as e:
         pass
@@ -3074,7 +3076,13 @@ def inidanxlinks(simple=False):
             pass
         link = linked_validate()
         if link == False:
-            pyautogui.click(23,62, duration = 0.4)
+            time.sleep(3)
+            link = linked_validate()
+            if link == False:
+                time.sleep(3)
+                link = linked_validate()
+                if link == False:
+                    pyautogui.click(23,62, duration = 0.4)
             return
     try:
         x, y = pyautogui.locateCenterOnScreen( 'idiaad_rsum.png', confidence=0.99)

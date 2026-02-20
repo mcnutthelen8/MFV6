@@ -551,175 +551,136 @@ function handleBlogButtons() {
 
 // Start the function
 handleBlogButtons();
+/**
+ * SCRIPT 1: THE JANITOR (gpscroll)
+ * Focused on finding "Scroll Only" targets and clearing obstacles (ads).
+ */
+function gpscroll() {
+    const scrollOnlySelectors = ["#VerifyBtn", "#NextBtn", "#captchaForm button", "#skip-btn"];
+    const styleId = 'ui-helper-styles';
 
+    if (!document.getElementById(styleId)) {
+        const style = document.createElement('style');
+        style.id = styleId;
+        style.innerHTML = `
+            .btn-rescue-active { z-index: 2147483647 !important; position: relative !important; outline: 3px solid #00FF00 !important; }
+            .obstacle-ghost { pointer-events: none !important; opacity: 0 !important; visibility: hidden !important; }
+        `;
+        document.head.appendChild(style);
+    }
 
-function gpscroll22() {
+    const processedElements2 = new WeakSet();
 
-    const buttonSelectors = [
-        "#VerifyBtn",
-        "#NextBtn",
-        "#captchaForm button",
-        "#skip-btn",
+    function rescueAndPrepare(btn) {
+        if (!btn || processedElements2.has(btn)) return;
+        const rect = btn.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
 
-        "#robotContinue",
-        "#rtgli1",
-        "#rtgli1",
-        "#rtg-snp2",
-        "#open-continue-btn",
-
-
-    ];
-
-
+        let topEl = document.elementFromPoint(x, y);
+        let loopLimit = 0;
+        while (topEl && topEl !== btn && !btn.contains(topEl) && topEl !== document.documentElement && loopLimit < 15) {
+            topEl.classList.add('obstacle-ghost');
+            topEl = document.elementFromPoint(x, y);
+            loopLimit++; 
+        }
+        btn.classList.add('btn-rescue-active');
+        processedElements2.add(btn);
+        setTimeout(() => {
+            processedElements2.delete(btn);
+            btn.classList.remove('btn-rescue-active');
+        }, 10000);
+    }
 
     function isVisible(el) {
-        return el && el.offsetParent !== null && window.getComputedStyle(el).display !== "none";
+        if (!el) return false;
+        const style = window.getComputedStyle(el);
+        const rect = el.getBoundingClientRect();
+        return (style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0);
     }
 
-
-
-    function checkAndScroll334() {
-// 1. Check for the specific "Scroll down" instruction header
-        const scrollInstruction = document.querySelector("h4#txt3");
-        let shouldRestrictScrolling = false;
-
-        if (isVisible(scrollInstruction) && scrollInstruction.textContent.includes("Scroll down")) {
-            shouldRestrictScrolling = true;
-        }
-        // 2. Loop through selectors
-        for (const selector of buttonSelectors) {
+    setInterval(() => {
+        for (const selector of scrollOnlySelectors) {
             const btn = document.querySelector(selector);
-            
             if (isVisible(btn)) {
+                const btnText = (btn.innerText || "").toLowerCase();
+                if (btnText.includes("wait") || btnText.includes("...")) continue;
+
                 const rect = btn.getBoundingClientRect();
-                const distanceFromTop = rect.top + window.scrollY;
-
-                // 3. Apply your logic: 
-                // If the instruction exists, only scroll if the button is deep (e.g., > 1500px)
-                if (shouldRestrictScrolling && distanceFromTop < 1500) {
-                    console.log("Skipping scroll: Instruction visible and button is above 1500px");
-                    continue; 
+                if (rect.top < 0 || rect.bottom > window.innerHeight) {
+                    btn.scrollIntoView({ behavior: "smooth", block: "center" });
                 }
-
-                btn.scrollIntoView({ behavior: "smooth", block: "center" });
-                console.log("Scrolled to:", selector);
-                break; // Stop at the first valid button found to prevent "jitter"
+                rescueAndPrepare(btn);
+                break; 
             }
         }
-
-        // 4. Handle the success alert separately
-        const alertSuccess = document.querySelector("div.alert.alert-success");
-        if (isVisible(alertSuccess) && alertSuccess.textContent.includes("Scroll down and complete")) {
-            alertSuccess.scrollIntoView({ behavior: "smooth", block: "center" });
-            console.log("Scrolled to Success Alert");
-        }
-
-
-    }
-
-
-    //setInterval(checkAndScroll34, 1000);
+    }, 1500);
 }
 
-function gpscroll() {
-    // Prevent multiple instances
-    if (window.gpScrollRunning) return;
-    window.gpScrollRunning = true;
+/**
+ * SCRIPT 2: THE EXECUTOR (indi)
+ * Focused strictly on sorting and clicking "Active" buttons.
+ */
+function indi() {
+    const clickSelectors = ["#robotButton", "#robot", "#robot2", "#rtgli1", "#rtg-generate", "#robotContinueButton", "#open-continue-btn", "#rtg-snp2"];
+    const blacklisted = new WeakSet(); 
+    let isLocked = false;
 
-    function gpscroll() {
-        const clickSelectors = [
-            "#robotButton", "#robot", "#robot2", "#rtgli1", 
-            "#rtg-generate", "#robotContinueButton", "#open-continue-btn", "#rtg-snp2"
-        ];
-
-        const scrollOnlySelectors = [
-            "#VerifyBtn", "#NextBtn", "#captchaForm button", "#skip-btn"
-        ];
-
-        const blacklisted = new WeakSet(); 
-        let isLocked = false;
-
-        function isVisible(el) {
-            if (!el || blacklisted.has(el)) return false;
-            const style = window.getComputedStyle(el);
-            const rect = el.getBoundingClientRect();
-            // Original Check: Exists in DOM and not display:none
-            return (style.display !== 'none' && rect.width > 0);
-        }
-
-        async function naturalClick(element) {
-            if (!element || blacklisted.has(element)) return;
-            
-            blacklisted.add(element); 
-            
-            const props = { view: window, bubbles: true, cancelable: true, buttons: 1 };
-            element.dispatchEvent(new PointerEvent('pointerdown', props));
-            element.dispatchEvent(new MouseEvent('mousedown', props));
-            
-            await new Promise(r => setTimeout(r, Math.random() * 50 + 50));
-
-            element.dispatchEvent(new PointerEvent('pointerup', props));
-            element.dispatchEvent(new MouseEvent('mouseup', props));
-            element.dispatchEvent(new MouseEvent('click', props));
-            
-            // Re-enable after 15s if page didn't refresh
-            setTimeout(() => blacklisted.delete(element), 15000);
-        }
-
-        function checkAndScroll() {
-            if (isLocked) return;
-
-            const allSelectors = [...clickSelectors, ...scrollOnlySelectors];
-            let foundButtons = [];
-
-            allSelectors.forEach(selector => {
-                document.querySelectorAll(selector).forEach(el => {
-                    if (isVisible(el)) foundButtons.push(el);
-                });
-            });
-
-            if (foundButtons.length === 0) return;
-
-            // SORT: Bottom of page first
-            foundButtons.sort((a, b) => {
-                const posA = a.getBoundingClientRect().top + window.scrollY;
-                const posB = b.getBoundingClientRect().top + window.scrollY;
-                return posB - posA;
-            });
-
-            const btn = foundButtons[0];
-            const rect = btn.getBoundingClientRect();
-            
-            // 1. If off-screen, scroll
-            if (rect.top < 0 || rect.bottom > window.innerHeight) {
-                btn.scrollIntoView({ behavior: "smooth", block: "center" });
-                return; 
-            }
-
-            // 2. If on-screen, click
-            const isScrollOnly = scrollOnlySelectors.some(s => btn.matches(s));
-            
-            if (!isScrollOnly) {
-                isLocked = true;
-                setTimeout(async () => {
-                    await naturalClick(btn);
-                    isLocked = false;
-                }, 1000);
-            } else {
-                blacklisted.add(btn);
-                setTimeout(() => blacklisted.delete(btn), 5000);
-            }
-        }
-
-        setInterval(checkAndScroll, 1500);
+    function isVisible(el) {
+        if (!el || blacklisted.has(el)) return false;
+        const style = window.getComputedStyle(el);
+        const rect = el.getBoundingClientRect();
+        return (style.display !== 'none' && rect.width > 0);
     }
 
-    gpscroll();
-    console.log("GP-Scroll Bottom-Up Engine Started");
-};
+    async function naturalClick(element) {
+        blacklisted.add(element); 
+        const props = { view: window, bubbles: true, cancelable: true, buttons: 1 };
+        element.dispatchEvent(new PointerEvent('pointerdown', props));
+        element.dispatchEvent(new MouseEvent('mousedown', props));
+        await new Promise(r => setTimeout(r, 100));
+        element.dispatchEvent(new PointerEvent('pointerup', props));
+        element.dispatchEvent(new MouseEvent('mouseup', props));
+        element.dispatchEvent(new MouseEvent('click', props));
+        setTimeout(() => blacklisted.delete(element), 15000);
+    }
 
+    setInterval(() => {
+        if (isLocked) return;
+        let foundButtons = [];
+
+        clickSelectors.forEach(selector => {
+            document.querySelectorAll(selector).forEach(el => {
+                if (isVisible(el)) foundButtons.push(el);
+            });
+        });
+
+        if (foundButtons.length === 0) return;
+
+        // Sort by bottom-most first
+        foundButtons.sort((a, b) => b.getBoundingClientRect().top - a.getBoundingClientRect().top);
+
+        const btn = foundButtons[0];
+        const rect = btn.getBoundingClientRect();
+        
+        // Scroll if needed
+        if (rect.top < 0 || rect.bottom > window.innerHeight) {
+            btn.scrollIntoView({ behavior: "smooth", block: "center" });
+            return; 
+        }
+
+        // Click logic
+        isLocked = true;
+        setTimeout(async () => {
+            await naturalClick(btn);
+            isLocked = false;
+        }, 1000);
+    }, 1500);
+}
+
+// Start both
 gpscroll();
-
+indi();
 function setupDeadEndRedirect() {
     if (!window.location.href.includes("powergam.online")) return;
 

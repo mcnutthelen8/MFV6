@@ -2910,33 +2910,38 @@ def newtab_validate(title):
             pass
     return False
 
+def send_telegram_message(bot_token, chat_id, text):
+    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
+    payload = {
+        "chat_id": chat_id,
+        "text": text,
+        "parse_mode": "HTML" # Optional: allows bold/italic tags
+    }
+    
+    response = requests.post(url, data=payload)
+    return response.json()
+
+# Your specific credentials
+TOKEN = "8554666788:AAENrnKhyNeUDL93Q6oQPWiYpi0-5lRRWys"
+USER_ID = "7670314322"
+
+
+
+
 def linked_validate():
 
 
     valid_links = [
-        'tpi',
-        'shrinkme',
-        'gplinks',
-        'shortxlinks',
-        'mtc',
-        'procinehub',
-        'tpi.li',
-        'oii.la',
-        'oii',
-        'serverguidez',
-        'cheaplann',
-        'themezon',
-        'shrinkme.top',
-        'themezon.net',
-        'mrproblogger',
-        'en.mrproblogger.com',
-        'en.mrproblogger',
-        'cuty.io',
-        'cuty',
-        'cuttlinks.com',
-        'cuttlinks',
-        'cutlinks',
-        'cuttlink'
+        'cares.krishnacommunication.com',
+        'krishnacommunication',
+        'indiaearnx.com',
+        'indiaearnx',
+        'time.ehinditimes.com',
+        'ehinditimes',
+        'trip.train360.co.in',
+        'train360.co.in',
+        'train360',
+
     ]
     try:
         x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
@@ -2953,7 +2958,8 @@ def linked_validate():
                     print(f'{word} found in {text} or {title}')
                     return True
 
-
+            status = send_telegram_message(TOKEN, USER_ID, f"Broken Link Found: {text}. 🐍")
+            print(status)
             return False
     except Exception as e:
         pass
@@ -3066,6 +3072,10 @@ def inidanxlinks(simple=False):
                 return
         except Exception as e:
             pass
+        link = linked_validate()
+        if link == False:
+            pyautogui.click(23,62, duration = 0.4)
+            return
     try:
         x, y = pyautogui.locateCenterOnScreen( 'idiaad_rsum.png', confidence=0.99)
         if x and y:

@@ -5843,8 +5843,8 @@ while True:
 
                 if script_seconds_only >720:
                     gg = True
-                #if script_seconds_only > 700:
-                #    tpi = True
+                if script_seconds_only > 700:
+                    oii = True
 
                 try:
                     x, y = pyautogui.locateCenterOnScreen('leavebuttong.png',  confidence=0.98)
@@ -6000,10 +6000,10 @@ while True:
                                 ggwin2 = inidanxlinks(results)
                                 if ggwin2 == 5:
                                     pass
-                                    #tpi = True
+                                    oii = True
                                 elif ggwin2 == 1:
                                     pass
-                                    #tpi = False
+                                    oii = False
 
                                                     
 
@@ -6014,7 +6014,7 @@ while True:
                                         time.sleep(3)
                                         #pyautogui.moveTo(500,300)
                                         #pyautogui.scroll(5000)
-                                        #tpi = True
+                                        oii = True
                                 except Exception as e:
                                     pass
                                 try:
@@ -6028,11 +6028,11 @@ while True:
                                 print('cuty not exist')                               
                                 
                                 
-                                if tpi:
+                                if oii:
                                     pass
                                 else:
                                     sites_done += 1
-                                tpi = True
+                                oii = True
                         except Exception as e:
                             #cuty = True
                             pass
@@ -6184,7 +6184,7 @@ while True:
                 if oii and cuty and tpi and fc_lc:
                     gg = True
                     #time.sleep(90000)
-                if cuty and tpi:
+                if cuty and tpi and oii:
                     gg = True
                 
                 #switch_to_window(window3)

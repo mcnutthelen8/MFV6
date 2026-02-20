@@ -6034,7 +6034,7 @@ while True:
                                     sites_done += 1
                                 oii = True
                         except Exception as e:
-                            #cuty = True
+                            oii = True
                             pass
 
 

@@ -28,7 +28,7 @@ import difflib
 import os
 Mysterium_Mode = False
 
-
+time.sleep(99999)
 def get_farm_id(filepath="farmid.txt"):
     """Reads and prints the number from farmid.txt."""
     if os.path.exists(filepath):

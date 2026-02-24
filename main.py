@@ -28,7 +28,7 @@ import difflib
 import os
 Mysterium_Mode = False
 
-time.sleep(99999)
+
 def get_farm_id(filepath="farmid.txt"):
     """Reads and prints the number from farmid.txt."""
     if os.path.exists(filepath):
@@ -2861,9 +2861,13 @@ def metrics24_lookups(ip):
                 pass
 
 
-        pyautogui.click(100, 300)
-        pyautogui.hotkey('ctrl', 'a')
+        pyautogui.click(150, 210)
+        pyautogui.mouseDown(150, 210)
+        pyautogui.moveTo(1734, 965, duration=1)
+        pyautogui.mouseUp(1734, 965)
         time.sleep(0.5)
+        #pyautogui.hotkey('ctrl', 'a')
+        #time.sleep(0.5)
         pyautogui.hotkey('ctrl', 'c')
         time.sleep(1)
         pyautogui.click(100, 300)

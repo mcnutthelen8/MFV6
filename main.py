@@ -1325,6 +1325,15 @@ def create_browser():
             except Exception as e:
                 pass
             try:
+                x, y = pyautogui.locateCenterOnScreen('adspowerads2.png', region=[209,12,1470,840], confidence=0.95)
+                if x and y:
+                    pyautogui.click(x, y)
+                    pyautogui.moveTo(100, 100)  # Move mouse to a safe position
+                    time.sleep(3)
+                    
+            except Exception as e:
+                pass
+            try:
                 x, y = pyautogui.locateCenterOnScreen('paywall_adpower.png',  confidence=0.9)
                 if x and y:
                     pyautogui.click(98, 208)

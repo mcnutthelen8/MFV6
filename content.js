@@ -202,28 +202,32 @@
 { url: 'https://indiaearnx.com/0dHmw', sites: siteGroups.common },
     ],
     link8: [
-{ url: 'https://adurl.io/CJRsBh7', sites: siteGroups.common },
-{ url: 'https://adurl.io/U5LX', sites: siteGroups.common },
-{ url: 'https://adurl.io/5J4gSO', sites: siteGroups.common },
-{ url: 'https://adurl.io/pKOOQL', sites: siteGroups.common },
-{ url: 'https://adurl.io/HQRQ', sites: siteGroups.common },
-{ url: 'https://adurl.io/rpol8zKw', sites: siteGroups.common },
-{ url: 'https://adurl.io/Jf2TCPBm', sites: siteGroups.common },
-{ url: 'https://adurl.io/9gSTGpJ', sites: siteGroups.common },
-{ url: 'https://adurl.io/uq8UimT8', sites: siteGroups.common },
-{ url: 'https://adurl.io/z8GV', sites: siteGroups.common },
+{ url: 'https://shrinkme.click/ueUBdyj', sites: siteGroups.common },
+{ url: 'https://shrinkme.click/Qnsty', sites: siteGroups.common },
+{ url: 'https://shrinkme.click/1b8kAl', sites: siteGroups.common },
+{ url: 'https://shrinkme.click/9B3ARuT', sites: siteGroups.common },
+{ url: 'https://shrinkme.click/2YlIIIz', sites: siteGroups.common },
+{ url: 'https://shrinkme.click/sEY6', sites: siteGroups.common },
+{ url: 'https://shrinkme.click/nQiz', sites: siteGroups.common },
+{ url: 'https://shrinkme.click/rPiZ5v', sites: siteGroups.common },
+{ url: 'https://shrinkme.click/0kxil', sites: siteGroups.common },
+{ url: 'https://shrinkme.click/CkS9BwXk', sites: siteGroups.common },
     ],
     link5: [
-{ url: 'https://link.adlink.click/vai0', sites: siteGroups.common },
-{ url: 'https://link.adlink.click/mC9o', sites: siteGroups.common },
-{ url: 'https://link.adlink.click/3Vud', sites: siteGroups.common },
-{ url: 'https://link.adlink.click/nBAQ', sites: siteGroups.common },
-{ url: 'https://link.adlink.click/iaiL', sites: siteGroups.common },
-{ url: 'https://link.adlink.click/t1x3', sites: siteGroups.common },
-{ url: 'https://link.adlink.click/1xVN', sites: siteGroups.common },
-{ url: 'https://link.adlink.click/ARwt', sites: siteGroups.common },
-{ url: 'https://link.adlink.click/hwNa', sites: siteGroups.common },
-{ url: 'https://link.adlink.click/ZUVQ', sites: siteGroups.common },
+{ url: 'https://tpi.li/PojXEQ9', sites: siteGroups.common },
+{ url: 'https://tpi.li/PI1shh81mXr', sites: siteGroups.common },
+{ url: 'https://tpi.li/AG6YBBUThlZ', sites: siteGroups.common },
+{ url: 'https://tpi.li/gw9GJ1gdfp', sites: siteGroups.common },
+{ url: 'https://tpi.li/uSYcuOZLb', sites: siteGroups.common },
+{ url: 'https://tpi.li/GqW4eGR', sites: siteGroups.common },
+{ url: 'https://tpi.li/u1e2W8fH', sites: siteGroups.common },
+{ url: 'https://tpi.li/Wqoq', sites: siteGroups.common },
+{ url: 'https://tpi.li/t7kzHVe4A4', sites: siteGroups.common },
+{ url: 'https://tpi.li/5NAf', sites: siteGroups.common },
+{ url: 'https://tpi.li/0W3Vypb', sites: siteGroups.common },
+{ url: 'https://tpi.li/a8EiqdeDK', sites: siteGroups.common },
+{ url: 'https://tpi.li/HRMkwGA', sites: siteGroups.common },
+{ url: 'https://tpi.li/vAn', sites: siteGroups.common },
     ],
 
   };
@@ -555,6 +559,101 @@ handleBlogButtons();
  * SCRIPT 1: THE JANITOR (gpscroll)
  * Focused on finding "Scroll Only" targets and clearing obstacles (ads).
  */
+function shrinkearnscroll() {
+    const mainSelectors = ["#getnewlink", "#startButton", ".wp2continuelink"];
+    const styleId = 'shrinkearn-helper-styles';
+
+    // 1. Setup CSS for highlighting and clearing obstacles
+    if (!document.getElementById(styleId)) {
+        const style = document.createElement('style');
+        style.id = styleId;
+        style.innerHTML = `
+            .btn-rescue-active { z-index: 2147483647 !important; position: relative !important; outline: 3px solid #00FF00 !important; }
+            .obstacle-ghost { pointer-events: none !important; opacity: 0 !important; visibility: hidden !important; }
+        `;
+        document.head.appendChild(style);
+    }
+
+    const processedElements = new WeakSet();
+
+    // Clears overlapping elements (ads/popups) above the button
+    function rescueAndPrepare(btn) {
+        if (!btn || processedElements.has(btn)) return;
+        const rect = btn.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+
+        let topEl = document.elementFromPoint(x, y);
+        let loopLimit = 0;
+        while (topEl && topEl !== btn && !btn.contains(topEl) && topEl !== document.documentElement && loopLimit < 15) {
+            topEl.classList.add('obstacle-ghost');
+            topEl = document.elementFromPoint(x, y);
+            loopLimit++; 
+        }
+        btn.classList.add('btn-rescue-active');
+        processedElements.add(btn);
+        setTimeout(() => {
+            processedElements.delete(btn);
+            btn.classList.remove('btn-rescue-active');
+        }, 8000);
+    }
+
+    function isVisible(el) {
+        if (!el) return false;
+        const style = window.getComputedStyle(el);
+        const rect = el.getBoundingClientRect();
+        // Check if it exists in DOM and is not hidden via CSS
+        return (style.display !== 'none' && style.visibility !== 'hidden' && rect.height > 0);
+    }
+
+    setInterval(() => {
+        const pageTitle = document.title;
+        let targetBtn = null;
+
+        // 2. Logic for "Health Shield" page
+        if (pageTitle.includes("Health Shield")) {
+            const getLinkBtn = document.querySelector('a.btn.btn-success.btn-lg.get-link');
+            
+            // Check if button exists, is visible, and contains the text "Get Link"
+            if (isVisible(getLinkBtn)) {
+                const btnText = getLinkBtn.innerText.trim().toLowerCase();
+                if (btnText === "get link") {
+                    const rect = getLinkBtn.getBoundingClientRect();
+                    // Scroll if button is not in the current viewport
+                    if (rect.top < 0 || rect.bottom > window.innerHeight) {
+                        getLinkBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+                    }
+                }
+            }
+        }
+        // 3. Logic for standard selectors if Health Shield specific button isn't found
+        if (!targetBtn) {
+            for (const selector of mainSelectors) {
+                const btn = document.querySelector(selector);
+                if (isVisible(btn)) {
+                    targetBtn = btn;
+                    break; // Priority found, stop searching
+                }
+            }
+        }
+
+        // 4. Execution: Scroll and Rescue
+        if (targetBtn) {
+            const rect = targetBtn.getBoundingClientRect();
+            // Scroll if button is not in the current viewport
+            if (rect.top < 0 || rect.bottom > window.innerHeight) {
+                targetBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+            rescueAndPrepare(targetBtn);
+        }
+    }, 1500);
+}
+
+// Start the function
+shrinkearnscroll();
+
+
+
 function gpscroll() {
     const scrollOnlySelectors = ["#VerifyBtn", "#NextBtn", "#captchaForm button", "#skip-btn"];
     const styleId = 'ui-helper-styles';

@@ -3139,6 +3139,147 @@ def inidanxlinks(simple=False):
 
 
 
+def shrink_meorearn(earn = True):
+
+    pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.2)
+    pyautogui.click(493,19, duration = 0.2)
+    title = get_focused_window_title()
+    print(f"Current Window Title: {title}")
+
+    try:
+        x, y = pyautogui.locateCenterOnScreen('js_ok.png', region=[930,130,342,165] ,confidence=0.9)
+        if x and y:
+            human_click(x, y, duration=1)
+            time.sleep(2)
+            pyautogui.click(95, 62)  # Click on the 'No Internet' button
+            time.sleep(2)
+            return 5
+    except Exception as e:
+        pass
+
+    close_ads()
+
+    if earn:
+        try:
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.6)
+            if x and y:
+                for i in range(6):
+                    close_ads()
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.6)
+                        pyautogui.click(x, y,duration=0.2)
+                        time.sleep(1)
+                    except Exception as e:
+                        pass
+
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_success_win10.png",  confidence=0.7)
+                        if x and y:
+                            try:
+                                x, y = pyautogui.locateCenterOnScreen('shrinkearn_continue1.png', region=[699,156,530,870], confidence=0.8)
+                                if x and y:
+                                    human_click(x, y, duration=0.2)
+                                    time.sleep(1)
+                                    pyautogui.click(493,19, duration = 0.4)
+                                    time.sleep(2)
+                                    continue
+                            except Exception as e:
+                                pass
+                            try:
+                                x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
+                                if x and y:
+                                    pass
+                            except Exception as e:
+                                return 1 
+
+                    except Exception as e:
+                        pass
+        except Exception as e:
+            pass
+        try:
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.6)
+            pyautogui.click(x, y,duration=0.2)
+            time.sleep(1)
+            pyautogui.click(x, y,duration=0.2)
+            time.sleep(5)
+        except Exception as e:
+            pass
+
+        try:
+            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_success_win10.png",  confidence=0.7)
+            if x and y:
+                for i in range(6):
+                    close_ads()
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen('shrinkearn_continue1.png', region=[699,156,530,870], confidence=0.8)
+                        if x and y:
+                            human_click(x, y, duration=0.2)
+                            time.sleep(1)
+                            pyautogui.click(493,19, duration = 0.4)
+                            time.sleep(2)
+                            continue
+                    except Exception as e:
+                        pass
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
+                        if x and y:
+                            pass
+                    except Exception as e:
+                        
+                        return 1 
+                return 1
+        except Exception as e:
+            pass
+
+        shrinkearn_button1 = [
+
+                ('Getlink2.png', [680,110,557,909], 0.75),
+                ('getlinkearn.png', None, 0.7),
+                
+                ('continueearn.png', None, 0.7),
+                ('continue_shren.png', None, 0.7),
+
+
+                ('Getlink1.png', None, 0.7),
+                ('getlink_shren.png', None, 0.7),
+
+            ]
+            
+
+        full_screen = pyautogui.screenshot()
+        for img_name, reg, conf in shrinkearn_button1:
+            try:
+                # 3. Search WITHIN the screenshot we already took
+                # Use grayscale=True for 30% more speed
+                match = pyautogui.locate(img_name, full_screen, region=reg, confidence=conf)
+                if match:
+
+                    
+                    human_click(x, y, duration=0.2)
+                    if img_name == "Getlink1.png" or img_name == "getlink_shren.png":
+                        return 
+                    time.sleep(0.5)
+                    pyautogui.click(493, 19, duration=0.3)
+                    full_screen = pyautogui.screenshot()
+
+            except Exception as e:
+                pass
+        try:
+            x, y = pyautogui.locateCenterOnScreen('adblockshrink.png',  confidence=0.9)
+            if x and y: 
+                return 5
+        except Exception as e:
+            pass
+        try:
+            x, y = pyautogui.locateCenterOnScreen('shrinkearn_continue1.png', region=[699,156,530,870], confidence=0.9)
+            if x and y:
+                human_click(x, y, duration=1)
+                time.sleep(1)
+                pyautogui.click(493,19, duration = 0.4)
+                time.sleep(3)
+                return 1
+        except Exception as e:
+            pass
 
 
 shrinkearn_continue= 1 
@@ -4307,14 +4448,16 @@ def gplink_handle():
             ('continuenewgpg.png', None, 0.9),
 
             ('gp_verifynew.png', None, 0.9),
+            ('gp_connew4.png', None, 0.8),
             ('gp_connew.png', None, 0.7),
             ('gp_connew3.png', None, 0.8),
             ('gp_verifynew3.png', None, 0.8),
+            ('gp_verifynew4.png', None, 0.8),
             ('gp_verifynew2.png', None, 0.8),
 
         ]
         
-    gpbuttons = ['gp_verifynew.png', 'gp_connew.png', 'gp_connew3.png', 'gp_verifynew2.png','gp_verifynew3.png']
+    gpbuttons = [ 'gp_verifynew.png', 'gp_connew.png', 'gp_connew3.png', 'gp_verifynew2.png','gp_verifynew3.png', 'gp_connew4.png', 'gp_verifynew4.png']
 
 
     full_screen = pyautogui.screenshot()
@@ -5505,6 +5648,7 @@ tux_stat_check = 5
 timeoutforlink = 5000
 testing = True
 preip = ''
+window4_meorearn = 1
 while True:
     window0 = None
     window1 = None
@@ -5769,9 +5913,13 @@ while True:
         hyperrefreshstat4 = False
 
 
-        #switch_to_window(cutty_window)
+        #switch_to_window(window4)
         #pyautogui.click(493,19, duration = 0.4)
-        #shorlink = random_link('link5')
+        #if window4_meorearn == 1:
+        #    shorlink = random_link('link8')
+        #    #window4_meorearn = 0
+        #else:
+        #    shorlink = random_link('link5')
         #open_link(link = shorlink ,newtab = False)
         #time.sleep(2)
 
@@ -5793,6 +5941,8 @@ while True:
 
 
         time.sleep(10)
+        closetabwin4 = random.randint(60, 180)
+        win4switchfg = False
         #focus_and_close_window('New Tab')
         gg = None
         started = time.time()
@@ -5802,7 +5952,7 @@ while True:
         window2_lastclick = time.time()
         window3_lastclick = time.time()
         window4_lastclick = time.time()
-        #layout = 1
+        shrinkmeorearn_time = time.time()
         clickads_gplink = True
         clickads_gplink_attempts = 0
 
@@ -5863,7 +6013,7 @@ while True:
                         close_window(window2)
 
 
-                if script_seconds_only >720:
+                if script_seconds_only > 780:
                     gg = True
                 if script_seconds_only > 700:
                     oii = True
@@ -5906,7 +6056,7 @@ while True:
                                     elif ggwin1 == 1:
                                         tpi = False
 
-                                    time.sleep(1)
+                                    #time.sleep(1)
         
 
                                 try:
@@ -5951,6 +6101,7 @@ while True:
                     
                 #if tpi == True:
                 #    close_window(window3)
+
 
                 if layout == 1:
                     
@@ -6000,6 +6151,82 @@ while True:
                         except Exception as e:
                             #cuty = True
                             pass
+
+
+
+
+                if layout == 2:
+                    
+                        try:
+                            switch_to_window(window4)
+                            if win32gui.IsWindow(window4):
+
+                                switch = switch_to_window(window4)
+                                #pyautogui.click(150,200, duration = 0.4)
+                                script_elapsed_time = time.time() - shrinkmeorearn_time
+                                script_seconds_only = int(script_elapsed_time)
+                                if script_seconds_only > closetabwin4 and win4switchfg == False:
+                                    if window4_meorearn == 1:
+                                        window4_meorearn = 0
+                                    win4switchfg = True
+
+                                    switch_to_window(window4)
+                                    pyautogui.click(493,19, duration = 0.4)
+                                    if window4_meorearn == 1:
+                                        shorlink = random_link('link8')
+                                        #window4_meorearn = 0
+                                    else:
+                                        shorlink = random_link('link5')
+                                    open_link(link = shorlink ,newtab = False)
+                                    time.sleep(2)
+
+
+                                ggwin2 = None
+                                if window4_meorearn == 1:
+                                    earn = False
+                                else:                                    
+                                    earn = True
+                                ggwin2 = shrink_meorearn(earn)
+                                if ggwin2 == 5:
+                                    fc_lc = True
+                                elif ggwin2 == 1:
+                                    fc_lc = False
+
+                                                    
+
+                                try:
+                                    x, y = pyautogui.locateCenterOnScreen('resubmission.png', region=[585,210,585,290], confidence=0.8)
+                                    if x and y:
+                                        pyautogui.click(1027,235)
+                                        time.sleep(3)
+                                        #pyautogui.moveTo(500,300)
+                                        #pyautogui.scroll(5000)
+                                        #tpi = True
+                                except Exception as e:
+                                    pass
+                                try:
+                                    x, y = pyautogui.locateCenterOnScreen('thissiteerror.png', region=[526,160,530,470], confidence=0.95)
+                                    if x and y:
+                                        print('site not working shortix')
+                                        fc_lc = True
+                                except Exception as e:
+                                    pass
+                            else:
+                                print('cuty not exist')                               
+                                
+                                
+                                if fc_lc:
+                                    pass
+                                else:
+                                    sites_done += 1
+                                fc_lc = True
+
+                        except Exception as e:
+                            fc_lc = True
+                            pass
+
+
+
 
 
                 if layout == 1:
@@ -6203,11 +6430,11 @@ while True:
                         close_window(window2)
                         layout2_start = time.time()
 
-                if oii and cuty and tpi and fc_lc:
+                if oii and cuty and tpi: #and fc_lc:
                     gg = True
                     #time.sleep(90000)
-                if cuty and tpi and oii:
-                    gg = True
+                #if cuty and tpi and oii:
+                #    gg = True
                 
                 #switch_to_window(window3)
                 #mysite_handle()

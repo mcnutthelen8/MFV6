@@ -575,29 +575,28 @@ function shrinkearnscroll() {
     }
 
     const processedElements = new WeakSet();
-
-    // Clears overlapping elements (ads/popups) above the button
     function rescueAndPrepare(btn) {
         if (!btn || processedElements.has(btn)) return;
+
+        // Safely boost the button without making it a "ghost"
+        btn.style.setProperty('z-index', '2147483647', 'important');
+        btn.style.setProperty('position', 'relative', 'important');
+        btn.style.setProperty('pointer-events', 'auto', 'important'); // Forces clickability
+        
         const rect = btn.getBoundingClientRect();
         const x = rect.left + rect.width / 2;
         const y = rect.top + rect.height / 2;
 
+        // Only ghost elements that are NOT the button or its children
         let topEl = document.elementFromPoint(x, y);
-        let loopLimit = 0;
-        while (topEl && topEl !== btn && !btn.contains(topEl) && topEl !== document.documentElement && loopLimit < 15) {
-            topEl.classList.add('obstacle-ghost');
-            topEl = document.elementFromPoint(x, y);
-            loopLimit++; 
+        if (topEl && topEl !== btn && !btn.contains(topEl)) {
+            topEl.style.pointerEvents = 'none';
+            topEl.style.opacity = '0';
+            console.log("Cleared obstacle from button");
         }
-        btn.classList.add('btn-rescue-active');
-        processedElements.add(btn);
-        setTimeout(() => {
-            processedElements.delete(btn);
-            btn.classList.remove('btn-rescue-active');
-        }, 8000);
-    }
 
+        processedElements.add(btn);
+    }
     function isVisible(el) {
         if (!el) return false;
         const style = window.getComputedStyle(el);

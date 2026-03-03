@@ -284,304 +284,281 @@
 
 
 
+function handleButtonClicks() {
+    let el = document.querySelector("h5.title i.fas.fa-bolt + span");
+    const logoImg = document.querySelector('img[src*="shrinkme"]');
 
-
-
-
-// --- STATE TRACKING ---
-let lastMouseX = Math.floor(Math.random() * window.innerWidth);
-let lastMouseY = Math.floor(Math.random() * window.innerHeight);
-let lastUserActivity = Date.now();
-
-window.addEventListener('mousemove', (e) => {
-    lastMouseX = e.clientX;
-    lastMouseY = e.clientY;
-    lastUserActivity = Date.now();
-}, { passive: true });
-
-window.addEventListener('mousedown', () => { lastUserActivity = Date.now(); });
-
-// --- UTILITIES ---
-function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-// --- CORE ACTIONS ---
-async function naturalClick(element) {
-    const idleTime = Date.now() - lastUserActivity;
-    
-    // Safety check: Don't hijack the mouse if the user is moving it
-    if (idleTime < 2000) {
-        setTimeout(() => naturalClick(element), 1500);
+    if (el && el.textContent.trim() === "Breaking") {
+        console.log("Found! earns");
+    } else if (logoImg) {
+        console.log("Found! Seime");
+    } else {
+        console.log("Not found.");
         return;
     }
 
-    const rect = element.getBoundingClientRect();
-    const paddingX = rect.width * 0.2;
-    const paddingY = rect.height * 0.2;
-    
-    const targetX = Math.floor(rect.left + paddingX + Math.random() * (rect.width - 2 * paddingX));
-    const targetY = Math.floor(rect.top + paddingY + Math.random() * (rect.height - 2 * paddingY));
-    if (!isTrueVisible2(element)) {
-        console.log("click is not truly visible (honeypot/obstacle detected). Skipping click.");
-        //console.log(el);
-        //isLocked = false;
-        return;
-    }
-    chrome.runtime.sendMessage({
-        action: "trustedClick",
-        startX: lastMouseX,
-        startY: lastMouseY,
-        endX: targetX,
-        endY: targetY
-    });
-}
+    let canClick = true;
+    const clickedButtons = new WeakSet();
 
-async function naturalScrollToElement(element) {
-    let isCentered = false;
-    let attempts = 0;
 
-    while (!isCentered && attempts < 10) {
-        const rect = element.getBoundingClientRect();
-        const viewportHeight = window.innerHeight;
-        const elementCenter = rect.top + rect.height / 2;
-        const screenCenter = viewportHeight / 2;
-        
-        // Calculate how far we are from the center
-        const diff = elementCenter - screenCenter;
+    function isClickable(el) {
+        if (!el) return false;
 
-        // If the button is within 100px of the center, we are good enough
-        if (Math.abs(diff) < 100) {
-            isCentered = true;
-            break;
+        const style = window.getComputedStyle(el);
+        if (style.display === "none" || style.visibility === "hidden" || style.opacity === "0") {
+            return false;
         }
 
-        // Determine scroll chunk (don't scroll more than 300px at once)
-        const scrollAmount = Math.sign(diff) * Math.min(Math.abs(diff), 300);
+        const rect = el.getBoundingClientRect();
+        if (rect.width === 0 || rect.height === 0) return false;
 
-        chrome.runtime.sendMessage({
-            action: "trustedScroll",
-            x: lastMouseX,
-            y: lastMouseY,
-            distance: Math.floor(scrollAmount)
+        const midX = rect.left + rect.width / 2;
+        const midY = rect.top + rect.height / 2;
+
+        const topEl = document.elementFromPoint(midX, midY);
+        return el.contains(topEl) || topEl === el;
+    }
+
+
+    function simulateClick(button) {
+        const rect = button.getBoundingClientRect();
+        const randomX = rect.left + Math.random() * rect.width;
+        const randomY = rect.top + Math.random() * rect.height;
+
+        ["mousedown", "mouseup", "click"].forEach(evt => {
+            button.dispatchEvent(new MouseEvent(evt, {
+                bubbles: true,
+                cancelable: true,
+                clientX: randomX,
+                clientY: randomY,
+                buttons: 1
+            }));
         });
 
-        // Wait for the "momentum" of the scroll to finish before checking position again
-        await delay(Math.random() * 600 + 200); 
-        attempts++;
-    }
-}
-
-function isTrueVisible(el) {
-    if (!el) return false;
-
-    const style = window.getComputedStyle(el);
-    const rect = el.getBoundingClientRect();
-
-    // 1. Basic Visibility Check (CSS)
-    const isCSSVisible = (
-        style.display !== 'none' && 
-        style.visibility !== 'hidden' && 
-        parseFloat(style.opacity) > 0.1 &&
-        rect.width > 2 && 
-        rect.height > 2
-    );
-
-    if (!isCSSVisible) {
-        console.log("Element failed CSS visibility check:", el);
-        return false;
+        console.log("[ButtonClick] Simulated click on:", button.textContent.trim() || button.id);
     }
 
-    // 2. Viewport Check (Is it even on screen?)
-    const isWithinViewport = (
-        rect.top < window.innerHeight &&
-        rect.bottom > 0 &&
-        rect.left < window.innerWidth &&
-        rect.right > 0
-    );
-
-    if (!isWithinViewport) {
-        console.log("Element is not within viewport:", el);
-        return false;
-    }
-
-    // 3. THE "Honeypot & Obstacle" Check
-    // We check the center of the element to see what's actually on top.
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    
-    // Safety: elementFromPoint can return null if coordinates are off-screen
-    const topEl = document.elementFromPoint(centerX, centerY);
-
-    if (!topEl) {
-        console.log("elementFromPoint returned null for coordinates:", centerX, centerY);
-
-        return false;
-    }
-    // Check if the element at that point is our button OR a child of our button
-    const isBlocked = !el.contains(topEl) && !topEl.contains(el);
-
-    if (isBlocked) {
-        // Optional: Log what is blocking it for debugging
-        // console.log("Button is blocked by:", topEl);
-        console.log("Button is blocked by another element. Possible honeypot or obstacle detected.", el, "Blocked by:", topEl);
-        return false;
-    }
-
-    return true;
-}
-
-
-function isTrueVisible2(el) {
-    if (!el) return false;
-
-    const style = window.getComputedStyle(el);
-    const rect = el.getBoundingClientRect();
-
-    // 1. Basic Visibility Check (CSS)
-    const isCSSVisible = (
-        style.display !== 'none' && 
-        style.visibility !== 'hidden' && 
-        parseFloat(style.opacity) > 0.1 &&
-        rect.width > 2 && 
-        rect.height > 2
-    );
-
-    if (!isCSSVisible) {
-        console.log("Element failed CSS visibility check:", el);
-        return false;
-    }
-
-    // 2. Viewport Check (Is it even on screen?)
-    const isWithinViewport = (
-        rect.top < window.innerHeight &&
-        rect.bottom > 0 &&
-        rect.left < window.innerWidth &&
-        rect.right > 0
-    );
-
-    if (!isWithinViewport) {
-        console.log("Element is not within viewport:", el);
-        return false;
-    }
-
-
-
-    return true;
-}
-
-
-
-
-
-async function clearStickies() {
-    // We search for both IDs (#) and Classes (.) just in case
-    const stickySelectors = [
-        "#closeStickyBottom", 
-        ".closeStickyBottom", 
-        "#closeStickyTop", 
-        ".closeStickyTop"
+    const allSelectors = [
+        '#btn1',
+        '#btn2',
+        '#tp-snp2',
+        'button.tp-btn',
+        'button.tp-blue'
     ];
-    
-    for (const selector of stickySelectors) {
-        const el = document.querySelector(selector);
-        
-        if (el) {
-            //const style = window.getComputedStyle(el);
-            //const rect = el.getBoundingClientRect();
-            if (!isTrueVisible(el)) {
-                console.log("Sticky is not truly visible (honeypot/obstacle detected). Skipping click.", selector);
-                //console.log(el);
-                //isLocked = false;
-                return;
-            }
 
-            console.log(`Sticky found: ${selector}. Clearing...`);
-            
-            // Human reaction time
-            await new Promise(r => setTimeout(r, Math.floor(Math.random() * 400 + 400)));
-            
-            await naturalClick(el);
-            
-            // Wait for DOM to update
-            await new Promise(r => setTimeout(r, 1000));
-            //return true; 
-            
+    function checkAndClickButtons() {
+        if (!canClick) return setTimeout(checkAndClickButtons, 500);
+
+        const waitingDiv = document.querySelector("#newtimer");
+        if (waitingDiv && isClickable(waitingDiv)) {
+            console.log("[ButtonClick] Waiting for timer...");
+            return setTimeout(checkAndClickButtons, 1000);
         }
-        //else {
-        //    console.log(`No sticky found for selector: ${selector}`);
-        //}
+
+        for (const selector of allSelectors) {
+            const buttons = document.querySelectorAll(selector);
+
+            for (const button of buttons) {
+                if (!isClickable(button)) {
+                    console.log("[ButtonClick] Found but not clickable yet:", selector);
+                    continue;
+                }
+                if (clickedButtons.has(button)) continue;
+
+                simulateClick(button);
+                clickedButtons.add(button);
+
+                canClick = false;
+                setTimeout(() => {
+                    canClick = true;
+                    console.log("[ButtonClick] Ready for next after 5s");
+                }, 5000);
+
+                return setTimeout(checkAndClickButtons, 500);
+            }
+        }
+
+        setTimeout(checkAndClickButtons, 500);
     }
-    return false;
+
+    checkAndClickButtons();
 }
 
+setTimeout(handleButtonClicks, 2000);
 
-// --- MAIN LOOP --- #closeStickyBottom", "#closeStickyTop",
-function indi() {
-    const clickSelectors = [  "#robotButton", "#robot", "#robot2", "#rtgli1", "#rtg-generate", "#robotContinueButton", "#open-continue-btn", "#rtg-snp2"];
-    let isLocked = false;
 
-    function isVisible(el) {
+function handleMdTimerSite() {
+    const mdTimer = document.querySelector("#mdtimer");
+    if (!mdTimer) {
+        console.log("[MDTimer] Not this site.");
+        return;
+    }
+    console.log("[MDTimer] Correct site detected.");
+
+    let canClick = true;
+    const clickedButtons = new WeakSet();
+
+    // Visibility check
+    function isVisuallyVisible(el) {
         if (!el) return false;
         const style = window.getComputedStyle(el);
+        if (style.display === "none" || style.visibility === "hidden" || style.opacity === "0") {
+            return false;
+        }
         const rect = el.getBoundingClientRect();
-        // Check for honeypots: tiny size or hidden
-        return (style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 2 && rect.height > 2);
+        if (rect.width === 0 || rect.height === 0) return false;
+        return true;
     }
-    setInterval(async () => {
-        if (isLocked || (Date.now() - lastUserActivity < 2000)) return;
-        clearStickies();
-        //if (handledSticky) return;
 
-        let foundButtons = [];
-        clickSelectors.forEach(selector => {
-            document.querySelectorAll(selector).forEach(el => {
-                if (isVisible(el)) foundButtons.push(el);
-            });
-        });
+    // Simulate realistic click
+    function simulateClick(button) {
+        const rect = button.getBoundingClientRect();
+        const randomX = rect.left + Math.random() * rect.width;
+        const randomY = rect.top + Math.random() * rect.height;
 
-        if (foundButtons.length === 0) return;
+        button.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, clientX: randomX, clientY: randomY, buttons: 1 }));
+        button.dispatchEvent(new MouseEvent("mouseup", { bubbles: true, clientX: randomX, clientY: randomY, buttons: 1 }));
+        button.dispatchEvent(new MouseEvent("click", { bubbles: true, clientX: randomX, clientY: randomY, buttons: 1 }));
 
-        // Sort to find the most relevant button
-        foundButtons.sort((a, b) => b.getBoundingClientRect().top - a.getBoundingClientRect().top);
-        const btn = foundButtons[0];
+        console.log("[MDTimer] Clicked:", button.id || button.textContent.trim());
+    }
 
-        const rect = btn.getBoundingClientRect();
+    function checkMdTimer() {
+        if (!canClick) return setTimeout(checkMdTimer, 500);
 
-        // 1. If button is off-screen, use the trusted scroll
-        // Inside your setInterval logic:
-        if (rect.top < 0 || rect.bottom > window.innerHeight) {
-        //if (rect.top < 100 || rect.bottom > (window.innerHeight - 100)) {
-            isLocked = true;
-            console.log("Button out of view. Starting precision scroll...");
-            
-            await naturalScrollToElement(btn);
-            
-            // Short pause after scrolling to look "human"
-            await delay(Math.random() * 500 + 500);
-            isLocked = false;
-            return; 
+        // If timer visible -> wait
+        if (isVisuallyVisible(mdTimer)) {
+            console.log("[MDTimer] Waiting for countdown...");
+            return setTimeout(checkMdTimer, 1000);
         }
-        // 2. If button is visible, perform the human click
-        isLocked = true;
-        
-        // Random "thinking" delay before moving to click
-        await delay(Math.random() * 1000 + 500); 
-        console.log("Button in view. Starting natural click...", btn);
-        
-        if (!isTrueVisible(btn)) {
-            console.log("Button is not truly visible (honeypot/obstacle detected). Skipping click.");
-            isLocked = false;
-            return;
+
+        const selectors = ["#next", "#nextbutton","#nexthead"];
+        for (const selector of selectors) {
+            const btn = document.querySelector(selector);
+            if (!btn || !isVisuallyVisible(btn)) continue;
+            if (clickedButtons.has(btn)) continue;
+
+            simulateClick(btn);
+            clickedButtons.add(btn);
+
+            canClick = false;
+            setTimeout(() => {
+                canClick = true;
+                console.log("[MDTimer] Ready for next after 5s");
+            }, 10000);
+
+            return setTimeout(checkMdTimer, 500);
         }
-        await naturalClick(btn);
-        
-        // Lock for a few seconds to let page load/react
-        setTimeout(() => { isLocked = false; }, 4000);
-        
-    }, 2000 + (Math.random() * 1000)); // Randomized interval
+
+        setTimeout(checkMdTimer, 500);
+    }
+
+    checkMdTimer();
 }
 
+// Start after delay
+setTimeout(handleMdTimerSite, 2000);
 
 
+// Start with longer random initial delay
+setTimeout(handleButtonClicks, 2000);
+function handleMrProBloggerSite() {
+    if (!window.location.href.includes("en.mrproblogger.com")) {
+        console.log("[MrProBlogger] Not the target site.");
+        return;
+    }
+    console.log("[MrProBlogger] Target site detected.");
+
+    const getLinkSelector = "a.get-link[href*='adobe-photoshop-2023-free-download']";
+    const countdownSelector = "#countdown #timer";
+
+    function isVisuallyVisible(el) {
+        if (!el) return false;
+        const style = window.getComputedStyle(el);
+        if (style.display === "none" || style.visibility === "hidden" || style.opacity === "0") return false;
+        const rect = el.getBoundingClientRect();
+        return rect.width > 0 && rect.height > 0;
+    }
+
+    function scrollToLink() {
+        const link = document.querySelector(getLinkSelector);
+        if (link && isVisuallyVisible(link)) {
+            console.log("[MrProBlogger] Scrolling to Get Link button...");
+            link.scrollIntoView({ behavior: "smooth", block: "center" });
+        } else {
+            console.log("[MrProBlogger] Link not visible yet, retrying...");
+            setTimeout(scrollToLink, 500); // retry until visible
+        }
+    }
+
+    function checkTimer() {
+        const timerEl = document.querySelector(countdownSelector);
+        if (!timerEl) {
+            console.log("[MrProBlogger] Timer not found, stopping.");
+            return;
+        }
+
+        const timeValue = parseInt(timerEl.textContent.trim(), 10);
+        if (timeValue === 0) {
+            scrollToLink(); // start looping scroll until visible
+        } else {
+            console.log("[MrProBlogger] Waiting for timer, current:", timeValue);
+            setTimeout(checkTimer, 500);
+        }
+    }
+
+    checkTimer();
+}
+
+setTimeout(handleMrProBloggerSite, 2000);
+
+
+
+
+
+
+
+function handleBlogButtons() {
+
+    if (!window.location.hostname.includes("blogspot") || !window.location.hostname.includes("blog") || !window.location.hostname.includes("zyrox")) {
+        return;
+    }
+
+    function isVisible(el) {
+        return el && el.offsetParent !== null && window.getComputedStyle(el).display !== "none";
+    }
+
+
+    function scrollAndClick(button) {
+        button.scrollIntoView({ behavior: "smooth", block: "center" });
+        console.log("Scrolled to continue button.");
+        button.click();
+        console.log("Clicked continue button.");
+    }
+
+    const intervalId = setInterval(() => {
+        const timerDiv = document.querySelector("#timer");
+        const continueBtn = document.querySelector("#continueBtn");
+
+        if (timerDiv && isVisible(timerDiv) && timerDiv.textContent.includes("Scroll down and click continue")) {
+            if (continueBtn && isVisible(continueBtn)) {
+                scrollAndClick(continueBtn);
+                clearInterval(intervalId); // stop after clicking
+            } else {
+                console.log("Continue button not visible yet, waiting...");
+            }
+        } else {
+            console.log("Timer div not found or not visible, waiting...");
+        }
+    }, 1000); // check every 1 second
+}
+
+// Start the function
+handleBlogButtons();
+/**
+ * SCRIPT 1: THE JANITOR (gpscroll)
+ * Focused on finding "Scroll Only" targets and clearing obstacles (ads).
+ */
 function shrinkearnscroll() {
     const mainSelectors = ["#getnewlink", "#startButton", ".wp2continuelink"];
     const styleId = 'shrinkearn-helper-styles';
@@ -729,75 +706,77 @@ function gpscroll() {
 
                 const rect = btn.getBoundingClientRect();
                 if (rect.top < 0 || rect.bottom > window.innerHeight) {
-                //    btn.scrollIntoView({ behavior: "smooth", block: "center" });
-                    naturalScrollToElement(btn);
-                    
-                    // Short pause after scrolling to look "human"
-                    delay(Math.random() * 300 + 300);
+                    btn.scrollIntoView({ behavior: "smooth", block: "center" });
                 }
                 rescueAndPrepare(btn);
-                naturalClick(btn);
                 break; 
             }
         }
     }, 1500);
 }
-
-
-
-
-function shrtxlingo() {
-    const scrollOnlySelectors = ["#wpsafelinkhuman", "#wpsafe-link", "#wpsafe-generate"];
-
-
-
-    const processedElements3 = new WeakSet();
-    function isVisible(el) {
-        if (!el) return false;
-        const style = window.getComputedStyle(el);
-        const rect = el.getBoundingClientRect();
-        return (style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0);
-    }
-
-    setInterval(() => {
-        for (const selector of scrollOnlySelectors) {
-            const btn = document.querySelector(selector);
-            if (isVisible(btn)) {
-                
-                const btnwait = document.querySelector('#wpsafe-wait2');
-                if (isVisible(btnwait)) continue;
-
-                const rect = btn.getBoundingClientRect();
-                if (rect.top < 0 || rect.bottom > window.innerHeight) {
-                //    btn.scrollIntoView({ behavior: "smooth", block: "center" });
-                    naturalScrollToElement(btn);
-                    
-                    // Short pause after scrolling to look "human"
-                    delay(Math.random() * 300 + 300);
-                }
-                if (!btn || processedElements3.has(btn)) return;
-                //rescueAndPrepare(btn);
-                naturalClick(btn);
-                processedElements3.add(btn);
-                setTimeout(() => {
-                    processedElements3.delete(btn);
-                    btn.classList.remove('btn-rescue-active');
-                }, 10000);
-                break; 
-            }
-        }
-    }, 1500);
-}
-
-
 
 /**
  * SCRIPT 2: THE EXECUTOR (indi)
  * Focused strictly on sorting and clicking "Active" buttons.
  */
+function indi() {
+    const clickSelectors = ["#robotButton", "#robot", "#robot2", "#rtgli1", "#rtg-generate", "#robotContinueButton", "#open-continue-btn", "#rtg-snp2"];
+    const blacklisted = new WeakSet(); 
+    let isLocked = false;
+
+    function isVisible(el) {
+        if (!el || blacklisted.has(el)) return false;
+        const style = window.getComputedStyle(el);
+        const rect = el.getBoundingClientRect();
+        return (style.display !== 'none' && rect.width > 0);
+    }
+
+    async function naturalClick(element) {
+        blacklisted.add(element); 
+        const props = { view: window, bubbles: true, cancelable: true, buttons: 1 };
+        element.dispatchEvent(new PointerEvent('pointerdown', props));
+        element.dispatchEvent(new MouseEvent('mousedown', props));
+        await new Promise(r => setTimeout(r, 100));
+        element.dispatchEvent(new PointerEvent('pointerup', props));
+        element.dispatchEvent(new MouseEvent('mouseup', props));
+        element.dispatchEvent(new MouseEvent('click', props));
+        setTimeout(() => blacklisted.delete(element), 15000);
+    }
+
+    setInterval(() => {
+        if (isLocked) return;
+        let foundButtons = [];
+
+        clickSelectors.forEach(selector => {
+            document.querySelectorAll(selector).forEach(el => {
+                if (isVisible(el)) foundButtons.push(el);
+            });
+        });
+
+        if (foundButtons.length === 0) return;
+
+        // Sort by bottom-most first
+        foundButtons.sort((a, b) => b.getBoundingClientRect().top - a.getBoundingClientRect().top);
+
+        const btn = foundButtons[0];
+        const rect = btn.getBoundingClientRect();
+        
+        // Scroll if needed
+        if (rect.top < 0 || rect.bottom > window.innerHeight) {
+            btn.scrollIntoView({ behavior: "smooth", block: "center" });
+            return; 
+        }
+
+        // Click logic
+        isLocked = true;
+        setTimeout(async () => {
+            await naturalClick(btn);
+            isLocked = false;
+        }, 1000);
+    }, 1500);
+}
 
 // Start both
-shrtxlingo();
 gpscroll();
 indi();
 function setupDeadEndRedirect() {

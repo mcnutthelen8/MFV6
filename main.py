@@ -1,5 +1,4 @@
 
-
 print("Version 10.5.8 loaded.")
 import pyautogui
 import time
@@ -1594,7 +1593,7 @@ Search Google or type a URL
                                             # If no valid item found
                                             print("No valid items found.")
                                             time.sleep(7200)
-                                            return False, 'No valid items found.'
+                                            return False
 
 
 
@@ -1622,7 +1621,7 @@ Search Google or type a URL
                                         time.sleep(0.2)
                                         pyautogui.click(x,y)
                                         time.sleep(5)
-                                        return True, ipaddress
+                                        return True
                                     else:
                                         print("Bad IP")
                                         continue
@@ -1650,7 +1649,7 @@ Search Google or type a URL
                                             time.sleep(7)
                                             pyautogui.click(x,y)
                                             time.sleep(5)
-                                            return True, ipaddress
+                                            return True
                                         else:
                                             print("Bad IP")
                                             continue
@@ -5756,7 +5755,7 @@ while True:
         layout = 1
 
 
-        browser_ready,ipaddress = create_browser()
+        browser_ready = create_browser()
 
         try:
             x, y = pyautogui.locateCenterOnScreen('limit_adpower.png', region=[927,173,480,260],confidence=0.9)
@@ -5840,14 +5839,9 @@ while True:
                     time.sleep(3)
         if browsero_Failed:
             continue
-        result =2 # ipcheck_handle(clipboard.paste())
-        ip = clipboard.paste()
-        if ipaddress != ip:
-            print(f"IP mismatch: Browser IP {ipaddress} vs Detected IP {ip}")
-            time.sleep(9999)
-            continue
 
-        if result == 3:
+        result = ipcheck_handle(clipboard.paste())
+        if result:
             ip = result["ip"]
             is_clean = result["is_clean"]
             proxy_type = result["type"]
@@ -5864,6 +5858,7 @@ while True:
             restart_tuxler()
             continue
         preip = ip
+
         adding_extensions()
         always_active()
 
@@ -5874,11 +5869,11 @@ while True:
         #fingerpintid = fingerpint()
         #pyautogui.hotkey('ctrl', 'w')
 
-        #rek_ready = configure_rektcaptcha()
+        rek_ready = configure_rektcaptcha()
         
-        #if not rek_ready :
-        #    print("Rektcaptcha not ready, retrying...")
-        #    continue
+        if not rek_ready :
+            print("Rektcaptcha not ready, retrying...")
+            continue
     else:
         focus_and_maximize_window('SunBrowser')
     window1 = open_detatch_tab()
@@ -6027,9 +6022,9 @@ while True:
                         close_window(window2)
 
 
-                if script_seconds_only > 660:
+                if script_seconds_only > 780:
                     gg = True
-                if script_seconds_only > 660:
+                if script_seconds_only > 700:
                     oii = True
 
                 try:

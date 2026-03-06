@@ -2954,6 +2954,15 @@ def linked_validate():
         'trip.train360.co.in',
         'train360.co.in',
         'train360',
+        'fitnesstipz',
+        'tpi',
+        'tpisi',
+        'gplinks',
+        'powergram'
+        'mtc',
+        'shortxlinks',
+        'carensureplan',
+        'discoverlaw'
 
     ]
     try:

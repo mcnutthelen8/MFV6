@@ -2977,6 +2977,9 @@ def linked_validate():
 
             text = text.lower().strip()
 
+            if text == '' or text == None or text == '.':
+                return False
+
             # direct contains check
             for word in valid_links:
                 if word in text or word in title.lower():

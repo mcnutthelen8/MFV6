@@ -2982,8 +2982,8 @@ def linked_validate():
             if ' demo.dynamicslab.ai' in title.lower() or 'always active window - always visible' in title.lower() or '/get_option_verify_bot' in title.lower():
                     print(f'Demo link found in title: {title}')
                     return True     
-            #status = send_telegram_message(TOKEN, USER_ID, f"Broken Link Found: {text}. 🐍")
-            #print(status)
+            status = send_telegram_message(TOKEN, USER_ID, f"Broken Link Found: {text}. 🐍")
+            print(status)
             return False
     except Exception as e:
         pass

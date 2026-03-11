@@ -26,6 +26,19 @@ import subprocess
 import requests
 import difflib
 import os
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
+
+
+
+
+
+
+
 Mysterium_Mode = False
 
 #time.sleep(99990)
@@ -1505,158 +1518,29 @@ def create_browser():
                         focus_and_close_window('New Tab')
                         focus_and_close_window('ipqualityscore')
                         close_chrome()
-                        open_chrome()
-                        wait_for_chrome(timeout=15)
-                        focus_and_maximize_window("Google Chrome")
-                        focus_and_maximize_window("New Tab")
-                        time.sleep(5)
-                        pyautogui.click(250, 64)
-                        time.sleep(1)
-                        open_link(link=f'https://api.ipify.org/', newtab=False)
-                        time.sleep(5)
-                        pyautogui.click(200, 219)
-                        time.sleep(0.5)
-                        pyautogui.hotkey('ctrl', 'a')
-                        time.sleep(0.5)
-                        pyautogui.hotkey('ctrl', 'c')
-                        time.sleep(0.5)
-                        ipaddress = clipboard.paste()
-                        stringtg = """
-Search Google or type a URL
-"""
-                        if stringtg in ipaddress or ipaddress in stringtg or ipaddress == "https://api.ipify.org/":
-                            for i in range(8):
-                                time.sleep(3)
-                                pyautogui.click(200, 219)
-                                time.sleep(0.5)
-                                pyautogui.hotkey('ctrl', 'a')
-                                time.sleep(0.5)
-                                pyautogui.hotkey('ctrl', 'c')
-                                time.sleep(0.5)
-                                ipaddress = clipboard.paste()
-                                if stringtg not in ipaddress and ipaddress not in stringtg or ipaddress == "https://api.ipify.org/":
-                                    break
-                        if ipaddress:
-                            pass
-                        else:
-                            for i in range(5):
-                                time.sleep(2)
-                                pyautogui.click(200, 219)
-                                time.sleep(0.5)
-                                pyautogui.hotkey('ctrl', 'a')
-                                time.sleep(0.5)
-                                pyautogui.hotkey('ctrl', 'c')
-                                time.sleep(0.5)
-                                ipaddress = clipboard.paste()
-                                if ipaddress:
-                                    break
-
-                        result = ipcheck_handle(ipaddress)
-
+                        ipaddress,result, z = checkip_selenium()
+                        print("IP Address:", ipaddress)
+                        print("Result:", result)
+                        close_chrome()
                         if result:
-                            ip = result["ip"]
-                            is_clean = result["is_clean"]
-                            proxy_type = result["type"]
-                            country = result["country"]
-                            print(ip, is_clean, proxy_type, country)
-                            if is_clean:
-                                if Mysterium_Mode:
-
-                                    ipqs_url = f"{ipqs_website}{ip}"
-                                    open_link(link=ipqs_url, newtab=False)
-                                    time.sleep(5)
-                                    pyautogui.click(200, 219)
-                                    time.sleep(0.5)
-                                    pyautogui.hotkey('ctrl', 'a')
-                                    time.sleep(0.5)
-                                    pyautogui.hotkey('ctrl', 'c')
-                                    time.sleep(0.5)
-                                    data_copied = clipboard.paste()
-                                    if data_copied:
-                                        pass
-                                    else:
-                                        for i in range(5):
-                                            pyautogui.click(200, 219)
-                                            time.sleep(0.5)
-                                            pyautogui.hotkey('ctrl', 'a')
-                                            time.sleep(0.5)
-                                            pyautogui.hotkey('ctrl', 'c')
-                                            time.sleep(0.5)
-                                            data_copied = clipboard.paste()
-                                            if data_copied:
-                                                break
-                                    if '"success":false' in data_copied or data_copied in '"success":false' or data_copied in 'API issue':
-                                        print("success false from ipqualityscore")
-
-                                        valid_key = False
-                                        if valid_key == False:
-                                            # If no valid item found
-                                            print("No valid items found.")
-                                            time.sleep(7200)
-                                            return False
-
-
-
-                                    ip_data = json.loads(data_copied)
-                                    print(ip_data)
-                                    close_chrome()
-                                    focus_and_close_window('Google Chrome')
-                                    focus_and_close_window('New Tab')
-                                    focus_and_close_window('ipqualityscore')
-                                    focus_and_close_window('pythonanywhere')
-                                    focus_and_close_window('proxycheck')
-                                    
-                                    time.sleep(0.5)
-                                    #country = ip_data.get("country_code", "N/A")
-                                    is_vpn = ip_data.get("vpn")
-                                    is_proxy = ip_data.get("proxy")
-                                    fraud_score = ip_data.get("fraud_score")
-                                    print(f" VPN: {is_vpn}, Proxy: {is_proxy}, Fraud Score: {fraud_score}")
-
-                                    if is_vpn == False and is_proxy == False and fraud_score < 30:
-                                        print("Good IP")
-                                        focus_and_maximize_window('AdsPower')
-                                        time.sleep(2)
-                                        pyautogui.click(x,y)
-                                        time.sleep(0.2)
-                                        pyautogui.click(x,y)
-                                        time.sleep(5)
-                                        return True
-                                    else:
-                                        print("Bad IP")
-                                        continue
-                                else:
-                                    try:
-                                        print("cHECKING iP  with IPQS")
-                                        ip_data = metrics24_lookups(ip)
-                                        #if 'no_key' == ipqs_key:
-                                            # If no valid item found
-                                        #    print("No valid items found.")
-                                        #    time.sleep(7200)
-                                        #    return False
-                                        if ip_data:
-                                            close_chrome()
-                                            focus_and_close_window('Google Chrome')
-                                            focus_and_close_window('New Tab')
-                                            focus_and_close_window('ipqualityscore')
-                                            focus_and_close_window('pythonanywhere')
-                                            focus_and_close_window('proxycheck')
-                                            
-                                            print("Good IP")
-                                            focus_and_maximize_window('AdsPower')
-                                            time.sleep(2)
-                                            pyautogui.click(x,y)
-                                            time.sleep(7)
-                                            pyautogui.click(x,y)
-                                            time.sleep(5)
-                                            return True
-                                        else:
-                                            print("Bad IP")
-                                            continue
-
-                                    except Exception as e:
-                                        print("Error during IPQS lookup:", e)
-                                        continue
+                            close_chrome()
+                            focus_and_close_window('Google Chrome')
+                            focus_and_close_window('New Tab')
+                            focus_and_close_window('ipqualityscore')
+                            focus_and_close_window('pythonanywhere')
+                            focus_and_close_window('proxycheck')
+                            
+                            print("Good IP")
+                            focus_and_maximize_window('AdsPower')
+                            time.sleep(2)
+                            pyautogui.click(x,y)
+                            time.sleep(7)
+                            pyautogui.click(x,y)
+                            time.sleep(5)
+                            return True
+                        else:
+                            print("Bad IP")
+                            continue
 
 
 
@@ -2990,7 +2874,7 @@ def linked_validate():
             if ' demo.dynamicslab.ai' in title.lower() or 'always active window - always visible' in title.lower() or '/get_option_verify_bot' in title.lower():
                     print(f'Demo link found in title: {title}')
                     return True     
-            status = send_telegram_message(TOKEN, USER_ID, f"Broken Link Found: {text}. 🐍")
+            status = send_telegram_message(TOKEN, USER_ID, f"Broken Link Found in Farm{farm_id}: {text}. 🐍")
             print(status)
             return False
     except Exception as e:
@@ -5393,6 +5277,255 @@ def ipcheck_handle(ipaddress):
         print("Invalid JSON")
         return None
     
+
+
+def _make_driver():
+    options = Options()
+    #options.add_argument("--headless=new")           # newer headless, faster
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--disable-gpu")
+    #options.add_argument("--window-size=1920,1080")
+    options.add_argument("--disable-extensions")
+    options.add_argument("--disable-infobars")
+    options.add_argument("--blink-settings=imagesEnabled=false")  # skip images → faster
+    options.add_argument("--log-level=3")            # silence DevTools/ERROR logs
+    options.add_experimental_option("excludeSwitches", ["enable-logging"])
+    return webdriver.Chrome(options=options)
+# ─────────────────────────────────────────────
+#  Helper: dismiss any modal/popup overlay
+# ─────────────────────────────────────────────
+def _dismiss_popup(driver):
+    try:
+        overlay = driver.find_element(
+            By.CSS_SELECTOR,
+            "div.dialog-widget.dialog-lightbox-widget, "
+            "div[id^='elementor-popup-modal']"
+        )
+        if overlay.is_displayed():
+            # Try clicking the close button first
+            try:
+                close_btn = overlay.find_element(
+                    By.CSS_SELECTOR,
+                    "button.dialog-close-button, .elementor-popup-close, [aria-label='Close']"
+                )
+                close_btn.click()
+                print("[popup] Closed modal via close button")
+                time.sleep(0.5)
+                return
+            except Exception:
+                pass
+            # Fallback: press Escape
+            from selenium.webdriver.common.keys import Keys
+            driver.find_element(By.TAG_NAME, "body").send_keys(Keys.ESCAPE)
+            print("[popup] Dismissed modal via ESC")
+            time.sleep(0.5)
+    except Exception:
+        pass  # No popup present
+
+
+# ─────────────────────────────────────────────
+#  Helper: safe JS click (bypasses overlay interception)
+# ─────────────────────────────────────────────
+def _js_click(driver, element):
+    driver.execute_script("arguments[0].scrollIntoView(true);", element)
+    driver.execute_script("arguments[0].click();", element)
+
+
+def _check_24metrics_with_driver(driver, wait, ip: str,
+                                  max_attempts: int = 10,
+                                  retry_delay:  int = 5):
+
+    def _scrape_verdict() -> str:
+        result_items = driver.find_elements(
+            By.CSS_SELECTOR, "#ipScannerResults .ip-scanner-result-item"
+        )
+
+        def find(pattern: str):
+            for item in result_items:
+                try:
+                    key_el = item.find_element(By.CLASS_NAME, "ip-scanner-result-key")
+                    val_el = item.find_element(By.CLASS_NAME, "ip-scanner-result-value")
+                    if re.search(pattern, key_el.text, re.IGNORECASE):
+                        return val_el.text.strip()
+                except Exception:
+                    continue
+            return None
+
+        def _hdr(elem_id: str) -> str:
+            try:
+                return driver.find_element(By.ID, elem_id).text.strip()
+            except Exception:
+                return ""
+
+        Residential_proxy = find(r"Residential Proxy\?")
+        Risk_Score        = find(r"Risk Score")
+        Recent_Abuse      = find(r"Recent Abuse\?")
+        is_vpn            = _hdr("header-vpn-val")   or find(r"\bVPN\b")
+        is_proxy          = _hdr("header-proxy-val") or find(r"\bProxy\b")
+        networkip         = find(r"Network")
+
+        print(f"[24metrics]  vpn={is_vpn!r}  proxy={is_proxy!r}  "
+              f"network={networkip!r}  residential={Residential_proxy!r}  "
+              f"abuse={Recent_Abuse!r}  risk={Risk_Score!r}")
+
+        # Guard against loading / placeholder states
+        if not networkip or not is_vpn:
+            return "noip"
+        if networkip == "2003" or is_vpn in ("- - -", ""):
+            return "noip"
+
+        if (Residential_proxy == "No"
+                and Risk_Score   == "No Risk"
+                and Recent_Abuse == "No"
+                and is_vpn       == "False"
+                and is_proxy     == "False"):
+            print("[24metrics] ✅  This IP is clean and safe to use.")
+            return "goodip"
+
+        if (Residential_proxy == "Yes"
+                or Risk_Score in ("High Risk", "Risk", "Medium Risk")
+                or Recent_Abuse == "Yes"
+                or is_vpn       == "True"
+                or is_proxy     == "True"):
+            print("[24metrics] ❌  Warning: This IP may be risky to use.")
+            return "badip"
+
+        return "noip"
+
+    print(f"[24metrics] Starting scan (max {max_attempts} attempts) ...")
+
+    for attempt in range(1, max_attempts + 1):
+        print(f"[24metrics] Attempt {attempt}/{max_attempts} ...")
+
+        try:
+            driver.get("https://www.24metrics.com/#anchor-ip-scanner")
+
+            # Wait for input to be available
+            ip_input = wait.until(
+                EC.presence_of_element_located((By.ID, "ipScannerInputDesktop"))
+            )
+
+            # Dismiss any popup/modal that blocks the button
+            _dismiss_popup(driver)
+
+            # Scroll input into view and fill it
+            driver.execute_script("arguments[0].scrollIntoView(true);", ip_input)
+            ip_input.clear()
+            ip_input.send_keys(ip)
+
+            # Click via JS to avoid overlay interception
+            btn = driver.find_element(By.ID, "ipScannerButtonDesktop")
+            _js_click(driver, btn)
+
+            # Inner polling loop — stay on this page, check every 3s up to 60s
+            poll_deadline = time.time() + 60
+            poll_interval = 3
+            verdict       = "noip"
+
+            while time.time() < poll_deadline:
+                time.sleep(poll_interval)
+                verdict = _scrape_verdict()
+                if verdict in ("goodip", "badip"):
+                    break
+                print(f"[24metrics]  ⏳ Data not ready, polling again in {poll_interval}s ...")
+
+        except Exception as e:
+            print(f"[24metrics]  ⚠️  Exception on attempt {attempt}: {e}")
+            verdict = "noip"
+
+        if verdict in ("goodip", "badip"):
+            return verdict
+
+        if attempt < max_attempts:
+            print(f"[24metrics]  🔄 Retrying in {retry_delay}s ...")
+            time.sleep(retry_delay)
+
+    print("[24metrics]  ❌  Could not determine verdict after all attempts.")
+    return "noip"
+
+
+def checkip_selenium():
+    driver = _make_driver()
+    wait   = WebDriverWait(driver, 25)
+
+    try:
+        # ─────────────────────────────────────────
+        #  STEP 1 – Get public IP via ipify
+        # ─────────────────────────────────────────
+        print("=" * 55)
+        print("STEP 1 – Getting current public IP ...")
+        driver.get("https://api.ipify.org/")
+        ip = driver.find_element(By.TAG_NAME, "body").text.strip()
+        print(f"         Public IP: {ip}")
+
+        # ─────────────────────────────────────────
+        #  STEP 2 – ProxyCheck (same driver, new tab)
+        # ─────────────────────────────────────────
+        print("\nSTEP 2 – ProxyCheck.io ...")
+        url = f"https://proxycheck.io/v3/{ip}"
+        print(f"[ProxyCheck] Loading {url} ...")
+        driver.get(url)
+
+        body = driver.find_element(By.TAG_NAME, "body").text.strip()
+        data = json.loads(body)
+
+        pc_good = False
+        if data.get("status") == "ok":
+            ip_data    = data.get(ip, {})
+            detections = ip_data.get("detections", {})
+            network    = ip_data.get("network", {})
+            location   = ip_data.get("location", {})
+
+            is_hosting = detections.get("hosting", True)
+            is_vpn_pc  = detections.get("vpn",     True)
+            is_proxy_pc= detections.get("proxy",   True)
+            risk       = detections.get("risk",    100)
+
+            print(f"[ProxyCheck] provider={network.get('provider')}  "
+                  f"type={network.get('type')}  hosting={is_hosting}  "
+                  f"vpn={is_vpn_pc}  proxy={is_proxy_pc}  risk={risk}")
+
+            pc_good = (not is_hosting) and (not is_vpn_pc) and (not is_proxy_pc)
+        else:
+            print(f"[ProxyCheck] ERROR – status: {data.get('status')}")
+
+        print(f"[ProxyCheck] {'✅ PASS' if pc_good else '❌ FAIL'}")
+
+        # ─────────────────────────────────────────
+        #  STEP 3 – 24metrics (same driver, navigate)
+        # ─────────────────────────────────────────
+        if pc_good:
+            print("\nSTEP 3 – 24metrics.com ...")
+            verdict = _check_24metrics_with_driver(driver, wait, ip)
+            tm_good = (verdict == "goodip")
+        else:
+            verdict = "badip"
+            tm_good = (verdict == "goodip")
+
+        # ─────────────────────────────────────────
+        #  FINAL VERDICT
+        # ─────────────────────────────────────────
+        print("\n" + "=" * 55)
+        print("FINAL VERDICT")
+        print(f"  IP            : {ip}")
+        print(f"  ProxyCheck    : {'✅ PASS' if pc_good else '❌ FAIL'}")
+        print(f"  24metrics     : {'✅ PASS' if tm_good else ('❌ FAIL' if verdict == 'badip' else '⚠️  NO DATA')}")
+
+        if pc_good and tm_good:
+            print("  ➜  IP is GOOD ✅")
+        else:
+            print("  ➜  IP is BAD ❌")
+
+
+        return ip, pc_good, tm_good
+
+    finally:
+        driver.quit()
+
+
+
+
 
 
 def tuxler_stat_check():

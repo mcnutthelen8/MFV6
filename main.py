@@ -5673,6 +5673,12 @@ timeoutforlink = 5000
 testing = True
 preip = ''
 window4_meorearn = 1
+
+win1time = 1
+win2time = 1
+win3time = 1
+
+
 while True:
     window0 = None
     window1 = None
@@ -5904,7 +5910,7 @@ while True:
         add_farm_activity(farmid=f"Farm{farm_id}", country= country, ipaddress= ip , duration = proxy_type, sites = f'{sites_done}x | 4 ', fingerprints_id= fingerpintid, tuxler_left=location_changes, expiredate=expire)
 
     if testing and not shrink_Timeout:
-        add_farm_activity(farmid=f"Farm{farm_id}", country= country, ipaddress= ip , duration = proxy_type, sites = f'{sites_done} | 4', fingerprints_id= fingerpintid, tuxler_left=location_changes, expiredate=expire)
+        add_farm_activity(farmid=f"Farm{farm_id}", country= country, ipaddress= ip , duration = proxy_type, sites = f'w1:{win1time}|w2:{win2time}|w3:{win3time}|{sites_done} | 4', fingerprints_id= fingerpintid, tuxler_left=location_changes, expiredate=expire)
 
     duration_time = time.time()
     layout = 1
@@ -5963,6 +5969,13 @@ while True:
         ggwin3_unvalid = 1
         ggwin4_unvalid = 1
 
+        win1time = 1
+        win2time = 1
+        win3time = 1
+
+        win1timeG =time.time()
+        win2timeG =time.time()
+        win3timeG =time.time()
 
         time.sleep(10)
         closetabwin4 = random.randint(60, 180)
@@ -6453,6 +6466,22 @@ while True:
                         #close_window(cutty_window)
                         close_window(window2)
                         layout2_start = time.time()
+
+
+
+                if win1time == 1 and tpi:
+                    script_elapsed_time = time.time() - win1timeG
+                    win1time = int(script_elapsed_time)
+                    print(f"Scrip1 has been running for {script_seconds_only} seconds")
+
+                if win2time == 1 and tpi:
+                    script_elapsed_time = time.time() - win2timeG
+                    win2time = int(script_elapsed_time)
+                    print(f"Scrip2t has been running for {script_seconds_only} seconds")
+                if win3time == 1 and tpi:
+                    script_elapsed_time = time.time() - win3timeG
+                    win3time = int(script_elapsed_time)
+                    print(f"Script3 has been running for {script_seconds_only} seconds")
 
                 if oii and cuty and tpi: #and fc_lc:
                     gg = True

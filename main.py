@@ -1,5 +1,7 @@
 import subprocess
 import sys
+print('gg')
+time.sleep(1000)
 
 def install_selenium():
     print("--- Starting Selenium Setup ---")

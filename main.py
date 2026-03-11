@@ -6417,7 +6417,7 @@ while True:
 
                 if layout == 1:
 
-                        if check_indx % 4 == 0:
+                        if check_indx % 2 == 0:
                             results = True
                         else:
                             results = False

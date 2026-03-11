@@ -2283,7 +2283,9 @@ def destined_reached(text):
         '503 Service',
         '504: Gateway',
         '500 Internal',
-        "A timeout occurred"
+        "A timeout occurred",
+        "dynamicslab",
+        "demo.dynamicslab.ai",
 
 
 
@@ -5973,6 +5975,10 @@ while True:
         win2time = 1
         win3time = 1
 
+        win1timeeee = True
+        win2timeeee = True
+        win3timeeee  = True
+
         win1timeG =time.time()
         win2timeG =time.time()
         win3timeG =time.time()
@@ -6469,19 +6475,22 @@ while True:
 
 
 
-                if win1time == 1 and tpi:
+                if win1timeeee and tpi:
                     script_elapsed_time = time.time() - win1timeG
                     win1time = int(script_elapsed_time)
                     print(f"Scrip1 has been running for {script_seconds_only} seconds")
+                    win1timeeee = False
 
-                if win2time == 1 and tpi:
+                if win2timeeee and tpi:
                     script_elapsed_time = time.time() - win2timeG
                     win2time = int(script_elapsed_time)
                     print(f"Scrip2t has been running for {script_seconds_only} seconds")
-                if win3time == 1 and tpi:
+                    win2timeeee = False
+                if win3timeeee and tpi:
                     script_elapsed_time = time.time() - win3timeG
                     win3time = int(script_elapsed_time)
                     print(f"Script3 has been running for {script_seconds_only} seconds")
+                    win3timeeee = False
 
                 if oii and cuty and tpi: #and fc_lc:
                     gg = True

@@ -5680,6 +5680,7 @@ win1time = 1
 win2time = 1
 win3time = 1
 
+browser_redtime = 1
 
 while True:
     window0 = None
@@ -5777,7 +5778,7 @@ while True:
         focus_and_maximize_window('SunBrowser')
         layout = 1
 
-
+        ggtimer = time.time()
         browser_ready = create_browser()
 
         try:
@@ -5863,6 +5864,7 @@ while True:
         if browsero_Failed:
             continue
 
+
         result = ipcheck_handle(clipboard.paste())
         if result:
             ip = result["ip"]
@@ -5882,9 +5884,13 @@ while True:
             continue
         preip = ip
 
+        browser_redtime = time.time() - ggtimer
+        ggtimer = time.time()
+        print(f"Browser ready in {int(browser_redtime)} seconds")
         adding_extensions()
         always_active()
-
+        browser_redtime2 = time.time() - ggtimer
+        ggtimer = time.time()
         #pyautogui.hotkey('ctrl', 't')
         #time.sleep(2)
         #pyautogui.click(257,20)
@@ -5893,10 +5899,12 @@ while True:
         #pyautogui.hotkey('ctrl', 'w')
 
         rek_ready = configure_rektcaptcha()
-        
+
         if not rek_ready :
             print("Rektcaptcha not ready, retrying...")
             continue
+        browser_redtime3 = time.time() - ggtimer
+        ggtimer = time.time()
     else:
         focus_and_maximize_window('SunBrowser')
     window1 = open_detatch_tab()
@@ -5908,11 +5916,13 @@ while True:
     script_elapsed_time3 = time.time() - duration_time
     duration_time_sec = int(script_elapsed_time3)
     shrink_Timeout = False #checkodd(premadelist, location_changes)
+    browser_redtime4 = time.time() - ggtimer
+    ggtimer = time.time()
     if testing and shrink_Timeout:
         add_farm_activity(farmid=f"Farm{farm_id}", country= country, ipaddress= ip , duration = proxy_type, sites = f'{sites_done}x | 4 ', fingerprints_id= fingerpintid, tuxler_left=location_changes, expiredate=expire)
 
     if testing and not shrink_Timeout:
-        add_farm_activity(farmid=f"Farm{farm_id}", country= country, ipaddress= ip , duration = proxy_type, sites = f'w1:{win1time}|w2:{win2time}|w3:{win3time}|{sites_done} | 4', fingerprints_id= fingerpintid, tuxler_left=location_changes, expiredate=expire)
+        add_farm_activity(farmid=f"Farm{farm_id}", country= country, ipaddress= ip , duration = proxy_type, sites = f'b1:{int(browser_redtime)}|b2:{int(browser_redtime2)}|b3:{int(browser_redtime3)} |w3:{int(browser_redtime4)} |w3:{win3time}|{sites_done} | 4', fingerprints_id= fingerpintid, tuxler_left=location_changes, expiredate=expire)
 
     duration_time = time.time()
     layout = 1

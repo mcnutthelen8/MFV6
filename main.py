@@ -2962,7 +2962,10 @@ def linked_validate():
         'mtc',
         'shortxlinks',
         'carensureplan',
-        'discoverlaw'
+        'discoverlaw',
+        'kdvgi',
+        'explore.kdvgi.xyz',
+        'explore'
 
     ]
     try:

@@ -793,7 +793,7 @@ def open_detatch_tab():
     time.sleep(1) 
     pyautogui.mouseDown(350, 22) # 
     time.sleep(1)  # Hold for 1 second
-    pyautogui.moveTo(400, 400, duration=1)
+    pyautogui.moveTo(1000, 400, duration=1)
     pyautogui.mouseUp()  # Release the mouse button
     time.sleep(1)
     fid = get_focused_window_id()

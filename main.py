@@ -37,7 +37,10 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 
 
-
+Indianxorshrink = True
+hybridmode_indianxshrink = False
+#Tru = Shrink
+#False = Indianxor
 
 Mysterium_Mode = False
 
@@ -461,7 +464,7 @@ def update_content_extension():
             print("[Error] No document found or 'extension_updates' field missing.")
 
     # URL to the raw GitHub file
-    url = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/refs/heads/main/content.js"
+    url = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/refs/heads/main/cookie/content.js"
     
     # Path to your local content.js
     file_path = r"C:\Users\Administrator\Downloads\MFV6-main\MFV6-main\extension\content.js"
@@ -2164,6 +2167,7 @@ def destined_reached(text):
         'This link is risky',
         'Database Error',
         'Privacy Error',
+        'Google',
         '503 Service',
         '504: Gateway',
         '500 Internal',
@@ -2846,6 +2850,10 @@ def linked_validate():
         'gplinks',
         'powergram'
         'mtc',
+        'mtc1',
+        'mtc2',
+        'mtc3',
+        'mtc0',
         'shortxlinks',
         'carensureplan',
         'discoverlaw',
@@ -2871,7 +2879,7 @@ def linked_validate():
                 if word in text or word in title.lower():
                     print(f'{word} found in {text} or {title}')
                     return True
-            if ' demo.dynamicslab.ai' in title.lower() or 'always active window - always visible' in title.lower() or '/get_option_verify_bot' in title.lower():
+            if 'demo.dynamicslab.ai' in title.lower() or 'always active window - always visible' in title.lower() or '/get_option_verify_bot' in title.lower():
                     print(f'Demo link found in title: {title}')
                     return True     
             #status = send_telegram_message(TOKEN, USER_ID, f"Broken Link Found in Farm{farm_id}: {text}. 🐍")
@@ -5793,8 +5801,30 @@ def hyperhustlebrows():
              
     except Exception as e:
         pass
-
+def check_line_value(line_number):
+    """
+    Reads the given line number and returns the boolean value.
+    """
+    file_location = "shrinklist.txt"
+    try:
+        with open(file_location, 'r') as f:
+            lines = f.readlines()
+            
+            # Check if line number is within range
+            if 1 <= line_number <= len(lines):
+                # .strip() removes the newline character, then we compare string
+                value_str = lines[line_number - 1].strip()
+                if value_str == "True":
+                    return True
+                else:                    
+                    return False
+            else:
+                return True
+                
+    except FileNotFoundError:
+        return True
 ###########################################################
+
 update_content_extension()
 export_farm_to_txt(f"farm{farm_id}","traffic_flow.txt")  # saves custom filename
 gplink_bug = False
@@ -6043,7 +6073,15 @@ while True:
     window1 = open_detatch_tab()
     window2 = open_detatch_tab()
     #cutty_window = open_detatch_tab()
-    window3 = open_detatch_tab()
+    if Indianxorshrink == False and hybridmode_indianxshrink == False:
+        window3 = open_detatch_tab()
+    if Indianxorshrink == True and hybridmode_indianxshrink == False:
+        window4 = open_detatch_tab()
+        window5 = open_detatch_tab()
+    if hybridmode_indianxshrink == True:
+        window3 = open_detatch_tab()
+        window4 = open_detatch_tab()
+        window5 = open_detatch_tab()
     #window4 = open_detatch_tab()
     print("Window IDs:", window1, window2)
     script_elapsed_time3 = time.time() - duration_time
@@ -6071,11 +6109,12 @@ while True:
         open_link(link = shorlink ,newtab = False)
         time.sleep(2)
 
-        switch_to_window(window3)
-        pyautogui.click(493,19, duration = 0.4)
-        shorlink = random_link('link4')
-        open_link(link = shorlink ,newtab = False)
-        time.sleep(2)
+        if Indianxorshrink == False and hybridmode_indianxshrink == False:
+            switch_to_window(window3)
+            pyautogui.click(493,19, duration = 0.4)
+            shorlink = random_link('link4')
+            open_link(link = shorlink ,newtab = False)
+            time.sleep(2)
         
         hyperrefreshtime1 = random.randint(200, 500)
         hyperrefreshtime2 = random.randint(200, 800)
@@ -6087,7 +6126,27 @@ while True:
         hyperrefreshstat3 = False
         hyperrefreshstat4 = False
 
+        if Indianxorshrink == True and hybridmode_indianxshrink == False:
+            switch_to_window(window4)
+            pyautogui.click(493,19, duration = 0.4)
+            window4_meorearn = check_line_value(location_changes)
+            print("Window 4 meorearn status:", window4_meorearn, "Location changes:", location_changes)
+            if window4_meorearn:
+                shorlink = random_link('link5')
+            else:
+                shorlink = random_link('link8')
+            open_link(link = shorlink ,newtab = False)
 
+
+            switch_to_window(window5)
+            pyautogui.click(493,19, duration = 0.4)
+            #window5_meorearn = check_line_value(location_changes)
+            #print("Window 5 meorearn status:", window5_meorearn, "Location changes:", location_changes)
+            if window4_meorearn:
+                shorlink = random_link('link8')
+            else:
+                shorlink = random_link('link5')
+            open_link(link = shorlink ,newtab = False)
         #switch_to_window(window4)
         #pyautogui.click(493,19, duration = 0.4)
         #if window4_meorearn == 1:
@@ -6097,7 +6156,33 @@ while True:
         #    shorlink = random_link('link5')
         #open_link(link = shorlink ,newtab = False)
         #time.sleep(2)
+        if hybridmode_indianxshrink == True:
+            switch_to_window(window3)
+            pyautogui.click(493,19, duration = 0.4)
+            shorlink = random_link('link4')
+            open_link(link = shorlink ,newtab = False)
+            time.sleep(2)
 
+            switch_to_window(window4)
+            pyautogui.click(493,19, duration = 0.4)
+            window4_meorearn = check_line_value(location_changes)
+            print("Window 4 meorearn status:", window4_meorearn, "Location changes:", location_changes)
+            if window4_meorearn:
+                shorlink = random_link('link5')
+            else:
+                shorlink = random_link('link8')
+            open_link(link = shorlink ,newtab = False)
+
+
+            switch_to_window(window5)
+            pyautogui.click(493,19, duration = 0.4)
+            #window5_meorearn = check_line_value(location_changes)
+            #print("Window 5 meorearn status:", window5_meorearn, "Location changes:", location_changes)
+            if window4_meorearn:
+                shorlink = random_link('link8')
+            else:
+                shorlink = random_link('link5')
+            open_link(link = shorlink ,newtab = False)
     ############################################################
 
     if layout != 0:
@@ -6127,9 +6212,14 @@ while True:
         win3timeG =time.time()
 
         time.sleep(10)
-        closetabwin4 = random.randint(60, 180)
+        #closetabwin4 = random.randint(60, 180)
         win4switchfg = False
-        #focus_and_close_window('New Tab')
+        closetabwin4 = random.randint(40, 90)
+        print("Time to consider closing window 4:", closetabwin4, "seconds")
+        oddofg = random.randint(1, 10)
+        #if oddofg <= 7:
+        win4switchfg = False
+        #else:
         gg = None
         started = time.time()
         sites_done = 0
@@ -6141,7 +6231,7 @@ while True:
         shrinkmeorearn_time = time.time()
         clickads_gplink = True
         clickads_gplink_attempts = 0
-
+        focus_and_close_window('Options Page')
         check_indx = 1
         while gg == None:
             check_indx += 1
@@ -6199,9 +6289,9 @@ while True:
                         close_window(window2)
 
 
-                if script_seconds_only > 780:
+                if script_seconds_only > 600:
                     gg = True
-                if script_seconds_only > 700:
+                if script_seconds_only > 600:
                     oii = True
 
                 try:
@@ -6338,47 +6428,58 @@ while True:
                             #cuty = True
                             pass
 
-
-
-
-                if layout == 2:
+                if layout == 1 and Indianxorshrink == True and hybridmode_indianxshrink == False or layout == 1 and hybridmode_indianxshrink == True:
                     
                         try:
                             switch_to_window(window4)
                             if win32gui.IsWindow(window4):
 
                                 switch = switch_to_window(window4)
-                                #pyautogui.click(150,200, duration = 0.4)
-                                script_elapsed_time = time.time() - shrinkmeorearn_time
-                                script_seconds_only = int(script_elapsed_time)
-                                if script_seconds_only > closetabwin4 and win4switchfg == False:
-                                    if window4_meorearn == 1:
-                                        window4_meorearn = 0
-                                    win4switchfg = True
-
-                                    switch_to_window(window4)
-                                    pyautogui.click(493,19, duration = 0.4)
-                                    if window4_meorearn == 1:
-                                        shorlink = random_link('link8')
-                                        #window4_meorearn = 0
-                                    else:
-                                        shorlink = random_link('link5')
-                                    open_link(link = shorlink ,newtab = False)
-                                    time.sleep(2)
 
 
                                 ggwin2 = None
-                                if window4_meorearn == 1:
-                                    earn = False
-                                else:                                    
+                                if window4_meorearn:
                                     earn = True
+                                else:                                    
+                                    earn = False
                                 ggwin2 = shrink_meorearn(earn)
                                 if ggwin2 == 5:
-                                    fc_lc = True
+                                    oii = True
                                 elif ggwin2 == 1:
-                                    fc_lc = False
+                                    oii = False
 
-                                                    
+                                if win4switchfg == False:
+
+                                    try:
+                                        switch_to_window(window5)
+                                        if win32gui.IsWindow(window5): 
+                                            script_elapsed_time = time.time() - shrinkmeorearn_time
+                                            script_seconds_only = int(script_elapsed_time)
+                                            switch = switch_to_window(window5)
+                                            if script_seconds_only > closetabwin4 and win4switchfg == False :
+                                                time.sleep(1)
+                                                title = get_focused_window_title()
+                                                print("Time to consider closing window 4, current title:", title)
+                                                if script_seconds_only < 300:
+                                                    if 'ShrinkMe' in title or 'Health Shield' in title:
+                                                        print("Closing window 4 due to time limit and title match")
+                                                        if window4_meorearn:
+                                                            earn = False
+                                                        else:                                    
+                                                            earn = True
+                                                        ggwin2 = shrink_meorearn(earn)
+                                                        continue
+                                                close_window(window5)
+                                                win4switchfg = True
+                                                continue
+                                            switch = switch_to_window(window5)
+                                            if window4_meorearn:
+                                                earn = False
+                                            else:                                    
+                                                earn = True
+                                            ggwin2 = shrink_meorearn(earn)
+                                    except Exception as e:
+                                        pass    
 
                                 try:
                                     x, y = pyautogui.locateCenterOnScreen('resubmission.png', region=[585,210,585,290], confidence=0.8)
@@ -6394,30 +6495,29 @@ while True:
                                     x, y = pyautogui.locateCenterOnScreen('thissiteerror.png', region=[526,160,530,470], confidence=0.95)
                                     if x and y:
                                         print('site not working shortix')
-                                        fc_lc = True
+                                        oii = True
                                 except Exception as e:
                                     pass
                             else:
-                                print('cuty not exist')                               
+                                print('oii not exist')                               
                                 
                                 
-                                if fc_lc:
+                                if oii:
                                     pass
                                 else:
                                     sites_done += 1
-                                fc_lc = True
+                                oii = True
 
                         except Exception as e:
-                            fc_lc = True
+                            oii = True
                             pass
 
 
 
 
+                if layout == 1 and Indianxorshrink == False and hybridmode_indianxshrink == False or layout == 1 and hybridmode_indianxshrink == True:
 
-                if layout == 1:
-
-                        if check_indx % 2 == 0:
+                        if check_indx % 4 == 0:
                             results = True
                         else:
                             results = False

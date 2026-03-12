@@ -932,6 +932,17 @@ function shinkern() {
             const getLinkBtn = document.querySelector('a.btn.btn-success.btn-lg.get-link');
             if (isVisible(getLinkBtn) && getLinkBtn.innerText.trim().toLowerCase() === "get link") {
                 getLinkBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+                if (processedElements4.has(getLinkBtn)) {
+                    console.log("Button #continue is ready but in 10s cooldown.");
+                    return;
+                }
+                rescueAndPrepare(getLinkBtn);
+                delay(700);
+                naturalClick(getLinkBtn);
+                processedElements4.add(getLinkBtn);
+                setTimeout(() => {
+                    processedElements4.delete(getLinkBtn);
+                }, 10000);
                 return;
                 // We don't click here because your original code didn't have a click command here
             }

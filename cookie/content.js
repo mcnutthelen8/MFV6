@@ -1201,7 +1201,7 @@ function shrkme() {
     let lastButtonClickTime2 = isFitnessTipz2 ? Date.now() : null;
     if (isFitnessTipz2) {
         setInterval(() => {
-            if (Date.now() - lastButtonClickTime2 > 60000) {
+            if (Date.now() - lastButtonClickTime2 > 120000) {
                 console.log("No buttons found/clicked in 60s on fitnesstipz.com. Redirecting...");
                 window.location.href = "https://web.telegram.org/a/get#link8";
             }

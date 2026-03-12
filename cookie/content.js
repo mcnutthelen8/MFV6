@@ -1044,7 +1044,36 @@ function shinkern2() {
 
 function shinkern() {
     const Countinue_btns = ["#startButton", "#message .wp2continuelink"];
+    async function rescueAndPrepare(btn) {
+        if (!btn || processedElements2.has(btn)) return;
 
+        // Force button to the very top immediately
+        btn.style.setProperty('z-index', '2147483647', 'important');
+        btn.style.setProperty('position', 'relative', 'important');
+        btn.classList.add('btn-rescue-active');
+
+        const rect = btn.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+
+        // Clear any remaining obstacles that might be blocking 'naturalClick'
+        let topEl = document.elementFromPoint(x, y);
+        let loopLimit = 0;
+        while (topEl && topEl !== btn && !btn.contains(topEl) && topEl !== document.documentElement && loopLimit < 15) {
+            console.log("Removing obstacle covering button:", topEl);
+            topEl.classList.add('obstacle-ghost');
+            topEl = document.elementFromPoint(x, y);
+            loopLimit++; 
+        }
+
+        processedElements2.add(btn);
+        // Cleanup after 10s
+        setTimeout(() => {
+            processedElements2.delete(btn);
+            btn.classList.remove('btn-rescue-active');
+            btn.style.removeProperty('z-index');
+        }, 10000);
+    }
     function isVisible(el) {
         if (!el) return false;
         const style = window.getComputedStyle(el);
@@ -1090,7 +1119,7 @@ function shinkern() {
                 processedElements4.add(getLinkBtn);
                 setTimeout(() => {
                     processedElements4.delete(getLinkBtn);
-                }, 10000);
+                }, 5000);
                 return;
             }
 

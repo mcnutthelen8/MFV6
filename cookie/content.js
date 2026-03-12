@@ -912,7 +912,7 @@ async function naturalClick55(element) {
 const processedElements4 = new WeakSet();
 let lastGetNavLinkClick = 0; 
 
-function shinkern() {
+function shinkern2() {
     const Countinue_btns = ["#startButton", "#message .wp2continuelink"];
 
     function isVisible(el) {
@@ -1042,7 +1042,126 @@ function shinkern() {
 }
 
 
+function shinkern() {
+    const Countinue_btns = ["#startButton", "#message .wp2continuelink"];
 
+    function isVisible(el) {
+        if (!el) return false;
+        const style = window.getComputedStyle(el);
+        const rect = el.getBoundingClientRect();
+        return (style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0);
+    }
+
+    // --- Redirect tracker (only active on fitnesstipz.com) ---
+    const isFitnessTipz = window.location.hostname.includes("fitnesstipz.com");
+    let lastButtonClickTime = isFitnessTipz ? Date.now() : null;
+
+    if (isFitnessTipz) {
+        setInterval(() => {
+            if (Date.now() - lastButtonClickTime > 60000) {
+                console.log("No buttons found/clicked in 60s on fitnesstipz.com. Redirecting...");
+                window.location.href = "https://web.telegram.org/a/get#link5";
+            }
+        }, 5000); // Check every 5 seconds
+    }
+
+    function recordClick() {
+        if (isFitnessTipz) lastButtonClickTime = Date.now();
+    }
+
+    setInterval(() => {
+        const pageTitle = document.title;
+        const currentTime = Date.now();
+        handleConsentdsFirst();
+
+        // --- SECTION 1: Health Shield Logic ---
+        if (pageTitle.includes("Health Shield")) {
+            const getLinkBtn = document.querySelector('a.btn.btn-success.btn-lg.get-link');
+            if (isVisible(getLinkBtn) && getLinkBtn.innerText.trim().toLowerCase() === "get link") {
+                getLinkBtn.scrollIntoView({ behavior: "smooth", block: "center" });
+                if (processedElements4.has(getLinkBtn)) {
+                    console.log("Button #continue is ready but in 10s cooldown.");
+                    return;
+                }
+                rescueAndPrepare(getLinkBtn);
+                delay(700);
+                naturalClick(getLinkBtn);
+                recordClick();
+                processedElements4.add(getLinkBtn);
+                setTimeout(() => {
+                    processedElements4.delete(getLinkBtn);
+                }, 10000);
+                return;
+            }
+
+            const counti_btn = document.querySelector('button.btn.btn-primary.btn-captcha#continue');
+            if (isTrueVisible2(counti_btn)) {
+                const btnText = counti_btn.innerText.trim().toLowerCase();
+                if (btnText === "continue" && !counti_btn.disabled) {
+                    if (processedElements4.has(counti_btn)) {
+                        console.log("Button #continue is ready but in 10s cooldown.");
+                        return;
+                    }
+                    console.log("Button #continue is active and clickable. Clicking now...");
+                    processedElements4.add(counti_btn);
+                    naturalClick55(counti_btn);
+                    recordClick();
+                    setTimeout(() => {
+                        processedElements4.delete(counti_btn);
+                    }, 5000);
+                    return;
+                } else if (counti_btn.disabled) {
+                    console.log("Button #continue found, but it is currently DISABLED. Waiting...");
+                }
+            }
+        }
+
+        // --- SECTION 2: #getnewlink Logic (with 10s Cooldown) ---
+        const btnwait = document.querySelector('#getnewlink');
+        if (isVisible(btnwait)) {
+            const currentUrl = window.location.href;
+            if (currentUrl.includes("#getmylink") || currentUrl.includes("getmylink") || isTrueVisible2(btnwait)) {
+                const btnwaitText = (btnwait.innerText || "").toLowerCase();
+                if (btnwaitText.includes("get link")) {
+                    if (currentTime - lastGetNavLinkClick < 10000) {
+                        console.log("GetNewLink is in 10s cooldown...");
+                        return;
+                    } else {
+                        console.log(`Clicking #getnewlink...`);
+                        btnwait.scrollIntoView({ behavior: "smooth", block: "center" });
+                        lastGetNavLinkClick = currentTime;
+                        delay(Math.random() * 300 + 800);
+                        setTimeout(() => {
+                            naturalClick(btnwait);
+                            recordClick();
+                        }, 1000);
+                        return;
+                    }
+                }
+            }
+        }
+
+        // --- SECTION 3: Continue Buttons Logic ---
+        for (const selector of Countinue_btns) {
+            const btn = document.querySelector(selector);
+            if (isVisible(btn)) {
+                if (processedElements4.has(btn)) continue;
+                const btnText = (btn.innerText || "").toLowerCase();
+                if (btnText.includes("continue")) {
+                    console.log(`Clicking ${selector}`);
+                    btn.scrollIntoView({ behavior: "smooth", block: "center" });
+                    delay(Math.random() * 300 + 800);
+                    processedElements4.add(btn);
+                    naturalClick(btn);
+                    recordClick();
+                    setTimeout(() => {
+                        processedElements4.delete(btn);
+                    }, 10000);
+                }
+            }
+        }
+    }, 1500);
+}
 
 const processedElements5= new WeakSet();
 const processedElementsgg= new WeakSet();

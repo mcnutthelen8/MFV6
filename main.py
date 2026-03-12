@@ -37,7 +37,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 
 
-Indianxorshrink = True
+Indianxorshrink = False
 hybridmode_indianxshrink = False
 #Tru = Shrink
 #False = Indianxor

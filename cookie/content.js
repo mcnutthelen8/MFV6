@@ -1197,8 +1197,19 @@ const processedElementsgg= new WeakSet();
 
 function shrkme() {
     const Countinue_btns = [".center-link-items #btn1", '#nextPage #btn2', ".center-link-items .tp-btn.tp-blue", ".center-link-items #btn2", "#tp-snp2" ];
-
-
+    const isFitnessTipz2 = window.location.hostname.includes("shrinkme");
+    let lastButtonClickTime2 = isFitnessTipz2 ? Date.now() : null;
+    if (isFitnessTipz2) {
+        setInterval(() => {
+            if (Date.now() - lastButtonClickTime2 > 60000) {
+                console.log("No buttons found/clicked in 60s on fitnesstipz.com. Redirecting...");
+                window.location.href = "https://web.telegram.org/a/get#link8";
+            }
+        }, 5000); // Check every 5 seconds
+    }
+    function recordClick2() {
+        if (isFitnessTipz2) lastButtonClickTime2 = Date.now();
+    }
     // 1. Ensure the CSS is ready
     const styleId = 'priority-button-styles';
     if (!document.getElementById(styleId)) {
@@ -1280,6 +1291,7 @@ function shrkme() {
                     console.log("Button #continue is ready but in 10s cooldown.");
                     return;
                 }
+                recordClick2();
                 rescueAndPrepare(getLinkBtn);
                 delay(700);
                 naturalClick(getLinkBtn);
@@ -1287,6 +1299,7 @@ function shrkme() {
                 setTimeout(() => {
                     processedElements5.delete(getLinkBtn);
                 }, 10000);
+                
                 return;
                 // We don't click here because your original code didn't have a click command here
             }
@@ -1307,6 +1320,7 @@ function shrkme() {
                     // Mark as processed immediately to prevent spam
                     processedElements5.add(counti_btn);
                     // Perform the click
+                    recordClick2();
                     rescueAndPrepare(counti_btn);
                     delay(700);
 
@@ -1346,6 +1360,7 @@ function shrkme() {
                 // Skip buttons in a wait state
                 if (btnText.includes("please") || btnText.includes("wait")) {
                     console.log("shrkme button found but in wait state. Skipping for now...", btn);
+                    recordClick2();
                     return;
                 }
                 

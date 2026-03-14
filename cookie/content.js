@@ -170,20 +170,16 @@
 
     ],
     link3: [
-        { url: 'https://hyperhustle.online/', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/High-Probability-Trading', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/Crypto-vs-Forex-vs-Stocks-Choosing-Your-Battlefield', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/index?filter=strategies', sites: siteGroups.common },
+        { url: 'https://corelinks.site/video', sites: siteGroups.common },
+        { url: 'https://corelinks.site', sites: siteGroups.common },
+        { url: 'https://corelinks.site/video#streaming', sites: siteGroups.common },
+        { url: 'https://corelinks.site/system-tools', sites: siteGroups.common },
+        { url: 'https://corelinks.site', sites: siteGroups.common },
+        { url: 'https://corelinks.site/privacy', sites: siteGroups.common },
+        { url: 'https://corelinks.site/ai', sites: siteGroups.common },
+        { url: 'https://corelinks.site', sites: siteGroups.common },
+        { url: 'https://corelinks.site/beginners-guide', sites: siteGroups.common },
 
-{ url: 'https://hyperhustle.online/The-Triple-Threat-Strategy', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/Deploy-Applications', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/tools', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/which-exchange-has-the-best-liquidity-for-small-caps', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/which-exchange-has-the-best-liquidity-for-small-caps', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/', sites: siteGroups.common },
-{ url: 'https://hyperhustle.online/?page=2', sites: siteGroups.common },
 
 
     ],

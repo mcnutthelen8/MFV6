@@ -1,4 +1,5 @@
 
+
 print("Version 10.5.8 loaded.")
 import pyautogui
 import time
@@ -626,16 +627,14 @@ def save_variables(var1, var2):
         file.write(f"{var1} | {var2}\n")
     print(f"Saved: {var1} | {var2}")
 
-def get_ocr_from_screen_area(left, top, width, height, lang='eng'):
-    screenshot = pyautogui.screenshot(region=(left, top, width, height))
-    #text = pytesseract.image_to_string(screenshot, lang=lang)
-    return text.strip()
 
 
 def get_focused_window_title():
     hwnd = win32gui.GetForegroundWindow()
-    
+#    print(f"Focused window handle: {win32gui.GetWindowText(hwnd)}")
     return win32gui.GetWindowText(hwnd)
+#get_focused_window_title()
+
     #text = get_ocr_from_screen_area(65, 6, 185, 35)
     #print("Detected Text:", text)
     #return text
@@ -652,6 +651,7 @@ def switch_to_window(hwnd):
         time.sleep(0.5)
         return True
     return False
+
 def close_window(hwnd):
     """Closes the given window by sending WM_CLOSE if it exists."""
     if win32gui.IsWindow(hwnd):
@@ -665,6 +665,7 @@ def check_windows(hwnd_list):
     Returns a dict with hwnd -> True/False for existence.
     """
     return {hwnd: win32gui.IsWindow(hwnd) for hwnd in hwnd_list}
+
 def color_exists_in_region(target_rgb, region):
 
     screenshot = pyautogui.screenshot(region=region)
@@ -5716,27 +5717,76 @@ def get_gplink_bug_status():
             return True
     return False  # Default value if not found
 
+
+def find_dark_mode_text_and_click(target_text, scale=3):
+    print(f"Scanning Dark Mode screen for: '{target_text}'...")
+    
+    # 1. Take Screenshot
+    screenshot = pyautogui.screenshot()
+    img = np.array(screenshot)
+    img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+
+    # 2. PRE-PROCESSING FOR DARK MODE
+    # Convert to grayscale
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    
+    # Scale up (helps with small UI text)
+    width = int(img.shape[1] * scale)
+    height = int(img.shape[0] * scale)
+    scaled = cv2.resize(gray, (width, height), interpolation=cv2.INTER_CUBIC)
+
+    # INVERT: This is the key for Dark Mode (White text becomes Black)
+    inverted = cv2.bitwise_not(scaled)
+
+    # THRESHOLD: Turn everything into pure Black and White (removes gray noise)
+    # Otsu's method automatically finds the best contrast level
+    _, thresh = cv2.threshold(inverted, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+    # 3. OCR (psm 11 is best for sparse UI text)
+    data = pytesseract.image_to_data(thresh, output_type=pytesseract.Output.DICT, config='--psm 11')
+
+    for i in range(len(data['text'])):
+        word = data['text'][i].strip().lower()
+        
+        # Check if target is in the word
+        if target_text.lower() in word and word != "":
+            # Map coordinates back to original screen size
+            orig_x = (data['left'][i] + (data['width'][i] // 2)) // scale
+            orig_y = (data['top'][i] + (data['height'][i] // 2)) // scale
+
+            print(f"Found '{data['text'][i]}' at ({orig_x}, {orig_y}). Clicking...")
+            #pyautogui.click(orig_x, orig_y)
+            human_click(orig_x, orig_y)
+            return True
+
+    print("Target text not found.")
+    return False
+
+hyper_scrolled = False
+
 def hyperhustlebrows():
     pyautogui.click(493,19, duration = 0.2)
     pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.3)
     pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.3)
-    pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.3)
+    global hyper_scrolled
+
 
     title = get_focused_window_title()
-    if 'Hyper Hustle' in title or 'hyperhustle.online' in title:
+    if 'CoreLinks' in title or 'corelinks.site' in title:
         print("Already on Hyper Hustle page.")
     else:
 
-        if random.random() < 0.93:   # 0.9 = 90%
+        if random.random() < 0.8:   # 0.9 = 90%
             shorlink = random_link('link3')
         else:
-            shorlink = "https://hyperhustle.online/"
-        switch_to_window(window3)
+            shorlink = randomhyperlinks()
+        hyper_scrolled = False
+        switch_to_window(hyperwindow)
         pyautogui.click(493,19, duration = 0.4)
         shorlink = random_link('link3')
         open_link(link = shorlink ,newtab = False)
         time.sleep(2)
-        pyautogui.click(1056,192, duration=0.6)
+        #pyautogui.click(1056,192, duration=0.6)
 
 
 
@@ -5746,61 +5796,117 @@ def hyperhustlebrows():
     try:
         x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
         if x and y:
-            if '– Hyper Hustle' in title:
-                if random.random() < 0.6: 
-                    pyautogui.moveTo(random.randint(300, 1600), random.randint(300, 900), duration=0.3)
-                    pyautogui.moveTo(random.randint(300, 1600), random.randint(300, 900), duration=0.3)
-                    if random.random() < 0.5: 
-                        pyautogui.moveTo(random.randint(300, 1600), random.randint(300, 900), duration=0.4)
-                    pyautogui.scroll(-random.randint(70, 300))
-                    if random.random() < 0.5: 
-                        pyautogui.scroll(-random.randint(70, 300))
-                        if random.random() < 0.7: 
-                            pyautogui.click(random.randint(950, 1050), random.randint(640, 900), duration=0.5)
-                    if random.random() < 0.5: 
-                        pyautogui.scroll(-random.randint(70, 300))
-                        if random.random() < 0.7: 
-                            pyautogui.click(random.randint(950, 1050), random.randint(640, 900), duration=0.5)
-                    if random.random() < 0.5: 
-                        pyautogui.scroll(-random.randint(70, 300))
-                        if random.random() < 0.7: 
-                            pyautogui.click(random.randint(950, 1050), random.randint(640, 900), duration=0.5)
-                    if random.random() < 0.5: 
-                        pyautogui.scroll(-random.randint(70, 300))
-                        if random.random() < 0.7: 
-                            pyautogui.click(random.randint(950, 1050), random.randint(640, 900), duration=0.5)
-                    time.sleep(1)
-                    return
-                else:
-                    if random.random() < 0.9:
-                         pyautogui.scroll(random.randint(200, 900))
-                    if random.random() < 0.5: 
-                        pyautogui.click(random.randint(1460, 1550), random.randint(887, 868), duration=0.5)
-                        time.sleep(0.5)
+            #text = ocr_screen_region(167, 45, 342, 35)
+            title = get_focused_window_title()
+            print(f"Screen OCR Text: {title}")
+            if hyper_scrolled:
+                pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.3)
+                pyautogui.scroll(-random.randint(100, 300))
+                time.sleep(0.1)
+                pyautogui.scroll(random.randint(200, 300))
+                time.sleep(0.2)
+                pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.5)
+                pyautogui.scroll(random.randint(100, 300))
+                pyautogui.scroll(-random.randint(100, 300))
+                time.sleep(0.1)
+                
+                pyautogui.scroll(random.randint(100, 300))
+                if random.random() < 0.5:
+                    time.sleep(0.2)
+                    pyautogui.scroll(random.randint(100, 200))
+                    time.sleep(0.1)
+                    pyautogui.scroll(random.randint(100, 200))
+
+
+
+
+            if title == '' or title == None or title == '.':
+                return False
+            root = False
+            if title == 'CoreLinks – The Largest Collection of Free Tools & Software' or title in 'The Largest Collection of Free Tools & Software':
+                act = random.choice([1,2])
+                root = True
+            else:
+
+                act = random.choice([2,3])
+
+            scro = random.choice([1,2])
+            hyper_scrolled = True
+            cate = random.choice(["Adblock","Artificial", "Privacy","Books", "Movies", "Music", "Downloading", "Privacy", "Gaming", "Movies", "Anime", "TV", "Emulation"])
+            # Test run
+            if act == 1:
+                
+                if scro == 1:
+                   
+                    pyautogui.click(1914,random.randint(433, 444), duration = 0.4)
+                if scro == 2:
+                    pyautogui.scroll(-random.randint(100, 300))
+                    time.sleep(0.1)
+                    pyautogui.scroll(-random.randint(100, 300))
+                    time.sleep(0.2)
+                    pyautogui.scroll(-random.randint(100, 200))
+                    time.sleep(0.1)
+                    pyautogui.scroll(-random.randint(100, 200))
+
+                time.sleep(2)
+                find_dark_mode_text_and_click(cate)
+
+            if act == 2:
+                    pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.3)
+                    pyautogui.scroll(-random.randint(100, 300))
+                    time.sleep(0.1)
+                    pyautogui.scroll(-random.randint(100, 300))
+                    time.sleep(0.2)
+                    pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.5)
+                    pyautogui.scroll(-random.randint(100, 200))
+                    if random.random() < 0.5 and root == False:
+                        human_click(random.randint(595, 1250), random.randint(310, 940))
                         return
-                    elif random.random() < 0.6: 
-                        pyautogui.click(random.randint(1330, 1425), random.randint(130, 132), duration=0.5)
-                        time.sleep(0.5)
-                        return
-                    elif random.random() < 0.5: 
-                        pyautogui.click(random.randint(1460, 1550), random.randint(760, 800), duration=0.5)
-                        time.sleep(0.5)
-                        return
-                    elif random.random() < 0.5: 
-                        pyautogui.click(random.randint(1460, 1550), random.randint(650, 695), duration=0.5)
-                        time.sleep(0.5)
+                    time.sleep(0.1)
+                    pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.3)
+                    pyautogui.scroll(-random.randint(100, 200))
+                    if random.random() < 0.5 and root == False:
+                        human_click(random.randint(595, 1250), random.randint(310, 940))
                         return
 
-            else:
-                if random.random() < 0.5: 
-                    pyautogui.click(random.randint(950, 1050), random.randint(640, 900), duration=0.5)
-                if random.random() < 0.5: 
-                    pyautogui.click(random.randint(950, 1050), random.randint(640, 900), duration=0.5)
-                if random.random() < 0.5: 
-                    pyautogui.click(random.randint(950, 1050), random.randint(640, 900), duration=0.5)
+            if act == 3:
+                    pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.3)
+                    pyautogui.scroll(-random.randint(100, 300))
+                    time.sleep(0.1)
+                    pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.5)
+                    pyautogui.scroll(random.randint(100, 300))
+                    time.sleep(0.2)
+                    if random.random() < 0.5 and root == False:
+                        human_click(random.randint(595, 1250), random.randint(310, 940))
+                        return
+                    pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.3)
+                    pyautogui.scroll(-random.randint(100, 200))
+                    time.sleep(0.1)
+                    pyautogui.moveTo(random.randint(595, 1250), random.randint(310, 940), duration=0.3)
+                    pyautogui.scroll(-random.randint(100, 200))
+
+                    pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.3)
+                    pyautogui.scroll(-random.randint(100, 300))
+                    if random.random() < 0.5 and root == False:
+                        return
+                    time.sleep(0.1)
+                    pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.5)
+                    pyautogui.scroll(-random.randint(100, 300))
+                    time.sleep(0.2)
+                    pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.3)
+                    pyautogui.scroll(random.randint(100, 200))
+                    time.sleep(0.1)
+                    pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.3)
+                    pyautogui.scroll(-random.randint(100, 200))
+
+
+
+
              
     except Exception as e:
         pass
+
+
 def check_line_value(line_number):
     """
     Reads the given line number and returns the boolean value.
@@ -5823,6 +5929,32 @@ def check_line_value(line_number):
                 
     except FileNotFoundError:
         return True
+    
+
+
+
+
+def randomhyperlinks():
+    links = [
+        "https://corelinks.site/privacy", 
+        "https://corelinks.site",
+        "https://corelinks.site/ai", 
+        "https://corelinks.site/audio", 
+        "https://corelinks.site/video",
+        "https://corelinks.site/video#streaming", 
+        "https://corelinks.site", 
+        "https://corelinks.site", 
+        "https://corelinks.site/video",
+        "https://corelinks.site", 
+        "https://corelinks.site/privacy", 
+
+
+
+    ]
+    return random.choice(links)
+
+
+
 ###########################################################
 
 update_content_extension()
@@ -6082,7 +6214,8 @@ while True:
         window3 = open_detatch_tab()
         window4 = open_detatch_tab()
         window5 = open_detatch_tab()
-    #window4 = open_detatch_tab()
+
+    hyperwindow = open_detatch_tab()
     print("Window IDs:", window1, window2)
     script_elapsed_time3 = time.time() - duration_time
     duration_time_sec = int(script_elapsed_time3)
@@ -6117,9 +6250,9 @@ while True:
             time.sleep(2)
         
         hyperrefreshtime1 = random.randint(200, 500)
-        hyperrefreshtime2 = random.randint(200, 800)
-        hyperrefreshtime3 = random.randint(400, 1000)
-        hyperrefreshtime4 = random.randint(600, 1000)
+        hyperrefreshtime2 = random.randint(200, 600)
+        hyperrefreshtime3 = random.randint(400, 900)
+        hyperrefreshtime4 = random.randint(120, 500)
 
         hyperrefreshstat1 = False
         hyperrefreshstat2 = False
@@ -6183,6 +6316,16 @@ while True:
             else:
                 shorlink = random_link('link5')
             open_link(link = shorlink ,newtab = False)
+
+        switch_to_window(hyperwindow)
+        pyautogui.click(493,19, duration = 0.4)
+        if random.random() < 0.8:   # 0.9 = 90%
+            shorlink = random_link('link3')
+        else:
+            shorlink = randomhyperlinks()
+        open_link(link = shorlink ,newtab = False)
+        time.sleep(2)
+        
     ############################################################
 
     if layout != 0:
@@ -6230,6 +6373,7 @@ while True:
         window4_lastclick = time.time()
         shrinkmeorearn_time = time.time()
         clickads_gplink = True
+        hyper_scrolled = False
         clickads_gplink_attempts = 0
         focus_and_close_window('Options Page')
         check_indx = 1
@@ -6576,14 +6720,17 @@ while True:
 
 
 
-                if layout == 5:
-                    if random.random() < 0.5: ##if cuty == None or cuty == False:
+                if layout == 1:
+                    if random.random() < 0.9: ##if cuty == None or cuty == False:
+                        script_elapsed_time = time.time() - started
+                        script_seconds_only = int(script_elapsed_time)
+                        print(f"Script has been running for {script_seconds_only} seconds")
                         try:
-                            switch_to_window(window3)
-                            if win32gui.IsWindow(window3):
+                            switch_to_window(hyperwindow)
+                            if win32gui.IsWindow(hyperwindow):
 
-                                switch = switch_to_window(window3)
-                                pyautogui.click(150,200, duration = 0.4)
+                                switch = switch_to_window(hyperwindow)
+                                #pyautogui.click(150,200, duration = 0.4)
 
                                 ggwin2 = None
                                 ggwin2 = hyperhustlebrows()
@@ -6591,11 +6738,11 @@ while True:
                                 if hyperrefreshstat1 == False:
                                     if script_seconds_only > hyperrefreshtime1:
                                         hyperrefreshstat1 = True
-                                        if random.random() < 0.93:   # 0.9 = 90%
+                                        if random.random() < 0.8:   # 0.9 = 90%
                                             shorlink = random_link('link3')
                                         else:
-                                            shorlink = "https://hyperhustle.online/"
-                                        switch_to_window(window3)
+                                            shorlink = randomhyperlinks()
+                                        switch_to_window(hyperwindow)
                                         pyautogui.click(493,19, duration = 0.4)
                                         shorlink = random_link('link3')
                                         open_link(link = shorlink ,newtab = False)
@@ -6607,11 +6754,11 @@ while True:
                                 if hyperrefreshstat2 == False:
                                     if script_seconds_only > hyperrefreshtime2:
                                         hyperrefreshstat2 = True
-                                        if random.random() < 0.93:   # 0.9 = 90%
+                                        if random.random() < 0.8:   # 0.9 = 90%
                                             shorlink = random_link('link3')
                                         else:
-                                            shorlink = "https://hyperhustle.online/"
-                                        switch_to_window(window3)
+                                            shorlink = randomhyperlinks()
+                                        switch_to_window(hyperwindow)
                                         pyautogui.click(493,19, duration = 0.4)
                                         shorlink = random_link('link3')
                                         open_link(link = shorlink ,newtab = False)
@@ -6621,41 +6768,32 @@ while True:
                                 if hyperrefreshstat3 == False:
                                     if script_seconds_only > hyperrefreshtime3:
                                         hyperrefreshstat3 = True
-                                        if random.random() < 0.93:   # 0.9 = 90%
+                                        if random.random() < 0.8:   # 0.9 = 90%
                                             shorlink = random_link('link3')
                                         else:
-                                            shorlink = "https://hyperhustle.online/"
-                                        switch_to_window(window3)
+                                            shorlink = randomhyperlinks()
+                                        switch_to_window(hyperwindow)
                                         pyautogui.click(493,19, duration = 0.4)
                                         shorlink = random_link('link3')
                                         open_link(link = shorlink ,newtab = False)
                                         time.sleep(2)
-
+                                if script_seconds_only > hyperrefreshtime4:
+                                    hyperrefreshstat4 = True
+                                    time.sleep(3)
+                                    close_window(hyperwindow)
                                         #pyautogui.click(1056,192, duration=0.6)
 
 
 
 
-                                if hyperrefreshstat4 == False:
-                                    if script_seconds_only > hyperrefreshtime4:
-                                        hyperrefreshstat4 = True
-                                        if random.random() < 0.93:   # 0.9 = 90%
-                                            shorlink = random_link('link3')
-                                        else:
-                                            shorlink = "https://hyperhustle.online/"
-                                        switch_to_window(window3)
-                                        pyautogui.click(493,19, duration = 0.4)
-                                        shorlink = random_link('link3')
-                                        open_link(link = shorlink ,newtab = False)
-                                        time.sleep(2)
-                                        pyautogui.click(1056,192, duration=0.6)
+
 
                                     
                                 try:
                                     x, y = pyautogui.locateCenterOnScreen('thissiteerror.png', region=[526,160,530,470], confidence=0.95)
                                     if x and y:
                                         print('site not working shortix')
-                                        cuty = True
+                                        #cuty = True
                                 except Exception as e:
                                     pass
                             else:

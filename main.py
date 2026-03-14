@@ -6214,8 +6214,8 @@ while True:
         window3 = open_detatch_tab()
         window4 = open_detatch_tab()
         window5 = open_detatch_tab()
-
-    hyperwindow = open_detatch_tab()
+    hyperwindow = 0
+    #hyperwindow = open_detatch_tab()
     print("Window IDs:", window1, window2)
     script_elapsed_time3 = time.time() - duration_time
     duration_time_sec = int(script_elapsed_time3)
@@ -6316,15 +6316,15 @@ while True:
             else:
                 shorlink = random_link('link5')
             open_link(link = shorlink ,newtab = False)
-
-        switch_to_window(hyperwindow)
-        pyautogui.click(493,19, duration = 0.4)
-        if random.random() < 0.8:   # 0.9 = 90%
-            shorlink = random_link('link3')
-        else:
-            shorlink = randomhyperlinks()
-        open_link(link = shorlink ,newtab = False)
-        time.sleep(2)
+        if hyperwindow != 0:
+            #switch_to_window(hyperwindow)
+            #pyautogui.click(493,19, duration = 0.4)
+            #if random.random() < 0.8:   # 0.9 = 90%
+            #    shorlink = random_link('link3')
+            #else:
+            #    shorlink = randomhyperlinks()
+            #open_link(link = shorlink ,newtab = False)
+            time.sleep(2)
         
     ############################################################
 
@@ -6720,7 +6720,7 @@ while True:
 
 
 
-                if layout == 1:
+                if layout == 2:
                     if random.random() < 0.9: ##if cuty == None or cuty == False:
                         script_elapsed_time = time.time() - started
                         script_seconds_only = int(script_elapsed_time)

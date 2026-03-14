@@ -170,15 +170,20 @@
 
     ],
     link3: [
+        { url: 'https://corelinks.site', sites: siteGroups.common },
         { url: 'https://corelinks.site/video', sites: siteGroups.common },
         { url: 'https://corelinks.site', sites: siteGroups.common },
         { url: 'https://corelinks.site/video#streaming', sites: siteGroups.common },
+        { url: 'https://corelinks.site', sites: siteGroups.common },
         { url: 'https://corelinks.site/system-tools', sites: siteGroups.common },
         { url: 'https://corelinks.site', sites: siteGroups.common },
         { url: 'https://corelinks.site/privacy', sites: siteGroups.common },
+        { url: 'https://corelinks.site', sites: siteGroups.common },
         { url: 'https://corelinks.site/ai', sites: siteGroups.common },
         { url: 'https://corelinks.site', sites: siteGroups.common },
         { url: 'https://corelinks.site/beginners-guide', sites: siteGroups.common },
+        { url: 'https://corelinks.site', sites: siteGroups.common },
+        { url: 'https://corelinks.site', sites: siteGroups.common },
 
 
 

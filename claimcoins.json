@@ -1,67 +1,44 @@
-[
-    {
-        "domain": "claimcoin.in",
-        "expirationDate": 1764235281.969538,
-        "hostOnly": true,
-        "httpOnly": false,
-        "name": "bitmedia_fid",
-        "path": "/",
-        "sameSite": null,
-        "secure": false,
-        "session": false,
-        "storeId": null,
-        "value": "eyJmaWQiOiI5YzZhZmFjYmViYjBlZDRmYjFiM2E4MTI4OWYyMDRjZSIsImZpZG5vdWEiOiJhNjQyZmMzNTNiMjUwMDliMzViYWY3ZTQ4NzdiZTdhNSJ9"
-    },
-    {
-        "domain": ".claimcoin.in",
-        "expirationDate": 1764235299.390451,
-        "hostOnly": false,
-        "httpOnly": false,
-        "name": "_ga_LXG101TQEW",
-        "path": "/",
-        "sameSite": null,
-        "secure": false,
-        "session": false,
-        "storeId": null,
-        "value": "GS1.1.1729675280.1.1.1729675299.0.0.0"
-    },
-    {
-        "domain": ".claimcoin.in",
-        "expirationDate": 1764235299.390844,
-        "hostOnly": false,
-        "httpOnly": false,
-        "name": "_ga",
-        "path": "/",
-        "sameSite": null,
-        "secure": false,
-        "session": false,
-        "storeId": null,
-        "value": "GA1.1.1231923693.1729675281"
-    },
-    {
-        "domain": "claimcoin.in",
-        "expirationDate": 1729761680.588065,
-        "hostOnly": true,
-        "httpOnly": true,
-        "name": "ci_session",
-        "path": "/",
-        "sameSite": null,
-        "secure": true,
-        "session": false,
-        "storeId": null,
-        "value": "c408605362fe773c8fe1c6ff22679624057c588e"
-    },
-    {
-        "domain": "claimcoin.in",
-        "expirationDate": 1729682499.073895,
-        "hostOnly": true,
-        "httpOnly": false,
-        "name": "csrf_cookie_name",
-        "path": "/",
-        "sameSite": null,
-        "secure": true,
-        "session": false,
-        "storeId": null,
-        "value": "3c301f5a42ac819c48b5f9722b48c6f0"
-    }
-]
+{
+    "gplink_urls": [
+        "https://gplinks.co/RrybixVq",
+        "https://gplinks.co/poPc7UDt",
+        "https://gplinks.co/B5ZRb",
+        "https://gplinks.co/BBzFo2Zj",
+        "https://gplinks.co/YrTaT",
+        "https://gplinks.co/WXiJT8V5",
+        "https://gplinks.co/Tm0V9Gh",
+        "https://gplinks.co/gGEhA2Rx",
+        "https://gplinks.co/mbhlzihK",
+        "https://gplinks.co/UBqgI3G",
+        "https://gplinks.co/VQZuFFpY",
+        "https://gplinks.co/fp7jnWT"
+    ],
+    "shortxlink_urls": [
+        "https://shortxlinks.in/9rPEK",
+        "https://shortxlinks.in/5iQXS",
+        "https://shortxlinks.in/fOUX",
+        "https://shortxlinks.in/SSUXU",
+        "https://shortxlinks.in/i83Zv5S7",
+        "https://shortxlinks.in/evnTk",
+        "https://shortxlinks.in/zzOm",
+        "https://shortxlinks.in/K0u1eM",
+        "https://shortxlinks.in/NIjX",
+        "https://shortxlinks.in/Q6LL8",
+        "https://shortxlinks.in/DPLGfq",
+        "https://shortxlinks.in/DL5R"
+    ],
+    "indianxlink_urls": [
+        "https://indiaearnx.com/rvad9V5",
+        "https://indiaearnx.com/4JwV",
+        "https://indiaearnx.com/4fZ",
+        "https://indiaearnx.com/z8AB1",
+        "https://indiaearnx.com/CIYG3D",
+        "https://indiaearnx.com/GsDUC",
+        "https://indiaearnx.com/UKh8",
+        "https://indiaearnx.com/VDiSM",
+        "https://indiaearnx.com/WkvBti",
+        "https://indiaearnx.com/bu13X0Sz",
+        "https://indiaearnx.com/yPbxqt",
+        "https://indiaearnx.com/0dHmw"
+    ]
+}

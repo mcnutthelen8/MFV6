@@ -2849,7 +2849,8 @@ def linked_validate():
         'tpi',
         'tpisi',
         'gplinks',
-        'powergram'
+        'powergram',
+        'collegedekho',
         'mtc',
         'mtc1',
         'mtc2',

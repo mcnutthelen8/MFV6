@@ -1210,26 +1210,44 @@ def adspower_api_grabber():
             except Exception as e:
                 pass
 
+            try:
+                x, y = pyautogui.locateCenterOnScreen('api_switch.png',confidence=0.9)
+                if x and y:
+                    print("api_switch Found")
+                    pyautogui.click(x,y)
+                    time.sleep(3)
+                    #switch_adspower()
+                    
+            except Exception as e:
+                pass
 
             try:
                 x, y = pyautogui.locateCenterOnScreen('copyreset_adspower.png',confidence=0.9)
                 if x and y:
                     print("copyreset_adspower Found")
-                    clipboard.copy('1234')
-                    x -= 38
-                    pyautogui.click(x,y)
-                    time.sleep(3)
-                    clip = clipboard.paste()
-                    print("clip is :",clip)
-                    if '1234' == clip:
-                        print('Clip is same....')
-                        continue
-                    else:
-                        print('API Found')
-                        API_KEY = clip
-                        return clip
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen('api_off_switch.png',confidence=0.9)
+                        if x and y:
+                            print("api_off_switch Found")
+                            clipboard.copy('1234')
+                            x -= 38
+                            pyautogui.click(x,y)
+                            time.sleep(3)
+                            clip = clipboard.paste()
+                            print("clip is :",clip)
+                            if '1234' == clip:
+                                print('Clip is same....')
+                                continue
+                            else:
+                                print('API Found')
+                                API_KEY = clip
+                                return clip
 
-                    #switch_adspower()
+                            #switch_adspower()
+                            
+                    except Exception as e:
+                        print('api_off_switch not found')
+
                     
             except Exception as e:
                 pass

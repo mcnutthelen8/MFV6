@@ -33,9 +33,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.action_chains import ActionChains
-
-
-
+from humancursor import WebCursor
+import json
 
 
 Indianxorshrink = False
@@ -78,12 +77,7 @@ APPS = {
     }
 }
 
-def kill_apps32():
-    """Forcefully closes Tuxler and AdsPower processes."""
-    for name, info in APPS.items():
-        print(f"🛑 Killing {name}...")
-        # /F is force, /IM is image name, /T kills child processes too
-        os.system(f'taskkill /F /IM "{info["exe_name"]}" /T >nul 2>&1')
+
 
 def launch_via_run_dialog(app_path):
     """Mimics a human pressing Win+R and typing the path."""
@@ -362,36 +356,6 @@ def ocr_screen_region(x, y, w, h):
     except Exception as e:
         print('OCR ResultER',e)
 
-def ocrcaptchaadlink(x, y, w, h):
-    try:
-        # --- Coordinates for capture ---
-        left = x
-        top = y
-        right = x + w
-        bottom = y + h
-
-        # --- Capture screen region ---
-        screenshot = ImageGrab.grab(bbox=(left, top, right, bottom))
-        cv2.imwrite("screenshot.png", cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR))
-
-        # --- Run PaddleOCR ---
-        results = ''#paddleocrg.predict(r"screenshot.png")
-        #print(results)
-
-        # --- Extract and return recognized text ---
-        for res in results:
-            rec_texts = res.get("rec_texts", [])
-            for text in rec_texts:
-                print("OCR Result:", text)
-                return text
-
-        # If no text detected
-        print("OCR Result: None")
-        return ""
-
-    except Exception as e:
-        print("OCR ResultER:", e)
-        return ""
 
 
 def extract_expire_and_location(ocr_text):
@@ -594,16 +558,6 @@ def update_farm_stat(farmid, tuxler_left, expiredate):
 
 
 
-#############################################
-
-def human_click(x, y, duration=1):
-    # Add random offset between -5 and +5
-    rand_x = x + random.randint(-5, 5)
-    rand_y = y + random.randint(-5, 5)
-
-    pyautogui.click(rand_x, rand_y, duration=duration)
-
-
 def close_window_by_name(window_name: str):
     """Closes the first window that matches the given name (case-insensitive)."""
     windows = gw.getWindowsWithTitle(window_name)
@@ -621,13 +575,6 @@ def close_window_by_name(window_name: str):
     
     return False
 
-def save_variables(var1, var2):
-    """Save a pair of variables (IP, ID) to the file."""
-    with open(FILENAME, "a") as file:
-        file.write(f"{var1} | {var2}\n")
-    print(f"Saved: {var1} | {var2}")
-
-
 
 def get_focused_window_title():
     hwnd = win32gui.GetForegroundWindow()
@@ -639,8 +586,6 @@ def get_focused_window_title():
     #print("Detected Text:", text)
     #return text
 
-def get_focused_window_id():
-    return win32gui.GetForegroundWindow()
 
 def switch_to_window(hwnd):
     """Brings the given window to the foreground if it exists."""
@@ -652,6 +597,7 @@ def switch_to_window(hwnd):
         return True
     return False
 
+
 def close_window(hwnd):
     """Closes the given window by sending WM_CLOSE if it exists."""
     if win32gui.IsWindow(hwnd):
@@ -659,108 +605,7 @@ def close_window(hwnd):
         return True
     return False
 
-def check_windows(hwnd_list):
-    """
-    Checks if all hwnds in the list still exist.
-    Returns a dict with hwnd -> True/False for existence.
-    """
-    return {hwnd: win32gui.IsWindow(hwnd) for hwnd in hwnd_list}
 
-def color_exists_in_region(target_rgb, region):
-
-    screenshot = pyautogui.screenshot(region=region)
-    pixels = screenshot.load()
-
-    width, height = screenshot.size
-
-    for x in range(width):
-        for y in range(height):
-            if pixels[x, y][:3] == target_rgb:
-                screen_x = region[0] + x
-                screen_y = region[1] + y
-                print(f"Color {target_rgb} found at ({screen_x}, {screen_y})")
-                return True
-    return False
-
-def region_is_only_color_fast(target_rgb, region):
-    screenshot = pyautogui.screenshot(region=region)
-    img_array = np.array(screenshot)
-
-    # Compare all pixels to the target color
-    return np.all(img_array[:, :, :3] == target_rgb)
-
-
-
-#title = get_focused_window_title()    # → returns window title
-#print("Focused window title:", title)
-#hwnd = get_focused_window_id()       # → returns HWND (int)
-#print("Focused window title:", hwnd)
-#switch_to_window(hwnd)        # → activates that window
-
-def extract_id_ip(text):
-    """Extract ID and IP from a multiline string."""
-    id_match = re.search(r'(?i)\bID\b\s*[\n:]*\s*([a-zA-Z0-9]+)', text)
-    ip_match = re.search(r'(?i)\bIP\b\s*[\n:]*\s*([\d\.]+)', text)
-
-    if id_match and ip_match:
-        extracted_id = id_match.group(1)
-        extracted_ip = ip_match.group(1)
-        return extracted_id, extracted_ip
-    else:
-        return None, None
-
-def fingerpint():
-
-    try:
-        pyautogui.hotkey('ctrl', 't')
-        time.sleep(1)
-        pyautogui.hotkey('ctrl', 'l')
-        time.sleep(1)
-        pyautogui.typewrite('https://fingerprint.com/demo/')
-        pyautogui.press('enter')
-        time.sleep(5)
-        clipboard.copy("")  # Clear clipboard before starting
-        for i in range(15):
-            try:
-                x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-                if x and y: 
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen('bookmarksggg.png', confidence=0.7)
-                        if x and y:
-                            pyautogui.rightClick(334,96)
-                            time.sleep(1)
-                            pyautogui.click(388,573)    
-                            time.sleep(1)                
-                    except Exception as e:
-                        pass
-            except Exception as e:
-                pass
-
-            pyautogui.click(462,692)
-            time.sleep(1)
-            pyautogui.mouseDown(462,692)
-            time.sleep(1)
-            pyautogui.moveTo(578,832, duration=1)
-            time.sleep(1)
-            pyautogui.mouseUp(578,832)
-            time.sleep(1)
-            pyautogui.hotkey('ctrl', 'c')
-            time.sleep(1)
-            ip, id = extract_id_ip(clipboard.paste())
-            print(f"Extracted IP: {ip}, ID: {id}")
-            if ip and id:
-                #save_variables(id, ip)
-                return ip
-            try:
-                x, y = pyautogui.locateCenterOnScreen('error_fingerpitn.png', region=[435,653,603,288], confidence=0.8)
-                if x and y:
-                    print("Adblock found")
-                    pyautogui.press('f5')
-
-            except Exception as e:
-                pass
-    except Exception as e:
-        pass
 def focus_and_maximize_window(partial_title):
     try:
         windows = Desktop(backend="uia").windows()
@@ -768,23 +613,14 @@ def focus_and_maximize_window(partial_title):
             title = win.window_text()
             if partial_title.lower() in title.lower():
                 win.set_focus()
-                win.maximize()
+                #win.maximize()
                 print(f"Activated and maximized: {title}")
                 return True
         print(f"No matching window found for: {partial_title}")
     except Exception as e:
         print(f"Error: {e}")
-def window_exists(partial_title):
-    try:
-        windows = Desktop(backend="uia").windows()
-        for win in windows:
-            title = win.window_text()
-            if partial_title.lower() in title.lower():
-                return True
-        return False
-    except Exception as e:
-        print(f"Error: {e}")
-        return False
+
+
 def focus_and_close_window(partial_title):
     try:
         windows = Desktop(backend="uia").windows()
@@ -800,272 +636,6 @@ def focus_and_close_window(partial_title):
     except Exception as e:
         print(f"Error: {e}")
 
-
-def open_detatch_tab():
-    focus_and_maximize_window('Chromium')
-    time.sleep(1)  # Wait for the window to be focused
-    pyautogui.click(290, 22) # New Tab
-    time.sleep(1) 
-    pyautogui.click(350, 22)
-    time.sleep(1) 
-    pyautogui.mouseDown(350, 22) # 
-    time.sleep(1)  # Hold for 1 second
-    pyautogui.moveTo(1000, 400, duration=1)
-    pyautogui.mouseUp()  # Release the mouse button
-    time.sleep(1)
-    fid = get_focused_window_id()
-    print("Focused window ID:", fid)
-    return fid
-
-
-def generate_username():
-    # Generate 7 random lowercase letters
-    letters = ''.join(random.choices(string.ascii_lowercase, k=7))
-    # Generate 3 random digits
-    numbers = ''.join(random.choices(string.digits, k=3))
-    return letters + numbers
-
-def create_new_fingerprint_browser(settings = False):
-    partial_title = 'Undetectable'
-    windows = gw.getWindowsWithTitle(partial_title)
-    if windows:
-        win = windows[0]
-        win.activate()
-        time.sleep(1)  # Allow time for window to activate
-        win.moveTo(300, 200)
-        print("Window moved and resized.")
-        time.sleep(1)
-        pyautogui.rightClick(540,397) #option rightclick
-        time.sleep(3)
-        pyautogui.click(590,730) # Delete
-        time.sleep(3)
-        pyautogui.click(1060,508) # Yeas
-        time.sleep(2)
-        pyautogui.click(460,325) # Click on the 'Create New Profile' button
-        time.sleep(2)
-        pyautogui.click(460,325) # Click on the 'Create New Profile' button
-        time.sleep(2)
-
-        if settings:
-            pyautogui.click(753, 367)  # poxy
-            time.sleep(1)
-            pyautogui.click(795, 474) #options
-            time.sleep(1)
-            pyautogui.click(795, 516) #NO PROXY
-            time.sleep(1)
-
-
-            pyautogui.click(815, 369)  # fingerpint
-            time.sleep(1)
-            pyautogui.click(715, 455)  # emulation
-            time.sleep(1)
-            pyautogui.click(940, 555)  # geo optio
-            time.sleep(1)
-            pyautogui.click(940, 650)  # off
-            time.sleep(1)
-            pyautogui.click(940, 630)  # timezone option
-            time.sleep(1)
-            pyautogui.click(940, 720)  # timezone
-            time.sleep(1)
-
-            pyautogui.click(795, 455)  # emulation
-            time.sleep(1)
-            pyautogui.click(940, 658)  # window size options
-            time.sleep(1)
-            pyautogui.click(940, 725)  # window size system
-            time.sleep(1)
-            
-            pyautogui.click(875, 455)  # Noises
-            time.sleep(1)
-            pyautogui.click(950, 500) #canvas
-            time.sleep(1)
-            pyautogui.click(950, 540) #click canvas noise
-            time.sleep(1)
-            pyautogui.click(950, 555) #audio
-            time.sleep(1)
-            pyautogui.click(950, 595) #click audio noise
-            time.sleep(1)
-            pyautogui.click(950, 610) #webgl
-            time.sleep(1)
-            pyautogui.click(950, 650) #click webgl noise
-            time.sleep(1)
-            pyautogui.click(950, 665) #clientrect
-            time.sleep(1)
-            pyautogui.click(950, 705) #click clientrect noise
-            time.sleep(1)
-
-        pyautogui.click(770, 263)  # Name
-        time.sleep(1)
-        username = generate_username()
-        print("Generated username:", username)
-        pyautogui.typewrite(username)
-        time.sleep(1)
-
-        pyautogui.click(980, 860)  # Open
-
-    else:
-        print(f"No window found with title containing '{partial_title}'")
-
-
-def create_browser_old():
-    created = False
-    for i in range(50):
-        print('goin again',i)
-
-        time.sleep(1)
-        try:
-            focus_and_maximize_window('MoreLogin')
-            time.sleep(1)  # Wait for the window to be focused
-            try:
-                x, y = pyautogui.locateCenterOnScreen('stop_browser.png', region=[438,115,662,320], confidence=0.95)
-                if x and y:
-                    pyautogui.click(x, y)
-                    pyautogui.moveTo(100, 100)  # Move mouse to a safe position
-                    time.sleep(5)
-                    continue
-            except Exception as e:
-                pass
-            try:
-                x, y = pyautogui.locateCenterOnScreen('stop_browser2.png', region=[438,115,662,320], confidence=0.95)
-                if x and y:
-                    pyautogui.click(x, y)
-                    pyautogui.moveTo(100, 100)  # Move mouse to a safe position
-                    time.sleep(5)
-                    continue
-            except Exception as e:
-                pass
-
-            try:
-                x, y = pyautogui.locateCenterOnScreen('del_confrim.png', region=[940,190,345,170], confidence=0.95)
-                if x and y:
-                    pyautogui.click(x, y)
-                    pyautogui.moveTo(100, 100)  # Move mouse to a safe position
-                    time.sleep(5)
-                    continue
-            except Exception as e:
-                pass
-            try:
-                x, y = pyautogui.locateCenterOnScreen('igotit_browser.png', region=[695,115,625,215], confidence=0.95)
-                if x and y:
-                    pyautogui.click(x, y)
-                    pyautogui.moveTo(100, 100)  # Move mouse to a safe position
-                    time.sleep(3)
-                    pyautogui.click(78, 295)  #emulation
-                    time.sleep(2)
-                    continue
-            except Exception as e:
-                pass
-
-            try:
-                x, y = pyautogui.locateCenterOnScreen('start_browser.png', region=[438,115,662,320], confidence=0.95)
-                if x and y:
-                    if created == True:
-                        pyautogui.click(x,y)
-                        time.sleep(5)
-                        return True
-
-                    pyautogui.click(812, 221)
-                    time.sleep(1)
-                    pyautogui.click(787, 532) 
-                    time.sleep(1)
-                    pyautogui.moveTo(787, 532) 
-                    time.sleep(1)
-                    pyautogui.click(787, 532, duration=1)  # Hold the mouse button down
-                    time.sleep(3)
-                    pyautogui.click(1150, 267)
-                    time.sleep(7)
-                    continue
-            except Exception as e:
-                pass
-
-            try:
-                x, y = pyautogui.locateCenterOnScreen('start_browser2.png', region=[438,115,662,320], confidence=0.95)
-                if x and y:
-                    if created == True:
-                        pyautogui.click(x,y)
-                        time.sleep(5)
-                        return True
-
-                    pyautogui.click(768, 221)
-                    time.sleep(1)
-                    pyautogui.click(768, 532) 
-                    time.sleep(1)
-                    pyautogui.moveTo(768, 532) 
-                    time.sleep(1)
-                    pyautogui.click(768, 532, duration=1)  # Hold the mouse button down
-                    time.sleep(3)
-                    pyautogui.click(1150, 267)
-                    time.sleep(7)
-                    continue
-            except Exception as e:
-                pass
-
-            try:
-                x, y = pyautogui.locateCenterOnScreen('empty_browser.png', region=[575,460,1033,345], confidence=0.8)
-                if x and y:
-                    pyautogui.click(101, 137)  # Click on the 'Create New Profile' button
-                    time.sleep(2)
-                    pyautogui.click(437, 183) #advaced
-                    time.sleep(5)
-            except Exception as e:
-                pass
-
-            
-            try:
-                x, y = pyautogui.locateCenterOnScreen('setting_browser.png', region=[165,205,730,545], confidence=0.7)
-                if x and y:
-                    time.sleep(2)
-                    pyautogui.click(408,853)
-                    time.sleep(1)
-                    pyautogui.click(1750, 178)  #fingerprint
-                    time.sleep(5)
-                    pyautogui.click(1208, 267) #proxy
-                    time.sleep(1)
-                    pyautogui.click(340, 645)  #detect proxy
-                    time.sleep(3)
-
-
-                    for i in range(7):
-                        pyautogui.moveTo(100, 100)
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen('lang_eng.png', region=[244,335,645,637], confidence=0.7)
-                            if x and y:
-                                break
-                        except Exception as e:
-                            pyautogui.click(1218, 385) 
-                            time.sleep(3)
-                            pyautogui.click(401, 650)  #lang
-                            time.sleep(3)
-
-                    pyautogui.click(394, 984)  #emulation
-                    time.sleep(8)
-                    pyautogui.click(78, 295)  #emulation
-                    time.sleep(3)
-                    created = True
-            except Exception as e:
-                pass
-
-            
-            #pyautogui.click(750, 376)  #emulation
-            #pyautogui.click(750, 225)  #emulation
-            #time.sleep(5)
-        except Exception as e:
-            print(f"Error creating browser: {e}")
-            return False
-
-def always_active():
-    open_link(link = 'chrome-extension://ehllkhjndgnlokhomdlhgbineffifcbj/data/options/index.html',newtab = False)
-    time.sleep(3)
-    pyautogui.click(850, 559)  # C
-    time.sleep(0.5)
-    pyautogui.hotkey('ctrl', 'a')  # Select all text
-    pyautogui.press('backspace')  # Clear the text
-    pyautogui.typewrite('*')
-    time.sleep(0.5)
-    pyautogui.click(547, 916)  # C
-    time.sleep(1)
-    pyautogui.click(547, 874)  # C
-    time.sleep(1)
 
 def get_next_account(file_path= f"adspower_acc.txt"):
     accounts = []
@@ -1105,53 +675,41 @@ def get_next_account(file_path= f"adspower_acc.txt"):
     
     return email, password
 
-def myst_disconnect():
-    focus_mysterium()
-    time.sleep(2)
-    try:
-        x, y = pyautogui.locateCenterOnScreen('myst_disconnect.png', confidence=0.9)
-        if x and y:
-            pyautogui.click(x, y)
-            time.sleep(2)
-            
-    except Exception as e:
-        pass
+
+
 def switch_adspower():
     #tuxler OFF
     
-    if Mysterium_Mode:
-        myst_disconnect()
+
+    tuxler_switch = True
+    while tuxler_switch == True:
+        focus_tuxler()
         time.sleep(2)
-    else:
-        tuxler_switch = True
-        while tuxler_switch == True:
-            focus_tuxler()
-            time.sleep(2)
-            pyautogui.click(326,720)
-            
-            
+        pyautogui.click(326,720)
+        
+        
+        time.sleep(1)
+        pyautogui.click(326,757)
+        try:
+            x, y = pyautogui.locateCenterOnScreen('tuxler_on.png', confidence=0.9)
+            if x and y:
+                pyautogui.click(x, y)
+                time.sleep(2)
+                
+        except Exception as e:
+            pass
+        try:
+            x, y = pyautogui.locateCenterOnScreen('tuxler_off.png', confidence=0.9)
+            if x and y:
+                tuxler_switch = False
+                
+        except Exception as e:
+            print('tuxler off not found')
+            print('tuxler off not found')
+            pyautogui.hotkey('alt','tab')
             time.sleep(1)
-            pyautogui.click(326,757)
-            try:
-                x, y = pyautogui.locateCenterOnScreen('tuxler_on.png', confidence=0.9)
-                if x and y:
-                    pyautogui.click(x, y)
-                    time.sleep(2)
-                    
-            except Exception as e:
-                pass
-            try:
-                x, y = pyautogui.locateCenterOnScreen('tuxler_off.png', confidence=0.9)
-                if x and y:
-                    tuxler_switch = False
-                    
-            except Exception as e:
-                print('tuxler off not found')
-                print('tuxler off not found')
-                pyautogui.hotkey('alt','tab')
-                time.sleep(1)
-                pyautogui.press('esc')
-                time.sleep(1)
+            pyautogui.press('esc')
+            time.sleep(1)
     focus_and_maximize_window('AdsPower')
     time.sleep(1)
     pyautogui.click(1227,141)
@@ -1215,12 +773,6 @@ CHROME_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
 PROFILE_PATH = r"C:\Users\Administrator\AppData\Local\Google\Chrome\User Data\Default"
 
 
-def open_chrome():
-    """Open Chrome with the given profile"""
-    cmd = [CHROME_PATH, f'--user-data-dir={PROFILE_PATH}']
-    process = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-    print("Chrome is starting...")
-    return process
 
 def wait_for_chrome(timeout=10):
     """Wait until Chrome is running (or timeout)"""
@@ -1256,8 +808,8 @@ def is_sunbrowser_open():
             return True
     return False
 
-def create_browser():
-    created = False
+def reloginadspower():
+    relogged = False
     focus_and_close_window('SunBrowser')
     focus_and_close_window('SunBrowser')
     focus_and_close_window('SunBrowser')
@@ -1265,41 +817,40 @@ def create_browser():
     tuxler_switch = True
     global ipqs_key
     global location_changes
-    if Mysterium_Mode:
-        myst_disconnect()
+
+    while tuxler_switch == True:
+        focus_tuxler()
+        if location_changes >= 100:
+            return None
         time.sleep(2)
-    else:
-        while tuxler_switch == True:
-            focus_tuxler()
-            if location_changes >= 100:
-                return None
-            time.sleep(2)
-            pyautogui.click(326,720)
-            
-            
+        pyautogui.click(326,720)
+        
+        
+        time.sleep(1)
+        pyautogui.click(326,757)
+        try:
+            x, y = pyautogui.locateCenterOnScreen('tuxler_on.png', confidence=0.9)
+            if x and y:
+                pyautogui.click(x, y)
+                time.sleep(2)
+                
+        except Exception as e:
+            pass
+        try:
+            x, y = pyautogui.locateCenterOnScreen('tuxler_off.png', confidence=0.9)
+            if x and y:
+                tuxler_switch = False
+                
+        except Exception as e:
+            print('tuxler off not found')
+            print('tuxler off not found')
+            pyautogui.hotkey('alt','tab')
             time.sleep(1)
-            pyautogui.click(326,757)
-            try:
-                x, y = pyautogui.locateCenterOnScreen('tuxler_on.png', confidence=0.9)
-                if x and y:
-                    pyautogui.click(x, y)
-                    time.sleep(2)
-                    
-            except Exception as e:
-                pass
-            try:
-                x, y = pyautogui.locateCenterOnScreen('tuxler_off.png', confidence=0.9)
-                if x and y:
-                    tuxler_switch = False
-                    
-            except Exception as e:
-                print('tuxler off not found')
-                print('tuxler off not found')
-                pyautogui.hotkey('alt','tab')
-                time.sleep(1)
-                pyautogui.press('esc')
-                time.sleep(1)
-            
+            pyautogui.press('esc')
+            time.sleep(1)
+        
+
+    switch_adspower()
     for i in range(50):
         print('goin again',i)
 
@@ -1358,14 +909,7 @@ def create_browser():
                     time.sleep(5)
             except Exception as e:
                 pass
-            try:
-                x, y = pyautogui.locateCenterOnScreen('bindauthe_adpower2.png',  confidence=0.98)
-                if x and y:
-                    pyautogui.click(x, y)
-                    pyautogui.moveTo(100, 100)  # Move mouse to a safe position
-                    time.sleep(5)
-            except Exception as e:
-                pass
+
             try:
                 x, y = pyautogui.locateCenterOnScreen('skip_adspower.png', region=[213,87,551,664], confidence=0.98)
                 if x and y:
@@ -1392,15 +936,7 @@ def create_browser():
                     
             except Exception as e:
                 pass
-            try:
-                x, y = pyautogui.locateCenterOnScreen('bind_autora.png',confidence=0.9)
-                if x and y:
-                    print("bind_autora Close X on Privacy")
-                    pyautogui.click(x, y)
-                    time.sleep(5)
-                    
-            except Exception as e:
-                pass
+
             try:
                 x, y = pyautogui.locateCenterOnScreen('close_adspowerg.png',  region=[922,202,528,265],confidence=0.99)
                 if x and y:
@@ -1413,30 +949,8 @@ def create_browser():
                     
             except Exception as e:
                 pass
-            try:
-                x, y = pyautogui.locateCenterOnScreen('bindaumsg.png', confidence=0.8)
-                if x and y:
-                    print("bindaumsg Close X on Privacy")
-                    pyautogui.click(1325, 140)
-                    time.sleep(5)
-                    pyautogui.click(88,206)
-                    time.sleep(1)
-                    continue
-                    
-            except Exception as e:
-                pass
-            try:
-                x, y = pyautogui.locateCenterOnScreen('settings_preferences.png', confidence=0.8)
-                if x and y:
-                    print("settings_preferences Close X on Privacy")
-                    pyautogui.click(1325, 140)
-                    time.sleep(5)
-                    pyautogui.click(88,206)
-                    time.sleep(1)
-                    continue
-                    
-            except Exception as e:
-                pass
+
+
             try:
                 x, y = pyautogui.locateCenterOnScreen('limit_adpower.png', region=[927,173,480,260],confidence=0.9)
                 if x and y:
@@ -1451,6 +965,7 @@ def create_browser():
                     print("adpower browser Limited")
                     switch_adspower()
                     
+                    
             except Exception as e:
                 pass
             try:
@@ -1459,145 +974,71 @@ def create_browser():
                     print("OKKK")
                     pyautogui.click(x,y)
                     time.sleep(5)
-                    if Mysterium_Mode:
-                        myst_disconnect()
-                        time.sleep(2)
-                    else:
-                        tuxler_switch = True
-                        while tuxler_switch == True:
-                            focus_tuxler()
-                            time.sleep(2)
-                            pyautogui.click(326,720)
-                            
-                            
-                            time.sleep(1)
-                            pyautogui.click(326,757)
-                            try:
-                                x, y = pyautogui.locateCenterOnScreen('tuxler_on.png', confidence=0.9)
-                                if x and y:
-                                    pyautogui.click(x, y)
-                                    time.sleep(2)
-                                    
-                            except Exception as e:
-                                pass
-                            try:
-                                x, y = pyautogui.locateCenterOnScreen('tuxler_off.png', confidence=0.9)
-                                if x and y:
-                                    tuxler_switch = False
-                                    
-                            except Exception as e:
-                                print('tuxler off not found')
-                                print('tuxler off not found')
-                                pyautogui.hotkey('alt','tab')
-                                time.sleep(1)
-                                pyautogui.press('esc')
-                                time.sleep(1)
-            except Exception as e:
-                pass
-
-            try:
-                x, y = pyautogui.locateCenterOnScreen('del_confrim_adspower.png', confidence=0.95)
-                if x and y:
-                    pyautogui.click(689,296)
-                    time.sleep(1)
-                    pyautogui.click(1160,473)
-                    pyautogui.moveTo(100, 100)  # Move mouse to a safe position
-                    time.sleep(2)
-                    continue
-            except Exception as e:
-                pass
-
-
-            try:
-                x, y = pyautogui.locateCenterOnScreen('start_browser_adspower.png', region=[1675,260,245,105], confidence=0.95)
-                if x and y:
-                    if created == True:
-                        
-                        tuxler_changer()
-                        time.sleep(0.2)
-                        focus_and_close_window('pythonanywhere')
-                        focus_and_close_window('proxycheck')
-
-                        focus_and_close_window('Google Chrome')
-                        focus_and_close_window('New Tab')
-                        focus_and_close_window('ipqualityscore')
-                        close_chrome()
-                        ipaddress,result, z = checkip_selenium()
-                        print("IP Address:", ipaddress)
-                        print("Result:", result)
-                        close_chrome()
-                        if result:
-                            close_chrome()
-                            focus_and_close_window('Google Chrome')
-                            focus_and_close_window('New Tab')
-                            focus_and_close_window('ipqualityscore')
-                            focus_and_close_window('pythonanywhere')
-                            focus_and_close_window('proxycheck')
-                            
-                            print("Good IP")
-                            focus_and_maximize_window('AdsPower')
-                            time.sleep(2)
-                            pyautogui.click(x,y)
-                            time.sleep(7)
-                            pyautogui.click(x,y)
-                            time.sleep(5)
-                            return True
-                        else:
-                            print("Bad IP")
-                            continue
-
-
-
-
-                    pyautogui.click(1870,286)
-                    time.sleep(1)
-
-                    pyautogui.moveTo(1826,388) 
-                    time.sleep(1)
-                    pyautogui.click(1826,388)  # Hold the mouse button down
-                    time.sleep(7)
-                    continue
+                    
             except Exception as e:
                 pass
 
 
 
             try:
-                x, y = pyautogui.locateCenterOnScreen('empty_browser_adspower.png', region=[276,256,215,140], confidence=0.99)
+                x, y = pyautogui.locateCenterOnScreen('api_btn_adspower.png',confidence=0.95)
                 if x and y:
-                    pyautogui.click(105,144)  # Click on the 'Create New Profile' button
-                    time.sleep(5)
+                    print("api_btn_adspower Found")
+                    break
+                    #switch_adspower()
+                    
             except Exception as e:
                 pass
-
-            
             try:
-                x, y = pyautogui.locateCenterOnScreen('setting_browser_adspower.png', confidence=0.9)
+                x, y = pyautogui.locateCenterOnScreen('adspower_rpa.png',confidence=0.95)
                 if x and y:
-                    time.sleep(1)
-                    pyautogui.click(1784,208)
-                    time.sleep(5)
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen('ok_adspower.png',  confidence=0.9)
-                        if x and y:
-                            pyautogui.click(572,265)
-                            time.sleep(3)
-                            pyautogui.click(478,342)
-                            time.sleep(1)
-                            pyautogui.click(x,y , duration=1)
-                            time.sleep(7)
-
-                            created = True
-
-                            
-                    except Exception as e:
-                        pass
+                    print("adspower_rpa Found")
+                    break
+                    #switch_adspower()
+                    
             except Exception as e:
                 pass
+
 
         except Exception as e:
             print(f"Error focusing window: {e}")
             
+    adspower_api_grabber()
+    tuxler_switch = True
+    while tuxler_switch == True:
+        focus_tuxler()
+        if location_changes >= 100:
+            return None
+        time.sleep(2)
+        pyautogui.click(326,720)
+        
+        
+        time.sleep(1)
+        pyautogui.click(326,757)
+        try:
+            x, y = pyautogui.locateCenterOnScreen('tuxler_on.png', confidence=0.9)
+            if x and y:
+                tuxler_switch = False
+                pyautogui.click(x, y)
+                time.sleep(2)
+                
+        except Exception as e:
+            pass
+        try:
+            x, y = pyautogui.locateCenterOnScreen('tuxler_off.png', confidence=0.9)
+            if x and y:
+                pyautogui.click(x, y)
+                time.sleep(2)
+        except Exception as e:
+            print('tuxler off not found')
+            print('tuxler off not found')
+            pyautogui.hotkey('alt','tab')
+            time.sleep(1)
+            pyautogui.press('esc')
+            time.sleep(1)
+        
+
+
 
 
 traffic_links2 = [
@@ -1650,411 +1091,187 @@ def random_link(link_type):
 ########## Browser handling ## ######################
 ########################################################
 
-def open_link(link = 'google.com',newtab = False):
-    if newtab:
-        pyautogui.hotkey('ctrl', 't')
-    pyautogui.hotkey('ctrl', 'l')
-    time.sleep(0.5)
-    #pyautogui.typewrite(link)
-    clipboard.copy(link)  # Copy the link to clipboard
-    time.sleep(0.5)
-    pyautogui.hotkey('ctrl', 'v')
-    time.sleep(0.5)
-    pyautogui.press('enter')
-    time.sleep(2)  # Wait for the page to load
-    return True
 
-def configure_rektcaptcha():
-    for i in range(30):
-        time.sleep(2)
-        print('waiting', i)
-        try:
-            x, y = pyautogui.locateCenterOnScreen('rek_off.png', region=[1524,146,396,77], confidence=0.9)
-            if x and y:
-                pyautogui.click(x, y)
-                time.sleep(1)
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('rek_off.png', region=[1524,237,396,77], confidence=0.9)
-            if x and y:
-                pyautogui.click(x, y)
-                time.sleep(1)
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('rek_onnn.png', region=[1636,112,284,242], confidence=0.9)
-            if x and y:
-                pyautogui.click(493,19, duration = 0.4)
-                print("Rektcaptcha configured")
-                return True
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('rektcaptcha_icon.png', region=[1653,31,261,61], confidence=0.9)
-            if x and y:
-                pyautogui.click(x, y)
-                time.sleep(4)
-                for i in range(8):
+def adspower_api_grabber():
+    global API_KEY
+    try:
+        for i in range(50):
+            time.sleep(2)
+            focus_and_maximize_window('AdsPower')
+
+            try:
+                x, y = pyautogui.locateCenterOnScreen('login_adspowr.png', confidence=0.9)
+                if x and y:
+                    print("adpower browser Limited")
+                    switch_adspower()
+                    
+            except Exception as e:
+                pass
+            try:
+                x, y = pyautogui.locateCenterOnScreen('closead_adspower3.png',  confidence=0.95)
+                if x and y:
+                    print('blackfri closea')
+                    #pyautogui.click(x, y)
+                    #time.sleep(1)
+                    
+                    pyautogui.click(1308, 260)
+                    pyautogui.moveTo(100, 100)  # Move mouse to a safe position
+                    time.sleep(5)
+            except Exception as e:
+                pass
+            try:
+                x, y = pyautogui.locateCenterOnScreen('closead_adspower4.png',  confidence=0.95)
+                if x and y:
+                    print('blackfri closea2')
+                    #pyautogui.click(x, y)
+                    #time.sleep(1)
+                    
+                    pyautogui.click(1323, 217)
+                    pyautogui.moveTo(100, 100)  # Move mouse to a safe position
+                    time.sleep(5)
+            except Exception as e:
+                pass
+            try:
+                x, y = pyautogui.locateCenterOnScreen('adspowerads2.png', region=[209,12,1470,840], confidence=0.95)
+                if x and y:
+                    pyautogui.click(x, y)
+                    pyautogui.moveTo(100, 100)  # Move mouse to a safe position
+                    time.sleep(3)
+                    
+            except Exception as e:
+                pass
+            try:
+                x, y = pyautogui.locateCenterOnScreen('paywall_adpower.png',  confidence=0.9)
+                if x and y:
+                    pyautogui.click(98, 208)
+                    pyautogui.moveTo(100, 100)  # Move mouse to a safe position
+                    time.sleep(5)
+            except Exception as e:
+                pass
+
+            try:
+                x, y = pyautogui.locateCenterOnScreen('skip_adspower.png', region=[213,87,551,664], confidence=0.98)
+                if x and y:
+                    pyautogui.click(x, y)
+                    pyautogui.moveTo(100, 100)  # Move mouse to a safe position
+                    time.sleep(5)
+            except Exception as e:
+                pass
+            try:
+                x, y = pyautogui.locateCenterOnScreen('closeAdspowr.png', region=[1775,852,146,180], confidence=0.98)
+                if x and y:
+                    pyautogui.click(x, y)
+                    pyautogui.moveTo(100, 100)  # Move mouse to a safe position
+                    time.sleep(2)
+            except Exception as e:
+                pass
+            try:
+                x, y = pyautogui.locateCenterOnScreen('close_privaymsg.png', region=[1611,100,309,228],confidence=0.9)
+                if x and y:
+                    print("adpoower Close X on Privacy")
+                    pyautogui.click(x, y)
+                    pyautogui.moveTo(100, 100)  # Move mouse to a safe position
+                    time.sleep(5)
+                    
+            except Exception as e:
+                pass
+
+            try:
+                x, y = pyautogui.locateCenterOnScreen('close_adspowerg.png',  region=[922,202,528,265],confidence=0.99)
+                if x and y:
+                    print("close_adspowerg Close X on Privacy")
+                    pyautogui.click(1187, 317)
+                    time.sleep(5)
+                    pyautogui.click(88,206)
                     time.sleep(1)
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen('rek_off.png', region=[1524,146,396,77], confidence=0.9)
-                        if x and y:
-                            pyautogui.click(x, y)
-                            time.sleep(1)
-                    except Exception as e:
-                        pass
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen('rek_off.png', region=[1524,237,396,77], confidence=0.9)
-                        if x and y:
-                            pyautogui.click(x, y)
-                            time.sleep(1)
-                    except Exception as e:
-                        pass
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen('rek_onnn.png', region=[1636,112,284,242], confidence=0.9)
-                        if x and y:
-                            pyautogui.click(493,19, duration = 0.4)
-                            print("Rektcaptcha configured")
-                            return True
-                    except Exception as e:
-                        pass
-        except Exception as e:
-            print("Rektcaptcha not found:", e)
+                    continue
+                    
+            except Exception as e:
+                pass
+
+            try:
+                x, y = pyautogui.locateCenterOnScreen('okk_adspowre.png', region=[950,154,430,230],confidence=0.9)
+                if x and y:
+                    print("OKKK")
+                    pyautogui.click(x,y)
+                    time.sleep(3)
+            except Exception as e:
+                pass
+            
+
+            try:
+                x, y = pyautogui.locateCenterOnScreen('api_btn_adspower.png',confidence=0.9)
+                if x and y:
+                    print("api_btn_adspower Found")
+                    pyautogui.click(x,y)
+                    time.sleep(3)
+                    #switch_adspower()
+                    
+            except Exception as e:
+                pass
 
 
-def close_ads2():
-    #pyautogui.click(493,19, duration = 0.4)
-    close_window_by_name("Save As") 
-    for i in range(5):
-        try:
-            x, y = pyautogui.locateCenterOnScreen('newcloseadas2.png', region=[1151,204,227,450] ,confidence=0.98)
-            if x and y:
-                human_click(x, y, duration=0.3)
-                time.sleep(0.5)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(0.5)
-                 
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('newcloseadas.png', region=[1151,204,227,350] ,confidence=0.95)
-            if x and y:
-                human_click(x, y, duration=0.3)
-                time.sleep(0.5)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(0.5)
-                 
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('cancelads2.png' ,confidence=0.95)
-            if x and y:
-                human_click(x, y, duration=0.3)
-                time.sleep(0.5)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(0.5)
-                 
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('cancelads1.png' ,confidence=0.95)
-            if x and y:
-                human_click(x, y, duration=0.3)
-                time.sleep(0.5)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(0.5)
-                 
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('js_ok.png', region=[930,130,342,165] ,confidence=0.95)
-            if x and y:
-                human_click(x, y, duration=1)
-                time.sleep(2)
-                pyautogui.click(95, 62)  # Click on the 'No Internet' button
-                time.sleep(2)
-                return 
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('reload_confrim.png', region=[930,130,342,165] ,confidence=0.95)
-            if x and y:
-                human_click(x, y, duration=1)
-                time.sleep(2)
-                pyautogui.click(95, 62)  # Click on the 'No Internet' button
-                time.sleep(2)
-                return 
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('mini_popup_close.png', region=[705,463,515,232] ,confidence=0.97)
-            if x and y:
-                human_click(x, y, duration=1)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(2)
-                continue
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('unloaded_adclose.png', region=[705,463,515,232] ,confidence=0.97)
-            if x and y:
-                human_click(x, y, duration=1)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(2)
-                continue
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('close_ad2.png', region=[1108,168,92,463] ,confidence=0.97)
-            if x and y:
-                human_click(x, y, duration=1)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(2)
-                continue
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('close_ad7.png', region=[1335,733,260,145] ,confidence=0.98)
-            if x and y:
-                human_click(x, y, duration=1)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(2)
-                continue
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('closeadgoogle511.png' ,confidence=0.98)
-            if x and y:
-                human_click(x, y, duration=0.2)
-                time.sleep(0.6)
-                pyautogui.click(493,19, duration = 0.2)
-                time.sleep(0.6)
-                continue
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('close_ad17.png', region=[1680,45,280,280] ,confidence=0.98)
-            if x and y:
-                human_click(x, y, duration=1)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(2)
-                continue
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('consent.png', region=[920,722,344,83] ,confidence=0.9)
-            if x and y:
-                human_click(x, y, duration=1)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(2)
-                continue
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('close_ads19.png', region=[1194,256,192,167] ,confidence=0.98)
-            if x and y:
-                pyautogui.click(x, y, duration=0.2)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(2)
-                continue
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('close_ad75.png', region=[1335,733,260,145] ,confidence=0.98)
-            if x and y:
-                human_click(x, y, duration=1)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(2)
-                continue
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('agreevalue.png', region=[908,586,1012,465] ,confidence=0.98)
-            if x and y:
-                human_click(x, y, duration=1)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(2)
-                continue
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('block_js.png', region=[186,80,320,165] ,confidence=0.98)
-            if x and y:
-                human_click(x, y, duration=1)
-                time.sleep(1)
-                human_click(x, y, duration=1)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(2)
-                return
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('close_ads_gg.png', region=[1280,229,223,660] ,confidence=0.98)
-            if x and y:
-                human_click(x, y, duration=1)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(2)
-                continue
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('close_ad6.png', region=[1280,229,223,660] ,confidence=0.98)
-            if x and y:
-                human_click(x, y, duration=1)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(2)
-                continue
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('close_ad3.png', region=[1836,55,85,98] ,confidence=0.98)
-            if x and y:
-                human_click(x, y, duration=1)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(1)
-                continue
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('close_ad4.png', region=[1780,85,135,138] ,confidence=0.98)
-            if x and y:
-                human_click(x, y, duration=1)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(1)
-                continue
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('close_ad5.png', region=[876,527,484,413] ,confidence=0.98)
-            if x and y:
-                human_click(x, y, duration=1)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(1)
-                continue
-        except Exception as e:
-            pass
+            try:
+                x, y = pyautogui.locateCenterOnScreen('copyreset_adspower.png',confidence=0.9)
+                if x and y:
+                    print("copyreset_adspower Found")
+                    clipboard.copy('1234')
+                    x -= 38
+                    pyautogui.click(x,y)
+                    time.sleep(3)
+                    clip = clipboard.paste()
+                    print("clip is :",clip)
+                    if '1234' == clip:
+                        print('Clip is same....')
+                        continue
+                    else:
+                        print('API Found')
+                        API_KEY = clip
+                        return clip
 
-        try:
-            x, y = pyautogui.locateCenterOnScreen('close_ad8.png', region=[876,527,484,413] ,confidence=0.98)
-            if x and y:
-                human_click(x, y, duration=1)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(1)
-                continue
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('close_ad9.png', region=[1083,108,360,865] ,confidence=0.98)
-            if x and y:
-                human_click(x, y, duration=1)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(1)
-                continue
-        except Exception as e:
-            pass
+                    #switch_adspower()
+                    
+            except Exception as e:
+                pass
 
-        try:
-            x, y = pyautogui.locateCenterOnScreen('closeadsgoogleg.png' ,confidence=0.98)
-            if x and y:
-                pyautogui.click(x, y, duration=0.4)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(1)
-                continue
-        except Exception as e:
-            pass       
-        try:
-            x, y = pyautogui.locateCenterOnScreen('adclosegoogle2g.png' ,confidence=0.98)
-            if x and y:
-                pyautogui.click(x, y, duration=0.4)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(1)
-                continue
-        except Exception as e:
-            pass            
-        try:
-            x, y = pyautogui.locateCenterOnScreen('closeadsgloogle2g.png' ,confidence=0.98)
-            if x and y:
-                pyautogui.click(x, y, duration=0.4)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(1)
-                continue
-        except Exception as e:
-            pass  
-        try:
-            x, y = pyautogui.locateCenterOnScreen('closegoolge3.png' ,confidence=0.98)
-            if x and y:
-                pyautogui.click(x, y, duration=0.4)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(1)
-                continue
-        except Exception as e:
-            pass  
-        try:
-            x, y = pyautogui.locateCenterOnScreen('closeadg23.png' ,confidence=0.98)
-            if x and y:
-                pyautogui.click(x, y, duration=0.4)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(1)
-                continue
-        except Exception as e:
-            pass  
-
-        try:
-            x, y = pyautogui.locateCenterOnScreen('closeads321.png' ,confidence=0.98)
-            if x and y:
-                pyautogui.click(x, y, duration=0.4)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(1)
-                continue
-        except Exception as e:
-            pass 
+            try:
+                x, y = pyautogui.locateCenterOnScreen('generate_adspowr.png',confidence=0.9)
+                if x and y:
+                    print("api_btn_adspower Found")
+                    pyautogui.click(x,y)
+                    time.sleep(3)
+                    #switch_adspower()
+                    
+            except Exception as e:
+                pass
 
 
-        try:
-            x, y = pyautogui.locateCenterOnScreen('closeadsgootrans.png' ,confidence=0.98)
-            if x and y:
-                pyautogui.click(x, y, duration=0.4)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(1)
-                continue
-        except Exception as e:
-            pass 
-        try:
-            x, y = pyautogui.locateCenterOnScreen('adremoved.png' ,confidence=0.98)
-            if x and y:
-                pyautogui.press('f5')
-                time.sleep(2)
-                continue
-        except Exception as e:
-            pass  
-        return False
 
 
+
+    except Exception as e:
+        print('ERR adspower_api_grabber:',e)
+    return '1234'
+
+
+
+
+
+
+def get_browser_region():
+    """
+    Returns the browser content area region for pyautogui image search.
+    Excludes the browser chrome (nav bar) from the top.
+    region = (left, top, width, height)
+    """
+    # browser_rect and nav_bar_height are your globals set at startup
+    left   = browser_rect['x']
+    top    = browser_rect['y'] + nav_bar_height
+    width  = browser_rect['width']
+    height = browser_rect['height'] - nav_bar_height
+
+    print(f"🖥️ Browser region: left={left} top={top} width={width} height={height}")
+    return (left, top, width, height)
 
 
 
@@ -2098,7 +1315,7 @@ def close_ads():
             ('closeadsgootrans.png', None, 0.98),
             
         ]
-
+    regiong = get_browser_region()
     for i in range(5):
         print(f"Attempt {i+1} to close ads...")
         
@@ -2110,38 +1327,13 @@ def close_ads():
             try:
                 # 3. Search WITHIN the screenshot we already took
                 # Use grayscale=True for 30% more speed
-                match = pyautogui.locate(img_name, full_screen, region=reg, confidence=conf)
+                match = pyautogui.locate(img_name, full_screen, region=regiong, confidence=conf)
                 
                 if match:
                     print(f"Found {img_name} on attempt {i+1}")
                     x, y = pyautogui.center(match)
-                    
-                    # Logic for special buttons (JS/Reload/Block)
-                    if img_name in ['js_ok.png', 'reload_confrim.png', 'block_js.png']:
-                        pyautogui.click(x, y, duration=0.1)
-                        time.sleep(2)
-                        if img_name == 'block_js.png': 
-                            pyautogui.click(x, y, duration=0.1) 
-                            time.sleep(1)
-                        #pyautogui.click(95, 62)
-                        return True
-                    
-                    # Logic for Page Refresh
-
-
-                    # Standard Ad Click Flow
-                    if img_name in ['closeadgoogle511.png', 'close_ads19.png']:
-                        # These had faster durations in your old code
-                        pyautogui.click(x, y, duration=0.2)
-                        time.sleep(0.6)
-                        pyautogui.click(493, 19, duration=0.2)
-                    else:
-                        human_click(x, y, duration=0.3 if 'cancel' in img_name else 1)
-                        time.sleep(0.5 if 'cancel' in img_name else 1)
-                        pyautogui.click(493, 19, duration=0.4)
-                    
-                    time.sleep(1)
-                    break # Found one, break to re-scan with fresh screenshot
+                    pyautogui.click(x, y, duration=0.2)
+                    return True
 
             except Exception:
                 continue
@@ -2150,41 +1342,6 @@ def close_ads():
 
 
 
-
-def facebook_leaving():
-    title = get_focused_window_title()
-    if 'Leaving Facebook' in title:
-        pyautogui.scroll(500)
-        time.sleep(1)
-        pyautogui.click(1090, 820)  # Click on the 'Leave' button
-        time.sleep(1)
-        pyautogui.click(1117, 460)
-
-
-def destined_reached(text):
-    keywords = [
-        '405 Not Allowed',
-        '502 Bad Gateway',
-        'This link is risky',
-        'Database Error',
-        'Privacy Error',
-        'Google',
-        '503 Service',
-        '504: Gateway',
-        '500 Internal',
-        "A timeout occurred",
-        "dynamicslab",
-        "demo.dynamicslab.ai",
-
-
-
-
-
-
-    ]
-    return any(keyword.lower() in text.lower() for keyword in keywords)
-
-    
 def focus_tuxler():
     windows = gw.getWindowsWithTitle("Tuxler")
     if not windows:
@@ -2211,10 +1368,6 @@ def focus_tuxler():
             print("Clicked and moved manually.")
         except Exception as e2:
             print(f"Manual click or move failed: {e2}")
-
-
-def focus_mysterium():
-    focus_and_maximize_window("Mysterium")
 
 
 
@@ -2284,16 +1437,6 @@ select_country = {
     #"New Zealand": [612,565],
     "WorldWide": [495,506],
 }
-def randomcountry():
-    countries = [
-        "Canada", "United States", "Mexico", "Brazil", "Argentina",
-        "United Kingdom", "France", "Germany", "Italy", "Spain", "Portugal", "Netherlands", "Belgium",
-        "Switzerland", "Austria", "Sweden", "Norway",
-        "Greece", "Egypt", "South Africa", "Nigeria",
-        "India", "Japan", "South Korea", "Vietnam",
-        "Thailand",  "Philippines", "Australia", "New Zealand",
-    ]
-    return random.choice(countries)
 
 prev_country = None
 random_contry = None
@@ -2302,61 +1445,6 @@ def tuxler_changer(given_country="WorldWide"):
     global random_contry
     global location_changes
     if Mysterium_Mode:
-        try:
-            for i in range(30):
-                focus_mysterium()
-                time.sleep(2)
-                pyautogui.click(273,292)
-                try:
-                    x, y = pyautogui.locateCenterOnScreen('myst_disconnect.png',  region=[273,297,211,415],confidence=0.99)
-                    if x and y:
-                        break
-                        
-                except Exception as e:
-                    print('tuxler off not found')
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen('mysterium_connect.png',  region=[273,297,211,415],confidence=0.99)
-                        if x and y:
-                            break
-                            
-                    except Exception as e:
-                        print('tuxler off not found')
-                        pyautogui.hotkey('alt','tab')
-                        time.sleep(1)
-                        pyautogui.press('esc')
-                        time.sleep(1)
-            
-            file_location = "traffic_flow.txt"
-            gg_select_country = read_line_from_file(file_location, location_changes)
-            if gg_select_country == 'WorldWide':
-                gg_select_country = randomcountry()
-            location_changes +=1
-
-            pyautogui.click(273,292)
-            time.sleep(1)
-            pyautogui.click(420,104)
-            time.sleep(1)
-                
-            pyautogui.click(227,105)
-            time.sleep(2)
-            pyautogui.hotkey('ctrl', 'a')
-            time.sleep(1)
-            pyautogui.press('delete')
-            time.sleep(1)
-            pyautogui.typewrite(gg_select_country)
-            time.sleep(1)
-            pyautogui.click(273,292)
-            time.sleep(1)
-
-            try:
-                x, y = pyautogui.locateCenterOnScreen('mysterium_connect.png',  region=[273,297,211,415],confidence=0.99)
-                if x and y:
-                    pyautogui.click(x, y)
-                    time.sleep(5)
-            except Exception as e:
-                pass
-            return True
-        except Exception as e:
             print(f"Error in Mysterium_Mode: {e}")
     else:
 
@@ -2415,7 +1503,7 @@ def tuxler_changer(given_country="WorldWide"):
             # Assign scroll and click coordinates
             scrollG, ClickG = coords
 
-            print(f"Selected country: {country}")
+            print(f"Selected country: {gg_select_country}")
             print(f"ScrollG: {scrollG}, ClickG: {ClickG}")
 
             pyautogui.moveTo(446, scrollG)
@@ -2565,2746 +1653,45 @@ def tuxler_account_changer():
         pass
 
 
-def ipqs_lookup(ip, api_key, api_list):
-    return api_key, True
-    
-    
-    try:
-        url = f"https://ipqualityscore.com/api/json/ip/{api_key}/{ip}"#?strictness=1&allow_public_access_points=true"
-        response = requests.get(url, timeout=10)
-        response.raise_for_status()
-        data = response.json()
-        print('Data:',data)  # raw API response for debugging
-        print(f"Using IPQS Key: {api_key}")
 
-        # ✅ Safe if no VPN, no proxy, and fraud score < 75
-        if data.get("success", False) is False:
-
-            for key in api_list:
-                try:
-                    url = f"https://ipqualityscore.com/api/json/ip/{key}/{ip}"#?strictness=1&allow_public_access_points=true"
-                    response = requests.get(url, timeout=10)
-                    response.raise_for_status()
-                    data = response.json()
-                    print(f"Checking IP {ip} with key {key}")
-                    print("Data:", data)
-
-                    if not data.get("success", False):
-                        # invalid or rate limited key
-                        print(f"Key {key} invalid or rate-limited. Trying next key...")
-                        continue
-
-                    # key worked, now check IP
-                    if not data.get("vpn", True) and not data.get("proxy", True) and data.get("fraud_score", 100) < 29:
-                        return True, key  # clean IP, working key
-                    else:
-                        # IP flagged
-                        print(f"IP flagged: VPN={data.get('vpn')}, Proxy={data.get('proxy')}, Fraud Score={data.get('fraud_score')}")
-                        return False, key  # working key but flagged IP
-
-                except requests.RequestException as e:
-                    print(f"Error with key {key}: {e}")
-                    continue
-            return False, "no_key"
-
-        if (
-            not data.get("vpn", True) and
-            not data.get("proxy", True) and
-            data.get("fraud_score", 100) < 29
-        ):
-            return True, api_key
-        else:
-            print(f"IPQS Check Failed: VPN={data.get('vpn')}, Proxy={data.get('proxy')}, Fraud Score={data.get('fraud_score')}")
-            return False, api_key
-
-    except requests.RequestException as e:
-        print('Thers Issue in Function IPQS')
-        return False, api_key  # error = treat as unsafe
-    
-
-
-def ipqs_browsercheck(ip, api_key, api_list):
-    open_link(link=f'https://www.ipqualityscore.com/ip-lookup/search/{ip}', newtab=False)
-    time.sleep(5)
-    for i in range(53):
-        try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.6)
-            pyautogui.click(x, y,duration=0.5)
-            time.sleep(1)
-            pyautogui.click(x, y,duration=0.5)
-            time.sleep(5)
-        except Exception as e:
-            pass
-
-        pyautogui.click(200, 219)
-        time.sleep(0.5)
-        pyautogui.hotkey('ctrl', 'a')
-        time.sleep(0.5)
-        pyautogui.hotkey('ctrl', 'c')
-        time.sleep(0.5)
-        data_str = clipboard.paste()
-        if 'IP Address Lookup' in data_str:
-            cond1 = "0% - Clean IP" in data_str
-            cond2 = "Healthy IP — Not A Proxy or VPN Connection" in data_str
-
-            if cond1 and cond2:
-                print("PASS IP")
-                return True
-            else:
-                print("NOT PASSED")
-                return None
-
-def clean_headers(text):
-    """
-    Renames marketing headers so the regex doesn't mistake them for data fields.
-    """
-    # Replace common marketing headers that interfere with data extraction
-    text = re.sub(r"Proxy & VPN Detection", "Prxxy & CPN Datection", text, flags=re.IGNORECASE)
-    text = re.sub(r"VPN & Proxy Detection", "CPN & Prxxy Datection", text, flags=re.IGNORECASE)
-    text = re.sub(r"Detecting Proxies", "Detecting Prxxies", text, flags=re.IGNORECASE)
-    return text
-def update_fraud_report(text):
-    # The new content to insert
-    text = clean_headers(text)
-    new_content = """
-Device Fingerprinting
-Real-Time Fraud Blocking
-25+ Platform Integration
-Custom Fraud Rules
-Bot Traffic Filtering"""
-
-    # Define the start and end anchors
-    # We use re.escape to handle special characters and .*? (dotall) to match across lines
-    pattern = re.compile(
-        r"(Affiliate Fraud Detection Dashboard)(.*?)(Supported Platform Integrations)", 
-        re.DOTALL
-    )
-
-    # Perform the replacement
-    # \1 and \3 keep the original anchor headers intact
-    updated_text = pattern.sub(f"\\1\n\n{new_content}\n\n\\3", text)
-    
-    return updated_text
-
-def extract_ip_info24metric(text, ip):
-    text = update_fraud_report(text)
-    def find(label):
-        pattern = rf"{label}\s*:?[\s]*([A-Za-z0-9 ._-]+)"
-        match = re.search(pattern, text, re.IGNORECASE)
-        return match.group(1).strip() if match else None
-
-    Residential_proxy = find(r"Residential Proxy\?")
-    Risk_Score = find(r"Risk Score")
-    Recent_Abuse = find(r"Recent Abuse\?")
-    is_vpn = find(r"VPN")
-    is_proxy = find(r"Proxy")
-    networkip = find(r"Network")
-    print(is_vpn, is_proxy, networkip)
-    if networkip and is_vpn:
-        print(f"Extracted Network IP: {networkip} and {ip}")
-        if networkip != '2003' and is_vpn != '- - -':
-            print(f"Extracted Network IP: {networkip}")
-            if Residential_proxy == 'No' and Risk_Score == 'No Risk' and Recent_Abuse == 'No' and is_vpn == 'False' and is_proxy == 'False':
-                print("This IP is clean and safe to use.")
-                return 'goodip'
-            elif Residential_proxy == 'Yes' or Risk_Score == 'High Risk' or Risk_Score == 'Risk' or Recent_Abuse == 'Yes' or is_vpn == 'Yes' or is_proxy == 'Yes':
-                print("Warning: This IP may be risky to use.")
-                return 'badip'
-    return 'noip'
-
-def metrics24_lookups(ip):
-    open_link(link=f'https://www.24metrics.com/#anchor-ip-scanner', newtab=False)
-    time.sleep(2)
-    for i in range(53):
-        try:
-            x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-            if x and y:
-                break
-        except Exception as e:
-            pass
-        time.sleep(1)
-
-    met24_empty = ['24met_empty.png', '24met_empty2.png', '24met_empty3.png' , '24met_empty4.png']
-    lookup_metr = ['lookup_metr.png', 'lookup_metr2.png', 'lookup_metr3.png' , 'lookup_metr4.png']
-    for i in range(33):
-        try:
-            x, y = pyautogui.locateCenterOnScreen('24met_acceptcookie.png',  confidence=0.6)
-            if x and y:
-                pyautogui.click(x, y)
-        except Exception as e:
-            pass
-        
-        for img in met24_empty:
-            print(f"Checking for image: {img}")
-            try:
-                x, y = pyautogui.locateCenterOnScreen(img,  confidence=0.7)
-                if x and y:
-                    for img in lookup_metr:
-                        print(f"Checking for image: {img}")
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen(img,  confidence=0.7)
-                            if x and y:
-                                print(f"Found lookup image at: {x}, {y}")
-                                pyautogui.click(1444, y)
-                                time.sleep(1)
-                                pyautogui.hotkey('ctrl', 'a')
-                                pyautogui.press('delete')   
-                                pyautogui.typewrite(ip)
-                                time.sleep(1)
-                                pyautogui.click(x, y)
-                                time.sleep(3)
-                                break
-                        except Exception as e:
-                            pass
-                    break
-            except Exception as e:
-                pass
-
-
-        pyautogui.click(150, 210)
-        pyautogui.mouseDown(150, 210)
-        pyautogui.moveTo(1734, 965, duration=1)
-        pyautogui.mouseUp(1734, 965)
-        time.sleep(0.5)
-        #pyautogui.hotkey('ctrl', 'a')
-        #time.sleep(0.5)
-        pyautogui.hotkey('ctrl', 'c')
-        time.sleep(1)
-        pyautogui.click(100, 300)
-        text = clipboard.paste()
-        res_txt = extract_ip_info24metric(text, ip)
-        if res_txt == 'goodip':
-            return True
-        if res_txt == 'badip':
-            return False
-
-
-
-    
-def get_link():
-
-    try:
-
-        clipboard.copy('')
-        pyautogui.click(228,63)
-        time.sleep(0.5)
-        pyautogui.hotkey('ctrl', 'a')
-        time.sleep(0.5)
-        pyautogui.hotkey('ctrl', 'c')  # Focus the address bar
-        time.sleep(0.5)
-        link = clipboard.paste()  # Get the copied link from clipboard
-        if link == '' or link == None:
-            pyautogui.press('esc')
-        if link:
-            print(f"Link copied: {link}")
-            return link
-
-
-    except Exception as e:
-        print(f"Error in: {e}")
-
-
-def newtab_validate(title):
-    if 'New Tab' in title:
-        try:
-            x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-            if x and y:
-                return True
-        except Exception as e:
-            pass
-    return False
-
-def send_telegram_message(bot_token, chat_id, text):
-    url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-    payload = {
-        "chat_id": chat_id,
-        "text": text,
-        "parse_mode": "HTML" # Optional: allows bold/italic tags
-    }
-    
-    response = requests.post(url, data=payload)
-    return response.json()
 
 # Your specific credentials
 TOKEN = "8554666788:AAENrnKhyNeUDL93Q6oQPWiYpi0-5lRRWys"
 USER_ID = "7670314322"
 
 
-
-
-def linked_validate():
-
-
-    valid_links = [
-        'cares.krishnacommunication.com',
-        'krishnacommunication',
-        'indiaearnx.com',
-        'indiaearnx',
-        'time.ehinditimes.com',
-        'ehinditimes',
-        'trip.train360.co.in',
-        'train360.co.in',
-        'train360',
-        'fitnesstipz',
-        'tpi',
-        'tpisi',
-        'gplinks',
-        'powergram',
-        'collegedekho',
-        'mtc',
-        'mtc1',
-        'mtc2',
-        'mtc3',
-        'mtc0',
-        'shortxlinks',
-        'carensureplan',
-        'discoverlaw',
-        'kdvgi',
-        'explore.kdvgi.xyz',
-        'explore'
-
-    ]
-    try:
-        x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-        if x and y: 
-            text = ocr_screen_region(167, 45, 342, 35)
-            title = get_focused_window_title()
-            print(f"Screen OCR Text: {text}")
-
-            text = text.lower().strip()
-
-            if text == '' or text == None or text == '.':
-                return False
-
-            # direct contains check
-            for word in valid_links:
-                if word in text or word in title.lower():
-                    print(f'{word} found in {text} or {title}')
-                    return True
-            if 'demo.dynamicslab.ai' in title.lower() or 'always active window - always visible' in title.lower() or '/get_option_verify_bot' in title.lower():
-                    print(f'Demo link found in title: {title}')
-                    return True     
-            #status = send_telegram_message(TOKEN, USER_ID, f"Broken Link Found in Farm{farm_id}: {text}. 🐍")
-            #print(status)
-            return False
-    except Exception as e:
-        pass
-    return True
-
-
-
 ##############################################################
 # Function to handle the Shortlinks statistics
 #######################################################
-
-def zyrox_handle():
-    pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.4)
-    pyautogui.click(493,19, duration = 0.4)
-    title = get_focused_window_title()
-
-    if destined_reached(title):
-        return 5
-    if newtab_validate(title):
-        return 5
-
-    try:
-        x, y = pyautogui.locateCenterOnScreen('js_ok.png', region=[930,130,342,165] ,confidence=0.9)
-        if x and y:
-            human_click(x, y, duration=1)
-            time.sleep(2)
-            pyautogui.click(95, 62)  # Click on the 'No Internet' button
-            time.sleep(2)
-            return 5
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('getlink_zyrox.png',confidence=0.9)
-        if x and y:
-            human_click(x, y, duration=0.2)
-            time.sleep(0.2)
-            pyautogui.click(95, 62)  # Click on the 'No Internet' button
-            return 5
-    except Exception as e:
-        pass
-    close_ads()
-
-
-
-def inidanxlinks(simple=False):
-    
-    pyautogui.click(493,19, duration = 0.4)
-    pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.4)
-    title = get_focused_window_title()
-
-    if destined_reached(title):
-        return 5
-    if newtab_validate(title):
-        return 5
-
-    try:
-        x, y = pyautogui.locateCenterOnScreen('js_ok.png', region=[930,130,342,165] ,confidence=0.99)
-        if x and y:
-            human_click(x, y, duration=1)
-            time.sleep(2)
-            pyautogui.click(493,19, duration = 0.2)
-            time.sleep(2)
-            return 5
-    except Exception as e:
-        pass
-    
-    if simple:
-        close_ads()
-        
-        buttons = ['wait_for_page.png','consent5.png','indiax_notrobo5.png','indiax_dualtap5.png','indiax_dualtap52.png','indiax_dualtap23.png','indiax_openc5.png','indiax_openc52.png','opencon53.png','opencon5.png','indiax_closead5.png', 'indiax_dualtap4.png','idiaad_open3.png','idiaad_dual3.png','indiadasclose.png','indiax_closead3.png','indiax_closead4.png','indiax_closead2.png', 'indiax_closead1.png','indiax_notrobo2.png','indiax_dualtap3.png','indiax_dualtap2.png','indiax_openc.png','indiax_notrobo1.png' ,'indiax_dualtap1.png','indiax_open_con.png','indiax_getlink.png']
-
-        full_screen = pyautogui.screenshot()
-        for img_name in buttons:
-            try:
-
-                match = pyautogui.locate(img_name, full_screen, confidence=0.99)
-                if img_name == 'consent5.png':
-                    match = pyautogui.locate(img_name, full_screen, confidence=0.99)
-                if match:
-                    x, y = pyautogui.center(match)
-                    pyautogui.click(x,y)
-                    time.sleep(0.5)
-                    pyautogui.click(493,19, duration = 0.4)
-                    time.sleep(0.5)
-                    full_screen = pyautogui.screenshot()
-
-            except Exception:
-                pass
-
-        adsclosebutton = [ 'closeadsgoogle1.png','closeadsgoole11.png','closeadsgoole10.png', 'closeadsgoole2.png', 'closeadsgoole3.png', 'closeadsgoole4.png', 'closeadsgoole5.png', 'closeadsgoole6.png', 'closeadsgoole7.png', 'closeadsgoole9.png','closeadsgoole8.png']
-        full_screen = pyautogui.screenshot()
-        for img_name in adsclosebutton:
-            try:
-                match = pyautogui.locate(img_name, full_screen,  region=[1,83,1914,956],confidence=0.99)
-                if match:
-                    x, y = pyautogui.center(match)
-                    pyautogui.click(x,y)
-                    time.sleep(0.5)
-                    pyautogui.click(493,19, duration = 0.4)
-                    time.sleep(0.5)
-                    full_screen = pyautogui.screenshot()
-
-            except Exception:
-                pass
-
-        try:
-            x, y = pyautogui.locateCenterOnScreen( 'adremoved.png', confidence=0.98)
-            if x and y:
-                pyautogui.press('f5')
-                return
-        except Exception as e:
-            pass
-        link = linked_validate()
-        if link == False:
-            time.sleep(3)
-            link = linked_validate()
-            if link == False:
-                time.sleep(3)
-                link = linked_validate()
-                if link == False:
-                    pyautogui.click(23,62, duration = 0.4)
-            return
-    try:
-        x, y = pyautogui.locateCenterOnScreen( 'idiaad_rsum.png', confidence=0.99)
-        if x and y:
-            pyautogui.click(x, y, duration=0.1)
-            time.sleep(1)
-            pyautogui.click(494,19, duration = 0.2)
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen( 'skipvidgp.png', confidence=0.99)
-        if x and y:
-            pyautogui.click(x, y, duration=0.1)
-            time.sleep(1)
-            pyautogui.click(494,19, duration = 0.2)
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen( 'closevideoadgp.png', region=[900,212,714,522], confidence=0.99)
-        if x and y:
-            pyautogui.click(x, y, duration=0.1)
-            time.sleep(1)
-            pyautogui.click(970, 638, duration=0.1)
-            time.sleep(1)
-            pyautogui.click(494,19, duration = 0.2)
-            return
-            
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen( 'skipvidgp.png', confidence=0.99)
-        if x and y:
-            pyautogui.click(x, y, duration=0.1)
-            time.sleep(2)
-            pyautogui.click(494,19, duration = 0.2)
-            return
-            
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen( 'resumevidgp.png', region=[1,83,1914,956], confidence=0.99)
-        if x and y:
-            pyautogui.click(x, y, duration=0.1)
-            time.sleep(2)
-            pyautogui.click(494,19, duration = 0.2)
-            return
-            
-    except Exception as e:
-        pass
-
-
-
-def shrink_meorearn(earn = True):
-
-    pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.2)
-    pyautogui.click(493,19, duration = 0.2)
-    title = get_focused_window_title()
-    print(f"Current Window Title: {title}")
-
-    try:
-        x, y = pyautogui.locateCenterOnScreen('js_ok.png', region=[930,130,342,165] ,confidence=0.9)
-        if x and y:
-            human_click(x, y, duration=1)
-            time.sleep(2)
-            pyautogui.click(95, 62)  # Click on the 'No Internet' button
-            time.sleep(2)
-            return 5
-    except Exception as e:
-        pass
-
-    close_ads()
-
-    if earn:
-        try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.6)
-            if x and y:
-                for i in range(6):
-                    close_ads()
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.6)
-                        pyautogui.click(x, y,duration=0.2)
-                        time.sleep(1)
-                    except Exception as e:
-                        pass
-
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_success_win10.png",  confidence=0.7)
-                        if x and y:
-                            try:
-                                x, y = pyautogui.locateCenterOnScreen('shrinkearn_continue1.png', region=[699,156,530,870], confidence=0.8)
-                                if x and y:
-                                    human_click(x, y, duration=0.2)
-                                    time.sleep(1)
-                                    pyautogui.click(493,19, duration = 0.4)
-                                    time.sleep(2)
-                                    continue
-                            except Exception as e:
-                                pass
-                            try:
-                                x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-                                if x and y:
-                                    pass
-                            except Exception as e:
-                                return 1 
-
-                    except Exception as e:
-                        pass
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.6)
-            pyautogui.click(x, y,duration=0.2)
-            time.sleep(1)
-            pyautogui.click(x, y,duration=0.2)
-            time.sleep(5)
-        except Exception as e:
-            pass
-
-        try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_success_win10.png",  confidence=0.7)
-            if x and y:
-                for i in range(6):
-                    close_ads()
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen('shrinkearn_continue1.png', region=[699,156,530,870], confidence=0.8)
-                        if x and y:
-                            human_click(x, y, duration=0.2)
-                            time.sleep(1)
-                            pyautogui.click(493,19, duration = 0.4)
-                            time.sleep(2)
-                            continue
-                    except Exception as e:
-                        pass
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-                        if x and y:
-                            pass
-                    except Exception as e:
-                        
-                        return 1 
-                return 1
-        except Exception as e:
-            pass
-
-        shrinkearn_button1 = [
-
-                ('Getlink2.png', [680,110,557,909], 0.75),
-                ('getlinkearn.png', None, 0.7),
-                
-                ('continueearn.png', None, 0.7),
-                ('continue_shren.png', None, 0.7),
-
-
-                ('Getlink1.png', None, 0.7),
-                ('getlink_shren.png', None, 0.7),
-
-            ]
-            
-
-        full_screen = pyautogui.screenshot()
-        for img_name, reg, conf in shrinkearn_button1:
-            try:
-                # 3. Search WITHIN the screenshot we already took
-                # Use grayscale=True for 30% more speed
-                match = pyautogui.locate(img_name, full_screen, region=reg, confidence=conf)
-                if match:
-
-                    
-                    human_click(x, y, duration=0.2)
-                    if img_name == "Getlink1.png" or img_name == "getlink_shren.png":
-                        return 
-                    time.sleep(0.5)
-                    pyautogui.click(493, 19, duration=0.3)
-                    full_screen = pyautogui.screenshot()
-
-            except Exception as e:
-                pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('adblockshrink.png',  confidence=0.9)
-            if x and y: 
-                return 5
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('shrinkearn_continue1.png', region=[699,156,530,870], confidence=0.9)
-            if x and y:
-                human_click(x, y, duration=1)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(3)
-                return 1
-        except Exception as e:
-            pass
-
-
-shrinkearn_continue= 1 
-
-def shrinkearn_handle():
-    global shrinkearn_continue
-    pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=1)
-    pyautogui.click(493,19, duration = 0.4)
-    title = get_focused_window_title()
-    print(f"Current Window Title: {title}")
-
-    if destined_reached(title):
-        return 5
-    if newtab_validate(title):
-        return 5
-    if 'HealthShield - Review of Fitness, Weight Gain, Skin Care, Yoga & Weight Loss' in title:
-        shorlink = random_link('link3')
-        open_link(link = shorlink ,newtab = False)
-
-    try:
-        x, y = pyautogui.locateCenterOnScreen('js_ok.png', region=[930,130,342,165] ,confidence=0.9)
-        if x and y:
-            human_click(x, y, duration=1)
-            time.sleep(2)
-            pyautogui.click(95, 62)  # Click on the 'No Internet' button
-            time.sleep(2)
-            return 5
-    except Exception as e:
-        pass
-
-    close_ads()
-    try:
-        x, y = pyautogui.locateCenterOnScreen('Getlink2.png', region=[680,110,557,909], confidence=0.8)
-        if x and y:
-            human_click(x, y, duration=1)
-            time.sleep(1)
-            pyautogui.click(493,19, duration = 0.4)
-            time.sleep(5)
-            return 1
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('recaptcha_fail2.png', region=[344,65,1208,977], confidence=0.98)
-        if x and y:
-            print('Failed Recaptcha')
-            pyautogui.press('f5')
-            time.sleep(3)
-            pyautogui.press('enter')
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('recaptcha_valid.png', region=[699,156,530,870], confidence=0.9)
-        if x and y:
-            for i in range(6):
-                close_ads()
-                try:
-                    x, y = pyautogui.locateCenterOnScreen('shrinkearn_continue1.png', region=[699,156,530,870], confidence=0.9)
-                    if x and y:
-                        human_click(x, y, duration=1)
-                        time.sleep(1)
-                        pyautogui.click(493,19, duration = 0.4)
-                        time.sleep(3)
-                        continue
-                except Exception as e:
-                    pass
-                try:
-                    x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-                    if x and y:
-                        pass
-                except Exception as e:
-                    
-                    return 1 
-            return 1
-    except Exception as e:
-        pass
-
-    try:
-        x, y = pyautogui.locateCenterOnScreen('urlinkready.png', region=[680,110,557,909], confidence=0.8)
-        if x and y:
-            print("Link is ready")
-            try:
-                x, y = pyautogui.locateCenterOnScreen('zero.png', region=[680,110,557,909], confidence=0.9)
-                if x and y:
-                    print("Link is ready2")
-                    for i in range(5):
-                        close_ads()
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen('Getlink2.png', region=[680,110,557,909], confidence=0.8)
-                            if x and y:
-                                human_click(x, y, duration=1)
-                                time.sleep(1)
-                                pyautogui.click(493,19, duration = 0.4)
-                                time.sleep(5)
-                                return 1
-                        except Exception as e:
-                            pyautogui.moveTo(400,409)
-                            time.sleep(1)
-                            pyautogui.scroll(-350)
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen('getting_linkstuck2.png', region=[680,110,557,909], confidence=0.9)
-                            if x and y:
-                                
-                                time.sleep(4)
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('getting_linkstuck2.png', region=[680,110,557,909], confidence=0.9)
-                                    if x and y:
-                                        pyautogui.press('f5')
-                                        time.sleep(2)
-                                        pyautogui.press('enter')
-                                        return 1
-                                except Exception as e:
-                                    pass
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('shrime_getlink.png', region=[680,110,557,909], confidence=0.7)
-                                    if x and y:
-                                        human_click(x, y, duration=1)
-                                        time.sleep(1)
-                                        pyautogui.click(493,19, duration = 0.4)
-                                        time.sleep(5)
-                                        #return
-                                except Exception as e:
-                                    pass
-                        except Exception as e:
-                            pass
-                else:
-                    return 1
-            except Exception as e:
-                return 1
-        pyautogui.scroll(5000)
-    except Exception as e:
-        pass
-    if 'Health Shield' not in title or 'PolicyBuzz' not in title:
-        if shrinkearn_continue > 4:
-            pyautogui.press('f5')
-            time.sleep(3)
-            pyautogui.press('enter')
-            shrinkearn_continue = 1
-        
-        try:
-            x, y = pyautogui.locateCenterOnScreen('shrinkearn_continue2.png', region=[407,100,932,816], confidence=0.7)
-            if x and y:
-                human_click(x, y, duration=1)
-                shrinkearn_continue += 1
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(2)
-
-                  
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-            if x and y:
-                try:
-                    x, y = pyautogui.locateCenterOnScreen('continue_shrentop.png', region=[407,100,932,816], confidence=0.998)
-                    if x and y:
-                        shrinkearn_continue += 1
-                        print("Top continue found", shrinkearn_continue)
-                        y += 20
-                        pyautogui.click(x, y, duration = 0.4)
-                        #time.sleep(2)
-                        #return  
-                except Exception as e:
-                    pass
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('continue_shren.png', region=[407,100,932,816], confidence=0.7)
-            if x and y:
-                human_click(x, y, duration=1)
-                shrinkearn_continue += 1
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(2)
-
-                  
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('shrinkearn_continue3.png', region=[407,100,932,816], confidence=0.7)
-            if x and y:
-                human_click(x, y, duration=1)
-                shrinkearn_continue += 1
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(2)
-
-                  
-        except Exception as e:
-            pass
-    
-    elif 'Health Shield' in title or 'PolicyBuzz' not in title:
-        try:
-            x, y = pyautogui.locateCenterOnScreen('close_shrinkearn_new.png', region=[1165,150,273,664], confidence=0.9)
-            if x and y:
-                pyautogui.click(x,y, duration=1)
-                time.sleep(2)
-        except Exception as e:
-            pass
-    #try:
-    #    x, y = pyautogui.locateCenterOnScreen('Getlink1.png', region=[407,104,722,900], confidence=0.9)
-    #    if x and y:
-    #        human_click(x, y, duration=1)
-    #        time.sleep(1)
-    #        pyautogui.click(493,19, duration = 0.4)
-    #        time.sleep(3)
-    #        return 
-    #except Exception as e:
-    #    pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('getlink_shren.png',  confidence=0.7)
-        if x and y:
-            human_click(x, y, duration=1)
-            time.sleep(1)
-            pyautogui.click(493,19, duration = 0.4)
-            time.sleep(3)
-            shrinkearn_continue = 1
-            return 1 
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('Getlink1.png',  confidence=0.7)
-        if x and y:
-            human_click(x, y, duration=1)
-            time.sleep(1)
-            pyautogui.click(493,19, duration = 0.4)
-            time.sleep(3)
-            shrinkearn_continue = 1
-            return 1 
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('goup_shrinkearn.png',  confidence=0.9)
-        if x and y: 
-            pyautogui.click(x,y)
-            time.sleep(2)
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('post_comment2.png',  confidence=0.9)
-        if x and y: 
-            pyautogui.moveTo(300, 300)
-            pyautogui.scroll(10000)
-            time.sleep(1)
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('adblockshrink.png',  confidence=0.9)
-        if x and y: 
-            return 5
-    except Exception as e:
-        pass
-    
-
-
-def fclink_handle():
-    pyautogui.click(493,19, duration = 0.4)
-    pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.5)
-
-    title = get_focused_window_title()
-    if destined_reached(title):
-        return True
-    if 'Just' in title:
-        try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.6)
-            pyautogui.click(x, y,duration=1)
-            time.sleep(1)
-            pyautogui.click(x, y,duration=1)
-            time.sleep(5)
-
-        except Exception as e:
-            pass
-
-    try:
-        x, y = pyautogui.locateCenterOnScreen('fbg_lg.png', region=[394,83,303,123], confidence=0.95)
-        if x and y:
-            pyautogui.scroll(500)
-            time.sleep(1)
-            pyautogui.click(1090, 820)  # Click on the 'Leave' button
-            time.sleep(1)
-            pyautogui.click(1117, 550)
-            pyautogui.click(1117, 540)
-            pyautogui.click(1117, 530)
-            pyautogui.click(1117, 520)
-            pyautogui.click(1117, 510)
-            pyautogui.click(1117, 500)
-            pyautogui.click(1117, 490)
-            pyautogui.click(1117, 480)
-            pyautogui.click(1117, 470)
-            pyautogui.click(1117, 460)
-            pyautogui.click(1117, 450)
-            pyautogui.click(1117, 430)
-            pyautogui.click(1117, 420)
-            pyautogui.click(1117, 410)
-            pyautogui.click(1117, 400)
-            return 
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('yt_logo.png', region=[699,56,240,136], confidence=0.94)
-        if x and y:
-            pyautogui.click(885,394)
-            time.sleep(1)
-            return 
-    except Exception as e:
-        pass
-    close_ads()
-    button_found = False
-    try:
-        x, y = pyautogui.locateCenterOnScreen('fc_clickhere.png', region=[770,108,400,912], confidence=0.9)
-        if x and y:
-            human_click(x, y, duration=1)
-            time.sleep(1)
-            pyautogui.click(493,19, duration = 0.4)
-            time.sleep(1)
-            human_click(x, y, duration=1)
-            time.sleep(1)
-            pyautogui.click(493,19, duration = 0.4)
-            button_found = True  
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('fc_clickverify.png', region=[493,98,930,935], confidence=0.9)
-        if x and y:
-            human_click(x, y, duration=1)
-            time.sleep(1)
-            pyautogui.click(493,19, duration = 0.4)
-            time.sleep(1)  
-            human_click(x, y, duration=1)
-            time.sleep(1)
-            pyautogui.click(493,19, duration = 0.4)
-            button_found = True 
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('fc_countinue.png', region=[493,98,930,935], confidence=0.9)
-        if x and y:
-            human_click(x, y, duration=1)
-            time.sleep(1)
-            pyautogui.click(493,19, duration = 0.4)
-            time.sleep(1)  
-            human_click(x, y, duration=1)
-            time.sleep(1)
-            pyautogui.click(493,19, duration = 0.4)
-            button_found = True 
-    except Exception as e:
-        pass
-    if button_found:
-        for i in range(4):
-            if button_found == False:
-                break
-            title = get_focused_window_title()
-            if destined_reached(title):
-                return True
-            close_ads()
-            try:
-                x, y = pyautogui.locateCenterOnScreen('fc_clickhere.png', region=[770,108,400,912], confidence=0.9)
-                if x and y:
-                    human_click(x, y, duration=1)
-                    time.sleep(1)
-                    pyautogui.click(493,19, duration = 0.4)
-                    time.sleep(1)
-                    human_click(x, y, duration=1)
-                    time.sleep(1)
-                    pyautogui.click(493,19, duration = 0.4)
-                    button_found = True  
-            except Exception as e:
-                button_found = False
-            
-            try:
-                x, y = pyautogui.locateCenterOnScreen('fc_clickverify.png', region=[493,98,930,935], confidence=0.9)
-                if x and y:
-                    human_click(x, y, duration=1)
-                    time.sleep(1)
-                    pyautogui.click(493,19, duration = 0.4)
-                    time.sleep(1)  
-                    human_click(x, y, duration=1)
-                    time.sleep(1)
-                    pyautogui.click(493,19, duration = 0.4)
-                    button_found = True 
-            except Exception as e:
-                button_found = False
-            try:
-                x, y = pyautogui.locateCenterOnScreen('fc_countinue.png', region=[493,98,930,935], confidence=0.9)
-                if x and y:
-                    human_click(x, y, duration=1)
-                    time.sleep(1)
-                    pyautogui.click(493,19, duration = 0.4)
-                    time.sleep(1)  
-                    human_click(x, y, duration=1)
-                    time.sleep(1)
-                    pyautogui.click(493,19, duration = 0.4)
-                    button_found = True 
-            except Exception as e:
-                button_found = False
-    try:
-        x, y = pyautogui.locateCenterOnScreen('fc_scrolldown.png', region=[493,98,930,935], confidence=0.9)
-        if x and y:
-            pyautogui.moveTo(x, y, duration=1)
-            time.sleep(1)
-            pyautogui.scroll(-5000)
-            time.sleep(2)  
-    except Exception as e:
-        pass
-
-    try:
-        x, y = pyautogui.locateCenterOnScreen('fc_getlink.png', region=[493,98,930,935], confidence=0.9)
-        if x and y:
-            for i in range(8):
-                title = get_focused_window_title()
-                if destined_reached(title):
-                    return True
-                close_ads()
-                try:
-                    x, y = pyautogui.locateCenterOnScreen('fc_getlink.png', region=[493,98,930,935], confidence=0.7)
-                    if x and y:
-                        human_click(x, y, duration=1)
-                        time.sleep(1)
-                        pyautogui.click(493,19, duration = 0.4)
-                        time.sleep(1)
-                        
-                except Exception as e:
-                    continue
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('fc_linkready.png', region=[493,98,930,935], confidence=0.8)
-        if x and y:
-            print("Link is ready2")
-            x, y = pyautogui.locateCenterOnScreen('fczero.png', region=[493,98,930,935], confidence=0.9)
-            if x and y:
-                print("Link is ready2")
-                for i in range(5):
-                    title = get_focused_window_title()
-                    if destined_reached(title):
-                        return True
-                    close_ads()
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen('fc_getlink2.png', region=[493,98,930,935], confidence=0.7)
-                        if x and y:
-                            human_click(x, y, duration=1)
-                            time.sleep(1)
-                            pyautogui.click(493,19, duration = 0.4)
-                            time.sleep(1)
-                            
-                    except Exception as e:
-                        pyautogui.moveTo(400,409)
-                        time.sleep(1)
-                        pyautogui.scroll(-350)
-        pyautogui.scroll(5000)
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('fc_getlink2.png', region=[493,98,930,935], confidence=0.9)
-        if x and y:
-            for i in range(8):
-                title = get_focused_window_title()
-                if destined_reached(title):
-                    return True
-                close_ads()
-                try:
-                    x, y = pyautogui.locateCenterOnScreen('fc_getlink2.png', region=[493,98,930,935], confidence=0.7)
-                    if x and y:
-                        human_click(x, y, duration=1)
-                        time.sleep(1)
-                        pyautogui.click(493,19, duration = 0.4)
-                        time.sleep(1)
-                        
-                except Exception as e:
-                    pyautogui.moveTo(400,409)
-                    time.sleep(1)
-                    pyautogui.scroll(-350)
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('fclc_title.png', region=[65, 6, 185, 35], confidence=0.98)
-        if x and y:
-            return
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('adblockfc2.png', region=[595,570,180,185], confidence=0.8)
-        if x and y:
-            print("Adblock found")
-            pyautogui.press('f5')
-
-    except Exception as e:
-        pass
-    if 'fc.lc' not in title or 'fclc' not in title or 'fc,lc' not in title or 'fle' not in title:
-        #time.sleep(1)
-        pyautogui.click(200,432, duration=1)
-        time.sleep(1)
-        pyautogui.click(1861,132, duration=1)
-        time.sleep(1)
-        pyautogui.click(493,19, duration = 0.4)
-        time.sleep(1)
-        pyautogui.click(200,432, duration=1)
-        time.sleep(1)
-        pyautogui.click(493,19, duration = 0.4)
-    try:
-        x, y = pyautogui.locateCenterOnScreen('clickhere_unload.png', region=[765,170,400,850], confidence=0.95)
-        if x and y:
-            pyautogui.press('f5')
-            time.sleep(3)
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-        if x and y:
-            try:
-                
-                x, y = pyautogui.locateCenterOnScreen('fc_blur.png', confidence=0.98)
-                if x and y:
-                    print("Blur found")
-                    pyautogui.press('f5')
-                    time.sleep(3)
-            except Exception as e:
-                pass
-    except Exception as e:
-        pass
-
-def cutty_handle():
-    pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.3)
-    pyautogui.click(493,19, duration=0.2)
-    title = get_focused_window_title()
-
-    if destined_reached(title):
-        return True
-
-    close_ads()
-    try:
-        x, y = pyautogui.locateCenterOnScreen('cssnotloadcutty.png',  confidence=0.95)
-        if x and y:
-            pyautogui.press('f5')
-            time.sleep(3)
-            return
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('cutty_continue.png', region=[541,146,812,895], confidence=0.9)
-        if x and y:
-            
-            human_click(x, y, duration=0.2)
-            time.sleep(0.2)
-            pyautogui.click(493,19, duration = 0.2)
-            time.sleep(0.4)
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('cutty_notrobot.png', region=[541,146,812,895], confidence=0.9)
-        if x and y:
-            
-            human_click(x, y, duration=0.2)
-            time.sleep(0.2)
-            pyautogui.click(493,19, duration = 0.2)
-            time.sleep(0.2)
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-        if x and y:
-            pyautogui.moveTo(300,509)
-            pyautogui.scroll(5000)
-            button_found = False
-            for i in range(4):
-                if button_found:
-                    break
-                pyautogui.scroll(-300)
-                time.sleep(1)
-                try:
-                    x, y = pyautogui.locateCenterOnScreen('cutty_notrobot.png', region=[541,146,812,895], confidence=0.8)
-                    if x and y:
-                        button_found = True
-                except Exception as e:
-                    pass
-                try:
-                    x, y = pyautogui.locateCenterOnScreen('cutty_go.png', region=[541,146,812,895], confidence=0.7)
-                    if x and y:
-                        button_found = True
-                except Exception as e:
-                    pass
-            if button_found == False:
-                return
-
-
-            try:
-                x, y = pyautogui.locateCenterOnScreen('cutty_notrobot.png', region=[541,146,812,895], confidence=0.9)
-                if x and y:
-                    for i in range(5):
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-                            if x and y:
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('cutty_notrobot.png', region=[541,146,812,895], confidence=0.9)
-                                    if x and y:
-                                    
-                                        human_click(x, y, duration=0.4)
-                                        time.sleep(1)
-                                        pyautogui.click(493,19, duration = 0.4)
-                                        time.sleep(2)
-                                        
-                                except Exception as e:
-                                    pass
-                        except Exception as e:
-                            pass
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-                        if x and y:
-                            pyautogui.press('f5')
-                            time.sleep(1)
-                            return
-                    except Exception as e:
-                        pass
-            except Exception as e:
-                pass
-
-
-
-            try:
-                x, y = pyautogui.locateCenterOnScreen('cutty_go.png', region=[541,146,812,895], confidence=0.9)
-                if x and y:
-                    for i in range(6):
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-                            if x and y:
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('cutty_go.png', region=[541,146,812,895], confidence=0.9)
-                                    if x and y:
-                                    
-                                        human_click(x, y, duration=0.4)
-                                        time.sleep(1)
-                                        pyautogui.click(493,19, duration = 0.4)
-                                        time.sleep(2)
-                                        
-                                except Exception as e:
-                                    pass
-                        except Exception as e:
-                            pass
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-                        if x and y:
-                            pyautogui.press('f5')
-                            time.sleep(1)
-                            return
-                    except Exception as e:
-                        pass
-            except Exception as e:
-                pass
-            try:
-                x, y = pyautogui.locateCenterOnScreen('linkready_cutty.png', region=[680,110,557,909], confidence=0.8)
-                if x and y:
-                    print("Link is ready")
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-                        if x and y:
-                            print("Link is ready2")
-                            for i in range(6):
-                                title = get_focused_window_title()
-                                if 'Shorten Links' in title or 'cuty.io' in title:
-                                    return True
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('cutty_go.png', region=[541,146,812,895], confidence=0.7)
-                                    if x and y:
-                                        human_click(x, y, duration=1)
-                                        time.sleep(1)
-                                        pyautogui.click(493,19, duration = 0.4)
-                                        time.sleep(1)
-                                        return
-                                except Exception as e:
-                                    pyautogui.moveTo(400,409)
-                                    time.sleep(1)
-                                    pyautogui.scroll(-350)
-                        else:
-                            return
-                    except Exception as e:
-                        return
-                pyautogui.scroll(5000)
-            except Exception as e:
-                pass
-            try:
-                x, y = pyautogui.locateCenterOnScreen('cutty_go.png', region=[541,146,812,895], confidence=0.9)
-                if x and y:
-                
-                    human_click(x, y, duration=1)
-                    time.sleep(1)
-                    pyautogui.click(493,19, duration = 0.4)
-                    time.sleep(1)
-                    
-            except Exception as e:
-                pass
-            for i in range(7):
-                try:
-                    x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-                    if x and y:
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen('cutty_continue.png', region=[541,146,812,895], confidence=0.9)
-                            if x and y:
-                                
-                                human_click(x, y, duration=0.2)
-                                time.sleep(0.2)
-                                pyautogui.click(493,19, duration = 0.2)
-                                time.sleep(0.4)
-                                
-                                continue  
-                        except Exception as e:
-                            pass
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen('cutty_notrobot.png', region=[541,146,812,895], confidence=0.9)
-                            if x and y:
-                                
-                                human_click(x, y, duration=0.2)
-                                time.sleep(0.2)
-                                pyautogui.click(493,19, duration = 0.2)
-                                time.sleep(0.2)
-                                
-                                continue  
-                        except Exception as e:
-                            pass
-                except Exception as e:
-                    pass
-                return
-                print("Page loaded")  
-
-    except Exception as e:
-        pass
-
-
-
-
-def shrtfly_handle():
-    pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.2)
-    pyautogui.click(493,19, duration=0.2)
-    title = get_focused_window_title()
-    if destined_reached(title):
-        return True
-    close_ads()
-
-
-    try:
-        x, y = pyautogui.locateCenterOnScreen('scrollshrt2.png',  confidence=0.8)
-        if x and y:
-            pyautogui.moveTo(300, 339, duration=0.2)
-            pyautogui.scroll(-5000)
-    except Exception as e:
-        pass
-    click_buttons = ['getnex_shrt.png', 'begin_shrt.png', 'clckhere_shrt.png', 'open_shrt.png', 'clickhere_shrt.png', 'vrify_shrt.png', 'gonex_shrt.png']
-    try:
-        x, y = pyautogui.locateCenterOnScreen('pleasecaptcha_shrt.png', confidence=0.9)
-        if x and y:
-            try:
-                x, y = pyautogui.locateCenterOnScreen('recaptcha_valid.png', region=[699,156,530,870], confidence=0.9)
-                if x and y:
-                    for button in click_buttons:
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen(button,  confidence=0.8)
-                            if x and y:
-                                human_click(x, y, duration=1)
-                                time.sleep(0.2)
-                                pyautogui.click(493,19, duration = 0.4)
-                                time.sleep(0.2)
-                        except Exception as e:
-                            pass
-            except Exception as e:
-                pass
-
-        try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png",  confidence=0.7)
-            if x and y:
-                for i in range(3):
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png",  confidence=0.7)
-                        if x and y:
-                            pyautogui.click(x, y,duration=0.2)
-                    except Exception as e:
-                        pass
-                    time.sleep(1)
-        except Exception as e:
-            try:
-                x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_success_win10.png",  confidence=0.7)
-                if x and y:
-                    for button in click_buttons:
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen(button,  confidence=0.8)
-                            if x and y:
-                                human_click(x, y, duration=1)
-                                time.sleep(0.2)
-                                pyautogui.click(493,19, duration = 0.4)
-                                time.sleep(0.2)
-                        except Exception as e:
-                            pass
-            except Exception as e:
-                pass
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('scrollshrt2.png',  confidence=0.8)
-        if x and y:
-            pyautogui.moveTo(300, 339, duration=0.2)
-            pyautogui.scroll(-5000)
-    except Exception as e:
-        pass
-    
-    for button in click_buttons:
-        try:
-            x, y = pyautogui.locateCenterOnScreen(button,  confidence=0.8)
-            if x and y:
-                human_click(x, y, duration=1)
-                time.sleep(0.2)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(0.2)
-        except Exception as e:
-            pass
-
-
-
-shrinkme_nopage = 1    
-def shrinkme_handle():
-    pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=1)
-    pyautogui.click(493,19, duration=1)
-    title = get_focused_window_title()
-    if destined_reached(title):
-        return 5
-    if newtab_validate(title):
-        return 5
-    try:
-        x, y = pyautogui.locateCenterOnScreen('js_ok.png', region=[930,130,342,165] ,confidence=0.9)
-        if x and y:
-            human_click(x, y, duration=1)
-            time.sleep(2)
-            pyautogui.click(95, 62)  # Click on the 'No Internet' button
-            time.sleep(2)
-            return 5
-    except Exception as e:
-        pass
-    if 'New Message!' in title:
-        pyautogui.click(1887,108)
-    close_ads()
-    try:
-        x, y = pyautogui.locateCenterOnScreen('conftransparent_ad.png', confidence=0.8)
-        if x and y:
-            print('Failed shrinkme_cssnotload')
-
-            pyautogui.click(1179,333, duration = 0.4)
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('shrinkme_cssnotload.png', confidence=0.95)
-        if x and y:
-            print('Failed shrinkme_cssnotload')
-            pyautogui.press('f5')
-            time.sleep(3)
-            pyautogui.press('enter')
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('shrinkme_cssnotload2.png', confidence=0.95)
-        if x and y:
-            print('Failed shrinkme_cssnotload')
-            pyautogui.press('f5')
-            time.sleep(3)
-            pyautogui.press('enter')
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('shrime_getlink.png', region=[680,110,557,909], confidence=0.7)
-        if x and y:
-            human_click(x, y, duration=1)
-            time.sleep(1)
-            pyautogui.click(493,19, duration = 0.4)
-            time.sleep(1)
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('recaptcha_fail2.png', region=[344,65,1208,977], confidence=0.98)
-        if x and y:
-            print('Failed Recaptcha')
-            pyautogui.press('f5')
-            time.sleep(3)
-            pyautogui.press('enter')
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('recaptcha_valid.png', region=[699,156,530,870], confidence=0.9)
-        if x and y:
-            for i in range(6):
-                close_ads()
-                try:
-                    x, y = pyautogui.locateCenterOnScreen('shrime_clickhere.png', region=[699,156,530,870], confidence=0.9)
-                    if x and y:
-                        human_click(x, y, duration=1)
-                        time.sleep(1)
-                        pyautogui.click(493,19, duration = 0.4)
-                        time.sleep(3)
-                        continue
-                except Exception as e:
-                    pass
-                try:
-                    x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-                    if x and y:
-                        pass
-                except Exception as e:
-                    
-                    return 1  
-            return 1
-    except Exception as e:
-        pass
-
-    if color_exists_in_region((51, 51, 51), (15,200,100,350)):
-        print("Blue pixel found in region!")
-        pyautogui.click(22, 63)
-        time.sleep(5)
-        close_ads()
-        time.sleep(3)
-
-    region = (61, 181, 282, 743)
-    target_color = (14, 14, 14)  # #0e0e0e
-
-    if region_is_only_color_fast(target_color, region):
-        print("Region is completely #0e0e0e")
-        pyautogui.click(22, 63)
-        time.sleep(5)
-
-        
-    try:
-        x, y = pyautogui.locateCenterOnScreen('click2ver.png', region=[568,108,776,916], confidence=0.8)
-        if x and y:
-            human_click(x, y, duration=1)
-            time.sleep(1)
-            pyautogui.click(493,19, duration = 0.4)
-            time.sleep(2)
-            #return 
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('srinkme_continue.png', region=[568,108,776,916], confidence=0.8)
-        if x and y:
-            human_click(x, y, duration=1)
-            time.sleep(1)
-            pyautogui.click(493,19, duration = 0.4)
-            time.sleep(2)
-            #return 
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('shrink_generate.png', region=[568,108,776,916], confidence=0.8)
-        if x and y:
-            human_click(x, y, duration=1)
-            time.sleep(1)
-            pyautogui.click(493,19, duration = 0.4)
-            time.sleep(1)
-            return 1 
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('shrime_getlink.png', region=[680,110,557,909], confidence=0.8)
-        if x and y:
-            human_click(x, y, duration=1)
-            time.sleep(1)
-            pyautogui.click(493,19, duration = 0.4)
-            time.sleep(2)
-            return 1
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('shrink_gourl.png', region=[680,110,557,909], confidence=0.8)
-        if x and y:
-            human_click(x, y, duration=1)
-            time.sleep(1)
-            pyautogui.click(493,19, duration = 0.4)
-            time.sleep(2)
-            return 1
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('shrink_urlink.png', region=[680,110,557,909], confidence=0.6)
-        if x and y:
-            title = get_focused_window_title()
-            print("Link is ready")
-            try:
-                x, y = pyautogui.locateCenterOnScreen('shrink_ze.png', region=[680,110,557,909], confidence=0.8)
-                if x and y:
-                    print("Link is ready2")
-                    for i in range(5):
-                        title2 = get_focused_window_title()
-                        if title2 != title:
-                            return 
-                        close_ads()
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen('shrime_getlink.png', region=[680,110,557,909], confidence=0.7)
-                            if x and y:
-                                human_click(x, y, duration=1)
-                                time.sleep(1)
-                                pyautogui.click(493,19, duration = 0.4)
-                                time.sleep(5)
-                                #return
-                        except Exception as e:
-                            pyautogui.moveTo(400,409)
-                            time.sleep(1)
-                            pyautogui.scroll(-350)
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen('getting_linkstuck.png', region=[680,110,557,909], confidence=0.9)
-                            if x and y:
-                                
-                                time.sleep(4)
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('getting_linkstuck.png', region=[680,110,557,909], confidence=0.9)
-                                    if x and y:
-                                        pyautogui.press('f5')
-                                        time.sleep(2)
-                                        pyautogui.press('enter')
-                                        return 1
-                                except Exception as e:
-                                    pass
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('shrime_getlink.png', region=[680,110,557,909], confidence=0.7)
-                                    if x and y:
-                                        human_click(x, y, duration=1)
-                                        time.sleep(1)
-                                        pyautogui.click(493,19, duration = 0.4)
-                                        time.sleep(5)
-                                        #return
-                                except Exception as e:
-                                    pass
-                        except Exception as e:
-                            pass
-                else:
-                    return 1
-            except Exception as e:
-                return
-        title2 = get_focused_window_title()
-        if title2 != title:
-            return 
-        pyautogui.scroll(5000)
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('shrime_socialg.png', region=[758,771,407,155], confidence=0.8)
-        if x and y:
-            try:
-                x, y = pyautogui.locateCenterOnScreen('click2ver.png', region=[568,108,776,916], confidence=0.8)
-                if x and y:
-                    human_click(x, y, duration=1)
-                    time.sleep(1)
-                    pyautogui.click(493,19, duration = 0.4)
-                    time.sleep(2)
-                    #return 
-            except Exception as e:
-                pass
-            try:
-                x, y = pyautogui.locateCenterOnScreen('srinkme_continue.png', region=[568,108,776,916], confidence=0.8)
-                if x and y:
-                    human_click(x, y, duration=1)
-                    time.sleep(1)
-                    pyautogui.click(493,19, duration = 0.4)
-                    time.sleep(2)
-                    #return 
-            except Exception as e:
-                pass
-            try:
-                x, y = pyautogui.locateCenterOnScreen('shrink_generate.png', region=[568,108,776,916], confidence=0.8)
-                if x and y:
-                    human_click(x, y, duration=1)
-                    time.sleep(1)
-                    pyautogui.click(493,19, duration = 0.4)
-                    time.sleep(1)
-                    return 1 
-            except Exception as e:
-                pass
-            try:
-                x, y = pyautogui.locateCenterOnScreen('shrime_getlink.png', region=[680,110,557,909], confidence=0.8)
-                if x and y:
-                    human_click(x, y, duration=1)
-                    time.sleep(1)
-                    pyautogui.click(493,19, duration = 0.4)
-                    time.sleep(2)
-                    return 1
-            except Exception as e:
-                pass
-            try:
-                x, y = pyautogui.locateCenterOnScreen('shrink_gourl.png', region=[680,110,557,909], confidence=0.8)
-                if x and y:
-                    human_click(x, y, duration=1)
-                    time.sleep(1)
-                    pyautogui.click(493,19, duration = 0.4)
-                    time.sleep(2)
-                    return 1
-            except Exception as e:
-                pass
-            pyautogui.moveTo(x, y)
-            pyautogui.scroll(50000)
-            return 1
-    except Exception as e:
-        pass
-
-    if 'ShrinkMe.io' not in title or 'Shrink' not in title or 'Shrinkme' not in title or 'Shrinkme.io' not in title or 'fle' not in title:
-        pyautogui.click(1885,107, duration=1)
-        time.sleep(0.5)
-        pyautogui.click(493,19, duration = 0.4)
-        time.sleep(0.5)
-    if 'ShrinkMe.io' not in title or 'Shrinkme' not in title or 'Shrinkme.io' not in title or 'ThemeZon' not in title or 'themezon' not in title or 'themezon.net' not in title: 
-        shrinkme_nopage += 1
-        if shrinkme_nopage >= 5:
-            shrinkme_nopage = 1
-            shorlink = random_link('link7')
-            open_link(link = shorlink ,newtab = False)
-            time.sleep(3)
-
-clickads_gplink = True
-clickads_gplink_attempts = 0
-
-
-
-def gplink_handle():
-    global clickads_gplink
-    global clickads_gplink_attempts
-    pyautogui.click(493,19, duration = 0.4)
-    pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.4)
-
-    title = get_focused_window_title()
-    #if destined_reached(title):
-    #    return True
-    if 'New Tab' in title:
-        shorlink = random_link('link1')
-        open_link(link = shorlink ,newtab = False)
-        return 
-
-    if 'Note from' in title:
-        pyautogui.click(292,20)
-        time.sleep(1)
-        pyautogui.click(185,20)
-        time.sleep(1)
-        pyautogui.click(394,239, duration=1)
-        time.sleep(1)
-        pyautogui.click(394,239, duration=1)
-        time.sleep(1)
-        pyautogui.click(257,20)
-        time.sleep(3)
-        pyautogui.click(493,19, duration = 0.4)
-        title = get_focused_window_title()
-        if 'New Tab' in title:
-            shorlink = random_link('link1')
-            open_link(link = shorlink ,newtab = False)
-            return 1
-        
-
-    if 'Just' in title:
-        try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.6)
-            pyautogui.click(x, y,duration=1)
-            time.sleep(1)
-            pyautogui.click(x, y,duration=1)
-            time.sleep(5)
-            return
-
-        except Exception as e:
-            pass
-
-    conbutfond_found = False
-##########################################
-    black_closeads_button = [
-
-            ('blackcloseads_gp.png', None, 0.9),
-            ('blackcloseads_gpskip.png', None, 0.9),
-            ('noworkingpage.png', None, 0.95),
-            ('rewrdingp.png', None, 0.9),
-            ('continuenewgpg.png', None, 0.9),
-
-            ('gp_verifynew.png', None, 0.9),
-            ('gp_connew4.png', None, 0.8),
-            ('gp_connew.png', None, 0.7),
-            ('gp_connew3.png', None, 0.8),
-            ('gp_verifynew3.png', None, 0.8),
-            ('gp_verifynew4.png', None, 0.8),
-            ('gp_verifynew2.png', None, 0.8),
-
-        ]
-        
-    gpbuttons = [ 'gp_verifynew.png', 'gp_connew.png', 'gp_connew3.png', 'gp_verifynew2.png','gp_verifynew3.png', 'gp_connew4.png', 'gp_verifynew4.png']
-
-
-    full_screen = pyautogui.screenshot()
-
-    for img_name, reg, conf in black_closeads_button:
-        try:
-            # 3. Search WITHIN the screenshot we already took
-            # Use grayscale=True for 30% more speed
-            match = pyautogui.locate(img_name, full_screen, region=reg, confidence=conf)
-            if match:
-                if img_name == 'noworkingpage.png':
-                    return 5
-                if img_name == 'rewrdingp.png':
-                    return 
-                
-                x, y = pyautogui.center(match)
-                if img_name == 'continuenewgpg.png':
-                    pyautogui.click(x, y, duration=0.1)
-                    return 
-
-                
-                human_click(x, y, duration=0.2)
-                time.sleep(0.5)
-                pyautogui.click(493, 19, duration=0.3)
-
-                if img_name in gpbuttons:
-                    time.sleep(1)
-                    conbutfond_found = True
-                full_screen = pyautogui.screenshot()
-
-        except Exception as e:
-            pass
-
-#################################################
-    con_buttons = [
-            
-            ('cancel2.png', None, 0.9),
-            ('close12new.png', None, 0.9),
-            ('cancel3.png', None, 0.9),
-            ('cancel1.png', None, 0.9),
-
-    ]
-    if conbutfond_found == True:
-        combined_buttons = con_buttons + black_closeads_button
-        for i in range(6):
-            for img_name, reg, conf in combined_buttons:
-                try:
-
-                    match = pyautogui.locate(img_name, full_screen, region=reg, confidence=conf)
-                    if match:
-                        x, y = pyautogui.center(match)
-                        human_click(x, y, duration=0.2)
-                        time.sleep(0.5)
-                        pyautogui.click(494,19, duration = 0.2)
-                        time.sleep(0.5)
-                        full_screen = pyautogui.screenshot()
-                        
-                        
-                        
-                except Exception as e:
-                    pass
-        return
-
-
-
-    conbutfond_found = False
-    for img_name, reg, conf in con_buttons:
-        try:
-            # 3. Search WITHIN the screenshot we already took
-            # Use grayscale=True for 30% more speed
-            match = pyautogui.locate(img_name, full_screen, region=reg, confidence=conf)
-            if match:
-                x, y = pyautogui.center(match)
-                human_click(x, y, duration=0.2)
-                time.sleep(0.5)
-                pyautogui.click(494,19, duration = 0.2)
-                time.sleep(0.5)
-                conbutfond_found = True
-                full_screen = pyautogui.screenshot()
-                break
-                
-        except Exception as e:
-            pass
-    if conbutfond_found == True:
-        for i in range(3):
-            #pyautogui.click(494,19, duration = 0.2)
-            for button in con_buttons:
-                try:
-                    x, y = pyautogui.locateCenterOnScreen(button,  confidence=0.9)
-                    if x and y:
-                        human_click(x, y, duration=0.2)
-                        time.sleep(0.5)
-                        pyautogui.click(494,19, duration = 0.2)
-                        time.sleep(0.5)
-                        clickads_gplink = False
-                        
-                except Exception as e:
-                    pass
-
-    close_ads()
-    full_screen = pyautogui.screenshot()
-
-
-    adsclosebutton = ['adremoved.png','resumevid_gp.png', 'skipvidgp.png', 'resumevidgp.png','closevideoadgp.png', 'consent5.png',  'closeadsgoogle1.png','closeadsgoole11.png','closeadsgoole10.png', 'closeadsgoole2.png', 'closeadsgoole3.png', 'closeadsgoole4.png', 'closeadsgoole5.png', 'closeadsgoole6.png', 'closeadsgoole7.png', 'closeadsgoole9.png','closeadsgoole8.png']
-    for adbutton in adsclosebutton:
-        try:
-            if adbutton == 'closevideoadgp.png':
-                match = pyautogui.locate(adbutton, full_screen, region=[900,212,714,522], confidence=0.9)
-            elif adbutton == 'skipvidgp.png':
-                match = pyautogui.locate(adbutton, full_screen,  confidence=0.9)
-            else:
-                match = pyautogui.locate(adbutton, full_screen,  region=[1,83,1914,956], confidence=0.9)
-            if match:
-                x, y = pyautogui.center(match)
-                if adbutton == 'adremoved.png':
-                    pyautogui.press('f5')
-                    time.sleep(2)
-                    return
-
-                if adbutton == 'closevideoadgp.png':
-                    pyautogui.click(x, y, duration=0.1)
-                    time.sleep(0.5)
-                    pyautogui.click(970, 638, duration=0.1)
-                    time.sleep(0.5)
-                    pyautogui.click(494,19, duration = 0.2)
-                    return
-                if adbutton == 'resumevidgp.png':
-                    pyautogui.click(x, y, duration=0.1)
-                    time.sleep(2)
-                    pyautogui.click(494,19, duration = 0.2)
-                    return
-                
-                pyautogui.click(x, y, duration=0.1)
-                time.sleep(0.5)
-                pyautogui.click(494,19, duration = 0.2)
-                full_screen = pyautogui.screenshot()
-
-        except Exception as e:
-            pass
-
-
-    
-    pyautogui.click(1116,525, duration=0.5)
-
-
-    
-    if 'GPlinks' in title:
-        pyautogui.moveTo(300,509)
-        pyautogui.scroll(5000)
-        time.sleep(0.5)
-        try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png",  confidence=0.7)
-            if x and y:
-                pyautogui.scroll(-40)
-        except Exception as e:
-            try:
-                x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_success_win10.png",  confidence=0.7)
-                if x and y:
-                    pyautogui.scroll(-40)
-            except Exception as e:
-                pyautogui.scroll(-500)
-            
-        time.sleep(0.5)
-
-        try:
-            x, y = pyautogui.locateCenterOnScreen('gpverify.png', region=[610,55,670,989], confidence=0.75)
-            if x and y:
-                human_click(x, y, duration=1)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(1)
-                pyautogui.moveTo(x, y, duration=1)
-                pyautogui.scroll(-2000)
-                time.sleep(1)
-                
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('gpreload.png', region=[610,55,670,989], confidence=0.8)
-            if x and y:
-                human_click(x, y, duration=1)
-                time.sleep(3)
-                
-        except Exception as e:
-            pass
-
-        try:
-            x, y = pyautogui.locateCenterOnScreen('gpcontinue.png', confidence=0.8)
-            if x and y:
-                human_click(x, y, duration=1)
-                time.sleep(1)
-                pyautogui.click(493,19, duration = 0.4)
-                pyautogui.click(100,300)
-                time.sleep(1)
-                for i in range(3):
-                    time.sleep(1)
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen('15sec.png', region=[610,55,670,989], confidence=0.95)
-                        if x and y:
-                            print("Page loaded but its 15sec",i)
-                            pyautogui.click(100,300)
-                            time.sleep(1)
-                            pyautogui.click(493,19, duration = 0.4)
-                            time.sleep(1)
-                            continue
-                    except Exception as e:
-                        return 1
-                
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('gpscroll.png', region=[610,55,670,989], confidence=0.9)
-            if x and y:
-                pyautogui.moveTo(x, y, duration=1)
-                time.sleep(1)
-                pyautogui.scroll(-2000)
-                time.sleep(1)
-                return 1
-        except Exception as e:
-            pass
-
-        try:
-            x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-            if x and y:
-                try:
-                    x, y = pyautogui.locateCenterOnScreen('0zec_gp.png',  confidence=0.6)
-                    if x and y:
-                        print("Link is ready 000")
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_success_win10.png",  confidence=0.7)
-                            if x and y:
-                                print("Link is ready 111")
-                                for i in range(3):
-                                    try:
-                                        x, y = pyautogui.locateCenterOnScreen("gp_getlink.png", confidence=0.7)
-                                        if x and y:
-                                            print("Link is ready 222")
-                                            pyautogui.click(x, y)
-                                            time.sleep(1)
-                                            pyautogui.click(493,19, duration = 0.4)
-                                            time.sleep(2)
-                                            return 1
-                                    except Exception as e:
-                                        pass
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen("gplinkload_stuck.png", confidence=0.8)
-                                    if x and y:
-                                        print("gplinkload_stuck found")
-                                        for i in range(5):
-                                            time.sleep(1)
-                                            try:
-                                                x, y = pyautogui.locateCenterOnScreen("gp_getlink.png",  confidence=0.7)
-                                                if x and y:
-                                                    print("Link is ready 222")
-                                                    pyautogui.click(x, y)
-                                                    time.sleep(1)
-                                                    pyautogui.click(493,19, duration = 0.4)
-                                                    time.sleep(2)
-                                                    return 1
-                                            except Exception as e:
-                                                pass
-                                        try:
-                                            x, y = pyautogui.locateCenterOnScreen("gplinkload_stuck.png", confidence=0.8)
-                                            if x and y:
-                                                print("gplinkload_stuck found2")
-                                                pyautogui.press('f5')
-                                                time.sleep(2)
-                                                
-                                                return 1
-                                        except Exception as e:
-                                            pass
-                                        
-                                except Exception as e:
-                                    pass
-
-
-
-                        except Exception as e:
-                            pass
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png",   confidence=0.7)
-                            pyautogui.click(x, y,duration=1)
-                            time.sleep(1)
-                            pyautogui.click(x, y,duration=1)
-                            time.sleep(3)
-
-                        except Exception as e:
-                            pass
-                except Exception as e:
-                    pass
-                try:
-                    x, y = pyautogui.locateCenterOnScreen("gplinkload_stuck2.png", confidence=0.8)
-                    if x and y:
-                        print("gplinkload_stuck2 found")
-                        for i in range(6):
-                            time.sleep(1)
-                            try:
-                                x, y = pyautogui.locateCenterOnScreen("gp_getlink.png",  confidence=0.7)
-                                if x and y:
-                                    print("Link is ready 222")
-                                    pyautogui.click(x, y)
-                                    time.sleep(1)
-                                    pyautogui.click(493,19, duration = 0.4)
-                                    time.sleep(2)
-                                    return 1
-                            except Exception as e:
-                                pass
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen("gplinkload_stuck2.png", confidence=0.8)
-                            if x and y:
-                                print("gplinkload_stuck2 found2")
-                                pyautogui.press('f5')
-                                time.sleep(2)
-                                
-                                return 1
-                        except Exception as e:
-                            pass
-                        
-                except Exception as e:
-                    pass
-        except Exception as e:
-            pass
-
-        try:
-            x, y = pyautogui.locateCenterOnScreen('15sec.png', region=[610,55,670,989], confidence=0.95)
-            if x and y:
-                pyautogui.hotkey('ctrl', 'a')
-                time.sleep(0.5)
-                pyautogui.hotkey('ctrl', 'c')
-                time.sleep(0.5)
-                pyautogui.click(103,300)
-                time.sleep(0.5)
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(0.5)
-                clip = clipboard.paste()
-                if 'Please wait 15' in clip:
-                    print("Page loaded but its 15secgggg")
-
-
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-                        if x and y:
-                            for i in range(5):
-                                time.sleep(1)
-                                pyautogui.hotkey('ctrl', 'a')
-                                time.sleep(0.5)
-                                pyautogui.hotkey('ctrl', 'c')
-                                time.sleep(0.5)
-                                pyautogui.click(103,300)
-                                time.sleep(0.5)
-                                pyautogui.click(493,19, duration = 0.4)
-                                time.sleep(0.5)
-                                clip = clipboard.paste()
-                                if 'Please wait 15' in clip:
-                                    print("Page loaded but its 15sec",i)
-                                    
-                                    try:
-                                        x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-                                        if x and y: 
-                                            pyautogui.click(95,65, duration=1)
-                                            time.sleep(1)
-                                            pyautogui.click(493,19, duration = 0.4)
-                                            time.sleep(5)   
-                                            return 1
-                                    except Exception as e:
-                                        pass
-                                        continue
-                                else:
-                                    return
-                            pyautogui.click(95,65, duration=1)
-                            time.sleep(1)
-                            pyautogui.click(493,19, duration = 0.4)
-                            time.sleep(5)   
-
-                            return
-                    except Exception as e:
-                        pass
-        except Exception as e:
-            pass
-
-        
-
-
-
-
-
-
-def shortx_handle():
-    pyautogui.click(493,19, duration = 0.4)
-    pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=1)
-
-    title = get_focused_window_title()
-    if destined_reached(title):
-        return 5
-    if newtab_validate(title):
-        return 5
-    if '522: Connection' in title:
-        pyautogui.press('f5')
-        time.sleep(1)
-        return
-    if 'Just' in title:
-        try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.6)
-            pyautogui.click(x, y,duration=1)
-            time.sleep(1)
-            pyautogui.click(x, y,duration=1)
-            time.sleep(5)
-
-        except Exception as e:
-            pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('acceptsxg.png', region=[572,68,762,960], confidence=0.7)
-        if x and y:
-            pyautogui.click(x,y, duration=0.4)
-            time.sleep(0.5)
-    except Exception as e:
-        pass
-
-    close_ads()
-
-    button_clicked = False
-    full_screen = pyautogui.screenshot()
-    shortxbuttons = ['getlink_shotx.png', 'getlink_shotx2.png', 'imnorobo_shortx.png', 'gen_shotx.png', 'genlink2_shortx.png','shortxcss.png', 'linkdown_shotx.png', 'clickhere_shotx.png', 'gen_shotx.png']
-    for img_name in shortxbuttons:
-        try:
-            match = pyautogui.locate(img_name, full_screen, region=[572,68,762,960], confidence=0.9)
-            if match:
-                x, y = pyautogui.center(match)
-                pyautogui.click(x,y)
-                #human_click(x, y, duration=0.1)
-                time.sleep(0.5)
-                if img_name == 'clickhere_shotx.png':
-                    return
-                pyautogui.click(493,19, duration = 0.4)
-                time.sleep(1)
-                full_screen = pyautogui.screenshot()
-                button_clicked = True
-
-        except Exception:
-            pass
-    
-    if button_clicked:
-        for i in range(3):
-            for img_name in shortxbuttons:
-                try:
-                    match = pyautogui.locate(img_name, full_screen, region=[572,68,762,960], confidence=0.9)
-                    match_reload = pyautogui.locate('loaded_page.png', full_screen, region=[60,33,77,58], confidence=0.95)
-                    if match and match_reload:
-
-                        x, y = pyautogui.center(match)
-                        pyautogui.click(x,y)
-                        #human_click(x, y, duration=0.1)
-                        time.sleep(0.5)
-                        if img_name == 'clickhere_shotx.png':
-                            return
-                        pyautogui.click(493,19, duration = 0.4)
-                        time.sleep(1)
-                        full_screen = pyautogui.screenshot()
-                        button_clicked = True
-                        if img_name == 'linkdown_shotx.png':
-                            time.sleep(2)
-
-                        continue
-                except Exception:
-                    pass
-
-
-
-    try:
-        x, y = pyautogui.locateCenterOnScreen('please_wait_get.png', region=[572,68,762,960], confidence=0.8)
-        if x and y:
-            try:
-                x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-                if x and y:
-                    for i in range(7):
-                        time.sleep(1)
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen('getlink_shotx.png', region=[572,68,762,960], confidence=0.8)
-                            if x and y:
-                                pyautogui.click(x,y)
-                                time.sleep(1)
-                                pyautogui.click(493,19, duration = 0.4)
-                                time.sleep(1)
-                                pyautogui.click(x,y)
-                                time.sleep(1)
-                                pyautogui.click(493,19, duration = 0.4)
-                                time.sleep(1)
-                                return 1
-                                
-                        except Exception as e:
-                            pass
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen('getlink_shotx2.png', region=[572,68,762,960], confidence=0.8)
-                            if x and y:
-                                pyautogui.click(x,y)
-                                time.sleep(1)
-                                pyautogui.click(493,19, duration = 0.4)
-                                time.sleep(1)
-                                pyautogui.click(x,y)
-                                time.sleep(1)
-                                pyautogui.click(493,19, duration = 0.4)
-                                time.sleep(1)
-                                return 1
-                                
-                        except Exception as e:
-                            pass
-                    pyautogui.press('f5')
-                    time.sleep(2)
-                    pyautogui.press('enter')
-            except Exception as e:
-                pass
-    except Exception as e:
-        pass
-
-
-
-
-
-
-def adding_extensions():
-    open_link(link = 'chrome://extensions/', newtab = False)
-    time.sleep(2)
-    devon = True
-    
-    for i in range(63):
-        time.sleep(1)
-        print("Checking for extension installation...", i)
-        if devon:
-            try:
-                x, y = pyautogui.locateCenterOnScreen('devmod_off.png', region=[1684,48,230,108], confidence=0.98)
-                if x and y:
-                    pyautogui.click(1894, 116)
-                    time.sleep(1)
-                    devon = False
-
-            except Exception as e:
-                pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('stealth_dom.png',  confidence=0.95)
-            if x and y:
-                #time.sleep(1)
-                return True
-
-        except Exception as e:
-            pass
-        try:
-            x, y = pyautogui.locateCenterOnScreen('load_unpacked.png', confidence=0.9)
-            if x and y:
-                pyautogui.click(x, y)
-                time.sleep(1)
-                for i in range(20):
-                    time.sleep(1)
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen('directory_extension.png', confidence=0.8)
-                        if x and y:
-                            pyautogui.press('enter')
-                            time.sleep(1)
-                            break
-
-                    except Exception as e:
-                        pass
-                    try:
-                        x, y = pyautogui.locateCenterOnScreen('directory_extension3.png', confidence=0.8)
-                        if x and y:
-                            pyautogui.press('enter')
-                            time.sleep(1)
-                            break
-
-                    except Exception as e:
-                        pass
-        except Exception as e:
-            pass
-
-def adurl_handle():
-    pyautogui.click(493,19, duration = 0.2)
-    pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.2)
-
-    title = get_focused_window_title()
-
-
-    if 'Just' in title:
-        try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.6)
-            pyautogui.click(x, y,duration=1)
-            time.sleep(1)
-            pyautogui.click(x, y,duration=1)
-            time.sleep(5)
-
-        except Exception as e:
-            pass
-    close_ads()
-    buttonlist = ['nextadurl.png', 'continue_aduirl.png', 'continuelined_adurl.png']
-    for buton in buttonlist:
-        try:
-            x, y = pyautogui.locateCenterOnScreen(buton, confidence=0.8)
-            if x and y:
-                human_click(x, y, duration=0.2)
-
-        except Exception as e:
-            pass
-    if 'Adurl.io' in title:
-        pyautogui.click(1889,135, duration=0.2)
-        try:
-            x, y = pyautogui.locateCenterOnScreen('get_linkadurl.png', confidence=0.8)
-            if x and y:
-                human_click(x, y, duration=0.2)
-
-        except Exception as e:
-            pass
-        pyautogui.moveTo(300,309)
-        pyautogui.scroll(-250)
-
-adlink_ocr_answer = 'ng'
-adlink_ocr_answerretry = "ng"
-adlink_ocr_answerrewait = "ng"
-def adlink_handle():
-    global adlink_ocr_answer
-    global adlink_ocr_answerretry
-    global adlink_ocr_answerrewait
-    print('adlink_ocr_answer:', adlink_ocr_answer)
-    title_ocr = ocr_screen_region(38,1,230,36)
-    print('title_ocr:', title_ocr)
-    if 'seconds' in title_ocr:
-        print('orc fond')
-        title = get_focused_window_title()
-        if 'seconds' in title:
-            pyautogui.hotkey('ctrl', 't')
-        return
-    pyautogui.click(493,19, duration = 0.2)
-    pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.2)
-
-    title = get_focused_window_title()
-    if 'seconds' in title:
-        pyautogui.hotkey('ctrl', 't')
-        return
-
-    if 'Just' in title:
-        try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.6)
-            pyautogui.click(x, y,duration=1)
-            time.sleep(1)
-            pyautogui.click(x, y,duration=1)
-            time.sleep(5)
-
-        except Exception as e:
-            pass
-
-
-    close_ads()
-    try:
-        x, y = pyautogui.locateCenterOnScreen("getlink_adlink.png", confidence=0.9)
-        if x and y:
-            human_click(x, y, duration=0.2)
-
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen("closedlinksg.png", confidence=0.95)
-        if x and y:
-            pyautogui.click(x, y, duration=0.2)
-
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen("closeadsggadlink.png",region=[624,106,697,924], confidence=0.9)
-        if x and y:
-            human_click(x, y, duration=0.2)
-
-    except Exception as e:
-        pass
-    print('checking adlink ocr')
-
-    try:
-        x, y = pyautogui.locateCenterOnScreen("check_adlink.png",confidence=0.6)
-        if x and y:
-            print('ocrtest detect adlinm')
-            answer = ocrcaptchaadlink(826,454,252,69)
-            print('answer:', answer)
-            print('adlink_ocr_answer:', adlink_ocr_answer)
-            if adlink_ocr_answer == answer:
-                print('sameocrissue twice, refreshing')
-                if adlink_ocr_answerrewait == answer:
-                    print('sameocrissue thrice, opening new tab')
-                    return
-                try:
-                    x, y = pyautogui.locateCenterOnScreen("refreshcodeadlin.png", confidence=0.7)
-                    if x and y:
-                        human_click(x, y, duration=0.2)
-
-                except Exception as e:
-                    pass
-                time.sleep(8)
-                adlink_ocr_answerrewait = answer
-                return
-            
-
-                #pyautogui.press('f5')
-            adlink_ocr_answer = answer
-            pyautogui.click(1002,632, duration=0.2)
-            pyautogui.hotkey('ctrl', 'a')
-            time.sleep(0.5)
-            pyautogui.press('delete')
-            time.sleep(0.5)
-            pyautogui.typewrite(adlink_ocr_answer)
-            time.sleep(0.5)
-            pyautogui.click(x, y, duration=0.2)
-            time.sleep(10)
-
-
-    except Exception as e:
-        pass
-
-    print('checking adlink ocr NOIO')
-    try:
-        x, y = pyautogui.locateCenterOnScreen("gonext_adlink.png" , confidence=0.7)
-        if x and y:
-            human_click(x, y, duration=0.2)
-
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen("scrolldownadlinks.png", confidence=0.8)
-        if x and y:
-            print('10sec detected, simulating clicks to bypass')
-            for i in range(6):
-                pyautogui.rightClick(random.randint(700, 850), random.randint(225, 250), duration=0.2)
-                pyautogui.rightClick(random.randint(700, 850), random.randint(790, 800), duration=0.2)
-                time.sleep(1)
-                try:
-                    x, y = pyautogui.locateCenterOnScreen("opennwtablnk.png" , confidence=0.9)
-                    if x and y:
-                        human_click(x, y, duration=0.2)
-                        return
-
-                except Exception as e:
-                    pass
-                title_ocr = ocr_screen_region(38,1,230,36)
-                if 'seconds' in title_ocr:
-                    pyautogui.hotkey('ctrl', 't')
-                    return
-    except Exception as e:
-        pass
-
-
-mysite_count = 1
-def mysite_handle():
-    pyautogui.press('enter')
-    global mysite_count
-    pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=1)
-    pyautogui.click(493,19, duration = 0.4)
-    time.sleep(1)
-    title = get_focused_window_title()
-    #
-    # if destined_reached(title):
-    #    return True
-    if 'Just' in title:
-        try:
-            x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.6)
-            pyautogui.click(x, y,duration=1)
-            time.sleep(1)
-            pyautogui.click(x, y,duration=1)
-            time.sleep(5)
-
-        except Exception as e:
-            pass
-
-    try:
-        x, y = pyautogui.locateCenterOnScreen('fbg_lg.png', region=[394,83,303,123], confidence=0.95)
-        if x and y:
-            pyautogui.scroll(500)
-            time.sleep(1)
-            pyautogui.click(1090, 820)  # Click on the 'Leave' button
-            time.sleep(1)
-            pyautogui.click(1117, 550)
-            pyautogui.click(1117, 540)
-            pyautogui.click(1117, 530)
-            pyautogui.click(1117, 520)
-            pyautogui.click(1117, 510)
-            pyautogui.click(1117, 500)
-            pyautogui.click(1117, 490)
-            pyautogui.click(1117, 480)
-            pyautogui.click(1117, 470)
-            pyautogui.click(1117, 460)
-            pyautogui.click(1117, 450)
-            pyautogui.click(1117, 430)
-            pyautogui.click(1117, 420)
-            pyautogui.click(1117, 410)
-            pyautogui.click(1117, 400)
-            return 
-    except Exception as e:
-        pass
-    try:
-        x, y = pyautogui.locateCenterOnScreen('yt_logo.png', region=[699,56,240,136], confidence=0.94)
-        if x and y:
-            pyautogui.click(885,394)
-            time.sleep(1)
-            return 
-    except Exception as e:
-        pass
-    if 'Free Crypto' in title or 'New Message!' in title:
-        print("Free Crypto or New Message found, skipping...",mysite_count)
-        if mysite_count >= 25:
-            mysite_count = 1
-            shorlink = 'https://eloquent-banoffee-bb1d42.netlify.app' #random_link(mysite_handle)
-            open_link(link = shorlink ,newtab = False)
-            time.sleep(3)
-        else:
-            mysite_count +=1
-        pyautogui.click(1885,107, duration=1)
-        time.sleep(0.5)
-        pyautogui.click(493,19, duration = 0.4)
-
-        pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.5)
-        pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.3)
-        pyautogui.click(random.randint(50, 1500), random.randint(40, 700), duration=0.3)
-        pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.5)
-        #pyautogui.click(493,19, duration=1)
-        time.sleep(1)   
-    else:
-        if 'Youtube' in title or 'Facebook'in title:
-            pass
-        else:
-            shorlink = 'https://eloquent-banoffee-bb1d42.netlify.app' #random_link(mysite_handle)
-            open_link(link = shorlink ,newtab = False)
-            time.sleep(3)
-            pyautogui.press('enter')
-            mysite_count = 1
-            pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.5)
-            pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.3)
-            pyautogui.click(random.randint(50, 1500), random.randint(40, 700), duration=0.3)
-            pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.5)
-            #pyautogui.click(493,19, duration=1)
-            time.sleep(1) 
-            
+       
 
 import json
 
-def is_proxy_no(data_str):
-    try:
-        data = json.loads(data_str)
-        # Skip the "status" key and look for the IP key
-        for key in data:
-            if ':' in key or '.' in key:  # Looks for an IP address (IPv6 or IPv4)
-                ip_info = data[key]
-                return ip_info.get('proxy', '') == 'no'
-        return False  # No IP info found
-    except json.JSONDecodeError:
-        print("Invalid JSON")
-        return False
-
-def ipcheck_handle(ipaddress):
-    open_link(link=f'https://proxycheck.io/v3/{ipaddress}', newtab=False)
-    time.sleep(5)
-    pyautogui.click(200, 219)
-    time.sleep(0.5)
-    pyautogui.hotkey('ctrl', 'a')
-    time.sleep(0.5)
-    pyautogui.hotkey('ctrl', 'c')
-    time.sleep(0.5)
-    data_str = clipboard.paste()
-    if data_str:
-        pass
-    else:
-        for i in range(5):
-            time.sleep(2)
-            pyautogui.click(200, 219)
-            time.sleep(0.5)
-            pyautogui.hotkey('ctrl', 'a')
-            time.sleep(0.5)
-            pyautogui.hotkey('ctrl', 'c')
-            time.sleep(0.5)
-            data_str = clipboard.paste()
-            if data_str:
-                break
-    print("Data string:", data_str)
-    try:
-        data = json.loads(data_str)
-
-        for key in data:
-            if ':' in key or '.' in key:
-                ip_info = data[key]
-                
-                # Extract needed fields
-                detections = ip_info.get("detections", {})
-                network = ip_info.get("network", {})
-                location = ip_info.get("location", {})
-
-                ip = key
-                country = location.get("country_name", "Unknown")
-                proxy = detections.get("proxy", True)
-                vpn = detections.get("vpn", True)
-                type_ = network.get("type", "Unknown")
-
-                # Check both proxy and vpn
-                is_clean = (proxy is False and vpn is False)
-
-                return {
-                    "ip": ip,
-                    "country": country,
-                    "type": type_,
-                    "is_clean": is_clean
-                }
-
-        return None  # No IP info found
-
-    except json.JSONDecodeError:
-        print("Invalid JSON")
-        return None
-    
-
+EMPTY_TIMEZONES = {
+    "timezone": None,
+    "longitude": None,
+    "latitude": None,
+    "country": None
+}
 
 def _make_driver():
     options = Options()
-    #options.add_argument("--headless=new")           # newer headless, faster
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
-    #options.add_argument("--window-size=1920,1080")
+    options.add_argument("--ignore-certificate-errors")
+    options.add_argument("--ignore-ssl-errors=yes")
+    options.add_argument("--allow-insecure-localhost")
+    options.add_argument("--disable-web-security")
     options.add_argument("--disable-extensions")
     options.add_argument("--disable-infobars")
-    options.add_argument("--blink-settings=imagesEnabled=false")  # skip images → faster
-    options.add_argument("--log-level=3")            # silence DevTools/ERROR logs
+    options.add_argument("--blink-settings=imagesEnabled=false")
+    options.add_argument("--log-level=3")
+    options.page_load_strategy = 'eager'
     options.add_experimental_option("excludeSwitches", ["enable-logging"])
     return webdriver.Chrome(options=options)
-# ─────────────────────────────────────────────
-#  Helper: dismiss any modal/popup overlay
-# ─────────────────────────────────────────────
+
+
 def _dismiss_popup(driver):
     try:
         overlay = driver.find_element(
@@ -5313,228 +1700,219 @@ def _dismiss_popup(driver):
             "div[id^='elementor-popup-modal']"
         )
         if overlay.is_displayed():
-            # Try clicking the close button first
             try:
                 close_btn = overlay.find_element(
                     By.CSS_SELECTOR,
                     "button.dialog-close-button, .elementor-popup-close, [aria-label='Close']"
                 )
                 close_btn.click()
-                print("[popup] Closed modal via close button")
                 time.sleep(0.5)
                 return
             except Exception:
                 pass
-            # Fallback: press Escape
             from selenium.webdriver.common.keys import Keys
             driver.find_element(By.TAG_NAME, "body").send_keys(Keys.ESCAPE)
-            print("[popup] Dismissed modal via ESC")
             time.sleep(0.5)
     except Exception:
-        pass  # No popup present
+        pass
 
 
-# ─────────────────────────────────────────────
-#  Helper: safe JS click (bypasses overlay interception)
-# ─────────────────────────────────────────────
 def _js_click(driver, element):
-    driver.execute_script("arguments[0].scrollIntoView(true);", element)
-    driver.execute_script("arguments[0].click();", element)
+    driver.execute_script("arguments[0].scrollIntoView(true); arguments[0].click();", element)
+
+def _find_metric(result_items, pattern):
+    """Find a value in 24metrics result items by key pattern."""
+    for item in result_items:
+        try:
+            key_el = item.find_element(By.CLASS_NAME, "ip-scanner-result-key")
+            if re.search(pattern, key_el.text, re.IGNORECASE):
+                return item.find_element(
+                    By.CLASS_NAME, "ip-scanner-result-value"
+                ).text.strip()
+        except Exception:
+            continue
+    return None
 
 
-def _check_24metrics_with_driver(driver, wait, ip: str,
-                                  max_attempts: int = 10,
-                                  retry_delay:  int = 5):
+def _hdr(driver, elem_id):
+    """Get header element text by ID."""
+    try:
+        return driver.find_element(By.ID, elem_id).text.strip()
+    except Exception:
+        return ""
 
-    def _scrape_verdict() -> str:
-        result_items = driver.find_elements(
-            By.CSS_SELECTOR, "#ipScannerResults .ip-scanner-result-item"
-        )
 
-        def find(pattern: str):
-            for item in result_items:
-                try:
-                    key_el = item.find_element(By.CLASS_NAME, "ip-scanner-result-key")
-                    val_el = item.find_element(By.CLASS_NAME, "ip-scanner-result-value")
-                    if re.search(pattern, key_el.text, re.IGNORECASE):
-                        return val_el.text.strip()
-                except Exception:
-                    continue
-            return None
+def _scrape_verdict(driver):
+    """Scrape 24metrics results. Returns (verdict_str, timezones_dict)."""
+    result_items = driver.find_elements(
+        By.CSS_SELECTOR, "#ipScannerResults .ip-scanner-result-item"
+    )
 
-        def _hdr(elem_id: str) -> str:
-            try:
-                return driver.find_element(By.ID, elem_id).text.strip()
-            except Exception:
-                return ""
+    Residential_proxy = _find_metric(result_items, r"Residential Proxy\?")
+    Risk_Score        = _find_metric(result_items, r"Risk Score")
+    Recent_Abuse      = _find_metric(result_items, r"Recent Abuse\?")
+    is_vpn            = _hdr(driver, "header-vpn-val")   or _find_metric(result_items, r"\bVPN\b")
+    is_proxy          = _hdr(driver, "header-proxy-val") or _find_metric(result_items, r"\bProxy\b")
+    networkip         = _find_metric(result_items, r"Network")
 
-        Residential_proxy = find(r"Residential Proxy\?")
-        Risk_Score        = find(r"Risk Score")
-        Recent_Abuse      = find(r"Recent Abuse\?")
-        is_vpn            = _hdr("header-vpn-val")   or find(r"\bVPN\b")
-        is_proxy          = _hdr("header-proxy-val") or find(r"\bProxy\b")
-        networkip         = find(r"Network")
+    list_timezones = {
+        "timezone":  _find_metric(result_items, r"Timezone"),
+        "longitude": _find_metric(result_items, r"Longitude"),
+        "latitude":  _find_metric(result_items, r"Latitude"),
+        "country":   _find_metric(result_items, r"Country"),
+    }
 
-        print(f"[24metrics]  vpn={is_vpn!r}  proxy={is_proxy!r}  "
-              f"network={networkip!r}  residential={Residential_proxy!r}  "
-              f"abuse={Recent_Abuse!r}  risk={Risk_Score!r}")
+    print(f"[24metrics] vpn={is_vpn!r} proxy={is_proxy!r} "
+          f"network={networkip!r} risk={Risk_Score!r}")
 
-        # Guard against loading / placeholder states
-        if not networkip or not is_vpn:
-            return "noip"
-        if networkip == "2003" or is_vpn in ("- - -", ""):
-            return "noip"
+    if not networkip or not is_vpn:
+        return "noip", list_timezones
+    if networkip == "2003" or is_vpn in ("- - -", ""):
+        return "noip", list_timezones
 
-        if (Residential_proxy == "No"
-                and Risk_Score   == "No Risk"
-                and Recent_Abuse == "No"
-                and is_vpn       == "False"
-                and is_proxy     == "False"):
-            print("[24metrics] ✅  This IP is clean and safe to use.")
-            return "goodip"
+    if (Residential_proxy == "No"
+            and Risk_Score   == "No Risk"
+            and Recent_Abuse == "No"
+            and is_vpn       == "False"
+            and is_proxy     == "False"):
+        print("[24metrics] ✅ Clean IP")
+        return "goodip", list_timezones
 
-        if (Residential_proxy == "Yes"
-                or Risk_Score in ("High Risk", "Risk", "Medium Risk")
-                or Recent_Abuse == "Yes"
-                or is_vpn       == "True"
-                or is_proxy     == "True"):
-            print("[24metrics] ❌  Warning: This IP may be risky to use.")
-            return "badip"
+    if (Residential_proxy == "Yes"
+            or Risk_Score in ("High Risk", "Risk", "Medium Risk")
+            or Recent_Abuse == "Yes"
+            or is_vpn       == "True"
+            or is_proxy     == "True"):
+        print("[24metrics] ❌ Risky IP")
+        return "badip", list_timezones
 
-        return "noip"
+    return "noip", list_timezones
 
-    print(f"[24metrics] Starting scan (max {max_attempts} attempts) ...")
+
+def _check_24metrics_with_driver(driver, wait, ip, max_attempts=9, retry_delay=5):
+    print(f"[24metrics] Starting scan for {ip} ...")
+    ssl_fail_count = 0
+    list_timezones = EMPTY_TIMEZONES.copy()
 
     for attempt in range(1, max_attempts + 1):
         print(f"[24metrics] Attempt {attempt}/{max_attempts} ...")
+        verdict = "noip"
 
         try:
             driver.get("https://www.24metrics.com/#anchor-ip-scanner")
-
-            # Wait for input to be available
             ip_input = wait.until(
                 EC.presence_of_element_located((By.ID, "ipScannerInputDesktop"))
             )
-
-            # Dismiss any popup/modal that blocks the button
             _dismiss_popup(driver)
-
-            # Scroll input into view and fill it
-            driver.execute_script("arguments[0].scrollIntoView(true);", ip_input)
-            ip_input.clear()
-            ip_input.send_keys(ip)
-
-            # Click via JS to avoid overlay interception
+            driver.execute_script("""
+                arguments[0].scrollIntoView(true);
+                arguments[0].value = arguments[1];
+                arguments[0].dispatchEvent(new Event('input', {bubbles:true}));
+            """, ip_input, ip)
             btn = driver.find_element(By.ID, "ipScannerButtonDesktop")
             _js_click(driver, btn)
+            ssl_fail_count = 0
 
-            # Inner polling loop — stay on this page, check every 3s up to 60s
             poll_deadline = time.time() + 60
-            poll_interval = 3
-            verdict       = "noip"
-
             while time.time() < poll_deadline:
-                time.sleep(poll_interval)
-                verdict = _scrape_verdict()
+                time.sleep(3)
+                verdict, list_timezones = _scrape_verdict(driver)
                 if verdict in ("goodip", "badip"):
                     break
-                print(f"[24metrics]  ⏳ Data not ready, polling again in {poll_interval}s ...")
+                print("[24metrics] ⏳ Waiting...")
 
         except Exception as e:
-            print(f"[24metrics]  ⚠️  Exception on attempt {attempt}: {e}")
+            err = str(e)
+            print(f"[24metrics] ⚠️ Attempt {attempt}: {err[:80]}")
+            if "ERR_SSL_PROTOCOL_ERROR" in err:
+                ssl_fail_count += 1
+                if ssl_fail_count >= 2:
+                    print("[24metrics] SSL blocked, skipping.")
+                    return "noip", EMPTY_TIMEZONES.copy()
             verdict = "noip"
 
         if verdict in ("goodip", "badip"):
-            return verdict
+            return verdict, list_timezones
 
         if attempt < max_attempts:
-            print(f"[24metrics]  🔄 Retrying in {retry_delay}s ...")
+            print(f"[24metrics] 🔄 Retry in {retry_delay}s ...")
             time.sleep(retry_delay)
 
-    print("[24metrics]  ❌  Could not determine verdict after all attempts.")
-    return "noip"
+    print("[24metrics] ❌ Failed all attempts.")
+    return "noip", EMPTY_TIMEZONES.copy()
 
 
-def checkip_selenium():
+
+
+def checkip_selenium(sameip='123'):
     driver = _make_driver()
-    wait   = WebDriverWait(driver, 25)
+    wait   = WebDriverWait(driver, 30)
+    list_timezones = EMPTY_TIMEZONES.copy()
 
     try:
-        # ─────────────────────────────────────────
-        #  STEP 1 – Get public IP via ipify
-        # ─────────────────────────────────────────
+        # STEP 1 — Get public IP
         print("=" * 55)
-        print("STEP 1 – Getting current public IP ...")
+        print("STEP 1 – Getting public IP ...")
         driver.get("https://api.ipify.org/")
         ip = driver.find_element(By.TAG_NAME, "body").text.strip()
-        print(f"         Public IP: {ip}")
+        print(f"  Public IP: {ip}")
 
-        # ─────────────────────────────────────────
-        #  STEP 2 – ProxyCheck (same driver, new tab)
-        # ─────────────────────────────────────────
+        # Same IP shortcut — skip all checks
+        if sameip == ip:
+            print("  Same IP detected, skipping checks.")
+            return ip, True, True, list_timezones
+
+        # STEP 2 — ProxyCheck via plain requests (no browser needed)
         print("\nSTEP 2 – ProxyCheck.io ...")
-        url = f"https://proxycheck.io/v3/{ip}"
-        print(f"[ProxyCheck] Loading {url} ...")
-        driver.get(url)
-
-        body = driver.find_element(By.TAG_NAME, "body").text.strip()
-        data = json.loads(body)
-
         pc_good = False
-        if data.get("status") == "ok":
-            ip_data    = data.get(ip, {})
-            detections = ip_data.get("detections", {})
-            network    = ip_data.get("network", {})
-            location   = ip_data.get("location", {})
-
-            is_hosting = detections.get("hosting", True)
-            is_vpn_pc  = detections.get("vpn",     True)
-            is_proxy_pc= detections.get("proxy",   True)
-            risk       = detections.get("risk",    100)
-
-            print(f"[ProxyCheck] provider={network.get('provider')}  "
-                  f"type={network.get('type')}  hosting={is_hosting}  "
-                  f"vpn={is_vpn_pc}  proxy={is_proxy_pc}  risk={risk}")
-
-            pc_good = (not is_hosting) and (not is_vpn_pc) and (not is_proxy_pc)
-        else:
-            print(f"[ProxyCheck] ERROR – status: {data.get('status')}")
+        try:
+            resp = requests.get(
+                f"https://proxycheck.io/v3/{ip}",
+                timeout=15
+            )
+            data = resp.json()
+            if data.get("status") == "ok":
+                ip_data    = data.get(ip, {})
+                detections = ip_data.get("detections", {})
+                network    = ip_data.get("network", {})
+                is_hosting = detections.get("hosting", True)
+                is_vpn_pc  = detections.get("vpn",     True)
+                is_proxy_pc= detections.get("proxy",   True)
+                print(f"[ProxyCheck] provider={network.get('provider')} "
+                      f"hosting={is_hosting} vpn={is_vpn_pc} proxy={is_proxy_pc}")
+                pc_good = not is_hosting and not is_vpn_pc and not is_proxy_pc
+            else:
+                print(f"[ProxyCheck] ERROR: {data.get('status')}")
+        except Exception as e:
+            print(f"[ProxyCheck] Request failed: {e}")
 
         print(f"[ProxyCheck] {'✅ PASS' if pc_good else '❌ FAIL'}")
 
-        # ─────────────────────────────────────────
-        #  STEP 3 – 24metrics (same driver, navigate)
-        # ─────────────────────────────────────────
+        # STEP 3 — 24metrics (only if ProxyCheck passed)
+        tm_good = False
+        verdict = "skipped"
         if pc_good:
             print("\nSTEP 3 – 24metrics.com ...")
-            verdict = _check_24metrics_with_driver(driver, wait, ip)
+            verdict, list_timezones = _check_24metrics_with_driver(driver, wait, ip)
             tm_good = (verdict == "goodip")
         else:
-            verdict = "badip"
-            tm_good = (verdict == "goodip")
+            print("\nSTEP 3 – Skipped (ProxyCheck failed)")
 
-        # ─────────────────────────────────────────
-        #  FINAL VERDICT
-        # ─────────────────────────────────────────
-        print("\n" + "=" * 55)
-        print("FINAL VERDICT")
-        print(f"  IP            : {ip}")
-        print(f"  ProxyCheck    : {'✅ PASS' if pc_good else '❌ FAIL'}")
-        print(f"  24metrics     : {'✅ PASS' if tm_good else ('❌ FAIL' if verdict == 'badip' else '⚠️  NO DATA')}")
+        # Final verdict
+        print("=" * 55)
+        print(f"  IP         : {ip}")
+        print(f"  ProxyCheck : {'✅' if pc_good else '❌'}")
+        print(f"  24metrics  : {'✅' if tm_good else '❌'}")
+        print(f"  Result     : {'GOOD ✅' if pc_good and tm_good else 'BAD ❌'}")
 
-        if pc_good and tm_good:
-            print("  ➜  IP is GOOD ✅")
-        else:
-            print("  ➜  IP is BAD ❌")
+        return ip, pc_good, tm_good, list_timezones
 
-
-        return ip, pc_good, tm_good
+    except Exception as e:
+        print(f"ERR checkip_selenium: {e}")
+        return None, False, False, EMPTY_TIMEZONES.copy()
 
     finally:
         driver.quit()
-
-
-
 
 
 
@@ -5694,19 +2072,6 @@ def is_between_12pm_and_6pm():
 # Example usage
 
 
-true_count = 40
-false_count = 60
-
-# Generate a random order of True and False
-bool_list = [True]*true_count + [False]*false_count
-random.shuffle(bool_list)  # shuffle so True/False are randomly distributed
-
-# Create a dictionary for quick lookup
-premadelist = {i+1: bool_list[i] for i in range(100)}
-print(premadelist)
-# Function to check the value for a given number
-def checkodd(premadelist, number):
-    return premadelist.get(number, None)  # returns None if number not in list
 
 
 def get_gplink_bug_status():
@@ -5719,246 +2084,2877 @@ def get_gplink_bug_status():
     return False  # Default value if not found
 
 
-def find_dark_mode_text_and_click(target_text, scale=3):
-    print(f"Scanning Dark Mode screen for: '{target_text}'...")
+
+###################AdsPower-Chrome################################
+
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.action_chains import ActionChains
+
+from selenium.webdriver.common.keys import Keys
+
+
+API_KEY = "84497762bcd3f3cfb5203c044df6d2a000620e0171e1e1b3"
+#API_KEY = "de27de41a1baf17d8ffebac045f4e2660064bb6652d4f79a"
+
+BASE_URL = "http://local.adspower.net:50325"
+
+
+
+# resolutions per OS
+RESOLUTIONS = {
+    "windows": [        
+        "1920_1080",
+        "1920_1080",  # most common ~30%
+        "1366_768",   # budget laptops ~20%
+        "1536_864",   # common Windows scaling default
+        "1440_900",   # mid laptops
+        "1600_900",
+        "1600_900",   # widescreen laptops
+        "1280_720",   # budget
+        "1280_1024",  # older office monitors
+        ],
+    "mac":     ["1920_1080", "1440_900", "2560_1600", "1680_1050", "1280_800"],
+    "linux":   ["1920_1080", "1366_768", "1280_1024", "1440_900"],
+    "android": ["360_800",   "390_844",  "412_915",   "414_896"],
+    "iphone":  ["390_844",   "375_812",  "414_896",   "428_926"],
+}
+
+# ─────────────────────────────────────────────────────────
+#  BASE REQUESTS
+# ─────────────────────────────────────────────────────────
+
+def get(endpoint, **params):
+    resp = requests.get(
+        f"{BASE_URL}{endpoint}",
+        params={"serial_number": API_KEY, **params}
+    )
+    data = resp.json()
+    print(f"[GET {endpoint}] {json.dumps(data, indent=2)}")
+    return data
+
+def post(endpoint, payload):
+    resp = requests.post(
+        f"{BASE_URL}{endpoint}",
+        params={"serial_number": API_KEY},
+        json=payload
+    )
+    data = resp.json()
+    print(f"[POST {endpoint}] {json.dumps(data, indent=2)}")
+    return data
+
+# ─────────────────────────────────────────────────────────
+#  PROFILES
+# ─────────────────────────────────────────────────────────
+def get_all_profiles():
+    resp = requests.post(
+        f"{BASE_URL}/api/v2/browser-profile/list",
+        params={"serial_number": API_KEY},
+        json={"page": 1, "limit": 100}
+    ).json()
+    print("Profiles V2:", json.dumps(resp, indent=2))
+    return resp.get("data", {}).get("list", [])
+
+
+def delete_all_profiles():
+    profiles = get_all_profiles()
+    if not profiles:
+        print("✅ No profiles to delete")
+        return True
+
+    profile_ids = [p["profile_id"] for p in profiles]
+    print(f"\n🗑️  Deleting {len(profile_ids)} profiles: {profile_ids}")
+
+    # try lowercase profile_id
+    resp = requests.post(
+        f"{BASE_URL}/api/v2/browser-profile/delete",
+        params={"serial_number": API_KEY},
+        json={"profile_id": profile_ids}   # lowercase
+    ).json()
+    print(json.dumps(resp, indent=2))
+
+    if resp.get("code") == 0:
+        print(f"✅ Deleted {len(profile_ids)} profiles")
+        return True
+
+    # fallback — try V1 delete with profile_ids as user_ids
+    print("V2 failed, trying V1 fallback...")
+    resp = requests.post(
+        f"{BASE_URL}/api/v1/user/delete",
+        params={"serial_number": API_KEY},
+        json={
+            "user_ids":     profile_ids,
+            "delete_cache": "true"
+        }
+    ).json()
+    print(json.dumps(resp, indent=2))
+
+    if resp.get("code") == 0:
+        print(f"✅ Deleted via V1 fallback")
+        return True
+
+    print(f"❌ Delete failed: {resp.get('msg')}")
+    return False
+# Most common fonts real users have per OS
+
+
+
+OS_RANDOM_UA = {
+    "windows": {
+        "ua_browser":        ["chrome", "firefox"],
+        "ua_system_version": ["Windows 10","Windows 11"],
+    },
+    "mac": {
+        "ua_browser":        ["chrome", "firefox"],
+        "ua_system_version": ["Mac OS X 10", "Mac OS X 11", "Mac OS X 12", "Mac OS X 13"],
+    },
+    "linux": {
+        "ua_browser":        ["chrome", "firefox"],
+        "ua_system_version": ["Linux"],
+    },
+    "android": {
+        "ua_browser":        ["chrome"],
+        "ua_system_version": ["Android 15", "Android 14", "Android 13"],
+    },
+    "iphone": {
+        "ua_browser":        ["chrome"],
+        "ua_system_version": ["iOS 15", "iOS 16", "iOS 17"],  # wait actually iOS uses safari
+    },
+}
+
+
+
+def create_profile(timezone_list=None, name=None, os_type="windows", os_version="Windows 10", chrome_ver='latest', resolution=None):
+    profile_name = name or f"profile_{random.randint(10000, 99999)}"
+    res = resolution or random.choice(RESOLUTIONS[os_type])
     
-    # 1. Take Screenshot
-    screenshot = pyautogui.screenshot()
-    img = np.array(screenshot)
-    img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-
-    # 2. PRE-PROCESSING FOR DARK MODE
-    # Convert to grayscale
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    # AdsPower API expects strings for these numerical values
+    cpu = str(random.choice([4, 6, 8, 10]))
+    ram = str(random.choice([8, 16, 32, 64])) # 64 is rare, 8-32 is more organic
+    if ram < cpu:
+        for i in range(5):
+            cpu = str(random.choice([4, 6, 8]))
+            ram = str(random.choice([8, 16, 32, 64])) # 64 is rare, 8-32 is more organic
+            if ram > cpu:
+                break
     
-    # Scale up (helps with small UI text)
-    width = int(img.shape[1] * scale)
-    height = int(img.shape[0] * scale)
-    scaled = cv2.resize(gray, (width, height), interpolation=cv2.INTER_CUBIC)
+    ua_config = OS_RANDOM_UA[os_type]
 
-    # INVERT: This is the key for Dark Mode (White text becomes Black)
-    inverted = cv2.bitwise_not(scaled)
+    # Pulling data from your provided timezone_list
+    timezone = timezone_list.get("timezone")
+    lat = timezone_list.get("latitude")
+    lon = timezone_list.get("longitude")
 
-    # THRESHOLD: Turn everything into pure Black and White (removes gray noise)
-    # Otsu's method automatically finds the best contrast level
-    _, thresh = cv2.threshold(inverted, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    # Spoofing the location slightly so not every bot is at the exact same GPS coordinate
+    spoofed_lat = str(round(float(lat) + random.uniform(-0.005, 0.005), 6))
+    spoofed_lon = str(round(float(lon) + random.uniform(-0.005, 0.005), 6))
 
-    # 3. OCR (psm 11 is best for sparse UI text)
-    data = pytesseract.image_to_data(thresh, output_type=pytesseract.Output.DICT, config='--psm 11')
+    payload = {
+        "name": profile_name,
+        "group_id": "0",
+        "user_proxy_config": {
+            "proxy_soft": "other",
+            "proxy_type": "socks5",
+            "proxy_host": "127.0.0.1",
+            "proxy_port": "23321"
+        },
+        "fingerprint_config": {
+            "automatic_timezone": "1",
+            "language_switch": "1",
+            "location_switch": "1", # Set to 0 to use our custom spoofed lat/lon
+            "location": "ask",
+            "page_language_switch": "1",
+            #"longitude": spoofed_lon,
+            #"latitude": spoofed_lat,
+            #"accuracy": str(random.randint(10, 1000)),
+            
+            "webrtc": "proxy", 
+            "canvas": "1",
+            "media_devices": "1",
+            "webgl_image": "1",
+            "webgl": "3",
+            "webgl_config": {
+                "unmasked_vendor": "",
+                "unmasked_renderer": "",
+                "webgpu": {"webgpu_switch": "1"}
+            },
+            "audio": "1",
+            "client_rects": "1",
+            "speech_switch": "1",
+            "device_name_switch": "1",
+            "mac_address_config": {"model": "1", "address": ""},
+            
+            "hardware_concurrency": cpu, # Fixed: Must be string
+            "device_memory": ram,        # Fixed: Must be string
+            "gpu": "1",
+            "scan_port_type": "1",
+            
+            "browser_kernel_config": {
+                "version": chrome_ver,
+                "type": "chrome"
+            },
+            "screen_resolution": res,
+            "do_not_track": "default",
+            "flash": "block",
+            
+            "random_ua": {
+                "ua_browser": ["chrome"],
+                "ua_system_version":[os_version] #ua_config['ua_system_version']
+            }
+        }
+    }
 
-    for i in range(len(data['text'])):
-        word = data['text'][i].strip().lower()
+    # IMPORTANT: Use headers for API key and catch the response correctly
+    headers = {"api-key": API_KEY}
+    response = requests.post(
+        f"{BASE_URL}/api/v2/browser-profile/create",
+        json=payload,
+        headers=headers
+    )
+    
+    # Fixed: data = response.json(), not resp.get()
+    data = response.json()
+    
+    if data.get("code") == 0:
+        profile_id = data["data"]["profile_id"]
+        print(f"✅ Profile created | ID: {profile_id}")
+        return profile_id
+    else:
+        print(f"❌ Create failed: {data.get('msg')}")
+        if 'daily limit' in data.get('msg'):
+            return 'daily limit'
+
+
+DEVICE_ADSPOWER ="notest" #"windows"
+# ─────────────────────────────────────────────────────────
+#  BROWSER
+# ─────────────────────────────────────────────────────────
+
+def start_browser(profile_id):
+    headers = {
+        "api-key": API_KEY,
+        "Content-Type": "application/json"
+    }
+
+    # Simplified payload to ensure compatibility
+    payload = {
+        "user_id": profile_id, # V2 often expects user_id inside the body
+        "headless": "0",
+        "last_opened_tabs": "0",
+        "proxy_detection": "0", # Setting to 0 is safer to avoid extra tabs
+        "cdp_mask": "1",
+        "user_proxy_config": {
+            "proxy_soft": "other",
+            "proxy_type": "socks5",
+            "proxy_host": "127.0.0.1",
+            "proxy_port": "23321"
+        }
+    }
+
+    try:
+        # ⚠️ FIX: Try v1 endpoint first if v2 fails, as it's more stable for starting
+        # Some AdsPower setups use /api/v1/browser/start even with V2 keys
+        url = f"{BASE_URL}/api/v1/browser/start"
         
-        # Check if target is in the word
-        if target_text.lower() in word and word != "":
-            # Map coordinates back to original screen size
-            orig_x = (data['left'][i] + (data['width'][i] // 2)) // scale
-            orig_y = (data['top'][i] + (data['height'][i] // 2)) // scale
+        # Use params for v1/start, but headers for the key
+        resp = requests.get(url, params={"user_id": profile_id}, headers=headers)
+        
+        if resp.status_code != 200:
+            print(f"❌ Server returned status {resp.status_code}: {resp.text}")
+            return None, None
 
-            print(f"Found '{data['text'][i]}' at ({orig_x}, {orig_y}). Clicking...")
-            #pyautogui.click(orig_x, orig_y)
-            human_click(orig_x, orig_y)
-            return True
+        data = resp.json()
+        
+        if data.get("code") == 0:
+            # Handle different return structures between versions
+            debug_data = data.get("data", {})
+            port = debug_data.get("debug_port") or debug_data.get("ws", {}).get("selenium", "").split(":")[-1]
+            chromedriver = debug_data.get("webdriver")
+            
+            print(f"✅ Profile {profile_id} is LIVE (Port: {port})")
+            return port, chromedriver
+        else:
+            print(f"❌ Launch failed: {data.get('msg')}")
+            if 'Exceeding open daily limit' in data.get('msg'):
+                print('Limit Hit on Adspower..')
+                return '555512', 'daily limit'
+            
+            return None, None
 
-    print("Target text not found.")
+    except Exception as e:
+        print(f"❌ API Error: {e}")
+        # If it's a JSON error, print the raw response to see what's wrong
+        if 'resp' in locals():
+            print(f"Raw Response: {resp.text}")
+        return None, None
+
+def stop_browser(user_id):
+    data = get("/api/v1/browser/stop", user_id=user_id)
+    if data.get("code") == 0:
+        print(f"✅ Browser stopped")
+    return data
+
+
+def connect_selenium(port, chromedriver):
+    service = Service(executable_path=chromedriver)
+    options = Options()
+    options.page_load_strategy = 'none'
+    options.add_experimental_option("debuggerAddress", f"127.0.0.1:{port}")
+    driver = webdriver.Chrome(service=service, options=options)
+    print(f"✅ Selenium connected")
+    return driver
+
+
+################################################################################################
+port_selenium = ''
+chromedriver_selenium =''
+def wait_for_load_state2(driver, state="interactive", timeout=10, wait= False):
+    try:
+        """
+        state can be:
+        - "interactive": Half load (DOM ready, good for JS injection)
+        - "complete": Full load (Everything done)
+        """
+        if wait:
+            start_time = time.time()
+
+            while time.time() - start_time < timeout:
+                # Check the readyState via JavaScript
+                current_state = driver.execute_script("return document.readyState")
+                
+                if state == "interactive":
+                    if current_state in ["interactive", "complete"]:
+                        return True
+                elif state == "complete":
+                    if current_state == "complete":
+                        return True
+                
+                time.sleep(0.2) # Small poll interval to save CPU
+        else:
+            current_state = driver.execute_script("return document.readyState")
+            
+            if state == "interactive":
+                if current_state in ["interactive", "complete"]:
+                    return True
+            elif state == "complete":
+                if current_state == "complete":
+                    return True
+            else:
+                return False
+    except Exception as e:
+        print('Error at wait_for_load state:',e)
     return False
 
-hyper_scrolled = False
 
-def hyperhustlebrows():
-    pyautogui.click(493,19, duration = 0.2)
-    pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.3)
-    pyautogui.moveTo(random.randint(50, 1500), random.randint(40, 700), duration=0.3)
-    global hyper_scrolled
+def wait_for_load_state(driver, state="interactive", timeout=10, wait=False):
+    """
+    state: "interactive" (DOM ready) | "complete" (fully loaded)
+    pass port + chromedriver to enable auto-reconnect on disconnect.
+    """
+    global port_selenium
+    global chromedriver_selenium
+    try:
+        if wait:
+            start_time = time.time()
+            while time.time() - start_time < timeout:
+                try:
+                    driver.set_script_timeout(3)
+                    current_state = driver.execute_script("return document.readyState")
+                    if state == "interactive" and current_state in ("interactive", "complete"):
+                        return True, driver
+                    if state == "complete" and current_state == "complete":
+                        return True, driver
+                    time.sleep(0.5)
 
-
-    title = get_focused_window_title()
-    if 'CoreLinks' in title or 'corelinks.site' in title:
-        print("Already on Hyper Hustle page.")
-    else:
-
-        if random.random() < 0.8:   # 0.9 = 90%
-            shorlink = random_link('link3')
+                except Exception as e:
+                    err = str(e)
+                    if "HTTPConnectionPool" in err or "timed out" in err:
+                        print(f"⚠️ Selenium disconnected during wait: {err[:60]}")
+                        if port_selenium and chromedriver_selenium:
+                            new_driver = connect_selenium(port_selenium, chromedriver_selenium)
+                            if new_driver:
+                                driver = new_driver   # swap to new connection
+                                continue              # retry the readyState check
+                        return False, driver
+                    print(f"⚠️ wait_for_load inner error: {err[:60]}")
+                    return False, driver
         else:
-            shorlink = randomhyperlinks()
-        hyper_scrolled = False
-        switch_to_window(hyperwindow)
-        pyautogui.click(493,19, duration = 0.4)
-        shorlink = random_link('link3')
-        open_link(link = shorlink ,newtab = False)
-        time.sleep(2)
-        #pyautogui.click(1056,192, duration=0.6)
+            try:
+                driver.set_script_timeout(3)
+                current_state = driver.execute_script("return document.readyState")
+                if state == "interactive":
+                    return current_state in ("interactive", "complete"), driver
+                if state == "complete":
+                    return current_state == "complete", driver
+                return False, driver
 
+            except Exception as e:
+                err = str(e)
+                if "HTTPConnectionPool" in err or "timed out" in err:
+                    print(f"⚠️ Selenium disconnected (non-wait): {err[:60]}")
+                    if port_selenium and chromedriver_selenium:
+                        new_driver = connect_selenium(port_selenium, chromedriver_selenium)
+                        if new_driver:
+                            return False, new_driver   # return fresh driver
+                                                       # caller retries next tick
+                return False, driver
 
-
-    close_ads()
-
-
-    try:
-        x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-        if x and y:
-            #text = ocr_screen_region(167, 45, 342, 35)
-            title = get_focused_window_title()
-            print(f"Screen OCR Text: {title}")
-            if hyper_scrolled:
-                pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.3)
-                pyautogui.scroll(-random.randint(100, 300))
-                time.sleep(0.1)
-                pyautogui.scroll(random.randint(200, 300))
-                time.sleep(0.2)
-                pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.5)
-                pyautogui.scroll(random.randint(100, 300))
-                pyautogui.scroll(-random.randint(100, 300))
-                time.sleep(0.1)
-                
-                pyautogui.scroll(random.randint(100, 300))
-                if random.random() < 0.5:
-                    time.sleep(0.2)
-                    pyautogui.scroll(random.randint(100, 200))
-                    time.sleep(0.1)
-                    pyautogui.scroll(random.randint(100, 200))
-
-
-
-
-            if title == '' or title == None or title == '.':
-                return False
-            root = False
-            if title == 'CoreLinks – The Largest Collection of Free Tools & Software' or title in 'The Largest Collection of Free Tools & Software':
-                act = random.choice([1,2])
-                root = True
-            else:
-
-                act = random.choice([2,3])
-
-            scro = random.choice([1,2])
-            hyper_scrolled = True
-            cate = random.choice(["Adblock","Artificial", "Privacy","Books", "Movies", "Music", "Downloading", "Privacy", "Gaming", "Movies", "Anime", "TV", "Emulation"])
-            # Test run
-            if act == 1:
-                
-                if scro == 1:
-                   
-                    pyautogui.click(1914,random.randint(433, 444), duration = 0.4)
-                if scro == 2:
-                    pyautogui.scroll(-random.randint(100, 300))
-                    time.sleep(0.1)
-                    pyautogui.scroll(-random.randint(100, 300))
-                    time.sleep(0.2)
-                    pyautogui.scroll(-random.randint(100, 200))
-                    time.sleep(0.1)
-                    pyautogui.scroll(-random.randint(100, 200))
-
-                time.sleep(2)
-                find_dark_mode_text_and_click(cate)
-
-            if act == 2:
-                    pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.3)
-                    pyautogui.scroll(-random.randint(100, 300))
-                    time.sleep(0.1)
-                    pyautogui.scroll(-random.randint(100, 300))
-                    time.sleep(0.2)
-                    pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.5)
-                    pyautogui.scroll(-random.randint(100, 200))
-                    if random.random() < 0.5 and root == False:
-                        human_click(random.randint(595, 1250), random.randint(310, 940))
-                        return
-                    time.sleep(0.1)
-                    pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.3)
-                    pyautogui.scroll(-random.randint(100, 200))
-                    if random.random() < 0.5 and root == False:
-                        human_click(random.randint(595, 1250), random.randint(310, 940))
-                        return
-
-            if act == 3:
-                    pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.3)
-                    pyautogui.scroll(-random.randint(100, 300))
-                    time.sleep(0.1)
-                    pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.5)
-                    pyautogui.scroll(random.randint(100, 300))
-                    time.sleep(0.2)
-                    if random.random() < 0.5 and root == False:
-                        human_click(random.randint(595, 1250), random.randint(310, 940))
-                        return
-                    pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.3)
-                    pyautogui.scroll(-random.randint(100, 200))
-                    time.sleep(0.1)
-                    pyautogui.moveTo(random.randint(595, 1250), random.randint(310, 940), duration=0.3)
-                    pyautogui.scroll(-random.randint(100, 200))
-
-                    pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.3)
-                    pyautogui.scroll(-random.randint(100, 300))
-                    if random.random() < 0.5 and root == False:
-                        return
-                    time.sleep(0.1)
-                    pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.5)
-                    pyautogui.scroll(-random.randint(100, 300))
-                    time.sleep(0.2)
-                    pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.3)
-                    pyautogui.scroll(random.randint(100, 200))
-                    time.sleep(0.1)
-                    pyautogui.moveTo(random.randint(510, 1600), random.randint(310, 940), duration=0.3)
-                    pyautogui.scroll(-random.randint(100, 200))
-
-
-
-
-             
     except Exception as e:
-        pass
+        print(f"Error at wait_for_load_state: {e}")
+    return False, driver
 
 
-def check_line_value(line_number):
+def spoof_referrer_and_redirect(driver, referer_site, target_site, new_page = True):
     """
-    Reads the given line number and returns the boolean value.
+    1. Opens referer_site
+    2. Injects a hidden anchor tag pointing to target_site
+    3. Clicks it to spoof the 'Referer' header
     """
-    file_location = "shrinklist.txt"
-    try:
-        with open(file_location, 'r') as f:
-            lines = f.readlines()
-            
-            # Check if line number is within range
-            if 1 <= line_number <= len(lines):
-                # .strip() removes the newline character, then we compare string
-                value_str = lines[line_number - 1].strip()
-                if value_str == "True":
-                    return True
-                else:                    
-                    return False
-            else:
-                return True
-                
-    except FileNotFoundError:
-        return True
+    print(f"🔗 Spoofing Referer via: {referer_site}")
     
+    try:
+        # 1. Go to the high-authority 'Referer' site
+        if new_page:
+            driver.switch_to.new_window('tab')
+        driver.get(referer_site)
+        
+        waitforpage, driver = wait_for_load_state(driver, state="interactive", timeout=30, wait= True)
+        if waitforpage == False:
+            print(f'Page Loading Failed... {referer_site}')
+            return False
+
+        # Wait for body to be ready to inject the link
+        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, "body")))
+        
+        # 2. Inject the hidden dummy button/link via JavaScript
+        # We use a.click() directly in JS to ensure the 'Referer' is passed
+        script = f"""
+            const a = document.createElement('a');
+            a.href = '{target_site}';
+            a.id = 'spoof_link';
+            a.style.position = 'fixed';
+            a.style.left = '-9999px';
+            a.style.top = '-9999px';
+            a.style.opacity = '0';
+            a.target = '_self'; 
+            document.body.appendChild(a);
+            
+            // Trigger the click immediately
+            a.click();
+        """
+        
+        print(f"🚀 Redirecting to: {target_site}")
+        driver.execute_script(script)
+        
+        # 3. Wait for the URL to change to the target site
+        # This ensures we don't return until the redirect has started
+        #WebDriverWait(driver, 15).until(lambda d: target_site in d.current_url)
+        time.sleep(2)
+        
+        print("✅ Redirect Successful!")
+        return driver.current_window_handle
+
+    except Exception as e:
+        print(f"❌ Referer Spoof Failed: {e}")
+        return False
+
+
+def destined_reached(text):
+    keywords = [
+        '405 Not Allowed',
+        '502 Bad Gateway',
+        'This link is risky',
+        'Database Error',
+        'Privacy Error',
+        'Google',
+        '503 Service',
+        '504: Gateway',
+        '500 Internal',
+        "A timeout occurred",
+        "dynamicslab",
+        "demo.dynamicslab.ai",
 
 
 
-
-def randomhyperlinks():
-    links = [
-        "https://corelinks.site/privacy", 
-        "https://corelinks.site",
-        "https://corelinks.site/ai", 
-        "https://corelinks.site/audio", 
-        "https://corelinks.site/video",
-        "https://corelinks.site/video#streaming", 
-        "https://corelinks.site", 
-        "https://corelinks.site", 
-        "https://corelinks.site/video",
-        "https://corelinks.site", 
-        "https://corelinks.site/privacy", 
 
 
 
     ]
-    return random.choice(links)
+    return any(keyword.lower() in text.lower() for keyword in keywords)
 
 
 
-###########################################################
+def human_click(driver, element):
+    # 1. Get the exact position relative to the screen WITHOUT scrolling
+    # This replaces location_once_scrolled_into_view
+
+    rect = driver.execute_script("""
+        var rect = arguments[0].getBoundingClientRect();
+        return {
+            x: rect.left,
+            y: rect.top,
+            w: rect.width,
+            h: rect.height
+        };
+    """, element)
+
+    # 2. Get Browser Window Position & Header Height
+
+    # 3. Calculate safe random offsets (30% to 70% of button)
+    # This keeps us in the "meat" of the button so we don't miss small ones
+    offset_x = random.uniform(rect['w'] * 0.3, rect['w'] * 0.7)
+    offset_y = random.uniform(rect['h'] * 0.3, rect['h'] * 0.7)
+
+    # 4. Final Math
+    # Browser X + Button X (inside window) + Random Offset
+    click_x = browser_rect['x'] + rect['x'] + offset_x
+    click_y = browser_rect['y'] + nav_bar_height + rect['y'] + offset_y
+
+    # 5. Move and Click
+    pyautogui.moveTo(click_x, click_y, duration=0.1, tween=pyautogui.easeOutQuad)
+    pyautogui.click()
+    
+    print(f"🎯 Human Click at: ({int(click_x)}, {int(click_y)}) | No Jump!")
+
+
+
+def move_human_os(target_x, target_y):
+    if DEVICE_ADSPOWER == "android":
+        return
+    """
+    Moves the mouse from current position to (target_x, target_y)
+    using a curved Bezier path.
+    """
+    # 1. Get current position
+    start_x, start_y = pyautogui.position()
+    
+    # 2. Create control points for the Bezier curve
+    # We pick two random points 'in between' to create a natural arc
+    control1_x = start_x + (target_x - start_x) * random.uniform(0.1, 0.4)
+    control1_y = start_y + (target_y - start_y) * random.uniform(0.1, 0.4) + random.randint(-100, 100)
+    
+    control2_x = start_x + (target_x - start_x) * random.uniform(0.6, 0.9)
+    control2_y = start_y + (target_y - start_y) * random.uniform(0.6, 0.9) + random.randint(-100, 100)
+    
+    # 3. Generate the curve points (the 'steps' of the move)
+    steps = random.randint(15, 35) # How many segments in the move
+    for i in range(1, steps + 1):
+        t = i / steps
+        # Cubic Bezier Formula
+        x = (1-t)**3 * start_x + 3*(1-t)**2 * t * control1_x + 3*(1-t) * t**2 * control2_x + t**3 * target_x
+        y = (1-t)**3 * start_y + 3*(1-t)**2 * t * control1_y + 3*(1-t) * t**2 * control2_y + t**3 * target_y
+        
+        # Add a tiny 'jitter' to simulate human hand shaking (0.5 pixel)
+        x += random.uniform(-0.5, 0.5)
+        y += random.uniform(-0.5, 0.5)
+        
+        # Move the physical mouse
+        pyautogui.moveTo(x, y)
+        
+        # Human speed variation (Faster in middle, slower at ends)
+        # This mimics 'Fitts Law'
+        sleep_time = 0.001 * (1 + (0.5 - abs(t - 0.5)) * 10)
+        time.sleep(sleep_time)
+
+
+
+
+
+
+#######################Shortlinks Handle##########################################
+
+def accept_consent_popups(driver):
+    # 1. Define common Consent/GDPR buttons
+    consent_selectors = [
+        '.qc-cmp2-summary-buttons button[mode="primary"]',
+        'button[mode="primary"]',
+        '.fc-agreement-dialog .fc-primary-button',         
+        'button[aria-label="Consent"]',                    
+        '#save .tp-button',                                
+        '.sd-cmp-2V7v7 .sd-button-primary',       
+        '.fc-primary-button',
+    ]
+
+    # 2. JS to find the first VISIBLE consent button
+    find_consent_script = """
+
+    // replace your consent detection block with this
+    const consent_selectors = [
+        '.qc-cmp2-summary-buttons button[mode="primary"]',
+        '#accept-btn',                                      // ← direct ID fallback
+        'button[id="accept-btn"]',
+        'button[mode="primary"]',
+        '.fc-agreement-dialog .fc-primary-button',
+        'button[aria-label="Consent"]',
+        '#save .tp-button',
+        '.sd-cmp-2V7v7 .sd-button-primary',
+        '.fc-primary-button',
+    ];
+
+    // consent uses looser visibility — overlay animation can hide it temporarily
+    const isVisConsent = (el) => {
+        if (!el) return false;
+        const s = window.getComputedStyle(el);
+        const r = el.getBoundingClientRect();
+        // looser check — just needs to exist in DOM with size
+        // skips opacity/visibility since overlay animates in
+        return s.display !== 'none' && r.width > 0 && r.height > 0;
+    };
+
+    for (const sel of consent_selectors) {
+        const btn = document.querySelector(sel);
+        if (btn && isVisConsent(btn)) {
+            consent_btn = sel;
+            return consent_btn;
+            break;
+        }
+    }
+
+    return null;
+
+
+
+
+    """
+
+    found_selector = driver.execute_script(find_consent_script)
+
+    if found_selector:
+        print(f"🛡️ Consent Popup Detected: {found_selector}")
+        
+        try:
+            # 3. Get Element & calculate "No-Jump" Screen Coords
+            btn_el = driver.find_element(By.CSS_SELECTOR, found_selector)
+            human_click(driver, btn_el)
+            return True
+            
+        except Exception as e:
+            print(f"⚠️ Failed to click consent: {e}")
+    
+    return False
+
+
+def close_google_ads(driver):
+    found = driver.execute_script("""
+        const isVignette = window.location.href.includes('#google_vignette');
+
+        const isVis = (el) => {
+            if (!el) return false;
+            const s = window.getComputedStyle(el);
+            const r = el.getBoundingClientRect();
+            return s.display !== 'none' && s.visibility !== 'hidden' && r.width > 0;
+        };
+
+        const isAdClose = (el) => {
+            const label = (el.getAttribute('aria-label') || '').toLowerCase();
+            const text  = (el.innerText || '').toLowerCase().trim();
+            const id    = (el.id || '').toLowerCase();
+            const cls   = (el.className || '').toLowerCase();
+            return (
+                label.includes('close ad')   ||
+                label.includes('close')      ||
+                text  === 'close'            ||
+                text  === 'x'               ||
+                id.includes('dismiss')       ||
+                cls.includes('close-button') ||
+                cls.includes('dismiss-button')
+            );
+        };
+
+        const selectors_gads = [
+            '#dismiss-button',
+            '[aria-label="Close ad"]',
+            '[aria-label="Close Ad"]',
+            '[id*="dismiss"]',
+            '[id*="close-button"]',
+            '[class*="close-button"]',
+            '[class*="dismiss-button"]',
+            'button[class*="close"]',
+        ];
+
+        // ── collect ALL visible matching buttons ──────────────────────
+        let candidates = [];
+        for (const sel of selectors_gads) {
+            const els = document.querySelectorAll(sel);
+            for (const el of els) {
+                if (isVis(el) && isAdClose(el)) {
+                    const r = el.getBoundingClientRect();
+                    const z = parseInt(window.getComputedStyle(el).zIndex) || 0;
+
+                    // ── visibility score ─────────────────────────────
+                    // how much of the element is inside the viewport
+                    const vpW = window.innerWidth  || document.documentElement.clientWidth;
+                    const vpH = window.innerHeight || document.documentElement.clientHeight;
+                    const visW = Math.max(0, Math.min(r.right,  vpW) - Math.max(r.left, 0));
+                    const visH = Math.max(0, Math.min(r.bottom, vpH) - Math.max(r.top,  0));
+                    const visibleArea = visW * visH;
+                    const totalArea   = r.width * r.height;
+                    const visRatio    = totalArea > 0 ? visibleArea / totalArea : 0;
+
+                    candidates.push({
+                        sel:       sel,
+                        zIndex:    z,
+                        visRatio:  visRatio,
+                        area:      totalArea,
+                    });
+                }
+            }
+        }
+
+        if (candidates.length === 0) {
+            return { found: null, isVignette: isVignette };
+        }
+
+        // ── pick best candidate: highest z-index, then highest vis ratio ─
+        candidates.sort((a, b) => {
+            if (b.zIndex !== a.zIndex) return b.zIndex - a.zIndex;   // z-index first
+            return b.visRatio - a.visRatio;                           // then visibility
+        });
+
+        const best = candidates[0];
+        const bestEl = document.querySelector(best.sel);
+        bestEl.setAttribute('data-gadclose', 'true');
+        bestEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        console.log(`Best candidate: ${best.sel} | z:${best.zIndex} | vis:${best.visRatio.toFixed(2)}`);
+
+        return { found: best.sel, isVignette: isVignette };
+    """)   # 1 call
+
+    is_vignette = found['isVignette']
+    found_sel   = found['found']
+    print('Found ',found_sel)
+
+    if is_vignette:
+        print("🔍 Google Vignette detected via #google_vignette")
+
+    if found_sel:
+        print(f"🧹 Best close btn: {found_sel}")
+        try:
+            btn = driver.find_element(By.CSS_SELECTOR, "[data-gadclose='true']")   # 1 call
+            time.sleep(0.2)
+            human_click(driver, btn)
+            print("✅ Ad closed")
+            return True
+        except Exception as e:
+            print(f"⚠️ Main doc click failed, trying iframes: {e}")
+
+    # ── vignette fallback: dismiss-button inside google iframe ───────────
+    if is_vignette:
+        try:
+            iframes = driver.find_elements(By.TAG_NAME, "iframe")   # 1 call
+            for iframe in iframes:
+                try:
+                    driver.switch_to.frame(iframe)
+                    btn = driver.find_element(By.CSS_SELECTOR, "#dismiss-button")
+                    if btn.is_displayed():
+                        print("🎯 Vignette dismiss-button in iframe")
+                        time.sleep(0.2)
+                        human_click(driver, btn)
+                        driver.switch_to.default_content()
+                        print("✅ Vignette closed")
+                        return True
+                    driver.switch_to.default_content()
+                except:
+                    driver.switch_to.default_content()
+                    continue
+        except Exception as e:
+            print(f"⚠️ Iframe search failed: {e}")
+            driver.switch_to.default_content()
+
+    return False
+
+
+
+def check_powergram_btns_covered(driver):
+
+    result = driver.execute_script("""
+        const btnSelectors = ["#VerifyBtn", "#NextBtn"];
+        let anyCovered    = false;
+        let anyVisible    = false;
+        let isFullscreen  = false;
+        let details       = [];
+
+        const vpW = window.innerWidth  || document.documentElement.clientWidth;
+        const vpH = window.innerHeight || document.documentElement.clientHeight;
+
+        for (const sel of btnSelectors) {
+            const el = document.querySelector(sel);
+            if (!el) {
+                details.push({sel: sel, status: 'not_found'});
+                continue;
+            }
+
+            const r = el.getBoundingClientRect();
+            const s = window.getComputedStyle(el);
+
+            if (s.display === 'none' || r.width === 0) {
+                details.push({sel: sel, status: 'hidden'});
+                continue;
+            }
+
+            el.scrollIntoView({ behavior: 'instant', block: 'center' });
+
+            const r2 = el.getBoundingClientRect();
+            const cx = r2.left + r2.width  / 2;
+            const cy = r2.top  + r2.height / 2;
+
+            if (cy < 0 || cy > vpH) {
+                details.push({sel: sel, status: 'offscreen', cy: Math.round(cy)});
+                continue;
+            }
+
+            const topEl = document.elementFromPoint(cx, cy);
+            if (!topEl) {
+                details.push({sel: sel, status: 'offscreen'});
+                continue;
+            }
+
+            const isOwn = topEl === el || el.contains(topEl);
+            if (isOwn) {
+                anyVisible = true;
+                details.push({sel: sel, status: 'visible'});
+                continue;
+            }
+
+            // ── coverage calculation ──────────────────────────────
+            anyCovered = true;
+            const ts       = window.getComputedStyle(topEl);
+            const tr       = topEl.getBoundingClientRect();
+            const coverPct = Math.round((tr.width * tr.height) / (vpW * vpH) * 100);
+            const isFull   = coverPct >= 60;
+            if (isFull) isFullscreen = true;
+
+            details.push({
+                sel:    sel,
+                status: 'covered',
+                isFullscreen: isFull,
+                coverPct: coverPct,
+                by: {
+                    tag:    topEl.tagName,
+                    id:     topEl.id     || '',
+                    cls:    (topEl.className || '').substring(0, 60),
+                    z:      parseInt(ts.zIndex) || 0,
+                    pos:    ts.position,
+                    width:  Math.round(tr.width),
+                    height: Math.round(tr.height),
+                }
+            });
+        }
+
+        return {
+            anyCovered:   anyCovered,
+            anyVisible:   anyVisible,
+            isFullscreen: isFullscreen,
+            details:      details
+        };
+    """)   # 1 call
+
+    anyCovered   = result['anyCovered']
+    anyVisible   = result['anyVisible']
+    isFullscreen = result['isFullscreen']
+
+    # ── log details ───────────────────────────────────────────────
+    for d in result['details']:
+        status = d['status']
+        if status == 'covered':
+            b = d['by']
+            kind = '🖥️ FULLSCREEN' if d['isFullscreen'] else '🔲 PARTIAL'
+            print(f"🚫 {d['sel']} covered by {kind} overlay ({d['coverPct']}% of viewport)")
+            print(f"   by: <{b['tag']}> id='{b['id']}' size={b['width']}x{b['height']}")
+
+    if anyCovered and not anyVisible:
+        if isFullscreen:
+            print('🖥️ Fullscreen ad overlay detected')
+        else:
+            print('🔲 Partial element covering btn')
+        return True, isFullscreen
+    else:
+        return False, False
+
+
+
+def find_button_multi_scale(template_path, region=None, threshold=0.7):
+    """
+    region: (x, y, width, height) - same format as pyautogui
+    """
+    # 1. Load your template image
+    template = cv2.imread(template_path, 0)
+    (tH, tW) = template.shape[:2]
+
+    # 2. Take a screenshot of ONLY the region (saves CPU/Time)
+    # If no region is provided, it takes the full screen
+    screenshot = pyautogui.screenshot(region=region)
+    screen_np = np.array(screenshot)
+    screen_gray = cv2.cvtColor(screen_np, cv2.COLOR_RGB2GRAY)
+
+    found = None
+
+    # 3. Multi-scale loop (checks from 120% down to 20% size)
+    for scale in np.linspace(0.2, 1.2, 20)[::-1]:
+        resized = cv2.resize(screen_gray, (int(screen_gray.shape[1] * scale), int(screen_gray.shape[0] * scale)))
+        r = screen_gray.shape[1] / float(resized.shape[1])
+
+        if resized.shape[0] < tH or resized.shape[1] < tW:
+            continue
+
+        result = cv2.matchTemplate(resized, template, cv2.TM_CCOEFF_NORMED)
+        (_, maxVal, _, maxLoc) = cv2.minMaxLoc(result)
+
+        if found is None or maxVal > found[0]:
+            found = (maxVal, maxLoc, r)
+
+    # 4. Convert local region coordinates back to screen coordinates
+    if found and found[0] >= threshold:
+        (maxVal, maxLoc, r) = found
+        
+        # Calculate center within the cropped screenshot
+        local_x = int((maxLoc[0] + tW/2) * r)
+        local_y = int((maxLoc[1] + tH/2) * r)
+        
+        # Add the region's offset to get the real screen position
+        offset_x = region[0] if region else 0
+        offset_y = region[1] if region else 0
+        
+        return (local_x + offset_x, local_y + offset_y)
+
+    return None
+
+
+
+
+emptygppgae = time.time()
+gplink_page_loaded = False
+gplink_page_notfound = 1
+gplink_adclose_failed = 1
+
+def gplinks_main(driver, window):
+    btn1_clicked = False
+    global emptygppgae
+    global gplink_page_notfound
+    global gplink_page_loaded
+    global gplink_adclose_failed
+    try:
+        if random.randint(1, 10) >= 8:
+            print('random Move')
+            move_human_os(random.randint(100, 800), random.randint(100, 500))
+
+        wait, driver = wait_for_load_state(driver, state="interactive", timeout=10, wait=False)
+        if wait:
+            print('starting GP automation')
+
+            # ── SINGLE execute_script: gets title, url, site type, AND runs rescue ──
+            result = driver.execute_script("""
+                const title = document.title;
+                const url   = window.location.href;
+
+                const isPowergram  = url.includes('powergram') || url.includes('powergam.online') || url.includes('collegedekho') || url.includes('collegedekho.online');
+                const isGPlinks    = url.includes('gplinks.co');
+                const isCloudflare = isGPlinks && !title.includes('GPlinks');
+                const isGetLink    = title.includes('GPlinks');
+                let isVignette   = null;                                            
+                let rescueSelector = null;
+                let consent_btn    = null;
+                let adblock_warn  = null;                
+                let google_close_btn = null;
+
+                if (isPowergram) {
+
+                                           
+                    const consent_selectors = [
+                        '.qc-cmp2-summary-buttons button[mode="primary"]',
+                        '#accept-btn',                                      // ← direct ID fallback
+                        'button[id="accept-btn"]',
+                        'button[mode="primary"]',
+                        '.fc-agreement-dialog .fc-primary-button',
+                        'button[aria-label="Consent"]',
+                        '#save .tp-button',
+                        '.sd-cmp-2V7v7 .sd-button-primary',
+                        '.fc-primary-button',
+                    ];
+
+                    // consent uses looser visibility — overlay animation can hide it temporarily
+                    const isVisConsent = (el) => {
+                        if (!el) return false;
+                        const s = window.getComputedStyle(el);
+                        const r = el.getBoundingClientRect();
+                        // looser check — just needs to exist in DOM with size
+                        // skips opacity/visibility since overlay animates in
+                        return s.display !== 'none' && r.width > 0 && r.height > 0;
+                    };
+
+                    for (const sel of consent_selectors) {
+                        const btn = document.querySelector(sel);
+                        if (btn && isVisConsent(btn)) {
+                            consent_btn = sel;
+
+                            break;
+                        }
+                    }
+
+
+                    const selectors = ["#VerifyBtn", "#NextBtn", "#captchaForm button", "#skip-btn"];
+
+                    const btnSelectors = ["#VerifyBtn", "#NextBtn"];
+                    let anyCovered    = false;
+                    let anyVisible    = false;
+                    let isFullscreen  = false;
+                    let details       = [];
+
+                    const vpW = window.innerWidth  || document.documentElement.clientWidth;
+                    const vpH = window.innerHeight || document.documentElement.clientHeight;
+
+                    for (const sel of btnSelectors) {
+                        const el = document.querySelector(sel);
+                        if (!el) {
+                            continue;
+                        }
+
+                        const r = el.getBoundingClientRect();
+                        const s = window.getComputedStyle(el);
+
+                        if (s.display === 'none' || r.width === 0) {
+                            continue;
+                        }
+
+                        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        el.scrollIntoView({ behavior: 'instant', block: 'center' });
+
+                        const r2 = el.getBoundingClientRect();
+                        const cx = r2.left + r2.width  / 2;
+                        const cy = r2.top  + r2.height / 2;
+
+                        if (cy < 0 || cy > vpH) {
+                            continue;
+                        }
+
+                        const topEl = document.elementFromPoint(cx, cy);
+                        if (!topEl) {
+                            continue;
+                        }
+
+                        const isOwn = topEl === el || el.contains(topEl);
+                        if (isOwn) {
+                            anyVisible = true;
+                            continue;
+                        }
+
+                        // ── coverage calculation ──────────────────────────────
+                        anyCovered = true;
+                        const ts       = window.getComputedStyle(topEl);
+                        const tr       = topEl.getBoundingClientRect();
+                        const coverPct = Math.round((tr.width * tr.height) / (vpW * vpH) * 100);
+                        const isFull   = coverPct >= 98;
+                        if (isFull) isFullscreen = true;
+
+
+                    }
+
+
+                    if (anyCovered){
+                        if (isFullscreen){
+                                isVignette = true;
+                                
+                            }
+                       }
+                                           
+                    const btn = document.querySelector('button.button-adb-refresh');
+                    if (btn) {
+                        const s = window.getComputedStyle(btn);
+                        const r = btn.getBoundingClientRect();
+                        if (s.display !== 'none' && s.visibility !== 'hidden' && r.width > 0) {
+                            const btnText = (btn.innerText || '').toLowerCase();
+                            if (btnText.includes('reload page')){
+                                    adblock_warn = true;
+                                    isVignette = false;
+                                           
+                                }
+                                           
+                            }
+                    }
+
+
+
+                    if (!isVignette){
+                        const styleId = 'ui-helper-styles';
+                        if (!document.getElementById(styleId)) {
+                            const style = document.createElement('style');
+                            style.id = styleId;
+                            style.innerHTML = `
+                                .btn-rescue-active { z-index: 2147483647 !important; position: relative !important; outline: 3px solid #00FF00 !important; }
+                                .obstacle-ghost    { pointer-events: none !important; opacity: 0 !important; visibility: hidden !important; }
+                            `;
+                            document.head.appendChild(style);
+                        }
+                        for (const selector of selectors) {
+                            const btn = document.querySelector(selector);
+                            if (btn) {
+                                const s = window.getComputedStyle(btn);
+                                const r = btn.getBoundingClientRect();
+                                if (s.display !== 'none' && s.visibility !== 'hidden' && r.width > 0) {
+                                    const btnText = (btn.innerText || '').toLowerCase();
+                                    if (btnText.includes('wait') || btnText.includes('...')) continue;
+                                    const cx = r.left + r.width  / 2;
+                                    const cy = r.top  + r.height / 2;
+                                    let topEl = document.elementFromPoint(cx, cy);
+                                    let lim = 0;
+                                    while (topEl && topEl !== btn && !btn.contains(topEl) &&
+                                        topEl !== document.documentElement && lim < 15) {
+                                        topEl.classList.add('obstacle-ghost');
+                                        topEl = document.elementFromPoint(cx, cy);
+                                        lim++;
+                                    }
+                                    if (!isVignette){
+                                        btn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                                        btn.classList.add('btn-rescue-active');
+                                        }
+
+                                    rescueSelector = selector;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                                           
+                }    // ← closes if (isPowergram)
+
+                return {
+                    title:          title,
+                    url:            url,
+                    isPowergram:    isPowergram,
+                    isCloudflare:   isCloudflare,
+                    isGetLink:      isGetLink,
+                    consent_btn:    consent_btn,
+                    rescueSelector: rescueSelector,
+                    google_close_btn: google_close_btn,
+                    isVignette:     isVignette,
+                };
+            """)   # ← ONE call does everything
+
+            title       = result['title']
+            stealth_url = result['url']
+            isVignette = result['isVignette']
+            rescueSelector = result['rescueSelector']
+            print(stealth_url)
+            print(title)
+            print('isVignette:',isVignette)
+
+            # ── Direct resource check (pure Python, zero extra calls) ────────
+            if is_direct_resource_link(stealth_url):
+                print('link is detect')
+                driver.close()
+                return
+
+            #accept_consent_popups(driver)   # 1 call
+            if 'chrome-error://chromewebdata/' in stealth_url:
+                print('chrome-error is detect')
+                #driver.close()
+                return "chrome-error"
+            # ── Cloudflare on gplinks.co ─────────────────────────────────────
+            if result['isCloudflare']:
+                print('Cloudflare turnstile Detected')
+                gplink_page_loaded = True
+                try:
+                    x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png",confidence=0.6)
+                    pyautogui.click(x, y, duration=1)
+                    time.sleep(1)
+                    pyautogui.click(x, y, duration=1)
+                    time.sleep(5)
+                except Exception as e:
+                    pass
+
+            # ── Powergram ────────────────────────────────────────────────────
+            if result['isPowergram']:
+                gplink_page_loaded = True
+                print('Powergram site')
+                #if '#google_' in stealth_url or  '#goog_rewarded' in stealth_url or '#goog_' in stealth_url or'#google_vignette' in stealth_url:
+                if isVignette:
+                    if '#google_' in stealth_url or  '#goog_rewarded' in stealth_url or '#goog_' in stealth_url or'#google_vignette' in stealth_url:
+                        print('GOOGLE ADS blocking — clearing first')
+                        regiong = get_browser_region()
+                        jk = close_ads()
+                        try:
+                            # 1. Get the full box instead of just the center
+                            # Box = (left, top, width, height)
+                            box = find_button_multi_scale("resume_shapedbtn.png", region=regiong, threshold=0.8)
+                            #box = pyautogui.locateOnScreen("resume_shapedbtn.png", region=regiong,confidence=0.995)
+                            pyautogui.click(box)
+                            
+                        except Exception as e:
+                            print("No Close Ad video Found1")
+                        try:
+                            # 1. Get the full box instead of just the center
+                            # Box = (left, top, width, height)
+                            box = find_button_multi_scale("closevideogoogle.png", region=regiong,threshold=0.8)
+                            #box = pyautogui.locateOnScreen("resume_shapedbtn.png", region=regiong,confidence=0.995)
+                            pyautogui.click(box)
+                            
+                        except Exception as e:
+                            print("No Close Ad video Found2")
+                        try:
+                            # 1. Get the full box instead of just the center
+                            # Box = (left, top, width, height)
+                            box = find_button_multi_scale("blackbtn_close.png", region=regiong,threshold=0.8)
+                            #box = pyautogui.locateOnScreen("resume_shapedbtn.png", region=regiong,confidence=0.995)
+                            pyautogui.click(box)
+                            
+                        except Exception as e:
+                            print("No Close Ad video Found3")
+
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen("gvideo_ads.png", region=regiong, confidence=0.9)
+                            if x and y:
+                                print('Yes Google Video Ads')
+                                    
+
+
+                                jk = True
+                            else:
+                                jk = close_ads()
+                                
+                        except Exception as e:
+                            print('No Google Video Ads')
+                        
+                        time.sleep(1)
+                        try:
+                            # 1. Get the full box instead of just the center
+                            # Box = (left, top, width, height)
+                            box = pyautogui.locateOnScreen("resume_shapedbtn.png", region=regiong,confidence=0.97)
+                            
+                            if box:
+                                target_x = (box.left + (box.width // 2)) - 120
+                                target_y = box.top + box.height
+                                
+                                print(f"🎯 Target Acquired: X={target_x}, Y={target_y}")
+                                
+                                # 3. Perform the click
+                                pyautogui.click(target_x, target_y, duration=0.2)
+                                if jk == False:
+                                    jk = True
+                            else:
+                                print("No Close Ad video Found")
+                        except Exception as e:
+                            print("No Close Ad video Found")
+                        try:
+                            # 1. Get the full box instead of just the center
+                            # Box = (left, top, width, height)
+                            box = pyautogui.locateOnScreen("skipres.png", region=regiong,confidence=0.97)
+                            
+                            if box:
+                                target_x = (box.left + (box.width // 2)) - 38
+                                target_y = box.top + box.height
+                                
+                                print(f"🎯 Target Acquired: X={target_x}, Y={target_y}")
+                                
+                                # 3. Perform the click
+                                pyautogui.click(target_x, target_y, duration=0.2)
+                                if jk == False:
+                                    jk = True
+                            else:
+                                print("No Close Ad video Found")
+                        except Exception as e:
+                            print("No Close Ad video Found")
+                            #pass
+                        if jk == False:
+                            try:
+                                x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[1,1,1917,95], confidence=0.98)
+                                if x and y: 
+                                    print('Page Fully Loaded and There no Ads found so refreshing')
+                                    if gplink_adclose_failed > 5:
+                                        current_url = driver.current_url
+                                        if "#google_vignette" in current_url or "#google_" in current_url or "#goog_rewarded" in current_url or "#google_" in current_url:
+                                            # Remove the fragment (split at # and take the first part)
+                                            clean_url = current_url.split('#')[0]
+                                            print(f"🔄 Vignette detected. Reloading to: {clean_url}")
+                                            # 3. Reload the page without the fragment
+                                            driver.get(clean_url)
+                                            return
+                                        else:
+                                            print("✅ No vignette fragment found in URL.")
+
+                                        gplink_adclose_failed = 1
+                                    else:
+                                        gplink_adclose_failed += 1
+
+
+                            except Exception as e:
+                                pass
+
+
+                if result['consent_btn']:
+                    
+                    gg = accept_consent_popups(driver)
+                    if gg:
+                        driver.switch_to.window(window)
+
+                                
+
+                # Reusable rescue — now a single execute_script per attempt
+                rescue_script = """
+                const selectors = arguments[0];
+                const styleId = 'ui-helper-styles';
+                const url   = window.location.href;
+                let isVignette   = false;
+                const btnSelectors = ["#VerifyBtn", "#NextBtn"];
+                let anyCovered    = false;
+                let anyVisible    = false;
+                let isFullscreen  = false;
+                let details       = [];
+
+                const vpW = window.innerWidth  || document.documentElement.clientWidth;
+                const vpH = window.innerHeight || document.documentElement.clientHeight;
+
+                for (const sel of btnSelectors) {
+                    const el = document.querySelector(sel);
+                    if (!el) {
+                        continue;
+                    }
+
+                    const r = el.getBoundingClientRect();
+                    const s = window.getComputedStyle(el);
+
+                    if (s.display === 'none' || r.width === 0) {
+                        continue;
+                    }
+
+                    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    el.scrollIntoView({ behavior: 'instant', block: 'center' });
+
+                    const r2 = el.getBoundingClientRect();
+                    const cx = r2.left + r2.width  / 2;
+                    const cy = r2.top  + r2.height / 2;
+
+                    if (cy < 0 || cy > vpH) {
+                        continue;
+                    }
+
+                    const topEl = document.elementFromPoint(cx, cy);
+                    if (!topEl) {
+                        continue;
+                    }
+
+                    const isOwn = topEl === el || el.contains(topEl);
+                    if (isOwn) {
+                        anyVisible = true;
+                        continue;
+                    }
+
+                    // ── coverage calculation ──────────────────────────────
+                    anyCovered = true;
+                    const ts       = window.getComputedStyle(topEl);
+                    const tr       = topEl.getBoundingClientRect();
+                    const coverPct = Math.round((tr.width * tr.height) / (vpW * vpH) * 100);
+                    const isFull   = coverPct >= 98;
+                    if (isFull) isFullscreen = true;
+
+
+                }
+
+
+                if (anyCovered){
+                    if (isFullscreen){
+                            isVignette = true;
+                            
+                        }
+                    }
+
+                if (isVignette){
+                    return null;
+                }
+                if (!document.getElementById(styleId)) {
+                    const style = document.createElement('style');
+                    style.id = styleId;
+                    style.innerHTML = `
+                        .btn-rescue-active { z-index: 2147483647 !important; position: relative !important; outline: 3px solid #00FF00 !important; }
+                        .obstacle-ghost    { pointer-events: none !important; opacity: 0 !important; visibility: hidden !important; }
+                    `;
+                    document.head.appendChild(style);
+                }
+                for (const selector of selectors) {
+                    const btn = document.querySelector(selector);
+                    if (btn) {
+                        const s = window.getComputedStyle(btn);
+                        const r = btn.getBoundingClientRect();
+                        if (s.display !== 'none' && s.visibility !== 'hidden' && r.width > 0) {
+                            const btnText = (btn.innerText || '').toLowerCase();
+                            if (btnText.includes('wait') || btnText.includes('...')) continue;
+                            const cx = r.left + r.width  / 2;
+                            const cy = r.top  + r.height / 2;
+                            let topEl = document.elementFromPoint(cx, cy), lim = 0;
+                            while (topEl && topEl !== btn && !btn.contains(topEl) &&
+                                   topEl !== document.documentElement && lim < 15) {
+                                topEl.classList.add('obstacle-ghost');
+                                topEl = document.elementFromPoint(cx, cy);
+                                lim++;
+                            }
+                            btn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            btn.classList.add('btn-rescue-active');
+                            return selector;
+                        }
+                    }
+                }
+                return null;
+                """
+
+                selectors = ["#VerifyBtn", "#NextBtn", "#captchaForm button", "#skip-btn"]
+
+                # First click — use the selector already found in the big script above
+                found_selector = result['rescueSelector']
+
+                if found_selector:
+                    gplink_adclose_failed = 1
+                    found_selector = driver.execute_script(rescue_script, selectors)
+                    emptygppgae = time.time()
+                    print(f"✅ Found and Rescued: {found_selector}")
+                    btn_element = driver.find_element(By.CSS_SELECTOR, found_selector)
+                    human_click(driver, btn_element)
+                    print(f"🎯 OS Click Success on {found_selector}")
+                    btn1_clicked = True
+                else:
+                    print("❌ No valid buttons found (or they are in 'Wait' state).")
+                    btn1_clicked = False
+
+                # Second click attempt
+                if btn1_clicked:
+                    time.sleep(1)
+                    driver.switch_to.window(window)
+                    found_selector = driver.execute_script(rescue_script, selectors)   # 1 call
+                    if found_selector:
+                        print(f"✅ Found and Rescued: {found_selector}")
+                        btn_element = driver.find_element(By.CSS_SELECTOR, found_selector)
+                        human_click(driver, btn_element)
+                        print(f"🎯 OS Click Success on {found_selector}")
+                        btn1_clicked = True
+                        selectors.remove(found_selector)
+                    else:
+                        print("❌ No valid buttons found.")
+                        btn1_clicked = False
+
+                # Third click attempt
+                if btn1_clicked:
+                    time.sleep(1)
+                    driver.switch_to.window(window)
+                    found_selector = driver.execute_script(rescue_script, selectors)   # 1 call
+                    if found_selector:
+                        print(f"✅ Found and Rescued: {found_selector}")
+                        btn_element = driver.find_element(By.CSS_SELECTOR, found_selector)
+                        human_click(driver, btn_element)
+                        print(f"🎯 OS Click Success on {found_selector}")
+                        btn1_clicked = True
+                    else:
+                        print("❌ No valid buttons found.")
+                        btn1_clicked = False
+
+                script_elapsed_time = time.time() - emptygppgae
+                script_seconds_only = int(script_elapsed_time)
+                print('Powergram Time:', script_seconds_only)
+
+                if script_seconds_only > 40:
+                    btn_elements = driver.find_elements(By.CSS_SELECTOR, "#myTimerDiv")
+                    if btn_elements:
+                        print("⏳ Timer found, resetting start time.")
+                        emptygppgae = time.time()
+                        return
+                    else:
+                        print("🔄 No Timer found after 50s. Forcing Redirect...")
+                        link = get_item_from_list("gplink_urls", "random")
+                        window1 =  spoof_referrer_and_redirect(driver, "https://web.telegram.org/a/get/", link, new_page=False)
+
+            # ── GPlinks Get Link page ────────────────────────────────────────
+            if result['isGetLink']:
+                gplink_page_loaded = True
+                try:
+                    get_link_btn = driver.find_element(By.ID, "captchaButton")
+                    btn_text = get_link_btn.text.strip()
+
+                    if btn_text == "Get Link":
+                        print("🎯 'Get Link' detected. Preparing human click...")
+                        driver.execute_script(
+                            "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});",
+                            get_link_btn)
+                        human_click(driver, get_link_btn)
+                        return True
+
+                    if btn_text == "Please wait...":
+                        print('please wait btn cloudflare checking')
+                        try:
+                            x, y = pyautogui.locateCenterOnScreen(
+                                "C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png",
+                                confidence=0.6)
+                            pyautogui.click(x, y, duration=1)
+                            time.sleep(1)
+                            pyautogui.click(x, y, duration=1)
+                            time.sleep(5)
+                        except Exception as e:
+                            pass
+                        return
+
+                except Exception as e:
+                    print('GPbtn', e)
+
+            if 'powergram' in stealth_url or 'collegedekho' in stealth_url or 'powergam.online' in stealth_url or 'collegedekho.online' in stealth_url or 'gplinks.co' in stealth_url or 'gplinks' in stealth_url: 
+                print('we are on page')
+                gplink_page_loaded = True
+            else:
+                if gplink_page_loaded:
+                    if gplink_page_notfound > 3:
+                        print('Page Broken trying backwarding')
+                        driver.back()
+                        wait, driver = wait_for_load_state(driver, state="interactive", timeout=10, wait=True)
+                        if wait:
+                            print('Page loading')
+                            current_url = driver.current_url
+
+                            print(f"Current Page URL: {current_url}")
+                            if 'powergram' in stealth_url or 'collegedekho' in stealth_url or 'powergam.online' in stealth_url or 'collegedekho.online' in stealth_url or 'gplinks.co' in stealth_url or 'gplinks' in stealth_url: 
+                                print('we are on page')
+                                gplink_page_notfound = 1
+                                gplink_page_loaded = True
+                            else:
+                                link = get_item_from_list("gplink_urls", "random")
+                                window1 =  spoof_referrer_and_redirect(driver, "https://web.telegram.org/a/get/", link, new_page=False)
+
+                    gplink_page_notfound += 1
+
+        else:
+            print('waiting for page to fully load gp')
+
+    except Exception as e:
+        print('Error at Gplinks:', e)
+
+
+
+def shortxlinks_main(driver):
+    if random.randint(1, 10) >= 8:
+        print('random Move')
+        move_human_os(random.randint(100, 800), random.randint(100, 500))
+
+    try:
+        wait, driver = wait_for_load_state(driver, state="interactive", timeout=10, wait=False)
+        if not wait:
+            return
+
+        # ── SINGLE execute_script: classify + shortxlinks btn check in one shot ──
+        result = driver.execute_script("""
+            const title = document.title;
+            const url   = window.location.href;
+
+            const isShortxlinks = url.includes('shortxlinks');
+            const isMtc         = url.includes('mtc');
+            let consent_btn     = null;
+            let bottomBtn       = null;    // ← top level
+            let waitingBtnReady = false;   // ← top level
+
+            if (isShortxlinks) {
+                const btn = document.querySelector('#waiting-btn');
+                if (btn) {
+                    const s = window.getComputedStyle(btn);
+                    const r = btn.getBoundingClientRect();
+                    waitingBtnReady = (
+                        s.display       !== 'none'   &&
+                        s.visibility    !== 'hidden' &&
+                        s.pointerEvents !== 'none'   &&
+                        r.width > 0                  &&
+                        !btn.disabled
+                    );
+                }
+            }
+
+            if (isMtc) {
+                const consent_selectors =     [
+                        '.qc-cmp2-summary-buttons button[mode="primary"]',
+                        'button[mode="primary"]',
+                        '.fc-agreement-dialog .fc-primary-button',         
+                        'button[aria-label="Consent"]',                    
+                        '#save .tp-button',                                
+                        '.sd-cmp-2V7v7 .sd-button-primary',       
+                        '.fc-primary-button',
+                    ]
+
+                for (const consen of consent_selectors) {
+                    const btn = document.querySelector(consen);
+                    if (btn) {
+                        const style = window.getComputedStyle(btn);
+                        const rect  = btn.getBoundingClientRect();
+                        if (style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0) {
+                            consent_btn = consen;
+                            break;
+                        }
+                    }
+                }
+
+                const selectors = ["img[alt='DOWNLOAD LINK']", "img[alt='human verification']", "img[alt='CLICK 2X FOR GENERATE LINK']"];
+                let maxTop = -1;
+                for (const selector of selectors) {
+                    const el = document.querySelector(selector);
+                    if (el) {
+                        const style = window.getComputedStyle(el);
+                        const rect  = el.getBoundingClientRect();
+                        const isVisibleCSS  = style.display !== 'none' && style.visibility !== 'hidden' && rect.height > 0;
+                        const isInsideViewport = (
+                            rect.top    >= 0 &&
+                            rect.left   >= 0 &&
+                            rect.bottom <= (window.innerHeight  || document.documentElement.clientHeight) &&
+                            rect.right  <= (window.innerWidth   || document.documentElement.clientWidth)
+                        );
+                        if (isVisibleCSS && isInsideViewport && rect.top > maxTop) {
+                            maxTop    = rect.top;
+                            bottomBtn = selector;    // ← writes to top-level var
+                        }
+                    }
+                }
+            }
+
+            return {
+                title:           title,
+                url:             url,
+                isShortxlinks:   isShortxlinks,
+                isMtc:           isMtc,
+                waitingBtnReady: waitingBtnReady,
+                bottomBtn:       bottomBtn,    // ← always defined now
+                consent_btn:     consent_btn,
+            };
+        """)   # ← ONE call replaces title + url + verify_script (was 3 calls)
+
+        title       = result['title']
+        stealth_url = result['url']
+        print(stealth_url)
+        print(title)
+        if 'chrome-error://chromewebdata/' in stealth_url:
+            print('chrome-error is detect')
+            #driver.close()
+            return "chrome-error"
+        if is_direct_resource_link(stealth_url):
+            print('link is detect')
+            driver.close()
+            return
+
+        if destined_reached(title):
+            print('destined_reached is detect')
+            driver.close()
+            return
+        # ── shortxlinks path ─────────────────────────────────────────────────
+        if result['isShortxlinks']:
+            print('shortxlinks page load')
+            if result['waitingBtnReady']:
+                print('btn is ready')
+                btn_element = driver.find_element(By.CSS_SELECTOR, "#waiting-btn")   # 1 call
+                human_click(driver, btn_element)
+            else:
+                print('btn is not ready')
+            return
+
+        # ── mtc path ─────────────────────────────────────────────────────────
+        if result['isMtc']:
+            print('we are on mtc1')
+            selectors = [
+
+                "img[alt='DOWNLOAD LINK']", # CSS selector for the image alt
+                "img[alt='human verification']",
+                "img[alt='CLICK 2X FOR GENERATE LINK']",
+            ]
+            if result['consent_btn']:
+                accept_consent_popups(driver)
+                
+            if result['bottomBtn']:
+                already_clicked = False
+                for i in range(4):
+                    clickf, selectors = wpsafe_human_handler(driver, selectors)
+                    if clickf == "noclicks":
+                        if already_clicked:
+                            time.sleep(2)
+                            already_clicked = False
+                            continue
+                        return
+                    if clickf == "clicked":
+                        time.sleep(1)
+                        already_clicked = True
+                        continue
+                    if clickf == "clicked_last":
+                        return
+
+    except Exception as e:
+        print('Shortxlinks Error:', e)
+
+
+def wpsafe_human_handler(driver, selectors):
+    # ── Single JS call: finds lowest visible button in viewport ──────────────
+    found_selector = driver.execute_script("""
+        const selectors = arguments[0];
+        let bottomBtn = null, maxTop = -1;
+        for (const s of selectors) {
+            const el = document.querySelector(s);
+            if (el) {
+                const st = window.getComputedStyle(el);
+                const r  = el.getBoundingClientRect();
+                const visibleCSS = st.display !== 'none' && st.visibility !== 'hidden' && r.height > 0;
+                const inViewport = (
+                    r.top    >= 0 &&
+                    r.left   >= 0 &&
+                    r.bottom <= (window.innerHeight  || document.documentElement.clientHeight) &&
+                    r.right  <= (window.innerWidth   || document.documentElement.clientWidth)
+                );
+                if (visibleCSS && inViewport && r.top > maxTop) {
+                    maxTop = r.top;
+                    bottomBtn = s;
+                }
+            }
+        }
+        return bottomBtn;
+    """, selectors)   # 1 call — unchanged logic, just cleaned up
+
+    if found_selector:
+        print(f"✅ Safelink Button Ready: {found_selector}")
+        btn_element = driver.find_element(By.CSS_SELECTOR, found_selector)   # 1 call
+        human_click(driver, btn_element)
+        selectors.remove(found_selector)
+        if found_selector == "img[alt='DOWNLOAD LINK']":
+            return "clicked_last", selectors
+        return "clicked", selectors
+
+    print("⏳ Safelink button not visible yet (still counting down...)")
+    return "noclicks", selectors
+
+
+
+
+
+
+def indianxshort_main(driver):
+    if random.randint(1, 10) >= 8:
+        print('random Move')
+        move_human_os(random.randint(100, 800), random.randint(100, 500))
+    wait, driver = wait_for_load_state(driver, state="interactive", timeout=10, wait=False)
+    if not wait:
+        return
+    # ── SINGLE execute_script: title + url + consent + sticky + first btn scan ──
+    result = driver.execute_script("""
+        const title = document.title;
+        const url   = window.location.href;
+        let bottomBtn = null;
+        let maxTop    = -1;
+        let sticky_btn = null;
+        const sticky_selectors = ["#closeStickyTop", "#closeStickyBottom"];
+        let consent_btn = null;              
+        // ── consent check ────────────────────────────────────────────────
+        
+        const consent_selectors =     [
+                '.qc-cmp2-summary-buttons button[mode="primary"]',
+                'button[mode="primary"]',
+                '.fc-agreement-dialog .fc-primary-button',         
+                'button[aria-label="Consent"]',                    
+                '#save .tp-button',                                
+                '.sd-cmp-2V7v7 .sd-button-primary',       
+                '.fc-primary-button',
+            ]
+        for (const sel of consent_selectors) {
+            const btn = document.querySelector(sel);
+            if (btn) {
+                const s = window.getComputedStyle(btn);
+                const r = btn.getBoundingClientRect();
+                if (s.display !== 'none' && s.visibility !== 'hidden' && r.width > 0) {
+                    consent_btn = sel;
+                    break;
+                }
+            }
+        }
+
+        // ── sticky ad check ──────────────────────────────────────────────
+
+        for (const sel of sticky_selectors) {
+            const el = document.querySelector(sel);
+            if (el) {
+                const s = window.getComputedStyle(el);
+                const r = el.getBoundingClientRect();
+                if (s.display !== 'none' && s.visibility !== 'hidden' && r.width > 0) {
+                    sticky_btn = sel;
+                    break;
+                }
+            }
+        }
+
+        // ── first robot btn scan (lowest visible) + scrollIntoView merged ─
+
+        const robot_selectors = [
+            "#robotButton", "#robot", "#robot2", "#rtgli1",
+            "#rtg-generate", "#robotContinueButton",
+            "#open-continue-btn", "#rtg-snp2"
+        ];
+        for (const sel of robot_selectors) {
+            const el = document.querySelector(sel);
+            if (el) {
+                const s = window.getComputedStyle(el);
+                const r = el.getBoundingClientRect();
+                if (s.display !== 'none' && s.visibility !== 'hidden' && r.height > 0) {
+                    if (r.top > maxTop) { maxTop = r.top; bottomBtn = sel; }
+                }
+            }
+        }
+        // scroll to it now so PyAutoGUI coords are ready when Python runs
+        if (bottomBtn) {
+            document.querySelector(bottomBtn).scrollIntoView({behavior: 'smooth', block: 'center'});
+        }
+
+        return {
+            title:      title,
+            url:        url,
+            consent_btn: consent_btn,
+            sticky_btn:  sticky_btn,
+            bottomBtn:   bottomBtn,
+        };
+    """)   # ← replaces: title call + url call + accept_consent_popups JS
+           #             + clear_sticky_ads JS + first rescue_script call
+           #             + first scrollIntoView call  =  6 calls → 1
+
+    title       = result['title']
+    stealth_url = result['url']
+    print(stealth_url)
+    print(title)
+    if 'chrome-error://chromewebdata/' in stealth_url:
+        print('chrome-error is detect')
+        #driver.close()
+        return "chrome-error"
+    if is_direct_resource_link(stealth_url):
+        print('link is detect')
+        driver.close()
+        return
+    if destined_reached(title):
+        print('destined_reached is detect')
+        driver.close()
+        return
+    # ── consent — only call if pre-scan found one ────────────────────────────
+    if result['consent_btn']:
+        accept_consent_popups(driver)   # 1 call only when needed
+
+    # ── sticky ad — direct JS click, no find_element needed ─────────────────
+    if result['sticky_btn']:
+        try:
+            #time.sleep(random.uniform(0.1, 0.3))
+            driver.execute_script(
+                f"document.querySelector('{result['sticky_btn']}').click();"
+            )   # 1 call, skips find_element entirely
+            print(f"🧹 Sticky Ad dismissed: {result['sticky_btn']}")
+        except Exception as e:
+            print(f"⚠️ Sticky click failed: {e}")
+
+    # ── no buttons found on first scan — nothing to do ──────────────────────
+    if not result['bottomBtn']:
+        print("⏳ No robot buttons visible yet.")
+        return False
+
+    selectors = [
+        "#robotButton", "#robot", "#robot2", "#rtgli1",
+        "#rtg-generate", "#robotContinueButton",
+        "#open-continue-btn", "#rtg-snp2"
+    ]
+
+    # rescue_script for loop iterations 2-4
+    # scrollIntoView merged in so no separate execute_script per iteration
+    rescue_script = """
+        const selectors = arguments[0];
+        let bottomBtn = null, maxTop = -1;
+        for (const sel of selectors) {
+            const el = document.querySelector(sel);
+            if (el) {
+                const s = window.getComputedStyle(el);
+                const r = el.getBoundingClientRect();
+                if (s.display !== 'none' && s.visibility !== 'hidden' && r.height > 0) {
+                    if (r.top > maxTop) { maxTop = r.top; bottomBtn = sel; }
+                }
+            }
+        }
+        if (bottomBtn) {
+            document.querySelector(bottomBtn).scrollIntoView({behavior: 'smooth', block: 'center'});
+        }
+        return bottomBtn;
+    """
+
+    # ── first iteration uses pre-scanned bottomBtn (0 JS calls) ─────────────
+    target_selector = result['bottomBtn']
+
+    for i in range(4):
+        if target_selector:
+            print(f"✅ Target found (Lowest): {target_selector}")
+            try:
+                element = driver.find_element(By.CSS_SELECTOR, target_selector)   # 1 call
+                try:
+                    element.click()
+                except Exception as e:
+                    print('click failed, JS fallback...')
+                    driver.execute_script("arguments[0].click();", element)   # 1 call fallback
+                time.sleep(random.uniform(0.1, 0.4))
+                selectors.remove(target_selector)
+                print(f"🎯 Click on {target_selector}")
+            except Exception as e:
+                print(f"⚠️ Click failed: {e}")
+        else:
+            print("⏳ No robot buttons visible yet.")
+            return False
+
+        # next iteration scan (scroll already merged inside rescue_script)
+        target_selector = driver.execute_script(rescue_script, selectors)   # 1 call per iter
+
+
+def close_unauthorized_tabs(driver, whitelist_handles):
+    try:
+        # Get a fresh list of handles every time
+        all_handles = driver.window_handles
+        for handle in all_handles:
+            if handle not in whitelist_handles:
+                print('found some pages outside and try closing')
+                try:
+                    # 1. Switch focus
+                    driver.switch_to.window(handle)
+                    
+                    # 2. Grab metadata safely
+                    current_url = driver.current_url
+                    current_title = driver.title
+                    
+                    # 3. Decision Logic: Only close real web pages (http)
+                    if current_url.startswith('http'):
+                        print(f"🧹 Closing unauthorized popup: {current_title} ({current_url})")
+                        driver.close()
+                        # IMPORTANT: After closing, move to the NEXT handle immediately
+                        continue 
+                    
+                    # 4. Skip internal browser UI (like the Omnibox popup)
+                    elif not current_title.strip() or 'Omnibox' in current_title or not current_url.startswith('http'):
+                        print(f"⏩ Skipping Ghost/Internal Handle: {handle}")
+                        continue
+                        
+                except Exception as e:
+                    # If the window was already closed by an ad-blocker or it's a dead handle
+                    print(f"⚠️ Handle {handle} was inaccessible, moving on...")
+                    continue
+
+        # 5. ALWAYS return focus to the main work tab
+        if whitelist_handles:
+            driver.switch_to.window(whitelist_handles[0])
+            
+    except Exception as e:
+        print(f"⚠️ Master cleanup error: {e}")
+
+    finally:
+        # 3. RESTORE ORIGINAL TIMEOUT so the rest of your bot works normally
+
+        print('all done closed..')
+
+def close_shrink_ad_span(driver):
+    result = driver.execute_script("""
+        // ── main document check ──────────────────────────────────────
+        const allSpans = document.querySelectorAll('span');
+        const target = Array.from(allSpans).find(el => {
+            const s = el.getAttribute('style') || '';
+            return s.includes('width: 35%') && s.includes('left: 0px');
+        });
+        if (target) {
+            target.setAttribute('data-adclose', 'true');
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return { found: true, inIframe: false, iframeIndex: null };
+        }
+
+        // ── iframe check (same-origin only) ──────────────────────────
+        const iframes = document.querySelectorAll('iframe');
+        for (let i = 0; i < iframes.length; i++) {
+            try {
+                const frameDoc = iframes[i].contentDocument || iframes[i].contentWindow.document;
+                const frameSpan = Array.from(frameDoc.querySelectorAll('span')).find(el => {
+                    const s = el.getAttribute('style') || '';
+                    return s.includes('width: 35%') && s.includes('left: 0px');
+                });
+                if (frameSpan) {
+                    frameSpan.setAttribute('data-adclose', 'true');
+                    frameSpan.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    return { found: true, inIframe: true, iframeIndex: i };
+                }
+            } catch (e) {
+                // cross-origin, skip
+            }
+        }
+        return { found: false, inIframe: false, iframeIndex: null };
+    """)   # 1 call
+
+    if not result['found']:
+        print("∅ No ad close span found")
+        return False
+
+    print("🎯 Ad close span found, clicking...")
+    try:
+        time.sleep(0.2)
+
+        if result['inIframe']:
+            # switch into the correct iframe first
+            iframes = driver.find_elements(By.TAG_NAME, "iframe")
+            driver.switch_to.frame(iframes[result['iframeIndex']])
+            el = driver.find_element(By.CSS_SELECTOR, "[data-adclose='true']")
+            human_click(driver, el)
+            driver.switch_to.default_content()   # always switch back
+        else:
+            el = driver.find_element(By.CSS_SELECTOR, "[data-adclose='true']")
+            human_click(driver, el)
+
+        print("✅ Ad span closed")
+        return True
+
+    except Exception as e:
+        print(f"⚠️ Click failed: {e}")
+        driver.switch_to.default_content()   # safety restore on failure
+    return False
+
+
+
+
+def shrinkearn_main(driver):
+    if random.randint(1, 10) >= 8:
+        print('random Move')
+        move_human_os(random.randint(100, 800), random.randint(100, 500))
+
+    try:
+        wait, driver = wait_for_load_state(driver, state="interactive", timeout=10, wait=False)
+        if not wait:
+            return
+
+        # ── SINGLE execute_script: title + url + consent + both branch logic ──
+        script_code = """
+
+const title = document.title;
+const url   = window.location.href;
+const isHealthShield = title.includes('Health Shield');
+
+let consent_btn      = null;
+let action           = null;
+let value            = null;
+let close_span       = null;
+
+const isVis = (el) => {
+    if (!el) return false;
+    const s = window.getComputedStyle(el);
+    const r = el.getBoundingClientRect();
+    return s.display !== 'none' && s.visibility !== 'hidden' && r.width > 0;
+};
+
+const inView = (r) => {
+    return r.top >= 0 && r.bottom <= (window.innerHeight || document.documentElement.clientHeight);
+};
+
+const isVisConsent = (el) => {
+    if (!el) return false;
+    const s = window.getComputedStyle(el);
+    const r = el.getBoundingClientRect();
+    return s.display !== 'none' && r.width > 0 && r.height > 0;
+};
+
+const consent_selectors = [
+    '.qc-cmp2-summary-buttons button[mode="primary"]',
+    '#accept-btn',
+    'button[id="accept-btn"]',
+    'button[mode="primary"]',
+    '.fc-agreement-dialog .fc-primary-button',
+    'button[aria-label="Consent"]',
+    '#save .tp-button',
+    '.sd-cmp-2V7v7 .sd-button-primary',
+    '.fc-primary-button',
+];
+
+if (isHealthShield) {
+    const getLinkBtn  = document.querySelector('a.btn.btn-success.btn-lg.get-link');
+    const continueBtn = document.querySelector('button.btn.btn-primary.btn-captcha#continue');
+
+    let click_btn_exist = false;
+    if (isVis(getLinkBtn) && getLinkBtn.innerText.toLowerCase().includes('get link')) {
+        action = 'scroll_click';
+        value  = 'a.btn.btn-success.btn-lg.get-link';
+        click_btn_exist = true;
+    } else if (isVis(continueBtn) && !continueBtn.disabled && continueBtn.innerText.toLowerCase().includes('continue')) {
+        action = 'scroll_click';
+        value  = 'button.btn.btn-primary.btn-captcha#continue';
+        click_btn_exist = true;
+    }
+
+    if (click_btn_exist) {
+        const spans = document.querySelectorAll('span');
+        for (const el of spans) {
+            const s = el.getAttribute('style') || '';
+            if (
+                s.includes('width: 35%')        &&
+                s.includes('position: absolute') &&
+                s.includes('left: 0px')          &&
+                s.includes('bottom: 0px')
+            ) {
+                const innerText = (el.innerText || '').trim().toLowerCase();
+                if (innerText.includes('close')) {
+                    el.setAttribute('data-adclose', 'true');
+                    close_span = true;
+                    break;
+                }
+            }
+        }
+    }
+
+} else {
+    // ── shrinkearn normal branch ─────────────────────────────────
+    const targets = ["#getnewlink", "#startButton", "#message .wp2continuelink"];
+    for (const sel of targets) {
+        const el = document.querySelector(sel);
+        if (isVis(el) && inView(el.getBoundingClientRect())) {
+            action = 'click'; value = sel; break;
+        }
+    }
+    if (!value) {
+        let closest = null, minD = Infinity;
+        for (const sel of targets) {
+            const el = document.querySelector(sel);
+            if (isVis(el)) {
+                const d = Math.abs(el.getBoundingClientRect().top);
+                if (d < minD) { minD = d; closest = sel; }
+            }
+        }
+        if (closest) { action = 'scroll_click'; value = closest; }
+    }
+
+    for (const sel of consent_selectors) {
+        const btn = document.querySelector(sel);
+        if (btn && isVisConsent(btn)) {
+            consent_btn = sel;
+            break;
+        }
+    }
+}   // ← closes if/else — only ONE closing brace here, was TWO before
+
+return {
+    title:          title,
+    url:            url,
+    isHealthShield: isHealthShield,
+    consent_btn:    consent_btn,
+    action:         action,
+    value:          value,
+    close_span:     close_span,
+};
+
+
+
+        """   # ← replaces: title + url + accept_consent_popups JS
+               #             + master_logic_js (either branch) = 4 calls → 1
+        result = driver.execute_script(script_code)
+        title       = result['title']
+        stealth_url = result['url']
+        close_spang =result['close_span']
+        print(stealth_url)
+        print(title)
+        print(close_spang)
+        if 'chrome-error://chromewebdata/' in stealth_url:
+            print('chrome-error is detect')
+            #driver.close()
+            return "chrome-error"
+        
+        if is_direct_resource_link(stealth_url):
+            print('link is detect')
+            driver.close()
+            return
+
+        # ── consent ──────────────────────────────────────────────────────
+        if result['consent_btn']:
+            accept_consent_popups(driver)   # 1 call only when needed
+
+        if close_spang:
+            try:
+                print("🎯 Close span found, clicking...")
+                # find_element works because we stamped data-adclose on it in JS
+                el_close = driver.find_element(By.CSS_SELECTOR, "[data-adclose='true']")   # 1 call
+                human_click(driver, el_close)
+                time.sleep(0.2)
+            except Exception as e:
+                print("Failed to click close span:", e)
+
+        # ── Health Shield cloudflare check (pyautogui only, 0 API calls) ─
+        if result['isHealthShield']:
+            print('Health shield found')
+            close_shrink_ad_span(driver)
+            try:
+                x, y = pyautogui.locateCenterOnScreen(
+                    "C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png",
+                    confidence=0.6)
+                pyautogui.click(x, y, duration=1)
+                time.sleep(1)
+                pyautogui.click(x, y, duration=1)
+                time.sleep(5)
+            except:
+                pass
+            regiong = get_browser_region()
+            try:
+                # 1. Get the full box instead of just the center
+                # Box = (left, top, width, height)
+                box = pyautogui.locateOnScreen("closeadbts.png",region=regiong, confidence=0.99)
+                
+                if box:
+                    target_x = (box.left + (box.width // 2)) - 50
+                    target_y = (box.top + (box.height // 2))
+                    
+                    print(f"🎯 Target Acquired: X={target_x}, Y={target_y}")
+                    
+                    # 3. Perform the click
+                    pyautogui.click(target_x, target_y, duration=0.2)
+
+                else:
+                    print("No Close Ad video Found")
+            except Exception as e:
+                print("No Close Ad video Found")
+                #pass
+        else:
+            print('at shrinkearn pages')
+
+        # ── click the pre-found button ────────────────────────────────────
+        if result['value']:
+            el = driver.find_element(By.CSS_SELECTOR, result['value'])   # 1 call
+            if result['action'] == 'scroll_click':
+                driver.execute_script(
+                    "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", el)   # 1 call
+                time.sleep(0.2)
+            human_click(driver, el)
+            print(f"✅ Fast Action: {result['action']} on {result['value']}")
+            if result['isHealthShield']:
+                pass
+            else:
+                time.sleep(1)
+                result = driver.execute_script(script_code)
+                if result['value']:
+                    el = driver.find_element(By.CSS_SELECTOR, result['value'])
+                    if result['action'] == 'scroll_click':
+                        driver.execute_script(
+                            "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", el)   # 1 call
+                        time.sleep(0.2)
+                    human_click(driver, el)
+                    print(f"✅ Fast Action: {result['action']} on {result['value']}")
+                else:
+                    print('No more btns Srinkearn')
+        else:
+            print("∅ No target buttons found.")
+            return None
+
+    except Exception as e:
+        print('ERR Shrinkearn:', e)
+
+
+def cuttyio_main(driver):
+    if random.randint(1,10) >= 8:
+        print('random Move')
+        move_human_os(random.randint(100,800), random.randint(100,500))
+
+    try:
+        wait, driver = wait_for_load_state(driver, state="interactive", timeout=10, wait= False)
+        if wait:
+            title = driver.execute_script("return document.title;")
+            stealth_url = driver.execute_script("return window.location.href;")
+            print(stealth_url)
+            print(title)
+            if 'github' in stealth_url:
+                print('link is detect')
+                driver.close()
+            accept_consent_popups(driver)
+            print('Cutty page load')
+            try:
+                x, y = pyautogui.locateCenterOnScreen("C:/Users/Administrator/Downloads/MFV6-main/MFV6-main/images/cloudflare_box_win10.png", confidence=0.6)
+                pyautogui.click(x, y,duration=1)
+                time.sleep(1)
+                pyautogui.click(x, y,duration=1)
+                time.sleep(5)
+                
+
+            except Exception as e:
+                pass
+            # The JS script above (stored as a string)
+            find_btn_script = """
+const findAndPrepareButton = () => {
+// Select all buttons with the ID or Class provided
+const buttons = document.querySelectorAll('button#submit-button, button.vhit');
+
+for (let btn of buttons) {
+    const text = (btn.innerText || btn.value || "").trim().toLowerCase();
+    const style = window.getComputedStyle(btn);
+    const rect = btn.getBoundingClientRect();
+
+    // 1. Basic Filters: Skip if "please wait", hidden, or disabled
+    if (text.includes("please wait") || text.includes("...") ) continue;
+    if (btn.disabled || style.display === 'none' || style.visibility === 'hidden' || style.opacity < 0.1) continue;
+
+    // 2. Check if it's actually in the DOM with size
+    if (rect.width === 0 || rect.height === 0) continue;
+
+    // 3. Viewport & Scrolling Logic
+    const isVisibleInViewport = (
+        rect.top >= 0 &&
+        rect.left >= 0 &&
+        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+        rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+
+    if (!isVisibleInViewport) {
+        console.log("DEBUG: Button found but off-screen. Scrolling...");
+        btn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Return 'scrolled' so Python knows to wait a split second for the animation
+        return { status: "scrolled", ref: btn.getAttribute('data-ref') };
+    }
+
+    // 4. Obstruction check (Clearing invisible overlays)
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    const topEl = document.elementFromPoint(x, y);
+    if (topEl && topEl !== btn && !btn.contains(topEl)) {
+        // If it's a typical transparent ad overlay, hide it
+        if (window.getComputedStyle(topEl).opacity < 0.5) {
+            topEl.style.setProperty('display', 'none', 'important');
+        }
+    }
+
+    return { status: "ready", ref: btn.getAttribute('data-ref'), text: text };
+}
+return { status: "not_found" };
+};
+
+return findAndPrepareButton();
+"""
+
+            result = driver.execute_script(find_btn_script)
+            
+            if result['status'] == "scrolled":
+                print(f"Scrolling to button: {result['ref']}")
+                time.sleep(1.5) # Wait for smooth scroll to finish
+                # Re-run once to confirm it's now in view
+                result = driver.execute_script(find_btn_script)
+
+            if result['status'] == "ready":
+                data_ref = result['ref']
+                print(f"Button {data_ref} ('{result['text']}') is ready for human click")
+                
+                # Target the specific button found by JS using its data-ref and text
+                # This is safer than just ID since ID is duplicated in your HTML
+                try:
+                    xpath = f"//button[@data-ref='{data_ref}' and not(@disabled)]"
+                    btn_element = driver.find_element(By.XPATH, xpath)
+                    
+                    # Execute human click
+                    human_click(driver, btn_element)
+                    print(f"Successfully clicked {data_ref}")
+                    return
+                except Exception as e:
+                    print(f"Error locating button after JS check: {e}")
+            else:
+                print('No valid clickable button found yet.')
+                return
+            
+    except Exception as e:
+        pass
+
+def close_ad_overlay_fast(driver):
+    # This script targets the container first, then the specific button.
+    # It avoids searching the entire DOM.
+    fast_find_js = """
+    // 1. Target the overlay container by its unique centered-flex style
+    // Usually these overlays are high-level children of <body> or a main wrapper
+    const containers = document.querySelectorAll('div[style*="position: absolute"][style*="left: 50%"][style*="top: 50%"]');
+    
+    for (const div of containers) {
+        // 2. Check for the 'Ad' marker or the specific Image source 
+        // This confirms it's the specific overlay we're looking for
+        if (div.innerText.includes('Ad') || div.querySelector('img[src*="bobapsoabauns.com"]')) {
+            
+            // 3. Narrow search only WITHIN this div for the 'Close' button
+            const closeBtn = Array.from(div.querySelectorAll('span')).find(s => 
+                s.innerText.trim().toLowerCase() === 'close' || 
+                window.getComputedStyle(s).animationName.includes('showButtonTimerText')
+            );
+
+            if (closeBtn) {
+                // If the span is the inner one, we want the clickable parent span
+                const target = closeBtn.tagName === 'SPAN' && closeBtn.parentElement.tagName === 'SPAN' 
+                               ? closeBtn.parentElement : closeBtn;
+                
+                target.setAttribute('data-target-overlay', 'true');
+                return true;
+            }
+        }
+    }
+    return false;
+    """
+
+    try:
+        # Execute the targeted search
+        if driver.execute_script(fast_find_js):
+            btn = driver.find_element(By.CSS_SELECTOR, "[data-target-overlay='true']")
+            
+            # Use your human_click logic
+            human_click(driver, btn)
+            print("🎯 Snipped the 'Close' overlay.")
+            return True
+    except:
+        pass
+    return False
+
+
+
+def shrinkme_main(driver):
+    btn1_clicked = False
+    try:
+        if random.randint(1,10) >= 8:
+            print('random Move')
+            move_human_os(random.randint(100,800), random.randint(100,500))
+
+        wait, driver = wait_for_load_state(driver, state="interactive", timeout=10, wait= False)
+        if wait:
+            title = driver.execute_script("return document.title;")
+            stealth_url = driver.execute_script("return window.location.href;")
+            print(stealth_url)
+            print(title)
+            if 'workout' in stealth_url:
+                print('link is detect')
+                driver.close()
+            accept_consent_popups(driver)
+            close_ad_overlay_fast(driver)
+            if 'ShrinkMe.io' in title:
+                master_logic_js = """
+                        const selectors = {
+                           
+                            getLink: ".btn.btn-success.btn-lg.get-link",
+                            continueBtn: "button.btn.btn-primary",
+                            
+                        };
+
+                        const isVis = (el) => {
+                            if (!el) return false;
+                            const style = window.getComputedStyle(el);
+                            const rect = el.getBoundingClientRect();
+                            return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0;
+                        };
+
+                        const inView = (rect) => {
+                            return rect.top >= 0 && rect.bottom <= (window.innerHeight || document.documentElement.clientHeight);
+                        };
+
+                        // Priority 2: Check Get Link / Continue
+                        const gl = document.querySelector(selectors.getLink);
+                        if (isVis(gl) && gl.innerText.toLowerCase().includes('get link')) return { action: 'scroll_click', type: 'css', value: selectors.getLink };
+
+                        const cb = document.querySelector(selectors.continueBtn);
+                        if (isVis(cb) && !cb.disabled && cb.innerText.toLowerCase().includes('click here to continue')) return { action: 'scroll_click', type: 'css', value: selectors.continueBtn };
+
+                        return null;
+                        """
+
+                result = driver.execute_script(master_logic_js)
+
+                if result:
+                    action = result['action']
+                    val = result['value']
+                    
+
+                    el = driver.find_element(By.CSS_SELECTOR, val)
+
+                    if action == 'scroll_click':
+                        driver.execute_script("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});",  el)
+                        time.sleep(0.2) # Shortest possible wait
+                    
+                    human_click(driver, el)
+                    print(f"✅ Fast Action: {action} on {val}")
+                
+            else:
+                print('SHrin site')
+                # 1. Define target selectors
+                selectors = [".center-link-items #btn1", '#nextPage #btn2', ".center-link-items .tp-btn.tp-blue", ".center-link-items #btn2", "#tp-snp2" ];
+                
+                # The no-nonsense rescue script for Powergram
+                rescue_script = """
+                const selectors = arguments[0];
+                const styleId = 'ui-helper-styles';
+
+                // 1. Inject Styles
+                if (!document.getElementById(styleId)) {
+                    const style = document.createElement('style');
+                    style.id = styleId;
+                    style.innerHTML = `
+                        .btn-rescue-active { z-index: 2147483647 !important; position: relative !important; outline: 3px solid #00FF00 !important; }
+                        .obstacle-ghost { pointer-events: none !important; opacity: 0 !important; visibility: hidden !important; }
+                    `;
+                    document.head.appendChild(style);
+                }
+
+
+                const isVis = (el) => {
+                    if (!el) return false;
+                    const style = window.getComputedStyle(el);
+                    const rect = el.getBoundingClientRect();
+                    return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0;
+                };
+
+                const inView = (rect) => {
+                    return rect.top >= 0 && rect.bottom <= (window.innerHeight || document.documentElement.clientHeight);
+                };
+
+
+                // Priority 3: Check Viewport Targets
+                for (const sel of selectors) {
+                    const el = document.querySelector(sel);
+                    if (isVis(el) && inView( el.getBoundingClientRect())){
+
+                            const rect = el.getBoundingClientRect();
+                            const x = rect.left + rect.width / 2;
+                            const y = rect.top + rect.height / 2;
+
+                            let topEl = document.elementFromPoint(x, y);
+                            let loopLimit = 0;
+                            while (topEl && topEl !== el && !el.contains(topEl) && topEl !== document.documentElement && loopLimit < 15) {
+                                topEl.classList.add('obstacle-ghost');
+                                topEl = document.elementFromPoint(x, y);
+                                loopLimit++; 
+                            }
+                            
+                            // 3. Pop to top
+                            el.scrollIntoView({ behavior: "smooth", block: "center" });
+                            el.classList.add('el-rescue-active');
+                            return sel;
+                            
+                            
+                            }
+                }
+
+                // Priority 4: Find Closest
+                let closest = null; let minD = Infinity;
+                for (const sel of selectors) {
+                    const el = document.querySelector(sel);
+                    if (isVis(el)) {
+                        const d = Math.abs(el.getBoundingClientRect().top);
+                        if (d < minD) { minD = d; closest = sel; }
+                    }
+                }
+                if (closest){
+                            const el = document.querySelector(closest);
+                            const rect = el.getBoundingClientRect();
+                            const x = rect.left + rect.width / 2;
+                            const y = rect.top + rect.height / 2;
+
+                            let topEl = document.elementFromPoint(x, y);
+                            let loopLimit = 0;
+                            while (topEl && topEl !== el && !el.contains(topEl) && topEl !== document.documentElement && loopLimit < 15) {
+                                topEl.classList.add('obstacle-ghost');
+                                topEl = document.elementFromPoint(x, y);
+                                loopLimit++; 
+                            }
+                            
+                            // 3. Pop to top
+                            el.scrollIntoView({ behavior: "smooth", block: "center" });
+                            el.classList.add('el-rescue-active');
+                            return closest;
+                            
+                            
+                            }
+
+                return null;
+
+
+                """
+                found_selector = driver.execute_script(rescue_script,selectors)
+
+                if found_selector:
+                    print(f"✅ Found and Rescued: {found_selector}")
+
+                    # 4. Get the physical element object in Python
+                    btn_element = driver.find_element(By.CSS_SELECTOR, found_selector)
+                    
+                    # 5. Execute your Adaptive PyAutoGUI Click (The "Human" part)
+                    # We reuse the logic that worked perfectly for you
+                    human_click(driver, btn_element)
+
+                    
+                    print(f"🎯 OS Click Success on {found_selector}")
+                    btn1_clicked =  True
+                    
+                
+                else:
+                    print("❌ No valid buttons found (or they are in 'Wait' state).")
+                    btn1_clicked =  False
+
+
+
+
+                if btn1_clicked:
+                    time.sleep(1)
+                    found_selector = driver.execute_script(rescue_script, selectors)
+                    if found_selector:
+                        print(f"✅ Found and Rescued: {found_selector}")
+                        # 4. Get the physical element object in Python
+                        btn_element = driver.find_element(By.CSS_SELECTOR, found_selector)
+                        # 5. Execute your Adaptive PyAutoGUI Click (The "Human" part)
+                        # We reuse the logic that worked perfectly for you
+                        human_click(driver, btn_element)
+                        print(f"🎯 OS Click Success on {found_selector}")
+                        btn1_clicked =  True
+                        selectors.remove(found_selector)
+                    else:
+                        print("❌ No valid buttons found (or they are in 'Wait' state).")
+                        btn1_clicked =  False
+
+                if btn1_clicked:
+                    time.sleep(1)
+                    found_selector = driver.execute_script(rescue_script, selectors)
+                    if found_selector:
+                        print(f"✅ Found and Rescued: {found_selector}")
+                        # 4. Get the physical element object in Python
+                        btn_element = driver.find_element(By.CSS_SELECTOR, found_selector)
+                        # 5. Execute your Adaptive PyAutoGUI Click (The "Human" part)
+                        # We reuse the logic that worked perfectly for you
+                        human_click(driver, btn_element)
+                        print(f"🎯 OS Click Success on {found_selector}")
+                        btn1_clicked =  True
+                    else:
+                        print("❌ No valid buttons found (or they are in 'Wait' state).")
+                        btn1_clicked =  False
+                
+                
+
+
+
+
+
+        else:
+            print('waiting for page to fully load gp')
+
+    except Exception as e:
+        print('Error at Gplinks:',e)
+
+
+
+def is_direct_resource_link(url):
+    """
+    Checks if a URL contains any of the blocked/resource keywords.
+    Returns True if a match is found, False otherwise.
+    """
+    if not url:
+        return False
+        
+    # Your specific list of keywords
+    resource_keywords = [
+
+        "huggingface.co",
+        "huggingface",
+        "mediafire.com",
+        "gamemodding.com",
+        "gamemodding",
+        "gta5-mods.com",
+        "gta5-mods",
+        "aether.mom",
+"limewire",
+"dogegamer",
+        "hianime.to",
+        "hianime",
+        "4anime.gg",
+        "4anime",
+        "simkl.com",
+        "simkl",
+        "aliexpress",
+        "animekai.me",
+        "animekai.to",
+        "animekai",
+        "animetosho.org",
+        "codepen.io",
+        "github.com",
+        "megaup.site",
+        "pastebin.com",
+        "simkl.com",
+        "vikingf1le.us.to",
+        "vikingfile.com",
+
+        "explore.org",
+        "demo.",
+        "demo.dynamicslab.ai",
+        "learn-anything",
+        "hacksplaining",
+        "ifixit.com",
+        "human.biodigital",
+        "photoskop.com",
+        "typingclub",
+        "myemulator",
+        "remove.photos",
+        "secretflixcodes",
+        "3dtuning",
+        "workout.cool",
+        "x-minus",
+        "buildcores",
+        "yoprintables",
+        "remusic.ai",
+        "chronas",
+        "faceonlive",
+
+        "pointerpointer.com",
+        "neal.fun",
+        "onemillioncheckboxes.com",
+        "staggeringbeauty.com",
+        "eelslap.com",
+        "shademap.co",
+        "homicide.watch",
+        "worldometers.info",
+        "webwithoutwords.com",
+        "cookingforengineers.com",
+        "notalwaysright.com",
+        "artofmanliness.com",
+        "cracked.com",
+        "quickdraw.withgoogle.com",
+        "play2048.co",
+        "9gag.com",
+        "iwastesomuchtime.com",
+        "stellarium-web.org",
+        "fallingfalling.com",
+        "zoomquilt.org",
+        'mediafire',
+        'filebin',
+        "patreon.com",
+        "getintopc.com",
+        "mega.nz",
+        "drive.google.com",
+        "vidu.com",
+        "drive.usercontent.google.com",
+        "gtaxscripting.blogspot.com",
+
+        "moewalls.com",
+        "cursify.vercel.app",
+        "cursify",
+        "dynamicslab",
+        'contentcore.xyz',
+        'pixelmotion.art',
+        'catbox.moe',
+        'litterbox.catbox.moe',
+        'napkin.ai',
+        'wolframalpha.com',
+        'spline.design',
+        'freesewing.eu',
+        'chefgpt.xyz',
+        'asciiart.eu',
+
+        "docs.google.com",
+        "thenewscasts.com"
+    ]
+
+    # Convert URL to lowercase once for comparison
+    url_lower = url.lower()
+
+    for keyword in resource_keywords:
+        if keyword.lower() in url_lower:
+            print(f"🚫 Match Found: URL contains '{keyword}'")
+            return True
+            
+    return False
+
+
+#############Random item Selections####################################
+
+
+
+
+
+def get_item_from_list(list_name, item_number, filename=r"C:\Users\Administrator\Downloads\MFV6-main\MFV6-main\shortlink_urls.txt"):
+    try:
+        if not os.path.exists(filename):
+            print("❌ Error: Database file not found.")
+            return None
+
+        with open(filename, "r") as f:
+            data = json.load(f)
+
+        if list_name in data:
+            target_list = data[list_name]
+            
+            # --- NEW RANDOM LOGIC ---
+            if str(item_number).lower() == "random":
+                result = random.choice(target_list)
+                print(f"🎲 Randomly picked from '{list_name}': {result}")
+                return result
+            
+            # --- ORIGINAL NUMBER LOGIC ---
+            index = int(item_number) - 1
+            if 0 <= index < len(target_list):
+                result = target_list[index]
+                print(f"🔍 Found in '{list_name}' at position {item_number}: {result}")
+                return result
+            else:
+                print(f"❌ Error: Position {item_number} is out of range for list '{list_name}'.")
+                time.sleep(999999)
+        else:
+            print(f"❌ Error: List name '{list_name}' does not exist.")
+            time.sleep(999999)
+            
+    except Exception as e:
+        print(f"⚠️ Error reading file: {e}")
+        time.sleep(999999)
+    time.sleep(999999)
+
+
+
+def get_profile_by_line(line_number,filename=r"C:\Users\Administrator\Downloads\MFV6-main\MFV6-main\fingerprint_os.txt"):
+    try:
+        with open(filename, "r") as f:
+            lines = f.readlines()
+            
+            # Adjust for 0-based indexing (Line 64 is index 63)
+            target_index = int(line_number) - 1
+            
+            if 0 <= target_index < len(lines):
+                data = lines[target_index].strip().split("|")
+                
+                # Assign to your variables
+                _current_id = data[0]
+                _device_os = data[1]
+                _chrome_version = data[2]
+                
+                print(f"Loaded Profile {line_number}: OS={_device_os}, Chrome={_chrome_version}")
+                return _device_os, _chrome_version
+            else:
+                print("Error: Line number out of range (1-100 only).")
+                print(line_number)
+                #return "Windows 11", "145"
+                time.sleep(9999)
+                
+    except FileNotFoundError:
+        print("Error: profiles.txt not found. Run generate_profile_list() first.")
+        time.sleep(9999)
+
+
+
+def update_Url_shortners():
+    # URL to the raw GitHub file
+    url = "https://raw.githubusercontent.com/mcnutthelen8/MFV6/refs/heads/main/claimcoins.json"
+    
+    # Path to your local content.js
+    file_path = r"C:\Users\Administrator\Downloads\MFV6-main\MFV6-main\shortlink_urls.txt"
+
+    try:
+        # Fetch the content from GitHub
+        response = requests.get(url)
+        
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
+            js_content = response.text
+
+            # Write the content to content.js
+            with open(file_path, "w", encoding="utf-8") as f:
+                f.write(js_content)
+            
+            print(f"[Success] content.js updated from GitHub.")
+        else:
+            print(f"[Error] Failed to fetch file. Status code: {response.status_code}")
+            
+    except Exception as e:
+        print(f"[Error] An unexpected error occurred: {e}")
+
+
+
+def get_city_slug(tz_string):
+    if not tz_string: return ""
+    # Replace underscores with slashes to handle all formats, then split
+    parts = tz_string.replace('_', '/').split('/')
+    # Return the last part, lowercased and stripped
+    return parts[-1].strip().lower()
 
 update_content_extension()
+update_Url_shortners()
 export_farm_to_txt(f"farm{farm_id}","traffic_flow.txt")  # saves custom filename
 gplink_bug = False
 gplink_bug = get_gplink_bug_status()
@@ -5970,918 +4966,504 @@ tux_stat_check = 5
 timeoutforlink = 5000
 testing = True
 preip = ''
-window4_meorearn = 1
+nochange_ip = False
+sameip = ''
+same_timezones = ''
 
-win1time = 1
-win2time = 1
-win3time = 1
 
-browser_redtime = 1
+testrun = True
 
-while True:
-    window0 = None
-    window1 = None
-    window2 = None
-    window3 = None
-    window4 = None
-    cutty_window = None
-    browsero_Failed = True
-    ip = None
-    proxy = None
-    proxy_type = None
-    country = None
-    fingerpintid= None
-    adspowerfreeze = 1
 
-    window1_lastclick = time.time()
-    window2_lastclick = time.time()
-    window3_lastclick = time.time()
-    window4_lastclick = time.time()
-    layout = 1
-    print("Starting main loop...")
-    if testing:
+_device_os = "Windows 11" # Windows 10 , Windows 11, Linux, Mac OS X 15 , Mac OS X 26 , Mac OS X 14
+_device_type = "windows"
+_chrome_version = "144"
+
+
+API_KEY = adspower_api_grabber()
+
+
+
+
+while testrun:
+        start_time = time.time()
+        focus_and_close_window('SunBrowser')
+        close_chrome()
+        time.sleep(1)
         location_changes += 1
         tux_stat_check += 1
-        if tux_stat_check >= 5 and Mysterium_Mode == False or location_changes >= 96 and Mysterium_Mode == False:
-            update_content_extension()
-            gplink_bug = get_gplink_bug_status()
-            print("gplink_bug status:", gplink_bug)
-            focus_and_close_window('Software Update')
-            running = any("tuxler".lower() in (p.info['name'] or "").lower() 
-                        for p in psutil.process_iter(['name']))
-            if running:
-                print("Tuxler started successfully ✅")
+        if testing:
+            if tux_stat_check >= 5 and Mysterium_Mode == False or location_changes >= 97 and Mysterium_Mode == False:
+                update_content_extension()
+                gplink_bug = get_gplink_bug_status()
+                print("gplink_bug status:", gplink_bug)
+                focus_and_close_window('Software Update')
+                running = any("tuxler".lower() in (p.info['name'] or "").lower() 
+                            for p in psutil.process_iter(['name']))
+                if running:
+                    print("Tuxler started successfully ✅")
 
-            else:
-                app_path = r"C:\Program Files (x86)\tuxlerVPN\tuxlerVPN.exe"
-                process = subprocess.Popen([app_path], shell=False)
-                print("Failed to start Tuxler ❌")
-                tux_stat_check += 10 
-                continue
-            expire, location_changes = tuxler_stat_check()
-            tux_stat_check = 1
-            export_farm_to_txt(f"farm{farm_id}","traffic_flow.txt")  # saves custom filename
-
-
-        if expire < 1 and Mysterium_Mode == False or location_changes >= 100 and Mysterium_Mode == False:
-            print("Tuxler needs attention, exiting...")
-            print("Tuxler Expire days:", expire, "Location changes used:", location_changes)
-            if tuxler_account_changer():
-                location_changes = 1
-                continue
-            for i in range(30):
-                focus_tuxler()
-                time.sleep(2)
-                pyautogui.click(326,720)
-                
-                
-                time.sleep(1)
-                pyautogui.click(326,757)
-                try:
-                    x, y = pyautogui.locateCenterOnScreen('tuxler_on.png', confidence=0.9)
-                    if x and y:
-                        pyautogui.click(x, y)
-                        time.sleep(3)
-                        break
-                        
-                except Exception as e:
-                    pass
-                try:
-                    x, y = pyautogui.locateCenterOnScreen('tuxler_off.png', confidence=0.9)
-                    if x and y:
-                        break
-                        
-                except Exception as e:
-                    print('tuxler off not found')
-                    pyautogui.hotkey('alt','tab')
-                    time.sleep(1)
-                    pyautogui.press('esc')
-                    time.sleep(1)
-            focus_and_close_window('SunBrowser')
-            while True:
-                if is_between_12pm_and_6pm():
-                    print("Yes, current time in Sri Lanka is between 12 PM and 6 PM.")
-                    time.sleep(100)
                 else:
-                    print("No, it's outside 12 PM - 6 PM in Sri Lanka.")
-                    break
+                    app_path = r"C:\Program Files (x86)\tuxlerVPN\tuxlerVPN.exe"
+                    process = subprocess.Popen([app_path], shell=False)
+                    print("Failed to start Tuxler ❌")
+                    tux_stat_check += 10 
+                    continue
+                expire, location_changes = tuxler_stat_check()
+                tux_stat_check = 1
+                export_farm_to_txt(f"farm{farm_id}","traffic_flow.txt")  # saves custom filename
+
+
+            if expire < 1 and Mysterium_Mode == False or location_changes >= 100 and Mysterium_Mode == False:
+                print("Tuxler needs attention, exiting...")
+                print("Tuxler Expire days:", expire, "Location changes used:", location_changes)
+                if tuxler_account_changer():
+                    location_changes = 1
+                    continue
+                for i in range(30):
+                    focus_tuxler()
+                    time.sleep(2)
+                    pyautogui.click(326,720)
                     
-        
-        
-        focus_and_maximize_window('SunBrowser')
-        focus_and_maximize_window('SunBrowser')
-        focus_and_maximize_window('SunBrowser')
-        focus_and_maximize_window('SunBrowser')
-        layout = 1
-
-        ggtimer = time.time()
-        browser_ready = create_browser()
-
-        try:
-            x, y = pyautogui.locateCenterOnScreen('limit_adpower.png', region=[927,173,480,260],confidence=0.9)
-            if x and y:
-                print("adpower browser Limited")
-                continue
-        except Exception as e:
-            pass
-        if not browser_ready:
-            print("Browser not ready, retrying...")
-            continue
-        time.sleep(15)
-        focus_and_maximize_window('Chromium')
-        focus_and_maximize_window('P-')
-        focus_and_maximize_window('SunBrowser')
-        focus_and_maximize_window('New Tab')
-        for i in range(40):
-            clipboard.copy('')
-            focus_and_maximize_window('Chromium')
-            focus_and_maximize_window('SunBrowser')
-
-            try:
-                x, y = pyautogui.locateCenterOnScreen('bookmarksggg.png', confidence=0.7)
-                if x and y:
-                    pyautogui.rightClick(334,96)
+                    
                     time.sleep(1)
-                    pyautogui.click(388,573)    
-                    time.sleep(1)    
+                    pyautogui.click(326,757)
                     try:
-                        x, y = pyautogui.locateCenterOnScreen('bookmarksggg.png', confidence=0.7)
+                        x, y = pyautogui.locateCenterOnScreen('tuxler_on.png', confidence=0.9)
                         if x and y:
-                            pyautogui.rightClick(334,96)
-                            time.sleep(1)
-                            pyautogui.click(388,604)    
-                            time.sleep(1)   
-                    except Exception as e:   
-                        print("Second bookmark close failed")    
+                            pyautogui.click(x, y)
+                            time.sleep(3)
+                            break
+                            
+                    except Exception as e:
+                        pass
                     try:
-                        x, y = pyautogui.locateCenterOnScreen('bookmarksggg.png', confidence=0.7)
+                        x, y = pyautogui.locateCenterOnScreen('tuxler_off.png', confidence=0.9)
                         if x and y:
-                            pyautogui.rightClick(334,96)
-                            time.sleep(1)
-                            pyautogui.click(388,543)    
-                            time.sleep(1)   
-                    except Exception as e:   
-                        print("Second3  bookmark close failed")       
-            except Exception as e:
-                try:
-                    x, y = pyautogui.locateCenterOnScreen('rektcaptcha_icon.png', region=[1653,31,261,61], confidence=0.9)
-                    if x and y:
-                        try:
-                            x, y = pyautogui.locateCenterOnScreen('clip_adspower.png', region=[956,80,348,192], confidence=0.9)
-                            if x and y:
-                                human_click(x, y, duration=1)
-                                time.sleep(1)
-                                if clipboard.paste() != '':
-                                    browsero_Failed = False
-                                    break
-
-                                    
-                        except Exception as e:
-                            print("Clipboard icon not found, retrying...", i)    
-                            try:
-                                x, y = pyautogui.locateCenterOnScreen('loaded_page.png', region=[60,33,77,58], confidence=0.95)
-                                if x and y:
-                                    adspowerfreeze += 1
-                                    if adspowerfreeze >= 6:
-                                        pyautogui.press('f5')
-                                        time.sleep(4)
-                                        adspowerfreeze = 1
-                                    print("Page loaded but adspowerfreeze not found, retrying...", adspowerfreeze)
-
-                                        
-                            except Exception as e:
-                                pass
-                except Exception as e:
-                    print("Rektcaptcha icon not found, retrying...", i)
-                    if i == 24:
+                            break
+                            
+                    except Exception as e:
+                        print('tuxler off not found')
+                        pyautogui.hotkey('alt','tab')
+                        time.sleep(1)
+                        pyautogui.press('esc')
+                        time.sleep(1)
+                focus_and_close_window('SunBrowser')
+                while True:
+                    if is_between_12pm_and_6pm():
+                        print("Yes, current time in Sri Lanka is between 12 PM and 6 PM.")
+                        time.sleep(100)
+                    else:
+                        print("No, it's outside 12 PM - 6 PM in Sri Lanka.")
+                        break
                         
-                        print("Rektcaptcha icon not found after 25 attempts, exiting...")
-                    time.sleep(3)
-        if browsero_Failed:
-            continue
+            if nochange_ip:
+                print('use same ip')
+                
 
-
-        result = ipcheck_handle(clipboard.paste())
-        if result:
-            ip = result["ip"]
-            is_clean = result["is_clean"]
-            proxy_type = result["type"]
-            country = result["country"]
-            if is_clean:
-                print(ip, is_clean, proxy_type, country)
+                ip, pc_good, tm_good , list_timezones =  checkip_selenium(sameip) #"151.73.1.91", True, True, list_timezones
+                if ip == sameip:
+                    
+                    list_timezones = same_timezones
+                nochange_ip = False
             else:
+                tuxler_changer()
+                ip, pc_good, tm_good , list_timezones =  checkip_selenium()
+
+            if not pc_good or not tm_good:
+                print("\n❌ Current IP is not suitable for testing. Please check your network settings or try again later.")
+                continue
+            if preip == ip:
+                restart_tuxler()
+                continue
+            script_elapsed_time = time.time() - start_time
+            script_seconds_only = int(script_elapsed_time)
+            print('Ip checked Time:', script_seconds_only)
+            delete_all_profiles()
+
+            time.sleep(1)
+            print('create profile')
+            _device_os, _chrome_version = get_profile_by_line(location_changes)
+            print(_device_os, _chrome_version)
+            user_id = create_profile(timezone_list =list_timezones, os_type=_device_type,os_version= _device_os, chrome_ver=_chrome_version)  # ← returns string directly now
+
+            if 'daily limit' == user_id:
+                nochange_ip = True
+                sameip = ip
+                same_timezones = list_timezones
+                reloginadspower()
                 continue
 
-            print(ip, is_clean, proxy_type, country)
+            if not user_id:
+                exit()
+            port_selenium, chromedriver_selenium = start_browser(user_id)
+            if 'daily limit' == chromedriver_selenium:
+                print('ADspowerLimit')
+                #time.sleep(88888)
+                nochange_ip = True
+                sameip = ip
+                same_timezones = list_timezones
+                reloginadspower()
+                continue
         else:
-            print("IP check failed")
-        if ip == preip:
-            restart_tuxler()
+            port_selenium, chromedriver_selenium = start_browser("k1alt6kr")
+            if 'daily limit' == chromedriver_selenium:
+                print('ADspowerLimit')
+                #time.sleep(88888)
+                reloginadspower()
+                continue
+        if not port_selenium:
+            exit()
+        
+
+        
+        time.sleep(5)
+
+        # 4. connect selenium
+        driver = connect_selenium(port_selenium, chromedriver_selenium)
+        driver.set_page_load_timeout(10)
+        script_elapsed_time = time.time() - start_time
+        script_seconds_only = int(script_elapsed_time)
+        print('Selenium Time:', script_seconds_only)
+        print("\n── IP check ────────────────────────────────────")
+
+        focus_and_maximize_window('Sunbrowser')
+
+
+
+
+        driver.get("https://api.ipify.org/")
+        
+        waitforpage, driver = wait_for_load_state(driver, state="complete", timeout=30, wait= True)
+        if waitforpage == False:
+            print('Page Loading Failed... ipifly')
             continue
+            
+
+        ipaddress = driver.find_element(By.TAG_NAME, "body").text.strip()
+        print(f"✅ IP: {ipaddress}")
+
+        if testing:
+            if ipaddress != ip :
+                print('IP missmatched',ipaddress, ip)
+                continue
+
+        
+        browser_tz_raw = driver.execute_script("return Intl.DateTimeFormat().resolvedOptions().timeZone;")
+        ip_tz_raw = list_timezones.get("timezone", "")
+
+        # 2. Normalize and extract the last part (e.g., 'cordoba')
+
+
+        browser_city = get_city_slug(browser_tz_raw)
+        ip_city = get_city_slug(ip_tz_raw)
+
+        print(f"Browser City: {browser_city} | IP City: {ip_city}")
+
+        # 3. Compare the "City" level instead of the full path
+        if browser_city == ip_city and browser_city != "":
+            print("✅ Timezone Match: Success")
+        else:
+            print(f"⚠️ Timezone Mismatch ({browser_city} vs {ip_city}): Potential Bot Flag")
+            #time.sleep(99999)
+            focus_and_close_window('SunBrowser')
+            close_chrome()
+            time.sleep(4)
+            port_selenium, chromedriver_selenium = start_browser(user_id)
+            driver = connect_selenium(port_selenium, chromedriver_selenium)
+
+        
+        script_elapsed_time = time.time() - start_time
+        script_seconds_only = int(script_elapsed_time)
+        print('Selenium Time:', script_seconds_only)
+        print("\n── IP check ────────────────────────────────────")
+
+        focus_and_maximize_window('Sunbrowser')
+        driver.get("https://api.ipify.org/")
+        
+        waitforpage, driver = wait_for_load_state(driver, state="complete", timeout=30, wait= True)
+        if waitforpage == False:
+            print('Page Loading Failed... ipifly')
+            continue
+            
+
+        ipaddress = driver.find_element(By.TAG_NAME, "body").text.strip()
+        print(f"✅ IP: {ipaddress}")
+
+        if testing:
+            if ipaddress != ip :
+                print('IP missmatched',ipaddress, ip)
+                continue
+
+
+
+        browser_rect = None
+        for attempt in range(5):
+            try:
+                # Ensure we are switched to the active tab
+                if len(driver.window_handles) > 0:
+                    driver.switch_to.window(driver.window_handles[0])
+                
+                browser_rect = driver.get_window_rect()
+                if browser_rect:
+                    break
+            except Exception as e:
+                print(f"⏳ Window not ready (Attempt {attempt+1}/5)...")
+                time.sleep(2)
+        
+        if not browser_rect:
+            print("❌ Critical Error: Could not grab browser geometry.")
+            continue
+
+        browser_rect = driver.get_window_rect()
+        nav_bar_height = driver.execute_script('return window.outerHeight - window.innerHeight;')
+        print(browser_rect, nav_bar_height)
+
+
+        
+        browser_tz_raw = driver.execute_script("return Intl.DateTimeFormat().resolvedOptions().timeZone;")
+        ip_tz_raw = list_timezones.get("timezone", "")
+
+        # 2. Normalize and extract the last part (e.g., 'cordoba')
+
+
+        browser_city = get_city_slug(browser_tz_raw)
+        ip_city = get_city_slug(ip_tz_raw)
+
+        print(f"Browser City: {browser_city} | IP City: {ip_city}")
+
+        # 3. Compare the "City" level instead of the full path
+        if browser_city == ip_city and browser_city != "":
+            print("✅ Timezone Match: Success")
+        else:
+            print(f"⚠️ Timezone Mismatch ({browser_city} vs {ip_city}): Potential Bot Flag")
+            continue
+
+
+        driver.set_page_load_timeout(10)
+        driver.implicitly_wait(10)
         preip = ip
-
-        browser_redtime = time.time() - ggtimer
-        ggtimer = time.time()
-        print(f"Browser ready in {int(browser_redtime)} seconds")
-        adding_extensions()
-        always_active()
-        browser_redtime2 = time.time() - ggtimer
-        ggtimer = time.time()
-        #pyautogui.hotkey('ctrl', 't')
-        #time.sleep(2)
-        #pyautogui.click(257,20)
-        #time.sleep(1)
-        #fingerpintid = fingerpint()
-        #pyautogui.hotkey('ctrl', 'w')
-
-        rek_ready = configure_rektcaptcha()
-
-        if not rek_ready :
-            print("Rektcaptcha not ready, retrying...")
+        print("\n── Extension Configure ────────────────────────────────────")
+        print("\n── Always on Configure ────────────────────────────────────")
+        driver.get("chrome-extension://ehllkhjndgnlokhomdlhgbineffifcbj/data/options/index.html")
+        waitforpage, driver = wait_for_load_state(driver, state="complete", timeout=30, wait= True)
+        if waitforpage == False:
+            print('Page Loading Failed... extension1')
             continue
-        browser_redtime3 = time.time() - ggtimer
-        ggtimer = time.time()
-    else:
-        focus_and_maximize_window('SunBrowser')
-    window1 = open_detatch_tab()
-    window2 = open_detatch_tab()
-    #cutty_window = open_detatch_tab()
-    if Indianxorshrink == False and hybridmode_indianxshrink == False:
-        window3 = open_detatch_tab()
-    if Indianxorshrink == True and hybridmode_indianxshrink == False:
-        window4 = open_detatch_tab()
-        window5 = open_detatch_tab()
-    if hybridmode_indianxshrink == True:
-        window3 = open_detatch_tab()
-        window4 = open_detatch_tab()
-        window5 = open_detatch_tab()
-    hyperwindow = 0
-    #hyperwindow = open_detatch_tab()
-    print("Window IDs:", window1, window2)
-    script_elapsed_time3 = time.time() - duration_time
-    duration_time_sec = int(script_elapsed_time3)
-    shrink_Timeout = False #checkodd(premadelist, location_changes)
-    browser_redtime4 = time.time() - ggtimer
-    ggtimer = time.time()
-    if testing and shrink_Timeout:
-        add_farm_activity(farmid=f"Farm{farm_id}", country= country, ipaddress= ip , duration = proxy_type, sites = f'{sites_done}x | 4 ', fingerprints_id= fingerpintid, tuxler_left=location_changes, expiredate=expire)
-
-    if testing and not shrink_Timeout:
-        add_farm_activity(farmid=f"Farm{farm_id}", country= country, ipaddress= ip , duration = proxy_type, sites = f'b1:{int(browser_redtime)}|b2:{int(browser_redtime2)}|b3:{int(browser_redtime3)} |w3:{int(browser_redtime4)} |w3:{win3time}|{sites_done} | 4', fingerprints_id= fingerpintid, tuxler_left=location_changes, expiredate=expire)
-
-    duration_time = time.time()
-    layout = 1
-    if layout == 1:
-        switch_to_window(window1)
-        pyautogui.click(493,19, duration = 0.4)
-        shorlink = random_link('link1')
-        open_link(link = shorlink ,newtab = False)
-        time.sleep(2)
-        switch_to_window(window2)
-        pyautogui.click(493,19, duration = 0.4)
-        shorlink = random_link('link2')
-        open_link(link = shorlink ,newtab = False)
-        time.sleep(2)
-
-        if Indianxorshrink == False and hybridmode_indianxshrink == False:
-            switch_to_window(window3)
-            pyautogui.click(493,19, duration = 0.4)
-            shorlink = random_link('link4')
-            open_link(link = shorlink ,newtab = False)
-            time.sleep(2)
+            
+        wait = WebDriverWait(driver,20)
+        textarea = wait.until(EC.visibility_of_element_located((By.ID, "hosts")))
         
-        hyperrefreshtime1 = random.randint(200, 500)
-        hyperrefreshtime2 = random.randint(200, 600)
-        hyperrefreshtime3 = random.randint(400, 900)
-        hyperrefreshtime4 = random.randint(120, 500)
-
-        hyperrefreshstat1 = False
-        hyperrefreshstat2 = False
-        hyperrefreshstat3 = False
-        hyperrefreshstat4 = False
-
-        if Indianxorshrink == True and hybridmode_indianxshrink == False:
-            switch_to_window(window4)
-            pyautogui.click(493,19, duration = 0.4)
-            window4_meorearn = check_line_value(location_changes)
-            print("Window 4 meorearn status:", window4_meorearn, "Location changes:", location_changes)
-            if window4_meorearn:
-                shorlink = random_link('link5')
-            else:
-                shorlink = random_link('link8')
-            open_link(link = shorlink ,newtab = False)
-
-
-            switch_to_window(window5)
-            pyautogui.click(493,19, duration = 0.4)
-            #window5_meorearn = check_line_value(location_changes)
-            #print("Window 5 meorearn status:", window5_meorearn, "Location changes:", location_changes)
-            if window4_meorearn:
-                shorlink = random_link('link8')
-            else:
-                shorlink = random_link('link5')
-            open_link(link = shorlink ,newtab = False)
-        #switch_to_window(window4)
-        #pyautogui.click(493,19, duration = 0.4)
-        #if window4_meorearn == 1:
-        #    shorlink = random_link('link8')
-        #    #window4_meorearn = 0
-        #else:
-        #    shorlink = random_link('link5')
-        #open_link(link = shorlink ,newtab = False)
-        #time.sleep(2)
-        if hybridmode_indianxshrink == True:
-            switch_to_window(window3)
-            pyautogui.click(493,19, duration = 0.4)
-            shorlink = random_link('link4')
-            open_link(link = shorlink ,newtab = False)
-            time.sleep(2)
-
-            switch_to_window(window4)
-            pyautogui.click(493,19, duration = 0.4)
-            window4_meorearn = check_line_value(location_changes)
-            print("Window 4 meorearn status:", window4_meorearn, "Location changes:", location_changes)
-            if window4_meorearn:
-                shorlink = random_link('link5')
-            else:
-                shorlink = random_link('link8')
-            open_link(link = shorlink ,newtab = False)
+        # 3. Clear existing content and type '*'
+        # textarea.clear() sometimes fails on extension pages, 
+        # so we use CTRL+A + Backspace to be safe.
+        if DEVICE_ADSPOWER == "android":
+            # Mobile: skip ALL selenium interactions, pure JS only
+            driver.execute_script("""
+                var ta = document.getElementById('hosts');
+                ta.value = '*';
+                ta.dispatchEvent(new Event('input', { bubbles: true }));
+                ta.dispatchEvent(new Event('change', { bubbles: true }));
+                
+                var btn = document.getElementById('save');
+                btn.click();
+            """)
+            print("Extension settings updated successfully (mobile JS mode).")
+        else:
+            # Desktop: original keyboard flow
+            textarea.click()
+            textarea.send_keys(Keys.CONTROL + "a")
+            textarea.send_keys(Keys.BACKSPACE)
+            textarea.send_keys("*")
+            time.sleep(1)
+            save_button = driver.find_element(By.ID, "save")
+            save_button.click()
+            print("Extension settings updated successfully.")
 
 
-            switch_to_window(window5)
-            pyautogui.click(493,19, duration = 0.4)
-            #window5_meorearn = check_line_value(location_changes)
-            #print("Window 5 meorearn status:", window5_meorearn, "Location changes:", location_changes)
-            if window4_meorearn:
-                shorlink = random_link('link8')
-            else:
-                shorlink = random_link('link5')
-            open_link(link = shorlink ,newtab = False)
-        if hyperwindow != 0:
-            #switch_to_window(hyperwindow)
-            #pyautogui.click(493,19, duration = 0.4)
-            #if random.random() < 0.8:   # 0.9 = 90%
-            #    shorlink = random_link('link3')
-            #else:
-            #    shorlink = randomhyperlinks()
-            #open_link(link = shorlink ,newtab = False)
-            time.sleep(2)
+
+
+
+        print("\n── Rekt Configure ────────────────────────────────────")
+        driver.get("chrome-extension://bbdhfoclddncoaomddgkaaphcnddbpdh/popup.html")
+        waitforpage, driver = wait_for_load_state(driver, state="complete", timeout=30, wait= True)
+        if waitforpage == False:
+            print('Page Loading Failed... extension2')
+            continue
+        wait = WebDriverWait(driver,20)
+        settings_to_enable = ["recaptcha_auto_open", "recaptcha_auto_solve"]
+        for i in range(4):
+            for setting in settings_to_enable:
+                # Locate the specific toggle div by its data-settings attribute
+                xpath = f"//div[@data-settings='{setting}']"
+                toggle_element = wait.until(EC.element_to_be_clickable((By.XPATH, xpath)))
+                
+                # Get the current class to see if it's already 'on'
+                current_class = toggle_element.get_attribute("class")
+                
+                if "off" in current_class:
+                    print(f"[+] Toggling {setting} to ON...")
+                    toggle_element.click()
+                else:
+                    print(f"[-] {setting} is already ON. Skipping.")
+                
+        print("✅ Recaptcha automation settings are ready.")
+
+        print("\n──All Extensions are configured ────────────────────────────────────")
+        print("\n──Openning Shortlinks ────────────────────────────────────")
+        try:
+            add_farm_activity(farmid=f"Farm{farm_id}", country= list_timezones.get("country"), ipaddress= ip , duration = f"B: {browser_tz_raw} |IP: {ip_tz_raw}", sites = f'{sites_done}x | 3 ', fingerprints_id= f"{browser_rect['width']} x {browser_rect['height']}", tuxler_left=location_changes, expiredate=expire)
+        except Exception as e:
+            print('ERR at Pymong:',e)
+
+        new_tab_handle = driver.current_window_handle
+
         
-    ############################################################
+        link = get_item_from_list("gplink_urls", "random")
+        window1 =  spoof_referrer_and_redirect(driver, "https://web.telegram.org/a/get/", link)
+        if window1 == False:
+            continue
+        if DEVICE_ADSPOWER == "notest":
+            link = get_item_from_list("shortxlink_urls", "random")
+            window2 = spoof_referrer_and_redirect(driver, "https://web.telegram.org/a/get/", link)
+            if window2 == False:
+                continue
 
-    if layout != 0:
+            link = get_item_from_list("indianxlink_urls", "random")
+            window3 = spoof_referrer_and_redirect(driver, "https://web.telegram.org/a/get/", link)
+            if window3 == False:
+                continue
 
-        tpi = None
-        if gplink_bug:
-            tpi = True
-        adrin = None
-        fc_lc = None
-        cuty = None
-        oii = None
-        ggwin1_unvalid = 1
-        ggwin2_unvalid = 1
-        ggwin3_unvalid = 1
-        ggwin4_unvalid = 1
 
-        win1time = 1
-        win2time = 1
-        win3time = 1
+            window4 = 'g3t3tg'# spoof_referrer_and_redirect(driver, "https://web.telegram.org/a/get/", "https://tpi.li/PojXEQ9") #spoof_referrer_and_redirect(driver, "https://web.telegram.org/a/get/", "https://gplinks.co/fp7jnWT")
+            if window4 == False:
+                continue
+        if DEVICE_ADSPOWER == "notest":
+            print(window1,window2,window3,window4)
+        driver.switch_to.window(new_tab_handle)
+        driver.close()
+        driver.switch_to.window(window1)
+        shortxlink_done = False
 
-        win1timeeee = True
-        win2timeeee = True
-        win3timeeee  = True
 
-        win1timeG =time.time()
-        win2timeG =time.time()
-        win3timeG =time.time()
+        win1_done = False
+        win2_done = False
+        win3_done = False
+        
+        start_loop = True
+        last_closetab = time.time()
+        last_ipcheck = time.time()
+        gplink_page_loaded = False
+        gplink_page_notfound = 1
+        gplink_adclose_failed = 1
+        while start_loop:
+            script_elapsed_time = time.time() - start_time
+            script_seconds_only = int(script_elapsed_time)
+            print('Time:', script_seconds_only)
+            if script_seconds_only > 600:
+                print("TimeOut All pages are Closed and Failed... 600")
+                start_loop = False
+                continue
 
-        time.sleep(10)
-        #closetabwin4 = random.randint(60, 180)
-        win4switchfg = False
-        closetabwin4 = random.randint(40, 90)
-        print("Time to consider closing window 4:", closetabwin4, "seconds")
-        oddofg = random.randint(1, 10)
-        #if oddofg <= 7:
-        win4switchfg = False
-        #else:
-        gg = None
-        started = time.time()
-        sites_done = 0
-        shrinkearn_continue = 1
-        window1_lastclick = time.time()
-        window2_lastclick = time.time()
-        window3_lastclick = time.time()
-        window4_lastclick = time.time()
-        shrinkmeorearn_time = time.time()
-        clickads_gplink = True
-        hyper_scrolled = False
-        clickads_gplink_attempts = 0
-        focus_and_close_window('Options Page')
-        check_indx = 1
-        while gg == None:
-            check_indx += 1
+            if win1_done and win2_done and win3_done:
+                print("All pages are Closed and Success")
+                start_loop = False
+                continue
+
+            if DEVICE_ADSPOWER == "notest":
+                script_elapsed_time = time.time() - last_closetab
+                script_seconds_only = int(script_elapsed_time)
+                print('Last Close:', script_seconds_only)
+                main_handlers = [window1,window2,window3,window4]
+                if script_seconds_only > 40:
+                    close_unauthorized_tabs(driver, main_handlers)
+                    last_closetab = time.time()
+                    
+                ################    
+                script_elapsed_time = time.time() - last_ipcheck
+                script_seconds_only = int(script_elapsed_time)
+                print('last_ipcheck :', script_seconds_only)
+                if script_seconds_only > 100:
+                    last_ipcheck = time.time()
+
+                    driver.switch_to.new_window('tab')
+                    driver.get("https://api.ipify.org/")
+                    
+                    waitforpage, driver = wait_for_load_state(driver, state="interactive", timeout=30, wait= True)
+                    if waitforpage == False:
+                        print(f'Page Loading Failed... api ipfly')
+                        continue
+
+                    ipaddress = driver.find_element(By.TAG_NAME, "body").text.strip()
+                    print(f"✅ IP: {ipaddress}")
+                    if ipaddress != ip :
+                        print('IP missmatched',ipaddress, ip)
+                        start_loop = False
+                        continue
+            sites_done = 0
             try:
 
-
-
-                script_elapsed_time = time.time() - started
-                script_seconds_only = int(script_elapsed_time)
-                print(f"Script has been running for {script_seconds_only} seconds")
-                if script_seconds_only > 1000 and layout == 16:
-
-
-                        print(cuty, tpi, 'Cuty and tpi is true')
-                        focus_and_maximize_window('SunBrowser')
-                        focus_and_maximize_window('New Tab')
-
-                        open_link(link = 'chrome-extension://ehllkhjndgnlokhomdlhgbineffifcbj/data/options/index.html',newtab = False)
-                        time.sleep(3)
-                        pyautogui.click(850, 559)  # C
-                        time.sleep(0.5)
-                        pyautogui.hotkey('ctrl', 'a')  # Select all text
-                        pyautogui.press('backspace')  # Clear the text
-                        pyautogui.typewrite('mobiend.com, healthy4pepole.com, adurl.io')
-                        time.sleep(0.5)
-                        pyautogui.click(547, 916)  # C
-                        time.sleep(1)
-                        pyautogui.click(547, 874)  # C
-                        time.sleep(1)
-                        pyautogui.click(493,19, duration = 0.4)
-
-                        extra_win = get_focused_window_id()
-                        time.sleep(2)
-                        window3 = open_detatch_tab()
-                        window4 = open_detatch_tab()
-
-                        
-                        time.sleep(2)
-                        switch_to_window(window3)
-                        pyautogui.click(493,19, duration = 0.4)
-                        shorlink = random_link('link5')
-                        open_link(link = shorlink ,newtab = False)
-                        time.sleep(2)
-                        switch_to_window(window4)
-                        pyautogui.click(493,19, duration = 0.4)
-                        shorlink = random_link('link8')
-                        open_link(link = shorlink ,newtab = False)
-                        time.sleep(2)
-
-                        time.sleep(10)
-                        layout = 2
-
-                        close_window(window1)
-                        #close_window(cutty_window)
-                        close_window(window2)
-
-
-                if script_seconds_only > 600:
-                    gg = True
-                if script_seconds_only > 600:
-                    oii = True
-
-                try:
-                    x, y = pyautogui.locateCenterOnScreen('leavebuttong.png',  confidence=0.98)
-                    if x and y:
-                        print('leave  working')
-                        pyautogui.click(x,y)
-                        time.sleep(3)
-                        continue
-
-                except Exception as e:
-                    pass
-                try:
-                    x, y = pyautogui.locateCenterOnScreen('wait_for_page.png',  confidence=0.98)
-                    if x and y:
-                        print('wait_for_page working')
-                        pyautogui.click(x,y)
-                        time.sleep(3)
-                        close_window(window3)
-                        continue
-
-                except Exception as e:
-                    pass
-                if layout == 1:
-                    if layout == 1:
-                        try:
-                            
-                            if win32gui.IsWindow(window1):
-                                #focus_and_maximize_window('Task Manager')
-                                switch = switch_to_window(window1)
-
-                                if switch:
-
-                                    ggwin1 = None
-                                    ggwin1 = gplink_handle()
-                                    if ggwin1 == 5:
-                                        tpi = True
-                                    elif ggwin1 == 1:
-                                        tpi = False
-
-                                    #time.sleep(1)
-        
-
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('thissiteerror.png', region=[526,160,530,470], confidence=0.95)
-                                    if x and y:
-                                        print('site not working')
-                                        pyautogui.click(24,64)
-                                        time.sleep(3)
-                                        tpi = True
-                                except Exception as e:
-                                    pass
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('cssnotload2.png', region=[1,66,230,190], confidence=0.8)
-                                    if x and y:
-                                        pyautogui.press('f5')
-                                        time.sleep(3)
-                                except Exception as e:
-                                    pass
-
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('resubmission.png', region=[585,210,585,290], confidence=0.8)
-                                    if x and y:
-                                        pyautogui.click(1027,235)
-                                        time.sleep(3)
-                                        #pyautogui.moveTo(500,300)
-                                        #pyautogui.scroll(5000)
-                                        #tpi = True
-                                except Exception as e:
-                                    pass
-
-                            else:
-                                print('tpi not exist')
-                                if tpi:
-                                    pass
-                                else:
-                                    sites_done += 1
-                                tpi = True
-
-                        except Exception as e:
-                        #tpi = True
-                            pass
-                    
-                #if tpi == True:
-                #    close_window(window3)
-
-
-                if layout == 1:
-                    
-                        try:
-                            switch_to_window(window2)
-                            if win32gui.IsWindow(window2):
-
-                                switch = switch_to_window(window2)
-                                pyautogui.click(150,200, duration = 0.4)
-
-                                ggwin2 = None
-                                ggwin2 = shortx_handle()
-                                if ggwin2 == 5:
-                                    cuty = True
-                                elif ggwin2 == 1:
-                                    cuty = False
-
-                                                    
-
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('resubmission.png', region=[585,210,585,290], confidence=0.8)
-                                    if x and y:
-                                        pyautogui.click(1027,235)
-                                        time.sleep(3)
-                                        #pyautogui.moveTo(500,300)
-                                        #pyautogui.scroll(5000)
-                                        #tpi = True
-                                except Exception as e:
-                                    pass
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('thissiteerror.png', region=[526,160,530,470], confidence=0.95)
-                                    if x and y:
-                                        print('site not working shortix')
-                                        cuty = True
-                                except Exception as e:
-                                    pass
-                            else:
-                                print('cuty not exist')                               
-                                
-                                
-                                if cuty:
-                                    pass
-                                else:
-                                    sites_done += 1
-                                cuty = True
-
-                        except Exception as e:
-                            #cuty = True
-                            pass
-
-                if layout == 1 and Indianxorshrink == True and hybridmode_indianxshrink == False or layout == 1 and hybridmode_indianxshrink == True:
-                    
-                        try:
-                            switch_to_window(window4)
-                            if win32gui.IsWindow(window4):
-
-                                switch = switch_to_window(window4)
-
-
-                                ggwin2 = None
-                                if window4_meorearn:
-                                    earn = True
-                                else:                                    
-                                    earn = False
-                                ggwin2 = shrink_meorearn(earn)
-                                if ggwin2 == 5:
-                                    oii = True
-                                elif ggwin2 == 1:
-                                    oii = False
-
-                                if win4switchfg == False:
-
-                                    try:
-                                        switch_to_window(window5)
-                                        if win32gui.IsWindow(window5): 
-                                            script_elapsed_time = time.time() - shrinkmeorearn_time
-                                            script_seconds_only = int(script_elapsed_time)
-                                            switch = switch_to_window(window5)
-                                            if script_seconds_only > closetabwin4 and win4switchfg == False :
-                                                time.sleep(1)
-                                                title = get_focused_window_title()
-                                                print("Time to consider closing window 4, current title:", title)
-                                                if script_seconds_only < 300:
-                                                    if 'ShrinkMe' in title or 'Health Shield' in title:
-                                                        print("Closing window 4 due to time limit and title match")
-                                                        if window4_meorearn:
-                                                            earn = False
-                                                        else:                                    
-                                                            earn = True
-                                                        ggwin2 = shrink_meorearn(earn)
-                                                        continue
-                                                close_window(window5)
-                                                win4switchfg = True
-                                                continue
-                                            switch = switch_to_window(window5)
-                                            if window4_meorearn:
-                                                earn = False
-                                            else:                                    
-                                                earn = True
-                                            ggwin2 = shrink_meorearn(earn)
-                                    except Exception as e:
-                                        pass    
-
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('resubmission.png', region=[585,210,585,290], confidence=0.8)
-                                    if x and y:
-                                        pyautogui.click(1027,235)
-                                        time.sleep(3)
-                                        #pyautogui.moveTo(500,300)
-                                        #pyautogui.scroll(5000)
-                                        #tpi = True
-                                except Exception as e:
-                                    pass
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('thissiteerror.png', region=[526,160,530,470], confidence=0.95)
-                                    if x and y:
-                                        print('site not working shortix')
-                                        oii = True
-                                except Exception as e:
-                                    pass
-                            else:
-                                print('oii not exist')                               
-                                
-                                
-                                if oii:
-                                    pass
-                                else:
-                                    sites_done += 1
-                                oii = True
-
-                        except Exception as e:
-                            oii = True
-                            pass
-
-
-
-
-                if layout == 1 and Indianxorshrink == False and hybridmode_indianxshrink == False or layout == 1 and hybridmode_indianxshrink == True:
-
-                        if check_indx % 4 == 0:
-                            results = True
-                        else:
-                            results = False
-
-                        # Print the results
-
-                        try:
-                            switch_to_window(window3)
-                            if win32gui.IsWindow(window3):
-
-                                switch = switch_to_window(window3)
-                                
-
-                                ggwin2 = None
-                                ggwin2 = inidanxlinks(results)
-                                if ggwin2 == 5:
-                                    pass
-                                    oii = True
-                                elif ggwin2 == 1:
-                                    pass
-                                    oii = False
-
-                                                    
-
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('resubmission.png', region=[585,210,585,290], confidence=0.8)
-                                    if x and y:
-                                        pyautogui.click(1027,235)
-                                        time.sleep(3)
-                                        #pyautogui.moveTo(500,300)
-                                        #pyautogui.scroll(5000)
-                                        oii = True
-                                except Exception as e:
-                                    pass
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('thissiteerror.png', region=[526,160,530,470], confidence=0.95)
-                                    if x and y:
-                                        print('site not working shortix')
-                                        tpi = True
-                                except Exception as e:
-                                    pass
-                            else:
-                                print('cuty not exist')                               
-                                
-                                
-                                if oii:
-                                    pass
-                                else:
-                                    sites_done += 1
-                                oii = True
-                        except Exception as e:
-                            oii = True
-                            pass
-
-
-
-
-
-                if layout == 2:
-                    if random.random() < 0.9: ##if cuty == None or cuty == False:
-                        script_elapsed_time = time.time() - started
-                        script_seconds_only = int(script_elapsed_time)
-                        print(f"Script has been running for {script_seconds_only} seconds")
-                        try:
-                            switch_to_window(hyperwindow)
-                            if win32gui.IsWindow(hyperwindow):
-
-                                switch = switch_to_window(hyperwindow)
-                                #pyautogui.click(150,200, duration = 0.4)
-
-                                ggwin2 = None
-                                ggwin2 = hyperhustlebrows()
-
-                                if hyperrefreshstat1 == False:
-                                    if script_seconds_only > hyperrefreshtime1:
-                                        hyperrefreshstat1 = True
-                                        if random.random() < 0.8:   # 0.9 = 90%
-                                            shorlink = random_link('link3')
-                                        else:
-                                            shorlink = randomhyperlinks()
-                                        switch_to_window(hyperwindow)
-                                        pyautogui.click(493,19, duration = 0.4)
-                                        shorlink = random_link('link3')
-                                        open_link(link = shorlink ,newtab = False)
-                                        time.sleep(2)
-                                        #pyautogui.click(1056,192, duration=0.6)
-
-
-
-                                if hyperrefreshstat2 == False:
-                                    if script_seconds_only > hyperrefreshtime2:
-                                        hyperrefreshstat2 = True
-                                        if random.random() < 0.8:   # 0.9 = 90%
-                                            shorlink = random_link('link3')
-                                        else:
-                                            shorlink = randomhyperlinks()
-                                        switch_to_window(hyperwindow)
-                                        pyautogui.click(493,19, duration = 0.4)
-                                        shorlink = random_link('link3')
-                                        open_link(link = shorlink ,newtab = False)
-                                        time.sleep(2)
-                                        #pyautogui.click(1056,192, duration=0.6)
-
-                                if hyperrefreshstat3 == False:
-                                    if script_seconds_only > hyperrefreshtime3:
-                                        hyperrefreshstat3 = True
-                                        if random.random() < 0.8:   # 0.9 = 90%
-                                            shorlink = random_link('link3')
-                                        else:
-                                            shorlink = randomhyperlinks()
-                                        switch_to_window(hyperwindow)
-                                        pyautogui.click(493,19, duration = 0.4)
-                                        shorlink = random_link('link3')
-                                        open_link(link = shorlink ,newtab = False)
-                                        time.sleep(2)
-                                if script_seconds_only > hyperrefreshtime4:
-                                    hyperrefreshstat4 = True
-                                    time.sleep(3)
-                                    close_window(hyperwindow)
-                                        #pyautogui.click(1056,192, duration=0.6)
-
-
-
-
-
-
-                                    
-                                try:
-                                    x, y = pyautogui.locateCenterOnScreen('thissiteerror.png', region=[526,160,530,470], confidence=0.95)
-                                    if x and y:
-                                        print('site not working shortix')
-                                        #cuty = True
-                                except Exception as e:
-                                    pass
-                            else:
-                                print('cuty not exist')                               
-                                
-
-
-                        except Exception as e:
-                            #cuty = True
-                            pass
-
-
-
-
-
-
-                if cuty and tpi and layout == 6:# and oii and fc_lc: #and cuty: #or oii:
-
-                        print(cuty, tpi, 'Cuty and tpi is true')
-                        focus_and_maximize_window('SunBrowser')
-                        focus_and_maximize_window('New Tab')
-                        open_link(link = 'chrome-extension://ehllkhjndgnlokhomdlhgbineffifcbj/data/options/index.html',newtab = False)
-                        time.sleep(3)
-                        pyautogui.click(850, 559)  # C
-                        time.sleep(0.5)
-                        pyautogui.hotkey('ctrl', 'a')  # Select all text
-                        pyautogui.press('backspace')  # Clear the text
-                        pyautogui.typewrite('mobiend.com, healthy4pepole.com, adurl.io')
-                        time.sleep(0.5)
-                        pyautogui.click(547, 916)  # C
-                        time.sleep(1)
-                        pyautogui.click(547, 874)  # C
-                        time.sleep(1)
-                        pyautogui.click(493,19, duration = 0.4)
-                        extra_win = get_focused_window_id()
-                        time.sleep(2)
-                        window3 = open_detatch_tab()
-                        window4 = open_detatch_tab()
-
-                        
-                        time.sleep(2)
-                        switch_to_window(window3)
-                        pyautogui.click(493,19, duration = 0.4)
-                        shorlink = random_link('link5')
-                        open_link(link = shorlink ,newtab = False)
-                        time.sleep(2)
-                        switch_to_window(window4)
-                        pyautogui.click(493,19, duration = 0.4)
-                        shorlink = random_link('link8')
-                        open_link(link = shorlink ,newtab = False)
-                        time.sleep(2)
-
-                        time.sleep(10)
-                        layout = 2
-
-                        close_window(window1)
-                        #close_window(cutty_window)
-                        close_window(window2)
-                        layout2_start = time.time()
-
-
-
-                if win1timeeee and tpi:
-                    script_elapsed_time = time.time() - win1timeG
-                    win1time = int(script_elapsed_time)
-                    print(f"Scrip1 has been running for {script_seconds_only} seconds")
-                    win1timeeee = False
-
-                if win2timeeee and tpi:
-                    script_elapsed_time = time.time() - win2timeG
-                    win2time = int(script_elapsed_time)
-                    print(f"Scrip2t has been running for {script_seconds_only} seconds")
-                    win2timeeee = False
-                if win3timeeee and tpi:
-                    script_elapsed_time = time.time() - win3timeG
-                    win3time = int(script_elapsed_time)
-                    print(f"Script3 has been running for {script_seconds_only} seconds")
-                    win3timeeee = False
-
-                if oii and cuty and tpi: #and fc_lc:
-                    gg = True
-                    #time.sleep(90000)
-                #if cuty and tpi and oii:
-                #    gg = True
-                
-                #switch_to_window(window3)
-                #mysite_handle()
-
+                driver.switch_to.window(window1)
+                time.sleep(1)
+                result = False
+                result = gplinks_main(driver, window1)
+                if result == "chrome-error":
+                    print('gplinks_main is broken 1')
+                    win1_done = True
             except Exception as e:
-                print("An error occurred:", e)
+                win1_done = True
+                sites_done += 1
+                #print('Win1 ERR automation:', e)
+
+            if DEVICE_ADSPOWER == "notest":
+                if shortxlink_done == False:
+                    try:
+                        driver.switch_to.window(window2)
+                        time.sleep(1)
+                        result = False
+                        result = shortxlinks_main(driver)
+                        if result == "chrome-error":
+                            print('shortxlinks_main is broken 1')
+                            win2_done = True
+
+                    except Exception as e:
+                        win2_done = True
+                        sites_done += 1
+                        #print('Win2 ERR automation:', e)
+                        if shortxlink_done == True:
+                            window4 = spoof_referrer_and_redirect(driver, "https://web.telegram.org/a/get/", "https://tpi.li/PojXEQ9") #spoof_referrer_and_redirect(driver, "https://web.telegram.org/a/get/", "https://gplinks.co/fp7jnWT")
+                            if window4 == False:
+                                continue
+                            #shortxlink_done = True
+                try:
+                    driver.switch_to.window(window3)
+                    time.sleep(1)
+                    result = False
+                    result = indianxshort_main(driver)
+                    if result == "chrome-error":
+                        print('indianxshort_main is broken 1')
+                        win3_done = True
+                except Exception as e:
+                    win3_done = True
+                    sites_done += 1
+
+                    #print('Win3 ERR automation:', e)
+                if shortxlink_done == True:
+
+                    try:
+                        driver.switch_to.window(window4)
+                        time.sleep(1)
+                        shrinkearn_main(driver)
+                    except Exception as e:
+                        win2_done = True
+
+
+
+
+
+
+
+
+
+
+
+

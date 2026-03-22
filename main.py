@@ -1226,8 +1226,8 @@ def adspower_api_grabber():
                 if x and y:
                     print("copyreset_adspower Found")
                     try:
-                        x, y = pyautogui.locateCenterOnScreen('api_off_switch.png',confidence=0.9)
-                        if x and y:
+                        x2, y2 = pyautogui.locateCenterOnScreen('api_off_switch.png',confidence=0.9)
+                        if x2 and y2:
                             print("api_off_switch Found")
                             clipboard.copy('1234')
                             x -= 38
@@ -1246,7 +1246,7 @@ def adspower_api_grabber():
                             #switch_adspower()
                             
                     except Exception as e:
-                        print('api_off_switch not found')
+                        print('api_off_switch not found', e)
 
                     
             except Exception as e:

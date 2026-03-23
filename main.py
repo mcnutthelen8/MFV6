@@ -5105,6 +5105,7 @@ API_KEY = adspower_api_grabber()
 
 
 while testrun:
+    try:
         start_time = time.time()
         focus_and_close_window('SunBrowser')
         close_chrome()
@@ -5605,7 +5606,8 @@ while testrun:
                 print("ERR at loop: ",e)
 
 
-
+    except Exception as e:
+        print("ERR at loop2: ",e)
 
 
 

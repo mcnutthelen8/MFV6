@@ -2715,25 +2715,13 @@ def move_human_os(target_x, target_y):
 #######################Shortlinks Handle##########################################
 
 def accept_consent_popups(driver):
-    # 1. Define common Consent/GDPR buttons
-    consent_selectors = [
-        '.qc-cmp2-summary-buttons button[mode="primary"]',
-        '#accept-btn',
-        'button[id="accept-btn"]',
-        'button[mode="primary"]',
-        '.fc-agreement-dialog .fc-primary-button',
-        'button[aria-label="Consent"]',
-        '#save .tp-button',
-        '.sd-cmp-2V7v7 .sd-button-primary',
-        '.fc-primary-button',
-    ]
 
     # 2. JS to find the first VISIBLE consent button
     find_consent_script = """
 
     // replace your consent detection block with this
     const consent_selectors = [
-        '.qc-cmp2-summary-buttons button[mode="primary"]',
+        
         '#accept-btn',                                      // ← direct ID fallback
         'button[id="accept-btn"]',
         'button[mode="primary"]',
@@ -2742,6 +2730,7 @@ def accept_consent_popups(driver):
         '#save .tp-button',
         '.sd-cmp-2V7v7 .sd-button-primary',
         '.fc-primary-button',
+        '.qc-cmp2-summary-buttons button[mode="primary"]',
     ];
 
     // consent uses looser visibility — overlay animation can hide it temporarily
@@ -4092,6 +4081,8 @@ def close_unauthorized_tabs(driver, whitelist_handles):
 
         print('all done closed..')
 
+
+
 def close_shrink_ad_span(driver):
     result = driver.execute_script("""
         // ── main document check ──────────────────────────────────────
@@ -4155,13 +4146,13 @@ def close_shrink_ad_span(driver):
     return False
 
 
+midpageshrinkearn = False
 
-
-def shrinkearn_main(driver):
+def shrinkearn_main(driver, page_shrinkearn_close):
     if random.randint(1, 10) >= 8:
         print('random Move')
         move_human_os(random.randint(100, 800), random.randint(100, 500))
-
+    global midpageshrinkearn
     try:
         wait, driver = wait_for_load_state(driver, state="interactive", timeout=10, wait=False)
         if not wait:
@@ -4199,7 +4190,7 @@ const isVisConsent = (el) => {
 };
 
 const consent_selectors = [
-    '.qc-cmp2-summary-buttons button[mode="primary"]',
+    
     '#accept-btn',
     'button[id="accept-btn"]',
     'button[mode="primary"]',
@@ -4208,6 +4199,7 @@ const consent_selectors = [
     '#save .tp-button',
     '.sd-cmp-2V7v7 .sd-button-primary',
     '.fc-primary-button',
+    '.qc-cmp2-summary-buttons button[mode="primary"]',
 ];
 
 if (isHealthShield) {
@@ -4272,7 +4264,7 @@ if (isHealthShield) {
     for (const sel of consent_selectors) {
         const btn = document.querySelector(sel);
         if (btn && isVisConsent(btn)) {
-            consent_btn = sel;
+            consent_btn = true;
             break;
         }
     }
@@ -4316,8 +4308,10 @@ return {
             return
         # ── consent ──────────────────────────────────────────────────────
         if result['consent_btn']:
+            print('found consents on shrinkearn')
             accept_consent_popups(driver)   # 1 call only when needed
-
+        else:
+            print('no consents on shrinkearn')
         if close_spang:
             try:
                 print("🎯 Close span found, clicking...")
@@ -4375,8 +4369,22 @@ return {
 
         # ── click the pre-found button ────────────────────────────────────
         if result['value']:
+            if result['isHealthShield']:
+                if page_shrinkearn_close == 1:
+                    driver.close()
+                    return 'close'
+            else:
+                if midpageshrinkearn:
+                    if page_shrinkearn_close == 3:
+                        driver.close()
+                        return 'close'
+                if page_shrinkearn_close == 2:
+                    driver.close()
+                    return 'close'
+                
             el = driver.find_element(By.CSS_SELECTOR, result['value'])   # 1 call
             if result['action'] == 'scroll_click':
+
                 driver.execute_script(
                     "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", el)   # 1 call
                 time.sleep(0.2)
@@ -4385,6 +4393,7 @@ return {
             if result['isHealthShield']:
                 pass
             else:
+                
                 time.sleep(1)
                 result = driver.execute_script(script_code)
                 if result['value']:
@@ -4395,6 +4404,7 @@ return {
                         time.sleep(0.2)
                     human_click(driver, el)
                     print(f"✅ Fast Action: {result['action']} on {result['value']}")
+                    midpageshrinkearn = True
                 else:
                     print('No more btns Srinkearn')
         else:
@@ -5436,6 +5446,15 @@ while testrun:
         gplink_page_loaded = False
         gplink_page_notfound = 1
         gplink_adclose_failed = 1
+        gg = random.random()
+        if gg < 0.7:
+            print("hel",gg)
+            close_shrinkearn = False
+        else:
+            close_shrinkearn = True
+        page_shrinkearn_close = random.choice([1, 2, 3])
+        midpageshrinkearn = False
+
         while start_loop:
             try:
                 script_elapsed_time = time.time() - start_time
@@ -5537,7 +5556,12 @@ while testrun:
                             driver.switch_to.window(window4)
                             time.sleep(1)
                             result = False
-                            result = shrinkearn_main(driver)
+                            if close_shrinkearn:
+                                result = shrinkearn_main(driver, page_shrinkearn_close)
+                            result = shrinkearn_main(driver, '5')
+                            if result == "close":
+                                print('shrinkearn_main is close 1')
+                                win2_done = True
                             if result == "chrome-error":
                                 print('shrinkearn_main is broken 1')
                                 win2_done = True

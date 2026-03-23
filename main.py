@@ -1264,6 +1264,26 @@ def adspower_api_grabber():
                 pass
 
 
+            try:
+                x, y = pyautogui.locateCenterOnScreen('autoteamcol.png',confidence=0.93)
+                if x and y:
+                    print("autoteamcol Found")
+                    try:
+                        x, y = pyautogui.locateCenterOnScreen('autocol.png',confidence=0.93)
+                        if x and y:
+                            print("autocol Found")
+                            pyautogui.click(x,y)
+                            time.sleep(3)
+                            continue
+
+                            
+                    except Exception as e:
+                        print("not autocol Found")
+
+
+                    
+            except Exception as e:
+                pass
 
 
 

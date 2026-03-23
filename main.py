@@ -5465,13 +5465,13 @@ while testrun:
             close_shrinkearn = True
         page_shrinkearn_close = random.choice([1, 2, 3])
         midpageshrinkearn = False
-        start_time = time.time()
+        start_time2 = time.time()
         while start_loop:
             try:
-                script_elapsed_time = time.time() - start_time
+                script_elapsed_time = time.time() - start_time2
                 script_seconds_only = int(script_elapsed_time)
                 print('Time:', script_seconds_only)
-                if script_seconds_only > 500:
+                if script_seconds_only > 460:
                     print("TimeOut All pages are Closed and Failed... 600")
                     start_loop = False
                     continue

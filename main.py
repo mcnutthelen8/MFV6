@@ -1,6 +1,6 @@
 
 
-print("Version 15.8 loaded.")
+print("Version 15.9 loaded.")
 import pyautogui
 import time
 import win32gui
@@ -3099,6 +3099,7 @@ def gplinks_main(driver, window):
                 let consent_btn    = null;
                 let adblock_warn  = null;                
                 let google_close_btn = null;
+                let google_ad_url      = url.includes('#goog_rewarded') || url.includes('#google_vignette') || url.includes('#google_') || url.includes('#goog_') 
 
                 if (isPowergram) {
 
@@ -3213,6 +3214,11 @@ def gplinks_main(driver, window):
                                 }
                                            
                             }
+                    }
+                    if (isVignette){
+                        if (!google_ad_url){
+                            isVignette = false;
+                        }
                     }
 
 
@@ -3442,6 +3448,7 @@ def gplinks_main(driver, window):
                 let anyVisible    = false;
                 let isFullscreen  = false;
                 let details       = [];
+                let google_ad_url      = url.includes('#goog_rewarded') || url.includes('#google_vignette') || url.includes('#google_') || url.includes('#goog_') 
 
                 const vpW = window.innerWidth  || document.documentElement.clientWidth;
                 const vpH = window.innerHeight || document.documentElement.clientHeight;
@@ -3499,7 +3506,11 @@ def gplinks_main(driver, window):
                             
                         }
                     }
-
+                if (isVignette){
+                    if (!google_ad_url){
+                        isVignette = false;
+                    }
+                }
                 if (isVignette){
                     return null;
                 }
@@ -4261,15 +4272,15 @@ if (isHealthShield) {
         if (closest) { action = 'scroll_click'; value = closest; }
     }
 
-    for (const sel of consent_selectors) {
-        const btn = document.querySelector(sel);
-        if (btn && isVisConsent(btn)) {
-            consent_btn = true;
-            break;
-        }
-    }
-}   // ← closes if/else — only ONE closing brace here, was TWO before
 
+}   // ← closes if/else — only ONE closing brace here, was TWO before
+for (const sel of consent_selectors) {
+    const btn = document.querySelector(sel);
+    if (btn && isVisConsent(btn)) {
+        consent_btn = true;
+        break;
+    }
+}
 return {
     title:          title,
     url:            url,

@@ -2523,6 +2523,29 @@ def wait_for_load_state(driver, state="interactive", timeout=10, wait=False):
     return False, driver
 
 
+
+traffic_links = [
+    'web.telegram.org/a/get',
+    'pinpaste.com',
+    'pubnotepad.com',
+
+]
+
+
+def random_spoofing_reffer():
+    odd = random.random()
+    print('ODD:',odd)
+    if odd < 0.90: # 0.9 = 90%
+        site = 'web.telegram.org/a/get'
+    elif odd < 0.93:
+        site = 'https://corelinks.site/'
+    else:
+        site = 'noreffer'
+
+    print('REffer:',site)
+    return site
+
+
 def spoof_referrer_and_redirect(driver, referer_site, target_site, new_page = True):
     """
     1. Opens referer_site
@@ -2535,6 +2558,15 @@ def spoof_referrer_and_redirect(driver, referer_site, target_site, new_page = Tr
         # 1. Go to the high-authority 'Referer' site
         if new_page:
             driver.switch_to.new_window('tab')
+        if referer_site == "random":
+            print('random spoofing detect...')
+            referer_site = random_spoofing_reffer()
+        if referer_site == 'noreffer':    
+            print('direct visit')
+            driver.get(target_site)
+            time.sleep(2)
+            print("✅ Redirect Successful!")
+            return driver.current_window_handle
         driver.get(referer_site)
         
         waitforpage, driver = wait_for_load_state(driver, state="interactive", timeout=30, wait= True)
@@ -3577,7 +3609,7 @@ def gplinks_main(driver, window):
                     else:
                         print("🔄 No Timer found after 50s. Forcing Redirect...")
                         link = get_item_from_list("gplink_urls", "random")
-                        window1 =  spoof_referrer_and_redirect(driver, "https://web.telegram.org/a/get/", link, new_page=False)
+                        window1 =  spoof_referrer_and_redirect(driver, "random", link, new_page=False)
 
             # ── GPlinks Get Link page ────────────────────────────────────────
             if result['isGetLink']:
@@ -3631,7 +3663,7 @@ def gplinks_main(driver, window):
                                 gplink_page_loaded = True
                             else:
                                 link = get_item_from_list("gplink_urls", "random")
-                                window1 =  spoof_referrer_and_redirect(driver, "https://web.telegram.org/a/get/", link, new_page=False)
+                                window1 =  spoof_referrer_and_redirect(driver, "random", link, new_page=False)
 
                     gplink_page_notfound += 1
 
@@ -4970,6 +5002,16 @@ def get_city_slug(tz_string):
     parts = tz_string.replace('_', '/').split('/')
     # Return the last part, lowercased and stripped
     return parts[-1].strip().lower()
+import zoneinfo
+def get_utc_offset(tz_name):
+    try:
+        # Normalize common naming issues (like Calcutta)
+        # zoneinfo usually handles aliases, but we need a valid TZ string
+        now = datetime.datetime.now(zoneinfo.ZoneInfo(tz_name))
+        return now.utcoffset().total_seconds()
+    except Exception:
+        return None
+    
 
 update_content_extension()
 update_Url_shortners()
@@ -5172,8 +5214,8 @@ while testrun:
         # 2. Normalize and extract the last part (e.g., 'cordoba')
 
 
-        browser_city = get_city_slug(browser_tz_raw)
-        ip_city = get_city_slug(ip_tz_raw)
+        browser_city = get_utc_offset(browser_tz_raw)
+        ip_city = get_utc_offset(ip_tz_raw)
 
         print(f"Browser City: {browser_city} | IP City: {ip_city}")
 
@@ -5244,8 +5286,10 @@ while testrun:
         # 2. Normalize and extract the last part (e.g., 'cordoba')
 
 
-        browser_city = get_city_slug(browser_tz_raw)
-        ip_city = get_city_slug(ip_tz_raw)
+        #browser_city = get_city_slug(browser_tz_raw)
+        #ip_city = get_city_slug(ip_tz_raw)
+        browser_city = get_utc_offset(browser_tz_raw)
+        ip_city = get_utc_offset(ip_tz_raw)
 
         print(f"Browser City: {browser_city} | IP City: {ip_city}")
 
@@ -5337,17 +5381,17 @@ while testrun:
 
         
         link = get_item_from_list("gplink_urls", "random")
-        window1 =  spoof_referrer_and_redirect(driver, "https://web.telegram.org/a/get/", link)
+        window1 =  spoof_referrer_and_redirect(driver, "random", link)
         if window1 == False:
             continue
         if DEVICE_ADSPOWER == "notest":
             link = get_item_from_list("shortxlink_urls", "random")
-            window2 = spoof_referrer_and_redirect(driver, "https://web.telegram.org/a/get/", link)
+            window2 = spoof_referrer_and_redirect(driver,"random", link)
             if window2 == False:
                 continue
 
             link = get_item_from_list("indianxlink_urls", "random")
-            window3 = spoof_referrer_and_redirect(driver, "https://web.telegram.org/a/get/", link)
+            window3 = spoof_referrer_and_redirect(driver, "random", link)
             if window3 == False:
                 continue
 
@@ -5374,105 +5418,115 @@ while testrun:
         gplink_page_notfound = 1
         gplink_adclose_failed = 1
         while start_loop:
-            script_elapsed_time = time.time() - start_time
-            script_seconds_only = int(script_elapsed_time)
-            print('Time:', script_seconds_only)
-            if script_seconds_only > 600:
-                print("TimeOut All pages are Closed and Failed... 600")
-                start_loop = False
-                continue
-
-            if win1_done and win2_done and win3_done:
-                print("All pages are Closed and Success")
-                start_loop = False
-                continue
-
-            if DEVICE_ADSPOWER == "notest":
-                script_elapsed_time = time.time() - last_closetab
-                script_seconds_only = int(script_elapsed_time)
-                print('Last Close:', script_seconds_only)
-                main_handlers = [window1,window2,window3,window4]
-                if script_seconds_only > 40:
-                    close_unauthorized_tabs(driver, main_handlers)
-                    last_closetab = time.time()
-                    
-                ################    
-                script_elapsed_time = time.time() - last_ipcheck
-                script_seconds_only = int(script_elapsed_time)
-                print('last_ipcheck :', script_seconds_only)
-                if script_seconds_only > 100:
-                    last_ipcheck = time.time()
-
-                    driver.switch_to.new_window('tab')
-                    driver.get("https://api.ipify.org/")
-                    
-                    waitforpage, driver = wait_for_load_state(driver, state="interactive", timeout=30, wait= True)
-                    if waitforpage == False:
-                        print(f'Page Loading Failed... api ipfly')
-                        continue
-
-                    ipaddress = driver.find_element(By.TAG_NAME, "body").text.strip()
-                    print(f"✅ IP: {ipaddress}")
-                    if ipaddress != ip :
-                        print('IP missmatched',ipaddress, ip)
-                        start_loop = False
-                        continue
-            sites_done = 0
             try:
+                script_elapsed_time = time.time() - start_time
+                script_seconds_only = int(script_elapsed_time)
+                print('Time:', script_seconds_only)
+                if script_seconds_only > 600:
+                    print("TimeOut All pages are Closed and Failed... 600")
+                    start_loop = False
+                    continue
 
-                driver.switch_to.window(window1)
-                time.sleep(1)
-                result = False
-                result = gplinks_main(driver, window1)
-                if result == "chrome-error":
-                    print('gplinks_main is broken 1')
-                    win1_done = True
-            except Exception as e:
-                win1_done = True
-                sites_done += 1
-                #print('Win1 ERR automation:', e)
+                if win1_done and win2_done and win3_done:
+                    print("All pages are Closed and Success")
+                    start_loop = False
+                    continue
 
-            if DEVICE_ADSPOWER == "notest":
-                if shortxlink_done == False:
-                    try:
-                        driver.switch_to.window(window2)
-                        time.sleep(1)
-                        result = False
-                        result = shortxlinks_main(driver)
-                        if result == "chrome-error":
-                            print('shortxlinks_main is broken 1')
-                            win2_done = True
+                if DEVICE_ADSPOWER == "notest":
+                    script_elapsed_time = time.time() - last_closetab
+                    script_seconds_only = int(script_elapsed_time)
+                    print('Last Close:', script_seconds_only)
+                    main_handlers = [window1,window2,window3,window4]
+                    if script_seconds_only > 40:
+                        close_unauthorized_tabs(driver, main_handlers)
+                        last_closetab = time.time()
+                        
+                    ################    
+                    script_elapsed_time = time.time() - last_ipcheck
+                    script_seconds_only = int(script_elapsed_time)
+                    print('last_ipcheck :', script_seconds_only)
+                    if script_seconds_only > 100:
+                        last_ipcheck = time.time()
 
-                    except Exception as e:
-                        win2_done = True
-                        sites_done += 1
-                        #print('Win2 ERR automation:', e)
-                        if shortxlink_done == True:
-                            window4 = spoof_referrer_and_redirect(driver, "https://web.telegram.org/a/get/", "https://tpi.li/PojXEQ9") #spoof_referrer_and_redirect(driver, "https://web.telegram.org/a/get/", "https://gplinks.co/fp7jnWT")
-                            if window4 == False:
-                                continue
-                            #shortxlink_done = True
+                        driver.switch_to.new_window('tab')
+                        driver.get("https://api.ipify.org/")
+                        
+                        waitforpage, driver = wait_for_load_state(driver, state="interactive", timeout=30, wait= True)
+                        if waitforpage == False:
+                            print(f'Page Loading Failed... api ipfly')
+                            continue
+
+                        ipaddress = driver.find_element(By.TAG_NAME, "body").text.strip()
+                        print(f"✅ IP: {ipaddress}")
+                        if ipaddress != ip :
+                            print('IP missmatched',ipaddress, ip)
+                            start_loop = False
+                            continue
+                sites_done = 0
                 try:
-                    driver.switch_to.window(window3)
+
+                    driver.switch_to.window(window1)
                     time.sleep(1)
                     result = False
-                    result = indianxshort_main(driver)
+                    result = gplinks_main(driver, window1)
                     if result == "chrome-error":
-                        print('indianxshort_main is broken 1')
-                        win3_done = True
+                        print('gplinks_main is broken 1')
+                        win1_done = True
                 except Exception as e:
-                    win3_done = True
+                    win1_done = True
                     sites_done += 1
+                    #print('Win1 ERR automation:', e)
 
-                    #print('Win3 ERR automation:', e)
-                if shortxlink_done == True:
+                if DEVICE_ADSPOWER == "notest":
+                    if shortxlink_done == False:
+                        try:
+                            driver.switch_to.window(window2)
+                            time.sleep(1)
+                            result = False
+                            result = shortxlinks_main(driver)
+                            if result == "chrome-error":
+                                print('shortxlinks_main is broken 1')
+                                win2_done = True
 
+                        except Exception as e:
+                            win2_done = True
+                            #sites_done += 1
+                            #print('Win2 ERR automation:', e)
+                            if shortxlink_done == False:
+                                link = get_item_from_list("shrinkearn_urls", "random")
+                                window4 = spoof_referrer_and_redirect(driver, "random", link) #spoof_referrer_and_redirect(driver, "https://web.telegram.org/a/get/", "https://gplinks.co/fp7jnWT")
+                                if window4 == False:
+                                    continue
+                                shortxlink_done = True
+                                win2_done = False
                     try:
-                        driver.switch_to.window(window4)
+                        driver.switch_to.window(window3)
                         time.sleep(1)
-                        shrinkearn_main(driver)
+                        result = False
+                        result = indianxshort_main(driver)
+                        if result == "chrome-error":
+                            print('indianxshort_main is broken 1')
+                            win3_done = True
                     except Exception as e:
-                        win2_done = True
+                        win3_done = True
+                        sites_done += 1
+
+                        #print('Win3 ERR automation:', e)
+                    if shortxlink_done == True:
+
+                        try:
+                            driver.switch_to.window(window4)
+                            time.sleep(1)
+                            result = False
+                            result = shrinkearn_main(driver)
+                            if result == "chrome-error":
+                                print('shrinkearn_main is broken 1')
+                                win2_done = True
+
+                        except Exception as e:
+                            win2_done = True
+            except Exception as e:
+                print("ERR at loop: ",e)
 
 
 

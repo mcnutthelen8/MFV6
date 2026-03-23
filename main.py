@@ -1,6 +1,6 @@
 
 
-print("Version 15.5.8 loaded.")
+print("Version 15.6 loaded.")
 import pyautogui
 import time
 import win32gui
@@ -2718,11 +2718,13 @@ def accept_consent_popups(driver):
     # 1. Define common Consent/GDPR buttons
     consent_selectors = [
         '.qc-cmp2-summary-buttons button[mode="primary"]',
+        '#accept-btn',
+        'button[id="accept-btn"]',
         'button[mode="primary"]',
-        '.fc-agreement-dialog .fc-primary-button',         
-        'button[aria-label="Consent"]',                    
-        '#save .tp-button',                                
-        '.sd-cmp-2V7v7 .sd-button-primary',       
+        '.fc-agreement-dialog .fc-primary-button',
+        'button[aria-label="Consent"]',
+        '#save .tp-button',
+        '.sd-cmp-2V7v7 .sd-button-primary',
         '.fc-primary-button',
     ]
 
@@ -4176,6 +4178,7 @@ let consent_btn      = null;
 let action           = null;
 let value            = null;
 let close_span       = null;
+let adblockdetect       = null;
 
 const isVis = (el) => {
     if (!el) return false;
@@ -4210,6 +4213,7 @@ const consent_selectors = [
 if (isHealthShield) {
     const getLinkBtn  = document.querySelector('a.btn.btn-success.btn-lg.get-link');
     const continueBtn = document.querySelector('button.btn.btn-primary.btn-captcha#continue');
+    const adblock_btn = document.querySelector('div.alert.alert-danger');
 
     let click_btn_exist = false;
     if (isVis(getLinkBtn) && getLinkBtn.innerText.toLowerCase().includes('get link')) {
@@ -4220,6 +4224,8 @@ if (isHealthShield) {
         action = 'scroll_click';
         value  = 'button.btn.btn-primary.btn-captcha#continue';
         click_btn_exist = true;
+    }else if (isVis(adblock_btn) && continueBtn.innerText.toLowerCase().includes('disable adblock')) {
+        adblockdetect = true;
     }
 
     if (click_btn_exist) {
@@ -4280,6 +4286,7 @@ return {
     action:         action,
     value:          value,
     close_span:     close_span,
+    adblockdetect: adblockdetect
 };
 
 
@@ -4290,6 +4297,7 @@ return {
         title       = result['title']
         stealth_url = result['url']
         close_spang =result['close_span']
+        adblockdetect = result['adblockdetect']
         print(stealth_url)
         print(title)
         print(close_spang)
@@ -4302,7 +4310,10 @@ return {
             print('link is detect')
             driver.close()
             return
-
+        if adblockdetect:
+            print('Adblock Detect...')
+            driver.close()
+            return
         # ── consent ──────────────────────────────────────────────────────
         if result['consent_btn']:
             accept_consent_popups(driver)   # 1 call only when needed
@@ -4316,7 +4327,15 @@ return {
                 time.sleep(0.2)
             except Exception as e:
                 print("Failed to click close span:", e)
-
+        try:
+            x, y = pyautogui.locateCenterOnScreen(
+                "shrinkearnadsblock",
+                confidence=0.9)
+            if x and y:
+                print('adblock found shrinkearn')
+                return 'adblock'
+        except:
+            pass
         # ── Health Shield cloudflare check (pyautogui only, 0 API calls) ─
         if result['isHealthShield']:
             print('Health shield found')
@@ -5522,7 +5541,9 @@ while testrun:
                             if result == "chrome-error":
                                 print('shrinkearn_main is broken 1')
                                 win2_done = True
-
+                            if result == "adblock":
+                                print('shrinkearn_main is adblock 2')
+                                win2_done = True
                         except Exception as e:
                             win2_done = True
             except Exception as e:

@@ -1963,6 +1963,8 @@ def checkip_selenium(sameip='123'):
 
 
 def tuxler_stat_check():
+    global expire
+    global location_changes
     try:
         for i in range(30):
             focus_tuxler()
@@ -2017,7 +2019,7 @@ def tuxler_stat_check():
         return expire, location_changes
     except Exception as e:
         print("Error during Tuxler status check:", e)
-        return None, None
+        return expire, location_changes
     
 def read_line_from_file(file_path, line_number):
     try:
@@ -5121,7 +5123,7 @@ while testrun:
         location_changes += 1
         tux_stat_check += 1
         if testing:
-            if tux_stat_check >= 5 and Mysterium_Mode == False or location_changes >= 97 and Mysterium_Mode == False:
+            if tux_stat_check >= 5 or location_changes >= 97:
                 update_content_extension()
                 gplink_bug = get_gplink_bug_status()
                 print("gplink_bug status:", gplink_bug)

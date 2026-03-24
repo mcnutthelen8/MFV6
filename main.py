@@ -796,6 +796,14 @@ def close_chrome():
                 closed = True
             except Exception as e:
                 print("Error closing Chrome:", e)
+
+    for proc in psutil.process_iter(attrs=['name']):
+        if proc.info['name'] and 'chromedriver.exe' in proc.info['name'].lower():
+            try:
+                proc.terminate()
+                #closed = True
+            except Exception as e:
+                print("Error closing Chrome:", e)
     if closed:
         print("Chrome closed.")
     else:

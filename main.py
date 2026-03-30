@@ -2016,6 +2016,10 @@ def tuxler_stat_check():
         
         time.sleep(1)
         pyautogui.click(326,757)
+        if location_changes is None:
+            location_changes = 1
+        if expire is None:
+            expire = 1
         return expire, location_changes
     except Exception as e:
         print("Error during Tuxler status check:", e)
@@ -5618,12 +5622,3 @@ while testrun:
 
     except Exception as e:
         print("ERR at loop2: ",e)
-
-
-
-
-
-
-
-
-

@@ -1,6 +1,6 @@
 
 
-print("Version 15.99 loaded.")
+print("Version 16 loaded.")
 import pyautogui
 import time
 import win32gui

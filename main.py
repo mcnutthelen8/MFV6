@@ -5574,15 +5574,9 @@ while testrun:
 
                         except Exception as e:
                             win2_done = True
-                            #sites_done += 1
+                            sites_done += 1
                             #print('Win2 ERR automation:', e)
-                            if shortxlink_done == False:
-                                link = get_item_from_list("shrinkearn_urls", "random")
-                                window4 = spoof_referrer_and_redirect(driver, "random", link) #spoof_referrer_and_redirect(driver, "https://web.telegram.org/a/get/", "https://gplinks.co/fp7jnWT")
-                                if window4 == False:
-                                    continue
-                                shortxlink_done = True
-                                win2_done = False
+
                     try:
                         driver.switch_to.window(window3)
                         time.sleep(1)
@@ -5596,26 +5590,8 @@ while testrun:
                         sites_done += 1
 
                         #print('Win3 ERR automation:', e)
-                    if shortxlink_done == True:
 
-                        try:
-                            driver.switch_to.window(window4)
-                            time.sleep(1)
-                            result = False
-                            if close_shrinkearn:
-                                result = shrinkearn_main(driver, page_shrinkearn_close)
-                            result = shrinkearn_main(driver, '5')
-                            if result == "close":
-                                print('shrinkearn_main is close 1')
-                                win2_done = True
-                            if result == "chrome-error":
-                                print('shrinkearn_main is broken 1')
-                                win2_done = True
-                            if result == "adblock":
-                                print('shrinkearn_main is adblock 2')
-                                win2_done = True
-                        except Exception as e:
-                            win2_done = True
+
             except Exception as e:
                 print("ERR at loop: ",e)
 
